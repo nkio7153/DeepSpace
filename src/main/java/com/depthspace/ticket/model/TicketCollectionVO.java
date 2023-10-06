@@ -1,4 +1,4 @@
-package com.depthspace.ticket.model.bean;
+package com.depthspace.ticket.model;
 
 public class TicketCollectionVO {
     private Integer memId; // 使用 Integer 作為包裝類型

@@ -1,4 +1,4 @@
-package com.depthspace.ticket.model.bean;
+package com.depthspace.ticket.model;
 
 import java.util.Date;
 
