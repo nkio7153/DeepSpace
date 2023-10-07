@@ -1,4 +1,4 @@
 package com.depthspace.ticketorders.model.ticketorderdetail;
 
-public interface TicketOrderDetailDAO {
+public interface TicketOrderDetailDAO_Interface {
 }

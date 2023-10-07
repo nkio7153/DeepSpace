@@ -3,7 +3,7 @@ package com.depthspace.ticketorders.model.memticketowned;
 
 public class test {
     public static void main(String[] args) {
-        MemTicketOwnedDAOImpl memTicketOwnedDAO = new MemTicketOwnedDAOImpl();
+        MemTicketOwnedJDBCDAO memTicketOwnedDAO = new MemTicketOwnedJDBCDAO();
         //測試用插入一筆資料
 //        java.sql.Date releaseDate = java.sql.Date.valueOf("2022-03-31");
 //        java.sql.Date expiryDate = java.sql.Date.valueOf("2024-03-30");

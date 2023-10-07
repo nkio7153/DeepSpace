@@ -1,4 +1,4 @@
 package com.depthspace.promotion.model.promotiondetails;
 
-public interface PromotionDetailsDAO {
+public interface PromotionDetailsDAO_Interface {
 }
