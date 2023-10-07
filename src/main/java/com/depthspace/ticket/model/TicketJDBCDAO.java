@@ -3,7 +3,7 @@ package com.depthspace.ticket.model;
 import java.util.List;
 import java.util.Map;
 
-public class TicketJDBCDAO implements TicketDAO_interface {
+public class TicketJDBCDAO implements TicketDAO_Interface {
 	String driver = "com.mysql.cj.jdbc.Driver";
 	String url = "jdbc:mysql://localhost:3306/cha103g5?serverTimezone=Asia/Taipei";
 	String userid = "root";

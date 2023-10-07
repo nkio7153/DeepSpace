@@ -2,7 +2,7 @@ package com.depthspace.ticket.model;
 
 import java.util.*;
 
-public interface TicketDAO_interface {
+public interface TicketDAO_Interface {
 	public void insert(TicketVO ticketVO);
 	public void update(TicketVO ticketVO);
 	public void delete(Integer ticketId); //測試用
