@@ -1,12 +1,17 @@
-package com.depthspace.ticket.model;
+package com.depthspace.ticket.model.ticketshoppingcart;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.sql.Date;
 
-public class TicketShoppingCartVO {
+
+public class TicketShoppingCartVO implements Serializable {
     private Integer memId; // 使用 Integer 作為包裝類型
     private Integer ticketId; // 使用 Integer 作為包裝類型
     private Integer quantity; // 使用 Integer 作為包裝類型
     private Date addedDate;
+
+    public TicketShoppingCartVO() {
+    }
 
     public TicketShoppingCartVO(Integer memId, Integer ticketId, Integer quantity, Date addedDate) {
         this.memId = memId;

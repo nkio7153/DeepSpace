@@ -1,8 +1,10 @@
-package com.depthspace.ticket.model;
+package com.depthspace.ticket.model.ticket;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.sql.Date;
 
-public class TicketVO {
+
+public class TicketVO implements Serializable {
     private Integer ticketId; // 使用 Integer 作為包裝類型
     private Integer ticketTypeId; // 使用 Integer 作為包裝類型
     private String ticketName;
@@ -14,6 +16,9 @@ public class TicketVO {
     private Date publishedDate;
     private Integer totalStarRatings; // 使用 Integer 作為包裝類型
     private Integer totalStars; // 使用 Integer 作為包裝類型
+
+    public TicketVO() {
+    }
 
     public TicketVO(Integer ticketId, Integer ticketTypeId, String ticketName, String description, Integer price, Integer stock, Integer validDays, Byte status, Date publishedDate, Integer totalStarRatings, Integer totalStars) {
         this.ticketId = ticketId;

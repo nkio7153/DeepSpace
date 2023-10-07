@@ -1,14 +1,18 @@
-package com.depthspace.ticket.model;
+package com.depthspace.ticket.model.memticketowned;
+import java.io.Serializable;
+import java.sql.Date;
 
-import java.util.Date;
 
-public class MemTicketOwnedVO {
+public class MemTicketOwnedVO implements Serializable{
     private Integer ticketOwnedId;  // 使用 Integer 包裝類
     private Integer memId;          // 使用 Integer 包裝類
     private Integer ticketId;       // 使用 Integer 包裝類
     private Date releaseDate;       // 使用 Date 類型
     private Date expiryDate;        // 使用 Date 類型
     private Integer statusOfUse;    // 使用 Integer 包裝類
+
+    public MemTicketOwnedVO() {
+    }
 
     // 帶參數的構造函數
     public MemTicketOwnedVO(Integer ticketOwnedId, Integer memId, Integer ticketId, Date releaseDate, Date expiryDate, Integer statusOfUse) {

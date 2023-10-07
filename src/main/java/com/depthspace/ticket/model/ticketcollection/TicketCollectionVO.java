@@ -1,8 +1,13 @@
-package com.depthspace.ticket.model;
+package com.depthspace.ticket.model.ticketcollection;
 
-public class TicketCollectionVO {
+import java.io.Serializable;
+
+public class TicketCollectionVO implements Serializable {
     private Integer memId; // 使用 Integer 作為包裝類型
     private Integer ticketId; // 使用 Integer 作為包裝類型
+
+    public TicketCollectionVO() {
+    }
 
     public TicketCollectionVO(Integer memId, Integer ticketId) {
         this.memId = memId;

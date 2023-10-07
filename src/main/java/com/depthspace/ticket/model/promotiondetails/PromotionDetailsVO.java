@@ -1,14 +1,19 @@
-package com.depthspace.ticket.model;
+package com.depthspace.ticket.model.promotiondetails;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.sql.Date;
 
-public class PromotionDetailsVO {
+
+public class PromotionDetailsVO implements Serializable {
     private Integer ticketOwnedId;
     private Integer memId;
     private Integer ticketId;
     private Date releaseDate;
     private Date expiryDate;
     private Byte statusOfUse;
+
+    public PromotionDetailsVO() {
+    }
 
     public PromotionDetailsVO(Integer ticketOwnedId, Integer memId, Integer ticketId, Date releaseDate, Date expiryDate, Byte statusOfUse) {
         this.ticketOwnedId = ticketOwnedId;

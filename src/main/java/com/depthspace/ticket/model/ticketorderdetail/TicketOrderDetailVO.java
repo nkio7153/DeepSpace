@@ -1,6 +1,8 @@
-package com.depthspace.ticket.model;
+package com.depthspace.ticket.model.ticketorderdetail;
 
-public class TicketOrderDetailVO {
+import java.io.Serializable;
+
+public class TicketOrderDetailVO implements Serializable {
     private Integer orderId;
     private Integer ticketId;
     private Integer quantity;
@@ -9,6 +11,9 @@ public class TicketOrderDetailVO {
     private Integer subtotal;
     private String ticketReviews;
     private Byte stars;
+
+    public TicketOrderDetailVO() {
+    }
 
     public TicketOrderDetailVO(Integer orderId, Integer ticketId, Integer quantity, Integer unitPrice, Integer discountPrice, Integer subtotal, String ticketReviews, Byte stars) {
         this.orderId = orderId;

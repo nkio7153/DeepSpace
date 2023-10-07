@@ -1,8 +1,10 @@
-package com.depthspace.ticket.model;
+package com.depthspace.ticket.model.ticketorders;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.sql.Date;
 
-public class TicketOrdersVO {
+
+public class TicketOrdersVO implements Serializable {
     private Integer orderId;
     private Integer memId;
     private Date orderDate;
@@ -11,6 +13,9 @@ public class TicketOrdersVO {
     private Integer amountPaid;
     private Byte status;
     private Byte paymentMethod;
+
+    public TicketOrdersVO() {
+    }
 
     public TicketOrdersVO(Integer orderId, Integer memId, Date orderDate, Integer totalAmount, Integer pointsFeedback, Integer amountPaid, Byte status, Byte paymentMethod) {
         this.orderId = orderId;

@@ -1,9 +1,14 @@
-package com.depthspace.ticket.model;
+package com.depthspace.ticket.model.tickettypes;
 
-public class TicketTypesVO {
+import java.io.Serializable;
+
+public class TicketTypesVO implements Serializable {
     private Integer ticketTypeId; // 使用 Integer 作為包裝類型
     private String typeName;
     private String description;
+
+    public TicketTypesVO() {
+    }
 
     public TicketTypesVO(Integer ticketTypeId, String typeName, String description) {
         this.ticketTypeId = ticketTypeId;
