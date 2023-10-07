@@ -1,4 +1,4 @@
-package com.depthspace.ticket.model.ticketorderdetail;
+package com.depthspace.ticketorders.model;
 
 public class TicketOrderDetailDAOImpl implements TicketOrderDetailDAO {
 }

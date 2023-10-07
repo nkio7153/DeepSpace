@@ -1,4 +1,4 @@
-package com.depthspace.ticket.model.ticketorders;
+package com.depthspace.ticketorders.model;
 
 import java.io.Serializable;
 import java.sql.Date;

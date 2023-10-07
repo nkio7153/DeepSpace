@@ -1,4 +1,4 @@
-package com.depthspace.ticket.model.ticketshoppingcart;
+package com.depthspace.ticketshoppingcart.model;
 
 public class TicketShoppingCartDAOImpl implements TicketShoppingCartDAO {
 }
