@@ -1,4 +1,4 @@
-package com.depthspace.ticket.model.promotiondetails;
+package com.depthspace.promotion.model;
 
 import java.io.Serializable;
 import java.sql.Date;

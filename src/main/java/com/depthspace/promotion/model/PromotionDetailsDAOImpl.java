@@ -1,4 +1,4 @@
-package com.depthspace.ticket.model.promotiondetails;
+package com.depthspace.promotion.model;
 
 
 public class PromotionDetailsDAOImpl implements PromotionDetailsDAO {
