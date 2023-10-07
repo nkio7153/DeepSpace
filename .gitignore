@@ -6,5 +6,4 @@ bin/
 .DS_Store
 .idea
 *.iml
-src/main/jdbc.properties
-jdbc.properties
+src/main/resources/jdbc.properties

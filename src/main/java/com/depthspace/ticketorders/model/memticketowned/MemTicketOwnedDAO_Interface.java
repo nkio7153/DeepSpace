@@ -2,7 +2,7 @@ package com.depthspace.ticketorders.model.memticketowned;
 
 import java.util.List;
 
-public interface MemTicketOwnedDAO {
+public interface MemTicketOwnedDAO_Interface {
     public void insert(MemTicketOwnedVO memTicketOwnedVO);
     public void update(MemTicketOwnedVO memTicketOwnedVO);
     public void delete(Integer ticketOwnedId);
