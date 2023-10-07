@@ -3,9 +3,9 @@ package com.depthspace.ticket.model;
 import java.io.Serializable;
 
 public class TicketImagesVO implements Serializable {
-    private Integer serialId; // 使用 Integer 作為包裝類型
-    private Integer ticketId; // 使用 Integer 作為包裝類型
-    private byte[] image; // 使用 Byte[] 作為包裝類型
+    private Integer serialId; 
+    private Integer ticketId; 
+    private byte[] image; 
 
     public TicketImagesVO() {
     }

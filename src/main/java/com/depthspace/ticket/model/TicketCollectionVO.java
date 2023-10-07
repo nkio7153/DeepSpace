@@ -3,8 +3,9 @@ package com.depthspace.ticket.model;
 import java.io.Serializable;
 
 public class TicketCollectionVO implements Serializable {
-    private Integer memId; // 使用 Integer 作為包裝類型
-    private Integer ticketId; // 使用 Integer 作為包裝類型
+	
+    private Integer memId; 
+    private Integer ticketId; 
 
     public TicketCollectionVO() {
     }
