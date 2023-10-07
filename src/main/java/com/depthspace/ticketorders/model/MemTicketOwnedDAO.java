@@ -1,4 +1,4 @@
-package com.depthspace.ticket.model.memticketowned;
+package com.depthspace.ticketorders.model;
 
 import java.util.List;
 

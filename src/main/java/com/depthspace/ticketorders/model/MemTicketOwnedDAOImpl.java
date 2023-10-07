@@ -1,4 +1,4 @@
-package com.depthspace.ticket.model.memticketowned;
+package com.depthspace.ticketorders.model;
 
 import com.depthspace.utils.DBUtil;
 

@@ -1,4 +1,4 @@
-package com.depthspace.ticket.model.ticketcollection;
+package com.depthspace.ticket.model;
 
 import java.io.Serializable;
 
