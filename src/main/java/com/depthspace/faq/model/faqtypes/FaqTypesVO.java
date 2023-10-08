@@ -1,4 +1,4 @@
-package com.depthspace.faq.faqtypes.model;
+package com.depthspace.faq.model.faqtypes;
 
 import java.util.Objects;
 
