@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemTicketOwnedDAOImpl implements MemTicketOwnedDAO {
+public class MemTicketOwnedJDBCDAO implements MemTicketOwnedDAO_Interface {
     private static final String INSERT_STMT =
             "INSERT INTO MEM_TICKET_OWNED( MEM_ID, TICKET_ID, RELEASE_DATE, EXPIRY_DATE, STATUS_OF_USE) VALUES ( ?, ?, ?, ?, ?)";
     private static final String DELETE =
