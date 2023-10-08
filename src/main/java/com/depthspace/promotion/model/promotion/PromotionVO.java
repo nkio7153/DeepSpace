@@ -1,21 +1,20 @@
 package com.depthspace.promotion.model.promotion;
 
 import java.io.Serializable;
-import java.sql.Date;
-
+import java.sql.Timestamp;
 
 public class PromotionVO implements Serializable {
     private Integer promotionId;
     private String promoName;
-    private Date startDate;
-    private Date endDate;
+    private Timestamp startDate;
+    private Timestamp endDate;
     private String description;
     private byte[] picture;
 
     public PromotionVO() {
     }
 
-    public PromotionVO(Integer promotionId, String promoName, Date startDate, Date endDate, String description, byte[] picture) {
+    public PromotionVO(Integer promotionId, String promoName, Timestamp startDate, Timestamp endDate, String description, byte[] picture) {
         this.promotionId = promotionId;
         this.promoName = promoName;
         this.startDate = startDate;
@@ -40,19 +39,19 @@ public class PromotionVO implements Serializable {
         this.promoName = promoName;
     }
 
-    public Date getStartDate() {
+    public Timestamp getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Timestamp startDate) {  // 改為Timestamp
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public Timestamp getEndDate() {  // 改為Timestamp
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Timestamp endDate) {  // 改為Timestamp
         this.endDate = endDate;
     }
 
