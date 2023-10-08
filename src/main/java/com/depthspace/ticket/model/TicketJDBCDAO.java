@@ -20,9 +20,9 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 	private static final String GET_ONE_STMT =
 			"SELECT TICKET_ID, TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE, STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS FROM TICKET WHERE TICKET_ID = ?";	
 	private static final String DELETE = 
-			"DELETE FROM ticket WHERE TICKET_ID = ?";		
+			"DELETE FROM TICKET WHERE TICKET_ID = ?";		
 	private static final String UPDATE = 
-			"UPDATE ticket SET TICKET_TYPE_ID=?, TICKET_NAME=?, DESCRIPTION=?, PRICE=?, STOCK=?, VALID_DAYS=?, STATUS=?, PUBLISHED_DATE=?, TOTAL_STAR_RATINGS=?, TOTAL_STARS=? WHERE TICKET_ID=?";	
+			"UPDATE TICKET SET TICKET_TYPE_ID=?, TICKET_NAME=?, DESCRIPTION=?, PRICE=?, STOCK=?, VALID_DAYS=?, STATUS=?, PUBLISHED_DATE=?, TOTAL_STAR_RATINGS=?, TOTAL_STARS=? WHERE TICKET_ID=?";	
 	
 	@Override
 	public void insert(TicketVO ticketVO) {
@@ -119,6 +119,7 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 		try {
 			con = DBUtil.getConnection();
 			pstmt = con.prepareStatement(GET_ONE_STMT);
+			pstmt.setInt(1, ticketId);
 			rs = pstmt.executeQuery();
 			while(rs.next()) { //移動查詢
 				ticketVO = new TicketVO();
@@ -182,41 +183,76 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 	
 	
 	
-	public static void main(String[] args) {
-		TicketJDBCDAO dao = new TicketJDBCDAO();
-
-		//新增
-//		TicketVO ticketVO1 = new TicketVO();
-//		ticketVO1.setTicketTypeId(1);
-//		ticketVO1.setTicketName("Xpark 都會型水生公園門票");
-//		ticketVO1.setDescription("Xpark 為台灣首座新都會型水生公園。將生活在地球上各種地域的生物們的環境，透過空間演出與科技的融合，加以忠實的重現。");
-//		ticketVO1.setPrice(600);
-//		ticketVO1.setStock(500);
-//		ticketVO1.setValidDays(365);
-//		ticketVO1.setStatus((byte)1);
-//		ticketVO1.setPublishedDate(new java.sql.Timestamp(System.currentTimeMillis()));
-//		ticketVO1.setTotalStarRatings(20);
-//		ticketVO1.setTotalStars(100);
-//		dao.insert(ticketVO1);
-//		System.out.println("完成新增");
-	
-		//修改
-		TicketVO ticketVO2 = new TicketVO();
-		ticketVO2.setTicketId(324001);
-		ticketVO2.setTicketTypeId(1);
-		ticketVO2.setTicketName("劍湖山");
-		ticketVO2.setDescription("台灣遊樂園！");
-		ticketVO2.setPrice(799);
-		ticketVO2.setStock(800);
-		ticketVO2.setValidDays(365);
-		ticketVO2.setStatus((byte)1);
-		ticketVO2.setPublishedDate(new java.sql.Timestamp(System.currentTimeMillis()));
-		ticketVO2.setTotalStarRatings(10);
-		ticketVO2.setTotalStars(450);
-		dao.update(ticketVO2);
-		System.out.println("完成修改");
-	}	
+//	public static void main(String[] args) {
+//		TicketJDBCDAO dao = new TicketJDBCDAO();
+//
+//		//新增
+////		TicketVO ticketVO1 = new TicketVO();
+////		ticketVO1.setTicketTypeId(1);
+////		ticketVO1.setTicketName("Xpark 都會型水生公園門票");
+////		ticketVO1.setDescription("Xpark 為台灣首座新都會型水生公園。將生活在地球上各種地域的生物們的環境，透過空間演出與科技的融合，加以忠實的重現。");
+////		ticketVO1.setPrice(600);
+////		ticketVO1.setStock(500);
+////		ticketVO1.setValidDays(365);
+////		ticketVO1.setStatus((byte)1);
+////		ticketVO1.setPublishedDate(new java.sql.Timestamp(System.currentTimeMillis()));
+////		ticketVO1.setTotalStarRatings(20);
+////		ticketVO1.setTotalStars(100);
+////		dao.insert(ticketVO1);
+////		System.out.println("完成新增");
+//	
+//		//修改
+////		TicketVO ticketVO2 = new TicketVO();
+////		ticketVO2.setTicketId(324001);
+////		ticketVO2.setTicketTypeId(1);
+////		ticketVO2.setTicketName("劍湖山");
+////		ticketVO2.setDescription("台灣遊樂園！");
+////		ticketVO2.setPrice(799);
+////		ticketVO2.setStock(800);
+////		ticketVO2.setValidDays(365);
+////		ticketVO2.setStatus((byte)1);
+////		ticketVO2.setPublishedDate(new java.sql.Timestamp(System.currentTimeMillis()));
+////		ticketVO2.setTotalStarRatings(10);
+////		ticketVO2.setTotalStars(450);
+////		dao.update(ticketVO2);
+////		System.out.println("完成修改");
+//		
+//		// 刪除
+////		dao.delete(1);
+////		System.out.println("完成刪除");
+//		
+//		// 查詢一個
+////		TicketVO ticketVO3 = dao.findByPrimaryKey(324001);
+////		System.out.print(ticketVO3.getTicketId() + ",");
+////		System.out.print(ticketVO3.getTicketTypeId() + ",");
+////		System.out.print(ticketVO3.getTicketName() + ",");
+////		System.out.print(ticketVO3.getDescription() + ",");
+////		System.out.print(ticketVO3.getPrice() + ",");
+////		System.out.print(ticketVO3.getStock() + ",");
+////		System.out.print(ticketVO3.getValidDays() + ",");
+////		System.out.print(ticketVO3.getStatus() + ",");
+////		System.out.print(ticketVO3.getPublishedDate() + ",");
+////		System.out.print(ticketVO3.getTotalStarRatings() + ",");
+////		System.out.println(ticketVO3.getTotalStars());
+////		System.out.println("完成查詢");
+//		
+//		// 查詢全部
+////		List<TicketVO> list = dao.getAll(null);
+////		for (TicketVO allTicket : list) {
+////			System.out.print(allTicket.getTicketId() + ",");
+////			System.out.print(allTicket.getTicketTypeId() + ",");
+////			System.out.print(allTicket.getTicketName() + ",");
+////			System.out.print(allTicket.getDescription() + ",");
+////			System.out.print(allTicket.getPrice() + ",");
+////			System.out.print(allTicket.getStock() + ",");
+////			System.out.print(allTicket.getValidDays() + ",");
+////			System.out.print(allTicket.getStatus() + ",");
+////			System.out.print(allTicket.getPublishedDate() + ",");
+////			System.out.print(allTicket.getTotalStarRatings() + ",");
+////			System.out.println(allTicket.getTotalStars());
+////			System.out.println("--------------");
+////		}
+//	}
 }
-
 
 
