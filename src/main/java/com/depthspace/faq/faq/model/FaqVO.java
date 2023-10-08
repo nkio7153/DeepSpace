@@ -1,40 +1,48 @@
 package com.depthspace.faq.faq.model;
 
 public class FaqVO {
-	private Integer serialid;
-	private Integer faqno;
-	private String faqname;
-	private String faqans;
+	private Integer serialId;
+	private Integer faqNo;
+	private String faqName;
+	private String faqAns;
 	
-	public FaqVO(Integer serialid, Integer faqno, String faqname, String faqans) {
-        this.serialid = serialid;
-        this.faqno = faqno;
-        this.faqname = faqname;
-        this.faqans = faqans;
+	public FaqVO(Integer serialId, Integer faqNo, String faqName, String faqAns) {
+        this.serialId = serialId;
+        this.faqNo = faqNo;
+        this.faqName = faqName;
+        this.faqAns = faqAns;
     }
-	
-	public Integer getSerialid() {
-		return serialid;
+
+	public Integer getSerialId() {
+		return serialId;
 	}
-	public void setSerialid(Integer serialid) {
-		this.serialid = serialid;
+
+	public void setSerialId(Integer serialId) {
+		this.serialId = serialId;
 	}
-	public Integer getFaqno() {
-		return faqno;
+
+	public Integer getFaqNo() {
+		return faqNo;
 	}
-	public void setFaqno(Integer faqno) {
-		this.faqno = faqno;
+
+	public void setFaqNo(Integer faqNo) {
+		this.faqNo = faqNo;
 	}
-	public String getFaqname() {
-		return faqname;
+
+	public String getFaqName() {
+		return faqName;
 	}
-	public void setFaqname(String faqname) {
-		this.faqname = faqname;
+
+	public void setFaqName(String faqName) {
+		this.faqName = faqName;
 	}
-	public String getFaqans() {
-		return faqans;
+
+	public String getFaqAns() {
+		return faqAns;
 	}
-	public void setFaqans(String faqans) {
-		this.faqans = faqans;
+
+	public void setFaqAns(String faqAns) {
+		this.faqAns = faqAns;
 	}
 }
+	
