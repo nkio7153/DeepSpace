@@ -3,12 +3,12 @@ package com.depthspace.faq.faqtypes.model;
 import java.util.Objects;
 
 //定義了一個FaqTypesVo類別
-public class FaqTypesVo {
+public class FaqTypesVO {
 	private final Integer faqNo;
 	private final String qTypes;
 
 	// 建構函數，用於初始化faqNo和qTypes屬性
-	public FaqTypesVo(Integer faqNo, String qTypes) {
+	public FaqTypesVO(Integer faqNo, String qTypes) {
 		this.faqNo = faqNo;
 		this.qTypes = qTypes;
 	}
@@ -30,7 +30,7 @@ public class FaqTypesVo {
 			return true;
 		if (obj == null || getClass() != obj.getClass())
 			return false;
-		FaqTypesVo other = (FaqTypesVo) obj;
+		FaqTypesVO other = (FaqTypesVO) obj;
 		return Objects.equals(faqNo, other.faqNo) && Objects.equals(qTypes, other.qTypes);
 	}
 

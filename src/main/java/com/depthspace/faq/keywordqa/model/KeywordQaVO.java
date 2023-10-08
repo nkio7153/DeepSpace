@@ -2,12 +2,12 @@ package com.depthspace.faq.keywordqa.model;
 
 import java.util.Objects;
 
-public class KeyWordQaVO {
+public class KeywordQaVO {
     private final Integer serialId;  
     private final String kwTypes;   
     private final String kwAns;
    
-    public KeyWordQaVO(Integer serialId, String kwTypes, String kwAns) {
+    public KeywordQaVO(Integer serialId, String kwTypes, String kwAns) {
         this.serialId = serialId;
         this.kwTypes = kwTypes;
         this.kwAns = kwAns;
@@ -35,7 +35,7 @@ public class KeyWordQaVO {
             return true;
         if (obj == null || getClass() != obj.getClass())
             return false;
-        KeyWordQaVO other = (KeyWordQaVO) obj;
+        KeywordQaVO other = (KeywordQaVO) obj;
         return Objects.equals(serialId, other.serialId) && Objects.equals(kwTypes, other.kwTypes) && Objects.equals(kwAns, other.kwAns);
     }
 
