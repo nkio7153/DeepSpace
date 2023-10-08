@@ -1,21 +1,20 @@
 package com.depthspace.ticketorders.model.memticketowned;
+
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;  // 引入 Timestamp 類型
 
-
-public class MemTicketOwnedVO implements Serializable{
-    private Integer ticketOwnedId;  // 使用 Integer 包裝類
-    private Integer memId;          // 使用 Integer 包裝類
-    private Integer ticketId;       // 使用 Integer 包裝類
-    private Date releaseDate;       // 使用 Date 類型
-    private Date expiryDate;        // 使用 Date 類型
-    private Integer statusOfUse;    // 使用 Integer 包裝類
+public class MemTicketOwnedVO implements Serializable {
+    private Integer ticketOwnedId;
+    private Integer memId;
+    private Integer ticketId;
+    private Timestamp releaseDate;
+    private Timestamp expiryDate;
+    private Integer statusOfUse;
 
     public MemTicketOwnedVO() {
     }
 
-    // 帶參數的構造函數
-    public MemTicketOwnedVO(Integer ticketOwnedId, Integer memId, Integer ticketId, Date releaseDate, Date expiryDate, Integer statusOfUse) {
+    public MemTicketOwnedVO(Integer ticketOwnedId, Integer memId, Integer ticketId, Timestamp releaseDate, Timestamp expiryDate, Integer statusOfUse) {
         this.ticketOwnedId = ticketOwnedId;
         this.memId = memId;
         this.ticketId = ticketId;
@@ -48,19 +47,19 @@ public class MemTicketOwnedVO implements Serializable{
         this.ticketId = ticketId;
     }
 
-    public Date getReleaseDate() {
+    public Timestamp getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(Timestamp releaseDate) {
         this.releaseDate = releaseDate;
     }
 
-    public Date getExpiryDate() {
+    public Timestamp getExpiryDate() {  // 使用 Timestamp
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(Timestamp expiryDate) {  // 使用 Timestamp
         this.expiryDate = expiryDate;
     }
 

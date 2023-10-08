@@ -1,13 +1,12 @@
 package com.depthspace.ticketorders.model.ticketorders;
 
 import java.io.Serializable;
-import java.sql.Date;
-
+import java.sql.Timestamp;
 
 public class TicketOrdersVO implements Serializable {
     private Integer orderId;
     private Integer memId;
-    private Date orderDate;
+    private Timestamp orderDate;
     private Integer totalAmount;
     private Integer pointsFeedback;
     private Integer amountPaid;
@@ -17,7 +16,7 @@ public class TicketOrdersVO implements Serializable {
     public TicketOrdersVO() {
     }
 
-    public TicketOrdersVO(Integer orderId, Integer memId, Date orderDate, Integer totalAmount, Integer pointsFeedback, Integer amountPaid, Byte status, Byte paymentMethod) {
+    public TicketOrdersVO(Integer orderId, Integer memId, Timestamp orderDate, Integer totalAmount, Integer pointsFeedback, Integer amountPaid, Byte status, Byte paymentMethod) {
         this.orderId = orderId;
         this.memId = memId;
         this.orderDate = orderDate;
@@ -44,11 +43,11 @@ public class TicketOrdersVO implements Serializable {
         this.memId = memId;
     }
 
-    public Date getOrderDate() {
+    public Timestamp getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(Timestamp orderDate) {  // Date 改為 Timestamp
         this.orderDate = orderDate;
     }
 
