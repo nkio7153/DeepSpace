@@ -31,16 +31,26 @@ public class Test {
 //        System.out.println("取得一列數據");
 //
 //        // 获取全部数据
-        List<TicketShoppingCartVO> list = dao.getAll();
-        for (TicketShoppingCartVO tsc : list) {
+//        List<TicketShoppingCartVO> list = dao.getAll();
+//        for (TicketShoppingCartVO tsc : list) {
+//            System.out.println("MEM_ID: " + tsc.getMemId());
+//            System.out.println("TICKET_ID: " + tsc.getTicketId());
+//            System.out.println("QUANTITY: " + tsc.getQuantity());
+//            System.out.println("ADDED_DATE: " + tsc.getAddedDate());
+//            System.out.println("===================================");
+//        }
+//        System.out.println("已取得全部資料");
+//
+        // 使用會員編號获取會員購物車資料
+        List<TicketShoppingCartVO> list2 = dao.findByMemId(1);
+        for (TicketShoppingCartVO tsc : list2) {
             System.out.println("MEM_ID: " + tsc.getMemId());
             System.out.println("TICKET_ID: " + tsc.getTicketId());
             System.out.println("QUANTITY: " + tsc.getQuantity());
             System.out.println("ADDED_DATE: " + tsc.getAddedDate());
             System.out.println("===================================");
         }
-        System.out.println("已取得全部資料");
-//
+        System.out.println("已取得會員購物車資料");
 
     }
 }
