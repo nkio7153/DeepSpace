@@ -1,6 +1,7 @@
 package com.depthspace.column.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class ColumnArticlesVO implements Serializable{
@@ -9,7 +10,7 @@ public class ColumnArticlesVO implements Serializable{
 	private Integer colTypeId;
 	private String aritTitle;
 	private String artiContent;
-	private Date articleDate;
+	private Timestamp articleDate;
 	private Integer adminId;	
 	private byte artiStatus;
 	
@@ -18,7 +19,7 @@ public class ColumnArticlesVO implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public ColumnArticlesVO(Integer aritId, Integer colTypeId, String aritTitle, String artiContent, Date articleDate,
+	public ColumnArticlesVO(Integer aritId, Integer colTypeId, String aritTitle, String artiContent, Timestamp articleDate,
 			Integer adminId, byte artiStatus) {
 		super();
 		this.aritId = aritId;
@@ -66,7 +67,7 @@ public class ColumnArticlesVO implements Serializable{
 		return articleDate;
 	}
 
-	public void setArticleDate(Date articleDate) {
+	public void setArticleDate(Timestamp articleDate) {
 		this.articleDate = articleDate;
 	}
 
