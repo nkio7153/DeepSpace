@@ -13,8 +13,10 @@ import java.util.List;
 public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interface {
     private static final String INSERT_STMT=
             "INSERT INTO TICKET_SHOPPING_CART(MEM_ID, TICKET_ID, QUANTITY, ADDED_DATE) VALUES(?,?,?,?)";
-    private static final String DELETE=
+    private static final String DELETE_ONE=
             "DELETE FROM TICKET_SHOPPING_CART WHERE MEM_ID=? AND TICKET_ID=?";
+    private static final String DELETE_ALL=
+            "DELETE FROM TICKET_SHOPPING_CART WHERE MEM_ID=?";
     private static final String UPDATE=
             "UPDATE TICKET_SHOPPING_CART SET QUANTITY=?, ADDED_DATE=? WHERE MEM_ID=? AND TICKET_ID=?";
     private static final String GET_ONE_STMT=
@@ -68,7 +70,7 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
         PreparedStatement ps=null;
         try {
             conn = DBUtil.getConnection();
-            ps = conn.prepareStatement(DELETE);
+            ps = conn.prepareStatement(DELETE_ONE);
             ps.setInt(1,memId);
             ps.setInt(2,ticketId);
             ps.executeUpdate();
@@ -78,6 +80,22 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
             DBUtil.close(conn, ps, null);
         }
 
+    }
+
+    @Override
+    public void delete(Integer memId) {
+        Connection conn=null;
+        PreparedStatement ps=null;
+        try {
+            conn = DBUtil.getConnection();
+            ps = conn.prepareStatement(DELETE_ALL);
+            ps.setInt(1,memId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            DBUtil.close(conn, ps, null);
+        }
     }
 
     @Override

@@ -39,7 +39,11 @@ public class TicketShoppingCartService {
         dao.update(tsc);
         return tsc;
     }
-    //購物車清空
+    //會員購物車清空
+    public void deleteTicketShoppingCart(Integer memId){
+        dao.delete(memId);
+    }
+    //會員購物車刪除一列
     public void deleteTicketShoppingCart(Integer memId, Integer ticketId){
         dao.delete(memId, ticketId);
     }
