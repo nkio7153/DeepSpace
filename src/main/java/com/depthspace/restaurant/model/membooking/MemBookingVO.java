@@ -1,7 +1,7 @@
-package com.depthspace.restaurant.model;
+package com.depthspace.restaurant.model.membooking;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 public class MemBookingVO implements Serializable {
 	private Integer bookingId;

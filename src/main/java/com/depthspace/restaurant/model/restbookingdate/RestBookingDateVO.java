@@ -1,7 +1,7 @@
-package com.depthspace.restaurant.model;
+package com.depthspace.restaurant.model.restbookingdate;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 public class RestBookingDateVO implements Serializable {
 	private Integer restId;

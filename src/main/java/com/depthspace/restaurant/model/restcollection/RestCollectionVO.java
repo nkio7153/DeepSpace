@@ -1,4 +1,4 @@
-package com.depthspace.restaurant.model;
+package com.depthspace.restaurant.model.restcollection;
 
 import java.io.Serializable;
 
