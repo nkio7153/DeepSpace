@@ -9,19 +9,20 @@
   <title>所有購物車資料 memAllCart.jsp</title>
 </head>
 <body>
+
+<input type="button" value="返回" onclick="window.history.back()">
 <script type="text/javascript">
   function del1(memId, ticketId){
-    alert("del1 function called");
     console.log("memId:", memId, "ticketId:", ticketId);
     var ok=window.confirm("確定要刪除嗎");
     if(ok){
-      document.location.href="/tsc/delete1?memId="+memId+"&ticketId="+ticketId
+      document.location.href="${pageContext.request.contextPath}/tsc/delete1?memId="+memId+"&ticketId="+ticketId
     }
   }
   function delAll(memId){
     var ok=window.confirm("確定要刪除嗎");
     if(ok){
-      document.location.href="/tsc/deleteAll?memId="+memId
+      document.location.href="${pageContext.request.contextPath}/tsc/deleteAll?memId="+memId
     }
   }
 
@@ -33,6 +34,7 @@
     <th>序號</th>
     <th>會員編號</th>
     <th>票券編號</th>
+    <th>票券名稱</th>
     <th>票券數量</th>
     <th>加入日期</th>
     <th>操作</th>
@@ -40,12 +42,13 @@
 
   <c:forEach items="${list}" var="cart" varStatus="cartStatus">
     <tr>
-      <td>${cartStatus.count}</td>
-      <td>${cart.memId}</td>
-      <td>${cart.ticketId}</td>
-      <td>${cart.quantity}</td>
-      <td>${cart.addedDate}</td>
-      <td>
+      <td align="center">${cartStatus.count}</td>
+      <td align="center">${cart.memId}</td>
+      <td align="center">${cart.ticketId}</td>
+      <td align="center">${cart.ticketName}</td>
+      <td align="center">${cart.quantity}</td>
+      <td align="center">${cart.addedDate}</td>
+      <td align="center" width="100px">
         <!-- 這裡添加你的後端刪除和修改的路徑 -->
         <a href="javascript:void(0)" onclick="del1(${cart.memId},${cart.ticketId})">刪除</a>
         <a href="">修改</a>
@@ -54,8 +57,8 @@
   </c:forEach>
 </table>
 <hr>
-<a href="add.jsp">購物車票券添加</a>
+<a href="${pageContext.request.contextPath}/ticket/addCart.jsp?memId=${memId}">購物車票券添加</a>
 <hr>
-<a href="javascript:void(0)" onclick="delAll(${cart.memId})"> 購物車票清空</a>
+<a href="javascript:void(0)" onclick="delAll(${memId})"> 購物車票清空</a>
 </body>
 </html>

@@ -15,25 +15,30 @@
     <title>所有購物車資料 listAllCart.jsp</title>
 </head>
 <body>
+<h1 align="center">購物車全部列表</h1>
+<hr>
 <table border="1px" align="center" width="50%">
     <tr>
         <th>序號</th>
         <th>會員編號</th>
         <th>票券編號</th>
+        <th>票券名稱</th>
         <th>票券數量</th>
         <th>加入日期</th>
+        <th>操作</th>
     </tr>
 
 
     <c:forEach items="${list}" var="cart" varStatus="cartStatus">
         <tr>
-            <td>${cartStatus.count}</td>
-            <td>${cart.memId}</td>
-            <td>${cart.ticketId}</td>
-            <td>${cart.quantity}</td>
-            <td>${cart.addedDate}</td>
-            <td>
-                <a href="" onclick="">刪除</a>
+            <td align="center">${cartStatus.count}</td>
+            <td align="center">${cart.memId}</td>
+            <td align="center">${cart.ticketId}</td>
+            <td align="center">${cart.ticketName}</td>
+            <td align="center">${cart.quantity}</td>
+            <td align="center">${cart.addedDate}</td>
+            <td align="center" width="100px">
+                <a href="">刪除</a>
                 <a href="">修改</a>
             </td>
         </tr>

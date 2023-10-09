@@ -19,12 +19,13 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
             "DELETE FROM TICKET_SHOPPING_CART WHERE MEM_ID=?";
     private static final String UPDATE=
             "UPDATE TICKET_SHOPPING_CART SET QUANTITY=?, ADDED_DATE=? WHERE MEM_ID=? AND TICKET_ID=?";
+
     private static final String GET_ONE_STMT=
-            "SELECT MEM_ID, TICKET_ID, QUANTITY, ADDED_DATE FROM TICKET_SHOPPING_CART WHERE MEM_ID=? AND TICKET_ID=?";
+            "SELECT TSC.MEM_ID, TSC.TICKET_ID, T.TICKET_NAME, TSC.QUANTITY, TSC.ADDED_DATE FROM TICKET_SHOPPING_CART TSC JOIN TICKET T ON TSC.TICKET_ID=T.TICKET_ID WHERE MEM_ID=? AND TICKET_ID=?";
     private static final String GET_ALL_STMT_BY_MEMID=
-            "SELECT MEM_ID, TICKET_ID, QUANTITY, ADDED_DATE FROM TICKET_SHOPPING_CART WHERE MEM_ID=?";
+            "SELECT TSC.MEM_ID, TSC.TICKET_ID, T.TICKET_NAME, TSC.QUANTITY, TSC.ADDED_DATE FROM TICKET_SHOPPING_CART TSC JOIN TICKET T ON TSC.TICKET_ID=T.TICKET_ID WHERE MEM_ID=?";
     private static final String GET_ALL_STMT=
-            "SELECT MEM_ID, TICKET_ID, QUANTITY, ADDED_DATE FROM TICKET_SHOPPING_CART ORDER BY MEM_ID";
+            "SELECT TSC.MEM_ID, TSC.TICKET_ID, T.TICKET_NAME, TSC.QUANTITY, TSC.ADDED_DATE FROM TICKET_SHOPPING_CART TSC JOIN TICKET T ON TSC.TICKET_ID=T.TICKET_ID ORDER BY MEM_ID";
 
     @Override
     public void insert(TicketShoppingCartVO tsc) {
@@ -113,6 +114,7 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
             if(rs.next()){
                 tsc.setMemId(rs.getInt("MEM_ID"));
                 tsc.setTicketId(rs.getInt("TICKET_ID"));
+                tsc.setTicketName(rs.getString("TICKET_NAME"));
                 tsc.setQuantity(rs.getInt("QUANTITY"));
                 tsc.setAddedDate(rs.getTimestamp("ADDED_DATE"));
             }
@@ -139,6 +141,7 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
                 TicketShoppingCartVO tsc = new TicketShoppingCartVO();
                 tsc.setMemId(rs.getInt("MEM_ID"));
                 tsc.setTicketId(rs.getInt("TICKET_ID"));
+                tsc.setTicketName(rs.getString("TICKET_NAME"));
                 tsc.setQuantity(rs.getInt("QUANTITY"));
                 tsc.setAddedDate(rs.getTimestamp("ADDED_DATE"));
                 list.add(tsc);
@@ -165,6 +168,7 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
                 TicketShoppingCartVO tsc = new TicketShoppingCartVO();
                 tsc.setMemId(rs.getInt("MEM_ID"));
                 tsc.setTicketId(rs.getInt("TICKET_ID"));
+                tsc.setTicketName(rs.getString("TICKET_NAME"));
                 tsc.setQuantity(rs.getInt("QUANTITY"));
                 tsc.setAddedDate(rs.getTimestamp("ADDED_DATE"));
                 list.add(tsc);

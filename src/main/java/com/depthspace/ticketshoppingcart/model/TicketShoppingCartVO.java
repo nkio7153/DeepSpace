@@ -6,12 +6,28 @@ import java.sql.Timestamp;
 public class TicketShoppingCartVO implements Serializable {
     private Integer memId;
     private Integer ticketId;
+    private String ticketName;
     private Integer quantity;
     private Timestamp addedDate;
 
     public TicketShoppingCartVO() {
     }
 
+    public String getTicketName() {
+        return ticketName;
+    }
+
+    public void setTicketName(String ticketName) {
+        this.ticketName = ticketName;
+    }
+
+    public TicketShoppingCartVO(Integer memId, Integer ticketId, String ticketName, Integer quantity, Timestamp addedDate) {  // 3. 更新構造函數
+        this.memId = memId;
+        this.ticketId = ticketId;
+        this.ticketName=ticketName;
+        this.quantity = quantity;
+        this.addedDate = addedDate;
+    }
     public TicketShoppingCartVO(Integer memId, Integer ticketId, Integer quantity, Timestamp addedDate) {  // 3. 更新構造函數
         this.memId = memId;
         this.ticketId = ticketId;
