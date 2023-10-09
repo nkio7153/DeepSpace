@@ -1,4 +1,4 @@
-package com.depthspace.ticketorders.model.memticketowned;
+package com.depthspace.memticketowned;
 
 import java.io.Serializable;
 import java.sql.Timestamp;  // 引入 Timestamp 類型

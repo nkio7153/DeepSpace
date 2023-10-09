@@ -1,4 +1,4 @@
-package com.depthspace.ticketorders.model.memticketowned;
+package com.depthspace.memticketowned;
 
 import com.depthspace.utils.DBUtil;
 
@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Timestamp;
 
 public class MemTicketOwnedJDBCDAO implements MemTicketOwnedDAO_Interface {
     private static final String INSERT_STMT =

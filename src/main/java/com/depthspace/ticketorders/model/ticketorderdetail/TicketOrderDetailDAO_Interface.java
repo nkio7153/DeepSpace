@@ -1,7 +1,5 @@
 package com.depthspace.ticketorders.model.ticketorderdetail;
 
-import com.depthspace.ticketorders.model.memticketowned.MemTicketOwnedVO;
-
 import java.util.List;
 
 public interface TicketOrderDetailDAO_Interface {
