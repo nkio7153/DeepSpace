@@ -1,6 +1,7 @@
 package com.depthspace.notifications.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class NotificationsVO implements Serializable{
@@ -9,7 +10,7 @@ public class NotificationsVO implements Serializable{
 	private Integer memId;
 	private String noteType;
 	private String noteContent;
-	private Date noteCreated;
+	private Timestamp noteCreated;
 	private byte noteRead;
 	
 	public NotificationsVO() {
@@ -17,7 +18,7 @@ public class NotificationsVO implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public NotificationsVO(Integer noteId, Integer memId, String noteType, String noteContent, Date noteCreated,
+	public NotificationsVO(Integer noteId, Integer memId, String noteType, String noteContent, Timestamp noteCreated,
 			byte noteRead) {
 		super();
 		this.noteId = noteId;
@@ -64,7 +65,7 @@ public class NotificationsVO implements Serializable{
 		return noteCreated;
 	}
 
-	public void setNoteCreated(Date noteCreated) {
+	public void setNoteCreated(Timestamp noteCreated) {
 		this.noteCreated = noteCreated;
 	}
 

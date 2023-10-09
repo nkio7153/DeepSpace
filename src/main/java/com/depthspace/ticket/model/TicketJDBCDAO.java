@@ -19,9 +19,9 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 			"SELECT TICKET_ID, TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE, STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS FROM TICKET ORDER BY TICKET_ID";		
 	private static final String GET_ONE_STMT =
 			"SELECT TICKET_ID, TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE, STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS FROM TICKET WHERE TICKET_ID = ?";	
-	private static final String DELETE = 
+	private static final String DELETE_STMT = 
 			"DELETE FROM TICKET WHERE TICKET_ID = ?";		
-	private static final String UPDATE = 
+	private static final String UPDATE_STMT = 
 			"UPDATE TICKET SET TICKET_TYPE_ID=?, TICKET_NAME=?, DESCRIPTION=?, PRICE=?, STOCK=?, VALID_DAYS=?, STATUS=?, PUBLISHED_DATE=?, TOTAL_STAR_RATINGS=?, TOTAL_STARS=? WHERE TICKET_ID=?";	
 	
 	@Override
@@ -64,7 +64,7 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 		try{
 			
 			con = DBUtil.getConnection();
-			pstmt = con.prepareStatement(UPDATE);
+			pstmt = con.prepareStatement(UPDATE_STMT);
 			
 			pstmt.setInt(1, ticketVO.getTicketTypeId());
 			pstmt.setString(2, ticketVO.getTicketName());
@@ -96,7 +96,7 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 		try {
 
 			con = DBUtil.getConnection();
-			pstmt = con.prepareStatement(DELETE);
+			pstmt = con.prepareStatement(DELETE_STMT);
 			pstmt.setInt(1, ticketId);
 			pstmt.executeUpdate();
 
