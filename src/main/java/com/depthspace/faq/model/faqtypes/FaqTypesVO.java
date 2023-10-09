@@ -2,10 +2,10 @@ package com.depthspace.faq.model.faqtypes;
 
 import java.util.Objects;
 
-//定義了一個FaqTypesVo類別
+// 定義了一個FaqTypesVO類別（根據慣例，類別名稱以大寫字母開頭）
 public class FaqTypesVO {
-	private final Integer faqNo;
-	private final String qTypes;
+	private Integer faqNo;
+	private String qTypes;
 
 	// 建構函數，用於初始化faqNo和qTypes屬性
 	public FaqTypesVO(Integer faqNo, String qTypes) {
@@ -13,17 +13,24 @@ public class FaqTypesVO {
 		this.qTypes = qTypes;
 	}
 
-	// 取得faqNo屬性的方法
+	// Getter 和 Setter 方法（方法名稱以小寫字母開頭，符合慣例）
 	public Integer getFaqNo() {
 		return faqNo;
 	}
 
-	// 取得qTypes屬性的方法
+	public void setFaqNo(Integer faqNo) {
+		this.faqNo = faqNo;
+	}
+
 	public String getqTypes() {
 		return qTypes;
 	}
 
-	// 重寫equals()方法，用於比較兩個FaqTypesVo物件是否相等
+	public void setqTypes(String qTypes) {
+		this.qTypes = qTypes;
+	}
+
+	// 重寫equals()方法，用於比較兩個FaqTypesVO物件是否相等
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -43,6 +50,6 @@ public class FaqTypesVO {
 	// 預設的toString()方法，用於返回物件的字符串表示，方便日誌記錄等情境下使用
 	@Override
 	public String toString() {
-		return "FaqTypesVo{" + "faqNo=" + faqNo + ", qTypes='" + qTypes + '\'' + '}';
+		return "FaqTypesVO{" + "faqNo=" + faqNo + ", qTypes='" + qTypes + '\'' + '}';
 	}
 }
