@@ -188,8 +188,8 @@ public class RestJDBCDAO implements RestDAO_interface {
 //		System.out.println("UPDATE DONE");
 		
 //		// DELETE
-		dao.delete(21);
-		System.out.println("DELETE DONE");
+//		dao.delete(21);
+//		System.out.println("DELETE DONE");
 //		
 //		// SELECT ID
 //		RestVO restVO3 = dao.findByPrimaryKey(21);
@@ -203,17 +203,17 @@ public class RestJDBCDAO implements RestDAO_interface {
 //		System.out.println(restVO3.getAdminId());
 		
 		// SELECT ALL
-//		List<RestVO> list = dao.getAll();
-//		for (RestVO rest: list) {
-//			System.out.println(rest.getRestId() + ",");
-//			System.out.println(rest.getRestName() + ",");
-//			System.out.println(rest.getRestTel() + ",");
-//			System.out.println(rest.getRestAddress() + ",");
-//			System.out.println(rest.getRestOpen() + ",");
-//			System.out.println(rest.getRestStatus() + ",");
-//			System.out.println(rest.getBookingLimit() + ",");
-//			System.out.println(rest.getAdminId());
-//		}
+		List<RestVO> list = dao.getAll();
+		for (RestVO rest: list) {
+			System.out.println(rest.getRestId() + ",");
+			System.out.println(rest.getRestName() + ",");
+			System.out.println(rest.getRestTel() + ",");
+			System.out.println(rest.getRestAddress() + ",");
+			System.out.println(rest.getRestOpen() + ",");
+			System.out.println(rest.getRestStatus() + ",");
+			System.out.println(rest.getBookingLimit() + ",");
+			System.out.println(rest.getAdminId());
+		}
 		
 	}
 	
