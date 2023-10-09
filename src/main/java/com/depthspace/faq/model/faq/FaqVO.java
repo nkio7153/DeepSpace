@@ -4,10 +4,10 @@ import java.util.Objects;
 
 //FaqVO 類別表示一個FAQ（常見問題）的對象。
 public class FaqVO {
-	private final Integer serialId;
-	private final Integer faqNo;
-	private final String faqName;
-	private final String faqAns;
+	private Integer serialId;
+	private Integer faqNo;
+	private String faqName;
+	private String faqAns;
 
 	// 建構函數，用於初始化這個FAQ對象。
 	public FaqVO(Integer serialId, Integer faqNo, String faqName, String faqAns) {
@@ -17,25 +17,57 @@ public class FaqVO {
 		this.faqAns = faqAns;
 	}
 
-	// 取得FAQ的唯一流水號。
+	public FaqVO() {
+		
+	}
+
 	public Integer getSerialId() {
 		return serialId;
 	}
 
-	// 取得FAQ的編號。
+
+
+	public void setSerialId(Integer serialId) {
+		this.serialId = serialId;
+	}
+
+
+
 	public Integer getFaqNo() {
 		return faqNo;
 	}
 
-	// 取得FAQ的名稱。
+
+
+	public void setFaqNo(Integer faqNo) {
+		this.faqNo = faqNo;
+	}
+
+
+
 	public String getFaqName() {
 		return faqName;
 	}
 
-	// 取得FAQ的答案。
+
+
+	public void setFaqName(String faqName) {
+		this.faqName = faqName;
+	}
+
+
+
 	public String getFaqAns() {
 		return faqAns;
 	}
+
+
+
+	public void setFaqAns(String faqAns) {
+		this.faqAns = faqAns;
+	}
+
+
 
 	// 覆寫equals方法，用於對比兩個FaqVO對象的相等性。
 	@Override
