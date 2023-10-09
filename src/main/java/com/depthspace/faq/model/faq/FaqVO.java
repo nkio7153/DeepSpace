@@ -18,56 +18,40 @@ public class FaqVO {
 	}
 
 	public FaqVO() {
-		
+
 	}
 
 	public Integer getSerialId() {
 		return serialId;
 	}
 
-
-
 	public void setSerialId(Integer serialId) {
 		this.serialId = serialId;
 	}
-
-
 
 	public Integer getFaqNo() {
 		return faqNo;
 	}
 
-
-
 	public void setFaqNo(Integer faqNo) {
 		this.faqNo = faqNo;
 	}
-
-
 
 	public String getFaqName() {
 		return faqName;
 	}
 
-
-
 	public void setFaqName(String faqName) {
 		this.faqName = faqName;
 	}
-
-
 
 	public String getFaqAns() {
 		return faqAns;
 	}
 
-
-
 	public void setFaqAns(String faqAns) {
 		this.faqAns = faqAns;
 	}
-
-
 
 	// 覆寫equals方法，用於對比兩個FaqVO對象的相等性。
 	@Override
