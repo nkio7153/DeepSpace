@@ -1,19 +1,34 @@
 package com.depthspace.ticketshoppingcart.model;
 
 import java.io.Serializable;
-import java.sql.Date;
-
+import java.sql.Timestamp;
 
 public class TicketShoppingCartVO implements Serializable {
-    private Integer memId; // 使用 Integer 作為包裝類型
-    private Integer ticketId; // 使用 Integer 作為包裝類型
-    private Integer quantity; // 使用 Integer 作為包裝類型
-    private Date addedDate;
+    private Integer memId;
+    private Integer ticketId;
+    private String ticketName;
+    private Integer quantity;
+    private Timestamp addedDate;
 
     public TicketShoppingCartVO() {
     }
 
-    public TicketShoppingCartVO(Integer memId, Integer ticketId, Integer quantity, Date addedDate) {
+    public String getTicketName() {
+        return ticketName;
+    }
+
+    public void setTicketName(String ticketName) {
+        this.ticketName = ticketName;
+    }
+
+    public TicketShoppingCartVO(Integer memId, Integer ticketId, String ticketName, Integer quantity, Timestamp addedDate) {  // 3. 更新構造函數
+        this.memId = memId;
+        this.ticketId = ticketId;
+        this.ticketName=ticketName;
+        this.quantity = quantity;
+        this.addedDate = addedDate;
+    }
+    public TicketShoppingCartVO(Integer memId, Integer ticketId, Integer quantity, Timestamp addedDate) {  // 3. 更新構造函數
         this.memId = memId;
         this.ticketId = ticketId;
         this.quantity = quantity;
@@ -44,11 +59,11 @@ public class TicketShoppingCartVO implements Serializable {
         this.quantity = quantity;
     }
 
-    public Date getAddedDate() {
+    public Timestamp getAddedDate() {
         return addedDate;
     }
 
-    public void setAddedDate(Date addedDate) {
+    public void setAddedDate(Timestamp addedDate) {  // 3. 更新 setter
         this.addedDate = addedDate;
     }
 }
