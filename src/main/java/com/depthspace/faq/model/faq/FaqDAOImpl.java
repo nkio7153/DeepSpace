@@ -46,10 +46,10 @@ public class FaqDAOImpl implements FaqDAO {
         try {
             conn = DBUtil.getConnection();
             pstmt = conn.prepareStatement(UPDATE_STMT);
-            pstmt.setInt(1, faqVO.getSerialId());
-            pstmt.setInt(2, faqVO.getFaqNo());
-            pstmt.setString(3, faqVO.getFaqName());
-            pstmt.setString(4, faqVO.getFaqAns());
+            pstmt.setInt(1, faqVO.getFaqNo());
+            pstmt.setString(2, faqVO.getFaqName());
+            pstmt.setString(3, faqVO.getFaqAns());
+            pstmt.setInt(4, faqVO.getSerialId()); // 這是WHERE條件，確保只更新特定的FAQ記錄
      
             pstmt.executeUpdate();
             

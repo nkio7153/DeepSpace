@@ -12,6 +12,10 @@ public class FaqTypesVO {
 		this.faqNo = faqNo;
 		this.qTypes = qTypes;
 	}
+	
+	public FaqTypesVO() {
+		
+	}
 
 	// Getter 和 Setter 方法（方法名稱以小寫字母開頭，符合慣例）
 	public Integer getFaqNo() {
