@@ -10,14 +10,14 @@ public class MemBookingVO implements Serializable {
 	private Integer checkStatus;
 	private Integer bookingTime;
 	private Integer bookingNumber;
-	private Date date;
+	private Date bookingDate;
 
 	public MemBookingVO() {
 		super();
 	}
 
 	public MemBookingVO(Integer bookingId, Integer restId, Integer memId, Integer checkStatus, Integer bookingTime,
-			Integer bookingNumber, Date date) {
+			Integer bookingNumber, Date bookingDate) {
 		super();
 		this.bookingId = bookingId;
 		this.restId = restId;
@@ -25,7 +25,7 @@ public class MemBookingVO implements Serializable {
 		this.checkStatus = checkStatus;
 		this.bookingTime = bookingTime;
 		this.bookingNumber = bookingNumber;
-		this.date = date;
+		this.bookingDate = bookingDate;
 	}
 
 	public Integer getBookingId() {
@@ -76,12 +76,12 @@ public class MemBookingVO implements Serializable {
 		this.bookingNumber = bookingNumber;
 	}
 
-	public Date getDate() {
-		return date;
+	public Date getBookingDate() {
+		return bookingDate;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setBookingDate(Date bookingDate) {
+		this.bookingDate = bookingDate;
 	}
 
 }
