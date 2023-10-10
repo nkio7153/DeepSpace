@@ -13,6 +13,10 @@ public class KeywordQaVO {
 		this.kwAns = kwAns;
 	}
 
+	public KeywordQaVO() {
+		
+	}
+	
 	public Integer getSerialId() {
 		return serialId;
 	}

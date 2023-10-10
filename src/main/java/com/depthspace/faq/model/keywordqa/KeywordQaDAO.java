@@ -2,7 +2,7 @@ package com.depthspace.faq.model.keywordqa;
 
 import java.util.List;
 
-public interface KeywordDAO {
+public interface KeywordQaDAO {
     void insert(KeywordQaVO keywordqaVO);
     void update(KeywordQaVO keywordqaVO);
     void delete(Integer serialId);
