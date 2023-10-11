@@ -41,9 +41,9 @@ public class AccountJDBCDAO implements AccountDAO_Interface {
 		try {
 			conn = DBUtil.getConnection();
 			ps = conn.prepareStatement(UPDATE);
-			ps.setInt(1, tod.getAccountId());
-			ps.setString(2, tod.getAccountName());
-			ps.setInt(3, tod.getMemId());
+			ps.setInt(3, tod.getAccountId());
+			ps.setString(1, tod.getAccountName());
+			ps.setInt(2, tod.getMemId());
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

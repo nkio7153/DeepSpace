@@ -1,0 +1,13 @@
+package com.depthspace.restaurant.model.restcollection;
+
+import java.util.List;
+
+import com.depthspace.restaurant.model.restaurant.RestVO;
+
+public interface RestCollectionDAO_interface {
+	public void insert(RestCollectionVO restCollectionVO);
+	public void update(Integer restId1, Integer memId1, Integer restId2, Integer memId2);
+	public void delete(RestCollectionVO restCollectionVO);
+	public RestCollectionVO findByPrimaryKey(Integer restId, Integer memId);
+	public List<RestCollectionVO> getAll();
+}

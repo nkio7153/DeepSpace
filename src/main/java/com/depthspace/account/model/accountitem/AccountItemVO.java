@@ -7,7 +7,7 @@ public class AccountItemVO implements Serializable {
 	private Integer accountItemId;
 	private String accountItem;
 	private Date date;
-	private Integer consumeAccount;
+	private Integer consumeAccount;	
 
 	public AccountItemVO() {
 
