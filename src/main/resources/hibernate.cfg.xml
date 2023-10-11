@@ -8,9 +8,9 @@
         <property name="hibernatePropertiesFile">hibernate.properties</property>
     
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-<!--         <property name="hibernate.connection.url">jdbc:mysql://tibame-gcp.masatw.cf:3306/uat_Travel?serverTimezone=Asia/Taipei</property> -->
-<!--         <property name="hibernate.connection.username">g3dev</property> -->
-<!--         <property name="hibernate.connection.password">fj_MwehUJhm-t7</property> -->
+<!--         <property name="hibernate.connection.url"></property> -->
+<!--         <property name="hibernate.connection.username"></property> -->
+<!--         <property name="hibernate.connection.password"></property> -->
 
         
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
