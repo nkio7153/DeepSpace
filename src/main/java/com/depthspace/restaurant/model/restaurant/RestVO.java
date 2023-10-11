@@ -21,9 +21,9 @@ public class RestVO implements Serializable {
 	private String restAddress;
 	@Column(name = "REST_OPEN")
 	private String restOpen;
-	@Column(name = "REST_STATUS")
+	@Column(name = "REST_STATUS", columnDefinition = "TINYINT")
 	private Integer restStatus;
-	@Column(name = "BOOKING_LIMIT")
+	@Column(name = "BOOKING_LIMIT", columnDefinition = "TINYINT")
 	private Integer bookingLimit;
 	@Column(name = "ADMIN_ID")
 	private Integer adminId;

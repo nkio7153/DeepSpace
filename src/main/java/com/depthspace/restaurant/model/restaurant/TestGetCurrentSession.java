@@ -14,10 +14,11 @@ public class TestGetCurrentSession {
 			
 			tx1 = s1.beginTransaction();
 			
-			RestVO rest = s1.get(RestVO.class, 1);
+			RestVO rest = s1.get(RestVO.class, 10);
 			System.out.println(rest);
 			
 			tx1.commit();
+	
 			
 			
 		} catch (Exception e) {
