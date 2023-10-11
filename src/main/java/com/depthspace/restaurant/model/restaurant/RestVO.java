@@ -2,14 +2,30 @@ package com.depthspace.restaurant.model.restaurant;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "RESTAURANT")
 public class RestVO implements Serializable {
+	@Id
+	@Column(name = "REST_ID")
 	private Integer restId;
+	@Column(name = "REST_NAME")
 	private String restName;
+	@Column(name = "REST_TEL")
 	private String restTel;
+	@Column(name = "REST_ADDRESS")
 	private String restAddress;
+	@Column(name = "REST_OPEN")
 	private String restOpen;
+	@Column(name = "REST_STATUS")
 	private Integer restStatus;
+	@Column(name = "BOOKING_LIMIT")
 	private Integer bookingLimit;
+	@Column(name = "ADMIN_ID")
 	private Integer adminId;
 
 	public RestVO() {
