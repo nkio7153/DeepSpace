@@ -3,17 +3,17 @@ package com.depthspace.ticketshoppingcart.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class TicketShoppingCartVO implements Serializable {
+public class TicketShoppingCart implements Serializable {
     private Integer memId;
     private Integer ticketId;
     private Integer quantity;
     private Timestamp addedDate;
 
-    public TicketShoppingCartVO() {
+    public TicketShoppingCart() {
     }
 
 
-    public TicketShoppingCartVO(Integer memId, Integer ticketId, Integer quantity, Timestamp addedDate) {  // 3. 更新構造函數
+    public TicketShoppingCart(Integer memId, Integer ticketId, Integer quantity, Timestamp addedDate) {  // 3. 更新構造函數
         this.memId = memId;
         this.ticketId = ticketId;
         this.quantity = quantity;

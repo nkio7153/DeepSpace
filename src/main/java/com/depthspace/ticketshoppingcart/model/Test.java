@@ -33,7 +33,6 @@ public class Test {
 //        TicketShoppingCartVO tsc3 = dao.findByPrimaryKey(1, 1);
 //        System.out.println("MEM_ID: " + tsc3.getMemId());
 //        System.out.println("TICKET_ID: " + tsc3.getTicketId());
-//        System.out.println("TICKET_NAME:"+tsc3.getTicketName());
 //        System.out.println("QUANTITY: " + tsc3.getQuantity());
 //        System.out.println("ADDED_DATE: " + tsc3.getAddedDate());
 //        System.out.println("===================================");
@@ -44,7 +43,6 @@ public class Test {
         for (TicketShoppingCartVO tsc : list) {
             System.out.println("MEM_ID: " + tsc.getMemId());
             System.out.println("TICKET_ID: " + tsc.getTicketId());
-            System.out.println("TICKET_NAME:"+tsc.getTicketName());
             System.out.println("QUANTITY: " + tsc.getQuantity());
             System.out.println("ADDED_DATE: " + tsc.getAddedDate());
             System.out.println("===================================");
@@ -56,7 +54,6 @@ public class Test {
 //        for (TicketShoppingCartVO tsc : list2) {
 //            System.out.println("MEM_ID: " + tsc.getMemId());
 //            System.out.println("TICKET_ID: " + tsc.getTicketId());
-//            System.out.println("TICKET_NAME:"+tsc.getTicketName());
 //            System.out.println("QUANTITY: " + tsc.getQuantity());
 //            System.out.println("ADDED_DATE: " + tsc.getAddedDate());
 //            System.out.println("===================================");

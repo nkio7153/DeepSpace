@@ -22,7 +22,6 @@
         <th>序號</th>
         <th>會員編號</th>
         <th>票券編號</th>
-        <th>票券名稱</th>
         <th>票券數量</th>
         <th>加入日期</th>
         <th>操作</th>
@@ -34,7 +33,6 @@
             <td align="center">${cartStatus.count}</td>
             <td align="center">${cart.memId}</td>
             <td align="center">${cart.ticketId}</td>
-            <td align="center">${cart.ticketName}</td>
             <td align="center">${cart.quantity}</td>
             <td align="center">${cart.addedDate}</td>
             <td align="center" width="100px">
