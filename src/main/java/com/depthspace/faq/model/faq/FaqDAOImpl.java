@@ -11,10 +11,10 @@ import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 import com.depthspace.utils.DBUtil;
 
 public class FaqDAOImpl implements FaqDAO {
-	private static final String INSERT_STMT = "insert into FAQ values (?, ?, ?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO FAQ values (?, ?, ?, ?)";
 	private static final String UPDATE_STMT = "UPDATE FAQ SET FAQ_NO = ?, FAQ_NAME = ?, FAQ_ANS = ? WHERE SERIAL_ID = ?";
 	private static final String DELETE_STMT = "DELETE FROM FAQ WHERE SERIAL_ID = ?";
-	private static final String FIND_BY_SERIALID = "select * from FAQ where SERIAL_ID = ?";
+	private static final String FIND_BY_SERIALID = "SELECT * FROM FAQ WHERE SERIAL_ID = ?";
 	private static final String GET_ALL = "SELECT * FROM FAQ";
 
 	@Override

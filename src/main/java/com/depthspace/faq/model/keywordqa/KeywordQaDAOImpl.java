@@ -13,10 +13,10 @@ import com.depthspace.utils.DBUtil;
 
 public class KeywordQaDAOImpl implements KeywordQaDAO {
 
-	private static final String INSERT_STMT = "insert into KEYWORD_QA values (?, ?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO KEYWORD_QA values (?, ?, ?)";
 	private static final String UPDATE_STMT = "UPDATE KEYWORD_QA SET KW_TYPES = ?, KW_ANS = ? WHERE SERIAL_ID = ?";
 	private static final String DELETE_STMT = "DELETE FROM KEYWORD_QA WHERE SERIAL_ID = ?";
-	private static final String FIND_BY_SERIALID = "select * from KEYWORD_QA where SERIAL_ID = ?";
+	private static final String FIND_BY_SERIALID = "SELECT * FROM KEYWORD_QA WHERE SERIAL_ID = ?";
 	private static final String GET_ALL = "SELECT * FROM KEYWORD_QA";
 
 	@Override
