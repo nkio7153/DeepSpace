@@ -1,14 +1,35 @@
 package com.depthspace.tour.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+@Entity
+@Table(name="TOUR")
 public class TourVO implements Serializable{
+	@Id
+	@Column(name="TOUR_ID")
 	private Integer tourId;
+	
+	@Column(name="MEM_ID")
 	private Integer memId;
+	
+	@Column(name="TOUR_NAME")
 	private String tourName;
+	
+	@Column(name="TOUR_TYPE_ID")
 	private Integer tourTypeId;
+	
+	@Column(name="ALL_DAYS")
 	private Integer allDays;
+	
+	@Column(name="TOUR_DESCRIPTION")
 	private String tourDescription;
+	
+	@Column(name="TOUR_IMG" , columnDefinition = "MEDIUMBLOB")
 	private byte[] tourImg;
 	public TourVO() {
 		super();
@@ -65,6 +86,12 @@ public class TourVO implements Serializable{
 	}
 	public void setTourImg(byte[] tourImg) {
 		this.tourImg = tourImg;
+	}
+	@Override
+	public String toString() {
+		return "TourVO [tourId=" + tourId + ", memId=" + memId + ", tourName=" + tourName + ", tourTypeId=" + tourTypeId
+				+ ", allDays=" + allDays + ", tourDescription=" + tourDescription + ", tourImg="
+				+ Arrays.toString(tourImg) + "]";
 	}
 	
 	
