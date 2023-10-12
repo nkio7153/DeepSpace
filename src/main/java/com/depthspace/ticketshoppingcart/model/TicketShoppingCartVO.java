@@ -1,12 +1,23 @@
 package com.depthspace.ticketshoppingcart.model;
 
+import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailId;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-
+@Entity
+@Table(name="TICKET_SHOPPING_CART")
+@IdClass(TicketShoppingCartId.class)
 public class TicketShoppingCartVO implements Serializable {
+    @Id
+    @Column(name="MEM_ID")
     private Integer memId;
+    @Id
+    @Column(name="TICKET_ID")
     private Integer ticketId;
+    @Column(name="QUANTITY", nullable = false)
     private Integer quantity;
+    @Column(name="ADDED_DATE", nullable = false)
     private Timestamp addedDate;
 
     public TicketShoppingCartVO() {

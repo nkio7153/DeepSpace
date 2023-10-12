@@ -1,14 +1,23 @@
 package com.depthspace.memticketowned;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;  // 引入 Timestamp 類型
-
+@Entity
+@Table(name="MEM_TICKET_OWNED")
 public class MemTicketOwnedVO implements Serializable {
+    @Id
+    @Column(name="TICKET_OWNED_ID")
     private Integer ticketOwnedId;
+    @Column(name="MEM_ID",nullable=false)
     private Integer memId;
+    @Column(name="TICKET_ID",nullable=false)
     private Integer ticketId;
+    @Column(name="RELEASE_DATE")
     private Timestamp releaseDate;
+    @Column(name="EXPIRY_DATE")
     private Timestamp expiryDate;
+    @Column(name="STATUS_OF_USE")
     private Integer statusOfUse;
 
     public MemTicketOwnedVO() {
