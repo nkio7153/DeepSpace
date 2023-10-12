@@ -1,4 +1,4 @@
-package com.depthspace.faq.model.faqtypes;
+package com.depthspace.faqtypes.model;
 
 import java.util.List;
 import java.util.Scanner;
