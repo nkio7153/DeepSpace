@@ -109,4 +109,12 @@ public class RestVO implements Serializable {
 		this.adminId = adminId;
 	}
 
+	@Override
+	public String toString() {
+		return "RestVO [restId=" + restId + ", restName=" + restName + ", restTel=" + restTel + ", restAddress="
+				+ restAddress + ", restOpen=" + restOpen + ", restStatus=" + restStatus + ", bookingLimit="
+				+ bookingLimit + ", adminId=" + adminId + "]";
+	}
+
+	
 }

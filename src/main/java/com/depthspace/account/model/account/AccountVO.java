@@ -2,9 +2,19 @@ package com.depthspace.account.model.account;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+@Entity
+@Table(name = "ACCOUNT")
 public class AccountVO implements Serializable {
+	@Id
+	@Column(name = "ACCOUNT_ID")
 	private Integer accountId;
+	@Column(name = "ACCOUNT_NAME")
 	private String accountName;
+	@Column(name = "MEM_ID")
 	private Integer memId;
 
 	public AccountVO() {
@@ -39,6 +49,11 @@ public class AccountVO implements Serializable {
 
 	public void setMemId(Integer memId) {
 		this.memId = memId;
+	}
+
+	@Override
+	public String toString() {
+		return "AccountVO [accountId=" + accountId + ", accountName=" + accountName + ", memId=" + memId + "]";
 	}
 
 }
