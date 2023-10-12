@@ -7,7 +7,7 @@
     	<!-- 引入外部属性文件 -->
         <property name="hibernatePropertiesFile">hibernate.properties</property>
     
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
 <!--         <property name="hibernate.connection.url"></property> -->
 <!--         <property name="hibernate.connection.username"></property> -->
 <!--         <property name="hibernate.connection.password"></property> -->
@@ -22,9 +22,16 @@
         <property name="hibernate.current_session_context_class">thread</property>
         
         <mapping class="com.depthspace.restaurant.model.restaurant.RestVO"/>
+<<<<<<< HEAD
         <mapping class="com.depthspace.account.model.account.AccountVO"/>
         
         
+=======
+        <mapping class="com.depthspace.member.MemVO"/>
+        <mapping class="com.depthspace.tour.model.TourVO"/>
+        <mapping class="com.depthspace.tour.model.TourDetailVO"/>
+        <mapping class="com.depthspace.tour.model.TourDaysVO"/>
+>>>>>>> branch 'master' of https://github.com/nkio7153/DepthSpace.git
                 
     </session-factory>
 </hibernate-configuration>
