@@ -21,11 +21,19 @@
         
         <property name="hibernate.current_session_context_class">thread</property>
         
-        <mapping class="com.depthspace.restaurant.model.restaurant.RestVO"/>
+        
         <mapping class="com.depthspace.member.MemVO"/>
         <mapping class="com.depthspace.tour.model.TourVO"/>
         <mapping class="com.depthspace.tour.model.TourDetailVO"/>
         <mapping class="com.depthspace.tour.model.TourDaysVO"/>
+        
+		<!-- restaurant -->
+        <mapping class="com.depthspace.restaurant.model.restaurant.RestVO"/>
+        <mapping class="com.depthspace.restaurant.model.membooking.MemBookingVO"/>
+        <mapping class="com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO"/>
+        <mapping class="com.depthspace.restaurant.model.restcollection.RestCollectionVO"/>
+        
+        
                 
     </session-factory>
 </hibernate-configuration>
