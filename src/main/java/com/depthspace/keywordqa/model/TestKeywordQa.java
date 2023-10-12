@@ -1,11 +1,8 @@
-package com.depthspace.faq.model.keywordqa;
+package com.depthspace.keywordqa.model;
 
 import java.util.List;
 import java.util.Scanner;
 
-import com.depthspace.faq.model.faqtypes.FaqTypesDAO;
-import com.depthspace.faq.model.faqtypes.FaqTypesDAOImpl;
-import com.depthspace.faq.model.faqtypes.FaqTypesVO;
 
 public class TestKeywordQa {
 	public static void main(String[] args) {

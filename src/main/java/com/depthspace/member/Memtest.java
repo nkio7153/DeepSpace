@@ -3,10 +3,6 @@ package com.depthspace.member;
 import java.util.List;
 import java.util.Scanner;
 
-import com.depthspace.faq.model.faqtypes.FaqTypesDAO;
-import com.depthspace.faq.model.faqtypes.FaqTypesDAOImpl;
-import com.depthspace.faq.model.faqtypes.FaqTypesVO;
-
 public class Memtest {
 	public static void main(String[] args) {
 		MemJDBCDAO m = new MemJDBCDAO();
