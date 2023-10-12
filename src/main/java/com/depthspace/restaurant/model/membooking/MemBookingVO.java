@@ -84,4 +84,11 @@ public class MemBookingVO implements Serializable {
 		this.bookingDate = bookingDate;
 	}
 
+	@Override
+	public String toString() {
+		return "MemBookingVO [bookingId=" + bookingId + ", restId=" + restId + ", memId=" + memId + ", checkStatus="
+				+ checkStatus + ", bookingTime=" + bookingTime + ", bookingNumber=" + bookingNumber + ", bookingDate="
+				+ bookingDate + "]";
+	}
+
 }
