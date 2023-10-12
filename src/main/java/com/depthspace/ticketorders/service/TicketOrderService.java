@@ -1,5 +1,7 @@
 package com.depthspace.ticketorders.service;
 
+import com.depthspace.memticketowned.model.MemTicketOwnedDAO_Interface;
+import com.depthspace.memticketowned.model.MemTicketOwnedJDBCDAO;
 import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailDAO_Interface;
 import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailJDBCDAO;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersDAO_Interface;
