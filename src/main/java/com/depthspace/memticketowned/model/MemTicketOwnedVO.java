@@ -17,7 +17,7 @@ public class MemTicketOwnedVO implements Serializable {
     private Timestamp releaseDate;
     @Column(name="EXPIRY_DATE")
     private Timestamp expiryDate;
-    @Column(name="STATUS_OF_USE")
+    @Column(name="STATUS_OF_USE", columnDefinition = "TINYINT")
     private Integer statusOfUse;
 
     public MemTicketOwnedVO() {
