@@ -115,10 +115,4 @@ public class RestVO implements Serializable {
 				+ restAddress + ", restOpen=" + restOpen + ", restStatus=" + restStatus + ", bookingLimit="
 				+ bookingLimit + ", adminId=" + adminId + "]";
 	}
-
-	
-<<<<<<< HEAD
-=======
-	
->>>>>>> branch 'master' of https://github.com/nkio7153/DepthSpace.git
 }
