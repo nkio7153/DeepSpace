@@ -64,6 +64,23 @@
         <mapping class="com.depthspace.restaurant.model.restcollection.RestCollectionVO"/>
         <mapping class="com.depthspace.restaurant.model.membooking.MemBookingVO"/>
 
+		
+	    <mapping class="com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO"/>
+        <mapping class="com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO"/>
+        <mapping class="com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO"/>
+        <mapping class="com.depthspace.promotion.model.promotion.PromotionVO"/>
+        <mapping class="com.depthspace.promotion.model.promotiondetails.PromotionDetailsVO"/>
+        <mapping class="com.depthspace.memticketowned.model.MemTicketOwnedVO"/>
                 
+                
+        <mapping class="com.depthspace.account.model.accountitem.AccountItemVO"/>
+        <mapping class="com.depthspace.account.model.accountper.AccountPerVO"/>
+        <mapping class="com.depthspace.account.model.expenses.ExpensesVO"/>
+        <mapping class="com.depthspace.forum.model.articlescollect.ArticlesCollectVO"/>
+        <mapping class="com.depthspace.forum.model.articleslike.ArticlesLikeVO"/>
+        <mapping class="com.depthspace.forum.model.articlesreport.ArticlesReportVO"/>
+        <mapping class="com.depthspace.forum.model.articlestype.ArticlesStypeVO"/>
+        <mapping class="com.depthspace.forum.model.forumarticles.ForumArticlesVO"/>
+         
     </session-factory>
 </hibernate-configuration>
