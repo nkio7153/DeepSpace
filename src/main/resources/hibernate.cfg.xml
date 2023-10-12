@@ -8,9 +8,9 @@
         <property name="hibernatePropertiesFile">hibernate.properties</property>
     
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-<!--         <property name="hibernate.connection.url"></property> -->
-<!--         <property name="hibernate.connection.username"></property> -->
-<!--         <property name="hibernate.connection.password"></property> -->
+		<!-- <property name="hibernate.connection.url"></property> -->
+		<!-- <property name="hibernate.connection.username"></property> -->
+		<!-- <property name="hibernate.connection.password"></property> -->
 
         
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -23,10 +23,6 @@
         
         
         <mapping class="com.depthspace.account.model.account.AccountVO"/>
-        <mapping class="com.depthspace.member.MemVO"/>
-        <mapping class="com.depthspace.tour.model.TourVO"/>
-        <mapping class="com.depthspace.tour.model.TourDetailVO"/>
-        <mapping class="com.depthspace.tour.model.TourDaysVO"/>
         
         
         <mapping class="com.depthspace.column.model.ColumnArticlesVO"/>
@@ -38,11 +34,27 @@
         <mapping class="com.depthspace.ticketcollection.model.TicketCollectionVO"/>
         <mapping class="com.depthspace.notifications.model.NotificationsVO"/>
         
+        <!--attractions-->
+		<mapping class="com.depthspace.attractions.model.AreaVO"/>
+		<mapping class="com.depthspace.attractions.model.AttractionsImagesVO"/>
+		<mapping class="com.depthspace.attractions.model.AttractionsTypeVO"/>
+		<mapping class="com.depthspace.attractions.model.AttractionsVO"/>
+		<mapping class="com.depthspace.attractions.model.CityVO"/>
+
+		<!--tour-->
+		<mapping class="com.depthspace.tour.model.TourVO"/>
+		<mapping class="com.depthspace.tour.model.TourDetailVO"/>
+		<mapping class="com.depthspace.tour.model.TourDaysVO"/>
+		<mapping class="com.depthspace.tour.model.TourTypeVO"/>
+
+		<!-- Member-->
+ 		<mapping class="com.depthspace.member.MemVO"/>
+        
 		<!-- restaurant -->
         <mapping class="com.depthspace.restaurant.model.restaurant.RestVO"/>
-        <mapping class="com.depthspace.restaurant.model.membooking.MemBookingVO"/>
         <mapping class="com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO"/>
         <mapping class="com.depthspace.restaurant.model.restcollection.RestCollectionVO"/>
+        <mapping class="com.depthspace.restaurant.model.membooking.MemBookingVO"/>
 
                 
     </session-factory>
