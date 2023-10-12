@@ -13,7 +13,7 @@ import javax.persistence.Table;
 public class AdminVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //AI鍵要加
-	@Column(name="ADMIN_ID")
+	@Column(name="ADMIN_ID", updatable = false)
 	private Integer adminId;
 	
 	@Column(name="ADMIN_NAME")
@@ -25,7 +25,7 @@ public class AdminVO {
 	@Column(name="ADMIN_PWD")
 	private String adminPwd;
 	
-	@Column(name="ADMIN_STATUS")
+	@Column(name="ADMIN_STATUS" , columnDefinition = "TINYINT")
 	private Integer adminStatus;
 	
 	public AdminVO() {
