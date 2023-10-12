@@ -1,4 +1,4 @@
-package com.depthspace.admin.model.admin;
+package com.depthspace.admin.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,11 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="admin")
+@Table(name="ADMIN")
 
 public class AdminVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //AI鍵要加
 	@Column(name="ADMIN_ID")
 	private Integer adminId;
 	
@@ -80,16 +80,12 @@ public class AdminVO {
 	public void setAdminStatus(Integer adminStatus) {
 		this.adminStatus = adminStatus;
 	}
-	
+
 	@Override
 	public String toString() {
-	    return "AdminVO{" +
-	            "adminId=" + adminId +
-	            ", adminName='" + adminName + '\'' +
-	            ", adminAcc='" + adminAcc + '\'' +
-	            ", adminPwd='" + adminPwd + '\'' +
-	            ", adminStatus=" + adminStatus +
-	            '}';
+		return "AdminVO [adminId=" + adminId + ", adminName=" + adminName + ", adminAcc=" + adminAcc + ", adminPwd="
+				+ adminPwd + ", adminStatus=" + adminStatus + "]";
 	}
-
+		
+	
 }
