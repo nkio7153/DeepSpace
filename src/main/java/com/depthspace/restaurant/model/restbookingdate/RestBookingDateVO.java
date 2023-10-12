@@ -74,4 +74,10 @@ public class RestBookingDateVO implements Serializable {
 		this.eveningNum = eveningNum;
 	}
 
+	@Override
+	public String toString() {
+		return "RestBookingDateVO [restId=" + restId + ", bookingDate=" + bookingDate + ", restOpen=" + restOpen
+				+ ", morningNum=" + morningNum + ", noonNum=" + noonNum + ", eveningNum=" + eveningNum + "]";
+	}
+
 }

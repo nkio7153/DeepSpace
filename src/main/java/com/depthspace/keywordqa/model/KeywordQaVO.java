@@ -1,4 +1,4 @@
-package com.depthspace.faq.model.keywordqa;
+package com.depthspace.keywordqa.model;
 
 import java.util.Objects;
 

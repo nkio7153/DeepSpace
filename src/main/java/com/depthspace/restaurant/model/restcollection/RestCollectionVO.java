@@ -50,4 +50,9 @@ public class RestCollectionVO implements Serializable {
 		return Objects.equals(memId, other.memId) && Objects.equals(restId, other.restId);
 	}
 
+	@Override
+	public String toString() {
+		return "RestCollectionVO [restId=" + restId + ", memId=" + memId + "]";
+	}
+
 }
