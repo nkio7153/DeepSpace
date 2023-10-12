@@ -28,6 +28,16 @@
         <mapping class="com.depthspace.tour.model.TourDetailVO"/>
         <mapping class="com.depthspace.tour.model.TourDaysVO"/>
         
+        
+        <mapping class="com.depthspace.column.model.ColumnArticlesVO"/>
+        <mapping class="com.depthspace.column.model.ColumnImagesVO"/>
+        <mapping class="com.depthspace.column.model.ColumnTypesVO"/>
+        <mapping class="com.depthspace.ticket.model.TicketImagesVO"/>
+        <mapping class="com.depthspace.ticket.model.TicketTypesVO"/>
+        <mapping class="com.depthspace.ticket.model.TicketVO"/>
+        <mapping class="com.depthspace.ticketcollection.model.TicketCollectionVO"/>
+        <mapping class="com.depthspace.notifications.model.NotificationsVO"/>
+        
 		<!-- restaurant -->
         <mapping class="com.depthspace.restaurant.model.restaurant.RestVO"/>
         <mapping class="com.depthspace.restaurant.model.membooking.MemBookingVO"/>
