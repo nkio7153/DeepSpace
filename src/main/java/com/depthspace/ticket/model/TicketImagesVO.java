@@ -2,10 +2,27 @@ package com.depthspace.ticket.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="TICKET_IMAGES")
 public class TicketImagesVO implements Serializable {
-    private Integer serialId; 
-    private Integer ticketId; 
-    private byte[] image; 
+
+	@Id
+	@Column(name="SERIAL_ID" , updatable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)	
+	private Integer serialId; 
+	
+	@Column(name="TICKET_ID")
+	private Integer ticketId; 
+	
+	@Column(name="IMAGE", columnDefinition = "mediumblob")
+	private byte[] image; 
 
     public TicketImagesVO() {
     }

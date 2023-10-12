@@ -4,13 +4,35 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="NOTIFICATIONS")
 public class NotificationsVO implements Serializable{
 	
+	@Id
+	@Column(name="NOTE_ID",updatable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer noteId;
+	
+	@Column(name="MEM_ID",updatable = false)
 	private Integer memId;
+	
+	@Column(name="NOTE_TYPE",updatable = false)
 	private String noteType;
+	
+	@Column(name="NOTE_CONTENT",updatable = false)
 	private String noteContent;
+	
+	@Column(name="NOTE_CREATED",updatable = false)
 	private Timestamp noteCreated;
+	
+	@Column(name="NOTE_READ",updatable = false)
 	private byte noteRead;
 	
 	public NotificationsVO() {
