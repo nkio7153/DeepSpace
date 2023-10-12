@@ -1,4 +1,4 @@
-package com.depthspace.memticketowned;
+package com.depthspace.memticketowned.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
