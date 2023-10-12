@@ -1,5 +1,7 @@
 package com.depthspace.restaurant.model.restaurant;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -8,23 +10,22 @@ import com.depthspace.utils.HibernateUtil;
 public class TestGetCurrentSession {
 	public static void main(String[] args) {
 		// 系統組態檔裡一定要有 <property name="hibernate.current_session_context_class">thread</property> 的設定才可以
-		Session s1 = HibernateUtil.getSessionFactory().getCurrentSession();
-		Transaction tx1 = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			
-			tx1 = s1.beginTransaction();
+			session.beginTransaction();
 			
-			RestVO rest = s1.get(RestVO.class, 10);
-			System.out.println(rest);
+//			RestVO rest = s1.get(RestVO.class, 10);
+//			System.out.println(rest);
+//			
+//			tx1.commit();
 			
-			tx1.commit();
-	
-			
+			List<RestVO> list = session.createQuery("from RestVO", RestVO.class).list();
+			System.out.println(list);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			if (tx1 != null)
-				tx1.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			HibernateUtil.shutdown();
 		}
