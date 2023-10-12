@@ -63,11 +63,6 @@
         <mapping class="com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO"/>
         <mapping class="com.depthspace.restaurant.model.restcollection.RestCollectionVO"/>
         <mapping class="com.depthspace.restaurant.model.membooking.MemBookingVO"/>
-        <!-- restaurant Association -->
-        <mapping class="com.depthspace.restaurant.model.restaurant.RestASS"/>
-        <mapping class="com.depthspace.restaurant.model.restbookingdate.RestBookingDateASS"/>
-        <mapping class="com.depthspace.restaurant.model.restcollection.RestCollectionASS"/>
-        <mapping class="com.depthspace.restaurant.model.membooking.MemBookingASS"/>
 
                 
     </session-factory>
