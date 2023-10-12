@@ -22,16 +22,12 @@
         <property name="hibernate.current_session_context_class">thread</property>
         
         <mapping class="com.depthspace.restaurant.model.restaurant.RestVO"/>
-<<<<<<< HEAD
         <mapping class="com.depthspace.account.model.account.AccountVO"/>
-        
-        
-=======
         <mapping class="com.depthspace.member.MemVO"/>
         <mapping class="com.depthspace.tour.model.TourVO"/>
         <mapping class="com.depthspace.tour.model.TourDetailVO"/>
         <mapping class="com.depthspace.tour.model.TourDaysVO"/>
->>>>>>> branch 'master' of https://github.com/nkio7153/DepthSpace.git
+
                 
     </session-factory>
 </hibernate-configuration>
