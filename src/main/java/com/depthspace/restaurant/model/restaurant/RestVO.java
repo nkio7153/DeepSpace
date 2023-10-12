@@ -115,5 +115,4 @@ public class RestVO implements Serializable {
 				+ restAddress + ", restOpen=" + restOpen + ", restStatus=" + restStatus + ", bookingLimit="
 				+ bookingLimit + ", adminId=" + adminId + "]";
 	}
-
 }
