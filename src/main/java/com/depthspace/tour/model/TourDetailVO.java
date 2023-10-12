@@ -3,11 +3,27 @@ package com.depthspace.tour.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+@Entity
+@Table(name="TOUR_DETAIL")
 public class TourDetailVO implements Serializable{
+	@Id
+	@Column(name="TOUR_DAYS_ID")
 	private Integer tourDaysId;
+	
+	@Column(name="ATTRACTIONS_ID")
 	private Integer attractionsId;
+	
+	@Column(name="START")
 	private Timestamp start;
+	
+	@Column(name="END")
 	private Timestamp end;
+	
+	@Column(name="ATTRACTIONS_NAME")
 	private String attractionsName;
 	public TourDetailVO() {
 		super();
@@ -51,4 +67,10 @@ public class TourDetailVO implements Serializable{
 	public void setAttractionsName(String attractionsName) {
 		this.attractionsName = attractionsName;
 	}
+	@Override
+	public String toString() {
+		return "TourDetailVO [tourDaysId=" + tourDaysId + ", attractionsId=" + attractionsId + ", start=" + start
+				+ ", end=" + end + ", attractionsName=" + attractionsName + "]";
+	}
+	
 }

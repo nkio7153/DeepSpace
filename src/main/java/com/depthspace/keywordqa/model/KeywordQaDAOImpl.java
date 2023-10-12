@@ -1,4 +1,4 @@
-package com.depthspace.faq.model.faqtypes;
+package com.depthspace.keywordqa.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,27 +7,26 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.depthspace.faq.model.faq.FaqDAO;
-import com.depthspace.faq.model.faq.FaqVO;
 import com.depthspace.utils.DBUtil;
 
-public class FaqTypesDAOImpl implements FaqTypesDAO{
+public class KeywordQaDAOImpl implements KeywordQaDAO {
 
-	private static final String INSERT_STMT = "INSERT INTO FAQ_TYPES values (?, ?)";
-	private static final String UPDATE_STMT = "UPDATE FAQ_TYPES SET Q_TYPES = ? WHERE FAQ_NO = ?";
-	private static final String DELETE_STMT = "DELETE FROM FAQ_TYPES WHERE FAQ_NO = ?";
-	private static final String FIND_BY_SERIALID = "SELECT * FROM FAQ_TYPES WHERE FAQ_NO = ?";
-	private static final String GET_ALL = "SELECT * FROM FAQ_TYPES";
+	private static final String INSERT_STMT = "INSERT INTO KEYWORD_QA values (?, ?, ?)";
+	private static final String UPDATE_STMT = "UPDATE KEYWORD_QA SET KW_TYPES = ?, KW_ANS = ? WHERE SERIAL_ID = ?";
+	private static final String DELETE_STMT = "DELETE FROM KEYWORD_QA WHERE SERIAL_ID = ?";
+	private static final String FIND_BY_SERIALID = "SELECT * FROM KEYWORD_QA WHERE SERIAL_ID = ?";
+	private static final String GET_ALL = "SELECT * FROM KEYWORD_QA";
 
 	@Override
-	public void insert(FaqTypesVO faqtypesVO) {
+	public void insert(KeywordQaVO keywordqaVO) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = DBUtil.getConnection();
 			pstmt = conn.prepareStatement(INSERT_STMT);
-			pstmt.setInt(1, faqtypesVO.getFaqNo());
-			pstmt.setString(2, faqtypesVO.getqTypes());
+			pstmt.setInt(1, keywordqaVO.getSerialId());
+			pstmt.setString(2, keywordqaVO.getKwTypes());
+			pstmt.setString(3, keywordqaVO.getKwAns());
 
 			pstmt.executeUpdate();
 
@@ -39,16 +38,17 @@ public class FaqTypesDAOImpl implements FaqTypesDAO{
 	}
 
 	@Override
-	public void update(FaqTypesVO faqTypesVO) {
+	public void update(KeywordQaVO keywordqaVO) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
 		try {
 			conn = DBUtil.getConnection();
 			pstmt = conn.prepareStatement(UPDATE_STMT);
-			pstmt.setString(1, faqTypesVO.getqTypes());
-			pstmt.setInt(2, faqTypesVO.getFaqNo());
-			
+			pstmt.setString(1, keywordqaVO.getKwTypes());
+			pstmt.setString(2, keywordqaVO.getKwAns());
+			pstmt.setInt(3, keywordqaVO.getSerialId());
+
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -59,14 +59,14 @@ public class FaqTypesDAOImpl implements FaqTypesDAO{
 	}
 
 	@Override
-	public void delete(Integer faqNo) {
+	public void delete(Integer serialId) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
 		try {
 			conn = DBUtil.getConnection();
 			pstmt = conn.prepareStatement(DELETE_STMT);
-			pstmt.setInt(1, faqNo);
+			pstmt.setInt(1, serialId);
 
 			pstmt.executeUpdate();
 
@@ -78,22 +78,23 @@ public class FaqTypesDAOImpl implements FaqTypesDAO{
 	}
 
 	@Override
-	public FaqTypesVO findByPrimaryKey(Integer faqNo) {
+	public KeywordQaVO findByPrimaryKey(Integer serialId) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		FaqTypesVO faqtypesVO = null;
+		KeywordQaVO keywordqaVO = null;
 
 		try {
 			con = DBUtil.getConnection();
 			pstmt = con.prepareStatement(FIND_BY_SERIALID);
-			pstmt.setInt(1, faqNo);
+			pstmt.setInt(1, serialId);
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-				faqtypesVO = new FaqTypesVO();
-				faqtypesVO.setFaqNo(rs.getInt("FAQ_NO"));
-				faqtypesVO.setqTypes(rs.getString("Q_TYPES"));
+				keywordqaVO = new KeywordQaVO();
+				keywordqaVO.setSerialId(rs.getInt("SERIAL_ID"));
+				keywordqaVO.setKwTypes(rs.getString("KW_TYPES"));
+				keywordqaVO.setKwAns(rs.getString("KW_ANS"));
 			}
 
 		} catch (SQLException e) {
@@ -102,12 +103,12 @@ public class FaqTypesDAOImpl implements FaqTypesDAO{
 			DBUtil.close(con, pstmt, rs);
 		}
 
-		return faqtypesVO;
+		return keywordqaVO;
 	}
 
 	@Override
-	public List<FaqTypesVO> getAll() {
-		ArrayList<FaqTypesVO> faqtypes = new ArrayList<>();
+	public List<KeywordQaVO> getAll() {
+		ArrayList<KeywordQaVO> keywordqas = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -118,10 +119,11 @@ public class FaqTypesDAOImpl implements FaqTypesDAO{
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				FaqTypesVO faqtype = new FaqTypesVO();
-				faqtype.setFaqNo(rs.getInt("FAQ_NO"));
-				faqtype.setqTypes(rs.getString("Q_TYPES"));
-				faqtypes.add(faqtype);
+				KeywordQaVO keywordqa = new KeywordQaVO();
+				keywordqa.setSerialId(rs.getInt("SERIAL_ID"));
+				keywordqa.setKwTypes(rs.getString("KW_TYPES"));
+				keywordqa.setKwAns(rs.getString("KW_ANS"));
+				keywordqas.add(keywordqa);
 			}
 
 		} catch (SQLException e) {
@@ -130,6 +132,6 @@ public class FaqTypesDAOImpl implements FaqTypesDAO{
 			DBUtil.close(con, pstmt, rs);
 		}
 
-		return faqtypes;
+		return keywordqas;
 	}
 }

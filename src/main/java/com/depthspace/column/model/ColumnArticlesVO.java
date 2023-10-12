@@ -4,14 +4,37 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class ColumnArticlesVO implements Serializable{
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="COLUMN_ARTICLES")
+public class ColumnArticlesVO implements Serializable{
+	@Id
+	@Column(name="ARTI_ID" , updatable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer aritId;
+	
+	@Column(name="COL_TYPE_ID")
 	private Integer colTypeId;
+	
+	@Column(name="ARTI_TITLE")
 	private String aritTitle;
+	
+	@Column(name="ARTI_CONTENT")
 	private String artiContent;
+	
+	@Column(name="ARTICLE_DATE")
 	private Timestamp articleDate;
+	
+	@Column(name="ADMIN_ID")
 	private Integer adminId;	
+	
+	@Column(name="ARTI_STATUS")
 	private byte artiStatus;
 	
 	public ColumnArticlesVO() {
