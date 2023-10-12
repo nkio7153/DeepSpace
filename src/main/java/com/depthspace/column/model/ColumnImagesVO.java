@@ -2,10 +2,26 @@ package com.depthspace.column.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="COLUMN_IMAGES")
 public class ColumnImagesVO implements Serializable{
 	
+	@Id
+	@Column(name="COL_IMG_ID" , updatable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer colImgId;
+	
+	@Column(name="ARTI_ID")
 	private Integer artiId;
+	
+	@Column(name="COL_IMG", columnDefinition = "mediumblob")
 	private byte[] colImg;
 	
 	public ColumnImagesVO() {
