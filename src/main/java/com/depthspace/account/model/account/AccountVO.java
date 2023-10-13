@@ -1,6 +1,7 @@
 package com.depthspace.account.model.account;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 @Entity
 @Table(name = "ACCOUNT")
 public class AccountVO implements Serializable {
@@ -57,6 +59,24 @@ public class AccountVO implements Serializable {
 	@Override
 	public String toString() {
 		return "AccountVO [accountId=" + accountId + ", accountName=" + accountName + ", memId=" + memId + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(accountId, accountName, memId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AccountVO other = (AccountVO) obj;
+		return Objects.equals(accountId, other.accountId) && Objects.equals(accountName, other.accountName)
+				&& Objects.equals(memId, other.memId);
 	}
 
 }
