@@ -3,13 +3,31 @@ package com.depthspace.restaurant.model.membooking;
 import java.io.Serializable;
 import java.sql.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "MEM_BOOKING")
 public class MemBookingVO implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "BOOKING_ID", updatable = false)
 	private Integer bookingId;
+	@Column(name = "REST_ID")
 	private Integer restId;
+	@Column(name = "MEM_ID")
 	private Integer memId;
+	@Column(name = "CHECK_STATUS")
 	private Integer checkStatus;
+	@Column(name = "BOOKING_TIME")
 	private Integer bookingTime;
+	@Column(name = "BOOKING_NUMBER")
 	private Integer bookingNumber;
+	@Column(name = "BOOKING_DATE")
 	private Date bookingDate;
 
 	public MemBookingVO() {
