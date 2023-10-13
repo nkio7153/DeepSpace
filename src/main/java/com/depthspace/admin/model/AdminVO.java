@@ -28,18 +28,7 @@ public class AdminVO {
 	@Column(name="ADMIN_STATUS" , columnDefinition = "TINYINT")
 	private Integer adminStatus;
 	
-	public AdminVO() {
-		super();
-	}
 
-	public AdminVO(Integer adminId, String adminName, String adminAcc, String adminPwd, Integer adminStatus) {
-		super();
-		this.adminId = adminId;
-		this.adminName = adminName;
-		this.adminAcc = adminAcc;
-		this.adminPwd = adminPwd;
-		this.adminStatus = adminStatus;
-	}
 
 	public Integer getAdminId() {
 		return adminId;
