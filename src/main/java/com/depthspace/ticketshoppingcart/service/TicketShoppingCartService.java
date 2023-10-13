@@ -3,7 +3,6 @@ package com.depthspace.ticketshoppingcart.service;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersDAO_Interface;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersJDBCDAO;
 import com.depthspace.ticketshoppingcart.model.TicketShoppingCartDAO_Interface;
-import com.depthspace.ticketshoppingcart.model.TicketShoppingCartJDBCDAO;
 import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 
 import java.sql.Timestamp;
@@ -13,7 +12,7 @@ public class TicketShoppingCartService {
     private TicketShoppingCartDAO_Interface dao;
 
     public TicketShoppingCartService() {
-        dao=new TicketShoppingCartJDBCDAO();
+//        dao=new TicketShoppingCartJDBCDAO();
     }
 //    private Integer memId;
 //    private Integer ticketId;
