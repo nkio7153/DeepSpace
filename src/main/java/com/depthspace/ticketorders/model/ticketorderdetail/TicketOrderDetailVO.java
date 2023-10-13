@@ -1,15 +1,32 @@
 package com.depthspace.ticketorders.model.ticketorderdetail;
 
+import javax.persistence.*;
 import java.io.Serializable;
-
+@Entity
+@Table(name="TICKET_ORDER_DETAIL")
+@IdClass(TicketOrderDetailId.class)
 public class TicketOrderDetailVO implements Serializable {
+    @Id
+    @Column(name = "ORDER_ID", nullable = false ,insertable = false, updatable = false)
     private Integer orderId;
+    @Id
+    @Column(name="TICKET_ID", nullable = false ,insertable = false, updatable = false)
     private Integer ticketId;
+    @Column(name="QUANTITY")
     private Integer quantity;
+    @Column(name = "UNIT_PRICE")
     private Integer unitPrice;
+
+    @Column(name = "DISCOUNT_PRICE")
     private Integer discountPrice;
+
+    @Column(name = "SUBTOTAL")
     private Integer subtotal;
+
+    @Column(name = "TICKET_REVIEWS", length = 100)
     private String ticketReviews;
+
+    @Column(name = "STARS")
     private Byte stars;
 
     public TicketOrderDetailVO() {
