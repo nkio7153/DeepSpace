@@ -22,7 +22,7 @@ public class AccountItemVO implements Serializable {
 	private String accountItem;
 	@Column(name = "DATE")
 	private Date date;
-	@Column(name = "CONSUMEACCOUNT")
+	@Column(name = "CONSUME_ACCOUNT")
 	private Integer consumeAccount;
 
 	public AccountItemVO() {
