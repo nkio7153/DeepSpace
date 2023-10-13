@@ -2,14 +2,32 @@ package com.depthspace.forum.model.articlesreport;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+@Entity
+@Table(name = "ARTICLES_REPORT")
 public class ArticlesReportVO implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ARTICLE_REPORT_ID")
 	private Integer articleReportId;
+	@Column(name = "ARTICLE_ID")
 	private Integer articleId;
+	@Column(name = "REPORT_ID")
 	private Integer reportId;
+	@Column(name = "ADMIN_ID")
 	private Integer adminId;
+	@Column(name = "REPORT_CONTENT")
 	private String reportContent;
+	@Column(name = "REPORT_TIME")
 	private Timestamp reportTime;
+	@Column(name = "REPORT_STATUS")
 	private Integer reportStatus;
 
 	public ArticlesReportVO() {
@@ -82,6 +100,33 @@ public class ArticlesReportVO implements Serializable {
 
 	public void setReportStatus(Integer reportStatus) {
 		this.reportStatus = reportStatus;
+	}
+
+	@Override
+	public String toString() {
+		return "ArticlesReportVO [articleReportId=" + articleReportId + ", articleId=" + articleId + ", reportId="
+				+ reportId + ", adminId=" + adminId + ", reportContent=" + reportContent + ", reportTime=" + reportTime
+				+ ", reportStatus=" + reportStatus + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(adminId, articleId, articleReportId, reportContent, reportId, reportStatus, reportTime);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ArticlesReportVO other = (ArticlesReportVO) obj;
+		return Objects.equals(adminId, other.adminId) && Objects.equals(articleId, other.articleId)
+				&& Objects.equals(articleReportId, other.articleReportId)
+				&& Objects.equals(reportContent, other.reportContent) && Objects.equals(reportId, other.reportId)
+				&& Objects.equals(reportStatus, other.reportStatus) && Objects.equals(reportTime, other.reportTime);
 	}
 
 }

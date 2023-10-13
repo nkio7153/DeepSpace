@@ -2,17 +2,39 @@ package com.depthspace.forum.model.forumarticles;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+@Entity
+@Table(name = "FORUM_ARTICLES")
 public class ForumArticlesVO implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ARTICLE_ID")
 	private Integer articleId;
+	@Column(name = "MEM_ID")
 	private Integer memId;
+	@Column(name = "MSG_ID")
 	private Integer msgId;
+	@Column(name = "ARTI_TYPE_ID")
 	private Integer artiTypeId;
+	@Column(name = "ARTI_TITLE")
 	private String artiTitle;
+	@Column(name = "ARTI_TIME")
 	private Timestamp artiTime;
+	@Column(name = "ARTI_TEXT")
 	private String artiText;
+	@Column(name = "ARTI_LK")
 	private Integer artiLk;
+	@Column(name = "ARTI_STATUS")
 	private Integer artiStatus;
+	@Column(name = "ARTI_IMG")
 	private byte[] atriImg;
 
 	public ForumArticlesVO() {
@@ -113,4 +135,37 @@ public class ForumArticlesVO implements Serializable {
 		this.atriImg = atriImg;
 	}
 
+	@Override
+	public String toString() {
+		return "ForumArticlesVO [articleId=" + articleId + ", memId=" + memId + ", msgId=" + msgId + ", artiTypeId="
+				+ artiTypeId + ", artiTitle=" + artiTitle + ", artiTime=" + artiTime + ", artiText=" + artiText
+				+ ", artiLk=" + artiLk + ", artiStatus=" + artiStatus + ", atriImg=" + Arrays.toString(atriImg) + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(atriImg);
+		result = prime * result
+				+ Objects.hash(artiLk, artiStatus, artiText, artiTime, artiTitle, artiTypeId, articleId, memId, msgId);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ForumArticlesVO other = (ForumArticlesVO) obj;
+		return Objects.equals(artiLk, other.artiLk) && Objects.equals(artiStatus, other.artiStatus)
+				&& Objects.equals(artiText, other.artiText) && Objects.equals(artiTime, other.artiTime)
+				&& Objects.equals(artiTitle, other.artiTitle) && Objects.equals(artiTypeId, other.artiTypeId)
+				&& Objects.equals(articleId, other.articleId) && Arrays.equals(atriImg, other.atriImg)
+				&& Objects.equals(memId, other.memId) && Objects.equals(msgId, other.msgId);
+	}
+	
 }
