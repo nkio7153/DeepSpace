@@ -8,3 +8,4 @@ bin/
 *.iml
 src/main/resources/jdbc.properties
 src/main/resources/hibernate.properties
+src/main/webapp/META-INF/context.xml
