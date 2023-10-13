@@ -1,7 +1,5 @@
 package com.depthspace.promotion.model.promotiondetails;
 
-import com.depthspace.promotion.model.promotion.PromotionVO;
-
 import java.util.List;
 
 public interface PromotionDetailsDAO_Interface {

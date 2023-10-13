@@ -26,7 +26,7 @@ public class TicketOrderDetailVO implements Serializable {
     @Column(name = "TICKET_REVIEWS", length = 100)
     private String ticketReviews;
 
-    @Column(name = "STARS")
+    @Column(name = "STARS", columnDefinition = "TINYINT")
     private Byte stars;
 
     public TicketOrderDetailVO() {

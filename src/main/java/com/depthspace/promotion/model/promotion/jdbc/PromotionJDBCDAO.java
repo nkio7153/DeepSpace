@@ -1,6 +1,7 @@
-package com.depthspace.promotion.model.promotion;
+package com.depthspace.promotion.model.promotion.jdbc;
 
 
+import com.depthspace.promotion.model.promotion.PromotionVO;
 import com.depthspace.utils.DBUtil;
 
 import java.sql.Connection;

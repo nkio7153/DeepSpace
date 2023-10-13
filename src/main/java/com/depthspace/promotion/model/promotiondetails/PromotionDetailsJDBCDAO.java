@@ -1,7 +1,6 @@
 package com.depthspace.promotion.model.promotiondetails;
 
 
-import com.depthspace.promotion.model.promotion.PromotionVO;
 import com.depthspace.utils.DBUtil;
 
 import java.sql.Connection;
@@ -32,7 +31,7 @@ public class PromotionDetailsJDBCDAO implements PromotionDetailsDAO_Interface {
             ps = conn.prepareStatement(INSERT_STMT);
             ps.setInt(1,pdo.getPromotionId());
             ps.setInt(2,pdo.getTicketId());
-            ps.setDouble(3,pdo.getDiscount());
+            ps.setBigDecimal(3,pdo.getDiscount());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -48,7 +47,7 @@ public class PromotionDetailsJDBCDAO implements PromotionDetailsDAO_Interface {
         try {
             conn = DBUtil.getConnection();
             ps = conn.prepareStatement(UPDATE);
-            ps.setDouble(1,pdo.getDiscount());
+            ps.setBigDecimal(1,pdo.getDiscount());
             ps.setInt(2,pdo.getPromotionId());
             ps.setInt(3,pdo.getTicketId());
             ps.executeUpdate();
@@ -92,7 +91,7 @@ public class PromotionDetailsJDBCDAO implements PromotionDetailsDAO_Interface {
             if(rs.next()){
                 pdo.setPromotionId(rs.getInt("PROMOTION_ID"));
                 pdo.setTicketId(rs.getInt("TICKET_ID"));
-                pdo.setDiscount(rs.getDouble("DISCOUNT"));
+                pdo.setDiscount(rs.getBigDecimal("DISCOUNT"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -116,7 +115,7 @@ public class PromotionDetailsJDBCDAO implements PromotionDetailsDAO_Interface {
                 PromotionDetailsVO pdo=new PromotionDetailsVO();
                 pdo.setPromotionId(rs.getInt("PROMOTION_ID"));
                 pdo.setTicketId(rs.getInt("TICKET_ID"));
-                pdo.setDiscount(rs.getDouble("DISCOUNT"));
+                pdo.setDiscount(rs.getBigDecimal("DISCOUNT"));
                 list.add(pdo);
             }
         } catch (SQLException e) {
