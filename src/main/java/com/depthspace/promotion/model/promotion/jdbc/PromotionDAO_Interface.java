@@ -1,6 +1,6 @@
-package com.depthspace.promotion.model.promotion;
+package com.depthspace.promotion.model.promotion.jdbc;
 
-import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
+import com.depthspace.promotion.model.promotion.PromotionVO;
 
 import java.util.List;
 

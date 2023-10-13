@@ -1,11 +1,10 @@
 package com.depthspace.ticketshoppingcart.service;
 
-import com.depthspace.ticketorders.model.ticketorders.TicketOrdersDAO_Interface;
-import com.depthspace.ticketorders.model.ticketorders.TicketOrdersJDBCDAO;
-import com.depthspace.ticketshoppingcart.model.TicketShoppingCartDAO_Interface;
-import com.depthspace.ticketshoppingcart.model.TicketShoppingCartJDBCDAO;
+import com.depthspace.ticketshoppingcart.model.jdbc.TicketShoppingCartDAO_Interface;
+import com.depthspace.ticketshoppingcart.model.jdbc.TicketShoppingCartJDBCDAO;
 import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class TicketShoppingCartService {
 //    private Integer quantity;
 //    private Timestamp addedDate;
     //購物車添加票券
-    public TicketShoppingCartVO addTicketShoppingCart(Integer memId, Integer ticketId, Integer quantity, Timestamp addedDate){
+    public TicketShoppingCartVO addTicketShoppingCart(Integer memId, Integer ticketId, Integer quantity, Date addedDate){
         TicketShoppingCartVO tsc = new TicketShoppingCartVO();
         tsc.setMemId(memId);
         tsc.setTicketId(ticketId);
@@ -30,7 +29,7 @@ public class TicketShoppingCartService {
         return tsc;
     }
 //    購物車更新票券
-    public TicketShoppingCartVO updateTicketShoppingCart(Integer memId, Integer ticketId, Integer quantity, Timestamp addedDate){
+    public TicketShoppingCartVO updateTicketShoppingCart(Integer memId, Integer ticketId, Integer quantity, Date addedDate){
         TicketShoppingCartVO tsc = new TicketShoppingCartVO();
         tsc.setMemId(memId);
         tsc.setTicketId(ticketId);

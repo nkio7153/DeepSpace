@@ -1,6 +1,6 @@
-package com.depthspace.ticketshoppingcart.model;
+package com.depthspace.ticketshoppingcart.model.jdbc;
 
-import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
+import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 import com.depthspace.utils.DBUtil;
 
 import java.sql.Connection;
@@ -37,7 +37,7 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
             ps.setInt(1,tsc.getMemId());
             ps.setInt(2,tsc.getTicketId());
             ps.setInt(3,tsc.getQuantity());
-            ps.setTimestamp(4,tsc.getAddedDate());
+            ps.setDate(4,tsc.getAddedDate());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -54,7 +54,7 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
             conn = DBUtil.getConnection();
             ps = conn.prepareStatement(UPDATE);
             ps.setInt(1,tsc.getQuantity());
-            ps.setTimestamp(2,tsc.getAddedDate());
+            ps.setDate(2,tsc.getAddedDate());
             ps.setInt(3, tsc.getMemId());
             ps.setInt(4, tsc.getTicketId());
             ps.executeUpdate();
@@ -115,7 +115,7 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
                 tsc.setMemId(rs.getInt("MEM_ID"));
                 tsc.setTicketId(rs.getInt("TICKET_ID"));
                 tsc.setQuantity(rs.getInt("QUANTITY"));
-                tsc.setAddedDate(rs.getTimestamp("ADDED_DATE"));
+                tsc.setAddedDate(rs.getDate("ADDED_DATE"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -141,7 +141,7 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
                 tsc.setMemId(rs.getInt("MEM_ID"));
                 tsc.setTicketId(rs.getInt("TICKET_ID"));
                 tsc.setQuantity(rs.getInt("QUANTITY"));
-                tsc.setAddedDate(rs.getTimestamp("ADDED_DATE"));
+                tsc.setAddedDate(rs.getDate("ADDED_DATE"));
                 list.add(tsc);
             }
         } catch (SQLException e) {
@@ -167,7 +167,7 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
                 tsc.setMemId(rs.getInt("MEM_ID"));
                 tsc.setTicketId(rs.getInt("TICKET_ID"));
                 tsc.setQuantity(rs.getInt("QUANTITY"));
-                tsc.setAddedDate(rs.getTimestamp("ADDED_DATE"));
+                tsc.setAddedDate(rs.getDate("ADDED_DATE"));
                 list.add(tsc);
             }
         } catch (SQLException e) {

@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -124,13 +127,13 @@ public class TicketShoppingCartServlet extends HttpServlet {
         Integer memId;
         Integer ticketId;
         Integer quantity;
-        Timestamp addedDate;
+        Date addedDate;
         TicketShoppingCartVO tscVO;
         try{
             memId= Integer.valueOf(str);
             ticketId=Integer.valueOf(str1);
             quantity=Integer.valueOf(str2);
-            addedDate=Timestamp.valueOf(str3);
+            addedDate = Date.valueOf(str3);
         }catch (NumberFormatException e){
             // 處理轉型錯誤
             return;

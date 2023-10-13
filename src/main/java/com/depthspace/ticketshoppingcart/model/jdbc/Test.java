@@ -1,6 +1,7 @@
-package com.depthspace.ticketshoppingcart.model;
+package com.depthspace.ticketshoppingcart.model.jdbc;
 
-import java.sql.Timestamp;
+import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
+
 import java.util.List;
 
 public class Test {
