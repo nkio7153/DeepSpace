@@ -1,4 +1,4 @@
-package com.depthspace.forum.model.articlesreport;
+package com.depthspace.forum.model.articlereport;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -11,8 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
-@Table(name = "ARTICLES_REPORT")
-public class ArticlesReportVO implements Serializable {
+@Table(name = "ARTICLE_REPORT")
+public class ArticleReportVO implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ARTICLE_REPORT_ID")
@@ -30,11 +30,11 @@ public class ArticlesReportVO implements Serializable {
 	@Column(name = "REPORT_STATUS")
 	private Integer reportStatus;
 
-	public ArticlesReportVO() {
+	public ArticleReportVO() {
 
 	}
 
-	public ArticlesReportVO(Integer articleReportId, Integer articleId, Integer reportId, Integer adminId,
+	public ArticleReportVO(Integer articleReportId, Integer articleId, Integer reportId, Integer adminId,
 			String reportContent, Timestamp reportTime, Integer reportStatus) {
 
 		this.articleReportId = articleReportId;
@@ -122,7 +122,7 @@ public class ArticlesReportVO implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ArticlesReportVO other = (ArticlesReportVO) obj;
+		ArticleReportVO other = (ArticleReportVO) obj;
 		return Objects.equals(adminId, other.adminId) && Objects.equals(articleId, other.articleId)
 				&& Objects.equals(articleReportId, other.articleReportId)
 				&& Objects.equals(reportContent, other.reportContent) && Objects.equals(reportId, other.reportId)

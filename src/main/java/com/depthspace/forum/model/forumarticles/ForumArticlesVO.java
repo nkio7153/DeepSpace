@@ -34,15 +34,16 @@ public class ForumArticlesVO implements Serializable {
 	private Integer artiLk;
 	@Column(name = "ARTI_STATUS")
 	private Integer artiStatus;
-	@Column(name = "ARTI_IMG")
-	private byte[] atriImg;
+	@Column(name = "ARTI_IMG" , columnDefinition = "BLOB")
+	private byte[] artiImg;
 
 	public ForumArticlesVO() {
 
 	}
 
 	public ForumArticlesVO(Integer articleId, Integer memId, Integer msgId, Integer artiTypeId, String artiTitle,
-			Timestamp artiTime, String artiText, Integer artiLk, Integer artiStatus, byte[] atriImg) {
+			Timestamp artiTime, String artiText, Integer artiLk, Integer artiStatus, byte[] artiImg) {
+		super();
 		this.articleId = articleId;
 		this.memId = memId;
 		this.msgId = msgId;
@@ -52,8 +53,10 @@ public class ForumArticlesVO implements Serializable {
 		this.artiText = artiText;
 		this.artiLk = artiLk;
 		this.artiStatus = artiStatus;
-		this.atriImg = atriImg;
+		this.artiImg = artiImg;
 	}
+
+
 
 	public Integer getArticleId() {
 		return articleId;
@@ -128,25 +131,25 @@ public class ForumArticlesVO implements Serializable {
 	}
 
 	public byte[] getAtriImg() {
-		return atriImg;
+		return artiImg;
 	}
 
 	public void setAtriImg(byte[] atriImg) {
-		this.atriImg = atriImg;
+		this.artiImg = atriImg;
 	}
 
 	@Override
 	public String toString() {
 		return "ForumArticlesVO [articleId=" + articleId + ", memId=" + memId + ", msgId=" + msgId + ", artiTypeId="
 				+ artiTypeId + ", artiTitle=" + artiTitle + ", artiTime=" + artiTime + ", artiText=" + artiText
-				+ ", artiLk=" + artiLk + ", artiStatus=" + artiStatus + ", atriImg=" + Arrays.toString(atriImg) + "]";
+				+ ", artiLk=" + artiLk + ", artiStatus=" + artiStatus + ", artiImg=" + Arrays.toString(artiImg) + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + Arrays.hashCode(atriImg);
+		result = prime * result + Arrays.hashCode(artiImg);
 		result = prime * result
 				+ Objects.hash(artiLk, artiStatus, artiText, artiTime, artiTitle, artiTypeId, articleId, memId, msgId);
 		return result;
@@ -161,11 +164,12 @@ public class ForumArticlesVO implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		ForumArticlesVO other = (ForumArticlesVO) obj;
-		return Objects.equals(artiLk, other.artiLk) && Objects.equals(artiStatus, other.artiStatus)
-				&& Objects.equals(artiText, other.artiText) && Objects.equals(artiTime, other.artiTime)
-				&& Objects.equals(artiTitle, other.artiTitle) && Objects.equals(artiTypeId, other.artiTypeId)
-				&& Objects.equals(articleId, other.articleId) && Arrays.equals(atriImg, other.atriImg)
+		return Arrays.equals(artiImg, other.artiImg) && Objects.equals(artiLk, other.artiLk)
+				&& Objects.equals(artiStatus, other.artiStatus) && Objects.equals(artiText, other.artiText)
+				&& Objects.equals(artiTime, other.artiTime) && Objects.equals(artiTitle, other.artiTitle)
+				&& Objects.equals(artiTypeId, other.artiTypeId) && Objects.equals(articleId, other.articleId)
 				&& Objects.equals(memId, other.memId) && Objects.equals(msgId, other.msgId);
 	}
+
 	
 }
