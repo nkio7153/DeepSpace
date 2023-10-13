@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Test {
     public static void main(String[] args) {
-        TicketShoppingCartJDBCDAO dao = new TicketShoppingCartJDBCDAO();
+//        TicketShoppingCartJDBCDAO dao = new TicketShoppingCartJDBCDAO();
 
 //        // 使用构造器插入一条数据
 //        TicketShoppingCartVO tsc1 = new TicketShoppingCartVO();
@@ -40,15 +40,15 @@ public class Test {
 //        System.out.println("取得一列數據");
 //
 //        // 获取全部数据
-        List<TicketShoppingCartVO> list = dao.getAll();
-        for (TicketShoppingCartVO tsc : list) {
-            System.out.println("MEM_ID: " + tsc.getMemId());
-            System.out.println("TICKET_ID: " + tsc.getTicketId());
-            System.out.println("QUANTITY: " + tsc.getQuantity());
-            System.out.println("ADDED_DATE: " + tsc.getAddedDate());
-            System.out.println("===================================");
-        }
-        System.out.println("已取得全部資料");
+//        List<TicketShoppingCartVO> list = dao.getAll();
+//        for (TicketShoppingCartVO tsc : list) {
+//            System.out.println("MEM_ID: " + tsc.getMemId());
+//            System.out.println("TICKET_ID: " + tsc.getTicketId());
+//            System.out.println("QUANTITY: " + tsc.getQuantity());
+//            System.out.println("ADDED_DATE: " + tsc.getAddedDate());
+//            System.out.println("===================================");
+//        }
+//        System.out.println("已取得全部資料");
 //
         // 使用會員編號获取會員購物車資料
 //        List<TicketShoppingCartVO> list2 = dao.findByMemId(1);
