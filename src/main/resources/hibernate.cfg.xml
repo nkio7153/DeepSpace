@@ -79,7 +79,7 @@
         <mapping class="com.depthspace.forum.model.articlescollect.ArticlesCollectVO"/>
         <mapping class="com.depthspace.forum.model.articleslike.ArticlesLikeVO"/>
         <mapping class="com.depthspace.forum.model.articlesreport.ArticlesReportVO"/>
-        <mapping class="com.depthspace.forum.model.articlestype.ArticlesStypeVO"/>
+        <mapping class="com.depthspace.forum.model.articlestype.ArticlestypeVO"/>
         <mapping class="com.depthspace.forum.model.forumarticles.ForumArticlesVO"/>
          
     </session-factory>
