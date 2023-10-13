@@ -1,10 +1,13 @@
 package com.depthspace.member;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
@@ -12,6 +15,7 @@ import javax.persistence.Table;
 public class MemVO implements Serializable{
 	@Id
 	@Column(name="MEM_ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer memId;
 	
 	@Column(name="MEM_ACC")
@@ -27,7 +31,7 @@ public class MemVO implements Serializable{
 	private String memIdentity;
 	
 	@Column(name="MEM_BTH")
-	private Timestamp memBth;
+	private Date memBth;
 	
 	@Column(name="MEM_SEX")
 	private byte memSex;
@@ -49,7 +53,7 @@ public class MemVO implements Serializable{
 	public MemVO() {
 		super();
 	}
-	public MemVO(Integer memId, String memAcc, String memPwd, String memName, String memIdentity, Timestamp memBth,
+	public MemVO(Integer memId, String memAcc, String memPwd, String memName, String memIdentity, Date memBth,
 			byte memSex, String memEmail, Integer memTel, String memAdd, byte accStatus, Integer memPoint) {
 		super();
 		this.memId = memId;
@@ -95,10 +99,10 @@ public class MemVO implements Serializable{
 	public void setMemIdentity(String memIdentity) {
 		this.memIdentity = memIdentity;
 	}
-	public Timestamp getMemBth() {
+	public Date getMemBth() {
 		return memBth;
 	}
-	public void setMemBth(Timestamp memBth) {
+	public void setMemBth(Date memBth) {
 		this.memBth = memBth;
 	}
 	public byte getMemSex() {
