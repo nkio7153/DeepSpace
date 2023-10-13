@@ -1,17 +1,31 @@
 package com.depthspace.ticketorders.model.ticketorders;
 
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-
+@Entity
+@Table(name="TICKET_ORDERS")
 public class TicketOrdersVO implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ORDER_ID", updatable = false)
     private Integer orderId;
+    @Column(name="MEM_ID",nullable = false)
     private Integer memId;
+    @Column(name="ORDER_DATE",nullable = false)
     private Timestamp orderDate;
+    @Column(name="TOTAL_AMOUNT",nullable = false)
     private Integer totalAmount;
+    @Column(name="POINTS_FEEDBACK")
     private Integer pointsFeedback;
+    @Column(name="AMOUNT_PAID")
     private Integer amountPaid;
+    @Column(name="STATUS",columnDefinition = "TINYINT DEFAULT 0",nullable = false)
     private Byte status;
+    @Column(name="PAYMENT_METHOD",nullable = false)
     private Byte paymentMethod;
+
 
     public TicketOrdersVO() {
     }
@@ -90,4 +104,6 @@ public class TicketOrdersVO implements Serializable {
     public void setPaymentMethod(Byte paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
+
+
 }

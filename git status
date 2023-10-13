@@ -1,0 +1,775 @@
+[33mcommit d57d200ce3ec21b61cf38f8cfe15457a1470724d[m[33m ([m[1;36mHEAD -> [m[1;32moscar[m[33m, [m[1;32mmaster[m[33m)[m
+Merge: 9ee109f 9f290e0
+Author: hsyclaire <143284108+hsyclaire@users.noreply.github.com>
+Date:   Wed Oct 11 23:01:25 2023 +0800
+
+    Merge pull request #15 from nkio7153/Claire
+    
+    update restVO's toSstring()
+
+[33mcommit 9f290e04f6adfafb5e6a54d8ad56d283100f31e2[m
+Author: claire <hsyclaire@gmail.com>
+Date:   Wed Oct 11 22:59:02 2023 +0800
+
+    update restVO's toSstring()
+
+[33mcommit 9ee109fbb0d42c28455b64c25f12cf85f30a1b39[m
+Merge: 0754a16 1ec3238
+Author: 陳進旺 <111399570+Cjw0523@users.noreply.github.com>
+Date:   Wed Oct 11 21:18:13 2023 +0800
+
+    Merge pull request #14 from nkio7153/ChenJinWang
+    
+    更新
+
+[33mcommit 1ec32388f8bc2674dbc75abf6a0a48e65370a43d[m
+Author: wang <pnn0908128305@gmail.com>
+Date:   Wed Oct 11 21:17:46 2023 +0800
+
+    更新
+
+[33mcommit 0754a166fcc65fa4ca666b4339c7ed4eabbd66a8[m
+Author: masa <nkio7153@gmail.com>
+Date:   Wed Oct 11 20:04:09 2023 +0800
+
+    change hibernate.cfg.xml
+
+[33mcommit 988a40f010e2b841e0d47490ff0d65525ff14088[m
+Author: masa <nkio7153@gmail.com>
+Date:   Wed Oct 11 20:00:51 2023 +0800
+
+    hibernate xml
+
+[33mcommit 4867ef80fc88f02f1c3741641af5d06b73ac7504[m
+Author: masa <nkio7153@gmail.com>
+Date:   Wed Oct 11 17:59:55 2023 +0800
+
+    add ignore hibernate.cfg.xml
+
+[33mcommit c940572e30503c9cd5b9f5911ce327afeaa994b7[m
+Author: masa <nkio7153@gmail.com>
+Date:   Wed Oct 11 17:02:09 2023 +0800
+
+    add HibernateUtil
+
+[33mcommit 2355ff0f7e08c650f6c0e936c89769f3243a2b6f[m
+Author: masa <nkio7153@gmail.com>
+Date:   Wed Oct 11 16:55:30 2023 +0800
+
+    add hibernate.cfg.xml
+
+[33mcommit 810a1d7338a7d9a4d6a39f74c4e7f500e2cfccbf[m
+Author: masa <nkio7153@gmail.com>
+Date:   Wed Oct 11 16:34:05 2023 +0800
+
+    rm ignore hibernate xml
+
+[33mcommit 6db293cd5ccea6e8707c67a9afb5416615bb043d[m[33m ([m[1;31morigin/oscar[m[33m)[m
+Merge: f7f1b6e c4d9ad1
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Wed Oct 11 14:50:19 2023 +0800
+
+    Merge remote-tracking branch 'origin/master'
+
+[33mcommit f7f1b6edc88386982808f72c131dc254089fc651[m
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Wed Oct 11 14:50:06 2023 +0800
+
+    oscar 10/11 14:49 update
+
+[33mcommit c4d9ad15847658acd55516eaa44484e0113bbe48[m[33m ([m[1;31morigin/Marz23[m[33m, [m[1;31morigin/Claire[m[33m)[m
+Merge: 6a6cc25 6b14b78
+Author: masa <nkio7153@gmail.com>
+Date:   Wed Oct 11 12:19:37 2023 +0800
+
+    Merge
+
+[33mcommit 6a6cc25e1e4212711f4c751c0e210567f73082e7[m
+Author: masa <nkio7153@gmail.com>
+Date:   Wed Oct 11 12:15:59 2023 +0800
+
+    add ignore hibernate.cfg.xml
+
+[33mcommit 6b14b78132fc478c5ff78e125c7bdcaaea08bca8[m
+Merge: 99a8bc3 6487ce5
+Author: 陳進旺 <111399570+Cjw0523@users.noreply.github.com>
+Date:   Wed Oct 11 10:35:56 2023 +0800
+
+    Merge pull request #13 from nkio7153/ChenJinWang
+    
+    更新
+
+[33mcommit 6487ce5d619e20af46fd8c2c6605bc8a5174ef32[m[33m ([m[1;31morigin/ChenJinWang[m[33m)[m
+Author: wang <pnn0908128305@gmail.com>
+Date:   Wed Oct 11 10:35:30 2023 +0800
+
+    更新
+
+[33mcommit 99a8bc3e0c4812ea3beab2c0b1c1e583a6501409[m[33m ([m[1;31morigin/masa[m[33m)[m
+Author: masa-PC <nkio7153@gmail.com>
+Date:   Wed Oct 11 00:26:51 2023 +0800
+
+    add all DAO
+
+[33mcommit 89d7617b823cdd6923ba4a1328e1bba1dde72d17[m
+Merge: fd515d9 967dd6d
+Author: masa-PC <nkio7153@gmail.com>
+Date:   Tue Oct 10 22:32:38 2023 +0800
+
+    Merge
+
+[33mcommit fd515d9d732d42daf6f3e478154f86af1d80c84b[m
+Author: masa-PC <nkio7153@gmail.com>
+Date:   Tue Oct 10 22:27:13 2023 +0800
+
+    add membookingDAO
+
+[33mcommit 967dd6d6313dc170b272782804c52a9921276d4a[m[33m ([m[1;31morigin/Lisa[m[33m)[m
+Author: Lisa <lisa860521@gmail.com>
+Date:   Tue Oct 10 22:23:43 2023 +0800
+
+    10/10更新
+
+[33mcommit 355589765ba7382008b39e009fd2d55633715866[m
+Author: Marz23 <s920797252@gmail.com>
+Date:   Tue Oct 10 19:34:35 2023 +0800
+
+    AccountItem,AccountPer jdbc測試
+    Expenses DAO建立
+
+[33mcommit fe301e071ebbf356cf49938bf4ceee6cda642d86[m
+Author: Marz23 <s920797252@gmail.com>
+Date:   Tue Oct 10 15:50:35 2023 +0800
+
+    只是放個空檔案,不用管,強迫症
+
+[33mcommit 10ed07f2f8aa5b93e63de195f2ae23642f7eb28d[m
+Author: Marz23 <s920797252@gmail.com>
+Date:   Tue Oct 10 15:45:29 2023 +0800
+
+    Account 表格jdbc正常
+
+[33mcommit 2666b65e40e98a81ff1ceca758f339ccbeb4cfb3[m
+Merge: af05bf9 5870992
+Author: Marz23 <s920797252@gmail.com>
+Date:   Tue Oct 10 15:08:10 2023 +0800
+
+    Merge branch 'master' of https://github.com/nkio7153/DepthSpace.git
+
+[33mcommit af05bf9709e9e586a686732ae5722fada7a9649c[m
+Author: Marz23 <s920797252@gmail.com>
+Date:   Tue Oct 10 15:05:14 2023 +0800
+
+    Account jdbc 測試第一版
+
+[33mcommit 587099272d81167d19133f81b1f75263d36bc4aa[m
+Merge: 9ae1f73 23038c6
+Author: 陳進旺 <111399570+Cjw0523@users.noreply.github.com>
+Date:   Tue Oct 10 13:38:27 2023 +0800
+
+    Merge pull request #12 from nkio7153/ChenJinWang
+    
+    test ok
+
+[33mcommit 23038c6ebe03b8db698645e95ea46be76da6121b[m
+Author: wang <pnn0908128305@gmail.com>
+Date:   Tue Oct 10 13:37:56 2023 +0800
+
+    test ok
+
+[33mcommit 9b13c18547ae70c1fa0275b353bc8f2d57347d95[m
+Author: masa-PC <nkio7153@gmail.com>
+Date:   Tue Oct 10 00:42:19 2023 +0800
+
+    change restdao
+
+[33mcommit 7125a809e2e0ecf8d437ee702fc4a12909e363e3[m
+Author: masa-PC <nkio7153@gmail.com>
+Date:   Tue Oct 10 00:26:59 2023 +0800
+
+    add restDAO and otherVO
+
+[33mcommit 9ae1f7318291a80f96afe881998bc1c8c97f9500[m
+Merge: a311d17 6fc1b28
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Mon Oct 9 22:57:36 2023 +0800
+
+    Merge remote-tracking branch 'origin/master'
+
+[33mcommit a311d17e56ff839ff7f7d78fe20e122ba78f069f[m
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Mon Oct 9 22:57:28 2023 +0800
+
+    oscar 10/09 22:57 update
+
+[33mcommit 6fc1b2830ab6e26142ad6b0d15cfec0d91333d56[m
+Merge: 78847d5 f6d9d73
+Author: 陳進旺 <111399570+Cjw0523@users.noreply.github.com>
+Date:   Mon Oct 9 20:53:48 2023 +0800
+
+    Merge pull request #11 from nkio7153/ChenJinWang
+    
+    FAQ Test OK
+
+[33mcommit f6d9d737961443f17d1a4d71572424946ed296ee[m
+Author: wang <pnn0908128305@gmail.com>
+Date:   Mon Oct 9 20:53:22 2023 +0800
+
+    FAQ Test OK
+
+[33mcommit 78847d5a49fbfaa857bdd642d8f6de6f965bb75a[m
+Merge: b2c004b 7ee8a0c
+Author: hsyclaire <143284108+hsyclaire@users.noreply.github.com>
+Date:   Mon Oct 9 20:07:54 2023 +0800
+
+    Merge pull request #10 from nkio7153/Claire
+    
+    Claire
+
+[33mcommit 7ee8a0cedae1635df531571c58367b2171fc434c[m
+Merge: f9e3e59 b2c004b
+Author: claire <hsyclaire@gmail.com>
+Date:   Mon Oct 9 20:05:10 2023 +0800
+
+    Merge branch 'master' into Claire
+
+[33mcommit b2c004b85ca58d8430665f4e7c820ccfcea51ad6[m
+Merge: 08fd853 d1a5a9c
+Author: claire <hsyclaire@gmail.com>
+Date:   Mon Oct 9 19:10:42 2023 +0800
+
+    Merge branch 'master' of https://github.com/nkio7153/DepthSpace.git
+
+[33mcommit f9e3e595f06c84d051d4f19f508e380884764c63[m
+Author: claire <hsyclaire@gmail.com>
+Date:   Mon Oct 9 19:08:18 2023 +0800
+
+    test images
+
+[33mcommit d1a5a9c5f6601c0892e62f8673a002c1b71f3782[m
+Merge: b509563 1b97c24
+Author: hsyclaire <143284108+hsyclaire@users.noreply.github.com>
+Date:   Mon Oct 9 19:04:25 2023 +0800
+
+    Merge pull request #9 from nkio7153/Claire
+    
+    Update colum/ticketimg/tickettype/notifi all vo/jdbcdao/impl
+
+[33mcommit 1b97c2411a5096040f724ed247bc45bb9da2362b[m
+Author: claire <hsyclaire@gmail.com>
+Date:   Mon Oct 9 19:03:53 2023 +0800
+
+    Update colum/ticketimg/tickettype/notifi all vo/jdbcdao/impl
+
+[33mcommit 08fd853b18b765a429c449016ab6467c0343fdb6[m
+Merge: f730680 b509563
+Author: claire <hsyclaire@gmail.com>
+Date:   Mon Oct 9 18:56:33 2023 +0800
+
+    Merge branch 'master' of https://github.com/nkio7153/DepthSpace.git
+
+[33mcommit f7306808f3a1b036fcc4913cd184d37019e46719[m
+Author: claire <hsyclaire@gmail.com>
+Date:   Mon Oct 9 18:50:10 2023 +0800
+
+    Update Column、Notifi、TicketImg all VO/DAO/JDBCDAO
+
+[33mcommit b5095631838c6de9a94fd10f4f98f6df866cb416[m
+Merge: b13bda4 2bee2d4
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Mon Oct 9 18:48:29 2023 +0800
+
+    Merge remote-tracking branch 'origin/master'
+
+[33mcommit b13bda436b7458feb79a34fa57daf18e738506bb[m
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Mon Oct 9 18:48:20 2023 +0800
+
+    oscar 10/09 18:48 update
+
+[33mcommit 2bee2d4483d7c3744a7597c4a013ed9069643d38[m
+Merge: caa0dd5 e5ac047
+Author: 陳進旺 <111399570+Cjw0523@users.noreply.github.com>
+Date:   Mon Oct 9 16:13:01 2023 +0800
+
+    Merge pull request #8 from nkio7153/ChenJinWang
+    
+    超吉讚
+
+[33mcommit e5ac0477ac93d881998b183e713056c9a26f6203[m
+Author: wang <pnn0908128305@gmail.com>
+Date:   Mon Oct 9 16:12:25 2023 +0800
+
+    超吉讚
+
+[33mcommit caa0dd5586cc040383dd0411f5f131367f73471c[m
+Merge: 6334369 85f27ee
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Sun Oct 8 23:35:45 2023 +0800
+
+    Merge remote-tracking branch 'origin/master'
+
+[33mcommit 6334369ee037710cbd6319398c9b3361a3b0bb78[m
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Sun Oct 8 23:35:38 2023 +0800
+
+    oscar 10/08 23:35 update
+
+[33mcommit 9249cdd1c0a63bd489b08dd91cce8649b383aef1[m
+Author: masa-PC <nkio7153@gmail.com>
+Date:   Sun Oct 8 23:03:00 2023 +0800
+
+    create VO
+
+[33mcommit 85f27eeef027bc344bb3d607c17dd8b2d988852d[m
+Merge: cbe29fe 89685eb
+Author: hsyclaire <143284108+hsyclaire@users.noreply.github.com>
+Date:   Sun Oct 8 19:13:55 2023 +0800
+
+    Merge pull request #7 from nkio7153/Claire
+    
+    Claire
+
+[33mcommit 89685eb4f43ed141d59c57ec997a90013f0132d3[m
+Author: claire <hsyclaire@gmail.com>
+Date:   Sun Oct 8 19:10:42 2023 +0800
+
+    update TicketJDBCDAO CRUD
+
+[33mcommit 26a24c725f8f529b9048ea8caf35015534e358ff[m
+Author: claire <hsyclaire@gmail.com>
+Date:   Sun Oct 8 18:37:24 2023 +0800
+
+    update ticketJDBCDAO
+
+[33mcommit 192537679de5a19fa443cb2c466fb514f63989e1[m
+Author: claire <hsyclaire@gmail.com>
+Date:   Sun Oct 8 18:25:08 2023 +0800
+
+    update ticketVO
+
+[33mcommit cbe29fe36ac91073c6e899e150d067dcc27cc1d4[m
+Merge: 07afe4f 3c1f4f7
+Author: Marz23 <s920797252@gmail.com>
+Date:   Sun Oct 8 18:18:27 2023 +0800
+
+    Merge branch 'Marz23'
+
+[33mcommit 3c1f4f702fed23db10ddca62142230f18dc5553d[m
+Author: Marz23 <s920797252@gmail.com>
+Date:   Sun Oct 8 18:17:32 2023 +0800
+
+    論壇相關VO上傳
+
+[33mcommit 07afe4fa843e79f7dabde5851d9c90942f0a8b1f[m
+Merge: 8d6ac6b be40d73
+Author: 陳進旺 <111399570+Cjw0523@users.noreply.github.com>
+Date:   Sun Oct 8 17:18:09 2023 +0800
+
+    Merge pull request #6 from nkio7153/ChenJinWang
+    
+    1
+
+[33mcommit be40d7395e2326a0b8c935fc908c2a41498dbaac[m
+Author: wang <pnn0908128305@gmail.com>
+Date:   Sun Oct 8 17:16:30 2023 +0800
+
+    Update
+
+[33mcommit 8d6ac6b31da93f780a9522bffe47cecc9393e253[m
+Merge: 731c4c0 0e02178
+Author: Marz23 <s920797252@gmail.com>
+Date:   Sun Oct 8 17:12:07 2023 +0800
+
+    Merge branch 'master' of https://github.com/nkio7153/DepthSpace.git
+
+[33mcommit 731c4c01da67a55d109ccd09eaada8f5f8e126d4[m
+Author: Marz23 <s920797252@gmail.com>
+Date:   Sun Oct 8 17:03:48 2023 +0800
+
+    Account 表格VO上傳
+
+[33mcommit 8fdf329d33e6c3862416016e476004f71ee5390c[m
+Author: wang <pnn0908128305@gmail.com>
+Date:   Sun Oct 8 16:46:00 2023 +0800
+
+    123
+
+[33mcommit 5d442ddd8ae4f50fed003f051a2b1efd8d29ad12[m
+Author: wang <pnn0908128305@gmail.com>
+Date:   Sun Oct 8 16:20:23 2023 +0800
+
+    1
+
+[33mcommit 0e02178a3b70840afbef77914e29252b649b4778[m
+Merge: 6047b51 ecde244
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Sun Oct 8 15:41:43 2023 +0800
+
+    Merge remote-tracking branch 'origin/master'
+
+[33mcommit 6047b51602b1fd8091fcb679a8f6d51bf9165ae6[m
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Sun Oct 8 15:41:22 2023 +0800
+
+    oscar 10/08 15:41 update
+
+[33mcommit 153318e5b35b0f508a1463257895933c28b43173[m
+Merge: b40133f ecde244
+Author: masa-PC <nkio7153@gmail.com>
+Date:   Sun Oct 8 15:25:32 2023 +0800
+
+    Merge branch 'master' into masa
+
+[33mcommit ecde244bbccda2e742929f4328fc41aa15e6ecc4[m
+Author: Lisa <lisa860521@gmail.com>
+Date:   Sun Oct 8 15:19:04 2023 +0800
+
+    Tour,member,attractions.VO commit
+
+[33mcommit 4889d37161fe754e983dc3fa38d66d92dda2de65[m
+Merge: d71fa25 acf859f
+Author: Lisa <lisa860521@gmail.com>
+Date:   Sun Oct 8 13:49:38 2023 +0800
+
+    Merge branch 'master' into Lisa
+
+[33mcommit acf859f00cac2db98611ede8af45f2e22aa70d2a[m
+Merge: 3b4d6e8 58b9e23
+Author: Lisa <lisa860521@gmail.com>
+Date:   Sun Oct 8 13:49:18 2023 +0800
+
+    Merge branch 'master' of https://github.com/nkio7153/DepthSpace.git
+
+[33mcommit 34913a861f4a28927171566c17e4650b54ff7cbd[m
+Merge: dabf2f7 58b9e23
+Author: claire <hsyclaire@gmail.com>
+Date:   Sun Oct 8 12:30:27 2023 +0800
+
+    Merge branch 'master' into Claire
+
+[33mcommit 58b9e236dc7e9574cdc6179a91404f42bb18ad18[m
+Merge: ff098ae eaed0ff
+Author: 陳進旺 <111399570+Cjw0523@users.noreply.github.com>
+Date:   Sat Oct 7 23:18:57 2023 +0800
+
+    Merge pull request #5 from nkio7153/ChenJinWang
+    
+    Update
+
+[33mcommit eaed0ff417c45e8bc17b3409849f42eeaf36e7f7[m
+Author: wang <pnn0908128305@gmail.com>
+Date:   Sat Oct 7 23:15:02 2023 +0800
+
+    Update
+
+[33mcommit b40133fb58573909f84b364b6d5c62a8174a09e6[m
+Author: masa-PC <nkio7153@gmail.com>
+Date:   Sat Oct 7 22:11:27 2023 +0800
+
+    rm
+
+[33mcommit dabf2f77e08fa92d75bad7cadd33a58f63df3f62[m
+Author: claire <hsyclaire@gmail.com>
+Date:   Sat Oct 7 22:11:13 2023 +0800
+
+    update ticketDAO
+
+[33mcommit 69938cc30b20a2aee02bd36a71be45aa92cbd0a9[m
+Merge: 5df172a ff098ae
+Author: masa-PC <nkio7153@gmail.com>
+Date:   Sat Oct 7 22:07:22 2023 +0800
+
+    test
+
+[33mcommit d71fa25eb3bf85ed34882008e2b2d9191bb2e7d1[m
+Merge: f577072 3b4d6e8
+Author: Lisa <lisa860521@gmail.com>
+Date:   Sat Oct 7 22:04:22 2023 +0800
+
+    Merge branch 'master' into Lisa
+
+[33mcommit 3b4d6e80a4a12ca00f201e72d8ae67a80b65433e[m
+Merge: 2a9502b ff098ae
+Author: Lisa <lisa860521@gmail.com>
+Date:   Sat Oct 7 22:04:02 2023 +0800
+
+    Merge branch 'master' of https://github.com/nkio7153/DepthSpace.git
+
+[33mcommit 2a9502b874e51c6cfe509872ff1f87e8f22d8d94[m
+Author: Lisa <lisa860521@gmail.com>
+Date:   Sat Oct 7 22:03:50 2023 +0800
+
+    "resources"
+
+[33mcommit ff098ae83e3f69392cb860e7a2eebfc7947821a0[m
+Merge: 148301b a79e854
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Sat Oct 7 21:54:09 2023 +0800
+
+    Merge remote-tracking branch 'origin/master'
+
+[33mcommit 148301b593946f90930e2c8046c4d29372cb93ea[m
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Sat Oct 7 21:53:36 2023 +0800
+
+    oscar 10/7 21:53 update
+
+[33mcommit a79e8547240139887e687fc7fce14cc2e34a3856[m
+Author: masa-PC <nkio7153@gmail.com>
+Date:   Sat Oct 7 21:53:14 2023 +0800
+
+    rm jdbc
+
+[33mcommit f577072ded8e082e7fdbe7dc747111b034e5da45[m
+Merge: eede63a 0c208a0
+Author: Lisa <lisa860521@gmail.com>
+Date:   Sat Oct 7 21:46:55 2023 +0800
+
+    Merge branch 'master' into Lisa
+
+[33mcommit 0c208a0345d739e24dd742fa9d22eb06aaea5373[m
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Sat Oct 7 21:38:10 2023 +0800
+
+    oscar 10/7 21:37 update
+
+[33mcommit 4bc3a32ec3fe44fe49efdf28a815d3ea93114905[m
+Author: claire <hsyclaire@gmail.com>
+Date:   Sat Oct 7 19:08:53 2023 +0800
+
+    update .gitignore:jdbc & ticket:impl
+
+[33mcommit f206f81680d2cb984cc0f99e12782f42d175e798[m
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Sat Oct 7 18:35:54 2023 +0800
+
+    oscar 10/7 18:35 update
+
+[33mcommit 40b334be37bbfa80088944a4b46654b4debb6432[m
+Merge: d90afa7 f55eacc
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Sat Oct 7 18:34:48 2023 +0800
+
+    Merge remote-tracking branch 'origin/master'
+
+[33mcommit d90afa73d0d73119898cc2fc50ae292c0c712e89[m
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Sat Oct 7 18:34:19 2023 +0800
+
+    oscar 10/7 18:34 update
+
+[33mcommit 5df172ad2ca9e0974d887188f734defefc6d659b[m
+Author: masa-PC <nkio7153@gmail.com>
+Date:   Sat Oct 7 17:17:54 2023 +0800
+
+    test ignore
+
+[33mcommit 5b82ba0d5296f97f6ff6a1aff5ade17c69f49506[m
+Author: masa-PC <nkio7153@gmail.com>
+Date:   Sat Oct 7 17:16:05 2023 +0800
+
+    test ignore
+
+[33mcommit 8799f747afae2f41a583b08fe74c235e5c4bbade[m
+Author: masa-PC <nkio7153@gmail.com>
+Date:   Sat Oct 7 17:11:17 2023 +0800
+
+    1
+
+[33mcommit f55eacc88a63c3d6ed31cd7b8216425ed7a95e27[m
+Author: hsyclaire <143284108+hsyclaire@users.noreply.github.com>
+Date:   Sat Oct 7 16:56:22 2023 +0800
+
+    Update .gitignore（src\main\的jdbc.properties）
+
+[33mcommit 2548215a3c5f7a20ad3ac7ad62acfbcb083ce16c[m
+Merge: e476e47 3969643
+Author: hsyclaire <143284108+hsyclaire@users.noreply.github.com>
+Date:   Sat Oct 7 16:53:18 2023 +0800
+
+    Merge pull request #4 from nkio7153/Claire
+    
+    新增票券/專欄/通知的VO、gitgnote隱藏JDBC.properties
+
+[33mcommit 39696439913ae069a463a5d0d154f31519e1e4ca[m
+Author: claire <hsyclaire@gmail.com>
+Date:   Sat Oct 7 16:52:03 2023 +0800
+
+    新增票券/專欄/通知的VO、gitgnote隱藏JDBC.properties
+
+[33mcommit e476e4763a2c5f9d75373a9e7003c27a069b2a34[m
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Sat Oct 7 14:29:23 2023 +0800
+
+    oscar 10/7 02:28 update
+
+[33mcommit c7d864ddb93ef84f5bd09a5b1c0c8d5298992f64[m
+Merge: e0c0004 1d16dff
+Author: hsyclaire <143284108+hsyclaire@users.noreply.github.com>
+Date:   Sat Oct 7 14:00:21 2023 +0800
+
+    Merge pull request #3 from nkio7153/Claire
+    
+    調整新增票券/購物車/訂單/通知package
+
+[33mcommit 1d16dffeba0f95f5c17a34080292db8b5d0d2ecc[m
+Author: claire <hsyclaire@gmail.com>
+Date:   Sat Oct 7 13:59:01 2023 +0800
+
+    調整新增票券/購物車/訂單/通知package
+
+[33mcommit e0c0004de9b0d59886cc4d1b390f7a4c5a4ee68b[m
+Merge: 4d6eb72 9068514
+Author: 陳進旺 <111399570+Cjw0523@users.noreply.github.com>
+Date:   Sat Oct 7 13:41:59 2023 +0800
+
+    Merge pull request #2 from nkio7153/ChenJinWang
+    
+    Update
+
+[33mcommit 4d6eb724af24667a8407f07a2a562123e5a69e7b[m
+Author: nkio7153 <46854739+nkio7153@users.noreply.github.com>
+Date:   Sat Oct 7 13:08:07 2023 +0800
+
+    del properties
+
+[33mcommit cd2ae9561cffecf7356bd9a1295e20b795704a69[m
+Merge: bc4e512 fbc411b
+Author: hsyclaire <143284108+hsyclaire@users.noreply.github.com>
+Date:   Sat Oct 7 12:29:25 2023 +0800
+
+    Merge pull request #1 from nkio7153/Claire
+    
+    調整promotion至上一層新增功能package
+
+[33mcommit fbc411b4ed5f8802033c0e8c6fbdd8fcab2876fc[m
+Author: claire <hsyclaire@gmail.com>
+Date:   Sat Oct 7 12:07:00 2023 +0800
+
+    調整promotion至上一層新增功能package
+
+[33mcommit bc4e5124001ca833714195ab754470cf03ad16f9[m
+Author: claire <hsyclaire@gmail.com>
+Date:   Sat Oct 7 11:41:19 2023 +0800
+
+    刪除測試的idv資料
+
+[33mcommit 9cda838f2ab49477e99e841219944ac8b2ce53c5[m
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Sat Oct 7 10:22:37 2023 +0800
+
+    oscar 10/7 10:22 update
+
+[33mcommit 125b445b44b9b26837c77684c27bc25d5e1b85f1[m
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Sat Oct 7 10:19:50 2023 +0800
+
+    oscar 10/7 10:20 update
+
+[33mcommit 90685147ebea00bac9415b73257183b8b3a2c9c4[m
+Author: wang <pnn0908128305@gmail.com>
+Date:   Sat Oct 7 02:24:37 2023 +0800
+
+    Update
+
+[33mcommit df8d5f8b970646c4e391f98b2a06725941b76f82[m
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Fri Oct 6 18:06:15 2023 +0800
+
+    ticketVO THIRD
+
+[33mcommit eede63aa2696b9b381c8570b1b34c22d4c484372[m
+Author: Lisa <lisa860521@gmail.com>
+Date:   Fri Oct 6 18:01:44 2023 +0800
+
+    reset
+
+[33mcommit ebc931b40aa24a96ff5b2be7e22c6505ef37214e[m
+Author: Lisa <lisa860521@gmail.com>
+Date:   Fri Oct 6 17:42:30 2023 +0800
+
+    123
+
+[33mcommit ebe7abed2609ad2cfee008ac1d82f53099ce2cd6[m
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Fri Oct 6 16:46:15 2023 +0800
+
+    ticketVO
+
+[33mcommit 49ad7a1a693f8d2ca34f32fd5cac3a59b83abbc4[m
+Merge: 40a390f 68f59bd
+Author: masa <nkio7153@gmail.com>
+Date:   Fri Oct 6 15:36:32 2023 +0800
+
+    Merge branch 'oscar'
+
+[33mcommit 40a390f9384f6f9eb1cfdfdf6a069900cf283c76[m
+Merge: c32ff04 761d0d0
+Author: masa <nkio7153@gmail.com>
+Date:   Fri Oct 6 15:36:17 2023 +0800
+
+    Merge branch 'masa'
+
+[33mcommit c32ff0435b96dd4a9b004349709360f1215159e5[m
+Merge: 01e442d 27eede8
+Author: masa <nkio7153@gmail.com>
+Date:   Fri Oct 6 15:36:07 2023 +0800
+
+    Merge branch 'Marz23'
+
+[33mcommit 01e442d559ff99b9294a71303f0fad2e6a3ad57a[m
+Merge: b6d6784 19c7014
+Author: masa <nkio7153@gmail.com>
+Date:   Fri Oct 6 15:35:57 2023 +0800
+
+    Merge branch 'Lisa'
+
+[33mcommit b6d6784a3ca6914a48e68cbdb88ac12e4702937b[m
+Merge: e3c480e b8a7f36
+Author: masa <nkio7153@gmail.com>
+Date:   Fri Oct 6 15:35:43 2023 +0800
+
+    Merge branch 'claire'
+
+[33mcommit 27eede8345b66447db9d32457acb7868bddcae94[m
+Author: Marz23 <s920797252@gmail.com>
+Date:   Fri Oct 6 15:09:26 2023 +0800
+
+    New :creat Lisa class
+
+[33mcommit 19c7014905175d7543738a25300720282e9bc86f[m
+Author: Lisa <lisa860521@gmail.com>
+Date:   Fri Oct 6 15:09:17 2023 +0800
+
+    First commit
+
+[33mcommit e3c480ee984f184092c823d77b87cc0a7bfe35ab[m
+Author: wang <pnn0908128305@gmail.com>
+Date:   Fri Oct 6 15:09:03 2023 +0800
+
+    New: create Pen class
+
+[33mcommit 68f59bd33ac9fefd3080d1c56f2b04afd8d3db1f[m
+Author: Oscar Yu <z5314888@gmail.com>
+Date:   Fri Oct 6 15:08:53 2023 +0800
+
+    ticket class test
+
+[33mcommit b8a7f36ea4903a781f00f64264316f162485a583[m
+Author: claire <hsyclaire@gmail.com>
+Date:   Fri Oct 6 15:08:49 2023 +0800
+
+    NEW: create column class
+
+[33mcommit 761d0d09604c92ae709f087dddd380941311940f[m
+Author: masa <nkio7153@gmail.com>
+Date:   Fri Oct 6 15:07:34 2023 +0800
+
+    新增餐廳表VO
+
+[33mcommit 235258cdc2db479fe341804bc0fdd0bbca24f799[m
+Author: masa <nkio7153@gmail.com>
+Date:   Fri Oct 6 14:32:08 2023 +0800
+
+    First commit
