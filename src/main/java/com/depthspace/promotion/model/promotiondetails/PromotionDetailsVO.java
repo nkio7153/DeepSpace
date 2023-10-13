@@ -7,6 +7,8 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Objects;
+
 @Entity
 @Table(name="PROMOTION_DETAILS")
 public class PromotionDetailsVO implements Serializable {
@@ -51,4 +53,49 @@ public class PromotionDetailsVO implements Serializable {
     public void setDiscount(BigDecimal discount) {
         this.discount = discount;
     }
+    public static class CompositeDetail implements Serializable {
+        private static final long SerialVersionUID=1L;
+        private Integer promotionId;
+        private Integer ticketId;
+
+        public CompositeDetail() {
+        }
+
+        public CompositeDetail(Integer promotionId, Integer ticketId) {
+            this.promotionId = promotionId;
+            this.ticketId = ticketId;
+        }
+
+        public Integer getPromotionId() {
+            return promotionId;
+        }
+
+        public void setPromotionId(Integer promotionId) {
+            this.promotionId = promotionId;
+        }
+
+        public Integer getTicketId() {
+            return ticketId;
+        }
+
+        public void setTicketId(Integer ticketId) {
+            this.ticketId = ticketId;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CompositeDetail that = (CompositeDetail) o;
+            return Objects.equals(promotionId, that.promotionId) && Objects.equals(ticketId, that.ticketId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(promotionId, ticketId);
+        }
+    }
+
+
+
 }

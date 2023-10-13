@@ -79,8 +79,8 @@ public class TicketShoppingCartVO implements Serializable {
 
         public CompositeDetail(Integer ticketId, Integer memId) {
             super();
-            this.ticketId = ticketId; // 修正了此處
-            this.memId = memId;       // 修正了此處
+            this.ticketId = ticketId;
+            this.memId = memId;
         }
 
         public Integer getTicketId() {
@@ -91,11 +91,11 @@ public class TicketShoppingCartVO implements Serializable {
             this.ticketId = ticketId;
         }
 
-        public Integer getMemId() { // 添加 memId 的 getter
+        public Integer getMemId() {
             return memId;
         }
 
-        public void setMemId(Integer memId) { // 添加 memId 的 setter
+        public void setMemId(Integer memId) {
             this.memId = memId;
         }
 
