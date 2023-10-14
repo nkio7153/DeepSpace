@@ -9,7 +9,7 @@ public interface AdminDAO {
 
 	int update(AdminVO entity);
 	
-	int delete(Integer id);
+	int delete(AdminVO id);
 	 
 	AdminVO getById(Integer id);
 	
