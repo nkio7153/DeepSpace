@@ -5,7 +5,7 @@ import org.hibernate.Transaction;
 
 import com.depthspace.utils.HibernateUtil;
 
-public class TestTourDetailSession {
+public class TestTourTypeSession {
 	public static void main(String[] args) {
 		// 系統組態檔裡一定要有 <property
 		// name="hibernate.current_session_context_class">thread</property> 的設定才可以
@@ -14,8 +14,8 @@ public class TestTourDetailSession {
 		try {
 
 			tx1 = s1.beginTransaction();
-			TourDetailVO.CompositeDetail detail = new TourDetailVO.CompositeDetail(1, 1);
-			TourDetailVO rest = s1.get(TourDetailVO.class, detail);
+
+			TourTypeVO rest = s1.get(TourTypeVO.class, 1);
 			System.out.println(rest);
 
 			tx1.commit();

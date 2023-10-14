@@ -1,11 +1,11 @@
-package com.depthspace.tour.model;
+package com.depthspace.attractions.model;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.depthspace.utils.HibernateUtil;
 
-public class TestTourDetailSession {
+public class TestAreaSession {
 	public static void main(String[] args) {
 		// 系統組態檔裡一定要有 <property
 		// name="hibernate.current_session_context_class">thread</property> 的設定才可以
@@ -14,8 +14,8 @@ public class TestTourDetailSession {
 		try {
 
 			tx1 = s1.beginTransaction();
-			TourDetailVO.CompositeDetail detail = new TourDetailVO.CompositeDetail(1, 1);
-			TourDetailVO rest = s1.get(TourDetailVO.class, detail);
+
+			AreaVO rest = s1.get(AreaVO.class, 64);
 			System.out.println(rest);
 
 			tx1.commit();

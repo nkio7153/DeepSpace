@@ -31,13 +31,13 @@ public class MemJDBCDAO implements MemDAO_Interface {
 			ps.setString(3, MemVO.getMemPwd());
 			ps.setString(4, MemVO.getMemName());
 			ps.setString(5, MemVO.getMemIdentity());
-			ps.setTimestamp(6, MemVO.getMemBth());
+			ps.setDate(6, MemVO.getMemBth());
 			ps.setByte(7, MemVO.getMemSex());
 			ps.setString(8, MemVO.getMemEmail());
-			ps.setInt(8, MemVO.getMemTel());
-			ps.setString(8, MemVO.getMemAdd());
-			ps.setByte(8, MemVO.getAccStatus());
-			ps.setInt(8, MemVO.getMemPoint());
+			ps.setInt(9, MemVO.getMemTel());
+			ps.setString(10, MemVO.getMemAdd());
+			ps.setByte(11, MemVO.getAccStatus());
+			ps.setInt(12, MemVO.getMemPoint());
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -58,13 +58,13 @@ public class MemJDBCDAO implements MemDAO_Interface {
 			ps.setString(3, MemVO.getMemPwd());
 			ps.setString(4, MemVO.getMemName());
 			ps.setString(5, MemVO.getMemIdentity());
-			ps.setTimestamp(6, MemVO.getMemBth());
+			ps.setDate(6, MemVO.getMemBth());
 			ps.setByte(7, MemVO.getMemSex());
 			ps.setString(8, MemVO.getMemEmail());
-			ps.setInt(8, MemVO.getMemTel());
-			ps.setString(8, MemVO.getMemAdd());
-			ps.setByte(8, MemVO.getAccStatus());
-			ps.setInt(8, MemVO.getMemPoint());
+			ps.setInt(9, MemVO.getMemTel());
+			ps.setString(10, MemVO.getMemAdd());
+			ps.setByte(11, MemVO.getAccStatus());
+			ps.setInt(12, MemVO.getMemPoint());
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -110,7 +110,7 @@ public class MemJDBCDAO implements MemDAO_Interface {
 				memVO.setMemPwd(rs.getString("MEM_PWD"));
 				memVO.setMemName(rs.getString("MEM_NAME"));
 				memVO.setMemIdentity(rs.getString("MEM_IDENTITY"));
-				memVO.setMemBth(rs.getTimestamp("MEM_BTH"));
+				memVO.setMemBth(rs.getDate("MEM_BTH"));
 				memVO.setMemSex(rs.getByte("MEM_SEX"));
 				memVO.setMemEmail(rs.getString("MEM_EMAIL"));
 				memVO.setMemTel(rs.getInt("MEM_TEL"));
@@ -146,7 +146,7 @@ public class MemJDBCDAO implements MemDAO_Interface {
 				memVO.setMemPwd(rs.getString("MEM_PWD"));
 				memVO.setMemName(rs.getString("MEM_NAME"));
 				memVO.setMemIdentity(rs.getString("MEM_IDENTITY"));
-				memVO.setMemBth(rs.getTimestamp("MEM_BTH"));
+				memVO.setMemBth(rs.getDate("MEM_BTH"));
 				memVO.setMemSex(rs.getByte("MEM_SEX"));
 				memVO.setMemEmail(rs.getString("MEM_EMAIL"));
 				memVO.setMemTel(rs.getInt("MEM_TEL"));
