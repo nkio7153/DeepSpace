@@ -3,7 +3,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.HashSet" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%
     TicketShoppingCartService tscSv = new TicketShoppingCartService();
     List<TicketShoppingCartVO> list = tscSv.getAll();
