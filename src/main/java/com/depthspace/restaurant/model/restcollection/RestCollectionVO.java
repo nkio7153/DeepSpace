@@ -47,6 +47,22 @@ public class RestCollectionVO implements Serializable {
 		this.memId = memId;
 	}
 
+	public CompositeDetail getCompositeKey() {
+		return new CompositeDetail(restId, memId);
+	}
+	
+	public void setCompositeKey(CompositeDetail key) {
+		this.restId = key.getRestId();
+		this.memId = key.getMemId();
+	}
+	
+	
+	@Override
+	public String toString() {
+		return "RestCollectionVO [restId=" + restId + ", memId=" + memId + "]";
+	}
+
+
 	static class CompositeDetail implements Serializable {
 		private static final long serialVersionUID = 1L;
 
@@ -82,6 +98,11 @@ public class RestCollectionVO implements Serializable {
 		@Override
 		public int hashCode() {
 			return Objects.hash(memId, restId);
+		}
+
+		@Override
+		public String toString() {
+			return "CompositeDetail [restId=" + restId + ", memId=" + memId + "]";
 		}
 
 		@Override
