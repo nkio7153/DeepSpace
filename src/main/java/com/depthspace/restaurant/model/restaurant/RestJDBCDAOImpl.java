@@ -5,7 +5,7 @@ import java.util.*;
 
 import com.depthspace.utils.DBUtil;
 
-public class RestJDBCDAO implements RestDAO_interface {
+public class RestJDBCDAOImpl implements RestDAO_interface {
 	private static final String INSERT_STMT = 
 		"INSERT INTO RESTAURANT (REST_NAME, REST_TEL, REST_ADDRESS, REST_OPEN, REST_STATUS, BOOKING_LIMIT, ADMIN_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT =
@@ -160,7 +160,7 @@ public class RestJDBCDAO implements RestDAO_interface {
 	}
 	
 	public static void main(String[] args) {
-		RestJDBCDAO dao = new RestJDBCDAO();
+		RestJDBCDAOImpl dao = new RestJDBCDAOImpl();
 		
 		// INSTERT
 //		RestVO restVO1 = new RestVO();
