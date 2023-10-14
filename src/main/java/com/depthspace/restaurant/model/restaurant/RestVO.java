@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -11,7 +13,8 @@ import javax.persistence.Table;
 @Table(name = "RESTAURANT")
 public class RestVO implements Serializable {
 	@Id
-	@Column(name = "REST_ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "REST_ID", updatable = false)
 	private Integer restId;
 	@Column(name = "REST_NAME")
 	private String restName;
@@ -21,9 +24,9 @@ public class RestVO implements Serializable {
 	private String restAddress;
 	@Column(name = "REST_OPEN")
 	private String restOpen;
-	@Column(name = "REST_STATUS", columnDefinition = "TINYINT")
+	@Column(name = "REST_STATUS")
 	private Integer restStatus;
-	@Column(name = "BOOKING_LIMIT", columnDefinition = "TINYINT")
+	@Column(name = "BOOKING_LIMIT")
 	private Integer bookingLimit;
 	@Column(name = "ADMIN_ID")
 	private Integer adminId;
