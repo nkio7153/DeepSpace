@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+    	<!-- 引入外部属性文件 -->
+        <property name="hibernatePropertiesFile">hibernate.properties</property>
+    
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+		<!-- <property name="hibernate.connection.url"></property> -->
+		<!-- <property name="hibernate.connection.username"></property> -->
+		<!-- <property name="hibernate.connection.password"></property> -->
+
+        
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">validate</property>
+        
+        <property name="hibernate.current_session_context_class">thread</property>
+        
+        
+        <mapping class="com.depthspace.account.model.account.AccountVO"/>
+        
+        <!-- -->
+        <mapping class="com.depthspace.column.model.ColumnArticlesVO"/>
+        <mapping class="com.depthspace.column.model.ColumnImagesVO"/>
+        <mapping class="com.depthspace.column.model.ColumnTypesVO"/>
+        <mapping class="com.depthspace.ticket.model.TicketImagesVO"/>
+        <mapping class="com.depthspace.ticket.model.TicketTypesVO"/>
+        <mapping class="com.depthspace.ticket.model.TicketVO"/>
+        <mapping class="com.depthspace.ticketcollection.model.TicketCollectionVO"/>
+        <mapping class="com.depthspace.notifications.model.NotificationsVO"/>
+        
+        <!--attractions-->
+		<mapping class="com.depthspace.attractions.model.AreaVO"/>
+		<mapping class="com.depthspace.attractions.model.AttractionsImagesVO"/>
+		<mapping class="com.depthspace.attractions.model.AttractionsTypeVO"/>
+		<mapping class="com.depthspace.attractions.model.AttractionsVO"/>
+		<mapping class="com.depthspace.attractions.model.CityVO"/>
+
+		<!--tour-->
+		<mapping class="com.depthspace.tour.model.TourVO"/>
+		<mapping class="com.depthspace.tour.model.TourDetailVO"/>
+		<mapping class="com.depthspace.tour.model.TourDaysVO"/>
+		<mapping class="com.depthspace.tour.model.TourTypeVO"/>
+
+		<!-- Member-->
+ 		<mapping class="com.depthspace.member.MemVO"/>
+        
+        <!-- -->
+        <mapping class="com.depthspace.admin.model.AdminVO"/>
+		<mapping class="com.depthspace.adminfunclist.model.AdminFuncListVO"/>
+		<mapping class="com.depthspace.faq.model.FaqVO"/>
+		<mapping class="com.depthspace.faqtypes.model.FaqTypesVO"/>
+		<mapping class="com.depthspace.function.model.FunctionVO"/>
+		<mapping class="com.depthspace.keywordqa.model.KeywordQaVO"/>
+        
+		<!-- restaurant -->
+        <mapping class="com.depthspace.restaurant.model.restaurant.RestVO"/>
+        <mapping class="com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO"/>
+        <mapping class="com.depthspace.restaurant.model.restcollection.RestCollectionVO"/>
+        <mapping class="com.depthspace.restaurant.model.membooking.MemBookingVO"/>
+
+		
+	    <mapping class="com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO"/>
+        <mapping class="com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO"/>
+        <mapping class="com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO"/>
+        <mapping class="com.depthspace.promotion.model.promotion.PromotionVO"/>
+        <mapping class="com.depthspace.promotion.model.promotiondetails.PromotionDetailsVO"/>
+        <mapping class="com.depthspace.memticketowned.model.MemTicketOwnedVO"/>
+                
+                
+        <mapping class="com.depthspace.account.model.accountitem.AccountItemVO"/>
+        <mapping class="com.depthspace.account.model.accountper.AccountPerVO"/>
+        <mapping class="com.depthspace.account.model.expenses.ExpensesVO"/>
+        <mapping class="com.depthspace.forum.model.articlescollect.ArticlesCollectVO"/>
+        <mapping class="com.depthspace.forum.model.articleslike.ArticlesLikeVO"/>
+        <mapping class="com.depthspace.forum.model.articlesreport.ArticlesReportVO"/>
+        <mapping class="com.depthspace.forum.model.articlestype.ArticlesStypeVO"/>
+        <mapping class="com.depthspace.forum.model.forumarticles.ForumArticlesVO"/>
+         
+    </session-factory>
+</hibernate-configuration>
