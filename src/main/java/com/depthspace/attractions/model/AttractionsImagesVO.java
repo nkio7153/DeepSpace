@@ -1,10 +1,23 @@
 package com.depthspace.attractions.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+@Entity
+@Table(name="ATTRACTIONS_IMAGES")
 public class AttractionsImagesVO implements Serializable{
+	@Id
+	@Column(name="ATTRACTIONS_IMAGES_ID")
 	private Integer attractionsImagesId;
+	
+	@Column(name="ATTRACTIONS_ID")
 	private Integer attractionsId;
+	
+	@Column(name="ATTRACTIONS_IMG", columnDefinition ="mediumblob")
 	private byte[] attractionsImg;
 	public AttractionsImagesVO() {
 		super();
@@ -32,6 +45,11 @@ public class AttractionsImagesVO implements Serializable{
 	}
 	public void setAttractionsImg(byte[] attractionsImg) {
 		this.attractionsImg = attractionsImg;
+	}
+	@Override
+	public String toString() {
+		return "AttractionsImagesVO [attractionsImagesId=" + attractionsImagesId + ", attractionsId=" + attractionsId
+				+ ", attractionsImg=" + Arrays.toString(attractionsImg) + "]";
 	}
 	
 }
