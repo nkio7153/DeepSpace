@@ -1,6 +1,5 @@
 package com.depthspace.restaurant.model.restbookingdate;
 
-import java.sql.Date;
 import java.util.List;
 
 public interface RestBookingDateDAO_interface {

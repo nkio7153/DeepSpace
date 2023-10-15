@@ -3,9 +3,8 @@ package com.depthspace.restaurant.model.restbookingdate;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
-import com.depthspace.restaurant.model.restaurant.RestVO;
+import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO.CompositeDetail;
 import com.depthspace.utils.HibernateUtil;
 
 public class RestBookingDateHibernateDAOImpl implements RestBookingDateDAO_interface {
@@ -29,10 +28,7 @@ public class RestBookingDateHibernateDAOImpl implements RestBookingDateDAO_inter
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			List<RestBookingDateVO> query = 
-					session.createQuery("FROM RestBookingDateVO WHERE :REST_ID AND :BOOKING_DATE", RestBookingDateVO.class)
-					.list();
-			session.update(query);
+			session.update(restBookingDateVO);
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -60,7 +56,7 @@ public class RestBookingDateHibernateDAOImpl implements RestBookingDateDAO_inter
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			RestBookingDateVO restBookingDateVO1 = session.get(RestBookingDateVO.class, restBookingDateVO);
+			RestBookingDateVO restBookingDateVO1 = session.get(RestBookingDateVO.class, new CompositeDetail(restBookingDateVO.getRestId(), restBookingDateVO.getBookingDate()));
 			session.getTransaction().commit();
 			return restBookingDateVO1;
 		} catch (Exception e) {
