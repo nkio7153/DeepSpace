@@ -4,6 +4,7 @@ import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 import com.depthspace.utils.HibernateUtil;
 import org.hibernate.Session;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 public class HibernateTest {
@@ -12,11 +13,11 @@ public class HibernateTest {
         try{
             session.beginTransaction();
             TicketShoppingCartVO tsc = new TicketShoppingCartVO();
-            tsc.setMemId(6);
-            tsc.setTicketId(324002);
+            tsc.setMemId(7);
+            tsc.setTicketId(324003);
             tsc.setQuantity(1);
-            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-            tsc.setAddedDate(currentTime);
+            Date date = new Date(System.currentTimeMillis());
+            tsc.setAddedDate(date);
             session.save(tsc);
             session.getTransaction().commit();
         }catch (Exception e){

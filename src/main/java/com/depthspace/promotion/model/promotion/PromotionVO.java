@@ -1,14 +1,25 @@
 package com.depthspace.promotion.model.promotion;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-
+@Entity
+@Table(name="PROMOTION")
 public class PromotionVO implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="PROMOTION_ID")
     private Integer promotionId;
+    @Column(name="PROMO_NAME")
     private String promoName;
+    @Column(name="START_DATE")
     private Timestamp startDate;
+    @Column(name="END_DATE")
     private Timestamp endDate;
+    @Column(name="DESCRIPTION")
     private String description;
+    @Lob
+    @Column(name="PICTURE",columnDefinition="mediumblob")
     private byte[] picture;
 
     public PromotionVO() {

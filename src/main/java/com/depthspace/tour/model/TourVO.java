@@ -5,6 +5,8 @@ import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
@@ -12,6 +14,7 @@ import javax.persistence.Table;
 public class TourVO implements Serializable{
 	@Id
 	@Column(name="TOUR_ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer tourId;
 	
 	@Column(name="MEM_ID")
@@ -93,7 +96,4 @@ public class TourVO implements Serializable{
 				+ ", allDays=" + allDays + ", tourDescription=" + tourDescription + ", tourImg="
 				+ Arrays.toString(tourImg) + "]";
 	}
-	
-	
-	
 }

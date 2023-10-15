@@ -6,6 +6,6 @@ public interface MemBookingDAO {
 	int add(MemBookingVO memBookingVO);
 	int update(MemBookingVO memBookingVO);
 	int delete(Integer bookingId);
-	MemBookingVO findByPK(Integer rebookingIdstId);
+	MemBookingVO findByPK(Integer bookingId);
 	List<MemBookingVO> getAll();
 }

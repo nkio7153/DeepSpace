@@ -1,7 +1,6 @@
 package com.depthspace.promotion.model.promotion;
 
-import java.sql.Timestamp;
-import java.util.List;
+import com.depthspace.promotion.model.promotion.jdbc.PromotionJDBCDAO;
 
 public class Test {
     public static void main(String[] args) {

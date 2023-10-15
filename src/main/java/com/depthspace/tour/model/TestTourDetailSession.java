@@ -14,8 +14,8 @@ public class TestTourDetailSession {
 		try {
 
 			tx1 = s1.beginTransaction();
-
-			TourDetailVO rest = s1.get(TourDetailVO.class, 1);
+			TourDetailVO.CompositeDetail detail = new TourDetailVO.CompositeDetail(1, 1);
+			TourDetailVO rest = s1.get(TourDetailVO.class, detail);
 			System.out.println(rest);
 
 			tx1.commit();

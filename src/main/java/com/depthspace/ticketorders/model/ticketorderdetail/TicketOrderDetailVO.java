@@ -1,7 +1,11 @@
 package com.depthspace.ticketorders.model.ticketorderdetail;
 
+import com.depthspace.promotion.model.promotiondetails.PromotionDetailsVO;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
+
 @Entity
 @Table(name="TICKET_ORDER_DETAIL")
 @IdClass(TicketOrderDetailId.class)
@@ -26,7 +30,7 @@ public class TicketOrderDetailVO implements Serializable {
     @Column(name = "TICKET_REVIEWS", length = 100)
     private String ticketReviews;
 
-    @Column(name = "STARS")
+    @Column(name = "STARS", columnDefinition = "TINYINT")
     private Byte stars;
 
     public TicketOrderDetailVO() {
@@ -105,5 +109,48 @@ public class TicketOrderDetailVO implements Serializable {
 
     public void setStars(Byte stars) {
         this.stars = stars;
+    }
+
+    public static class CompositeDetail implements Serializable {
+        private static final long SERIAL_VERSION_UID=1L;
+        private Integer orderId;
+        private Integer ticketId;
+
+        public CompositeDetail() {
+        }
+
+        public CompositeDetail(Integer orderId, Integer ticketId) {
+            this.orderId = orderId;
+            this.ticketId = ticketId;
+        }
+
+        public Integer getOrderId() {
+            return orderId;
+        }
+
+        public void setOrderId(Integer orderId) {
+            this.orderId = orderId;
+        }
+
+        public Integer getTicketId() {
+            return ticketId;
+        }
+
+        public void setTicketId(Integer ticketId) {
+            this.ticketId = ticketId;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            TicketOrderDetailVO.CompositeDetail that = (TicketOrderDetailVO.CompositeDetail) o;
+            return Objects.equals(orderId, that.orderId) && Objects.equals(ticketId, that.ticketId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(orderId, ticketId);
+        }
     }
 }
