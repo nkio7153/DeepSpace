@@ -14,45 +14,54 @@ import java.util.Map;
 
 public class HibernateTscDAOImpl implements HibernateTscDAO_Interface {
     private SessionFactory factory;
+    public HibernateTscDAOImpl(SessionFactory factory) {
+        this.factory = factory;
+    }
+    private Session getSession() {
+        return factory.getCurrentSession();
+    }
     @Override
     public int insert(TicketShoppingCartVO entity) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-
-            session.beginTransaction();
-            session.save(entity);
-            session.getTransaction().commit();
-            return 1;
+        return (Integer) getSession().save(entity);
     }
 
     @Override
     public int update(TicketShoppingCartVO entity) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
-        session.update(entity);
-        session.getTransaction().commit();
-        return 1;
+        try {
+            getSession().update(entity);
+            return 1;
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
     @Override
     public int delete(TicketShoppingCartVO.CompositeDetail id) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
-        TicketShoppingCartVO entity = session.get(TicketShoppingCartVO.class, id);
-        if(entity != null) {
-            session.delete(entity);
+        TicketShoppingCartVO tsc = getSession().get(TicketShoppingCartVO.class, id);
+        if (tsc != null) {
+            getSession().delete(tsc);
+            // 回傳給 service，1代表刪除成功
+            return 1;
+        } else {
+            // 回傳給 service，-1代表刪除失敗
+            return -1;
         }
-        session.getTransaction().commit();
-        return (entity != null) ? 1 : 0;
     }
 
     @Override
     public TicketShoppingCartVO getById(TicketShoppingCartVO.CompositeDetail id) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
-        TicketShoppingCartVO entity = session.get(TicketShoppingCartVO.class, id);
-        session.getTransaction().commit();
-        return entity;
+        return null;
     }
+
+//    @Override
+//    public TicketShoppingCartVO getById(TicketShoppingCartVO.CompositeDetail id) {
+//        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//        session.beginTransaction();
+//        TicketShoppingCartVO entity = session.get(TicketShoppingCartVO.class, id);
+//        session.getTransaction().commit();
+//        return entity;
+//    }
+
 
     @Override
     public List<TicketShoppingCartVO> getAll() {
