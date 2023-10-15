@@ -1,5 +1,7 @@
 package com.depthspace.ticketshoppingcart.model;
 
+import com.depthspace.ticket.model.TicketVO;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
@@ -13,7 +15,6 @@ public class TicketShoppingCartVO implements Serializable {
     @Id
     @Column(name = "MEM_ID")
     private Integer memId;
-
     @Id
     @Column(name = "TICKET_ID")
     private Integer ticketId;

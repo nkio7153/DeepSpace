@@ -1,11 +1,8 @@
 package com.depthspace.promotion.model.promotion;
 
-import com.depthspace.promotion.model.promotion.PromotionVO;
-
 import java.util.List;
-import java.util.Map;
 
-public interface HibernateProDAO {
+public interface HibernateProDao_Interface {
 
     int insert(PromotionVO entity);
 
@@ -17,7 +14,6 @@ public interface HibernateProDAO {
 
     List<PromotionVO> getAll();
 
-    List<PromotionVO> getByCompositeQuery(Map<String, String> map);
 
     List<PromotionVO> getAll(int currentPage);
 
