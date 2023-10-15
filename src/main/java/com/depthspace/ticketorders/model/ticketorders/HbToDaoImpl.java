@@ -5,11 +5,11 @@ import org.hibernate.SessionFactory;
 
 import java.util.List;
 
-public class HibernatToDaoImpl implements HibernateToDao_Interface {
+public class HbToDaoImpl implements HbToDao_Interface {
     //SessionFactory物件，用於取得與資料庫的連線Session。
     private SessionFactory factory;
     //factory 用於建立與資料庫的連線的SessionFactory物件
-    public HibernatToDaoImpl(SessionFactory factory){
+    public HbToDaoImpl(SessionFactory factory){
         this.factory=factory;
     }
     //取得與當前資料庫的連線Session。
@@ -47,6 +47,16 @@ public class HibernatToDaoImpl implements HibernateToDao_Interface {
     public TicketOrdersVO getById(Integer id) {
         return getSession().get(TicketOrdersVO.class, id);
     }
+
+    //用會員編號查詢訂單
+    @Override
+    public List<TicketOrdersVO> getByMemId(Integer memId) {
+        return getSession()
+                .createQuery("from TicketOrdersVO where memId= :memId",TicketOrdersVO.class)
+                .setParameter("memId", memId)
+                .list();
+    }
+
     //查全部列表
     @Override
     public List<TicketOrdersVO> getAll() {
@@ -57,7 +67,7 @@ public class HibernatToDaoImpl implements HibernateToDao_Interface {
     public List<TicketOrdersVO> getAll(int currentPage) {
         return null;
     }
-
+    //取得列表總數
     @Override
     public long getTotal() {
         return getSession().createQuery("select count(*) from TicketOrdersVO", Long.class).uniqueResult();

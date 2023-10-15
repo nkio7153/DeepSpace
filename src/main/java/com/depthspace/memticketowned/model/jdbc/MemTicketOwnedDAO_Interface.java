@@ -1,4 +1,6 @@
-package com.depthspace.memticketowned.model;
+package com.depthspace.memticketowned.model.jdbc;
+
+import com.depthspace.memticketowned.model.MemTicketOwnedVO;
 
 import java.util.List;
 

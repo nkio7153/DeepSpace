@@ -5,31 +5,34 @@ import org.hibernate.SessionFactory;
 
 import java.util.List;
 
-public class HibernateMtoDaoImpl implements HibernateMtoDao_Interface {
+public class HbMtoDaoImpl implements HbMtoDao_Interface {
+    //宣告一個factory變數
     private SessionFactory factory;
-
-    public HibernateMtoDaoImpl(SessionFactory factory) {
+    //構造器為該物件的factory變數賦值
+    public HbMtoDaoImpl(SessionFactory factory) {
         this.factory = factory;
     }
+    //取得當前session
     private Session getSession(){
         return factory.getCurrentSession();
     }
-
+    //插入一筆資料
     @Override
     public int insert(MemTicketOwnedVO entity) {
         return (Integer)getSession().save(entity);
     }
-
+    //更新一筆資料
     @Override
     public int update(MemTicketOwnedVO entity) {
         try{
             getSession().update(entity);
             return 1;
         }catch(Exception e){
+            e.printStackTrace();
             return -1;
         }
     }
-
+    //刪除一筆資料
     @Override
     public int delete(Integer id) {
         MemTicketOwnedVO mto = getSession().get(MemTicketOwnedVO.class, id);
@@ -40,12 +43,22 @@ public class HibernateMtoDaoImpl implements HibernateMtoDao_Interface {
             return -1;
         }
     }
-
+    //取得一筆資料
     @Override
     public MemTicketOwnedVO getById(Integer id) {
+
         return getSession().get(MemTicketOwnedVO.class, id);
     }
+    //用會員編號取得所有資料
+    @Override
+    public List<MemTicketOwnedVO> getByMemId(Integer memId) {
+        return getSession()
+                .createQuery("from MemTicketOwnedVO where memId= :memId",MemTicketOwnedVO.class)
+                .setParameter("memId", memId)
+                .list();
+    }
 
+    //取得
     @Override
     public List<MemTicketOwnedVO> getAll() {
         return getSession().createQuery("from MemTicketOwnedVO ", MemTicketOwnedVO.class).list();

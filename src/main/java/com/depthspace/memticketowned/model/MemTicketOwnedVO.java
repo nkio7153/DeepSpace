@@ -1,5 +1,6 @@
 package com.depthspace.memticketowned.model;
 
+import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;  // 引入 Timestamp 類型
@@ -7,6 +8,7 @@ import java.sql.Timestamp;  // 引入 Timestamp 類型
 @Table(name="MEM_TICKET_OWNED")
 public class MemTicketOwnedVO implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="TICKET_OWNED_ID")
     private Integer ticketOwnedId;
     @Column(name="MEM_ID",nullable=false)

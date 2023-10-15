@@ -1,5 +1,7 @@
 package com.depthspace.ticketorders.model.ticketorderdetail;
 
+import com.depthspace.ticketorders.model.ticketorderdetail.jdbc.TicketOrderDetailJDBCDAO;
+
 public class Test {
     public static void main(String[] args) {
         TicketOrderDetailJDBCDAO todDAO = new TicketOrderDetailJDBCDAO();

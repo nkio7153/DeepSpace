@@ -1,6 +1,8 @@
 package com.depthspace.memticketowned.model;
 
 
+import com.depthspace.memticketowned.model.jdbc.MemTicketOwnedJDBCDAO;
+
 import java.sql.Timestamp;
 
 public class test {
