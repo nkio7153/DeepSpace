@@ -79,8 +79,12 @@ public class RestCollectionDAO implements RestCollectionDAO_interface {
 		
 	}
 	@Override
-	public RestCollectionVO findByPrimaryKey(Integer restId, Integer memId) {
-		RestCollectionVO restCollectionVO = null;
+	public List<RestCollectionVO> CountfindByMemId(Integer restId) {
+		return null;
+	}
+	@Override
+	public RestCollectionVO findByPrimaryKey(RestCollectionVO restCollectionVO) {
+		RestCollectionVO restCollectionVO1 = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -90,15 +94,15 @@ public class RestCollectionDAO implements RestCollectionDAO_interface {
 			
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 			
-			pstmt.setInt(1, restId);
-			pstmt.setInt(2, memId);
+			pstmt.setInt(1, restCollectionVO1.getRestId());
+			pstmt.setInt(2, restCollectionVO1.getMemId());
 			
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				restCollectionVO = new RestCollectionVO();
-				restCollectionVO.setRestId(rs.getInt("REST_ID"));
-				restCollectionVO.setMemId(rs.getInt("MEM_ID"));
+				restCollectionVO1 = new RestCollectionVO();
+				restCollectionVO1.setRestId(rs.getInt("REST_ID"));
+				restCollectionVO1.setMemId(rs.getInt("MEM_ID"));
 			}
 
 		} catch (SQLException e) {
@@ -107,7 +111,7 @@ public class RestCollectionDAO implements RestCollectionDAO_interface {
 			DBUtil.close(con, pstmt, null);
 		}
 		
-		return restCollectionVO;
+		return restCollectionVO1;
 	}
 	@Override
 	public List<RestCollectionVO> getAll() {
