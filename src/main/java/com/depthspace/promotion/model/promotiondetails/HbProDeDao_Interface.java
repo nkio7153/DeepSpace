@@ -1,23 +1,22 @@
 package com.depthspace.promotion.model.promotiondetails;
 
-import com.depthspace.promotion.model.promotion.PromotionVO;
+import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 
 import java.util.List;
 import java.util.Map;
 
-public interface HibernateProDDao_Interface {
+public interface HbProDeDao_Interface {
 
     int insert(PromotionDetailsVO entity);
 
     int update(PromotionDetailsVO entity);
 
-    int delete(Integer id);
+    int delete(PromotionDetailsVO.CompositeDetail id);
 
-    PromotionDetailsVO getById(Integer id);
+    PromotionDetailsVO getById(PromotionDetailsVO.CompositeDetail id);
+    List<PromotionDetailsVO> getByProId(Integer id);
 
     List<PromotionDetailsVO> getAll();
-
-    List<PromotionDetailsVO> getByCompositeQuery(Map<String, String> map);
 
     List<PromotionDetailsVO> getAll(int currentPage);
 

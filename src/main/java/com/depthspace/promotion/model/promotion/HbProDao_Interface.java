@@ -2,7 +2,7 @@ package com.depthspace.promotion.model.promotion;
 
 import java.util.List;
 
-public interface HibernateProDao_Interface {
+public interface HbProDao_Interface {
 
     int insert(PromotionVO entity);
 

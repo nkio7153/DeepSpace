@@ -1,11 +1,9 @@
 package com.depthspace.ticketorders.service;
 
-import com.depthspace.memticketowned.model.MemTicketOwnedDAO_Interface;
-import com.depthspace.memticketowned.model.MemTicketOwnedJDBCDAO;
-import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailDAO_Interface;
-import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailJDBCDAO;
-import com.depthspace.ticketorders.model.ticketorders.TicketOrdersDAO_Interface;
-import com.depthspace.ticketorders.model.ticketorders.TicketOrdersJDBCDAO;
+import com.depthspace.ticketorders.model.ticketorderdetail.jdbc.TicketOrderDetailDAO_Interface;
+import com.depthspace.ticketorders.model.ticketorderdetail.jdbc.TicketOrderDetailJDBCDAO;
+import com.depthspace.ticketorders.model.ticketorders.jdbc.TicketOrdersDAO_Interface;
+import com.depthspace.ticketorders.model.ticketorders.jdbc.TicketOrdersJDBCDAO;
 
 public class TicketOrderService {
     private TicketOrderDetailDAO_Interface todDao;//票券訂單明細

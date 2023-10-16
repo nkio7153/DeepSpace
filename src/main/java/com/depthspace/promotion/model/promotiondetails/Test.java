@@ -1,6 +1,6 @@
 package com.depthspace.promotion.model.promotiondetails;
 
-import java.util.List;
+import com.depthspace.promotion.model.promotiondetails.jdbc.PromotionDetailsJDBCDAO;
 
 public class Test {
     public static void main(String[] args) {

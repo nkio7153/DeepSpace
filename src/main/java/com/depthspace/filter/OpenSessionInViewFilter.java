@@ -13,7 +13,7 @@ import org.hibernate.SessionFactory;
 
 import com.depthspace.utils.HibernateUtil;
 
-@WebFilter("/*")
+//@WebFilter("/*")
 public class OpenSessionInViewFilter implements Filter {
 
 	@Override
@@ -21,10 +21,13 @@ public class OpenSessionInViewFilter implements Filter {
 		SessionFactory factory = HibernateUtil.getSessionFactory();
 		try {
 			factory.getCurrentSession().beginTransaction();
+			System.out.println("Begin Transaction");
 			chain.doFilter(req, res);
 			factory.getCurrentSession().getTransaction().commit();
+			System.out.println("Begin Commit");
 		} catch (Exception e) {
 			factory.getCurrentSession().getTransaction().rollback();
+			System.out.println("roll back Transaction");
 			e.printStackTrace();
 			chain.doFilter(req, res);
 		}

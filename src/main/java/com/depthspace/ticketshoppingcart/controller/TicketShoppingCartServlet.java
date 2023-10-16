@@ -51,7 +51,7 @@ public class TicketShoppingCartServlet extends HttpServlet {
         }
         req.setAttribute("list", list);
         req.setAttribute("uniqueMemIds",uniqueMemIds);
-        req.getRequestDispatcher("/ticket/listAllCart.jsp").forward(req, resp);
+        req.getRequestDispatcher("/ticketShoppingCart/listAllCart.jsp").forward(req, resp);
     }
     //查出會員購物車清單
     protected void doMemList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -68,7 +68,7 @@ public class TicketShoppingCartServlet extends HttpServlet {
             memId = Integer.valueOf(str);
         } catch (Exception e) {
             errorMsgs.add("會員編號格式不正確");
-            req.getRequestDispatcher("/ticketShoppingCart.jsp").forward(req, resp);
+            req.getRequestDispatcher("ticketShoppingCart/index.jsp").forward(req, resp);
             return;
         }
 
@@ -76,7 +76,7 @@ public class TicketShoppingCartServlet extends HttpServlet {
         List<TicketShoppingCartVO> list = tscSv.getAllbyMemId(memId);
         req.setAttribute("list", list);
         req.setAttribute("memId",memId);
-        req.getRequestDispatcher("/ticket/memAllCart.jsp").forward(req, resp);
+        req.getRequestDispatcher("/ticketShoppingCart/memAllCart.jsp").forward(req, resp);
     }
     //刪除一列會員購物車內容
     protected void doDelete1(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -98,7 +98,7 @@ public class TicketShoppingCartServlet extends HttpServlet {
         List<TicketShoppingCartVO> list = tscSv.getAllbyMemId(memId);
         req.setAttribute("list", list);
         req.setAttribute("memId",memId);
-        req.getRequestDispatcher("/ticket/memAllCart.jsp").forward(req, resp);
+        req.getRequestDispatcher("/ticketShoppingCart/memAllCart.jsp").forward(req, resp);
     }
     //會員購物車清空
     protected void doDeleteAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -117,7 +117,7 @@ public class TicketShoppingCartServlet extends HttpServlet {
         List<TicketShoppingCartVO> list = tscSv.getAllbyMemId(memId);
         req.setAttribute("list", list);
         req.setAttribute("memId",memId);
-        req.getRequestDispatcher("/ticket/memAllCart.jsp").forward(req, resp);
+        req.getRequestDispatcher("/ticketShoppingCart/memAllCart.jsp").forward(req, resp);
     }
     protected void doSave(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String str = req.getParameter("memId");
@@ -145,7 +145,7 @@ public class TicketShoppingCartServlet extends HttpServlet {
         List<TicketShoppingCartVO> list = tscSv.getAllbyMemId(memId);
         req.setAttribute("list", list);
         req.setAttribute("memId",memId);
-        req.getRequestDispatcher("/ticket/memAllCart.jsp").forward(req, resp);
+        req.getRequestDispatcher("/ticketShoppingCart/memAllCart.jsp").forward(req, resp);
     }
 
 }

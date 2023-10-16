@@ -1,4 +1,7 @@
-package com.depthspace.ticketorders.model.ticketorderdetail;
+package com.depthspace.ticketorders.model.ticketorderdetail.jdbc;
+
+import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
+import com.depthspace.ticketorders.model.ticketorderdetail.jdbc.TicketOrderDetailJDBCDAO;
 
 public class Test {
     public static void main(String[] args) {

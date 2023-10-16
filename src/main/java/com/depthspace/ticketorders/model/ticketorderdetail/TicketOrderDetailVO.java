@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name="TICKET_ORDER_DETAIL")
-@IdClass(TicketOrderDetailId.class)
+@IdClass(TicketOrderDetailVO.CompositeDetail.class)
 public class TicketOrderDetailVO implements Serializable {
     @Id
     @Column(name = "ORDER_ID", nullable = false ,insertable = false, updatable = false)
@@ -112,7 +112,7 @@ public class TicketOrderDetailVO implements Serializable {
     }
 
     public static class CompositeDetail implements Serializable {
-        private static final long SERIAL_VERSION_UID=1L;
+        private static final long serialVersionUID=1L;
         private Integer orderId;
         private Integer ticketId;
 

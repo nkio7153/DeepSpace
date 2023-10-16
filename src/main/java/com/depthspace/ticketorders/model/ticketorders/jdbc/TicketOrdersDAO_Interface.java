@@ -1,6 +1,7 @@
-package com.depthspace.ticketorders.model.ticketorders;
+package com.depthspace.ticketorders.model.ticketorders.jdbc;
 
 import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
+import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 
 import java.util.List;
 

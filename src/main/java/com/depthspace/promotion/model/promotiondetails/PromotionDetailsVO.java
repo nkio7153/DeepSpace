@@ -1,9 +1,6 @@
 package com.depthspace.promotion.model.promotiondetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -11,6 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name="PROMOTION_DETAILS")
+@IdClass(PromotionDetailsVO.CompositeDetail.class)
 public class PromotionDetailsVO implements Serializable {
     @Id
     @Column(name="PROMOTION_ID")
