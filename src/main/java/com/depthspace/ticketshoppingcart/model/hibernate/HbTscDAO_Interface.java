@@ -1,4 +1,6 @@
-package com.depthspace.ticketshoppingcart.model;
+package com.depthspace.ticketshoppingcart.model.hibernate;
+
+import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 
 import java.util.List;
 

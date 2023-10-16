@@ -1,5 +1,6 @@
-package com.depthspace.ticketorders.model.ticketorders;
+package com.depthspace.ticketorders.model.ticketorders.hibernate;
 
+import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 import com.depthspace.utils.HibernateUtil;
 import org.hibernate.Session;
 

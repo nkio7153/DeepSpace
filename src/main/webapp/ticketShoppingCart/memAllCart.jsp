@@ -49,13 +49,13 @@
       <td align="center" width="100px">
         <!-- 這裡添加你的後端刪除和修改的路徑 -->
         <a href="javascript:void(0)" onclick="del1(${cart.memId},${cart.ticketId})">刪除</a>
-        <a href="">修改</a>
+        <a href="ticketShoppingCart/edit.jsp?cart=${cart}">修改</a>
       </td>
     </tr>
   </c:forEach>
 </table>
 <hr>
-<a href="${pageContext.request.contextPath}/ticket/addCart.jsp?memId=${memId}">購物車票券添加</a>
+<a href="${pageContext.request.contextPath}/ticketShoppingCart/addCart.jsp?memId=${memId}">購物車票券添加</a>
 <hr>
 <a href="javascript:void(0)" onclick="delAll(${memId})"> 購物車票清空</a>
 </body>
