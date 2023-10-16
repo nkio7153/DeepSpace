@@ -1,4 +1,4 @@
-package com.depthspace.member;
+package com.depthspace.member.model;
 
 import java.io.Serializable;
 import java.sql.Date;

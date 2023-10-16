@@ -1,7 +1,9 @@
-package com.depthspace.member;
+package com.depthspace.member.model;
 
 import java.util.List;
 import java.util.Scanner;
+
+import com.depthspace.member.model.jdbc.MemJDBCDAO;
 
 public class Memtest {
 	public static void main(String[] args) {

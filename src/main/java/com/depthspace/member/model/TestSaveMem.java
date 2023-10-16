@@ -1,4 +1,4 @@
-package com.depthspace.member;
+package com.depthspace.member.model;
 
 import java.sql.Date;
 
@@ -11,7 +11,7 @@ public class TestSaveMem {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			
+			HibernateMemDAOImpl test = new HibernateMemDAOImpl(session.getSessionFactory());
 			MemVO memVO = new MemVO();
 			memVO.setMemAcc("user006");
 			memVO.setMemPwd("password6");
@@ -25,7 +25,7 @@ public class TestSaveMem {
 			memVO.setAccStatus((byte) 2);
 			memVO.setMemPoint(700);
 
-			session.save(memVO);
+			test.insert(memVO);
 
 			session.getTransaction().commit();
 		} catch (Exception e) {

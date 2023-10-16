@@ -1,4 +1,4 @@
-package com.depthspace.member;
+package com.depthspace.member.model.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,18 +7,20 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.depthspace.member.model.MemVO;
 import com.depthspace.utils.DBUtil;
 
 public class MemJDBCDAO implements MemDAO_Interface {
 //	private static final String INSERT_STMT = "INSERT INTO MEM(MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH, MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String INSERT_STMT = "INSERT INTO MEM(MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH, MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-	
+
 //	private static final String UPDATE_STMT = "UPDATE MEM SET MEM_ACC=? MEM_PWD=?, MEM_NAME=?, MEM_IDENTITY=?, MEM_BTH=?, MEM_SEX=?, MEM_EMAIL=?, MEM_TEL=?, MEM_ADD=?, ACC_STATUS=?, MEM_POINT=? WHERE MEM_ID=?";
 	private static final String UPDATE_STMT = "UPDATE MEM SET MEM_ACC=?, MEM_PWD=?, MEM_NAME=?, MEM_IDENTITY=?, MEM_BTH=?, MEM_SEX=?, MEM_EMAIL=?, MEM_TEL=?, MEM_ADD=?, ACC_STATUS=?, MEM_POINT=? WHERE MEM_ID=?";
 	private static final String DELETE_STMT = "DELETE FROM MEM WHERE MEM_ID=?";
 	private static final String GET_ONE_STMT = "SELECT MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH,	MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT FROM MEM WHERE MEM_ID=?";
 //	private static final String GET_ALL_STMT = "SELECT MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH,	MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT FROM MEM";
 	private static final String GET_ALL_STMT = "SELECT MEM_ID, MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH, MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT FROM MEM";
+
 	@Override
 	public void insert(MemVO MemVO) {
 		Connection conn = null;
@@ -162,6 +164,41 @@ public class MemJDBCDAO implements MemDAO_Interface {
 		}
 
 		return memList;
+	}
+
+	@Override
+	public List<MemVO> findByMemId(Integer memId) {
+		ArrayList<MemVO> list = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			conn = DBUtil.getConnection();
+			ps = conn.prepareStatement(GET_ONE_STMT);
+			ps.setInt(1, memId);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				MemVO memVO = new MemVO();
+				memVO.setMemId(rs.getInt("MEM_ID"));
+				memVO.setMemAcc(rs.getString("MEM_ACC"));
+				memVO.setMemPwd(rs.getString("MEM_PWD"));
+				memVO.setMemName(rs.getString("MEM_NAME"));
+				memVO.setMemIdentity(rs.getString("MEM_IDENTITY"));
+				memVO.setMemBth(rs.getDate("MEM_BTH"));
+				memVO.setMemSex(rs.getByte("MEM_SEX"));
+				memVO.setMemEmail(rs.getString("MEM_EMAIL"));
+				memVO.setMemTel(rs.getInt("MEM_TEL"));
+				memVO.setMemAdd(rs.getString("MEM_ADD"));
+				memVO.setAccStatus(rs.getByte("ACC_STATUS"));
+				memVO.setMemPoint(rs.getInt("MEM_POINT"));
+				list.add(memVO);
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			DBUtil.close(conn, ps, rs);
+		}
+		return list;
 	}
 
 }
