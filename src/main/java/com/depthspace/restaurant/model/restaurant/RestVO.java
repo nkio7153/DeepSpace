@@ -1,20 +1,25 @@
 package com.depthspace.restaurant.model.restaurant;
 
 import java.io.Serializable;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.depthspace.restaurant.model.restcollection.RestCollectionVO;
 
 @Entity
 @Table(name = "RESTAURANT")
 public class RestVO implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "REST_ID", updatable = false)
+	@Column(name = "REST_ID", insertable = false, updatable = false)
 	private Integer restId;
 	@Column(name = "REST_NAME")
 	private String restName;
@@ -30,6 +35,17 @@ public class RestVO implements Serializable {
 	private Integer bookingLimit;
 	@Column(name = "ADMIN_ID")
 	private Integer adminId;
+	
+	@OneToMany(mappedBy = "restVO", cascade = CascadeType.ALL)
+	private Set<RestCollectionVO> rests;
+	
+	public Set<RestCollectionVO> getRestIds() {
+		return rests;
+	}
+
+	public void setRestIds(Set<RestCollectionVO> restIds) {
+		this.rests = restIds;
+	}
 
 	public RestVO() {
 		super();

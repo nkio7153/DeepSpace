@@ -3,23 +3,40 @@ package com.depthspace.restaurant.model.restcollection;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.depthspace.restaurant.model.restaurant.RestVO;
 
 @Entity
 @Table(name = "RESTAURANT_COLLECTION")
 @IdClass(RestCollectionVO.CompositeDetail.class)
 public class RestCollectionVO implements Serializable {
 	@Id
-	@Column(name = "REST_ID")
+	@Column(name = "MEM_REST")
 	private Integer restId;
 	
 	@Id
 	@Column(name = "MEM_ID")
 	private Integer memId;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "MEM_REST", referencedColumnName = "REST_ID", insertable = false, updatable = false)
+	private RestVO restVO;
+	
+	public RestVO getRestVO() {
+		return restVO;
+	}
+
+	public void setRestVO(RestVO restVO) {
+		this.restVO = restVO;
+	}
 
 	public RestCollectionVO() {
 		super();
