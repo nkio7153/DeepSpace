@@ -15,6 +15,7 @@
     <title>所有購物車資料 listAllCart.jsp</title>
 </head>
 <body>
+<input type="button" value="返回" onclick="index()">
 <h1 align="center">購物車全部列表</h1>
 <hr>
 <table border="1px" align="center" width="50%">
@@ -23,7 +24,6 @@
         <th>會員編號</th>
         <th>票券編號</th>
         <th>票券數量</th>
-        <th>加入日期</th>
         <th>操作</th>
     </tr>
 
@@ -34,7 +34,6 @@
             <td align="center">${cart.memId}</td>
             <td align="center">${cart.ticketId}</td>
             <td align="center">${cart.quantity}</td>
-            <td align="center">${cart.addedDate}</td>
             <td align="center" width="100px">
                 <a href="">刪除</a>
                 <a href="">修改</a>
@@ -44,6 +43,12 @@
     </c:forEach>
 </table>
 <hr>
-    <a href="add.jsp">購物車票券添加</a>
+    <script type="text/javascript">
+
+    function index(){
+        document.location.href=
+            "${pageContext.request.contextPath}/ticketShoppingCart/index.jsp"
+    }
+    </script>
 </body>
 </html>

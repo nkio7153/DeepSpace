@@ -1,12 +1,19 @@
 package com.depthspace.ticketshoppingcart.service;
 
+import com.depthspace.ticket.model.TicketImagesJDBCDAO;
+import com.depthspace.ticket.model.TicketImagesVO;
+import com.depthspace.ticket.model.TicketJDBCDAO;
+import com.depthspace.ticket.model.TicketVO;
+import com.depthspace.ticketshoppingcart.model.TicketInfoVO;
 import com.depthspace.ticketshoppingcart.model.jdbc.TicketShoppingCartDAO_Interface;
 import com.depthspace.ticketshoppingcart.model.jdbc.TicketShoppingCartJDBCDAO;
 import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TicketShoppingCartService {
     private TicketShoppingCartDAO_Interface dao;
@@ -19,22 +26,12 @@ public class TicketShoppingCartService {
 //    private Integer quantity;
 //    private Timestamp addedDate;
     //購物車添加票券
-    public TicketShoppingCartVO addTicketShoppingCart(Integer memId, Integer ticketId, Integer quantity, Date addedDate){
-        TicketShoppingCartVO tsc = new TicketShoppingCartVO();
-        tsc.setMemId(memId);
-        tsc.setTicketId(ticketId);
-        tsc.setQuantity(quantity);
-        tsc.setAddedDate(addedDate);
+    public TicketShoppingCartVO addTicketShoppingCart(TicketShoppingCartVO tsc){
         dao.insert(tsc);
         return tsc;
     }
 //    購物車更新票券
-    public TicketShoppingCartVO updateTicketShoppingCart(Integer memId, Integer ticketId, Integer quantity, Date addedDate){
-        TicketShoppingCartVO tsc = new TicketShoppingCartVO();
-        tsc.setMemId(memId);
-        tsc.setTicketId(ticketId);
-        tsc.setQuantity(quantity);
-        tsc.setAddedDate(addedDate);
+    public TicketShoppingCartVO updateTicketShoppingCart(TicketShoppingCartVO tsc){
         dao.update(tsc);
         return tsc;
     }
@@ -58,4 +55,11 @@ public class TicketShoppingCartService {
     public List<TicketShoppingCartVO> getAllbyMemId(Integer memId) {
         return dao.findByMemId(memId);
     }
+    //取得 去票券及票券圖片表格
+    //票券圖片、票券名稱、票券介紹、價格、數量、小計
+    public List<TicketInfoVO> getList(Integer memId){
+        return dao.getbyMemId(memId);
+    }
+
+
 }
