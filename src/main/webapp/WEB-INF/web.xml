@@ -11,5 +11,13 @@
 		<welcome-file>index.htm</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
-
+    
+	<servlet>
+		<servlet-name>RestServlet</servlet-name>
+		<servlet-class>com.depthspace.restaurant.controller.RestServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RestServlet</servlet-name>
+		<url-pattern>/Rest/Rest.do</url-pattern>
+	</servlet-mapping>
 </web-app>
