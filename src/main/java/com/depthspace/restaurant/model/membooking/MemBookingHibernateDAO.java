@@ -1,6 +1,5 @@
 package com.depthspace.restaurant.model.membooking;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class MemBookingHibernateDAO {

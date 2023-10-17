@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "RESTAURANT_BOOKINGDATE")
 @IdClass(RestBookingDateVO.CompositeDetail.class)
@@ -91,7 +92,16 @@ public class RestBookingDateVO implements Serializable {
 	public void setEveningNum(Integer eveningNum) {
 		this.eveningNum = eveningNum;
 	}
-
+	
+	public CompositeDetail getCompositeKey() {
+		return new CompositeDetail(restId, bookingDate);
+	}
+	
+	public void setCompositeKey(CompositeDetail key) {
+		this.restId = key.getRestId();
+		this.bookingDate = key.getBookingDate();
+	}
+	
 	@Override
 	public String toString() {
 		return "RestBookingDateVO [restId=" + restId + ", bookingDate=" + bookingDate + ", restOpen=" + restOpen
