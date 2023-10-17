@@ -1,8 +1,11 @@
 package com.depthspace.ticketshoppingcart.model.jdbc;
 
+import com.depthspace.ticketshoppingcart.model.TicketInfoVO;
 import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 import com.depthspace.utils.DBUtil;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,20 +15,26 @@ import java.util.List;
 
 public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interface {
     private static final String INSERT_STMT=
-            "INSERT INTO TICKET_SHOPPING_CART(MEM_ID, TICKET_ID, QUANTITY, ADDED_DATE) VALUES(?,?,?,?)";
+            "INSERT INTO TICKET_SHOPPING_CART(MEM_ID, TICKET_ID, QUANTITY) VALUES(?,?,?,?)";
     private static final String DELETE_ONE=
             "DELETE FROM TICKET_SHOPPING_CART WHERE MEM_ID=? AND TICKET_ID=?";
     private static final String DELETE_ALL=
             "DELETE FROM TICKET_SHOPPING_CART WHERE MEM_ID=?";
     private static final String UPDATE=
-            "UPDATE TICKET_SHOPPING_CART SET QUANTITY=?, ADDED_DATE=? WHERE MEM_ID=? AND TICKET_ID=?";
+            "UPDATE TICKET_SHOPPING_CART SET QUANTITY=? WHERE MEM_ID=? AND TICKET_ID=?";
 
     private static final String GET_ONE_STMT=
-            "SELECT MEM_ID, TICKET_ID, QUANTITY, ADDED_DATE FROM TICKET_SHOPPING_CART WHERE MEM_ID=? AND TICKET_ID=?";
+            "SELECT MEM_ID, TICKET_ID, QUANTITY FROM TICKET_SHOPPING_CART WHERE MEM_ID=? AND TICKET_ID=?";
     private static final String GET_ALL_STMT_BY_MEMID=
-            "SELECT MEM_ID, TICKET_ID, QUANTITY, ADDED_DATE FROM TICKET_SHOPPING_CART WHERE MEM_ID=?";
+            "SELECT MEM_ID, TICKET_ID, QUANTITY FROM TICKET_SHOPPING_CART WHERE MEM_ID=?";
     private static final String GET_ALL_STMT=
-            "SELECT MEM_ID, TICKET_ID, QUANTITY, ADDED_DATE FROM TICKET_SHOPPING_CART  ORDER BY MEM_ID";
+            "SELECT MEM_ID, TICKET_ID, QUANTITY FROM TICKET_SHOPPING_CART  ORDER BY MEM_ID";
+    private static final String GET_ALL_STMT2_BY_MEMID =
+            "SELECT tsc.MEM_ID, tsc.TICKET_ID, ti.IMAGE, t.TICKET_NAME, t.DESCRIPTION, t.PRICE, tsc.QUANTITY, (t.PRICE * tsc.QUANTITY) as SUBTOTAL " +
+                    "FROM TICKET_SHOPPING_CART tsc " +
+                    "JOIN TICKET t ON tsc.TICKET_ID = t.TICKET_ID " +
+                    "JOIN TICKET_IMAGES ti ON t.TICKET_ID = ti.TICKET_ID " +
+                    "WHERE tsc.MEM_ID = ?";
 
     @Override
     public void insert(TicketShoppingCartVO tsc) {
@@ -37,7 +46,6 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
             ps.setInt(1,tsc.getMemId());
             ps.setInt(2,tsc.getTicketId());
             ps.setInt(3,tsc.getQuantity());
-            ps.setDate(4,tsc.getAddedDate());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -54,9 +62,8 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
             conn = DBUtil.getConnection();
             ps = conn.prepareStatement(UPDATE);
             ps.setInt(1,tsc.getQuantity());
-            ps.setDate(2,tsc.getAddedDate());
-            ps.setInt(3, tsc.getMemId());
-            ps.setInt(4, tsc.getTicketId());
+            ps.setInt(2, tsc.getMemId());
+            ps.setInt(3, tsc.getTicketId());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -115,7 +122,6 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
                 tsc.setMemId(rs.getInt("MEM_ID"));
                 tsc.setTicketId(rs.getInt("TICKET_ID"));
                 tsc.setQuantity(rs.getInt("QUANTITY"));
-                tsc.setAddedDate(rs.getDate("ADDED_DATE"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -141,7 +147,6 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
                 tsc.setMemId(rs.getInt("MEM_ID"));
                 tsc.setTicketId(rs.getInt("TICKET_ID"));
                 tsc.setQuantity(rs.getInt("QUANTITY"));
-                tsc.setAddedDate(rs.getDate("ADDED_DATE"));
                 list.add(tsc);
             }
         } catch (SQLException e) {
@@ -167,7 +172,6 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
                 tsc.setMemId(rs.getInt("MEM_ID"));
                 tsc.setTicketId(rs.getInt("TICKET_ID"));
                 tsc.setQuantity(rs.getInt("QUANTITY"));
-                tsc.setAddedDate(rs.getDate("ADDED_DATE"));
                 list.add(tsc);
             }
         } catch (SQLException e) {
@@ -177,4 +181,37 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
         }
         return list;
     }
+    //取得 去票券及票券圖片表格
+    //票券圖片、票券名稱、票券介紹、價格、數量、小計
+    @Override
+    public List<TicketInfoVO> getbyMemId(Integer memId) {
+            ArrayList<TicketInfoVO> list = new ArrayList<>();
+        Connection conn=null;
+        PreparedStatement ps=null;
+        ResultSet rs=null;
+        try {
+            conn = DBUtil.getConnection();
+            ps = conn.prepareStatement(GET_ALL_STMT2_BY_MEMID);
+            ps.setInt(1,memId);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                TicketInfoVO tif = new TicketInfoVO();
+                tif.setImage(rs.getBytes("IMAGE"));
+                tif.setTicketId(rs.getInt("TICKET_ID"));
+                tif.setMemId(rs.getInt("MEM_ID"));
+                tif.setTicketName(rs.getString("TICKET_NAME"));
+                tif.setDescription(rs.getString("DESCRIPTION"));
+                tif.setPrice(rs.getInt("PRICE"));
+                tif.setQuantity(rs.getInt("QUANTITY"));
+                tif.setSubtotal(rs.getInt("SUBTOTAL"));
+                list.add(tif);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            DBUtil.close(conn, ps, rs);
+        }
+        return list;
+    }
+
 }
