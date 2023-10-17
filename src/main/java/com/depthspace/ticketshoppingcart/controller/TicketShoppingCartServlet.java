@@ -1,5 +1,6 @@
 package com.depthspace.ticketshoppingcart.controller;
 
+import com.depthspace.ticketshoppingcart.model.TicketInfoVO;
 import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 import com.depthspace.ticketshoppingcart.service.TicketShoppingCartService;
 
@@ -13,6 +14,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,6 +41,8 @@ public class TicketShoppingCartServlet extends HttpServlet {
             doMemList(req, resp);
         } else if ("/save".equals(pathInfo)) {
             doSave(req,resp);
+        } else if ("/modify".equals(pathInfo)) {
+            doModify(req,resp);
         }
     }
     //查出所有購物車清單
@@ -55,25 +59,25 @@ public class TicketShoppingCartServlet extends HttpServlet {
     }
     //查出會員購物車清單
     protected void doMemList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LinkedList<String> errorMsgs = new LinkedList<>();
-        req.setAttribute("errorMsgs", errorMsgs);
         String str = req.getParameter("memId");
-
-        if (str == null || str.trim().length() == 0) {
-            errorMsgs.add("請輸入會員編號");
-        }
-
         Integer memId;
         try {
             memId = Integer.valueOf(str);
         } catch (Exception e) {
-            errorMsgs.add("會員編號格式不正確");
-            req.getRequestDispatcher("ticketShoppingCart/index.jsp").forward(req, resp);
+            e.printStackTrace();
             return;
         }
 
         TicketShoppingCartService tscSv = new TicketShoppingCartService();
-        List<TicketShoppingCartVO> list = tscSv.getAllbyMemId(memId);
+//        List<TicketShoppingCartVO> list = tscSv.getAllbyMemId(memId);//正常VO
+        //TicketInfoVO
+        List<TicketInfoVO> list = tscSv.getList(memId);
+        for (TicketInfoVO vo : list) {
+            byte[] imageBytes = vo.getImage();
+            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+            vo.setBase64Image(base64Image);
+        }
+
         req.setAttribute("list", list);
         req.setAttribute("memId",memId);
         req.getRequestDispatcher("/ticketShoppingCart/memAllCart.jsp").forward(req, resp);
@@ -123,7 +127,6 @@ public class TicketShoppingCartServlet extends HttpServlet {
         String str = req.getParameter("memId");
         String str1 = req.getParameter("ticketId");
         String str2 = req.getParameter("quantity");
-        String str3 = req.getParameter("addedDate");
         Integer memId;
         Integer ticketId;
         Integer quantity;
@@ -133,14 +136,41 @@ public class TicketShoppingCartServlet extends HttpServlet {
             memId= Integer.valueOf(str);
             ticketId=Integer.valueOf(str1);
             quantity=Integer.valueOf(str2);
-            addedDate = Date.valueOf(str3);
         }catch (NumberFormatException e){
             // 處理轉型錯誤
+            e.printStackTrace();
             return;
         }
         TicketShoppingCartService tscSv = new TicketShoppingCartService();
-        if(memId!=null && ticketId!=null && quantity!=null && addedDate!=null) {
-            tscSv.addTicketShoppingCart(memId,ticketId,quantity,addedDate);
+        if(memId!=null && ticketId!=null && quantity!=null ) {
+            TicketShoppingCartVO tsc = new TicketShoppingCartVO(memId, ticketId, quantity);
+            tscSv.addTicketShoppingCart(tsc);
+        }
+        List<TicketShoppingCartVO> list = tscSv.getAllbyMemId(memId);
+        req.setAttribute("list", list);
+        req.setAttribute("memId",memId);
+        req.getRequestDispatcher("/ticketShoppingCart/memAllCart.jsp").forward(req, resp);
+    }
+    protected void doModify(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String str = req.getParameter("memId");
+        String str1 = req.getParameter("ticketId");
+        String str2 = req.getParameter("quantity");
+        Integer memId;
+        Integer ticketId;
+        Integer quantity;
+        Date addedDate;
+        try{
+            memId= Integer.valueOf(str.trim());
+            ticketId=Integer.valueOf(str1.trim());
+            quantity=Integer.valueOf(str2.trim());
+        }catch(NumberFormatException e){
+            e.printStackTrace();
+            return;
+        }
+        TicketShoppingCartService tscSv = new TicketShoppingCartService();
+        if(memId!=null && ticketId!=null && quantity!=null) {
+            TicketShoppingCartVO tsc = new TicketShoppingCartVO(memId, ticketId, quantity);
+            tscSv.updateTicketShoppingCart(tsc);
         }
         List<TicketShoppingCartVO> list = tscSv.getAllbyMemId(memId);
         req.setAttribute("list", list);

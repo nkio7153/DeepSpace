@@ -17,7 +17,6 @@
             會員編號:<input type="text" name="memId" value="${param.memId}" readonly><br>
             票券編號<input type="text" name="ticketId"><br>
             票券數量<input type="text" name="quantity"><br>
-            加入日期<input type="text" name="addedDate"><br>
             <input type="submit" value="保存">
         </form>
     </body>

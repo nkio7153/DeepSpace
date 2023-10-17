@@ -19,7 +19,6 @@ public class HibernateTest {
             tsc.setMemId(7);
             tsc.setTicketId(324003);
             tsc.setQuantity(1);
-            tsc.setAddedDate(new Date(System.currentTimeMillis()));
             hbTscDAO.insert(tsc);
             session.getTransaction().commit();
         }catch (Exception e){

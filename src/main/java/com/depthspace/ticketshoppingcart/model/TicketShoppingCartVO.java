@@ -4,8 +4,6 @@ import com.depthspace.ticket.model.TicketVO;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -22,17 +20,14 @@ public class TicketShoppingCartVO implements Serializable {
     @Column(name = "QUANTITY", nullable = false)
     private Integer quantity;
 
-    @Column(name = "ADDED_DATE", nullable = false)
-    private Date addedDate;
 
     public TicketShoppingCartVO() {
     }
 
-    public TicketShoppingCartVO(Integer memId, Integer ticketId, Integer quantity, Date addedDate) {
+    public TicketShoppingCartVO(Integer memId, Integer ticketId, Integer quantity) {
         this.memId = memId;
         this.ticketId = ticketId;
         this.quantity = quantity;
-        this.addedDate = addedDate;
     }
 
     public Integer getMemId() {
@@ -59,13 +54,6 @@ public class TicketShoppingCartVO implements Serializable {
         this.quantity = quantity;
     }
 
-    public Date getAddedDate() {
-        return addedDate;
-    }
-
-    public void setAddedDate(Date addedDate) {
-        this.addedDate = addedDate;
-    }
 
 
         public static class CompositeDetail implements Serializable {
