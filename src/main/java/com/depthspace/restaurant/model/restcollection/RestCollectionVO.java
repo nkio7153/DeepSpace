@@ -19,7 +19,7 @@ import com.depthspace.restaurant.model.restaurant.RestVO;
 @IdClass(RestCollectionVO.CompositeDetail.class)
 public class RestCollectionVO implements Serializable {
 	@Id
-	@Column(name = "MEM_REST")
+	@Column(name = "REST_ID")
 	private Integer restId;
 	
 	@Id
@@ -27,7 +27,7 @@ public class RestCollectionVO implements Serializable {
 	private Integer memId;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "MEM_REST", referencedColumnName = "REST_ID", insertable = false, updatable = false)
+	@JoinColumn(name = "REST_ID", referencedColumnName = "REST_ID", insertable = false, updatable = false)
 	private RestVO restVO;
 	
 	public RestVO getRestVO() {

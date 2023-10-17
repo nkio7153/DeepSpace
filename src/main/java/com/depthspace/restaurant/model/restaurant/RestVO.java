@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restcollection.RestCollectionVO;
 
 @Entity
@@ -38,13 +39,23 @@ public class RestVO implements Serializable {
 	
 	@OneToMany(mappedBy = "restVO", cascade = CascadeType.ALL)
 	private Set<RestCollectionVO> rests;
+	@OneToMany(mappedBy = "restVO", cascade = CascadeType.ALL)
+	private Set<MemBookingVO> memBooking;
 	
-	public Set<RestCollectionVO> getRestIds() {
+	public Set<RestCollectionVO> getRests() {
 		return rests;
 	}
 
-	public void setRestIds(Set<RestCollectionVO> restIds) {
-		this.rests = restIds;
+	public void setRests(Set<RestCollectionVO> rests) {
+		this.rests = rests;
+	}
+
+	public Set<MemBookingVO> getMemBooking() {
+		return memBooking;
+	}
+
+	public void setMemBooking(Set<MemBookingVO> memBooking) {
+		this.memBooking = memBooking;
 	}
 
 	public RestVO() {
