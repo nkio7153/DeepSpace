@@ -9,10 +9,10 @@ import java.nio.file.Files;
 public class ImageTest {
     public static void main(String[] args) {
         TicketImagesJDBCDAO dao = new TicketImagesJDBCDAO();
-        String imagePath="C:\\data\\xpark.jpg";
+        String imagePath="C:\\data\\20220923002036.jpg";
         try {
             byte[] pic = getPictureByteArray(imagePath);
-            TicketImagesVO entity = new TicketImagesVO(null, 324003, pic);
+            TicketImagesVO entity = new TicketImagesVO(null, 324004, pic,(byte)1);
             dao.insert(entity);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
