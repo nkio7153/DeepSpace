@@ -13,24 +13,24 @@ import com.depthspace.utils.DBUtil;
 public class TicketJDBCDAO implements TicketDAO_Interface {
 	
 	private static final String INSERT_STMT =
-			"INSERT INTO TICKET (TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE, STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS, AREA_ID, ADDRESS, LONGITUDE, LATITUDE) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			"INSERT INTO TICKET (TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE, STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS, ADDRESS, LONGITUDE, LATITUDE) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT =
 			"SELECT TICKET_ID, TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE,"
 			+ " STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS, AREA_ID, ADDRESS, LONGITUDE, LATITUDE FROM TICKET ORDER BY TICKET_ID";
 	private static final String GET_ONE_STMT =
-			"SELECT TICKET_ID, TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE, STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS, AREA_ID, ADDRESS, LONGITUDE, LATITUDE FROM TICKET WHERE TICKET_ID = ?";
+			"SELECT TICKET_ID, TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE, STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS,ADDRESS, LONGITUDE, LATITUDE FROM TICKET WHERE TICKET_ID = ?";
 	private static final String DELETE_STMT = 
 			"DELETE FROM TICKET WHERE TICKET_ID = ?";		
 	private static final String UPDATE_STMT = 
-			"UPDATE TICKET SET TICKET_TYPE_ID=?, TICKET_NAME=?, DESCRIPTION=?, PRICE=?, STOCK=?, VALID_DAYS=?, STATUS=?, PUBLISHED_DATE=?, TOTAL_STAR_RATINGS=?, TOTAL_STARS=?, AREA_ID=?, ADDRESS=?, LONGITUDE=?, LATITUDE=? WHERE TICKET_ID=?";
+			"UPDATE TICKET SET TICKET_TYPE_ID=?, TICKET_NAME=?, DESCRIPTION=?, PRICE=?, STOCK=?, VALID_DAYS=?, STATUS=?, PUBLISHED_DATE=?, TOTAL_STAR_RATINGS=?, TOTAL_STARS=?, ADDRESS=?, LONGITUDE=?, LATITUDE=? WHERE TICKET_ID=?";
 
 	//後台列表內容：票券編號、票券類型、票券名稱、描述、價格、庫存、上下架狀態、發布日、地區、圖片
 	private static final String GET_TICKETS_STMT = 
-	        "SELECT t.TICKET_ID, tt.TYPE_NAME, t.TICKET_NAME, t.DESCRIPTION, t.PRICE, t.STOCK, t.STATUS, t.PUBLISHED_DATE, c.CITY_NAME, ti.IMAGE " +
+	        "SELECT t.TICKET_ID, tt.TYPE_NAME, t.TICKET_NAME, t.DESCRIPTION, t.PRICE, t.STOCK, t.STATUS, t.PUBLISHED_DATE, ti.IMAGE " +
 	        "FROM TICKET t " +
 	        "JOIN TICKET_IMAGES ti ON t.TICKET_ID = ti.TICKET_ID " +
 	        "JOIN TICKET_TYPES tt ON t.TICKET_TYPE_ID = tt.TICKET_TYPE_ID " +
-	        "JOIN CITY c ON t.AREA_ID = c.CITY_ID " +
+//	        "JOIN CITY c ON t.AREA_ID = c.CITY_ID " +
 	        "WHERE ti.IS_MAIN_IMAGE = 1 " +
 	        "ORDER BY t.TICKET_ID;";
 
@@ -57,10 +57,10 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 //			pstmt.setTimestamp(8, new java.sql.Timestamp(System.currentTimeMillis()));
 			pstmt.setInt(9, ticketVO.getTotalStarRatings());
 			pstmt.setInt(10, ticketVO.getTotalStars());
-			pstmt.setInt(11, ticketVO.getAreaId());
-			pstmt.setString(12, ticketVO.getAddress());
-			pstmt.setDouble(13, ticketVO.getLongitude());
-			pstmt.setDouble(14, ticketVO.getLatitude());
+//			pstmt.setInt(11, ticketVO.getAreaId());
+			pstmt.setString(11, ticketVO.getAddress());
+			pstmt.setDouble(12, ticketVO.getLongitude());
+			pstmt.setDouble(13, ticketVO.getLatitude());
 			pstmt.executeUpdate();
 			
 		} catch (SQLException se) {
@@ -91,11 +91,11 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 			pstmt.setTimestamp(8, new java.sql.Timestamp(System.currentTimeMillis()));
 			pstmt.setInt(9, ticketVO.getTotalStarRatings());
 			pstmt.setInt(10, ticketVO.getTotalStars());
-			pstmt.setInt(11, ticketVO.getAreaId());
-			pstmt.setString(12, ticketVO.getAddress());
-			pstmt.setDouble(13, ticketVO.getLongitude());
-			pstmt.setDouble(14, ticketVO.getLatitude());
-			pstmt.setInt(15, ticketVO.getTicketId()); // 
+//			pstmt.setInt(11, ticketVO.getAreaId());
+			pstmt.setString(11, ticketVO.getAddress());
+			pstmt.setDouble(12, ticketVO.getLongitude());
+			pstmt.setDouble(13, ticketVO.getLatitude());
+			pstmt.setInt(14, ticketVO.getTicketId()); // 
 			
 			pstmt.executeUpdate();
 			
@@ -151,7 +151,7 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 				ticketVO.setPublishedDate(rs.getTimestamp("PUBLISHED_DATE")); 
 				ticketVO.setTotalStarRatings(rs.getInt("TOTAL_STAR_RATINGS")); 
 				ticketVO.setTotalStars(rs.getInt("TOTAL_STARS")); 
-				ticketVO.setAreaId(rs.getInt("AREA_ID"));
+//				ticketVO.setAreaId(rs.getInt("AREA_ID"));
 				ticketVO.setAddress(rs.getString("ADDRESS"));
 				ticketVO.setLongitude(rs.getDouble("LONGITUDE"));
 				ticketVO.setLatitude(rs.getDouble("LATITUDE"));
@@ -190,7 +190,7 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 				ticketVO.setPublishedDate(rs.getTimestamp("PUBLISHED_DATE")); 
 				ticketVO.setTotalStarRatings(rs.getInt("TOTAL_STAR_RATINGS")); 
 				ticketVO.setTotalStars(rs.getInt("TOTAL_STARS")); 
-				ticketVO.setAreaId(rs.getInt("AREA_ID"));
+//				ticketVO.setAreaId(rs.getInt("AREA_ID"));
 				ticketVO.setAddress(rs.getString("ADDRESS"));
 				ticketVO.setLongitude(rs.getDouble("LONGITUDE"));
 				ticketVO.setLatitude(rs.getDouble("LATITUDE"));
@@ -231,7 +231,7 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
                 ticketInfo.setPublishedDate(rs.getTimestamp("PUBLISHED_DATE"));
 //                ticketInfo.setTotalStarRatings(rs.getInt("TOTAL_STAR_RATINGS"));
 //                ticketInfo.setTotalStars(rs.getInt("TOTAL_STARS"));
-                ticketInfo.setAreaId(rs.getInt("AREA_ID"));
+//                ticketInfo.setAreaId(rs.getInt("AREA_ID"));
 //                ticketInfo.setAddress(rs.getString("ADDRESS"));
 //                ticketInfo.setLongitude(rs.getDouble("LONGITUDE"));
 //                ticketInfo.setLatitude(rs.getDouble("LATITUDE"));

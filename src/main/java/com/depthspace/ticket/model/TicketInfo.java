@@ -15,7 +15,7 @@ public class TicketInfo {
     private java.sql.Timestamp publishedDate;
     private Integer totalStarRatings;
     private Integer totalStars;
-    private Integer areaId;
+//    private Integer areaId;
     private String address;
     private Double longitude;
     private Double latitude;
@@ -53,7 +53,7 @@ public class TicketInfo {
 		this.publishedDate = publishedDate;
 		this.totalStarRatings = totalStarRatings;
 		this.totalStars = totalStars;
-		this.areaId = areaId;
+//		this.areaId = areaId;
 		this.address = address;
 		this.longitude = longitude;
 		this.latitude = latitude;
@@ -132,12 +132,12 @@ public class TicketInfo {
 	public void setTotalStars(Integer totalStars) {
 		this.totalStars = totalStars;
 	}
-	public Integer getAreaId() {
-		return areaId;
-	}
-	public void setAreaId(Integer areaId) {
-		this.areaId = areaId;
-	}
+//	public Integer getAreaId() {
+//		return areaId;
+//	}
+//	public void setAreaId(Integer areaId) {
+//		this.areaId = areaId;
+//	}
 	public String getAddress() {
 		return address;
 	}
