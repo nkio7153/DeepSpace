@@ -19,7 +19,6 @@ public class TicketInfo {
     private String address;
     private Double longitude;
     private Double latitude;
-//    private String image; 
     private byte[] image;
     private Integer salesVolume;
     
@@ -175,7 +174,7 @@ public class TicketInfo {
 	}
 	public void setSalesVolume(Integer salesVolume) {
 		this.salesVolume = salesVolume;
-	} 
+	}
 
 
 }
