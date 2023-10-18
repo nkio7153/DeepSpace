@@ -15,46 +15,24 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 	private static final String INSERT_STMT =
 			"INSERT INTO TICKET (TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE, STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS, AREA_ID, ADDRESS, LONGITUDE, LATITUDE) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT =
-			"SELECT TICKET_ID, TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE, STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS, AREA_ID, ADDRESS, LONGITUDE, LATITUDE FROM TICKET ORDER BY TICKET_ID";
+			"SELECT TICKET_ID, TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE,"
+			+ " STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS, AREA_ID, ADDRESS, LONGITUDE, LATITUDE FROM TICKET ORDER BY TICKET_ID";
 	private static final String GET_ONE_STMT =
 			"SELECT TICKET_ID, TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE, STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS, AREA_ID, ADDRESS, LONGITUDE, LATITUDE FROM TICKET WHERE TICKET_ID = ?";
 	private static final String DELETE_STMT = 
 			"DELETE FROM TICKET WHERE TICKET_ID = ?";		
 	private static final String UPDATE_STMT = 
 			"UPDATE TICKET SET TICKET_TYPE_ID=?, TICKET_NAME=?, DESCRIPTION=?, PRICE=?, STOCK=?, VALID_DAYS=?, STATUS=?, PUBLISHED_DATE=?, TOTAL_STAR_RATINGS=?, TOTAL_STARS=?, AREA_ID=?, ADDRESS=?, LONGITUDE=?, LATITUDE=? WHERE TICKET_ID=?";
-	//後台列表內容
-//	private static final String GET_TICKETS_STMT =  
-//	        "WITH RankedImages AS (" +
-//	        "    SELECT" +
-//	        "        ti.TICKET_ID," +
-//	        "        ti.IMAGE," +
-//	        "        ROW_NUMBER() OVER(PARTITION BY ti.TICKET_ID ORDER BY ti.SERIAL_ID) AS rn" +
-//	        "    FROM TICKET_IMAGES ti" +
-//	        "    WHERE ti.IS_MAIN_IMAGE = 1" + // 確保只有主圖被選擇
-//	        ") " +
-//	        "SELECT t.TICKET_ID, tt.TYPE_NAME, t.TICKET_NAME, t.DESCRIPTION, t.PRICE, t.STOCK, t.STATUS, t.PUBLISHED_DATE, t.ADDRESS, rti.IMAGE " +
-//	        "FROM TICKET t " +
-//	        "JOIN RankedImages rti ON t.TICKET_ID = rti.TICKET_ID AND rti.rn = 1 " + // 加入 rn 條件是為了確保每個票據ID只對應一個圖像
-//	        "JOIN TICKET_TYPES tt ON t.TICKET_TYPE_ID = tt.TICKET_TYPE_ID " +
-//	        "GROUP BY t.TICKET_ID, tt.TYPE_NAME, t.TICKET_NAME, t.DESCRIPTION, t.PRICE, t.STOCK, t.STATUS, t.PUBLISHED_DATE, t.ADDRESS, rti.IMAGE " +
-//	        "ORDER BY t.TICKET_ID";
+
+	//後台列表內容：票券編號、票券類型、票券名稱、描述、價格、庫存、上下架狀態、發布日、地區、圖片
 	private static final String GET_TICKETS_STMT = 
-	        "WITH RankedImages AS (" +
-	        "    SELECT" +
-	        "        ti.TICKET_ID," +
-	        "        ti.IMAGE," +
-	        "        ROW_NUMBER() OVER(PARTITION BY ti.TICKET_ID ORDER BY ti.SERIAL_ID) AS rn" +
-	        "    FROM TICKET_IMAGES ti" +
-	        "    WHERE ti.IS_MAIN_IMAGE = 1" + // 選擇主圖
-	        ") " +
-	        "SELECT t.TICKET_ID, t.TICKET_NAME, rti.IMAGE " +
+	        "SELECT t.TICKET_ID, tt.TYPE_NAME, t.TICKET_NAME, t.DESCRIPTION, t.PRICE, t.STOCK, t.STATUS, t.PUBLISHED_DATE, c.CITY_NAME, ti.IMAGE " +
 	        "FROM TICKET t " +
-	        "JOIN RankedImages rti ON t.TICKET_ID = rti.TICKET_ID AND rti.rn = 1 " + // 加入 rn 條件是為了確保每個票據ID只對應一個圖像
-	        "ORDER BY t.TICKET_ID"; 
-
-	
-
-
+	        "JOIN TICKET_IMAGES ti ON t.TICKET_ID = ti.TICKET_ID " +
+	        "JOIN TICKET_TYPES tt ON t.TICKET_TYPE_ID = tt.TICKET_TYPE_ID " +
+	        "JOIN CITY c ON t.AREA_ID = c.CITY_ID " +
+	        "WHERE ti.IS_MAIN_IMAGE = 1 " +
+	        "ORDER BY t.TICKET_ID;";
 
 
 	@Override
@@ -243,17 +221,17 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
             while (rs.next()) {
                 TicketInfo ticketInfo = new TicketInfo(); 
                 ticketInfo.setTicketId(rs.getInt("TICKET_ID"));
-//                ticketInfo.setTypeName(rs.getString("TYPE_NAME")); 
+                ticketInfo.setTypeName(rs.getString("TYPE_NAME")); 
                 ticketInfo.setTicketName(rs.getString("TICKET_NAME"));
-//                ticketInfo.setDescription(rs.getString("DESCRIPTION"));
-//                ticketInfo.setPrice(rs.getInt("PRICE"));
-//                ticketInfo.setStock(rs.getInt("STOCK"));
+                ticketInfo.setDescription(rs.getString("DESCRIPTION"));
+                ticketInfo.setPrice(rs.getInt("PRICE"));
+                ticketInfo.setStock(rs.getInt("STOCK"));
 //                ticketInfo.setValidDays(rs.getInt("VALID_DAYS"));
-//                ticketInfo.setStatus(rs.getByte("STATUS"));
-//                ticketInfo.setPublishedDate(rs.getTimestamp("PUBLISHED_DATE"));
+                ticketInfo.setStatus(rs.getByte("STATUS"));
+                ticketInfo.setPublishedDate(rs.getTimestamp("PUBLISHED_DATE"));
 //                ticketInfo.setTotalStarRatings(rs.getInt("TOTAL_STAR_RATINGS"));
 //                ticketInfo.setTotalStars(rs.getInt("TOTAL_STARS"));
-//                ticketInfo.setAreaId(rs.getInt("AREA_ID"));
+                ticketInfo.setAreaId(rs.getInt("AREA_ID"));
 //                ticketInfo.setAddress(rs.getString("ADDRESS"));
 //                ticketInfo.setLongitude(rs.getDouble("LONGITUDE"));
 //                ticketInfo.setLatitude(rs.getDouble("LATITUDE"));

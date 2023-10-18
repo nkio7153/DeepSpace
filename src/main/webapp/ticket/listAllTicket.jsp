@@ -19,7 +19,7 @@
   
  <style>
     img {
-        max-width: 100px; 
+        max-width: 100px;
         max-height: 100px; 
         display: block;
         margin: 0 auto;
@@ -43,7 +43,7 @@
 			        <button class="btn btn-primary btn-block">搜尋關鍵字</button>
 			    </div>
 			</div>
-    
+  
 <h1>票券列表</h1>
 
     <!-- 表格 -->
@@ -51,19 +51,31 @@
         <thead>
             <tr>
 				<th>項次</th>
-		    	<th>編號</th>
-		        <th>圖片</th>        
-		        <th>名稱</th>
+				<th>類型</th>
+				<th>編號</th>
+			    <th>圖片</th>        
+			    <th>名稱</th>
+			    <th>價格</th>
+			    <th>數量</th>
+			    <th>描述</th>   
+			    <th>發布日</th>
+			    <th>狀況</th>	
 		    </tr>
              </thead>
             <tbody>   
     <!-- 票券所有資料 -->
 	    <c:forEach var="ticket" items="${list}" varStatus="status">
 	        <tr>
-	        	<td>${status.index + 1}</td>
-	        	<td>${ticket.ticketId}</td>
+				<td>${status.index + 1}</td>
+				<td>${ticket.typeName}</td>
+				<td>${ticket.ticketId}</td>
 			    <td><img src="data:image/jpeg;base64,${ticket.base64Image}"/></td>
-	            <td>${ticket.ticketName}</td>     
+			    <td>${ticket.ticketName}</td>
+			    <td>${ticket.price}</td>
+			    <td>${ticket.stock}</td>
+			    <td>${ticket.description}</td>    
+			    <td>${ticket.publishedDate}</td> 
+			    <td>${ticket.status}</td>    	            
 	        </tr>
 	    </c:forEach>
         <!-- 分頁 -->

@@ -60,10 +60,10 @@ public class TicketVO implements Serializable{
     
 	@Column(name="LATITUDE")
     private Double latitude;
-    
+
 	public TicketVO() {
 		super();
-		
+		// TODO Auto-generated constructor stub
 	}
 
 	public TicketVO(Integer ticketId, Integer ticketTypeId, String ticketName, String description, Integer price,
@@ -205,8 +205,7 @@ public class TicketVO implements Serializable{
 
 	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
-	}  
-	    
-		
+	}
+    
 
 }
