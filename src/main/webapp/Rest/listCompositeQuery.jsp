@@ -1,6 +1,6 @@
-<%@page import="com.depthspace.restaurant.service.RestServiecImpl"%>
-<%@page import="com.depthspace.restaurant.service.RestService"%>
-<%@page import="com.depthspace.restaurant.model.restaurant.RestVO"%>
+<%@ page import="com.depthspace.restaurant.service.RestServiecImpl"%>
+<%@ page import="com.depthspace.restaurant.service.RestService"%>
+<%@ page import="com.depthspace.restaurant.model.restaurant.RestVO"%>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.HashSet" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -28,9 +28,7 @@
            			<option value="${rest.restId}">${rest.restId}</option>
        			</c:forEach>
     		</select>
-		<p><label>餐廳查詢：</label></p>
-		<input type="text" name="restName"><br>
-		<p><input type="submit" value="送出"></p>
+    	<p><input type="submit" value="送出"></p>
 		<input type="hidden" name="action" value="compositeQuery">
 	</form>
 	<table style="width:50%; text-align:center;">
@@ -49,6 +47,30 @@
 			<td>${rest.restOpen}</td>
 		</tr>
 	</table>
+	<br>
+	<form action="${pageContext.request.contextPath}/Rest/Rest.do" method="post">
+		<p><label>餐廳名稱：</label>
+		<input type="text" name="restName"><br>
+		<p><label>餐廳電話：</label>
+		<input type="text" name="restTel"><br>
+		<p><label>餐廳地址：</label>
+		<input type="text" name="restAddress"><br>
+		<p><label>營業時間：</label>
+		<input type="text" name="restOpen"><br>
+		<p><label>餐廳上下架 (0下架/1上架)：</label>
+		<select id="restStatus" name="restStatus">
+	        <option value=0>0</option>
+	        <option value=1>1</option>
+	   	</select>
+	   	<p><label>可預約組數：</label>
+		<input type="number" name="bookingLimit"><br>
+		<p><label>管理員ID：</label>
+		<input type="number" name="adminId" pattern="[1-5]"><br>
+		<p><input type="submit" value="新增"></p>
+		<input type="hidden" name="action" value="add">
+   	</form>
+		
+		
 	<br>
 	<a href="${pageContext.request.contextPath}/Rest/index.jsp">回首頁</a>	
 </body>

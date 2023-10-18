@@ -15,6 +15,7 @@ import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.restaurant.service.RestService;
 import com.depthspace.restaurant.service.RestServiecImpl;
 
+@WebServlet("/Rest/Rest.do")
 public class RestServlet extends HttpServlet {
 	
 	private RestService restService;
@@ -40,6 +41,9 @@ public class RestServlet extends HttpServlet {
 				break;
 			case "compositeQuery":
 				forwardPath = getCompositeEmpsQuery(req, resp);
+				break;
+			case "add":
+				forwardPath = add(req, resp);
 				break;
 			default:
 				forwardPath = "/Rest/index.jsp";
@@ -67,7 +71,18 @@ public class RestServlet extends HttpServlet {
 		return "/Rest/listCompositeQuery.jsp";			
 	}
 	
-
+	private String add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		RestVO rest = new RestVO();
+		rest.setRestName(req.getParameter("restName"));
+		rest.setRestTel(req.getParameter("restTel"));
+		rest.setRestAddress(req.getParameter("restAddress"));
+		rest.setRestOpen(req.getParameter("restOpen"));
+		rest.setRestStatus(Integer.valueOf(req.getParameter("restStatus")));
+		rest.setBookingLimit(Integer.valueOf(req.getParameter("bookingLimit")));
+		rest.setAdminId(Integer.valueOf(req.getParameter("adminId")));
+		restService.addRest(rest);
+		return "/Rest/listCompositeQuery.jsp";
+	}
 	
 	
 	

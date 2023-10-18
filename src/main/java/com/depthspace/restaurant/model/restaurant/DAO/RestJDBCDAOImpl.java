@@ -1,8 +1,9 @@
-package com.depthspace.restaurant.model.restaurant;
+package com.depthspace.restaurant.model.restaurant.DAO;
 
 import java.sql.*;
 import java.util.*;
 
+import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.utils.DBUtil;
 
 public class RestJDBCDAOImpl implements RestDAO_interface {

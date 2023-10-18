@@ -10,7 +10,7 @@
 	<h1>餐廳</h1>
 	<a href="${pageContext.request.contextPath}/Rest/Rest.do?action=getAll">查詢所有餐廳</a>
 	<br><br>
-	<a href="${pageContext.request.contextPath}/Rest/Rest.do?action=compositeQuery">查詢餐廳</a>
+	<a href="${pageContext.request.contextPath}/Rest/listCompositeQuery.jsp">查詢餐廳</a>
 
 </body>
 </html>

@@ -2,20 +2,26 @@ package com.depthspace.restaurant.service;
 
 import java.util.List;
 
-import com.depthspace.restaurant.model.restaurant.RestDAO_interface;
-import com.depthspace.restaurant.model.restaurant.RestJDBCDAOImpl;
+import org.hibernate.Session;
+
+import com.depthspace.restaurant.model.restaurant.RestDAO;
+import com.depthspace.restaurant.model.restaurant.RestDAOHibernateImpl;
+import com.depthspace.restaurant.model.restaurant.RestDAOImpl;
 import com.depthspace.restaurant.model.restaurant.RestVO;
+import com.depthspace.utils.HibernateUtil;
 
 public class RestServiecImpl implements RestService {
 
-	private RestDAO_interface dao;
+	private RestDAO dao;
 	
 	public RestServiecImpl() {
-		dao = new RestJDBCDAOImpl();
+		dao = new RestDAOHibernateImpl();
+//		dao = new RestDAOImpl(HibernateUtil.getSessionFactory());
 	}
 	
 	@Override
 	public RestVO addRest(RestVO restVO) {
+		dao.add(restVO);
 		return null;
 	}
 
@@ -26,12 +32,12 @@ public class RestServiecImpl implements RestService {
 
 	@Override
 	public void deleteRest(Integer restId) {
-		
+		dao.delete(restId);
 	}
 
 	@Override
 	public RestVO getRestByRestId(Integer restId) {
-		return dao.findByPrimaryKey(restId);
+		return dao.findByPK(restId);
 	}
 
 	@Override
