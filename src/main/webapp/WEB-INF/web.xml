@@ -16,6 +16,5 @@
 		<listener-class>com.depthspace.listener.InitializerListener</listener-class>
 	</listener>
 	
-
 	
 </web-app>

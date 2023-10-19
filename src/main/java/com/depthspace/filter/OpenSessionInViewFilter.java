@@ -13,7 +13,7 @@ import org.hibernate.SessionFactory;
 
 import com.depthspace.utils.HibernateUtil;
 
-//@WebFilter("/*")
+@WebFilter("/*")
 public class OpenSessionInViewFilter implements Filter {
 
 	@Override

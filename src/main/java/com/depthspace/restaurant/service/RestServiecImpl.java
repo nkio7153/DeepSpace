@@ -15,14 +15,14 @@ public class RestServiecImpl implements RestService {
 	private RestDAO dao;
 	
 	public RestServiecImpl() {
-		dao = new RestDAOHibernateImpl();
-//		dao = new RestDAOImpl(HibernateUtil.getSessionFactory());
+//		dao = new RestDAOHibernateImpl();
+		dao = new RestDAOImpl(HibernateUtil.getSessionFactory());
 	}
 	
 	@Override
 	public RestVO addRest(RestVO restVO) {
 		dao.add(restVO);
-		return null;
+		return restVO;
 	}
 
 	@Override
