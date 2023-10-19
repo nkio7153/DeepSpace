@@ -26,14 +26,13 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 
 	//後台列表內容：票券編號、票券類型、票券名稱、描述、價格、庫存、上下架狀態、發布日、地區、圖片
 	private static final String GET_TICKETS_STMT = 
-	        "SELECT t.TICKET_ID, tt.TYPE_NAME, t.TICKET_NAME, t.DESCRIPTION, t.PRICE, t.STOCK, t.STATUS, t.PUBLISHED_DATE, ti.IMAGE " +
+   	        "SELECT t.TICKET_ID, tt.TYPE_NAME, t.TICKET_NAME, t.DESCRIPTION, t.PRICE, t.STOCK, t.VALID_DAYS, t.STATUS, t.TOTAL_STAR_RATINGS, t.TOTAL_STARS, t.AREA_ID, c.CITY_NAME, t.ADDRESS, t.LONGITUDE, t.LATITUDE, t.PUBLISHED_DATE, ti.IMAGE " +
 	        "FROM TICKET t " +
 	        "JOIN TICKET_IMAGES ti ON t.TICKET_ID = ti.TICKET_ID " +
 	        "JOIN TICKET_TYPES tt ON t.TICKET_TYPE_ID = tt.TICKET_TYPE_ID " +
-//	        "JOIN CITY c ON t.AREA_ID = c.CITY_ID " +
+	        "JOIN CITY c ON t.AREA_ID = c.CITY_ID " +
 	        "WHERE ti.IS_MAIN_IMAGE = 1 " +
 	        "ORDER BY t.TICKET_ID;";
-
 
 	@Override
 	public void insert(TicketVO ticketVO) {
@@ -57,10 +56,10 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 //			pstmt.setTimestamp(8, new java.sql.Timestamp(System.currentTimeMillis()));
 			pstmt.setInt(9, ticketVO.getTotalStarRatings());
 			pstmt.setInt(10, ticketVO.getTotalStars());
-//			pstmt.setInt(11, ticketVO.getAreaId());
-			pstmt.setString(11, ticketVO.getAddress());
-			pstmt.setDouble(12, ticketVO.getLongitude());
-			pstmt.setDouble(13, ticketVO.getLatitude());
+			pstmt.setInt(11, ticketVO.getAreaId());
+			pstmt.setString(12, ticketVO.getAddress());
+			pstmt.setDouble(13, ticketVO.getLongitude());
+			pstmt.setDouble(14, ticketVO.getLatitude());
 			pstmt.executeUpdate();
 			
 		} catch (SQLException se) {
@@ -91,11 +90,11 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 			pstmt.setTimestamp(8, new java.sql.Timestamp(System.currentTimeMillis()));
 			pstmt.setInt(9, ticketVO.getTotalStarRatings());
 			pstmt.setInt(10, ticketVO.getTotalStars());
-//			pstmt.setInt(11, ticketVO.getAreaId());
-			pstmt.setString(11, ticketVO.getAddress());
-			pstmt.setDouble(12, ticketVO.getLongitude());
-			pstmt.setDouble(13, ticketVO.getLatitude());
-			pstmt.setInt(14, ticketVO.getTicketId()); // 
+			pstmt.setInt(11, ticketVO.getAreaId());
+			pstmt.setString(12, ticketVO.getAddress());
+			pstmt.setDouble(13, ticketVO.getLongitude());
+			pstmt.setDouble(14, ticketVO.getLatitude());
+			pstmt.setInt(15, ticketVO.getTicketId()); // 
 			
 			pstmt.executeUpdate();
 			
@@ -151,7 +150,7 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 				ticketVO.setPublishedDate(rs.getTimestamp("PUBLISHED_DATE")); 
 				ticketVO.setTotalStarRatings(rs.getInt("TOTAL_STAR_RATINGS")); 
 				ticketVO.setTotalStars(rs.getInt("TOTAL_STARS")); 
-//				ticketVO.setAreaId(rs.getInt("AREA_ID"));
+				ticketVO.setAreaId(rs.getInt("AREA_ID"));
 				ticketVO.setAddress(rs.getString("ADDRESS"));
 				ticketVO.setLongitude(rs.getDouble("LONGITUDE"));
 				ticketVO.setLatitude(rs.getDouble("LATITUDE"));
@@ -190,7 +189,7 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 				ticketVO.setPublishedDate(rs.getTimestamp("PUBLISHED_DATE")); 
 				ticketVO.setTotalStarRatings(rs.getInt("TOTAL_STAR_RATINGS")); 
 				ticketVO.setTotalStars(rs.getInt("TOTAL_STARS")); 
-//				ticketVO.setAreaId(rs.getInt("AREA_ID"));
+				ticketVO.setAreaId(rs.getInt("AREA_ID"));
 				ticketVO.setAddress(rs.getString("ADDRESS"));
 				ticketVO.setLongitude(rs.getDouble("LONGITUDE"));
 				ticketVO.setLatitude(rs.getDouble("LATITUDE"));
@@ -226,18 +225,18 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
                 ticketInfo.setDescription(rs.getString("DESCRIPTION"));
                 ticketInfo.setPrice(rs.getInt("PRICE"));
                 ticketInfo.setStock(rs.getInt("STOCK"));
-//                ticketInfo.setValidDays(rs.getInt("VALID_DAYS"));
+                ticketInfo.setValidDays(rs.getInt("VALID_DAYS"));
                 ticketInfo.setStatus(rs.getByte("STATUS"));
                 ticketInfo.setPublishedDate(rs.getTimestamp("PUBLISHED_DATE"));
-//                ticketInfo.setTotalStarRatings(rs.getInt("TOTAL_STAR_RATINGS"));
-//                ticketInfo.setTotalStars(rs.getInt("TOTAL_STARS"));
-//                ticketInfo.setAreaId(rs.getInt("AREA_ID"));
-//                ticketInfo.setAddress(rs.getString("ADDRESS"));
-//                ticketInfo.setLongitude(rs.getDouble("LONGITUDE"));
-//                ticketInfo.setLatitude(rs.getDouble("LATITUDE"));
+                ticketInfo.setTotalStarRatings(rs.getInt("TOTAL_STAR_RATINGS"));
+                ticketInfo.setTotalStars(rs.getInt("TOTAL_STARS"));
+                ticketInfo.setAreaId(rs.getInt("AREA_ID"));
+                ticketInfo.setCityName(rs.getString("CITY_Name"));
+                ticketInfo.setAddress(rs.getString("ADDRESS"));
+                ticketInfo.setLongitude(rs.getDouble("LONGITUDE"));
+                ticketInfo.setLatitude(rs.getDouble("LATITUDE"));
                 ticketInfo.setImage(rs.getBytes("IMAGE"));
-//                ticketInfo.setSalesVolume(rs.getInt("SALES_VOLUME")); 
-
+                
                 list.add(ticketInfo);
             }
 			
