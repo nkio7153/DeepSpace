@@ -36,7 +36,7 @@ public class TicketImagesJDBCDAO implements TicketImagesDAO_Interface {
             
             pstmt.setInt(1, ticketImagesVO.getTicketId());
             pstmt.setBytes(2, ticketImagesVO.getImage());
-            pstmt.setByte(3, ticketImagesVO.isMainImage());
+//            pstmt.setByte(3, ticketImagesVO.isMainImage());
             pstmt.executeUpdate();
             
         } catch (SQLException se) {
@@ -57,7 +57,7 @@ public class TicketImagesJDBCDAO implements TicketImagesDAO_Interface {
             
             pstmt.setInt(1, ticketImagesVO.getTicketId());
             pstmt.setBytes(2, ticketImagesVO.getImage());
-            pstmt.setByte(3, ticketImagesVO.isMainImage());
+//            pstmt.setByte(3, ticketImagesVO.isMainImage());
             pstmt.setInt(4, ticketImagesVO.getSerialId());
             pstmt.executeUpdate();
             
@@ -102,7 +102,7 @@ public class TicketImagesJDBCDAO implements TicketImagesDAO_Interface {
             rs = pstmt.executeQuery();
 
             while(rs.next()) {
-                ticketImagesVO = new TicketImagesVO();
+//                ticketImagesVO = new TicketImagesVO();
                 ticketImagesVO.setSerialId(rs.getInt("SERIAL_ID"));
                 ticketImagesVO.setTicketId(rs.getInt("TICKET_ID"));
                 ticketImagesVO.setImage(rs.getBytes("IMAGE"));
@@ -130,7 +130,7 @@ public class TicketImagesJDBCDAO implements TicketImagesDAO_Interface {
             rs = pstmt.executeQuery();
 
             while(rs.next()) {
-                ticketImagesVO = new TicketImagesVO();
+//                ticketImagesVO = new TicketImagesVO();
                 ticketImagesVO.setSerialId(rs.getInt("SERIAL_ID"));
                 ticketImagesVO.setTicketId(rs.getInt("TICKET_ID"));
                 ticketImagesVO.setImage(rs.getBytes("IMAGE"));

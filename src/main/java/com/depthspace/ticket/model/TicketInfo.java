@@ -22,14 +22,9 @@ public class TicketInfo {
     private Double longitude;
     private Double latitude;
     private byte[] image;
-    private Integer salesVolume;    
-    private String base64Image;
-    public String getBase64Image() {
-        return base64Image;
-    }
-    public void setBase64Image(String base64Image) {
-        this.base64Image = base64Image;
-    }
+    private Integer salesVolume;   
+//  private String base64Image;
+
     
 	public TicketInfo() {
 
@@ -42,7 +37,7 @@ public class TicketInfo {
 	public TicketInfo(Integer ticketId, Integer ticketTypeId, String typeName, String ticketName, String description,
 			Integer price, Integer stock, Integer validDays, Byte status, Timestamp publishedDate,
 			Integer totalStarRatings, Integer totalStars, Integer areaId, Integer cityId, String cityName,
-			String address, Double longitude, Double latitude, byte[] image, Integer salesVolume, String base64Image) {
+			String address, Double longitude, Double latitude, byte[] image, Integer salesVolume) {
 		super();
 		this.ticketId = ticketId;
 		this.ticketTypeId = ticketTypeId;
@@ -64,7 +59,7 @@ public class TicketInfo {
 		this.latitude = latitude;
 		this.image = image;
 		this.salesVolume = salesVolume;
-		this.base64Image = base64Image;
+//		this.base64Image = base64Image;
 	}
 	public Integer getTicketId() {
 		return ticketId;
@@ -186,5 +181,13 @@ public class TicketInfo {
 	public void setCityId(Integer cityId) {
 		this.cityId = cityId;
 	}
+
+	 
+//  public String getBase64Image() {
+//      return base64Image;
+//  }
+//  public void setBase64Image(String base64Image) {
+//      this.base64Image = base64Image;
+//  }
 
 }
