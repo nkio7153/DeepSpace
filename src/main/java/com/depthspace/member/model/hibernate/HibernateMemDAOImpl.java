@@ -1,10 +1,11 @@
-package com.depthspace.member.model;
+package com.depthspace.member.model.hibernate;
 
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import com.depthspace.member.model.MemVO;
 import com.depthspace.member.model.jdbc.MemDAO_Interface;
 
 public class HibernateMemDAOImpl implements HibernateMemDAO_Interface {
@@ -16,6 +17,10 @@ public class HibernateMemDAOImpl implements HibernateMemDAO_Interface {
 
 	private Session getSession() {
 		return factory.getCurrentSession();
+	}
+
+	public HibernateMemDAOImpl() {
+		super();
 	}
 
 	@Override

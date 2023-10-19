@@ -1,5 +1,7 @@
 package com.depthspace.member.model.jdbc;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,15 +14,16 @@ import com.depthspace.utils.DBUtil;
 
 public class MemJDBCDAO implements MemDAO_Interface {
 //	private static final String INSERT_STMT = "INSERT INTO MEM(MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH, MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-	private static final String INSERT_STMT = "INSERT INTO MEM(MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH, MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+	private static final String INSERT_STMT = "INSERT INTO MEM(MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH, MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT,MEM_IMAGE) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
 
 //	private static final String UPDATE_STMT = "UPDATE MEM SET MEM_ACC=? MEM_PWD=?, MEM_NAME=?, MEM_IDENTITY=?, MEM_BTH=?, MEM_SEX=?, MEM_EMAIL=?, MEM_TEL=?, MEM_ADD=?, ACC_STATUS=?, MEM_POINT=? WHERE MEM_ID=?";
-	private static final String UPDATE_STMT = "UPDATE MEM SET MEM_ACC=?, MEM_PWD=?, MEM_NAME=?, MEM_IDENTITY=?, MEM_BTH=?, MEM_SEX=?, MEM_EMAIL=?, MEM_TEL=?, MEM_ADD=?, ACC_STATUS=?, MEM_POINT=? WHERE MEM_ID=?";
+	private static final String UPDATE_STMT = "UPDATE MEM SET MEM_ACC=?, MEM_PWD=?, MEM_NAME=?, MEM_IDENTITY=?, MEM_BTH=?, MEM_SEX=?, MEM_EMAIL=?, MEM_TEL=?, MEM_ADD=?, ACC_STATUS=?, MEM_POINT=?, MEM_IMAGE=? WHERE MEM_ID=?";
 	private static final String DELETE_STMT = "DELETE FROM MEM WHERE MEM_ID=?";
-	private static final String GET_ONE_STMT = "SELECT MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH,	MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT FROM MEM WHERE MEM_ID=?";
-//	private static final String GET_ALL_STMT = "SELECT MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH,	MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT FROM MEM";
-	private static final String GET_ALL_STMT = "SELECT MEM_ID, MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH, MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT FROM MEM";
-
+	private static final String GET_ONE_STMT = "SELECT MEM_ID,MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH, MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT,MEM_IMAGE FROM MEM WHERE MEM_ID=?";
+//	private static final String GET_ALL_STMT = "SELECT MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH, MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT FROM MEM";
+	private static final String GET_ALL_STMT = "SELECT * FROM MEM";
+	private static final String GET_EMAIL = "SELECT * FROM MEM";
+	
 	@Override
 	public void insert(MemVO MemVO) {
 		Connection conn = null;
@@ -55,7 +58,7 @@ public class MemJDBCDAO implements MemDAO_Interface {
 		try {
 			conn = DBUtil.getConnection();
 			ps = conn.prepareStatement(UPDATE_STMT);
-			ps.setInt(1, MemVO.getMemId());
+//			ps.setInt(1, MemVO.getMemId());
 			ps.setString(2, MemVO.getMemAcc());
 			ps.setString(3, MemVO.getMemPwd());
 			ps.setString(4, MemVO.getMemName());
@@ -67,13 +70,14 @@ public class MemJDBCDAO implements MemDAO_Interface {
 			ps.setString(10, MemVO.getMemAdd());
 			ps.setByte(11, MemVO.getAccStatus());
 			ps.setInt(12, MemVO.getMemPoint());
+			ps.setBytes(13, MemVO.getMemImage());
+			
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
 			DBUtil.close(conn, ps, null);
 		}
-
 	}
 
 	@Override
@@ -107,7 +111,7 @@ public class MemJDBCDAO implements MemDAO_Interface {
 
 			if (rs.next()) {
 				memVO = new MemVO();
-				memVO.setMemId(memId);
+//				memVO.setMemId(memId);
 				memVO.setMemAcc(rs.getString("MEM_ACC"));
 				memVO.setMemPwd(rs.getString("MEM_PWD"));
 				memVO.setMemName(rs.getString("MEM_NAME"));
@@ -119,6 +123,7 @@ public class MemJDBCDAO implements MemDAO_Interface {
 				memVO.setMemAdd(rs.getString("MEM_ADD"));
 				memVO.setAccStatus(rs.getByte("ACC_STATUS"));
 				memVO.setMemPoint(rs.getInt("MEM_POINT"));
+				memVO.setBase64Image("MEM_IMAGE");
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -155,6 +160,7 @@ public class MemJDBCDAO implements MemDAO_Interface {
 				memVO.setMemAdd(rs.getString("MEM_ADD"));
 				memVO.setAccStatus(rs.getByte("ACC_STATUS"));
 				memVO.setMemPoint(rs.getInt("MEM_POINT"));
+				memVO.setMemImage(rs.getBytes("MEM_IMAGE"));
 				memList.add(memVO);
 			}
 		} catch (SQLException e) {
@@ -167,8 +173,8 @@ public class MemJDBCDAO implements MemDAO_Interface {
 	}
 
 	@Override
-	public List<MemVO> findByMemId(Integer memId) {
-		ArrayList<MemVO> list = new ArrayList<>();
+	public MemVO findByMemId(Integer memId) {
+		MemVO memVO = new MemVO();
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -176,6 +182,39 @@ public class MemJDBCDAO implements MemDAO_Interface {
 			conn = DBUtil.getConnection();
 			ps = conn.prepareStatement(GET_ONE_STMT);
 			ps.setInt(1, memId);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				
+				memVO.setMemId(rs.getInt("MEM_ID"));
+				memVO.setMemAcc(rs.getString("MEM_ACC"));
+				memVO.setMemPwd(rs.getString("MEM_PWD"));
+				memVO.setMemName(rs.getString("MEM_NAME"));
+				memVO.setMemIdentity(rs.getString("MEM_IDENTITY"));
+				memVO.setMemBth(rs.getDate("MEM_BTH"));
+				memVO.setMemSex(rs.getByte("MEM_SEX"));
+				memVO.setMemEmail(rs.getString("MEM_EMAIL"));
+				memVO.setMemTel(rs.getInt("MEM_TEL"));
+				memVO.setMemAdd(rs.getString("MEM_ADD"));
+				memVO.setAccStatus(rs.getByte("ACC_STATUS"));
+				memVO.setMemPoint(rs.getInt("MEM_POINT"));
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			DBUtil.close(conn, ps, rs);
+		}
+		return memVO;
+	}
+
+	@Override
+	public List<MemVO> getEmail(String memEmail) {
+		ArrayList<MemVO> list = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			conn = DBUtil.getConnection();
+			ps = conn.prepareStatement(GET_EMAIL);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				MemVO memVO = new MemVO();

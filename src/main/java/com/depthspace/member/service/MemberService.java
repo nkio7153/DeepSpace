@@ -3,7 +3,11 @@ package com.depthspace.member.service;
 import java.sql.Date;
 import java.util.List;
 
+import org.hibernate.Session;
+
 import com.depthspace.member.model.MemVO;
+import com.depthspace.member.model.hibernate.HibernateMemDAOImpl;
+import com.depthspace.member.model.hibernate.HibernateMemDAO_Interface;
 import com.depthspace.member.model.jdbc.MemDAO_Interface;
 import com.depthspace.member.model.jdbc.MemJDBCDAO;
 
@@ -13,32 +17,31 @@ public class MemberService {
 	public MemberService() {
 		dao = new MemJDBCDAO();
 	}
-
-	public MemVO addMember(String memAcc, String memPwd, String memName, String memIdentity, Date memBth, byte memSex,
-			String memEmail, Integer memTel, String memAdd, byte accStatus, Integer memPoint) {
-		MemVO memVO = new MemVO();
-		memVO.setMemAcc(memAcc);
-		memVO.setMemPwd(memPwd);
-		memVO.setMemName(memName);
-		memVO.setMemIdentity(memIdentity);
-		memVO.setMemBth(memBth);
-		memVO.setMemSex(memSex);
-		memVO.setMemEmail(memEmail);
-		memVO.setMemTel(memTel);
-		memVO.setMemAdd(memAdd);
-		memVO.setAccStatus(accStatus);
-		memVO.setMemPoint(memPoint);
+	//增加會員
+	public MemVO addMember(MemVO memVO) {
 		dao.insert(memVO);
 		return memVO;
 	}
-
-	// 取得會員資訊(?)
-	public MemVO addMemberInfo(Integer memId) {
-		return dao.findByPrimaryKey(memId);
+	//更新會員資料
+	public MemVO updateMember(MemVO memvo) {
+		dao.update(memvo);
+		return memvo;
 	}
-	//
+	// 取得會員資訊(?)
+//	public MemVO addMemberInfo(Integer memId) {
+//		return dao.findByPrimaryKey(memId);
+//	}
+	//拿到所有會員資料
 	public List<MemVO> getAll(){
 		return dao.getAll();
 	}
+	public List<MemVO> getEmail(String memEmail){
+		return dao.getEmail(memEmail);
+	}
+	public MemVO findByMemId(Integer memId) {
+		System.out.println(memId);
+		return dao.findByMemId(memId);
+	}
+
 
 }

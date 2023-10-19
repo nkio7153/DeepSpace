@@ -12,5 +12,6 @@ public interface MemDAO_Interface {
 	 public void delete(Integer memId);
 	 public MemVO findByPrimaryKey(Integer memId);
 	 public List<MemVO> getAll();
-	 public List<MemVO> findByMemId(Integer memId);
+	 public MemVO findByMemId(Integer memId);
+	 public List<MemVO> getEmail(String memEmail);
 }

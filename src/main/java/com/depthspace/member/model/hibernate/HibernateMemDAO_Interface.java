@@ -1,6 +1,8 @@
-package com.depthspace.member.model;
+package com.depthspace.member.model.hibernate;
 
 import java.util.List;
+
+import com.depthspace.member.model.MemVO;
 
 public interface HibernateMemDAO_Interface {
 	// 會員註冊

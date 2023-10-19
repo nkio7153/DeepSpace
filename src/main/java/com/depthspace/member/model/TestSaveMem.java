@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import org.hibernate.Session;
 
+import com.depthspace.member.model.hibernate.HibernateMemDAOImpl;
 import com.depthspace.utils.HibernateUtil;
 
 public class TestSaveMem {
