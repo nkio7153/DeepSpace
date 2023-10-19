@@ -23,17 +23,26 @@ public class TicketImagesVO implements Serializable {
 	
 	@Column(name="IMAGE", columnDefinition = "mediumblob")
 	private byte[] image; 
+	
+	@Column(name = "IS_MAIN_IMAGE")
+	private byte isMainImage;
+
 
     public TicketImagesVO() {
     }
 
-    public TicketImagesVO(Integer serialId, Integer ticketId, byte[] image) {
-        this.serialId = serialId;
-        this.ticketId = ticketId;
-        this.image = image;
-    }
 
-    public Integer getSerialId() {
+    public TicketImagesVO(Integer serialId, Integer ticketId, byte[] image, byte isMainImage) {
+		super();
+		this.serialId = serialId;
+		this.ticketId = ticketId;
+		this.image = image;
+		this.isMainImage = isMainImage;
+	}
+
+
+
+	public Integer getSerialId() {
         return serialId;
     }
 
@@ -56,4 +65,13 @@ public class TicketImagesVO implements Serializable {
     public void setImage(byte[] image) {
         this.image = image;
     }
+    
+    public byte isMainImage() {
+        return isMainImage;
+    }
+
+    public void setMainImage(byte mainImage) {
+        isMainImage = mainImage;
+    }
+
 }

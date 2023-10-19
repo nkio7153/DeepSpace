@@ -13,17 +13,27 @@ import com.depthspace.utils.DBUtil;
 public class TicketJDBCDAO implements TicketDAO_Interface {
 	
 	private static final String INSERT_STMT =
-			"INSERT INTO TICKET (TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE, STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		//TICKET_ID是AI鍵，故不用放入insert建立	
+			"INSERT INTO TICKET (TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE, STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS, ADDRESS, LONGITUDE, LATITUDE) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT =
-			"SELECT TICKET_ID, TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE, STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS FROM TICKET ORDER BY TICKET_ID";		
+			"SELECT TICKET_ID, TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE,"
+			+ " STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS, AREA_ID, ADDRESS, LONGITUDE, LATITUDE FROM TICKET ORDER BY TICKET_ID";
 	private static final String GET_ONE_STMT =
-			"SELECT TICKET_ID, TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE, STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS FROM TICKET WHERE TICKET_ID = ?";	
+			"SELECT TICKET_ID, TICKET_TYPE_ID, TICKET_NAME, DESCRIPTION, PRICE, STOCK, VALID_DAYS, STATUS, PUBLISHED_DATE, TOTAL_STAR_RATINGS, TOTAL_STARS,ADDRESS, LONGITUDE, LATITUDE FROM TICKET WHERE TICKET_ID = ?";
 	private static final String DELETE_STMT = 
 			"DELETE FROM TICKET WHERE TICKET_ID = ?";		
 	private static final String UPDATE_STMT = 
-			"UPDATE TICKET SET TICKET_TYPE_ID=?, TICKET_NAME=?, DESCRIPTION=?, PRICE=?, STOCK=?, VALID_DAYS=?, STATUS=?, PUBLISHED_DATE=?, TOTAL_STAR_RATINGS=?, TOTAL_STARS=? WHERE TICKET_ID=?";	
-	
+			"UPDATE TICKET SET TICKET_TYPE_ID=?, TICKET_NAME=?, DESCRIPTION=?, PRICE=?, STOCK=?, VALID_DAYS=?, STATUS=?, PUBLISHED_DATE=?, TOTAL_STAR_RATINGS=?, TOTAL_STARS=?, ADDRESS=?, LONGITUDE=?, LATITUDE=? WHERE TICKET_ID=?";
+
+	//後台列表內容：票券編號、票券類型、票券名稱、描述、價格、庫存、上下架狀態、發布日、地區、圖片
+	private static final String GET_TICKETS_STMT = 
+   	        "SELECT t.TICKET_ID, tt.TYPE_NAME, t.TICKET_NAME, t.DESCRIPTION, t.PRICE, t.STOCK, t.VALID_DAYS, t.STATUS, t.TOTAL_STAR_RATINGS, t.TOTAL_STARS, t.AREA_ID, c.CITY_NAME, t.ADDRESS, t.LONGITUDE, t.LATITUDE, t.PUBLISHED_DATE, ti.IMAGE " +
+	        "FROM TICKET t " +
+	        "JOIN TICKET_IMAGES ti ON t.TICKET_ID = ti.TICKET_ID " +
+	        "JOIN TICKET_TYPES tt ON t.TICKET_TYPE_ID = tt.TICKET_TYPE_ID " +
+	        "JOIN CITY c ON t.AREA_ID = c.CITY_ID " +
+	        "WHERE ti.IS_MAIN_IMAGE = 1 " +
+	        "ORDER BY t.TICKET_ID;";
+
 	@Override
 	public void insert(TicketVO ticketVO) {
 		// TODO Auto-generated method stub
@@ -46,6 +56,10 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 //			pstmt.setTimestamp(8, new java.sql.Timestamp(System.currentTimeMillis()));
 			pstmt.setInt(9, ticketVO.getTotalStarRatings());
 			pstmt.setInt(10, ticketVO.getTotalStars());
+			pstmt.setInt(11, ticketVO.getAreaId());
+			pstmt.setString(12, ticketVO.getAddress());
+			pstmt.setDouble(13, ticketVO.getLongitude());
+			pstmt.setDouble(14, ticketVO.getLatitude());
 			pstmt.executeUpdate();
 			
 		} catch (SQLException se) {
@@ -76,7 +90,11 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 			pstmt.setTimestamp(8, new java.sql.Timestamp(System.currentTimeMillis()));
 			pstmt.setInt(9, ticketVO.getTotalStarRatings());
 			pstmt.setInt(10, ticketVO.getTotalStars());
-			pstmt.setInt(11, ticketVO.getTicketId());
+			pstmt.setInt(11, ticketVO.getAreaId());
+			pstmt.setString(12, ticketVO.getAddress());
+			pstmt.setDouble(13, ticketVO.getLongitude());
+			pstmt.setDouble(14, ticketVO.getLatitude());
+			pstmt.setInt(15, ticketVO.getTicketId()); // 
 			
 			pstmt.executeUpdate();
 			
@@ -89,7 +107,6 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 	
 	@Override
 	public void delete(Integer ticketId) {
-		// TODO Auto-generated method stub
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		
@@ -109,7 +126,6 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 
 	@Override
 	public TicketVO findByPrimaryKey(Integer ticketId) {
-		// TODO Auto-generated method stub
 		
 		TicketVO ticketVO = null;
 		Connection con = null;
@@ -134,6 +150,10 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 				ticketVO.setPublishedDate(rs.getTimestamp("PUBLISHED_DATE")); 
 				ticketVO.setTotalStarRatings(rs.getInt("TOTAL_STAR_RATINGS")); 
 				ticketVO.setTotalStars(rs.getInt("TOTAL_STARS")); 
+				ticketVO.setAreaId(rs.getInt("AREA_ID"));
+				ticketVO.setAddress(rs.getString("ADDRESS"));
+				ticketVO.setLongitude(rs.getDouble("LONGITUDE"));
+				ticketVO.setLatitude(rs.getDouble("LATITUDE"));
 			}
 			
 		} catch (SQLException se) {
@@ -146,7 +166,6 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 	
 	@Override
 	public List<TicketVO> getAll(Map<String, String[]> map) {
-		// TODO Auto-generated method stub
 		List<TicketVO> list = new ArrayList<>();
 		TicketVO ticketVO = null;
 		Connection con = null;
@@ -170,6 +189,10 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 				ticketVO.setPublishedDate(rs.getTimestamp("PUBLISHED_DATE")); 
 				ticketVO.setTotalStarRatings(rs.getInt("TOTAL_STAR_RATINGS")); 
 				ticketVO.setTotalStars(rs.getInt("TOTAL_STARS")); 
+				ticketVO.setAreaId(rs.getInt("AREA_ID"));
+				ticketVO.setAddress(rs.getString("ADDRESS"));
+				ticketVO.setLongitude(rs.getDouble("LONGITUDE"));
+				ticketVO.setLatitude(rs.getDouble("LATITUDE"));
 				list.add(ticketVO);
 			}
 			
@@ -180,7 +203,51 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 		}
 		return list;
 	}
-	
+
+	@Override
+	public List<TicketInfo> getTicketsInfo(Map<String, String[]> map) {
+        List<TicketInfo> list = new ArrayList<TicketInfo>();
+        TicketInfo TicketInfo = null;
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = DBUtil.getConnection();
+            pstmt = con.prepareStatement(GET_TICKETS_STMT);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                TicketInfo ticketInfo = new TicketInfo(); 
+                ticketInfo.setTicketId(rs.getInt("TICKET_ID"));
+                ticketInfo.setTypeName(rs.getString("TYPE_NAME")); 
+                ticketInfo.setTicketName(rs.getString("TICKET_NAME"));
+                ticketInfo.setDescription(rs.getString("DESCRIPTION"));
+                ticketInfo.setPrice(rs.getInt("PRICE"));
+                ticketInfo.setStock(rs.getInt("STOCK"));
+                ticketInfo.setValidDays(rs.getInt("VALID_DAYS"));
+                ticketInfo.setStatus(rs.getByte("STATUS"));
+                ticketInfo.setPublishedDate(rs.getTimestamp("PUBLISHED_DATE"));
+                ticketInfo.setTotalStarRatings(rs.getInt("TOTAL_STAR_RATINGS"));
+                ticketInfo.setTotalStars(rs.getInt("TOTAL_STARS"));
+                ticketInfo.setAreaId(rs.getInt("AREA_ID"));
+                ticketInfo.setCityName(rs.getString("CITY_Name"));
+                ticketInfo.setAddress(rs.getString("ADDRESS"));
+                ticketInfo.setLongitude(rs.getDouble("LONGITUDE"));
+                ticketInfo.setLatitude(rs.getDouble("LATITUDE"));
+                ticketInfo.setImage(rs.getBytes("IMAGE"));
+                
+                list.add(ticketInfo);
+            }
+			
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured." + se.getMessage());			
+		} finally {
+            DBUtil.close(con, pstmt, null);
+		}
+		return list;
+	}
+
 	
 	
 //	public static void main(String[] args) {
