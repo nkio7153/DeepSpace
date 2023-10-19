@@ -1,4 +1,4 @@
-package com.depthspace.admin.model;
+package com.depthspace.admin.model.model;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

@@ -61,6 +61,7 @@ public class HbToDaoImpl implements HbToDao_Interface {
     //查全部列表
     @Override
     public List<TicketOrdersVO> getAll() {
+        System.out.println("test getAll");
         return getSession().createQuery("from TicketOrdersVO",TicketOrdersVO.class).list();
     }
 

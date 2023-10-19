@@ -16,7 +16,7 @@
 <%--%>--%>
 <html>
 <head>
-    <title>歡迎使用購物車資料查詢</title>
+    <title>歡迎使票券訂單查詢</title>
     <style>
         /* 這裡是 CSS 樣式 */
         /* ... */
@@ -25,7 +25,7 @@
 <body>
 
 <!-- 主標題 -->
-<h1>購物車資訊查詢</h1>
+<h1>票券訂單資訊查詢</h1>
 
 <!-- 錯誤信息顯示區 -->
 <c:if test="${not empty errorMsgs}">
@@ -40,7 +40,7 @@
 </c:if>
 
 <!-- 查詢表單 -->
-<form method="post" action="<%=request.getContextPath()%>/tsc/memCartList">
+<form method="post" action="<%=request.getContextPath()%>/to/memOrderList">
     <label for="memId">選擇會員編號：</label>
     <select id="memId" name="memId">
         <c:forEach var="memId" items="${uniqueMemIds}">
@@ -52,11 +52,11 @@
 
 <!-- 其他操作 -->
 <ul>
-    <li><a href="<%=request.getContextPath()%>/tsc/listAll">查看所有購物車列表</a></li>
+    <li><a href="<%=request.getContextPath()%>/to/listAll">查看票券訂單列表</a></li>
     <br>
     <br>
     <br>
-    <li><a href="<%=request.getContextPath()%>/to/index?memId=${memId}">票券訂單索引頁面</a></li>
+    <li><a href="<%=request.getContextPath()%>/tsc/index?memId=${memId}">票券購物車索引頁面</a></li>
 </ul>
 </body>
 </html>

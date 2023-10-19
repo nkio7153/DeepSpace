@@ -1,5 +1,7 @@
 package com.depthspace.ticketshoppingcart.controller;
 
+import com.depthspace.ticketorders.service.TicketOrderService;
+import com.depthspace.ticketorders.service.TicketOrderService_Interface;
 import com.depthspace.ticketshoppingcart.model.TicketInfoVO;
 import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 import com.depthspace.ticketshoppingcart.service.TicketShoppingCartService;
@@ -19,31 +21,54 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-@WebServlet({"/tsc/*"})
+@WebServlet("/tsc/*")
 public class TicketShoppingCartServlet extends HttpServlet {
+    private TicketShoppingCartService tscSv;
 
+    @Override
+    public void init() throws ServletException {
+        tscSv = new TicketShoppingCartService();
+    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
-        if ("/listAll".equals(pathInfo)) {
-            doList(req, resp);
-        }else if ("/delete1".equals(pathInfo)) {
-            doDelete1(req, resp);
-        }else if ("/deleteAll".equals(pathInfo)) {
-            doDeleteAll(req, resp);
+        switch (pathInfo) {
+            case "/listAll":
+                doList(req, resp);
+                break;
+            case "/delete1":
+                doDelete1(req, resp);
+                break;
+            case "/deleteAll":
+                doDeleteAll(req, resp);
+                break;
+            case "/index":
+                doIndex(req, resp);
+                break;
+            default:
+                // 在這裡處理所有其他情況
+                break;
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
-        if ("/memCartList".equals(pathInfo)) {
-            doMemList(req, resp);
-        } else if ("/save".equals(pathInfo)) {
-            doSave(req,resp);
-        } else if ("/modify".equals(pathInfo)) {
-            doModify(req,resp);
+        switch (pathInfo) {
+            case "/memCartList":
+                doMemList(req, resp);
+                break;
+            case "/save":
+                doSave(req, resp);
+                break;
+            case "/modify":
+                doModify(req, resp);
+                break;
+            default:
+                // 在這裡處理所有其他情況
+                break;
         }
+
     }
     //查出所有購物車清單
     protected void doList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -59,18 +84,13 @@ public class TicketShoppingCartServlet extends HttpServlet {
     }
     //查出會員購物車清單
     protected void doMemList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String str = req.getParameter("memId");
         Integer memId;
         try {
-            memId = Integer.valueOf(str);
+            memId = Integer.valueOf(req.getParameter("memId"));
         } catch (Exception e) {
             e.printStackTrace();
             return;
         }
-
-        TicketShoppingCartService tscSv = new TicketShoppingCartService();
-//        List<TicketShoppingCartVO> list = tscSv.getAllbyMemId(memId);//正常VO
-        //TicketInfoVO
         List<TicketInfoVO> list = tscSv.getList(memId);
         for (TicketInfoVO vo : list) {
             byte[] imageBytes = vo.getImage();
@@ -82,15 +102,24 @@ public class TicketShoppingCartServlet extends HttpServlet {
         req.setAttribute("memId",memId);
         req.getRequestDispatcher("/ticketShoppingCart/memAllCart.jsp").forward(req, resp);
     }
+    protected void doIndex(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        TicketShoppingCartService tscSv = new TicketShoppingCartService();
+        List<TicketShoppingCartVO> list = tscSv.getAll();
+        HashSet<Integer> uniqueMemIds = new HashSet<>();
+        for (TicketShoppingCartVO vo: list){
+            uniqueMemIds.add(vo.getMemId());
+        }
+        req.setAttribute("uniqueMemIds",uniqueMemIds);
+        req.getRequestDispatcher("/ticketShoppingCart/index.jsp").forward(req, resp);
+    }
+
     //刪除一列會員購物車內容
     protected void doDelete1(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String str1 = req.getParameter("memId");
-        String str2 = req.getParameter("ticketId");
         Integer memId;
         Integer ticketId;
         try {
-            memId = Integer.valueOf(str1);
-            ticketId = Integer.parseInt(str2);
+            memId = Integer.valueOf(req.getParameter("memId"));
+            ticketId = Integer.parseInt(req.getParameter("ticketId"));
         } catch (NumberFormatException e) {
             // 處理轉型錯誤
             return;
@@ -102,14 +131,13 @@ public class TicketShoppingCartServlet extends HttpServlet {
         List<TicketShoppingCartVO> list = tscSv.getAllbyMemId(memId);
         req.setAttribute("list", list);
         req.setAttribute("memId",memId);
-        req.getRequestDispatcher("/ticketShoppingCart/memAllCart.jsp").forward(req, resp);
+        req.getRequestDispatcher("/ticketShoppingCart/memOrderList.jsp").forward(req, resp);
     }
     //會員購物車清空
     protected void doDeleteAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String str = req.getParameter("memId");
         Integer memId;
         try{
-            memId= Integer.valueOf(str);
+            memId= Integer.valueOf(req.getParameter("memId"));
         }catch (NumberFormatException e){
             // 處理轉型錯誤
             return;
@@ -121,21 +149,17 @@ public class TicketShoppingCartServlet extends HttpServlet {
         List<TicketShoppingCartVO> list = tscSv.getAllbyMemId(memId);
         req.setAttribute("list", list);
         req.setAttribute("memId",memId);
-        req.getRequestDispatcher("/ticketShoppingCart/memAllCart.jsp").forward(req, resp);
+        req.getRequestDispatcher("/ticketShoppingCart/memOrderList.jsp").forward(req, resp);
     }
     protected void doSave(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String str = req.getParameter("memId");
-        String str1 = req.getParameter("ticketId");
-        String str2 = req.getParameter("quantity");
         Integer memId;
         Integer ticketId;
         Integer quantity;
-        Date addedDate;
         TicketShoppingCartVO tscVO;
         try{
-            memId= Integer.valueOf(str);
-            ticketId=Integer.valueOf(str1);
-            quantity=Integer.valueOf(str2);
+            memId= Integer.valueOf(req.getParameter("memId"));
+            ticketId=Integer.valueOf(req.getParameter("ticketId"));
+            quantity=Integer.valueOf(req.getParameter("quantity"));
         }catch (NumberFormatException e){
             // 處理轉型錯誤
             e.printStackTrace();
@@ -149,20 +173,17 @@ public class TicketShoppingCartServlet extends HttpServlet {
         List<TicketShoppingCartVO> list = tscSv.getAllbyMemId(memId);
         req.setAttribute("list", list);
         req.setAttribute("memId",memId);
-        req.getRequestDispatcher("/ticketShoppingCart/memAllCart.jsp").forward(req, resp);
+        req.getRequestDispatcher("/ticketShoppingCart/memOrderList.jsp").forward(req, resp);
     }
     protected void doModify(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String str = req.getParameter("memId");
-        String str1 = req.getParameter("ticketId");
-        String str2 = req.getParameter("quantity");
         Integer memId;
         Integer ticketId;
         Integer quantity;
         Date addedDate;
         try{
-            memId= Integer.valueOf(str.trim());
-            ticketId=Integer.valueOf(str1.trim());
-            quantity=Integer.valueOf(str2.trim());
+            memId= Integer.valueOf(req.getParameter("memId"));
+            ticketId=Integer.valueOf(req.getParameter("ticketId"));
+            quantity=Integer.valueOf(req.getParameter("quantity"));
         }catch(NumberFormatException e){
             e.printStackTrace();
             return;
@@ -175,7 +196,7 @@ public class TicketShoppingCartServlet extends HttpServlet {
         List<TicketShoppingCartVO> list = tscSv.getAllbyMemId(memId);
         req.setAttribute("list", list);
         req.setAttribute("memId",memId);
-        req.getRequestDispatcher("/ticketShoppingCart/memAllCart.jsp").forward(req, resp);
+        req.getRequestDispatcher("/ticketShoppingCart/memOrderList.jsp").forward(req, resp);
     }
 
 }
