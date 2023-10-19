@@ -1,6 +1,7 @@
 package com.depthspace.ticket.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,12 +28,46 @@ public class TicketImagesVO implements Serializable {
 	@Column(name = "IS_MAIN_IMAGE")
 	private byte isMainImage;
 
+	public Integer getSerialId() {
+		return serialId;
+	}
 
-    public TicketImagesVO() {
-    }
+	public void setSerialId(Integer serialId) {
+		this.serialId = serialId;
+	}
 
+	public Integer getTicketId() {
+		return ticketId;
+	}
 
-    public TicketImagesVO(Integer serialId, Integer ticketId, byte[] image, byte isMainImage) {
+	public void setTicketId(Integer ticketId) {
+		this.ticketId = ticketId;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
+	public byte getIsMainImage() {
+		return isMainImage;
+	}
+
+	public void setIsMainImage(byte isMainImage) {
+		this.isMainImage = isMainImage;
+	}
+
+	@Override
+	public String toString() {
+		return "TicketImagesVO [serialId=" + serialId + ", ticketId=" + ticketId + ", image=" + Arrays.toString(image)
+				+ ", isMainImage=" + isMainImage + "]";
+	}
+
+	/******JDBC用*******/
+	public TicketImagesVO(Integer serialId, Integer ticketId, byte[] image, byte isMainImage) {
 		super();
 		this.serialId = serialId;
 		this.ticketId = ticketId;
@@ -41,37 +76,5 @@ public class TicketImagesVO implements Serializable {
 	}
 
 
-
-	public Integer getSerialId() {
-        return serialId;
-    }
-
-    public void setSerialId(Integer serialId) {
-        this.serialId = serialId;
-    }
-
-    public Integer getTicketId() {
-        return ticketId;
-    }
-
-    public void setTicketId(Integer ticketId) {
-        this.ticketId = ticketId;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-    
-    public byte isMainImage() {
-        return isMainImage;
-    }
-
-    public void setMainImage(byte mainImage) {
-        isMainImage = mainImage;
-    }
-
+ 
 }
