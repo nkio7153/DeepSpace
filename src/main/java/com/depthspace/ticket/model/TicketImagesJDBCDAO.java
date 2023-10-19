@@ -15,9 +15,9 @@ import java.util.List;
 public class TicketImagesJDBCDAO implements TicketImagesDAO_Interface {
 
     private static final String INSERT_STMT = 
-        "INSERT INTO TICKET_IMAGES (TICKET_ID, IMAGE) VALUES(?, ?)";
+        "INSERT INTO TICKET_IMAGES (TICKET_ID, IMAGE,IS_MAIN_IMAGE) VALUES(?, ?, ?)";
     private static final String UPDATE_STMT = 
-        "UPDATE TICKET_IMAGES SET TICKET_ID=?, IMAGE=? WHERE SERIAL_ID=?";
+        "UPDATE TICKET_IMAGES SET TICKET_ID=?, IMAGE=?, IS_MAIN_IMAGE=? WHERE SERIAL_ID=?";
     private static final String DELETE_STMT = 
         "DELETE FROM TICKET_IMAGES WHERE SERIAL_ID=?";
     private static final String GET_ONE_STMT = 
@@ -36,6 +36,7 @@ public class TicketImagesJDBCDAO implements TicketImagesDAO_Interface {
             
             pstmt.setInt(1, ticketImagesVO.getTicketId());
             pstmt.setBytes(2, ticketImagesVO.getImage());
+            pstmt.setByte(3, ticketImagesVO.isMainImage());
             pstmt.executeUpdate();
             
         } catch (SQLException se) {
@@ -56,7 +57,8 @@ public class TicketImagesJDBCDAO implements TicketImagesDAO_Interface {
             
             pstmt.setInt(1, ticketImagesVO.getTicketId());
             pstmt.setBytes(2, ticketImagesVO.getImage());
-            pstmt.setInt(3, ticketImagesVO.getSerialId());
+            pstmt.setByte(3, ticketImagesVO.isMainImage());
+            pstmt.setInt(4, ticketImagesVO.getSerialId());
             pstmt.executeUpdate();
             
         } catch (SQLException se) {
@@ -147,55 +149,56 @@ public class TicketImagesJDBCDAO implements TicketImagesDAO_Interface {
 //        TicketImagesJDBCDAO dao = new TicketImagesJDBCDAO();
 //
 //        // 新增
-////     byte[] pic = null;
-////     try {
-////		pic = getPictureByteArray("src/main/resources/images/tomcat.gif");
-////		} catch (IOException e) {
-////			e.printStackTrace();
-////		}
-////        TicketImagesVO ticketImagesVO1 = new TicketImagesVO();
-////        ticketImagesVO1.setTicketId(324001);
-////        ticketImagesVO1.setImage(pic);
-////        dao.insert(ticketImagesVO1);
-////        System.out.println("完成新增");
+//     byte[] pic = null;
+//     try {
+//		pic = getPictureByteArray("src/main/resources/images/tomcat.gif");
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//        TicketImagesVO ticketImagesVO1 = new TicketImagesVO();
+//        ticketImagesVO1.setTicketId(324001);
+//        ticketImagesVO1.setImage(pic);
+//        dao.insert(ticketImagesVO1);
+//        System.out.println("完成新增");
 //
-//        // 修改
-////        byte[] updatedPic = null;
-////        try {
-////            updatedPic = getPictureByteArray("src/main/resources/images/tomcat.gif"); 
-////        } catch (IOException e) {
-////            e.printStackTrace();
-////        }
-////        TicketImagesVO ticketImagesVO2 = new TicketImagesVO();
-////        ticketImagesVO2.setSerialId(8);  
+////        // 修改
+//        byte[] updatedPic = null;
+//        try {
+//            updatedPic = getPictureByteArray("C:/Users/Tibame_T14/Downloads/新增資料夾/16479310383226352680.jpg"); 
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        TicketImagesVO ticketImagesVO2 = new TicketImagesVO();
+//        ticketImagesVO2.setSerialId(2);  
 ////        ticketImagesVO2.setTicketId(324002);
-////        ticketImagesVO2.setImage(updatedPic);  
-////        dao.update(ticketImagesVO2);
-////        System.out.println("完成修改");
-//
-//        // 查詢一個
-////        TicketImagesVO ticketImagesVO3 = dao.findByPrimaryKey(7);
-////        System.out.print(ticketImagesVO3.getSerialId() + ",");
-//////        System.out.println(ticketImagesVO3.getImage());  
-////        outputImage(ticketImagesVO3.getImage(), "C:/output/1.png");         
-////        System.out.println("完成查詢");
-//
-//        // 查詢全部
-////        List<TicketImagesVO> list = dao.getAll();
-////        for (TicketImagesVO all : list) {
-////            System.out.print(all.getSerialId() + ",");
-////            outputImage(all.getImage(), "C:/output/"+all.getSerialId()+".png"); 
-////            System.out.println("--------------");
-////        }
-//
-//        // 刪除
-////        dao.delete(5);
-////        System.out.println("完成刪除");
+//        ticketImagesVO2.setImage(updatedPic);  
+//        dao.update(ticketImagesVO2);
+//        System.out.println("完成修改");
 //    }
-//    
-//
-//
-//	//新增圖片
+////
+////        // 查詢一個
+//////        TicketImagesVO ticketImagesVO3 = dao.findByPrimaryKey(7);
+//////        System.out.print(ticketImagesVO3.getSerialId() + ",");
+////////        System.out.println(ticketImagesVO3.getImage());  
+//////        outputImage(ticketImagesVO3.getImage(), "C:/output/1.png");         
+//////        System.out.println("完成查詢");
+////
+////        // 查詢全部
+//////        List<TicketImagesVO> list = dao.getAll();
+//////        for (TicketImagesVO all : list) {
+//////            System.out.print(all.getSerialId() + ",");
+//////            outputImage(all.getImage(), "C:/output/"+all.getSerialId()+".png"); 
+//////            System.out.println("--------------");
+//////        }
+////
+////        // 刪除
+//////        dao.delete(5);
+//////        System.out.println("完成刪除");
+////    }
+////    
+////
+////
+////	//新增圖片
 //	public static byte[] getPictureByteArray(String path) throws IOException {
 //		FileInputStream fis = new FileInputStream(path);
 //		byte[] buffer = fis.readAllBytes();
@@ -204,7 +207,7 @@ public class TicketImagesJDBCDAO implements TicketImagesDAO_Interface {
 //		return buffer;
 //
 //	}
-//	//查找圖片
+////	//查找圖片
 //	private static void outputImage(byte[] imageData, String outputPath) {
 //	    FileOutputStream fos = null;
 //	    try {
@@ -223,6 +226,6 @@ public class TicketImagesJDBCDAO implements TicketImagesDAO_Interface {
 //	    }
 //	}
 //
-//
-//   
+
+   
 }
