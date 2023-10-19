@@ -1,6 +1,6 @@
-package com.depthspace.ticketorders.model.ticketorderdetail;
+package com.depthspace.ticketorders.model.ticketorderdetail.hibernate;
 
-import com.depthspace.promotion.model.promotiondetails.HbProDeDaoImpl;
+import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
