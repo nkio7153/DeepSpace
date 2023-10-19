@@ -27,7 +27,8 @@ public class RestServiecImpl implements RestService {
 
 	@Override
 	public RestVO updateRest(RestVO restVO) {
-		return null;
+		dao.update(restVO);
+		return restVO;
 	}
 
 	@Override

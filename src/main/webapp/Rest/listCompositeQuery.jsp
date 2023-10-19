@@ -20,7 +20,7 @@
 <title>餐廳查詢</title>
 </head>
 <body>
-	<h3><b>複合查詢 (使用 Criteria Query)：</b></h3>
+	<h3><b>PK查詢：</b></h3>
 	<form action="${pageContext.request.contextPath}/Rest/Rest.do" method="post">
 		<label for="restId">選擇餐廳編號：</label>
     		<select id="restId" name="restId">
@@ -38,6 +38,9 @@
 			<th>餐廳電話</th>
 			<th>餐廳地址</th>
 			<th>營業時間</th>
+			<th>上/下架</th>
+			<th>預設可訂位組數</th>
+			<th>管理員ID</th>
 		</tr>
 		<tr>
 			<td>${rest.restId}</td>
@@ -45,6 +48,16 @@
 			<td>${rest.restTel}</td>
 			<td>${rest.restAddress}</td>
 			<td>${rest.restOpen}</td>
+			<c:choose>
+			    <c:when test="${rest.restStatus == 0}">
+			        <td>下架</td>
+			    </c:when>
+			    <c:when test="${rest.restStatus == 1}">
+			        <td>上架</td>
+			    </c:when>
+			</c:choose>
+			<td>${rest.bookingLimit}組</td>
+			<td>${rest.adminId}</td>
 		</tr>
 	</table>
 	<br>

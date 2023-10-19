@@ -45,6 +45,15 @@ public class RestServlet extends HttpServlet {
 			case "add":
 				forwardPath = add(req, resp);
 				break;
+			case "delete":
+				forwardPath = delete(req, resp);
+				break;
+			case "getId_for_update":
+				forwardPath = forUpdate(req, resp);
+				break;
+			case "update":
+				forwardPath = update(req, resp);
+				break;
 			default:
 				forwardPath = "/Rest/index.jsp";
 		}
@@ -68,7 +77,7 @@ public class RestServlet extends HttpServlet {
 		}
 		RestVO restList = restService.getRestByRestId(Integer.parseInt(restId));
 		req.setAttribute("rest", restList);
-		return "/Rest/listCompositeQuery.jsp";			
+		return "/Rest/listCompositeQuery.jsp";
 	}
 	
 	private String add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -84,6 +93,30 @@ public class RestServlet extends HttpServlet {
 		return "/Rest/listCompositeQuery.jsp";
 	}
 	
+	private String delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String restId = req.getParameter("restId");
+		restService.deleteRest(Integer.parseInt(restId));
+		return "/Rest/Rest.do?action=getAll";
+	}
 	
+	private String forUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String restId = req.getParameter("restId");
+		RestVO restList = restService.getRestByRestId(Integer.parseInt(restId));
+		req.setAttribute("rest", restList);
+		return "/Rest/Update_Rest.jsp";
+	}
 	
+	private String update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		RestVO rest = new RestVO();
+		rest.setRestName(req.getParameter("restName"));
+		rest.setRestTel(req.getParameter("restTel"));
+		rest.setRestAddress(req.getParameter("restAddress"));
+		rest.setRestOpen(req.getParameter("restOpen"));
+		rest.setRestStatus(Integer.parseInt(req.getParameter("restStatus")));
+		rest.setBookingLimit(Integer.parseInt(req.getParameter("bookingLimit")));
+		rest.setAdminId(Integer.parseInt(req.getParameter("adminId")));
+		rest.setRestId(Integer.parseInt(req.getParameter("restId")));
+		restService.updateRest(rest);
+		return "/Rest/Rest.do?action=getAll";
+	}
 }
