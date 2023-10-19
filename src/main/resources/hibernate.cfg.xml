@@ -30,7 +30,8 @@
         <mapping class="com.depthspace.column.model.ColumnTypesVO"/>
         <mapping class="com.depthspace.ticket.model.TicketImagesVO"/>
         <mapping class="com.depthspace.ticket.model.TicketTypesVO"/>
-        <mapping class="com.depthspace.ticket.model.TicketVO"/>
+<!--         有錯 暫時註解 -->
+<!--         <mapping class="com.depthspace.ticket.model.TicketVO"/> -->
         <mapping class="com.depthspace.ticketcollection.model.TicketCollectionVO"/>
         <mapping class="com.depthspace.notifications.model.NotificationsVO"/>
         
