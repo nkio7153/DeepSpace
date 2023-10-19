@@ -1,4 +1,4 @@
-package com.depthspace.faq.model;
+package com.depthspace.faq.model.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
