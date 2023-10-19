@@ -21,7 +21,7 @@ public class FaqService {
 		faqVO.setFaqNo(faqNo);
 		faqVO.setFaqName(faqName);
 		faqVO.setFaqAns(faqAns);
-		dao.insertFaq(faqVO);
+		dao.insert(faqVO);
 
 		return faqVO;
 	}
@@ -34,13 +34,13 @@ public class FaqService {
 		faqVO.setFaqNo(faqNo);
 		faqVO.setFaqName(faqName);
 		faqVO.setFaqAns(faqAns);
-		dao.updateFaq(faqVO);
+		dao.update(faqVO);
 
 		return faqVO;
 	}
 
 	public void deleteFaq(Integer serialId) {
-		dao.deleteFaq(serialId);
+		dao.delete(serialId);
 	}
 
 	public FaqVO getOneFaq(Integer serialId) {

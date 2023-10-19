@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 import com.depthspace.utils.DBUtil;
 
 public class FaqDAOImpl implements FaqDAO {
@@ -18,7 +17,7 @@ public class FaqDAOImpl implements FaqDAO {
 	private static final String GET_ALL = "SELECT * FROM FAQ";
 
 	@Override
-	public void insertFaq(FaqVO faqVO) {
+	public void insert(FaqVO faqVO) {
 		Connection conn = null;
         PreparedStatement pstmt = null;
         try {
@@ -39,7 +38,7 @@ public class FaqDAOImpl implements FaqDAO {
 	}
 
 	@Override
-	public void updateFaq(FaqVO faqVO) {
+	public void update(FaqVO faqVO) {
 		Connection conn = null;
         PreparedStatement pstmt = null;
         
@@ -61,7 +60,7 @@ public class FaqDAOImpl implements FaqDAO {
 	}
 
 	@Override
-	public void deleteFaq(Integer serialId) {
+	public void delete(Integer serialId) {
 		Connection conn = null;
         PreparedStatement pstmt = null;
         

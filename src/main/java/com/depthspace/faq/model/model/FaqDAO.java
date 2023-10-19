@@ -2,10 +2,12 @@ package com.depthspace.faq.model.model;
 
 import java.util.List;
 
+import com.depthspace.ticketshoppingcart.model.TicketInfoVO;
+
 public interface FaqDAO {
-    void insertFaq(FaqVO faqVO);
-    void updateFaq(FaqVO faqVO);
-    void deleteFaq(Integer serialId);
+    void insert(FaqVO faqVO);
+    void update(FaqVO faqVO);
+    void delete(Integer serialId);
 
     FaqVO findByPrimaryKey(Integer serialId);
     List<FaqVO> getAllFaqs();

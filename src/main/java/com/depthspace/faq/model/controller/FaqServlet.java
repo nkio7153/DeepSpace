@@ -6,8 +6,9 @@ import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import com.depthspace.faq.model.model.FaqVO;
+import com.depthspace.faq.model.model.*;
 import com.depthspace.faq.model.service.*;
+import com.depthspace.faq.model.controller.*;
 
 public class FaqServlet extends HttpServlet {
 
@@ -28,39 +29,43 @@ public class FaqServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
-			String str = req.getParameter("empno");
-			if (str == null || (str.trim()).length() == 0) {
-				errorMsgs.add("請輸入員工編號");
-			}
-			// Send the use back to the form, if there were errors
-			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req.getRequestDispatcher("/emp/select_page.jsp");
-				failureView.forward(req, res);
-				return;// 程式中斷
-			}
-
-			Integer empno = null;
+			String str = req.getParameter("serialId");
+			
+			Integer serialId = null;
 			try {
-				empno = Integer.valueOf(str);
+				serialId = Integer.valueOf(str);
 			} catch (Exception e) {
 				errorMsgs.add("員工編號格式不正確");
 			}
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req.getRequestDispatcher("/emp/select_page.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/faq/select_page.jsp");
+				failureView.forward(req, res);
+				return;// 程式中斷
+			}
+			
+			Integer faqNo = null;
+			try {
+				faqNo = Integer.valueOf(str);
+			} catch (Exception e) {
+				errorMsgs.add("員工編號格式不正確");
+			}
+			// Send the use back to the form, if there were errors
+			if (!errorMsgs.isEmpty()) {
+				RequestDispatcher failureView = req.getRequestDispatcher("/faq/select_page.jsp");
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
 
 			/*************************** 2.開始查詢資料 *****************************************/
 			FaqService faqSvc = new FaqService();
-			FaqVO faqVO = faqSvc.getOneFaq(empno);
+			FaqVO faqVO = faqSvc.getOneFaq(serialId);
 			if (faqVO == null) {
 				errorMsgs.add("查無資料");
 			}
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req.getRequestDispatcher("/emp/select_page.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/faq/select_page.jsp");
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
@@ -88,7 +93,7 @@ public class FaqServlet extends HttpServlet {
 
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
 			req.setAttribute("FaqVO", FaqVO); // 資料庫取出的FaqVO物件,存入req
-			String url = "/emp/update_Faq_input.jsp";
+			String url = "/faq/update_Faq_input.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_Faq_input.jsp
 			successView.forward(req, res);
 		}
@@ -254,7 +259,7 @@ public class FaqServlet extends HttpServlet {
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
 				req.setAttribute("faqVO", faqVO); // 含有輸入格式錯誤的empVO物件,也存入req
-				RequestDispatcher failureView = req.getRequestDispatcher("/emp/addEmp.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/faq/addFaq.jsp");
 				failureView.forward(req, res);
 				return;
 			}
@@ -269,7 +274,7 @@ public class FaqServlet extends HttpServlet {
 			successView.forward(req, res);
 		}
 
-		if ("insert".equals(action)) { // 來自addEmp.jsp的請求
+		if ("delete".equals(action)) { // 來自addEmp.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -284,7 +289,7 @@ public class FaqServlet extends HttpServlet {
 			faqSvc.deleteFaq(Faqno);
 
 			/*************************** 3.刪除完成,準備轉交(Send the Success view) ***********/
-			String url = "/emp/listAllFaq.jsp";
+			String url = "/faq/listAllFaq.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
 			successView.forward(req, res);
 		}
