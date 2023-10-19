@@ -49,8 +49,8 @@ public class TicketVO implements Serializable{
 	@Column(name="TOTAL_STARS")
 	private Integer totalStars;
 	
-//	@Column(name="AREA_ID")
-//    private Integer areaId;  
+	@Column(name="AREA_ID")
+    private Integer areaId;  
     
 	@Column(name="ADDRESS")
     private String address;  
@@ -68,7 +68,7 @@ public class TicketVO implements Serializable{
 
 	public TicketVO(Integer ticketId, Integer ticketTypeId, String ticketName, String description, Integer price,
 			Integer stock, Integer validDays, byte status, Timestamp publishedDate, Integer totalStarRatings,
-			Integer totalStars, String address, Double longitude, Double latitude) {
+			Integer totalStars, Integer areaId, String address, Double longitude, Double latitude) {
 		super();
 		this.ticketId = ticketId;
 		this.ticketTypeId = ticketTypeId;
@@ -81,7 +81,7 @@ public class TicketVO implements Serializable{
 		this.publishedDate = publishedDate;
 		this.totalStarRatings = totalStarRatings;
 		this.totalStars = totalStars;
-//		this.areaId = areaId;
+		this.areaId = areaId;
 		this.address = address;
 		this.longitude = longitude;
 		this.latitude = latitude;
@@ -175,13 +175,13 @@ public class TicketVO implements Serializable{
 		this.totalStars = totalStars;
 	}
 
-//	public Integer getAreaId() {
-//		return areaId;
-//	}
-//
-//	public void setAreaId(Integer areaId) {
-//		this.areaId = areaId;
-//	}
+	public Integer getAreaId() {
+		return areaId;
+	}
+
+	public void setAreaId(Integer areaId) {
+		this.areaId = areaId;
+	}
 
 	public String getAddress() {
 		return address;

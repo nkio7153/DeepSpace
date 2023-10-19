@@ -15,13 +15,14 @@ public class TicketInfo {
     private java.sql.Timestamp publishedDate;
     private Integer totalStarRatings;
     private Integer totalStars;
-//    private Integer areaId;
+    private Integer areaId;
+    private Integer cityId;
+	private String cityName;    
     private String address;
     private Double longitude;
     private Double latitude;
     private byte[] image;
-    private Integer salesVolume;
-    
+    private Integer salesVolume;    
     private String base64Image;
     public String getBase64Image() {
         return base64Image;
@@ -36,10 +37,12 @@ public class TicketInfo {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+
 	public TicketInfo(Integer ticketId, Integer ticketTypeId, String typeName, String ticketName, String description,
 			Integer price, Integer stock, Integer validDays, Byte status, Timestamp publishedDate,
-			Integer totalStarRatings, Integer totalStars, Integer areaId, String address, Double longitude,
-			Double latitude, byte[] image, Integer salesVolume) {
+			Integer totalStarRatings, Integer totalStars, Integer areaId, Integer cityId, String cityName,
+			String address, Double longitude, Double latitude, byte[] image, Integer salesVolume, String base64Image) {
 		super();
 		this.ticketId = ticketId;
 		this.ticketTypeId = ticketTypeId;
@@ -53,12 +56,15 @@ public class TicketInfo {
 		this.publishedDate = publishedDate;
 		this.totalStarRatings = totalStarRatings;
 		this.totalStars = totalStars;
-//		this.areaId = areaId;
+		this.areaId = areaId;
+		this.cityId = cityId;
+		this.cityName = cityName;
 		this.address = address;
 		this.longitude = longitude;
 		this.latitude = latitude;
 		this.image = image;
 		this.salesVolume = salesVolume;
+		this.base64Image = base64Image;
 	}
 	public Integer getTicketId() {
 		return ticketId;
@@ -132,12 +138,12 @@ public class TicketInfo {
 	public void setTotalStars(Integer totalStars) {
 		this.totalStars = totalStars;
 	}
-//	public Integer getAreaId() {
-//		return areaId;
-//	}
-//	public void setAreaId(Integer areaId) {
-//		this.areaId = areaId;
-//	}
+	public Integer getAreaId() {
+		return areaId;
+	}
+	public void setAreaId(Integer areaId) {
+		this.areaId = areaId;
+	}
 	public String getAddress() {
 		return address;
 	}
@@ -156,17 +162,10 @@ public class TicketInfo {
 	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
-//	public String getImage() {
-//		return image;
-//	}
-//	public void setImage(String image) {
-//		this.image = image;
-//	}
     public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
+		return image;
+	}
+	public void setImage(byte[] image) {
         this.image = image;
     }
 	public Integer getSalesVolume() {
@@ -175,6 +174,17 @@ public class TicketInfo {
 	public void setSalesVolume(Integer salesVolume) {
 		this.salesVolume = salesVolume;
 	}
-
+	public String getCityName() {
+		return cityName;
+	}
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+	public Integer getCityId() {
+		return cityId;
+	}
+	public void setCityId(Integer cityId) {
+		this.cityId = cityId;
+	}
 
 }

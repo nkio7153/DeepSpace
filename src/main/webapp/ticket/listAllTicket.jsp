@@ -2,6 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.depthspace.ticket.model.TicketVO" %>
 <%@ page import="com.depthspace.ticket.model.TicketInfo" %>
+<%@ page import="com.depthspace.attractions.model.CityVO" %>
 <%@ page import="com.depthspace.ticket.service.TicketService" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -60,6 +61,7 @@
 			    <th>描述</th>   
 			    <th>發布日</th>
 			    <th>狀況</th>	
+			    <th>區域</th>		
 		    </tr>
              </thead>
             <tbody>   
@@ -75,7 +77,8 @@
 			    <td>${ticket.stock}</td>
 			    <td>${ticket.description}</td>    
 			    <td>${ticket.publishedDate}</td> 
-			    <td>${ticket.status}</td>    	            
+			    <td>${ticket.status}</td>      
+			     <td>${ticket.cityName}</td>     
 	        </tr>
 	    </c:forEach>
         <!-- 分頁 -->
