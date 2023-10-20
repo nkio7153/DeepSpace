@@ -71,8 +71,8 @@ public class FaqServlet extends HttpServlet {
 			}
 
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
-			req.setAttribute("FaqVO", faqVO); // 資料庫取出的empVO物件,存入req
-			String url = "/Faq/listOneFaq.jsp";
+			req.setAttribute("faqVO", faqVO); // 資料庫取出的empVO物件,存入req
+			String url = "/faq/listOneFaq.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneFaq.jsp
 			successView.forward(req, res);
 		}
@@ -248,7 +248,7 @@ public class FaqServlet extends HttpServlet {
 //				errorMsgs.add("獎金請填數字.");
 //			}
 
-			Integer faq = Integer.valueOf(req.getParameter("faq").trim());
+//			Integer faq = Integer.valueOf(req.getParameter("faq").trim());
 
 			FaqVO faqVO = new FaqVO();
 			faqVO.setSerialId(serialId);
@@ -268,7 +268,6 @@ public class FaqServlet extends HttpServlet {
 			faqVO = faqSvc.updateFaq(serialId, faqNo, faqName, faqAns);
 
 			/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
-			req.setAttribute("faqVO", faqVO); // 資料庫update成功後,正確的的faqVO物件,存入req
 			String url = "/faq/listOnefaq.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneFaq.jsp
 			successView.forward(req, res);
@@ -282,11 +281,11 @@ public class FaqServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			/*************************** 1.接收請求參數 ***************************************/
-			Integer Faqno = Integer.valueOf(req.getParameter("Faqno"));
+			Integer serialId = Integer.valueOf(req.getParameter("serialId"));
 
 			/*************************** 2.開始刪除資料 ***************************************/
 			FaqService faqSvc = new FaqService();
-			faqSvc.deleteFaq(Faqno);
+			faqSvc.deleteFaq(serialId);
 
 			/*************************** 3.刪除完成,準備轉交(Send the Success view) ***********/
 			String url = "/faq/listAllFaq.jsp";
