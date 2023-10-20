@@ -58,16 +58,7 @@ public class MemVO implements Serializable {
 	@Column(name = "MEM_IMAGE", columnDefinition = "mediumblob")
 	private byte[] memImage;
 	
-//	@Column
-	private String base64Image;
 
-	public String getBase64Image() {
-        return base64Image;
-    }
-	
-	public void setBase64Image(String base64Image) {
-        this.base64Image = base64Image;
-    }
 
 	public MemVO() {
 	}
@@ -194,12 +185,14 @@ public class MemVO implements Serializable {
 	public void setMemImage(byte[] memImage) {
 		this.memImage = memImage;
 	}
+
 	@Override
 	public String toString() {
 		return "MemVO [memId=" + memId + ", memAcc=" + memAcc + ", memPwd=" + memPwd + ", memName=" + memName
 				+ ", memIdentity=" + memIdentity + ", memBth=" + memBth + ", memSex=" + memSex + ", memEmail="
 				+ memEmail + ", memTel=" + memTel + ", memAdd=" + memAdd + ", accStatus=" + accStatus + ", memPoint="
-				+ memPoint + ", memImage=" + Arrays.toString(memImage) + ", base64Image=" + base64Image + "]";
+				+ memPoint + ", memImage=" + Arrays.toString(memImage) + "]";
 	}
+	
 
 }

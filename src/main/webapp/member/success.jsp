@@ -27,7 +27,7 @@
 			<th>會員編號</th><td>${authenticatedMem.memId} </td>
 		</tr>
 		<tr>
-			<th>會員大頭貼</th><td><img src="data:image/jpeg;base64, ${authenticatedMem.base64Image}" ></td>
+			<th>會員大頭貼</th><td><img src="data:image/jpeg;base64, ${base64Image}" ></td>
 		</tr>
 		<tr>
 			<th>帳號</th><td>${authenticatedMem.memAcc}</td>
@@ -67,7 +67,6 @@
 		<input type="submit" value="修改會員資料">
 		<input type="hidden" name="action"	value="update">
 	</form>
-<!-- 	<input type="button" value="修改會員資料" onclick="revise()"> -->
 	<input type="button" value="登出" onclick="index()">
 	<script type="text/javascript">
 	    function index() {

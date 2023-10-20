@@ -32,36 +32,130 @@ public class MemberServlet extends HttpServlet {
 		String pathInfo = req.getPathInfo();
 		if ("/success".equals(pathInfo)) {
 			doSuccess(req, resp);
-		} else {
-			"/edit".equals(pathInfo);
+		} else if ("/edit".equals(pathInfo)){
 			doEdit(req, resp);
+		} else if ("/addMember".equals(pathInfo)){
+			doAddMember(req,resp);
+		} else if ("/modify".equals(pathInfo)) {
+			doModify(req, resp);
 		}
 	}
 
-	private void doEdit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		System.out.println(req.toString());
+	private void doModify(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<String> errorMsgs = new LinkedList<String>();
 		req.setAttribute("errorMsgs", errorMsgs);
 		
-		//============================================
+		String memId = req.getParameter("memId");
+		Integer st1 = Integer.valueOf(memId);
+		
+		String st2 = req.getParameter("memAcc");
+		if (st2 == null || st2.trim().length() == 0) {
+			errorMsgs.add("帳號請勿空白");
+		}
+		
+		String st3 = req.getParameter("memPwd");
+		if (st3 == null || st3.trim().length() == 0) {
+			errorMsgs.add("密碼請勿空白");
+		}
+		
+		String st4 = req.getParameter("memName");
+		if (st4 == null || st4.trim().length() == 0) {
+			errorMsgs.add("姓名請勿空白");
+		}
+		
+		String st5 = req.getParameter("memIdentity");
+		if (st5 == null || st5.trim().length() == 0) {
+			errorMsgs.add("身分證請勿空白");
+		}
+		
+		java.sql.Date st6 = null;
+		String memBth = req.getParameter("memBth");
+		if (memBth != null && !memBth.isEmpty()) {
+		    try {
+		        st6 = java.sql.Date.valueOf(memBth);
+		    } catch (IllegalArgumentException e) {
+		    	errorMsgs.add("生日請勿空白");
+		    }
+		}
+
+		String memSex = req.getParameter("memSex");
+		byte st7 = Byte.parseByte(memSex);
+
+		String st8 = req.getParameter("memEmail");
+		if (st8 == null || st8.trim().length() == 0) {
+			errorMsgs.add("Email請勿空白");
+		}
+		
+		String memTel = req.getParameter("memTel");
+		Integer st9 = Integer.valueOf(memTel);
+		if (st9 == null) {
+			errorMsgs.add("電話請勿空白");
+		}
+		
+		String st10 = req.getParameter("memAdd");
+		if (st10 == null || st10.trim().length() == 0) {
+			errorMsgs.add("地址請勿空白");
+		}
+		String accStatus = req.getParameter("accStatus");
+		byte st11 = Byte.parseByte(accStatus);
+		
+		String memPoint = req.getParameter("memPoint");
+		Integer st12 = Integer.valueOf(memPoint);
+		
+		String st13 = req.getParameter("memImage");
+		if (st13 != null && !st13.isEmpty()) {
+			MemVO memvo = new MemVO();
+			byte[] imageBytes = memvo.getMemImage();
+			st13 = Base64.getEncoder().encodeToString(imageBytes);
+			req.setAttribute("base64Image", st13);
+			}
+		
+		MemberService m = new MemberService();
+		if (!errorMsgs.isEmpty()) {
+			
+		}
+		
+		req.getRequestDispatcher("/member/modify.jsp").forward(req, resp);
+	}
+	
+	// ===================================================================================
+	
+	private void doAddMember(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		System.out.println("喔耶");
+		req.getRequestDispatcher("/member/addMember.jsp").forward(req, resp);
+	}
+	
+// ===================================================================================
+	
+	private void doEdit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		
 		MemberService m = new MemberService();
 		Integer memId;
 		try {
 			memId = Integer.valueOf(req.getParameter("memId"));
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 		MemVO memVo = m.findByMemId(memId);
-			String imageBytes = memVo.getBase64Image();
-			if (imageBytes != null) {
-//				String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-				memVo.setBase64Image(imageBytes);
-			}
+	    if (memVo != null) {
+	        byte[] imageBytes = memVo.getMemImage();
+	        
+	        if (imageBytes != null) {
+	            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+	            req.setAttribute("base64Image", base64Image);
+	        } else {
+	            req.setAttribute("base64Image", null); // 如果 memImage 為 null，設定 base64Image 為 null
+	        }
+	        
+	        req.setAttribute("mem", memVo);
+	        req.getRequestDispatcher("/member/revise.jsp").forward(req, resp);
+	    } else {
+	       System.out.println("失敗QQ");
+	    }
 		
-		req.setAttribute("mem", memVo);
-		req.getRequestDispatcher("/member/revise.jsp").forward(req, resp);
-		//============================================
+		// ============================================
 
 //		Integer empno = Integer.valueOf(req.getParameter("empno").trim());
 //		String memId = req.getParameter("memId");
@@ -283,21 +377,10 @@ public class MemberServlet extends HttpServlet {
 	protected void doSuccess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String email = req.getParameter("email");
 		String password = req.getParameter("password");
-//		System.out.println(email);
-//		System.out.println(password);
 
 		MemberService ms = new MemberService();
 		List<MemVO> list = ms.getAll();
-
-		for (MemVO mem : list) {
-			byte[] imageBytes = mem.getMemImage();
-//			if (imageBytes != null) {
-				String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-				mem.setBase64Image(base64Image);
-//			}
-//			mem.setBase64Image(imageBytes);
-//			System.out.println(imageBytes);
-		}
+		String base64Image;
 
 		for (MemVO mem : list) {
 			if (mem.getMemEmail().equals(email) && mem.getMemPwd().equals(password)) {
@@ -315,35 +398,15 @@ public class MemberServlet extends HttpServlet {
 				authenticatedMem.setMemAdd(mem.getMemAdd());
 				authenticatedMem.setAccStatus(mem.getAccStatus());
 				authenticatedMem.setMemPoint(mem.getMemPoint());
-				authenticatedMem.setBase64Image(mem.getBase64Image());
-
-//				byte[] imageBytes = mem.getMemImage();
-//	            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-//	            authenticatedMem.setBase64Image(base64Image);
-//				authenticatedMem.setBase64Image(mem.getBase64Image());		
-				// 設定 MemVO 物件到 request 屬性，以便在 JSP 中使用
+				byte[] imageBytes = mem.getMemImage();
+				base64Image = Base64.getEncoder().encodeToString(imageBytes);
 				req.setAttribute("authenticatedMem", authenticatedMem);
-//				System.out.println(authenticatedMem);
+				req.setAttribute("base64Image", base64Image);
 			}
 		}
 		req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
 	}
 }
-//byte[] memImage = null;
-//	            try {
-//	                memImage = MemJDBCDAO.getPictureByteArray("src/main/resource/images/1.gif"); // 將 "path_to_image" 換成圖片路徑
-//	            } catch (IOException e) {
-//	                e.printStackTrace();
-//	            }
-//				authenticatedMem.setMemImage(memImage);
-
-//				for (MemVO mem : list) {
-//				if (mem.getMemEmail().equals(email) && mem.getMemPwd().equals(password)) {
-//					Map<String, String[]> map = req.getParameterMap();
-//					System.out.println(map);
-//					req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
-//				}
-//		 }
 //		if (isAuthenticated) {
 //			// 帳號和密碼匹配，執行登入成功後的動作
 //			// 這裡可以設置登入成功後的跳轉頁面或其他處理

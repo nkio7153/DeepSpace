@@ -124,7 +124,7 @@ public class MemJDBCDAO implements MemDAO_Interface {
 				memVO.setMemAdd(rs.getString("MEM_ADD"));
 				memVO.setAccStatus(rs.getByte("ACC_STATUS"));
 				memVO.setMemPoint(rs.getInt("MEM_POINT"));
-				memVO.setBase64Image("MEM_IMAGE");
+				memVO.setMemImage(rs.getBytes("MEM_IMAGE"));
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

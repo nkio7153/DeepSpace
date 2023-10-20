@@ -21,27 +21,27 @@
         </tr>
         <tr>
             <th>會員大頭貼</th>
-            <td><img src="data:image/jpeg;base64, ${mem.base64Image}" ></td>
+            <td><img src="data:image/jpeg;base64, ${base64Image}" ></td>
         </tr>
         <tr>
             <th>帳號</th>
-            <td>${mem.memAcc}</td>
+            <td><input type="text" name="memId" value="${mem.memAcc}"></td>
         </tr>
         <tr>
             <th>密碼</th>
-            <td>${mem.memPwd}</td>
+            <td><input type="text" name="memId" value="${mem.memPwd}"></td>
         </tr>
         <tr>
             <th>會員姓名</th>
-            <td>${mem.memName}</td>
+            <td><input type="text" name="memId" value="${mem.memName}"></td>
         </tr>
         <tr>
             <th>身分證字號</th>
-            <td>${mem.memIdentity}</td>
+            <td><input type="text" name="memId" value="${mem.memIdentity}"></td>
         </tr>
         <tr>
             <th>生日</th>
-            <td>${mem.memBth}</td>
+            <td><input type="text" name="memId" value="${mem.memBth}"></td>
         </tr>
         <tr>
             <th>性別</th>
@@ -49,31 +49,31 @@
         </tr>
         <tr>
             <th>電子郵件</th>
-            <td>${mem.memEmail}</td>
+            <td><input type="text" name="memId" value="${mem.memEmail}"></td>
         </tr>
         <tr>
             <th>手機電話</th>
-            <td>${mem.memTel}</td>
+            <td><input type="text" name="memId" value="${mem.memTel}"></td>
         </tr>
         <tr>
             <th>地址</th>
-            <td>${mem.memAdd}</td>
+            <td><input type="text" name="memId" value="${mem.memAdd}"></td>
         </tr>
     </table>
     <p align="center">
-        <input type="button" value="修改會員資料" onclick="revise()" />
-        <input type="button" value="取消" onclick="cancel()" />
+        <input type="button" value="儲存會員資料" onclick="save()" />
+        <input type="button" value="取消" onclick="history.back()">" />
     </p>
     <script type="text/javascript">
-        function revise() {
+        function save() {
             // 導向到修改頁面
             document.location.href = "${pageContext.request.contextPath}/member/revise.jsp";
         }
         
-        function cancel() {
-            // 導向回成功頁面
-            document.location.href = "${pageContext.request.contextPath}/member/success.jsp";
-        }
+//         function cancel() {
+//             // 導向回success頁面
+//             document.location.href = "${pageContext.request.contextPath}/member/success.jsp";
+//         }
     </script>
 </body>
 </html>
