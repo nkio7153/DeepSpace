@@ -45,7 +45,7 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 			con = DBUtil.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 			
-			pstmt.setInt(1, ticketVO.getTicketTypeId());
+//			pstmt.setInt(1, ticketVO.getTicketTypeId());
 			pstmt.setString(2, ticketVO.getTicketName());
 			pstmt.setString(3, ticketVO.getDescription());
 			pstmt.setInt(4, ticketVO.getPrice());
@@ -80,7 +80,7 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 			con = DBUtil.getConnection();
 			pstmt = con.prepareStatement(UPDATE_STMT);
 			
-			pstmt.setInt(1, ticketVO.getTicketTypeId());
+//			pstmt.setInt(1, ticketVO.getTicketTypeId());
 			pstmt.setString(2, ticketVO.getTicketName());
 			pstmt.setString(3, ticketVO.getDescription());
 			pstmt.setInt(4, ticketVO.getPrice());
@@ -140,7 +140,7 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 			while(rs.next()) { //移動查詢
 				ticketVO = new TicketVO();
 				ticketVO.setTicketId(rs.getInt("TICKET_ID")); 
-				ticketVO.setTicketTypeId(rs.getInt("TICKET_TYPE_ID")); 				
+//				ticketVO.setTicketTypeId(rs.getInt("TICKET_TYPE_ID")); 				
 				ticketVO.setTicketName(rs.getString("TICKET_NAME")); 
 				ticketVO.setDescription(rs.getString("DESCRIPTION")); 
 				ticketVO.setPrice(rs.getInt("PRICE")); 
@@ -179,7 +179,7 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 			while(rs.next()) { //移動查詢
 				ticketVO = new TicketVO();
 				ticketVO.setTicketId(rs.getInt("TICKET_ID")); 
-				ticketVO.setTicketTypeId(rs.getInt("TICKET_TYPE_ID")); 				
+//				ticketVO.setTicketTypeId(rs.getInt("TICKET_TYPE_ID")); 				
 				ticketVO.setTicketName(rs.getString("TICKET_NAME")); 
 				ticketVO.setDescription(rs.getString("DESCRIPTION")); 
 				ticketVO.setPrice(rs.getInt("PRICE")); 

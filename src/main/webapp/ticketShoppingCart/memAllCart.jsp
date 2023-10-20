@@ -16,7 +16,7 @@
 
   function index(){
     document.location.href=
-            "${pageContext.request.contextPath}/ticketShoppingCart/index.jsp?memId=${memId}"
+            "${pageContext.request.contextPath}/tsc/index"
   }
   function del1(memId, ticketId){
     console.log("memId:", memId, "ticketId:", ticketId);
@@ -51,6 +51,7 @@
     width:200px;
   }
 
+
 </style>
 <h1 align="center">會員購物車列表</h1>
 <hr>
@@ -67,6 +68,7 @@
       <th class="no-wrap">小計</th>
       <th class="no-wrap w150">操作</th>
     </tr>
+
 
   <c:forEach items="${list}" var="cart" varStatus="cartStatus">
     <tr>

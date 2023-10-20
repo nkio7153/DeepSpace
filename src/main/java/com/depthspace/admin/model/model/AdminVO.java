@@ -1,4 +1,4 @@
-package com.depthspace.admin.model;
+package com.depthspace.admin.model.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
