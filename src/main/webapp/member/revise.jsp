@@ -62,7 +62,7 @@
     </table>
     <p align="center">
         <input type="button" value="儲存會員資料" onclick="save()" />
-        <input type="button" value="取消" onclick="history.back()">" />
+        <input type="button" value="取消" onclick="history.back()">
     </p>
     <script type="text/javascript">
         function save() {

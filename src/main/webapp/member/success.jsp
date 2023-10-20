@@ -63,11 +63,11 @@
 			<th>會員點數</th><td>${authenticatedMem.memPoint}</td>
 		</tr>
 	</table>
-	<form action="${pageContext.request.contextPath}/mem/edit?memId=${authenticatedMem.memId}" method="post" >
+	<form align="center" action="${pageContext.request.contextPath}/mem/edit?memId=${authenticatedMem.memId}" method="post" >
 		<input type="submit" value="修改會員資料">
 		<input type="hidden" name="action"	value="update">
 	</form>
-	<input type="button" value="登出" onclick="index()">
+	<input type="button" value="登出" align="center" onclick="index()">
 	<script type="text/javascript">
 	    function index() {
 	        document.location.href = "${pageContext.request.contextPath}/member/member.jsp";
