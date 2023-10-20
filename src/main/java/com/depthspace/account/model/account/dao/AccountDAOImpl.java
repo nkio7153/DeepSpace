@@ -25,7 +25,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public int insert(AccountVO entity) {
-		
+
 		Transaction tx = getSession().beginTransaction();
 		session = getSession();
 		int count = (int) session.save(entity);
@@ -36,11 +36,18 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public int update(AccountVO entity) {
+		Transaction tx = getSession().beginTransaction();
+		session = getSession();
 		try {
-			getSession().update(entity);
-			return 1;
+			session.update(entity); // 或者 session.merge(entity);
+			tx.commit();
+			return 1; // 成功更新，可以返回1或其他适当的标识
 		} catch (Exception e) {
-			return -1;
+			tx.rollback(); // 如果出现异常，回滚事务
+			e.printStackTrace(); // 可以记录异常或者进行其他处理
+			return 0; // 返回0或其他标识表示更新失败
+		} finally {
+			session.close();
 		}
 	}
 
@@ -50,11 +57,11 @@ public class AccountDAOImpl implements AccountDAO {
 		session = getSession();
 		AccountVO account = session.get(AccountVO.class, id);
 		// 0:失敗 1:成功
-		int state ;
+		int state;
 		if (account != null) {
 			session.delete(account);
 			tx.commit();
-			state = 1; 
+			state = 1;
 		} else {
 			tx.rollback();
 			state = 0;
