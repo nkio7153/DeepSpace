@@ -5,7 +5,7 @@
          version="4.0">
          
     <welcome-file-list>
-        <welcome-file>ticketShoppingCart/index.jsp</welcome-file>
+<!--		<welcome-file>to/index</welcome-file>-->
         <welcome-file>account/list.jsp</welcome-file>
         <welcome-file>index.html</welcome-file>
 		<welcome-file>index.xhtml</welcome-file>
@@ -23,5 +23,8 @@
 		<url-pattern>/account/account.do</url-pattern>
 	</servlet-mapping>
 	
+	<listener>
+		<listener-class>com.depthspace.listener.InitializerListener</listener-class>
+	</listener>
 	
 </web-app>
