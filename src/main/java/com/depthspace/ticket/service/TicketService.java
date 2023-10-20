@@ -1,13 +1,32 @@
 package com.depthspace.ticket.service;
 
+import java.util.List;
+import java.util.Map;
 
+import com.depthspace.ticket.model.TicketVO;
 
 public interface TicketService {
 	
+    TicketVO addTicket(TicketVO ticketVO);
+    
+    TicketVO updateTicket(TicketVO ticketVO);
 
+    int deleteTicket(Integer ticketId);
+
+    TicketVO getTicketById(Integer ticketId);
+    
+    List<TicketVO> getAllTickets(int currentPage);
+    
+    List<TicketDTO> getTicketsWithAreaName();
+    
+    int getPageTotal();
+    
+//    List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map);
 	
 	
 }
+
+
 /***JDBC***/
 //import java.io.FileOutputStream;
 //import java.io.IOException;

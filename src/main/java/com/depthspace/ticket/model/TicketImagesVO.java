@@ -25,8 +25,14 @@ public class TicketImagesVO implements Serializable {
 	@Column(name="IMAGE", columnDefinition = "mediumblob")
 	private byte[] image; 
 	
-	@Column(name = "IS_MAIN_IMAGE")
+	@Column(name = "IS_MAIN_IMAGE") //1為主圖，0為多張圖
 	private byte isMainImage;
+
+	
+	public TicketImagesVO() {
+		super();
+	
+	}
 
 	public Integer getSerialId() {
 		return serialId;

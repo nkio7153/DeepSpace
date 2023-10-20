@@ -7,24 +7,29 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
+
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Predicate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
+import com.depthspace.attractions.model.CityVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.utils.DBUtil;
 import com.depthspace.utils.HibernateUtil;
 //import com.depthspace.utils.Constants.PAGE_MAX_RESULT;
 
+
 public class TicketDAOImpl implements TicketDAO {
 	
-	private static final int PAGE_MAX_RESULT = 10;
+	public static final int PAGE_MAX_RESULT = 10;
 	private SessionFactory factory;
 	
 	public TicketDAOImpl(SessionFactory factory) {
@@ -77,14 +82,13 @@ public class TicketDAOImpl implements TicketDAO {
 				.setFirstResult(first)
 				.setMaxResults(PAGE_MAX_RESULT) //每頁紀錄數量
 				.list(); //查出的資料存於此列表
-	
 	}
 	
 
 	
 	
 //	@Override
-	public List<TicketVO> getByCompositeQuery(Map<String, String> map) {
+//	public List<TicketVO> getByCompositeQuery(Map<String, String> map) {
 //		if(map.size() == 0) //如果map傳入條件為0則回傳全部票券
 //			return getAll();
 //		
@@ -101,61 +105,131 @@ public class TicketDAOImpl implements TicketDAO {
 //					Integer.valueOf(map.get("endTicketId"))));
 //		}
 //		
-//		//票券名稱模糊查詢
-//		if(map.containsKey(""))
+//	    // 依照縣市查詢
+//	    if (map.containsKey("areaId")) {
+//	        predicates.add(builder.equal(root.get("areaId"), map.get("areaId")));
+//	    }
+//	    // 依照票券類型查詢
+//	    if (map.containsKey("ticketType")) {
+//	        predicates.add(builder.equal(root.get("ticketType"), map.get("ticketType")));
+//	    }
+//		
+//		for (Map.Entry<String, String> row : map.entrySet()) {
+//			
+//			//票券名稱模糊查詢
+//			if ("ticketName".equals(row.getKey())) {
+//				predicates.add(builder.like(root.get("ticketName"), "%" + row.getValue() + "%"));
+//			}
+//			if ("areaId".equals(row.getKey())) {
+//				predicates.add(builder.equal(root.get("areaId"), row.getValue()));
+//			}
+//			if ("ticketType".equals(row.getKey())) {
+//				predicates.add(builder.equal(root.get("ticketType"), row.getValue()));
+//			}
+//		}
+//
+//		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
+//		criteria.orderBy(builder.asc(root.get("ticketId")));
+//		TypedQuery<TicketVO> query = getSession().createQuery(criteria);
+//
+//		return query.getResultList();
+//	}
 	
-		return null;
 	
-	
-	}
 	@Override
-	public List<TicketVO> findTicketsByPartialName(String partialName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public int getTotal() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public long getTotal() {
+//		return getSession().createQuery("select count(*) from TicketVO", Long.class).uniqueResult();
+
+		    Session session = null;
+		    Transaction transaction = null;
+		    long count = 0;
+
+		    try {
+		        session = getSession(); 
+		        transaction = session.beginTransaction(); 
+		        
+		        Query<Long> countQuery = session.createQuery("select count(*) from TicketVO", Long.class);
+		        count = countQuery.uniqueResult(); 
+		        
+		        transaction.commit(); 
+		    } catch (RuntimeException e) {
+		        if (transaction != null) {
+		            transaction.rollback();
+		        }
+		        throw e; 
+		    } finally {
+		        if (session != null) {
+		            // 如果需要，可以关闭session，但这取决于您的session管理策略
+		             session.close();
+		        }
+		    }
+
+		    return count;
+		}
+
+	
 
 	@Override
 	public List<TicketVO> getAll() {
-		return getSession().createQuery("from TicketVO",TicketVO.class).list();
-	}
-	
-
-
+		return getSession().createQuery("from TicketVO", TicketVO.class).list();
+////		return getSession().createQuery("from TicketVO",TicketVO.class).list();
+//	    // 获取当前的Hibernate会话
+//	    Session session = getSession();
 //
-//////////////////////////方法測試/////////////////////
-//	
-//    public static void main(String[] args) {
-//        // 創建一個SessionFactory對象
-//        SessionFactory factory = HibernateUtil.getSessionFactory();
-//        
-//        // 使用該SessionFactory創建TicketHibernateDAO的實例
-//        TicketDAOlmpl dao = new TicketDAOlmpl(factory);
-//        
-//        // 創建一個新的TicketVO對象作為測試數據
-//        TicketVO ticket01 = new TicketVO();
-//        // 設置newTicket的新資料
-//         ticket01.setTicketTypeId(1);
-//         ticket01.setTicketName("苗栗水族館");
-//         ticket01.setDescription("好好玩好好玩好好玩好好玩好好玩");
-//         ticket01.setPrice(400);
-//         ticket01.setStock(500);
-//         ticket01.setValidDays(365);
-//         ticket01.setStatus((byte)1);
-//         ticket01.setPublishedDate(new java.sql.Timestamp(System.currentTimeMillis()));
-//         ticket01.setTotalStarRatings(20);
-//         ticket01.setTotalStars(100);
-//         
-//        // 調用insert方法返回的票券ID
-//        int R = dao.insert(ticket01);
-//        System.out.println("Inserted new ticket with ID: " + R);
-//    
-//	
-	
-//	}
+//	    // 创建HQL查询
+//	    String hql = "FROM TicketVO";  // "TicketVO" 是您的实体类名
+//	    Query query = session.createQuery(hql);
+//
+//	    // 执行查询并获取结果
+//	    List<TicketVO> list = query.list();
+//	    return list;
+	}
+
+	@Override
+	public List<TicketVO> getTicketCityName() {
+	    Session session = factory.getCurrentSession();
+	    Transaction transaction = null;
+
+	    try {
+	        transaction = session.beginTransaction();
+
+	        // 查询所有的票据
+	        String hqlTickets = "FROM TicketVO";
+	        Query<TicketVO> queryTickets = session.createQuery(hqlTickets, TicketVO.class);
+	        List<TicketVO> tickets = queryTickets.list();
+
+	        // 查询所有的城市
+	        String hqlCities = "FROM CityVO";
+	        Query<CityVO> queryCities = session.createQuery(hqlCities, CityVO.class);
+	        List<CityVO> cities = queryCities.list();
+
+	        // 创建城市ID到城市名称的映射
+	        Map<Integer, String> cityMap = new HashMap<>();
+	        for (CityVO city : cities) {
+	            cityMap.put(city.getCityId(), city.getCityName());
+	        }
+
+	        // 对于tickets列表中的每个票据，设置相应的城市名称
+	        for (TicketVO ticket : tickets) {
+	            // 假设CityId是城市的外键，存储在TicketVO的某个字段中
+	            String cityId = ticket.getCityName(); // 这里需要根据您的字段名进行调整
+	            if (cityId != null) {
+	                ticket.setCityName(cityMap.get(cityId));
+	            }
+	        }
+
+	        transaction.commit();
+	        return tickets;
+	    } catch (Exception e) {
+	        if (transaction != null) {
+	            transaction.rollback();
+	        }
+	        throw new RuntimeException("Error fetching ticket and city names", e);
+//	    } finally {
+//	        if (session != null) {
+//	            session.close();
+//	        }
+	    }
+	}
 }
 

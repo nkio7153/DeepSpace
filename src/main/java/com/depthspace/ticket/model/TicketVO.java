@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="TICKET")
@@ -23,7 +24,7 @@ public class TicketVO implements Serializable{
 	private Integer ticketId;
 	
 	//fetch為存取，不立即跟著關聯
-	@ManyToOne(fetch = FetchType.LAZY) //多方Many搭配Join，name為自己要映射的表格欄位名、ref為對方要被關聯的表格欄位名
+	@ManyToOne(fetch = FetchType.EAGER) //多方Many搭配Join，name為自己要映射的表格欄位名、ref為對方要被關聯的表格欄位名
 	@JoinColumn(name="TICKET_TYPE_ID",referencedColumnName = "TICKET_TYPE_ID")
 	private TicketTypesVO ticketType; //新增被關聯的類別自取名
 //	@Column(name="TICKET_TYPE_ID")
@@ -68,10 +69,14 @@ public class TicketVO implements Serializable{
 	@Column(name="LATITUDE")
     private Double latitude;
 
+	@Transient
+    private String cityName;
+
 	
-	//不用不帶任何參數的建構子、也不用所有物件初始化
-	//加上get/set/toString's methods
-	
+	public TicketVO() {
+		super();
+	}
+
 	public Integer getTicketId() {
 		return ticketId;
 	}
@@ -199,6 +204,14 @@ public class TicketVO implements Serializable{
 				+ ", status=" + status + ", publishedDate=" + publishedDate + ", totalStarRatings=" + totalStarRatings
 				+ ", totalStars=" + totalStars + ", areaId=" + areaId + ", address=" + address + ", longitude="
 				+ longitude + ", latitude=" + latitude + "]";
+	}
+
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
 	}
 	
 	
