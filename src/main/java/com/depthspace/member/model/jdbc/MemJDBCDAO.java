@@ -13,8 +13,8 @@ import com.depthspace.member.model.MemVO;
 import com.depthspace.utils.DBUtil;
 
 public class MemJDBCDAO implements MemDAO_Interface {
-//	private static final String INSERT_STMT = "INSERT INTO MEM(MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH, MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-	private static final String INSERT_STMT = "INSERT INTO MEM(MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH, MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT,MEM_IMAGE) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+	private static final String INSERT_STMT = "INSERT INTO MEM(MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH, MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT, MEM_IMAGE) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+
 
 //	private static final String UPDATE_STMT = "UPDATE MEM SET MEM_ACC=? MEM_PWD=?, MEM_NAME=?, MEM_IDENTITY=?, MEM_BTH=?, MEM_SEX=?, MEM_EMAIL=?, MEM_TEL=?, MEM_ADD=?, ACC_STATUS=?, MEM_POINT=? WHERE MEM_ID=?";
 	private static final String UPDATE_STMT = "UPDATE MEM SET MEM_ACC=?, MEM_PWD=?, MEM_NAME=?, MEM_IDENTITY=?, MEM_BTH=?, MEM_SEX=?, MEM_EMAIL=?, MEM_TEL=?, MEM_ADD=?, ACC_STATUS=?, MEM_POINT=?, MEM_IMAGE=? WHERE MEM_ID=?";
@@ -31,18 +31,20 @@ public class MemJDBCDAO implements MemDAO_Interface {
 		try {
 			conn = DBUtil.getConnection();
 			ps = conn.prepareStatement(INSERT_STMT);
-			ps.setInt(1, MemVO.getMemId());
-			ps.setString(2, MemVO.getMemAcc());
-			ps.setString(3, MemVO.getMemPwd());
-			ps.setString(4, MemVO.getMemName());
-			ps.setString(5, MemVO.getMemIdentity());
-			ps.setDate(6, MemVO.getMemBth());
-			ps.setByte(7, MemVO.getMemSex());
-			ps.setString(8, MemVO.getMemEmail());
-			ps.setInt(9, MemVO.getMemTel());
-			ps.setString(10, MemVO.getMemAdd());
-			ps.setByte(11, MemVO.getAccStatus());
-			ps.setInt(12, MemVO.getMemPoint());
+//			ps.setInt(1, MemVO.getMemId());
+			ps.setString(1, MemVO.getMemAcc());
+			ps.setString(2, MemVO.getMemPwd());
+			ps.setString(3, MemVO.getMemName());
+			ps.setString(4, MemVO.getMemIdentity());
+			ps.setDate(5, MemVO.getMemBth());
+			ps.setByte(6, MemVO.getMemSex());
+			ps.setString(7, MemVO.getMemEmail());
+			ps.setInt(8, MemVO.getMemTel());
+			ps.setString(9, MemVO.getMemAdd());
+			ps.setByte(10, MemVO.getAccStatus());
+			ps.setInt(11, MemVO.getMemPoint());
+			ps.setBytes(12, MemVO.getMemImage());
+			
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
