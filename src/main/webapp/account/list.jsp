@@ -14,9 +14,10 @@
 	$(document).ready(function(){
 		processQueryList();
 		$('#Add').hide();
+		$('#UpDate').hide();
 		//按鈕控制
-		$('#btnAddSave,#btnCancel').prop('disabled',true);
-		$('#btnAdd,#btnAddDel').prop('disabled',false);
+		$('#btnAddSave,#btnCancel,#btnUpDateSave,#btnSelectAll').hide();
+		$('#btnAdd,#btnAddDel,#btnUpDate').show();
 	});
 	
 	function processQueryList(){
@@ -35,7 +36,7 @@
 					+'<td>' + data[i].accountId    +'</td>'
 					+'<td>' + data[i].accountName  +'</td>'
 					+'<td>' + data[i].memId  +'</td>'
-					+'<td><input type="button" value="閔萱名言" onclick="processTest();"></td>'
+					+'<td><input type="button" value="唯宸名言" onclick="processTest();"></td>'
 					+'</tr>'
 					)
 				}
@@ -45,16 +46,17 @@
 	}
 	
 	function processTest(){
-		alert('你0分!!');
+		alert('我是甲甲<3');
 	}
 	
 	function processAdd() {
 		//區塊控制;
 		$('#list').hide();
 		$('#Add').show();
+		$('#UpDate').hide();
 		//按鈕控制
-		$('#btnAddSave,#btnCancel').prop('disabled',false);
-		$('#btnAdd,#btnAddDel').prop('disabled',true);
+		$('#btnAddSave,#btnCancel').show();
+		$('#btnAdd,#btnAddDel,#btnUpDateSave,#btnUpDate,#btnSelectAll').hide();
 	}
 	
 	function processAddSave() {
@@ -65,6 +67,30 @@
 			async : false,
 			success : function(data){
 				alert('新增成功');				
+			}
+		})
+	}
+	
+	function processUpDate() {
+		//區塊控制;
+		$('#list').hide();
+		$('#Add').hide();
+		$('#UpDate').show();
+		//按鈕控制
+		$('#btnUpDateSave,#btnCancel').show();
+		$('#btnAdd,#btnAddDel,#btnAddSave,#btnUpDate,#btnSelectAll').hide();
+	}
+	
+	function processUpDateSave() {
+		var jsonObj = {};
+		jsonObj.accountId = $('input[name=chooseItem]:checked').val();
+		$.ajax({
+			type : 'post',
+			data : $('#updateForm').serialize(),
+			url :  '<%=request.getContextPath()%>/account/account.do?action=update',
+			async : false,
+			success : function(data){
+				alert('修改成功');				
 			}
 		})
 	}
@@ -91,9 +117,10 @@
 		//區塊控制;
 		$('#list').show();
 		$('#Add').hide();
+		$('#UpDate').hide();
 		//按鈕控制
-		$('#btnAddSave,#btnCancel').prop('disabled',true);
-		$('#btnAdd,#btnAddDel').prop('disabled',false);
+		$('#btnAddSave,#btnCancel,#btnUpDateSave,#btnSelectAll').hide();
+		$('#btnAdd,#btnAddDel,#btnUpDate').show();
 	}
 
 </script>
@@ -102,47 +129,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>分帳表</title>
+<meta charset="UTF-8">
+<title>分帳表</title>
 </head>
 <body>
-	<content class="btnContent">
+	<div class="btnContent">
 		<input type="button" id="btnAdd" value="新增" onclick="processAdd();">
-		<input type="button" id="btnAddSave" value="儲存" onclick="processAddSave();">
-		<input type="button" id="btnCancel" value="取消" onclick="processCancel();">
+		
+		<input type="button" id="btnUpDate" value="修改" onclick="processUpDate();">
+		<input type="button" id="btnUpDateSave" value="儲存"onclick="processUpDateSave();"> 
+		
+		<input type="button" id="btnAddSave" value="儲存"onclick="processAddSave();"> 
+		<input type="button" id="btnCancel" value="取消" onclick="processCancel();"> 
 		<input type="button" id="btnAddDel" value="刪除" onclick="processDelete();">
-	</content>
-	<content id="list">
-    <h1>分帳表清單</h1>
-    <table id='dataTable'>
-        <tr>
-        	<th>選取</th>
-            <th>分帳表編號</th>
-            <th>分帳表名稱</th>
-            <th>會員ID</th>
-            <th>功能</th>
-        </tr>
-    </table>
-    </content>
-    <content id="Add">
-    	<form id="addForm" method="Post">
-    		<table>
-    			<tr>
-    				<th>分帳表名稱</th>
-    				<td>
-    					<input type="text" name="accountName" id="accountName"> 
-    				</td>
-    			</tr>
-    			<tr>
-    				<th>會員ID</th>
-    				<td>
-    					<input type="text" name="memId" id="memId"> 
-    				</td>
-    			</tr>
-    		</table>
-    	</form>
-    </content>
-    
-    
+	</div>
+	<div id="list">
+		<h1>分帳表清單</h1>
+		<table id='dataTable'>
+			<tr>
+				<th>選取</th>
+				<th>分帳表編號</th>
+				<th>分帳表名稱</th>
+				<th>會員ID</th>
+				<th>功能</th>
+			</tr>
+		</table>
+	</div>
+	<div id="Add">
+		<form id="addForm" method="Post">
+			<table>
+				<tr>
+					<th>分帳表名稱</th>
+					<td><input type="text" name="accountName" id="accountName">
+					</td>
+				</tr>
+				<tr>
+					<th>會員ID</th>
+					<td><input type="text" name="memId" id="memId"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	<div id="UpDate">
+		<form id="updateForm" method="Post">
+			<table>
+				<tr>
+					<th>分帳表名稱</th>
+					<td><input type="text" name="accountName" id="accountName">
+					</td>
+				</tr>
+				<tr>
+					<th>會員ID</th>
+					<td><input type="text" name="memId" id="memId"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
 </body>
 </html>
+
