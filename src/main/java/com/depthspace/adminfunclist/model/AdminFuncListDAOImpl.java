@@ -8,7 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import com.depthspace.admin.model.AdminVO;
+
 import com.depthspace.utils.HibernateUtil;
 
 public class AdminFuncListDAOImpl implements AdminFuncListDAO{
