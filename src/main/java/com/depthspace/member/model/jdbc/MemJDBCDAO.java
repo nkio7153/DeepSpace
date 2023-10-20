@@ -60,7 +60,7 @@ public class MemJDBCDAO implements MemDAO_Interface {
 		try {
 			conn = DBUtil.getConnection();
 			ps = conn.prepareStatement(UPDATE_STMT);
-//			ps.setInt(1, MemVO.getMemId());
+			ps.setInt(1, MemVO.getMemId());
 			ps.setString(2, MemVO.getMemAcc());
 			ps.setString(3, MemVO.getMemPwd());
 			ps.setString(4, MemVO.getMemName());
@@ -73,7 +73,6 @@ public class MemJDBCDAO implements MemDAO_Interface {
 			ps.setByte(11, MemVO.getAccStatus());
 			ps.setInt(12, MemVO.getMemPoint());
 			ps.setBytes(13, MemVO.getMemImage());
-			
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

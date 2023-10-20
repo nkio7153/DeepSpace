@@ -56,23 +56,42 @@ public class Memtest {
 //	}
 
 	//	修改會員資料
+		 
+		 Integer memId = 9;
+		 String memAcc = "user006";
+		 String memPwd = "password6";
+		 String memName = "余八";
+		 String memIdentity = "D121987634";
+		 LocalDate localDate = LocalDate.of(1997, 5, 23);
+		 Date date = Date.valueOf(localDate);
+		 Byte memSex = 1;
+		 String memEmail = "user005@email.com";
+		 Integer memTel = 956789012;
+		 String memAdd = "新竹市東區";
+		 Byte accStatus = 2;
+		 Integer memPoint = 1300;
+		 byte[] memImage = null;
 		 MemVO memvo = new MemVO();
-		 	memvo.setMemAcc("user006");
-			memvo.setMemPwd("password6");
-			memvo.setMemName("余八");
-			memvo.setMemIdentity("D121987634");
-			LocalDate localDate = LocalDate.of(1997, 5, 23);
-			Date date = Date.valueOf(localDate);
-			memvo.setMemBth(date);
-			memvo.setMemSex((byte) 1);
-			memvo.setMemEmail("user005@email.com");
-			memvo.setMemTel(956789012);
-			memvo.setMemAdd("新竹市東區");
-			memvo.setAccStatus((byte) 2);
-			memvo.setMemPoint(1300);
-			memvo.setMemImage(null);
-			m.update(memvo);
-			System.out.println("更新成功");
+		 m.update(memvo);
+		 System.out.println("更新成功");
+//		 	memvo.setMemId(9);
+//		 	memvo.setMemAcc("user006");
+//			memvo.setMemPwd("password6");
+//			memvo.setMemName("余八");
+//			memvo.setMemIdentity("D121987634");
+//			LocalDate localDate = LocalDate.of(1997, 5, 23);
+//			Date date = Date.valueOf(localDate);
+//			memvo.setMemBth(date);
+//			memvo.setMemSex((byte) 1);
+//			memvo.setMemEmail("user005@email.com");
+//			memvo.setMemTel(956789012);
+//			memvo.setMemAdd("新竹市東區");
+//			memvo.setAccStatus((byte) 2);
+//			memvo.setMemPoint(1300);
+//			memvo.setMemImage(null);
+			
+			
+			
 		 
 		 
 	     }    
