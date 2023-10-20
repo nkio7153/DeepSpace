@@ -67,7 +67,7 @@
 	</ul>
 </c:if>
 
-<FORM METHOD="post" ACTION="Faq.do" name="form1">
+<FORM METHOD="post" ACTION="faq.do" name="form1">
 <table>
 	
 	
@@ -117,5 +117,5 @@
 
 
         
-</script>
+
 </html>
