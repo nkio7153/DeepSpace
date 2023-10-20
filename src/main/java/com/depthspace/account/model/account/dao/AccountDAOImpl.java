@@ -38,17 +38,17 @@ public class AccountDAOImpl implements AccountDAO {
 	public int update(AccountVO entity) {
 		Transaction tx = getSession().beginTransaction();
 		session = getSession();
-		try {
-			session.update(entity); // 或者 session.merge(entity);
+		AccountVO account = session.get(AccountVO.class, entity);
+		int state;
+		if (account != null) {
+			session.update(account);
 			tx.commit();
-			return 1; // 成功更新，可以返回1或其他适当的标识
-		} catch (Exception e) {
-			tx.rollback(); // 如果出现异常，回滚事务
-			e.printStackTrace(); // 可以记录异常或者进行其他处理
-			return 0; // 返回0或其他标识表示更新失败
-		} finally {
-			session.close();
+			state = 1;
+		} else {
+			tx.rollback();
+			state = 0;
 		}
+		return state;
 	}
 
 	@Override
