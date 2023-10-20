@@ -290,13 +290,13 @@ public class MemberServlet extends HttpServlet {
 		List<MemVO> list = ms.getAll();
 
 		for (MemVO mem : list) {
-			String imageBytes = mem.getBase64Image();
+			byte[] imageBytes = mem.getMemImage();
 //			if (imageBytes != null) {
-//				String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-//				mem.setBase64Image(base64Image);
+				String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+				mem.setBase64Image(base64Image);
 //			}
-			mem.setBase64Image(imageBytes);
-			System.out.println(imageBytes);
+//			mem.setBase64Image(imageBytes);
+//			System.out.println(imageBytes);
 		}
 
 		for (MemVO mem : list) {

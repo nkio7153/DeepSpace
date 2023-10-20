@@ -8,16 +8,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>購物車票券添加(addCart.jsp)</title>
+    <title>訂單添加頁面</title>
 </head>
     <body>
-    <h1 align="center">購物車票券添加</h1>
+    <input type="button" value="返回" onclick="history.back()">
+    <h1 align="center">訂單添加</h1>
     <hr>
         <form action="${pageContext.request.contextPath}/tsc/save" method="post">
             會員編號:<input type="text" name="memId" value="${param.memId}" readonly><br>
-            票券編號<input type="text" name="ticketId"><br>
-            票券數量<input type="text" name="quantity"><br>
+            訂單編號<input type="text" name="ticketId"><br>
+            總金額<input type="text" name="quantity"><br>
+            點數回饋<input type="text" name="quantity"><br>
+            實付金額<input type="text" name="quantity"><br>
+            支付方式<input type="text" name="quantity"><br>
             <input type="submit" value="保存">
         </form>
+
     </body>
 </html>

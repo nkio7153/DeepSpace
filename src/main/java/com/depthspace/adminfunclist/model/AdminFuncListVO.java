@@ -17,16 +17,6 @@ public class AdminFuncListVO {
 	@Column(name="FUNC_ID")
 	private Integer funcId;
 	
-	public AdminFuncListVO() {
-		super();
-	}
-
-	public AdminFuncListVO(Integer adminId, Integer funcId) {
-		super();
-		this.adminId = adminId;
-		this.funcId = funcId;
-	}
-
 	public Integer getAdminId() {
 		return adminId;
 	}

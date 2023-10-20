@@ -58,6 +58,7 @@ public class MemVO implements Serializable {
 	@Column(name = "MEM_IMAGE", columnDefinition = "mediumblob")
 	private byte[] memImage;
 	
+//	@Column
 	private String base64Image;
 
 	public String getBase64Image() {

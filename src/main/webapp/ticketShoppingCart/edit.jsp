@@ -9,6 +9,7 @@
     <title></title>
 </head>
 <body>
+<input type="button" value="返回" onclick="history.back()">
 <h3>歡迎oscar</h3>
 <h1>票券修改</h1>
 <hr>

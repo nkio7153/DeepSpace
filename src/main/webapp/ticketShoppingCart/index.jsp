@@ -5,15 +5,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%
-    TicketShoppingCartService tscSv = new TicketShoppingCartService();
-    List<TicketShoppingCartVO> list = tscSv.getAll();
-    HashSet<Integer> uniqueMemIds = new HashSet<>();
-    for (TicketShoppingCartVO vo: list){
-        uniqueMemIds.add(vo.getMemId());
-    }
-    request.setAttribute("uniqueMemIds",uniqueMemIds);
-%>
+<%--<%--%>
+<%--    TicketShoppingCartService tscSv = new TicketShoppingCartService();--%>
+<%--    List<TicketShoppingCartVO> list = tscSv.getAll();--%>
+<%--    HashSet<Integer> uniqueMemIds = new HashSet<>();--%>
+<%--    for (TicketShoppingCartVO vo: list){--%>
+<%--        uniqueMemIds.add(vo.getMemId());--%>
+<%--    }--%>
+<%--    request.setAttribute("uniqueMemIds",uniqueMemIds);--%>
+<%--%>--%>
 <html>
 <head>
     <title>歡迎使用購物車資料查詢</title>
@@ -53,6 +53,10 @@
 <!-- 其他操作 -->
 <ul>
     <li><a href="<%=request.getContextPath()%>/tsc/listAll">查看所有購物車列表</a></li>
+    <br>
+    <br>
+    <br>
+    <li><a href="<%=request.getContextPath()%>/to/index?memId=${memId}">票券訂單索引頁面</a></li>
 </ul>
 </body>
 </html>

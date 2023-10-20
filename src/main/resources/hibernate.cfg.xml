@@ -24,13 +24,15 @@
         
         <mapping class="com.depthspace.account.model.account.AccountVO"/>
         
-        <!-- -->
+        <!-- Column -->
         <mapping class="com.depthspace.column.model.ColumnArticlesVO"/>
         <mapping class="com.depthspace.column.model.ColumnImagesVO"/>
         <mapping class="com.depthspace.column.model.ColumnTypesVO"/>
+  
+         <!-- ticket -->      
         <mapping class="com.depthspace.ticket.model.TicketImagesVO"/>
         <mapping class="com.depthspace.ticket.model.TicketTypesVO"/>
-        <mapping class="com.depthspace.ticket.model.TicketVO"/>
+        <mapping class="com.depthspace.ticket.model.TicketVO"/> 
         <mapping class="com.depthspace.ticketcollection.model.TicketCollectionVO"/>
         <mapping class="com.depthspace.notifications.model.NotificationsVO"/>
         
@@ -51,9 +53,9 @@
  		<mapping class="com.depthspace.member.model.MemVO"/>
         
         <!-- -->
-        <mapping class="com.depthspace.admin.model.AdminVO"/>
+        <mapping class="com.depthspace.admin.model.model.AdminVO"/>
 		<mapping class="com.depthspace.adminfunclist.model.AdminFuncListVO"/>
-		<mapping class="com.depthspace.faq.model.FaqVO"/>
+		<mapping class="com.depthspace.faq.model.model.FaqVO"/>
 		<mapping class="com.depthspace.faqtypes.model.FaqTypesVO"/>
 		<mapping class="com.depthspace.function.model.FunctionVO"/>
 		<mapping class="com.depthspace.keywordqa.model.KeywordQaVO"/>
