@@ -2,7 +2,7 @@ package com.depthspace.attractions.model;
 
 import java.util.List;
 
-import com.depthspace.member.MemVO;
+import com.depthspace.member.model.MemVO;
 
 public interface AttractionsImagesDAO_Interface {
 	public void insert(AttractionsImagesVO AttractionsImagesVO);
