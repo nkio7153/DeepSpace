@@ -68,7 +68,7 @@
 	</ul>
 </c:if>
 
-<FORM METHOD="post" ACTION="emp.do" name="form1">
+<FORM METHOD="post" ACTION="faq.do" name="form1">
 <table>
 	<tr>
 		<td>¬y¤ô¸¹:<font color=red><b>*</b></font></td>
