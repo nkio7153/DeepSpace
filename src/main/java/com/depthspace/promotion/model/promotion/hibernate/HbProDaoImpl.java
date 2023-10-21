@@ -1,4 +1,5 @@
-package com.depthspace.promotion.model.promotion;
+package com.depthspace.promotion.model.promotion.hibernate;
+import com.depthspace.promotion.model.promotion.PromotionVO;
 import com.depthspace.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

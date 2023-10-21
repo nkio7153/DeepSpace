@@ -106,7 +106,8 @@
 			success : function(data){
 				alert('刪除成功');	
 				//清除list
-				$('#dataTable tr:not(:first)').html("");
+				// $('#dataTable tr:not(:first)').html("");
+				$('#dataTable tr:not(:first)').remove();
 				//重新build
 				processQueryList();
 			}
@@ -176,12 +177,12 @@
 			<table>
 				<tr>
 					<th>分帳表名稱</th>
-					<td><input type="text" name="accountName" id="accountName">
+					<td><input type="text" name="accountName" >
 					</td>
 				</tr>
 				<tr>
 					<th>會員ID</th>
-					<td><input type="text" name="memId" id="memId"></td>
+					<td><input type="text" name="memId" ></td>
 				</tr>
 			</table>
 		</form>

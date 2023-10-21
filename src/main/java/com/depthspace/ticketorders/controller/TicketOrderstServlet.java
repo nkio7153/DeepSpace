@@ -8,7 +8,6 @@ import com.depthspace.ticketorders.service.TicketOrderService_Interface;
 import com.depthspace.ticketshoppingcart.model.TicketInfoVO;
 import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 import com.depthspace.ticketshoppingcart.service.TicketShoppingCartService;
-import com.google.gson.Gson;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.ServletException;
