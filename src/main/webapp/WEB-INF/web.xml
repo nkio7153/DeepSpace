@@ -5,6 +5,7 @@
          version="4.0">
          
     <welcome-file-list>
+<!--		<welcome-file>account/index.jsp</welcome-file>-->
         <welcome-file>to/index</welcome-file>
         <welcome-file>account/list.jsp</welcome-file>
         <welcome-file>index.html</welcome-file>
@@ -14,14 +15,18 @@
     </welcome-file-list>
     
     
-    <servlet>
-  <servlet-name>AccountServlet</servlet-name>
-  <servlet-class>com.depthspace.account.model.account.controller.AccountServlet</servlet-class>
- </servlet>
- <servlet-mapping>
-  <servlet-name>AccountServlet</servlet-name>
-  <url-pattern>/account/account.do</url-pattern>
- </servlet-mapping>
- 
- 
+   	<servlet>
+		<servlet-name>AccountServlet</servlet-name>
+		<servlet-class>com.depthspace.account.model.account.controller.AccountServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AccountServlet</servlet-name>
+		<url-pattern>/account/account.do</url-pattern>
+	</servlet-mapping>
+
+	<listener>
+		<listener-class>com.depthspace.listener.InitializerListener</listener-class>
+	</listener>
+	
+	
 </web-app>
