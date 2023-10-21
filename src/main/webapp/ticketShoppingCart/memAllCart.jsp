@@ -7,11 +7,14 @@
 <html>
 <head>
   <title>所有購物車資料 memAllCart.jsp</title>
+  <jsp:include page="../indexpage/head.jsp" />
 </head>
 <body>
+<jsp:include page="../indexpage/header.jsp" />
+
+<h3>歡迎會員${memId}</h3>
 
 <input type="button" value="返回" onclick="index()">
-<h3>歡迎會員${memId}</h3>
 <script type="text/javascript">
 
   function index(){
@@ -34,7 +37,7 @@
 
 </script>
 <style>
-  img {
+  img.jpg {
     width:150px;
     height: 100px;
   }
@@ -58,15 +61,15 @@
 <table border="1px" align="center" width="80%">
 <%--  //票券圖片、票券名稱、票券介紹、價格、數量、小計--%>
     <tr>
-      <th class="no-wrap">序號</th>
-      <th class="no-wrap">票券圖片</th>
-      <th class="hidden">票券編號</th>
-      <th class="no-wrap w150">票券名稱</th>
-      <th class="no-wrap w200">票券介紹</th>
-      <th class="no-wrap">價格</th>
-      <th class="no-wrap">票券數量</th>
-      <th class="no-wrap">小計</th>
-      <th class="no-wrap w150">操作</th>
+      <th class="no-wrap" align="center">序號</th>
+      <th class="no-wrap" align="center">票券圖片</th>
+      <th class="hidden" align="center">票券編號</th>
+      <th class="no-wrap w150" align="center" >票券名稱</th>
+      <th class="no-wrap w200" align="center" >票券介紹</th>
+      <th class="no-wrap" align="center">價格</th>
+      <th class="no-wrap" align="center">票券數量</th>
+      <th class="no-wrap" align="center">小計</th>
+      <th class="no-wrap w150" align="center">操作</th>
     </tr>
 
 
@@ -74,7 +77,7 @@
     <tr>
       <td align="center">${cartStatus.count}</td>
       <td>
-      <img src="data:image/jpeg;base64,${cart.base64Image}"/>
+      <img src="data:image/jpeg;base64,${cart.base64Image}" class="jpg"/>
       </td>
       <td align="center" class="hidden">${cart.ticketId}</td>
       <td align="center">${cart.ticketName}</td>
@@ -90,10 +93,12 @@
       </td>
     </tr>
   </c:forEach>
+  <hr>
 </table>
-<hr>
 <a href="${pageContext.request.contextPath}/ticketShoppingCart/addCart.jsp?memId=${memId}">購物車票券添加</a>
 <hr>
 <a href="javascript:void(0)" onclick="delAll(${memId})"> 購物車票清空</a>
+
+<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>
