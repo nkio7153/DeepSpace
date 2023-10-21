@@ -131,7 +131,7 @@ public class MemberServlet extends HttpServlet {
 		}
 		m.updateMember(memvo);
 		req.setAttribute("memvo", memvo);
-		req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
+		req.getRequestDispatcher("/member/listOneMem.jsp").forward(req, resp);
 	}
 
 	// ===================================================================================
@@ -175,6 +175,7 @@ public class MemberServlet extends HttpServlet {
 	protected void doSuccess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String email = req.getParameter("email");
 		String password = req.getParameter("password");
+		System.out.println(email);
 
 		MemberService ms = new MemberService();
 		List<MemVO> list = ms.getAll();

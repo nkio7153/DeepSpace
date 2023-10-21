@@ -5,11 +5,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="org.json.JSONObject" %>
-
 <html>
 <head>
-<title>成功登入 success.jsp</title>
+<title>成功登入 listOneMem.jsp</title>
 <style>
   img {
       border-radius: 60px;
@@ -20,7 +18,7 @@
 </head>
 <body>
 <%-- 	<form action="${pageContext.request.contextPath}/mem/success" method="post"> --%>
-	<h1 align="center">歡迎登入成功！</h1>
+	<h1 align="center">已修改成功！</h1>
 	<p align="center">您已成功登入，歡迎回來，${authenticatedMem.memName}！</p>
 	<hr>
 	<h1 align="center">會員資訊</h1>
@@ -65,7 +63,7 @@
 			<th>會員點數</th><td>${authenticatedMem.memPoint}</td>
 		</tr>
 	</table>
-	<form align="center" action="${pageContext.request.contextPath}/mem/edit" method="post" >
+	<form align="center" action="${pageContext.request.contextPath}/mem/edit?memId=${authenticatedMem.memId}" method="post" >
 		<input type="submit" value="修改會員資料">
 		<input type="hidden" name="action"	value="update">
 	</form>

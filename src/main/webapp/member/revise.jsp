@@ -4,10 +4,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<% //見com.emp.controller.EmpServlet.java第163行存入req的empVO物件 (此為從資料庫取出的empVO, 也可以是輸入格式有錯誤時的empVO物件)
-   MemVO memvo = (MemVO) request.getAttribute("memId");
-%>
-
 <html>
 <head>
     <title>修改會員資料 revise.jsp</title>
@@ -59,19 +55,50 @@
             <th>地址</th>
             <td><input type="text" name="memId" value="${mem.memAdd}"></td>
         </tr>
+        <tr>
+            <th>狀態</th>
+            <td>${mem.accStatus}</td>
+        </tr>
+        <tr>
+            <th>點數</th>
+            <td>${mem.memPoint}</td>
+        </tr>
+        
     </table>
     <p align="center">
-    <form align="center" action="${pageContext.request.contextPath}/mem/success.jsp" method="post" >
-		<input type="submit" value="儲存會員資料">
-		<input type="hidden" name="action"	value="modify">
+<%--     <form align="center" action="${pageContext.request.contextPath}/mem/success.jsp" method="post" > --%>
+<!-- 		<input type="submit" value="儲存會員資料"> -->
+<!-- 		<input type="hidden" name="action"	value="modify"> -->
 	</form>
-<!--         <input type="button" value="儲存會員資料" onclick="save()" /> -->
+        <input type="button" value="儲存會員資料" onclick="save()" />
         <input type="button" value="取消" onclick="history.back()">
     </p>
     <script type="text/javascript">
         function save() {
-            // 導向到修改頁面
-            document.location.href = "${pageContext.request.contextPath}/mem/modify";
+        	 // 獲取修改後的資料
+            var modifiedData = {
+                // 這裡放入你的修改後的資料
+                memId: document.getElementById("memId").value;
+            	base64Image: document.getElementById("base64Image").value;
+	            memAcc: document.getElementById("memAcc").value;
+	            memPwd: document.getElementById("memPwd").value;
+                memName: document.getElementById("memName").value;
+	            memIdentity: document.getElementById("memIdentity").value;
+	            memBth: document.getElementById("memBth").value;
+	            memSex: document.getElementById("memSex").value;
+	            memEmail: document.getElementById("memEmail").value;
+	            memTel: document.getElementById("memTel").value;
+	            memAdd: document.getElementById("memAdd").value;
+//                 memName: document.getElementById("memId").value;
+//                 memName: document.getElementById("memId").value;
+                
+            };
+
+            // 存儲修改後的資料到 Local Storage
+            localStorage.setItem('modifiedData', JSON.stringify(modifiedData));
+
+            // 重導向到 success.jsp
+            document.location.href = "${pageContext.request.contextPath}/mem/success";
         }
         
 //         function cancel() {
