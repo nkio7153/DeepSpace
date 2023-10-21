@@ -61,13 +61,17 @@
         </tr>
     </table>
     <p align="center">
-        <input type="button" value="儲存會員資料" onclick="save()" />
+    <form align="center" action="${pageContext.request.contextPath}/mem/success.jsp" method="post" >
+		<input type="submit" value="儲存會員資料">
+		<input type="hidden" name="action"	value="modify">
+	</form>
+<!--         <input type="button" value="儲存會員資料" onclick="save()" /> -->
         <input type="button" value="取消" onclick="history.back()">
     </p>
     <script type="text/javascript">
         function save() {
             // 導向到修改頁面
-            document.location.href = "${pageContext.request.contextPath}/member/revise.jsp";
+            document.location.href = "${pageContext.request.contextPath}/mem/modify";
         }
         
 //         function cancel() {
