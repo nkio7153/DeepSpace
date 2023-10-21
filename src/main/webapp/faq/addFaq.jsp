@@ -75,19 +75,19 @@
 	
 	<tr>
 		<td>流水號:</td>
-		<td><input type="TEXT" name="serialId" value="<%= (faqVO==null)? "旺旺" : faqVO.getSerialId()%>" size="45"/></td>
+		<td><input type="TEXT" name="serialId" size="45"/></td>
 	</tr>
 	<tr>
 		<td>FAQ編號:</td>
-		<td><input type="TEXT" name="faqNo"   value="<%= (faqVO==null)? "吉祥物" : faqVO.getFaqNo()%>" size="45"/></td>
+		<td><input type="TEXT" name="faqNo"    size="45"/></td>
 	</tr>
 	<tr>
 		<td>FAQ名稱:</td>
-		<td><input type="TEXT" name="faqName"   value="<%= (faqVO==null)? "N500" : faqVO.getFaqName()%>" size="45"/></td>
+		<td><input type="TEXT" name="faqName"   size="45"/></td>
 	</tr>
 	<tr>
 		<td>FAQ答案:</td>
-		<td><input type="TEXT" name="faqAns"   value="<%= (faqVO==null)? "N404" : faqVO.getFaqAns()%>" size="45"/></td>
+		<td><input type="TEXT" name="faqAns"    size="45"/></td>
 	</tr>
 <!-- 	<tr> -->
 <!-- 		<td>獎金:</td> -->
@@ -114,7 +114,21 @@
 
 
 <!-- =========================================以下為 datetimepicker 之相關設定========================================== -->
+<link rel="stylesheet" type="text/css"
+ href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
+<script
+ src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
 
+<style>
+.xdsoft_datetimepicker .xdsoft_datepicker {
+ width: 300px; /* width:  300px; */
+}
+
+.xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
+ height: 151px; /* height:  151px; */
+}
+</style>
 
         
 

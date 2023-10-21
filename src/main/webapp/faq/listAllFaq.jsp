@@ -95,8 +95,8 @@ th, td {
 						ACTION="<%=request.getContextPath()%>/faq/faq.do"
 						style="margin-bottom: 0px;">
 						<input type="submit" value="­×§ï"> <input type="hidden"
-							name="serialId" value="${faqVO.serialId}"> <input type="hidden"
-							name="action" value="getOne_For_Update">
+							name="serialId" value="${faqVO.serialId}"> <input
+							type="hidden" name="action" value="getOne_For_Update">
 					</FORM>
 				</td>
 				<td>
@@ -104,8 +104,8 @@ th, td {
 						ACTION="<%=request.getContextPath()%>/faq/faq.do"
 						style="margin-bottom: 0px;">
 						<input type="submit" value="§R°£"> <input type="hidden"
-							name="serialId" value="${faqVO.serialId}"> <input type="hidden"
-							name="action" value="delete">
+							name="serialId" value="${faqVO.serialId}"> <input
+							type="hidden" name="action" value="delete">
 					</FORM>
 				</td>
 			</tr>

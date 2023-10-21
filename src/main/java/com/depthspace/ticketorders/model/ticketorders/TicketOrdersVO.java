@@ -21,8 +21,8 @@ public class TicketOrdersVO implements Serializable {
     private Integer pointsFeedback;
     @Column(name="AMOUNT_PAID")
     private Integer amountPaid;
-    @Column(name="STATUS",columnDefinition = "TINYINT DEFAULT 0",nullable = false)
-    private Byte status;
+    @Column(name="STATUS",columnDefinition = "TINYINT DEFAULT 0")
+    private Byte status=0;
     @Column(name="PAYMENT_METHOD", columnDefinition = "TINYINT",nullable = false)
     private Byte paymentMethod;
 

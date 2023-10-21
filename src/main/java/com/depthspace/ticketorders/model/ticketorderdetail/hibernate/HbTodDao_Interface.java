@@ -11,7 +11,7 @@ public interface HbTodDao_Interface {
 
     int update(TicketOrderDetailVO entity);
 
-    int delete(TicketOrderDetailVO.CompositeDetail id);
+    int delete(Integer orderId);
 
     TicketOrderDetailVO getById(TicketOrderDetailVO.CompositeDetail id);
     List<TicketOrderDetailVO> getByOrderId(Integer orderId);
@@ -20,5 +20,5 @@ public interface HbTodDao_Interface {
 
     List<TicketOrderDetailVO> getAll(int currentPage);
 
-    long getTotal();
+    long getTotal(Integer orderId);
 }

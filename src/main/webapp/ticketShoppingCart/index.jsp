@@ -1,29 +1,12 @@
-<%@ page import="com.depthspace.ticketshoppingcart.service.TicketShoppingCartService" %>
-<%@ page import="com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.HashSet" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<%--<%--%>
-<%--    TicketShoppingCartService tscSv = new TicketShoppingCartService();--%>
-<%--    List<TicketShoppingCartVO> list = tscSv.getAll();--%>
-<%--    HashSet<Integer> uniqueMemIds = new HashSet<>();--%>
-<%--    for (TicketShoppingCartVO vo: list){--%>
-<%--        uniqueMemIds.add(vo.getMemId());--%>
-<%--    }--%>
-<%--    request.setAttribute("uniqueMemIds",uniqueMemIds);--%>
-<%--%>--%>
 <html>
 <head>
     <title>歡迎使用購物車資料查詢</title>
-    <style>
-        /* 這裡是 CSS 樣式 */
-        /* ... */
-    </style>
+    <jsp:include page="../indexpage/head.jsp" />
 </head>
 <body>
-
+<jsp:include page="../indexpage/header.jsp" />
 <!-- 主標題 -->
 <h1>購物車資訊查詢</h1>
 
@@ -58,5 +41,7 @@
     <br>
     <li><a href="<%=request.getContextPath()%>/to/index?memId=${memId}">票券訂單索引頁面</a></li>
 </ul>
+
+<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

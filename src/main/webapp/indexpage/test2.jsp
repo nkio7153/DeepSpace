@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,13 +9,13 @@
 
 
     <!-- Bootstrap CSS -->
-    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/indexpage/css/bootstrap.min.css" rel="stylesheet">
     <!-- bookstrap css -->
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/indexpage/css/style.css">
     <title>深度漫遊</title>
     <!-- 載入icon -->
-    <link rel="shortcut icon" href="./images/icon.png" />
-    <link rel="bookmark" href="./images/icon.png" />
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/indexpage/images/icon.png" />
+    <link rel="bookmark" href="${pageContext.request.contextPath}/indexpage/images/icon.png" />
     <style>
 
     </style>
@@ -26,7 +27,7 @@
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid" style="padding: 20px 0;">
                     <a class="navbar-brand" href="index.html">
-                        <img src="./images/icon.png" alt="" width="30" height="24"
+                        <img src="${pageContext.request.contextPath}/indexpage/images/icon.png" alt="" width="30" height="24"
                             class="d-inline-block align-text-top">
                         深度漫遊
                     </a>
@@ -53,9 +54,10 @@
                             <li class="nav-item">
                                 <a class="booking" href="#">登入/註冊</a>
                             <li class="">
-                                <a href="shopping_car.html"><img src="./images/shoppingCar.svg" alt=""
-                                        style="width: 2em" /></a>
+                                <a href="#"><img src="${pageContext.request.contextPath}/indexpage/images/shoppingcar.svg" alt=""
+                                        style="width: 2em" /></a>                    
                             </li>
+                        </ul>
                     </div>
                 </div>
             </nav>
@@ -63,13 +65,13 @@
     </header>
     <section class="banner-inner" id="home">
         <div class="banner-inner_overlay">
-            <img src="./images/123.jpg" class="banner-inner_overlay_pic w-100">
+            <img src="${pageContext.request.contextPath}/indexpage/images/123.jpg" class="banner-inner_overlay_pic w-100">
         </div>
     </section>
 
 
     <!-- account/list.jsp 改成你的包跟jsp檔 -->
-    <jsp:include page="../account/list.jsp" />
+    <jsp:include page="../faq/listAllFaq.jsp" />
     <!-- account/list.jsp 改成你的包跟jsp檔 -->
 
 
@@ -146,19 +148,19 @@
                         </div>
                         <ul class="social_section_1info">
                             <li>
-                                <a href="https://www.facebook.com/TibaMe"><img src="./images/facebook.svg"
+                                <a href="https://www.facebook.com/TibaMe"><img src="${pageContext.request.contextPath}/indexpage/images/facebook.svg"
                                         alt="facebook" /></a>
                             </li>
                             <li>
-                                <a href="https://www.instagram.com/tibame_wiedu/"><img src="./images/instagram.svg"
+                                <a href="https://www.instagram.com/tibame_wiedu/"><img src="${pageContext.request.contextPath}/indexpage/images/instagram.svg"
                                         alt="instagram" /></a>
                             </li>
                             <li>
-                                <a href="https://twitter.com/"><img src="./images/twitter.svg" alt="twitter" /></a>
+                                <a href="https://twitter.com/"><img src="${pageContext.request.contextPath}/indexpage/images/twitter.svg" alt="twitter" /></a>
                             </li>
                             <li class="youtube">
                                 <a href="https://www.youtube.com/channel/UClhecf7eOGHwbKW5e7l_pTA"><img
-                                        src="./images/youtube.svg" alt="youtube" /></a>
+                                        src="${pageContext.request.contextPath}/indexpage/images/youtube.svg" alt="youtube" /></a>
                             </li>
                         </ul>
                     </div>
@@ -175,10 +177,10 @@
     <!-- //copyright -->
 
 
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/indexpage/js/popper.min.js"></script>
+    <script src="${pageContext.request.contextPath}/indexpage/js/bootstrap.min.js"></script>
     <!--載入 jQuery-->
-    <script src="js/jquery-3.6.4.min.js"></script>
+    <script src="${pageContext.request.contextPath}/indexpage/js/jquery-3.6.4.min.js"></script>
 </body>
 
 </html>
