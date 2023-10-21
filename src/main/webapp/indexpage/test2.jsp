@@ -71,7 +71,7 @@
 
 
     <!-- account/list.jsp 改成你的包跟jsp檔 -->
-    <jsp:include page="../account/list.jsp" />
+    <jsp:include page="../faq/listAllFaq.jsp" />
     <!-- account/list.jsp 改成你的包跟jsp檔 -->
 
 
