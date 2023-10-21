@@ -50,7 +50,7 @@
 		<mapping class="com.depthspace.tour.model.TourTypeVO"/>
 
 		<!-- Member-->
- 		<mapping class="com.depthspace.member.MemVO"/>
+ 		<mapping class="com.depthspace.member.model.MemVO"/>
         
         <!-- -->
         <mapping class="com.depthspace.admin.model.model.AdminVO"/>

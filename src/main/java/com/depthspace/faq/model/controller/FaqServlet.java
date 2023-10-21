@@ -162,6 +162,7 @@ public class FaqServlet extends HttpServlet {
 
 			/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
 			Integer serialId = Integer.valueOf(req.getParameter("serialId").trim());
+
 			Integer faqNo = Integer.valueOf(req.getParameter("faqNo").trim());
 			
 			String faqName = req.getParameter("faqName");
@@ -179,7 +180,6 @@ public class FaqServlet extends HttpServlet {
 			} else if(!faqAns.trim().matches(faqAnsReg)) { //以下練習正則(規)表示式(regular-expression)
 				errorMsgs.add("員工姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
             }
-			
 
 			FaqVO faqVO = new FaqVO();
 			faqVO.setSerialId(serialId);
@@ -199,7 +199,9 @@ public class FaqServlet extends HttpServlet {
 			faqVO = faqSvc.updateFaq(serialId, faqNo, faqName, faqAns);
 
 			/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
+
 			String url = "/faq/listAllFaq.jsp";
+
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneFaq.jsp
 			successView.forward(req, res);
 		}

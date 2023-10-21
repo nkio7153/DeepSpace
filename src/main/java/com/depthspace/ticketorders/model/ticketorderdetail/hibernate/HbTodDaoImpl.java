@@ -30,12 +30,15 @@ public class HbTodDaoImpl implements HbTodDao_Interface{
             return -1;
         }
     }
-    //刪除一筆資料
+    //刪除一筆2訂單對應訂單明細
     @Override
-    public int delete(TicketOrderDetailVO.CompositeDetail id) {
-        TicketOrderDetailVO tod = getSession().get(TicketOrderDetailVO.class, id);
-        if(tod!=null){
-            getSession().delete(tod);
+    public int delete(Integer orderId) {
+        List<TicketOrderDetailVO> tods=getSession()
+                .createQuery("from TicketOrderDetailVO where orderId= :orderId", TicketOrderDetailVO.class)
+                .setParameter("orderId", orderId)
+                .list();
+        if(tods!=null){
+            getSession().delete(tods);
             return 1;
         }else {
             return -1;
@@ -66,9 +69,12 @@ public class HbTodDaoImpl implements HbTodDao_Interface{
     public List<TicketOrderDetailVO> getAll(int currentPage) {
         return null;
     }
-    //
+    //取得一筆訂單對應訂單明細總數
     @Override
-    public long getTotal() {
-        return getSession().createQuery("select count(*) from TicketOrderDetailVO", Long.class).uniqueResult();
+    public long getTotal(Integer orderId) {
+        return getSession()
+                .createQuery("select count(*) from TicketOrderDetailVO where orderId= :orderId", Long.class)
+                .setParameter("orderId", orderId)
+                .uniqueResult();
     }
 }

@@ -1,4 +1,4 @@
-package com.depthspace.member;
+package com.depthspace.member.model;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;

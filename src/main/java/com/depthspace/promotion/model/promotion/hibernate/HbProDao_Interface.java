@@ -1,4 +1,6 @@
-package com.depthspace.promotion.model.promotion;
+package com.depthspace.promotion.model.promotion.hibernate;
+
+import com.depthspace.promotion.model.promotion.PromotionVO;
 
 import java.util.List;
 

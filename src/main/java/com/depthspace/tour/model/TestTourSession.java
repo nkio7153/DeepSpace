@@ -3,7 +3,7 @@ package com.depthspace.tour.model;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.depthspace.member.MemVO;
+import com.depthspace.member.model.MemVO;
 import com.depthspace.utils.HibernateUtil;
 
 public class TestTourSession {
