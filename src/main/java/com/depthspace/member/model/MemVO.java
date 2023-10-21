@@ -58,8 +58,6 @@ public class MemVO implements Serializable {
 	@Column(name = "MEM_IMAGE", columnDefinition = "mediumblob")
 	private byte[] memImage;
 	
-
-
 	public MemVO() {
 	}
 	

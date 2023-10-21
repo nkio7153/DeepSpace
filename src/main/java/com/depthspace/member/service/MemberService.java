@@ -38,8 +38,8 @@ public class MemberService {
 	public List<MemVO> getEmail(String memEmail){
 		return dao.getEmail(memEmail);
 	}
+	
 	public MemVO findByMemId(Integer memId) {
-		System.out.println(memId);
 		return dao.findByMemId(memId);
 	}
 
