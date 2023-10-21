@@ -86,6 +86,7 @@ public class AccountServlet extends HttpServlet {
 //
 //		AccountVO account = new AccountVO(null, accountName, memId);
 //		accountService.update(account);
+		System.out.println("Update Account");
 		 String accountIdStr = req.getParameter("accountId");
 		    if (accountIdStr != null && !accountIdStr.isEmpty()) {
 		        Integer accountId = Integer.parseInt(accountIdStr);
@@ -93,6 +94,7 @@ public class AccountServlet extends HttpServlet {
 		        Integer memId = Integer.parseInt(req.getParameter("memId"));
 		        
 		        AccountVO account = new AccountVO(accountId, accountName, memId);
+		        System.out.println(account.toString());
 		        accountService.update(account);
 		    } else {
 		        // 处理无效的 accountId，可能需要返回错误或进行其他适当的操作

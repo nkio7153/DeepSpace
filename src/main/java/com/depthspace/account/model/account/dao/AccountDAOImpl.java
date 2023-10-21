@@ -25,7 +25,6 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public int insert(AccountVO entity) {
-
 		Transaction tx = getSession().beginTransaction();
 		session = getSession();
 		int count = (int) session.save(entity);
