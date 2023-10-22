@@ -28,6 +28,8 @@ public class RestVO implements Serializable {
 	private String restTel;
 	@Column(name = "REST_ADDRESS")
 	private String restAddress;
+	@Column(name = "REST_TYPE")
+	private String restType;
 	@Column(name = "REST_OPEN")
 	private String restOpen;
 	@Column(name = "REST_STATUS")
@@ -62,7 +64,7 @@ public class RestVO implements Serializable {
 		super();
 	}
 
-	public RestVO(Integer restId, String restName, String restTel, String restAddress, String restOpen,
+	public RestVO(Integer restId, String restName, String restTel, String restAddress, String restType ,String restOpen,
 			Integer restStatus, Integer bookingLimit, Integer adminId) {
 		super();
 		this.restId = restId;
@@ -107,6 +109,14 @@ public class RestVO implements Serializable {
 		this.restAddress = restAddress;
 	}
 
+	public String getRestType() {
+		return restType;
+	}
+
+	public void setRestType(String restType) {
+		this.restType = restType;
+	}
+	
 	public String getRestOpen() {
 		return restOpen;
 	}
@@ -142,7 +152,7 @@ public class RestVO implements Serializable {
 	@Override
 	public String toString() {
 		return "RestVO [restId=" + restId + ", restName=" + restName + ", restTel=" + restTel + ", restAddress="
-				+ restAddress + ", restOpen=" + restOpen + ", restStatus=" + restStatus + ", bookingLimit="
+				+ restAddress + ", restType=" + restType + ", restOpen=" + restOpen + ", restStatus=" + restStatus + ", bookingLimit="
 				+ bookingLimit + ", adminId=" + adminId + "]";
 	}
 }

@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/main/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/Rest/css/main.css">
 <title>餐廳修改</title>
 </head>
 <body>
@@ -26,6 +26,8 @@
 		<input type="text" name="restTel" value=${rest.restTel}><br>
 		<p><label>餐廳地址：</label>
 		<input type="text" name="restAddress" value=${rest.restAddress}><br>
+		<p><label>餐廳類型：</label>
+		<input type="text" name="restType" value=${rest.restType}><br>
 		<p><label>營業時間：</label>
 		<input type="text" name="restOpen" value=${rest.restOpen}><br>
 		<p><label>餐廳上下架 (0下架/1上架)：</label>
@@ -43,10 +45,10 @@
 		
 		
 	<br>
-	<a href="${pageContext.request.contextPath}/Rest/index.jsp">回首頁</a>
+	<a href="${pageContext.request.contextPath}/Rest/into.jsp">回首頁</a>
 	
 	<script>
-    	// 将下拉框的默认选项设置为第二个选项（索引为1）
+    	// 將下拉框的預設選項設定為第二個選項（索引為1）
     	document.getElementById("restStatus").selectedIndex = ${rest.restStatus};
 	</script>	
 </body>

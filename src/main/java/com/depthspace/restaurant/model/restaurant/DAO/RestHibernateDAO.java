@@ -24,16 +24,16 @@ public class RestHibernateDAO {
 //		dao.add(rest1);
 		
 		// UPDATE
-		RestVO rest2 = new RestVO();
-		rest2.setRestName("餐廳777");
-		rest2.setRestTel("03-1234888");
-		rest2.setRestAddress("台北");
-		rest2.setRestOpen("周一~週六");
-		rest2.setRestStatus(1);
-		rest2.setBookingLimit(111);
-		rest2.setAdminId(2);
-		rest2.setRestId(28);
-		dao.update(rest2);
+//		RestVO rest2 = new RestVO();
+//		rest2.setRestName("餐廳777");
+//		rest2.setRestTel("03-1234888");
+//		rest2.setRestAddress("台北");
+//		rest2.setRestOpen("周一~週六");
+//		rest2.setRestStatus(1);
+//		rest2.setBookingLimit(111);
+//		rest2.setAdminId(2);
+//		rest2.setRestId(28);
+//		dao.update(rest2);
 		
 		// DELETE
 //		dao.delete(24);
@@ -50,16 +50,17 @@ public class RestHibernateDAO {
 //		System.out.println(rest3.getAdminId());
 		
 		
-//		List<RestVO> list = dao.getAll();
-//		for (RestVO rest: list) {
-//			System.out.println(rest.getRestId() + ",");
-//			System.out.println(rest.getRestName() + ",");
-//			System.out.println(rest.getRestTel() + ",");
-//			System.out.println(rest.getRestAddress() + ",");
-//			System.out.println(rest.getRestOpen() + ",");
-//			System.out.println(rest.getRestStatus() + ",");
-//			System.out.println(rest.getBookingLimit() + ",");
-//			System.out.println(rest.getAdminId());
-//		}
+		List<RestVO> list = dao.getAll();
+		for (RestVO rest: list) {
+			System.out.println(rest.getRestId() + ",");
+			System.out.println(rest.getRestName() + ",");
+			System.out.println(rest.getRestTel() + ",");
+			System.out.println(rest.getRestAddress() + ",");
+			System.out.println(rest.getRestType() + ",");
+			System.out.println(rest.getRestOpen() + ",");
+			System.out.println(rest.getRestStatus() + ",");
+			System.out.println(rest.getBookingLimit() + ",");
+			System.out.println(rest.getAdminId());
+		}
 	}
 }
