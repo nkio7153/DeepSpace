@@ -3,12 +3,17 @@ package com.depthspace.restaurant.model.membooking;
 import java.io.Serializable;
 import java.sql.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.depthspace.restaurant.model.restaurant.RestVO;
 
 @Entity
 @Table(name = "MEM_BOOKING")
@@ -29,6 +34,18 @@ public class MemBookingVO implements Serializable {
 	private Integer bookingNumber;
 	@Column(name = "BOOKING_DATE")
 	private Date bookingDate;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "REST_ID", referencedColumnName = "REST_ID", insertable = false, updatable = false)
+	private RestVO restVO;
+
+	public RestVO getRestVO() {
+		return restVO;
+	}
+
+	public void setRestVO(RestVO restVO) {
+		this.restVO = restVO;
+	}
 
 	public MemBookingVO() {
 		super();
