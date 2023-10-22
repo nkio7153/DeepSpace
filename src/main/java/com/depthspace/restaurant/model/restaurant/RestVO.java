@@ -1,20 +1,26 @@
 package com.depthspace.restaurant.model.restaurant;
 
 import java.io.Serializable;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.depthspace.restaurant.model.membooking.MemBookingVO;
+import com.depthspace.restaurant.model.restcollection.RestCollectionVO;
 
 @Entity
 @Table(name = "RESTAURANT")
 public class RestVO implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "REST_ID", updatable = false)
+	@Column(name = "REST_ID", insertable = false, updatable = false)
 	private Integer restId;
 	@Column(name = "REST_NAME")
 	private String restName;
@@ -22,6 +28,8 @@ public class RestVO implements Serializable {
 	private String restTel;
 	@Column(name = "REST_ADDRESS")
 	private String restAddress;
+	@Column(name = "REST_TYPE")
+	private String restType;
 	@Column(name = "REST_OPEN")
 	private String restOpen;
 	@Column(name = "REST_STATUS")
@@ -30,12 +38,33 @@ public class RestVO implements Serializable {
 	private Integer bookingLimit;
 	@Column(name = "ADMIN_ID")
 	private Integer adminId;
+	
+	@OneToMany(mappedBy = "restVO", cascade = CascadeType.ALL)
+	private Set<RestCollectionVO> rests;
+	@OneToMany(mappedBy = "restVO", cascade = CascadeType.ALL)
+	private Set<MemBookingVO> memBooking;
+	
+	public Set<RestCollectionVO> getRests() {
+		return rests;
+	}
+
+	public void setRests(Set<RestCollectionVO> rests) {
+		this.rests = rests;
+	}
+
+	public Set<MemBookingVO> getMemBooking() {
+		return memBooking;
+	}
+
+	public void setMemBooking(Set<MemBookingVO> memBooking) {
+		this.memBooking = memBooking;
+	}
 
 	public RestVO() {
 		super();
 	}
 
-	public RestVO(Integer restId, String restName, String restTel, String restAddress, String restOpen,
+	public RestVO(Integer restId, String restName, String restTel, String restAddress, String restType ,String restOpen,
 			Integer restStatus, Integer bookingLimit, Integer adminId) {
 		super();
 		this.restId = restId;
@@ -80,6 +109,14 @@ public class RestVO implements Serializable {
 		this.restAddress = restAddress;
 	}
 
+	public String getRestType() {
+		return restType;
+	}
+
+	public void setRestType(String restType) {
+		this.restType = restType;
+	}
+	
 	public String getRestOpen() {
 		return restOpen;
 	}
@@ -115,7 +152,7 @@ public class RestVO implements Serializable {
 	@Override
 	public String toString() {
 		return "RestVO [restId=" + restId + ", restName=" + restName + ", restTel=" + restTel + ", restAddress="
-				+ restAddress + ", restOpen=" + restOpen + ", restStatus=" + restStatus + ", bookingLimit="
+				+ restAddress + ", restType=" + restType + ", restOpen=" + restOpen + ", restStatus=" + restStatus + ", bookingLimit="
 				+ bookingLimit + ", adminId=" + adminId + "]";
 	}
 }
