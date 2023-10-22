@@ -236,6 +236,33 @@ public class TicketVO implements Serializable{
 //	}
 
 
+	public TicketVO(Integer ticketId, TicketTypesVO ticketType, String ticketName, String description, Integer price,
+			Integer stock, Integer validDays, byte status, Timestamp publishedDate, Integer totalStarRatings,
+			Integer totalStars, String address, Double longitude, Double latitude, CityVO city,
+			Set<TicketImagesVO> images, String cityName) {
+		super();
+		this.ticketId = ticketId;
+		this.ticketType = ticketType;
+		this.ticketName = ticketName;
+		this.description = description;
+		this.price = price;
+		this.stock = stock;
+		this.validDays = validDays;
+		this.status = status;
+		this.publishedDate = publishedDate;
+		this.totalStarRatings = totalStarRatings;
+		this.totalStars = totalStars;
+		this.address = address;
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.city = city;
+		this.images = images;
+		this.cityName = cityName;
+	}
+
+
+
+
 	public String getAddress() {
 		return address;
 	}

@@ -26,9 +26,8 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 	@Override
-	public TicketVO addTicket(TicketVO ticketVO) {
-		dao.insert(ticketVO);
-		return ticketVO;
+	public int addTicket(TicketVO ticketVO) {
+		return dao.insert(ticketVO);
 	}
 
 	@Override

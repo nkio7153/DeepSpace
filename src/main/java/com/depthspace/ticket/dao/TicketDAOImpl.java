@@ -39,9 +39,8 @@ public class TicketDAOImpl implements TicketDAO {
 	
 	@Override
 	public int insert(TicketVO ticketVO) {
-		
-		return (Integer) getSession().save(ticketVO); 
-		//回傳新增成功的ID
+		int count = (int) getSession().save(ticketVO);
+		return count;
 	}
 	
 	

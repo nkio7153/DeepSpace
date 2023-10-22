@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.depthspace.account.model.account.AccountVO;
 import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.ticket.service.TicketService;
@@ -99,49 +100,69 @@ public class TicketServlet extends HttpServlet {
 	}	
 	
 	/************票券新增************/
+
+//	String accountName = req.getParameter("accountName");
+//	Integer memId = Integer.parseInt(req.getParameter("memId"));
+//	System.out.println(accountName);
+//
+//	AccountVO account = new AccountVO(null, accountName, memId);
+//	accountService.insert(account);
+//
+//}
+	
 	private void doAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		String ticketName;
-		Integer price;
-//		String ticketType;
-//		String description;
-//		Integer stock;
-//		Integer validDays;
-//		Byte status;
-//		String address;
-//		Double longitude;
-//		Double latitude;
-//		Timestamp publishedDate=null;
+
+		String ticketName = req.getParameter("ticketName");
+		Integer price = Integer.parseInt(req.getParameter("price"));
+//		System.out.println(ticketName);
 		
-		TicketVO ticketVO;
-        try{
-        	ticketName = String.valueOf(req.getParameter("ticketName"));
-        	price = Integer.valueOf(req.getParameter("price"));
-//        	ticketType = String.valueOf(req.getParameter("ticketType"));
-//        	description = String.valueOf(req.getParameter("description"));
-//        	stock = Integer.valueOf(req.getParameter("stock"));
-//        	validDays = Integer.valueOf(req.getParameter("validDays"));
-//        	status = Byte.valueOf(req.getParameter("status"));
-//        	address = String.valueOf(req.getParameter("address"));
-//        	longitude = Double.valueOf(req.getParameter("longitude"));
-//        	latitude = Double.valueOf(req.getParameter("latitude"));
-//        	publishedDate = Date.valueOf(req.getParameter("publishedDate"));
-        	
-        }catch (NumberFormatException e){
-            e.printStackTrace();
-            return;
-        }
-        
-        TicketService tks = new TicketServiceImpl();
-        if(ticketName!=null && price!=null) {
-            TicketVO ticket = new TicketVO();
-            ticket.setTicketName(ticketName);
-            ticket.setPrice(price);
-            tks.addTicket(ticket);
-        }
-	    RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgAdd.jsp");
-	    dispatcher.forward(req, res); 
+		TicketVO ticket = new TicketVO();
+		ticket.setTicketName(ticketName);
+		ticket.setPrice(price);
+		ticketService.addTicket(ticket);
 		
-	}
+		//		String ticketName;
+//		Integer price;
+////		String ticketType;
+////		String description;
+////		Integer stock;
+////		Integer validDays;
+////		Byte status;
+////		String address;
+////		Double longitude;
+////		Double latitude;
+////		Timestamp publishedDate=null;
+//		
+//		TicketVO ticketVO;
+//        try{
+//        	ticketName = String.valueOf(req.getParameter("ticketName"));
+//        	price = Integer.valueOf(req.getParameter("price"));
+////        	ticketType = String.valueOf(req.getParameter("ticketType"));
+////        	description = String.valueOf(req.getParameter("description"));
+////        	stock = Integer.valueOf(req.getParameter("stock"));
+////        	validDays = Integer.valueOf(req.getParameter("validDays"));
+////        	status = Byte.valueOf(req.getParameter("status"));
+////        	address = String.valueOf(req.getParameter("address"));
+////        	longitude = Double.valueOf(req.getParameter("longitude"));
+////        	latitude = Double.valueOf(req.getParameter("latitude"));
+////        	publishedDate = Date.valueOf(req.getParameter("publishedDate"));
+//        	
+//        }catch (NumberFormatException e){
+//            e.printStackTrace();
+//            return;
+//        }
+//        
+//        TicketService tks = new TicketServiceImpl();
+//        if(ticketName!=null && price!=null) {
+//            TicketVO ticket = new TicketVO();
+//            ticket.setTicketName(ticketName);
+//            ticket.setPrice(price);
+//            tks.addTicket(ticket);
+//        }
+//	    RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgAdd.jsp");
+//	    dispatcher.forward(req, res); 
+//		
+//	}
 	
 	
 	
@@ -180,8 +201,10 @@ public class TicketServlet extends HttpServlet {
 //            res.setContentType("image/jpeg");  // 假設圖片是 JPEG 格式，如有需要請修改
 //            res.getOutputStream().write(imageBytes);
         
-
+	}
 }
+
+
 	
 
 

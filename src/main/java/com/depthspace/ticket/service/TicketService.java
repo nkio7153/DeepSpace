@@ -7,7 +7,7 @@ import com.depthspace.ticket.model.TicketVO;
 
 public interface TicketService {
 	
-    TicketVO addTicket(TicketVO ticketVO);
+    int addTicket(TicketVO ticketVO);
     
     TicketVO updateTicket(TicketVO ticketVO);
 
