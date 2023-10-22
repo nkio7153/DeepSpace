@@ -58,7 +58,6 @@
       <th>總金額</th>
       <th>點數回饋</th>
       <th>實付金額</th>
-      <th>狀態</th>
       <th>支付方式</th>
       <th>操作</th>
     </tr>
@@ -72,12 +71,11 @@
       <td align="center">${order.totalAmount}</td>
       <td align="center">${order.pointsFeedback}</td>
       <td align="center">${order.amountPaid}</td>
-      <td align="center">${order.status}</td>
       <td align="center">${order.paymentMethod}</td>
       <td align="center" class="no-wrap w150">
         <!-- 這裡添加你的後端刪除和修改的路徑 -->
 <%--        <a href="${pageContext.request.contextPath}/ticketOrders/edit.jsp?order=${order}" >修改</a>--%>
-        <a href="${pageContext.request.contextPath}/ticketOrders/edit.jsp?order=${order}" >訂單明細</a>
+        <a href="${pageContext.request.contextPath}/tod/list?orderId=${order.orderId}" >訂單明細</a>
         <a href="">取消訂單</a>
       </td>
     </tr>

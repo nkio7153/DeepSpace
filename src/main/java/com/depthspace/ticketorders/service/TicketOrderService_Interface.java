@@ -17,8 +17,8 @@ public interface TicketOrderService_Interface {
     public List<TicketOrdersVO> getAll();
     //取得當前頁面資料
     public List<TicketOrdersVO> getAll(int currentPage);
-    //取得列表總數
-    public long getTotal();
+    //取得訂單對應明細總數
+    public long getTotal(Integer orderId);
 
 
 }
