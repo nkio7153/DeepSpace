@@ -37,11 +37,30 @@ public class TicketDAOImpl implements TicketDAO {
 		return factory.getCurrentSession();
 	}
 	
+//	@Override
+//	public int insert(TicketVO ticketVO) {
+//		return (int) getSession().save(ticketVO);
+//	}
 	@Override
 	public int insert(TicketVO ticketVO) {
-		
-		return (Integer) getSession().save(ticketVO); 
-		//回傳新增成功的ID
+	    Transaction transaction = null;
+	    try {
+	        // 開啟事務
+	        transaction = getSession().beginTransaction();
+
+	        // 保存對象
+	        Integer ticketId = (Integer) getSession().save(ticketVO);
+
+	        // 提交事務
+	        transaction.commit();
+
+	        return ticketId;
+	    } catch (Exception e) {
+	        if (transaction != null) {
+	            transaction.rollback(); // 發生異常時回滾事務
+	        }
+	        throw e; // 將異常再次拋出，以便在上層進一步處理
+	    }
 	}
 	
 	

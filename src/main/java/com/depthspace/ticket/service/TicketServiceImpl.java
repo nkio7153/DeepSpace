@@ -24,22 +24,40 @@ public class TicketServiceImpl implements TicketService {
 	public TicketServiceImpl() {
 		dao = new TicketDAOImpl(HibernateUtil.getSessionFactory());
 	}
-
+	
+	//新增票券
 	@Override
-	public TicketVO addTicket(TicketVO ticketVO) {
-		dao.insert(ticketVO);
-		return ticketVO;
+	public int addTicket(TicketVO ticketVO) {
+		return dao.insert(ticketVO);
 	}
 
+	//更新票券
 	@Override
 	public TicketVO updateTicket(TicketVO ticketVO) {
 		dao.update(ticketVO);
 		return ticketVO;
 	}
-
+	
+	//刪除票券
 	@Override
 	public int deleteTicket(Integer ticketId) {
-		return dao.delete(ticketId);
+	    Transaction transaction = null;
+	    int deletedCount = 0;
+
+	    try {
+	        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+	        transaction = session.beginTransaction();
+	        
+	        deletedCount = dao.delete(ticketId);
+
+	        transaction.commit();
+	    } catch (Exception e) {
+	        if (transaction != null) {
+	            transaction.rollback();
+	        }
+	        e.printStackTrace();
+	    }
+	    return deletedCount;
 	}
 
 	@Override
@@ -49,6 +67,7 @@ public class TicketServiceImpl implements TicketService {
 	}
 	
 
+	//取得所有票券
 	@Override
 	public List<TicketVO> getAllTickets(int currentPage) {
 		Transaction transaction = null;
@@ -80,6 +99,7 @@ public class TicketServiceImpl implements TicketService {
 		return dao.getAllTicketsWithCity();
 	}
 
+	//分頁
 	@Override
 	public int getPageTotal() {
 		long total = dao.getTotal();
@@ -94,28 +114,4 @@ public class TicketServiceImpl implements TicketService {
 		return dao.getAllTicketsWithMainImages();
 	}
 
-//	@Override
-//	public List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map) {		
-//		Map<String, String> query = new HashMap<>();
-//	// Map.Entry即代表一組key-value
-//	Set<Map.Entry<String, String[]>> entry = map.entrySet();
-//	
-//	for (Map.Entry<String, String[]> row : entry) {
-//		String key = row.getKey();
-//		// 因為請求參數裡包含了action，做個去除動作
-//		if ("action".equals(key)) {
-//			continue;
-//		}
-//		// 若是value為空即代表沒有查詢條件，做個去除動作
-//		String value = row.getValue()[0];
-//		if (value.isEmpty() || value == null) {
-//			continue;
-//		}
-//		query.put(key, value);
-//	}
-//	
-//	System.out.println(query);
-//	
-//	return dao.getByCompositeQuery(query);
-//	}
 }

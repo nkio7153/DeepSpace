@@ -33,9 +33,7 @@
 		<div class="container mt-5">
 			<div class="container mt-5">
 				<h1>新增票券</h1>
-				<form
-					action="${pageContext.request.contextPath}/backendticket/addTicket"
-					method="post" enctype="multipart/form-data">
+				<form action="<%= request.getContextPath()%>/backendticket/mgaddsuccess" method="post">
 					<div class="row">
 						<!-- 類型 -->
 						<div class="form-group col-md-6">
@@ -67,14 +65,14 @@
 
 
 						<div class="row">
-							<!-- 圖片上傳 -->
+						<!-- 圖片上傳 -->
 							<div class="form-group col-md-6">
 								<label for="ticketImage">圖片</label> <input type="file"
 									class="form-control-file" id="ticketImage" name="ticketImage"
 									onchange="previewImage(event)">
 							</div>
 
-							<!-- 圖片預覽 -->
+						<!-- 圖片預覽 -->
 							<div class="form-group col-md-6">
 								<label>圖片預覽</label> <img id="imagePreview" src="#" alt="圖片預覽"
 									style="max-width: 100%; max-height: 300px; display: none;" />
@@ -84,9 +82,9 @@
 
 						<!-- 使用天數 -->
 						<div class="form-group col-md-12">
-							<label for="valiDays">使用天數</label> <input type="text"
-								pattern="\d{8}" title="請輸入數字，例如: 365"
-								class="form-control" id="valiDays" name="valiDays">
+							<label for="validDays">使用天數</label> <input type="text"
+								title="請輸入數字，例如: 365"
+								class="form-control" id="validDays" name="validDays">
 						</div>
 
 						<!-- 描述 -->
@@ -126,21 +124,20 @@
 
 						<!-- 上下架狀況 -->
 						<div class="form-group col-md-6">
-							<label>上下架狀況</label><br> <input type="radio" id="onShelf"
-								name="status" value="1"> <label for="onShelf">上架</label>
+							<label>上下架</label><br> <input type="radio" id="on"
+								name="status" value="1"> <label for="on">上架</label>
 
-							<input type="radio" id="offShelf" name="status" value="0">
-							<label for="offShelf">未上架</label>
+							<input type="radio" id="off" name="status" value="0">
+							<label for="off">未上架</label>
 						</div>
 					</div>
 
-					<button type="submit" class="btn btn-primary">提交</button>
+					<button type="submit" class="btn btn-primary" name="action">送出</button>
 				</form>
 			</div>
+    			
 
 
-			<!-- Optional JavaScript -->
-			<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 			<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 			<script
 				src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
