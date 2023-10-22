@@ -1,6 +1,7 @@
 package com.depthspace.ticket.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.*;
 
 import javax.servlet.RequestDispatcher;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.ticket.service.TicketService;
 import com.depthspace.ticket.service.TicketServiceImpl;
@@ -61,7 +63,8 @@ public class TicketServlet extends HttpServlet {
 	    }
 	}
 
-
+	
+	/************票券列表************/
 	private void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
@@ -73,32 +76,74 @@ public class TicketServlet extends HttpServlet {
 			req.getSession().setAttribute("ticketPageQty", ticketPageQty);
 		}
 		
+        List<TicketVO> ticketsWithCity = ticketService.getTicketsWithCity();
+
 		req.setAttribute("ticketList", ticketList);
 		req.setAttribute("currentPage", currentPage);
 		
-	    RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mglist.jsp");
+	    RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgList.jsp");
 	    dispatcher.forward(req, res); 
 	}
 
 	private void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
-	    RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgedit.jsp");
+	    RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgEdit.jsp");
 	    dispatcher.forward(req, res); 		
 	}
 	
 	private void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
-	    RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgsearch.jsp");
+	    RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgSearch.jsp");
 	    dispatcher.forward(req, res); 
 		
 	}	
 	
+	/************票券新增************/
 	private void doAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-
-	    RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgadd.jsp");
+		String ticketName;
+		Integer price;
+//		String ticketType;
+//		String description;
+//		Integer stock;
+//		Integer validDays;
+//		Byte status;
+//		String address;
+//		Double longitude;
+//		Double latitude;
+//		Timestamp publishedDate=null;
+		
+		TicketVO ticketVO;
+        try{
+        	ticketName = String.valueOf(req.getParameter("ticketName"));
+        	price = Integer.valueOf(req.getParameter("price"));
+//        	ticketType = String.valueOf(req.getParameter("ticketType"));
+//        	description = String.valueOf(req.getParameter("description"));
+//        	stock = Integer.valueOf(req.getParameter("stock"));
+//        	validDays = Integer.valueOf(req.getParameter("validDays"));
+//        	status = Byte.valueOf(req.getParameter("status"));
+//        	address = String.valueOf(req.getParameter("address"));
+//        	longitude = Double.valueOf(req.getParameter("longitude"));
+//        	latitude = Double.valueOf(req.getParameter("latitude"));
+//        	publishedDate = Date.valueOf(req.getParameter("publishedDate"));
+        	
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+            return;
+        }
+        
+        TicketService tks = new TicketServiceImpl();
+        if(ticketName!=null && price!=null) {
+            TicketVO ticket = new TicketVO();
+            ticket.setTicketName(ticketName);
+            ticket.setPrice(price);
+            tks.addTicket(ticket);
+        }
+	    RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgAdd.jsp");
 	    dispatcher.forward(req, res); 
 		
 	}
+	
+	
 	
 //	@Override
 //    protected void doGet(HttpServletRequest req, HttpServletResponse res) 

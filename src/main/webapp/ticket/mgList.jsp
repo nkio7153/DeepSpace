@@ -55,7 +55,7 @@
 				<th>項次</th>
 				<th>類型</th>
    				<th>編號</th>
-<!-- 			    <th>圖片</th>         -->
+			    <th>圖片</th>        
 			    <th>名稱</th>
 			    <th>價格</th>
 			    <th>數量</th>
@@ -71,20 +71,20 @@
 	    <c:forEach var="ticket" items="${ticketList}" varStatus="status">
 	        <tr>
         <!-- 用當前頁數和每頁的數量計算項目序號 -->
-        <td>${itemsPerPage * (currentPage - 1) + status.index + 1}</td>
+       			<td>${itemsPerPage * (currentPage - 1) + status.index + 1}</td>
 				<td>${ticket.ticketType.typeName}</td>
 				<td>${ticket.ticketId}</td>
-<%-- 			    <td>${ticket.image}</td> --%>
+			    <td><img src="ticketimage?ticketId=${ticket.ticketId}" alt="Main Ticket Image"></td>
 			    <td>${ticket.ticketName}</td>
 			    <td>${ticket.price}</td>
 			    <td>${ticket.stock}</td>
 			    <td>${ticket.description}</td>    
 			    <td>${ticket.publishedDate}</td> 
 			    <td>${ticket.status}</td>      
-			    <td>${ticket.cityName}</td>
+			    <td>${ticket.city.cityName}</td>
 			     <td>
-				    <a href="" class="btn btn-danger btn-sm" role="button">刪除</a> 
                     <a href="${pageContext.request.contextPath}/backendticket/mgedit" class="btn btn-primary btn-sm">修改</a>
+				    <a href="" class="btn btn-danger btn-sm" role="button">刪除</a> 
                 </td>  
 	        </tr>
 	    </c:forEach>
@@ -97,7 +97,7 @@
         <!-- "至第一頁" 只在非第一頁時顯示 -->
         <c:if test="${currentPage > 1}">
             <li class="page-item">
-                <a class="page-link" href="${pageContext.request.contextPath}/backendticket/mglist?page=1">首頁</a>
+                <a class="page-link" href="${pageContext.request.contextPath}/backendticket/mgList?page=1">首頁</a>
             </li>
         </c:if>
         
@@ -138,7 +138,7 @@
 
 <!-- 回首頁 -->
 <div class="page-item">
-<a class="page-link" href="${pageContext.request.contextPath}/backendticket/mg">回首頁</a>
+<a class="page-link" href="${pageContext.request.contextPath}/backendticket/">回首頁</a>
 </div>
 
     <!-- 引入Bootstrap JS 和 Popper.js -->

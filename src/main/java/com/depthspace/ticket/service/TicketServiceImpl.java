@@ -12,14 +12,15 @@ import org.hibernate.query.Query;
 
 import com.depthspace.ticket.dao.TicketDAO;
 import com.depthspace.ticket.dao.TicketDAOImpl;
+import com.depthspace.ticket.model.TicketImagesVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.utils.HibernateUtil;
 
-public class TicketServiceImpl  implements TicketService {
+public class TicketServiceImpl implements TicketService {
 
 	public static final int PAGE_MAX_RESULT = 10;
 	private TicketDAO dao;
-	
+
 	public TicketServiceImpl() {
 		dao = new TicketDAOImpl(HibernateUtil.getSessionFactory());
 	}
@@ -47,71 +48,50 @@ public class TicketServiceImpl  implements TicketService {
 		return null;
 	}
 	
+
 	@Override
 	public List<TicketVO> getAllTickets(int currentPage) {
-	    Transaction transaction = null;
-	    List<TicketVO> tickets = new ArrayList<>();
+		Transaction transaction = null;
+		List<TicketVO> tickets = new ArrayList<>();
 
-	    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
-	        transaction = session.beginTransaction();
+			transaction = session.beginTransaction();
 
-	        Query<TicketVO> query = session.createQuery("FROM TicketVO", TicketVO.class);
-	        
-	        // 分頁
-	        query.setFirstResult((currentPage - 1) * PAGE_MAX_RESULT);
-	        query.setMaxResults(PAGE_MAX_RESULT);
-	        
-	        tickets = query.list();
-	        transaction.commit();
-	    } catch (Exception e) {
-	        if (transaction != null) {
-	            transaction.rollback();
-	        }
-	        throw new RuntimeException("Error fetching tickets", e);
-	    } 
+			Query<TicketVO> query = session.createQuery("FROM TicketVO", TicketVO.class);
 
-	    return tickets;
+			// 分頁
+			query.setFirstResult((currentPage - 1) * PAGE_MAX_RESULT);
+			query.setMaxResults(PAGE_MAX_RESULT);
+
+			tickets = query.list();
+			transaction.commit();
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw new RuntimeException("Error fetching tickets", e);
+		}
+
+		return tickets;
 	}
 
-
-
-	public List<TicketDTO> getTicketsWithAreaName() {
-	    Transaction transaction = null;
-	    List<TicketDTO> result = new ArrayList<>();
-
-	    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-	        transaction = session.beginTransaction();
-	        // 使用原生SQL查询
-	        String sql = "SELECT t.AREA_ID, c.CITY_NAME FROM TICKET t JOIN CITY c ON t.AREA_ID = c.CITY_ID";
-	        Query<Object[]> query = session.createNativeQuery(sql);
-	        
-	        List<Object[]> rows = query.getResultList();
-	        for (Object[] row : rows) {
-	            Integer areaId = (Integer) row[0];
-	            String cityName = (String) row[1];
-	            result.add(new TicketDTO(areaId, cityName));
-	        }
-
-	        transaction.commit();
-	    } catch (Exception e) {
-	        if (transaction != null) {
-	            transaction.rollback(); 
-	        }
-	        throw new RuntimeException(e);
-	    }
-
-	    return result;
+	public List<TicketVO> getTicketsWithCity() {
+		return dao.getAllTicketsWithCity();
 	}
 
-
-	
 	@Override
 	public int getPageTotal() {
 		long total = dao.getTotal();
 		// 計算數量每頁3筆的話總共有幾頁
-		int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
+		int pageQty = (int) (total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
 		return pageQty;
+	}
+
+	// 找票券主圖
+	@Override
+	public List<TicketVO> getTicketsWithMainImage() {
+		return dao.getAllTicketsWithMainImages();
 	}
 
 //	@Override

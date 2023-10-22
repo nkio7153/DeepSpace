@@ -17,13 +17,16 @@ public interface TicketService {
     
     List<TicketVO> getAllTickets(int currentPage);
     
-    List<TicketDTO> getTicketsWithAreaName();
+    List<TicketVO> getTicketsWithCity();
     
     int getPageTotal();
     
+    List<TicketVO> getTicketsWithMainImage();
+    
 //    List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map);
 	
-	
+ 
+
 }
 
 
