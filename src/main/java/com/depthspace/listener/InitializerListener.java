@@ -10,13 +10,13 @@ public class InitializerListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		System.out.println("context started");
-		HibernateUtil.getSessionFactory();
+//		HibernateUtil.getSessionFactory();
 	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		System.out.println("context ended");
-		HibernateUtil.shutdown();
+//		HibernateUtil.shutdown();
 	}
 
 }

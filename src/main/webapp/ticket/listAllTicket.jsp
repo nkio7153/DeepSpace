@@ -71,7 +71,7 @@
 				<td>${status.index + 1}</td>
 				<td>${ticket.typeName}</td>
 				<td>${ticket.ticketId}</td>
-			    <td><img src="data:image/jpeg;base64,${ticket.base64Image}"/></td>
+			    <td>${ticket.image}</td>
 			    <td>${ticket.ticketName}</td>
 			    <td>${ticket.price}</td>
 			    <td>${ticket.stock}</td>

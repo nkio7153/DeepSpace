@@ -1,12 +1,12 @@
 package com.depthspace.account.model.account.dao;
 
-import java.util.List;
+		import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+		import org.hibernate.Session;
+		import org.hibernate.SessionFactory;
+		import org.hibernate.Transaction;
 
-import com.depthspace.account.model.account.AccountVO;
+		import com.depthspace.account.model.account.AccountVO;
 
 public class AccountDAOImpl implements AccountDAO {
 	// SessionFactory 為 thread-safe，可宣告為屬性讓請求執行緒們共用
@@ -25,7 +25,6 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public int insert(AccountVO entity) {
-		
 		Transaction tx = getSession().beginTransaction();
 		session = getSession();
 		int count = (int) session.save(entity);
@@ -36,12 +35,19 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public int update(AccountVO entity) {
-		try {
-			getSession().update(entity);
-			return 1;
-		} catch (Exception e) {
-			return -1;
+		Transaction tx = getSession().beginTransaction();
+		session = getSession();
+		AccountVO account = session.get(AccountVO.class, entity);
+		int state;
+		if (account != null) {
+			session.update(account);
+			tx.commit();
+			state = 1;
+		} else {
+			tx.rollback();
+			state = 0;
 		}
+		return state;
 	}
 
 	@Override
@@ -50,11 +56,11 @@ public class AccountDAOImpl implements AccountDAO {
 		session = getSession();
 		AccountVO account = session.get(AccountVO.class, id);
 		// 0:失敗 1:成功
-		int state ;
+		int state;
 		if (account != null) {
 			session.delete(account);
 			tx.commit();
-			state = 1; 
+			state = 1;
 		} else {
 			tx.rollback();
 			state = 0;
