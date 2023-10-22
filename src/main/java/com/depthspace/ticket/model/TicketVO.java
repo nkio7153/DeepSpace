@@ -2,6 +2,8 @@ package com.depthspace.ticket.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 import javax.persistence.CascadeType;
@@ -15,7 +17,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.depthspace.attractions.model.CityVO;
 
@@ -53,8 +59,10 @@ public class TicketVO implements Serializable{
 	@Column(name="STATUS")
 	private byte status;
 	
-	@Column(name="PUBLISHED_DATE")
-	private Timestamp publishedDate;
+    @CreationTimestamp
+    @Column(name="PUBLISHED_DATE", updatable = false, nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date publishedDate;
 	
 	@Column(name="TOTAL_STAR_RATINGS")
 	private Integer totalStarRatings;
@@ -84,6 +92,7 @@ public class TicketVO implements Serializable{
 	@Transient
     private String cityName;
 
+	
 	
 	public TicketVO() {
 		super();
@@ -186,14 +195,20 @@ public class TicketVO implements Serializable{
 	}
 
 
-	public Timestamp getPublishedDate() {
+
+
+	public Date getPublishedDate() {
 		return publishedDate;
 	}
 
 
-	public void setPublishedDate(Timestamp publishedDate) {
+
+
+	public void setPublishedDate(Date publishedDate) {
 		this.publishedDate = publishedDate;
 	}
+
+
 
 
 	public Integer getTotalStarRatings() {

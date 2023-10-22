@@ -12,9 +12,6 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   
     <title>票券列表</title>
-<%--  	<c:if test="${ticketPageQty > 0}"> --%>
-<%--   		<b><font color=red>第${currentPage}/${ticketPageQty}頁</font></b> --%>
-<%-- 	</c:if> --%>
   
  <style>
     img {
@@ -43,6 +40,7 @@
 		    </div>
 		    <div class="col-md-3 col-sm-6">
     			<a href="${pageContext.request.contextPath}/backendticket/mgadd" class="btn btn-success btn-block">新增</a>
+    			
     		</div>
 		</div>
   
@@ -83,8 +81,9 @@
 			    <td>${ticket.status}</td>      
 			    <td>${ticket.city.cityName}</td>
 			     <td>
-                    <a href="${pageContext.request.contextPath}/backendticket/mgedit" class="btn btn-primary btn-sm">修改</a>
-				    <a href="" class="btn btn-danger btn-sm" role="button">刪除</a> 
+                    <a href="${pageContext.request.contextPath}/backendticket/mgedit?ticketId=${ticket.ticketId}" class="btn btn-primary btn-sm">修改</a>
+				    <a href="${pageContext.request.contextPath}/backendticket/mgdel?ticketId=${ticket.ticketId}" class="btn btn-danger btn-sm" onclick="return confirm('確定刪除？不要亂刪喔！');">删除</a>
+
                 </td>  
 	        </tr>
 	    </c:forEach>

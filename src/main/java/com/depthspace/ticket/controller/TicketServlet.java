@@ -12,12 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.depthspace.account.model.account.AccountVO;
+import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.ticket.service.TicketService;
 import com.depthspace.ticket.service.TicketServiceImpl;
-
-
 
 @WebServlet("/backendticket/*")
 public class TicketServlet extends HttpServlet {
@@ -38,159 +37,123 @@ public class TicketServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
-        String pathInfo = req.getPathInfo();
-        if (pathInfo == null) {
-            pathInfo = "";
-        }
+		String pathInfo = req.getPathInfo();
+		if (pathInfo == null) {
+			pathInfo = "";
+		}
 
-	        switch (pathInfo) {
-	        case "/":  //票券管理頁面
-	            res.sendRedirect(req.getContextPath() + "/ticket/mg.jsp");
-	            break;
-	        case "/mglist": //票券總列表
-	            doList(req, res); 
-	            break;
-	        case "/mgedit": //票券修改
-	            doEdit(req, res); 
-	            break;
-	        case "/mgsearch": //票券查找
-	            doSearch(req, res); 
-	            break;   
-	        case "/mgadd": //票券新增
-	            doAdd(req, res); 
-	            break;   
-	        default:
-	            System.out.println("Path not handled: " + pathInfo);
-	    }
+		switch (pathInfo) {
+		case "/": // 票券管理頁面
+			res.sendRedirect(req.getContextPath() + "/ticket/mg.jsp");
+			break;
+		case "/mglist": // 票券總列表
+			doList(req, res);
+			break;
+		case "/mgedit": // 票券更新頁面
+			res.sendRedirect(req.getContextPath() + "/ticket/mgEdit.jsp");
+			break;
+		case "/mgeditsuccess": // 票券更新成功
+			doEditSuccess(req, res);
+			break;
+		case "/mgsearch": // 票券查找
+			doSearch(req, res);
+			break;
+		case "/mgadd": // 票券新增頁面
+			res.sendRedirect(req.getContextPath() + "/ticket/mgAdd.jsp");
+			break;
+		case "/mgaddsuccess": // 票券新增成功
+			doAddSuccess(req, res);
+			break;
+		case "/mgdel": // 票券刪除
+			doDel(req, res);
+			break;
+
+		default:
+			System.out.println("Path not handled: " + pathInfo);
+		}
 	}
 
-	
-	/************票券列表************/
+	/************ 票券列表 ************/
 	private void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
-		
-		List<TicketVO> ticketList = ticketService.getAllTickets(currentPage);
 
+		List<TicketVO> ticketList = ticketService.getAllTickets(currentPage);
+		List<TicketVO> ticketsWithCity = ticketService.getTicketsWithCity();
 		if (req.getSession().getAttribute("ticketPageQty") == null) {
 			int ticketPageQty = ticketService.getPageTotal();
 			req.getSession().setAttribute("ticketPageQty", ticketPageQty);
 		}
-		
-        List<TicketVO> ticketsWithCity = ticketService.getTicketsWithCity();
 
 		req.setAttribute("ticketList", ticketList);
 		req.setAttribute("currentPage", currentPage);
-		
-	    RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgList.jsp");
-	    dispatcher.forward(req, res); 
+
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgList.jsp");
+		dispatcher.forward(req, res);
 	}
 
-	private void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	
+	/************ 票券更新 ************/	
+	private void doEditSuccess(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+//	    Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
+//	    TicketVO ticket = ticketService.getTicketById(ticketId); 
+//		
+////		TicketVO ticket = new TicketVO();
+////		TicketVO ticket = ticketService.getTicketById(ticketId);
 
-	    RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgEdit.jsp");
-	    dispatcher.forward(req, res); 		
+	    Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
+	    TicketVO ticket = ticketService.getTicketById(ticketId); 
+	    
+		ticket.setTicketName(req.getParameter("ticketName"));
+		ticket.setPrice(Integer.valueOf(req.getParameter("price")));
+		ticket.setStock(Integer.valueOf(req.getParameter("stock")));
+//		Integer ticketTypeId = Integer.valueOf(req.getParameter("TICKET_TYPE_ID"));
+		ticket.setValidDays(Integer.valueOf(req.getParameter("validDays")));
+		ticket.setDescription(req.getParameter("description"));
+		ticket.setAddress(req.getParameter("address"));
+		ticket.setLongitude(Double.valueOf(req.getParameter("longitude")));
+		ticket.setLatitude(Double.valueOf(req.getParameter("latitude")));
+		ticket.setStatus(Byte.valueOf(req.getParameter("status")));
+	    
+		req.setAttribute("ticket", ticket);
+		ticketService.updateTicket(ticket);
+
 	}
 	
+//	/************ 票券搜尋 ************/	
 	private void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
-	    RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgSearch.jsp");
-	    dispatcher.forward(req, res); 
-		
-	}	
-	
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgSearch.jsp");
+		dispatcher.forward(req, res);
+
+	}
+
 	/************票券新增************/
-
-//	String accountName = req.getParameter("accountName");
-//	Integer memId = Integer.parseInt(req.getParameter("memId"));
-//	System.out.println(accountName);
-//
-//	AccountVO account = new AccountVO(null, accountName, memId);
-//	accountService.insert(account);
-//
-//}
-	
-	private void doAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-
-		String ticketName = req.getParameter("ticketName");
-		Integer price = Integer.parseInt(req.getParameter("price"));
-//		System.out.println(ticketName);
-		
+	private void doAddSuccess(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		//下列要有set，才能將前端的資料送進資料庫
 		TicketVO ticket = new TicketVO();
-		ticket.setTicketName(ticketName);
-		ticket.setPrice(price);
-		ticketService.addTicket(ticket);
+		ticket.setTicketName(req.getParameter("ticketName"));
+		ticket.setPrice(Integer.valueOf(req.getParameter("price")));
+		ticket.setStock(Integer.valueOf(req.getParameter("stock")));
+//		Integer ticketTypeId = Integer.valueOf(req.getParameter("TICKET_TYPE_ID"));
+		ticket.setValidDays(Integer.valueOf(req.getParameter("validDays")));
+		ticket.setDescription(req.getParameter("description"));
+		ticket.setAddress(req.getParameter("address"));
+		ticket.setLongitude(Double.valueOf(req.getParameter("longitude")));
+		ticket.setLatitude(Double.valueOf(req.getParameter("latitude")));
+		ticket.setStatus(Byte.valueOf(req.getParameter("status")));
 		
-		//		String ticketName;
-//		Integer price;
-////		String ticketType;
-////		String description;
-////		Integer stock;
-////		Integer validDays;
-////		Byte status;
-////		String address;
-////		Double longitude;
-////		Double latitude;
-////		Timestamp publishedDate=null;
-//		
-//		TicketVO ticketVO;
-//        try{
-//        	ticketName = String.valueOf(req.getParameter("ticketName"));
-//        	price = Integer.valueOf(req.getParameter("price"));
-////        	ticketType = String.valueOf(req.getParameter("ticketType"));
-////        	description = String.valueOf(req.getParameter("description"));
-////        	stock = Integer.valueOf(req.getParameter("stock"));
-////        	validDays = Integer.valueOf(req.getParameter("validDays"));
-////        	status = Byte.valueOf(req.getParameter("status"));
-////        	address = String.valueOf(req.getParameter("address"));
-////        	longitude = Double.valueOf(req.getParameter("longitude"));
-////        	latitude = Double.valueOf(req.getParameter("latitude"));
-////        	publishedDate = Date.valueOf(req.getParameter("publishedDate"));
-//        	
-//        }catch (NumberFormatException e){
-//            e.printStackTrace();
-//            return;
-//        }
-//        
-//        TicketService tks = new TicketServiceImpl();
-//        if(ticketName!=null && price!=null) {
-//            TicketVO ticket = new TicketVO();
-//            ticket.setTicketName(ticketName);
-//            ticket.setPrice(price);
-//            tks.addTicket(ticket);
-//        }
-//	    RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgAdd.jsp");
-//	    dispatcher.forward(req, res); 
-//		
-//	}
+		ticketService.addTicket(ticket);
+	}
 	
+	/************ 票券刪除 ************/
+	private void doDel(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
+		ticketService.deleteTicket(ticketId);
+	}
 	
+
 	
-//	@Override
-//    protected void doGet(HttpServletRequest req, HttpServletResponse res) 
-//    		throws ServletException, IOException {
-//        String pathInfo = req.getPathInfo();
-//        if (pathInfo == null || "/".equals(pathInfo)) {
-//            res.sendRedirect(req.getContextPath() + "/ticket/index.jsp");
-//        } else if ("/listAll".equals(pathInfo)) {
-//            doList(req, res);
-//        } else {
-//            System.out.println("Path not handled: " + pathInfo);  
-//        }
-//    }
-//
-//
-//	
-//	protected void doList(HttpServletRequest req, HttpServletResponse res)
-//			throws ServletException, IOException {
-//		List<TicketVO> listAllTickets = ticketService.getAllTickets(1);
-//		 req.setAttribute("list", listAllTickets); 
-//		 RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/listAllTicket.jsp"); 
-//		 System.out.println("Ticket list size: " + listAllTickets.size());
-//
-//	}
-      
-        
 //    protected void outputImage(HttpServletRequest req, HttpServletResponse res) 
 //              throws ServletException, IOException {
 //          String ticketId = req.getPathInfo().substring(7); // 從 "/image/{ticketId}" 中取得 ticketId
@@ -200,12 +163,6 @@ public class TicketServlet extends HttpServlet {
 //
 //            res.setContentType("image/jpeg");  // 假設圖片是 JPEG 格式，如有需要請修改
 //            res.getOutputStream().write(imageBytes);
-        
+
 	}
-}
-
-
-	
-
-
 
