@@ -17,6 +17,7 @@ pageContext.setAttribute("list", list);
 <html>
 <head>
 <title>FAQ - listAllFaq.jsp</title>
+<jsp:include page="../indexpage/head.jsp" />
 
 <style>
 table#table-1 {
@@ -57,6 +58,7 @@ th, td {
 
 </head>
 <body bgcolor='white'>
+<jsp:include page="../indexpage/header.jsp" />
 
 	<h4>此頁練習採用 EL 的寫法取值:</h4>
 	<table id="table-1">
@@ -113,5 +115,6 @@ th, td {
 	</table>
 	<%@ include file="page2.file"%>
 
+<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>
