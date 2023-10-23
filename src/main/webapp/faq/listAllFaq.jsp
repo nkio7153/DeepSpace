@@ -1,11 +1,11 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.depthspace.faq.model.model.FaqVO"%>
 <%@ page import="com.depthspace.faq.model.service.*"%>
 <%@ page import="com.depthspace.faq.model.controller.*"%>
 <%@ page import="com.depthspace.faq.model.model.*"%>
-<%-- ¦¹­¶½m²ß±Ä¥Î EL ªº¼gªk¨ú­È --%>
+<%-- æ­¤é ç·´ç¿’æŽ¡ç”¨ EL çš„å¯«æ³•å–å€¼ --%>
 
 <%
 FaqService faqSvc = new FaqService();
@@ -60,14 +60,14 @@ th, td {
 <body bgcolor='white'>
 <jsp:include page="../indexpage/header.jsp" />
 
-	<h4>¦¹­¶½m²ß±Ä¥Î EL ªº¼gªk¨ú­È:</h4>
+	<h4>æ­¤é ç·´ç¿’æŽ¡ç”¨ EL çš„å¯«æ³•å–å€¼:</h4>
 	<table id="table-1">
 		<tr>
 			<td>
 				<h3>FAQ - listAllFaq.jsp</h3>
 				<h4>
 					<a href="select_page.jsp"><img src="images/back1.gif"
-						width="100" height="32" border="0">¦^­º­¶</a>
+						width="100" height="32" border="0">å›žé¦–é </a>
 				</h4>
 			</td>
 		</tr>
@@ -75,12 +75,12 @@ th, td {
 
 	<table>
 		<tr>
-			<th>¬y¤ô¸¹</th>
-			<th>FAQ½s¸¹</th>
-			<th>FAQ¦WºÙ</th>
-			<th>FAQµª®×</th>
-			<th>­×§ï</th>
-			<th>§R°£</th>
+			<th>æµæ°´è™Ÿ</th>
+			<th>FAQç·¨è™Ÿ</th>
+			<th>FAQåç¨±</th>
+			<th>FAQç­”æ¡ˆ</th>
+			<th>ä¿®æ”¹</th>
+			<th>åˆªé™¤</th>
 		</tr>
 		<%@ include file="page1.file"%>
 		<c:forEach var="faqVO" items="${list}" begin="<%=pageIndex%>"
@@ -96,16 +96,16 @@ th, td {
 					<FORM METHOD="post"
 						ACTION="<%=request.getContextPath()%>/faq/faq.do"
 						style="margin-bottom: 0px;">
-						<input type="submit" value="­×§ï"> <input type="hidden"
-							name="serialId" value="${faqVO.serialId}"> <input
-							type="hidden" name="action" value="getOne_For_Update">
+						<input type="submit" value="ä¿®æ”¹"> 
+						<input type="hidden" name="serialId" value="${faqVO.serialId}"> 
+						<input type="hidden" name="action" value="getOne_For_Update">
 					</FORM>
 				</td>
 				<td>
 					<FORM METHOD="post"
 						ACTION="<%=request.getContextPath()%>/faq/faq.do"
 						style="margin-bottom: 0px;">
-						<input type="submit" value="§R°£"> <input type="hidden"
+						<input type="submit" value="åˆªé™¤"> <input type="hidden"
 							name="serialId" value="${faqVO.serialId}"> <input
 							type="hidden" name="action" value="delete">
 					</FORM>

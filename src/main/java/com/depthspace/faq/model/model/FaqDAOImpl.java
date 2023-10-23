@@ -10,11 +10,11 @@ import java.util.List;
 import com.depthspace.utils.DBUtil;
 
 public class FaqDAOImpl implements FaqDAO {
-	private static final String INSERT_STMT = "INSERT INTO FAQ values (?, ?, ?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO FAQ (FAQ_NO,FAQ_NAME,FAQ_ANS) values (?, ?, ?)";
 	private static final String UPDATE_STMT = "UPDATE FAQ SET FAQ_NO = ?, FAQ_NAME = ?, FAQ_ANS = ? WHERE SERIAL_ID = ?";
 	private static final String DELETE_STMT = "DELETE FROM FAQ WHERE SERIAL_ID = ?";
-	private static final String FIND_BY_SERIALID = "SELECT * FROM FAQ WHERE SERIAL_ID = ?";
-	private static final String GET_ALL = "SELECT * FROM FAQ";
+	private static final String FIND_BY_SERIALID = "SELECT SERIAL_ID,FAQ_NO,FAQ_NAME,FAQ_ANS FROM FAQ where SERIAL_ID = ?";
+	private static final String GET_ALL = "SELECT SERIAL_ID,FAQ_NO,FAQ_NAME,FAQ_ANS FROM FAQ order by SERIAL_ID";
 
 	@Override
 	public void insert(FaqVO faqVO) {
@@ -23,10 +23,10 @@ public class FaqDAOImpl implements FaqDAO {
         try {
             conn = DBUtil.getConnection();
             pstmt = conn.prepareStatement(INSERT_STMT);
-            pstmt.setInt(1, faqVO.getSerialId());
-            pstmt.setInt(2, faqVO.getFaqNo());
-            pstmt.setString(3, faqVO.getFaqName());
-            pstmt.setString(4, faqVO.getFaqAns());
+            
+            pstmt.setInt(1, faqVO.getFaqNo());
+            pstmt.setString(2, faqVO.getFaqName());
+            pstmt.setString(3, faqVO.getFaqAns());
      
             pstmt.executeUpdate();
             
@@ -52,11 +52,27 @@ public class FaqDAOImpl implements FaqDAO {
      
             pstmt.executeUpdate();
             
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }finally{
-            DBUtil.close(conn, pstmt, null);
-        }
+        } catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
 	}
 
 	@Override
