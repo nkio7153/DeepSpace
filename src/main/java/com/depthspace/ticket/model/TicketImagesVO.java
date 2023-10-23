@@ -52,17 +52,7 @@ public class TicketImagesVO implements Serializable {
 		this.isMainImage = isMainImage;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
+	
 
 
 
