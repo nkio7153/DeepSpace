@@ -1,26 +1,15 @@
 package com.depthspace.ticketorders.controller;
 
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
-import com.depthspace.ticketorders.service.TicketOrderDetailService;
-import com.depthspace.ticketorders.service.TicketOrderDetailService_Interface;
 import com.depthspace.ticketorders.service.TicketOrderService;
 import com.depthspace.ticketorders.service.TicketOrderService_Interface;
-import com.depthspace.ticketshoppingcart.model.TicketInfoVO;
-import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
-import com.depthspace.ticketshoppingcart.service.TicketShoppingCartService;
-
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Status;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 
@@ -103,7 +92,8 @@ public class TicketOrderstServlet extends HttpServlet {
     }
     //進入會員訂單索引頁面(跳轉)
     protected void doIndex(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<TicketOrdersVO> list = null;
+        System.out.println("doIndex執行了");
+        List<TicketOrdersVO> list;
         list = toSv.getAll();
         System.out.println(list);
         HashSet<Integer> uniqueMemIds = new HashSet<>();

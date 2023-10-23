@@ -1,0 +1,46 @@
+img.jpg {
+    width:300px;
+    height: 150px;
+}
+.hidden {
+    display: none;
+}
+.no-wrap {
+    white-space: nowrap;
+}
+.w150{
+    width:170px;
+    vertical-align: middle;
+}
+.w200{
+    width:200px;
+    vertical-align: middle;
+}
+a.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+div.last{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.lightgreen{
+    color: #8fcf9b;
+}
+.btn-del {
+    border: #ef7a70;
+    color: white;
+    background-color: #ef7a70;
+}
+.vertical{
+    vertical-align: middle;
+}
+
+
+.btn-del:hover,
+.btn-del:focus {
+    border: #f14131;
+    background-color: #f14131;
+}

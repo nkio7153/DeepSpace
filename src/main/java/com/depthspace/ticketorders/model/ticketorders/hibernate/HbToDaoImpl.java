@@ -46,6 +46,7 @@ public class HbToDaoImpl implements HbToDao_Interface {
     //用主鍵查一列
     @Override
     public TicketOrdersVO getById(Integer id) {
+
         return getSession().get(TicketOrdersVO.class, id);
     }
 
