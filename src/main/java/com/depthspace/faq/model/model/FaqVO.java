@@ -3,23 +3,13 @@ package com.depthspace.faq.model.model;
 import java.util.Objects;
 
 //FaqVO 類別表示一個FAQ（常見問題）的對象。
-public class FaqVO {
+public class FaqVO implements java.io.Serializable{
 	private Integer serialId;
 	private Integer faqNo;
 	private String faqName;
 	private String faqAns;
 
-	// 建構函數，用於初始化這個FAQ對象。
-	public FaqVO(Integer serialId, Integer faqNo, String faqName, String faqAns) {
-		this.serialId = serialId;
-		this.faqNo = faqNo;
-		this.faqName = faqName;
-		this.faqAns = faqAns;
-	}
-
-	public FaqVO() {
-
-	}
+	
 
 	public Integer getSerialId() {
 		return serialId;
