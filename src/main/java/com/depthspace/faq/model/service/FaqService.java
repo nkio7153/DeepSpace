@@ -13,11 +13,11 @@ public class FaqService {
 		dao = new FaqDAOImpl();
 	}
 
-	public FaqVO addFaq(Integer serialId, Integer faqNo, String faqName, String faqAns) {
+	public FaqVO addFaq(Integer faqNo, String faqName, String faqAns) {
 
 		FaqVO faqVO = new FaqVO();
 
-		faqVO.setSerialId(serialId);
+//		faqVO.setSerialId(serialId);
 		faqVO.setFaqNo(faqNo);
 		faqVO.setFaqName(faqName);
 		faqVO.setFaqAns(faqAns);

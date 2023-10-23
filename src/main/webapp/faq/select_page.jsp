@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <html>
@@ -35,11 +35,11 @@
 
 <p>This is the Home page for IBM Faq: Home</p>
 
-<h3>¸ê®Æ¬d¸ß:</h3>
+<h3>è³‡æ–™æŸ¥è©¢:</h3>
 	
-<%-- ¿ù»~ªí¦C --%>
+<%-- éŒ¯èª¤è¡¨åˆ— --%>
 <c:if test="${not empty errorMsgs}">
-	<font style="color:red">½Ğ­×¥¿¥H¤U¿ù»~:</font>
+	<font style="color:red">è«‹ä¿®æ­£ä»¥ä¸‹éŒ¯èª¤:</font>
 	<ul>
 	    <c:forEach var="message" items="${errorMsgs}">
 			<li style="color:red">${message}</li>
@@ -52,11 +52,11 @@
   
   
   <li>
-    <FORM METHOD="post" ACTION="Faq.do" >
-        <b>¿é¤J­û¤u½s¸¹ (¦p7001):</b>
+    <FORM METHOD="post" ACTION="faq.do" >
+        <b>è¼¸å…¥FAQå“¡å·¥ç·¨è™Ÿ :</b>
         <input type="text" name="serialId">
         <input type="hidden" name="action" value="getOne_For_Display">
-        <input type="submit" value="°e¥X">
+        <input type="submit" value="é€å‡º">
     </FORM>
   </li>
 
@@ -64,33 +64,33 @@
    
   <li>
      <FORM METHOD="post" ACTION="faq.do" >
-       <b>¿ï¾Ü­û¤u½s¸¹:</b>
+       <b>é¸æ“‡FAQç·¨è™Ÿ:</b>
        <select size="1" name="serialId">
          <c:forEach var="faqVO" items="${faqSvc.all}" > 
           <option value="${faqVO.serialId}">${faqVO.serialId}
          </c:forEach>   
        </select>
        <input type="hidden" name="action" value="getOne_For_Display">
-       <input type="submit" value="°e¥X">
+       <input type="submit" value="é€å‡º">
     </FORM>
   </li>
   
   <li>
      <FORM METHOD="post" ACTION="faq.do" >
-       <b>¿ï¾Ü­û¤u©m¦W:</b>
-       <select size="1" name="faqNo">
+       <b>é¸æ“‡å“¡å·¥å§“å:</b>
+       <select size="1" name="serialId">
          <c:forEach var="faqVO" items="${faqSvc.all}" > 
-          <option value="${faqVO.faqNo}">${faqVO.faqNo}
+          <option value="${faqVO.serialId}">${faqVO.faqName}
          </c:forEach>   
        </select>
        <input type="hidden" name="action" value="getOne_For_Display">
-       <input type="submit" value="°e¥X">
+       <input type="submit" value="é€å‡º">
      </FORM>
   </li>
 </ul>
 
 
-<h3>­û¤uºŞ²z</h3>
+<h3>å“¡å·¥ç®¡ç†</h3>
 
 <ul>
   <li><a href='addFaq.jsp'>Add</a> a new Faq.</li>

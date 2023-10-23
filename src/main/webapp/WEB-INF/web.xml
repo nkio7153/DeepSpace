@@ -38,5 +38,14 @@
 		<listener-class>com.depthspace.listener.InitializerListener</listener-class>
 	</listener>
 	
+		<servlet>
+		<servlet-name>FaqServlet</servlet-name>
+		<servlet-class>com.depthspace.faq.model.controller.FaqServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>FaqServlet</servlet-name>
+		<url-pattern>/faq/faq.do</url-pattern>
+	</servlet-mapping>
 	
 </web-app>

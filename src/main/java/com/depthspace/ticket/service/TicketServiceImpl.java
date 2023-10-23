@@ -60,6 +60,32 @@ public class TicketServiceImpl implements TicketService {
 	    return deletedCount;
 	}
 
+	//查詢票券
+	@Override
+	public List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map) {
+		Map<String, String> query = new HashMap<>();
+		// Map.Entry即代表一組key-value
+		Set<Map.Entry<String, String[]>> entry = map.entrySet();
+		
+		for (Map.Entry<String, String[]> row : entry) {
+			String key = row.getKey();
+			// 因為請求參數裡包含了action，做個去除動作
+			if ("action".equals(key)) {
+				continue;
+			}
+			// 若是value為空即代表沒有查詢條件，做個去除動作
+			String value = row.getValue()[0];
+			if (value.isEmpty() || value == null) {
+				continue;
+			}
+			query.put(key, value);
+		}
+		
+		System.out.println(query);
+		
+		return dao.getByCompositeQuery(query);
+	}
+	
 	@Override
 	public TicketVO getTicketById(Integer ticketId) {
 		dao.getById(ticketId);
@@ -67,6 +93,10 @@ public class TicketServiceImpl implements TicketService {
 	}
 	
 
+	public List<TicketVO> getAllTickets() {
+		return dao.getAll();
+	}
+	
 	//取得所有票券
 	@Override
 	public List<TicketVO> getAllTickets(int currentPage) {
@@ -74,7 +104,6 @@ public class TicketServiceImpl implements TicketService {
 		List<TicketVO> tickets = new ArrayList<>();
 
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-
 			transaction = session.beginTransaction();
 
 			Query<TicketVO> query = session.createQuery("FROM TicketVO", TicketVO.class);
@@ -89,14 +118,10 @@ public class TicketServiceImpl implements TicketService {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			throw new RuntimeException("Error fetching tickets", e);
+			throw new RuntimeException("Error", e);
 		}
 
 		return tickets;
-	}
-
-	public List<TicketVO> getTicketsWithCity() {
-		return dao.getAllTicketsWithCity();
 	}
 
 	//分頁
@@ -107,11 +132,23 @@ public class TicketServiceImpl implements TicketService {
 		int pageQty = (int) (total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
 		return pageQty;
 	}
-
-	// 找票券主圖
-	@Override
-	public List<TicketVO> getTicketsWithMainImage() {
-		return dao.getAllTicketsWithMainImages();
+	
+	//取得票券區域
+	public List<TicketVO> getTicketsWithCity() {
+		return dao.getAllTicketsWithCity();
 	}
+
+	@Override
+	public List<TicketVO> getAllTicketsWithMainImages() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+//	// 票券主圖
+//	@Override
+//	public List<TicketVO> getAllTicketsWithMainImages() {
+//		return dao.getAllTicketsWithMainImages();
+//	}
 
 }
