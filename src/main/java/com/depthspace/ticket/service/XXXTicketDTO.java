@@ -1,11 +1,11 @@
 package com.depthspace.ticket.service;
 
-public class TicketDTO {
+public class XXXTicketDTO {
 	
 	private Integer areaId;
 	private String cityName;
 	
-	public TicketDTO(Integer areaId, String cityName) {
+	public XXXTicketDTO(Integer areaId, String cityName) {
 		super();
 		this.areaId = areaId;
 		this.cityName = cityName;

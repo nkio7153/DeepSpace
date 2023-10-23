@@ -1,6 +1,7 @@
 package com.depthspace.ticket.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -17,6 +18,7 @@ import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.ticket.service.TicketService;
 import com.depthspace.ticket.service.TicketServiceImpl;
+import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 
 @WebServlet("/backendticket/*")
 public class TicketServlet extends HttpServlet {
@@ -78,8 +80,13 @@ public class TicketServlet extends HttpServlet {
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 
+		//取得所有票券內容(VO)
 		List<TicketVO> ticketList = ticketService.getAllTickets(currentPage);
+		//取得票券區域
 		List<TicketVO> ticketsWithCity = ticketService.getTicketsWithCity();
+//		//取得票券圖片
+//		List<TicketVO> ticketsWithMainImages = ticketService.getAllTicketsWithMainImages();
+
 		if (req.getSession().getAttribute("ticketPageQty") == null) {
 			int ticketPageQty = ticketService.getPageTotal();
 			req.getSession().setAttribute("ticketPageQty", ticketPageQty);
@@ -95,13 +102,8 @@ public class TicketServlet extends HttpServlet {
 	
 	/************ 票券更新 ************/	
 	private void doEditSuccess(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-//	    Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
-//	    TicketVO ticket = ticketService.getTicketById(ticketId); 
-//		
-////		TicketVO ticket = new TicketVO();
-////		TicketVO ticket = ticketService.getTicketById(ticketId);
 
-	    Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
+		Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
 	    TicketVO ticket = ticketService.getTicketById(ticketId); 
 	    
 		ticket.setTicketName(req.getParameter("ticketName"));
@@ -117,16 +119,55 @@ public class TicketServlet extends HttpServlet {
 	    
 		req.setAttribute("ticket", ticket);
 		ticketService.updateTicket(ticket);
-
 	}
 	
 //	/************ 票券搜尋 ************/	
 	private void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgSearch.jsp");
-		dispatcher.forward(req, res);
+		    Map<String, String[]> map = req.getParameterMap();
 
-	}
+		    res.setContentType("application/json"); 
+		    res.setCharacterEncoding("UTF-8");
+
+		    PrintWriter out = res.getWriter();
+
+		    try {
+		        List<TicketVO> ticketList = ticketService.getTicketsByCompositeQuery(map);
+		        
+		        StringBuilder json = new StringBuilder("[");
+		        for (TicketVO ticket : ticketList) {
+		            json.append(String.format(
+//		                "{\"類型\": \"%s\", \"編號\": \"%s\", \"圖片\": \"%s/ticketimage?ticketId=%s\", \"名稱\": \"%s\", \"價格\": \"%s\", \"數量\": \"%s\", \"描述\": \"%s\", \"發布日\": \"%s\", \"狀況\": \"%s\", \"區域\": \"%s\"},",
+			            "{\"編號\": \"%s\", \"圖片\": \"%s/ticketimage?ticketId=%s\", \"名稱\": \"%s\", \"價格\": \"%s\", \"數量\": \"%s\", \"描述\": \"%s\", \"發布日\": \"%s\", \"狀況\": \"%s\"},",
+
+		            		// TicketVO的屬性
+//		                ticket.getTicketType(), //類型
+		                ticket.getTicketId(), //編號
+		                req.getContextPath(), //圖片的前半部分URL
+		                ticket.getTicketId(), //圖片的ticketId參數
+		                ticket.getTicketName(), //名稱
+		                ticket.getPrice(), //價格
+		                ticket.getStock(), //數量
+		                ticket.getDescription(), //描述
+		                ticket.getPublishedDate(), //發布日
+		                ticket.getStatus() //狀況
+//		                ticket.getCity().getCityName() //區域
+		            ));
+		        }
+		        json = new StringBuilder(json.toString().replaceAll(",$", "")); 
+		        json.append("]");
+
+		        out.print(json); 
+
+		    } catch (Exception e) { 
+		        e.printStackTrace(); 
+		        out.print("[]");
+		    } finally {
+		        out.flush();
+		    }
+		}
+
+
 
 	/************票券新增************/
 	private void doAddSuccess(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -152,17 +193,6 @@ public class TicketServlet extends HttpServlet {
 		ticketService.deleteTicket(ticketId);
 	}
 	
-
-	
-//    protected void outputImage(HttpServletRequest req, HttpServletResponse res) 
-//              throws ServletException, IOException {
-//          String ticketId = req.getPathInfo().substring(7); // 從 "/image/{ticketId}" 中取得 ticketId
-//
-//          TicketServiceImpl ticketService = new TicketServiceImpl();
-//          byte[] imageBytes = ticketService.getImageByTicketId(ticketId); 
-//
-//            res.setContentType("image/jpeg");  // 假設圖片是 JPEG 格式，如有需要請修改
-//            res.getOutputStream().write(imageBytes);
 
 	}
 

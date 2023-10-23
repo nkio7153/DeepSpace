@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,11 +34,26 @@
         <!-- 搜尋框 -->
 		<div class="row mb-3">
 		    <div class="col-md-6 col-sm-12 mb-2">
-		        <input type="text" class="form-control" placeholder="輸入查找的關鍵字">
+<!-- 		        <input type="text" class="form-control" placeholder="輸入查找的關鍵字"> -->
+<%-- 		        	<form action="${pageContext.request.contextPath}/Ticket/mgsearch" method="post"> --%>
+<!-- 						<label for="ticketId">選擇票券：</label> -->
+<!-- 				    		<select id="ticketId" name="ticketId"> -->
+<%-- 				        		<c:forEach var="ticket" items="${TicketList}" varStatus="status"> --%>
+<%-- 				           			<option value="${ticketId}">${ticketId}</option> --%>
+<%-- 				       			</c:forEach> --%>
+<!-- 				    		</select> -->
+<!-- 				    	<p><input type="submit" value="送出"></p> -->
+<!-- 						<input type="hidden" name="action" value="doSearch"> -->
+<!-- 					</form> -->
+		<!-- onsubmit是使用ajaxSearch -->
+		<form onsubmit="return ajaxSearch();">
+		    <input type="text" id="searchField" name="ticketName" class="form-control" placeholder="票券名稱">
+		    <input type="button" class="col-md-3 col-sm-6 mb-2" value="搜索" onclick="ajaxSearch();"> <!--觸發按鈕 -->
+		</form>
 		    </div>
-		    <div class="col-md-3 col-sm-6 mb-2">
-    			<a href="${pageContext.request.contextPath}/backendticket/mgsearch" class="btn btn-primary btn-block">搜尋</a>
-		    </div>
+<!-- 		    <div class="col-md-3 col-sm-6 mb-2"> -->
+<%--     			<a href="${pageContext.request.contextPath}/backendticket/mgsearch" class="btn btn-primary btn-block">搜尋</a> --%>
+<!-- 		    </div> -->
 		    <div class="col-md-3 col-sm-6">
     			<a href="${pageContext.request.contextPath}/backendticket/mgadd" class="btn btn-success btn-block">新增</a>
     			
@@ -72,7 +88,7 @@
        			<td>${itemsPerPage * (currentPage - 1) + status.index + 1}</td>
 				<td>${ticket.ticketType.typeName}</td>
 				<td>${ticket.ticketId}</td>
-			    <td><img src="ticketimage?ticketId=${ticket.ticketId}" alt="Main Ticket Image"></td>
+			    <td><img src="<%=request.getContextPath()%>/ticketimage?ticketId=${ticket.ticketId}" alt="Main Ticket Image"></td>
 			    <td>${ticket.ticketName}</td>
 			    <td>${ticket.price}</td>
 			    <td>${ticket.stock}</td>
@@ -134,6 +150,52 @@
     </ul>
 </nav>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+function ajaxSearch() {
+    var searchField = document.getElementById('searchField').value;
+
+    $.ajax({
+        type: "POST",
+        url: "${pageContext.request.contextPath}/backendticket/mgsearch", // 搜尋網址
+        data: { action: "doSearch", ticketName: searchField },
+        success: function(data) {
+            // 先清空目前的列表
+            var tableBody = document.querySelector('table tbody');
+            tableBody.innerHTML = "";
+
+            // 將查詢到的資料填回列表
+            data.forEach(function(ticket) {
+                
+                var row = `<tr>
+                	<td>${itemsPerPage * (currentPage - 1) + status.index + 1}</td>
+    				<td>${ticket.ticketType.typeName}</td>
+    				<td>${ticket.ticketId}</td>
+    			    <td><img src="<%=request.getContextPath()%>/ticketimage?ticketId=${ticket.ticketId}" alt="Main Ticket Image"></td>
+    			    <td>${ticket.ticketName}</td>
+    			    <td>${ticket.price}</td>
+    			    <td>${ticket.stock}</td>
+    			    <td>${ticket.description}</td>    
+    			    <td>${ticket.publishedDate}</td> 
+    			    <td>${ticket.status}</td>      
+    			    <td>${ticket.city.cityName}</td>
+    			    <td>
+                        <a href="${pageContext.request.contextPath}/backendticket/mgedit?ticketId=${ticket.ticketId}" class="btn btn-primary btn-sm">修改</a>
+    				    <a href="${pageContext.request.contextPath}/backendticket/mgdel?ticketId=${ticket.ticketId}" class="btn btn-danger btn-sm" onclick="return confirm('確定刪除？不要亂刪喔！');">删除</a>
+                </tr>`;                
+
+                tableBody.innerHTML += row;
+            });
+        },
+        error: function(err) {
+            console.log('Error:', err);
+        }
+    });
+}
+</script>
+
+
 
 <!-- 回首頁 -->
 <div class="page-item">
