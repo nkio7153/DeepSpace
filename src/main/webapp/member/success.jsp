@@ -65,7 +65,7 @@
 			<th>會員點數</th><td>${authenticatedMem.memPoint}</td>
 		</tr>
 	</table>
-	<form align="center" action="${pageContext.request.contextPath}/mem/edit" method="post" >
+	<form align="center" action="${pageContext.request.contextPath}/mem/edit?memId=${authenticatedMem.memId}" method="post" >
 		<input type="submit" value="修改會員資料">
 		<input type="hidden" name="action"	value="update">
 	</form>

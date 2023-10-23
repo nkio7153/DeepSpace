@@ -61,7 +61,9 @@ public class MemberServlet extends HttpServlet {
 
 		try {
 			String memId = req.getParameter("memId");
+			System.out.println("1" + memId);
 			st1 = Integer.valueOf(memId);
+			System.out.println("2" + st1);
 
 			st2 = req.getParameter("memAcc");
 			if (st2 == null || st2.trim().length() == 0) {
@@ -117,7 +119,7 @@ public class MemberServlet extends HttpServlet {
 			String memPoint = req.getParameter("memPoint");
 			st12 = Integer.valueOf(memPoint);
 
-			String memImage = req.getParameter("memImage");
+			String memImage = req.getParameter("base64Image");
 			st13 = memImage.getBytes();
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
@@ -125,13 +127,15 @@ public class MemberServlet extends HttpServlet {
 		}
 		MemberService m = new MemberService();
 		MemVO memvo = null;
-		if (!errorMsgs.isEmpty()) {
+		if (errorMsgs.isEmpty()) {
 			memvo = new MemVO(st1, st2, st3, st4, st5, st6, st7, st8, st9, st10, st11, st12, st13);
 			
 		}
 		m.updateMember(memvo);
-		req.setAttribute("memvo", memvo);
-		req.getRequestDispatcher("/member/listOneMem.jsp").forward(req, resp);
+		System.out.println("3" + memvo.getMemName());
+		req.setAttribute("authenticatedMem", memvo);
+		req.setAttribute("base64Image", memvo.getMemImage());
+		req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
 	}
 
 	// ===================================================================================
@@ -175,7 +179,7 @@ public class MemberServlet extends HttpServlet {
 	protected void doSuccess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String email = req.getParameter("email");
 		String password = req.getParameter("password");
-		System.out.println(email);
+		System.out.println("4" + email);
 
 		MemberService ms = new MemberService();
 		List<MemVO> list = ms.getAll();
