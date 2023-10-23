@@ -106,7 +106,7 @@
 						<!-- 上下架狀況 -->
 						<div class="form-group col-md-6">
 							<label>上下架</label><br> <input type="radio" id="on"
-								name="status" value="1"> <label for="on">上架</label>
+								name="status" value="1"> <label for="on" ">上架</label>
 
 							<input type="radio" id="off" name="status" value="0">
 							<label for="off">未上架</label>

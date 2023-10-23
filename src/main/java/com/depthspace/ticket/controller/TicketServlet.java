@@ -17,6 +17,7 @@ import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.ticket.service.TicketService;
 import com.depthspace.ticket.service.TicketServiceImpl;
+import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 
 @WebServlet("/backendticket/*")
 public class TicketServlet extends HttpServlet {
@@ -78,8 +79,13 @@ public class TicketServlet extends HttpServlet {
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 
+		//取得所有票券內容(VO)
 		List<TicketVO> ticketList = ticketService.getAllTickets(currentPage);
+		//取得票券區域
 		List<TicketVO> ticketsWithCity = ticketService.getTicketsWithCity();
+		//取得票券圖片
+		List<TicketVO> ticketsWithMainImages = ticketService.getAllTicketsWithMainImages();
+
 		if (req.getSession().getAttribute("ticketPageQty") == null) {
 			int ticketPageQty = ticketService.getPageTotal();
 			req.getSession().setAttribute("ticketPageQty", ticketPageQty);
@@ -95,13 +101,8 @@ public class TicketServlet extends HttpServlet {
 	
 	/************ 票券更新 ************/	
 	private void doEditSuccess(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-//	    Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
-//	    TicketVO ticket = ticketService.getTicketById(ticketId); 
-//		
-////		TicketVO ticket = new TicketVO();
-////		TicketVO ticket = ticketService.getTicketById(ticketId);
 
-	    Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
+		Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
 	    TicketVO ticket = ticketService.getTicketById(ticketId); 
 	    
 		ticket.setTicketName(req.getParameter("ticketName"));
@@ -117,16 +118,16 @@ public class TicketServlet extends HttpServlet {
 	    
 		req.setAttribute("ticket", ticket);
 		ticketService.updateTicket(ticket);
-
 	}
 	
 //	/************ 票券搜尋 ************/	
 	private void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgSearch.jsp");
-		dispatcher.forward(req, res);
-
-	}
+//		Integer ticketId;
+//		List<TicketVO> tickets = ticketService.getAllTickets(); // 獲取所有票券
+//		req.setAttribute("TicketList", tickets); // 將票券列表存在請求範圍
+//		RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgSearch.jsp");
+//		dispatcher.forward(req, res);
+    }
 
 	/************票券新增************/
 	private void doAddSuccess(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -161,7 +162,7 @@ public class TicketServlet extends HttpServlet {
 //          TicketServiceImpl ticketService = new TicketServiceImpl();
 //          byte[] imageBytes = ticketService.getImageByTicketId(ticketId); 
 //
-//            res.setContentType("image/jpeg");  // 假設圖片是 JPEG 格式，如有需要請修改
+//            res.setContentType("image/jpeg");  
 //            res.getOutputStream().write(imageBytes);
 
 	}

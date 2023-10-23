@@ -21,8 +21,10 @@ public interface TicketService {
     
     int getPageTotal();
     
-    List<TicketVO> getTicketsWithMainImage();
-    
+    List<TicketVO> getAllTicketsWithMainImages();
+
+	List<TicketVO> getAllTickets();
+
 //    List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map);
 	
  

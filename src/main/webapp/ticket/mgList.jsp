@@ -33,7 +33,17 @@
         <!-- 搜尋框 -->
 		<div class="row mb-3">
 		    <div class="col-md-6 col-sm-12 mb-2">
-		        <input type="text" class="form-control" placeholder="輸入查找的關鍵字">
+<!-- 		        <input type="text" class="form-control" placeholder="輸入查找的關鍵字"> -->
+		        	<form action="${pageContext.request.contextPath}/Ticket/mgsearch" method="post">
+						<label for="ticketId">選擇票券：</label>
+				    		<select id="ticketId" name="ticketId">
+				        		<c:forEach var="ticket" items="${TicketList}" varStatus="status">
+				           			<option value="${ticketId}">${ticketId}</option>
+				       			</c:forEach>
+				    		</select>
+				    	<p><input type="submit" value="送出"></p>
+						<input type="hidden" name="action" value="doSearch">
+					</form>
 		    </div>
 		    <div class="col-md-3 col-sm-6 mb-2">
     			<a href="${pageContext.request.contextPath}/backendticket/mgsearch" class="btn btn-primary btn-block">搜尋</a>
@@ -72,7 +82,7 @@
        			<td>${itemsPerPage * (currentPage - 1) + status.index + 1}</td>
 				<td>${ticket.ticketType.typeName}</td>
 				<td>${ticket.ticketId}</td>
-			    <td><img src="ticketimage?ticketId=${ticket.ticketId}" alt="Main Ticket Image"></td>
+			    <td><img src="<%=request.getContextPath()%>/ticketimage?ticketId=${ticket.ticketId}" alt="Main Ticket Image"></td>
 			    <td>${ticket.ticketName}</td>
 			    <td>${ticket.price}</td>
 			    <td>${ticket.stock}</td>

@@ -32,7 +32,6 @@ public class TicketDAOImpl implements TicketDAO {
 		this.factory = factory;		
 	}
 	
-	//避免執行緒共用同個Session
 	private Session getSession() {
 		return factory.getCurrentSession();
 	}
@@ -45,21 +44,16 @@ public class TicketDAOImpl implements TicketDAO {
 	public int insert(TicketVO ticketVO) {
 	    Transaction transaction = null;
 	    try {
-	        // 開啟事務
 	        transaction = getSession().beginTransaction();
-
-	        // 保存對象
 	        Integer ticketId = (Integer) getSession().save(ticketVO);
-
-	        // 提交事務
 	        transaction.commit();
 
 	        return ticketId;
 	    } catch (Exception e) {
 	        if (transaction != null) {
-	            transaction.rollback(); // 發生異常時回滾事務
+	            transaction.rollback();
 	        }
-	        throw e; // 將異常再次拋出，以便在上層進一步處理
+	        throw e;
 	    }
 	}
 	
@@ -117,7 +111,6 @@ public class TicketDAOImpl implements TicketDAO {
 
             Query<TicketVO> query = session.createQuery(hql, TicketVO.class);
             query.setParameter("value", (byte) 1); 
-
             tickets = query.getResultList(); 
 
         } catch (Exception e) {

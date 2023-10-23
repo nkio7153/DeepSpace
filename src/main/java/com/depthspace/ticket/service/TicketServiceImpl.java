@@ -67,6 +67,10 @@ public class TicketServiceImpl implements TicketService {
 	}
 	
 
+	public List<TicketVO> getAllTickets() {
+		return dao.getAll();
+	}
+	
 	//取得所有票券
 	@Override
 	public List<TicketVO> getAllTickets(int currentPage) {
@@ -74,7 +78,6 @@ public class TicketServiceImpl implements TicketService {
 		List<TicketVO> tickets = new ArrayList<>();
 
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-
 			transaction = session.beginTransaction();
 
 			Query<TicketVO> query = session.createQuery("FROM TicketVO", TicketVO.class);
@@ -89,14 +92,10 @@ public class TicketServiceImpl implements TicketService {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			throw new RuntimeException("Error fetching tickets", e);
+			throw new RuntimeException("Error", e);
 		}
 
 		return tickets;
-	}
-
-	public List<TicketVO> getTicketsWithCity() {
-		return dao.getAllTicketsWithCity();
 	}
 
 	//分頁
@@ -107,10 +106,15 @@ public class TicketServiceImpl implements TicketService {
 		int pageQty = (int) (total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
 		return pageQty;
 	}
+	
+	//取得票券區域
+	public List<TicketVO> getTicketsWithCity() {
+		return dao.getAllTicketsWithCity();
+	}
 
-	// 找票券主圖
+	// 票券主圖
 	@Override
-	public List<TicketVO> getTicketsWithMainImage() {
+	public List<TicketVO> getAllTicketsWithMainImages() {
 		return dao.getAllTicketsWithMainImages();
 	}
 
