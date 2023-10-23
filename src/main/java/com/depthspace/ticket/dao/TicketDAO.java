@@ -19,9 +19,12 @@ public interface TicketDAO {
 		
 		List<TicketVO> getAll(int currentPage); //取得所有票券物件(分頁查詢)
 		
-		List<TicketVO> getByCompositeQuery(Map<String, String> map); //根據複雜條件查詢取得票券
+		List<TicketVO> getAllTicketsWithCity(); //取得縣市名
 		
-		List<TicketVO> findTicketsByPartialName(String partialName); //模糊查詢
-	
-		int getTotal();
+		List<TicketVO> getAllTicketsWithMainImages();
+		
+		long getTotal();
+
+		List<TicketVO> getByCompositeQuery(Map<String, String> query); //根據複雜條件查詢取得票券
+
 }

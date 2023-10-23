@@ -52,11 +52,11 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 			pstmt.setInt(5, ticketVO.getStock());
 			pstmt.setInt(6, ticketVO.getValidDays());
 			pstmt.setByte(7, ticketVO.getStatus());
-			pstmt.setTimestamp(8, ticketVO.getPublishedDate());
+//			pstmt.setTimestamp(8, ticketVO.getPublishedDate());
 //			pstmt.setTimestamp(8, new java.sql.Timestamp(System.currentTimeMillis()));
 			pstmt.setInt(9, ticketVO.getTotalStarRatings());
 			pstmt.setInt(10, ticketVO.getTotalStars());
-			pstmt.setInt(11, ticketVO.getAreaId());
+//			pstmt.setInt(11, ticketVO.getAreaId());
 			pstmt.setString(12, ticketVO.getAddress());
 			pstmt.setDouble(13, ticketVO.getLongitude());
 			pstmt.setDouble(14, ticketVO.getLatitude());
@@ -90,7 +90,7 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 			pstmt.setTimestamp(8, new java.sql.Timestamp(System.currentTimeMillis()));
 			pstmt.setInt(9, ticketVO.getTotalStarRatings());
 			pstmt.setInt(10, ticketVO.getTotalStars());
-			pstmt.setInt(11, ticketVO.getAreaId());
+//			pstmt.setInt(11, ticketVO.getAreaId());
 			pstmt.setString(12, ticketVO.getAddress());
 			pstmt.setDouble(13, ticketVO.getLongitude());
 			pstmt.setDouble(14, ticketVO.getLatitude());
@@ -147,10 +147,10 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 				ticketVO.setStock(rs.getInt("STOCK")); 
 				ticketVO.setValidDays(rs.getInt("VALID_DAYS")); 	
 				ticketVO.setStatus(rs.getByte("STATUS")); 
-				ticketVO.setPublishedDate(rs.getTimestamp("PUBLISHED_DATE")); 
+//				ticketVO.setPublishedDate(rs.getTimestamp("PUBLISHED_DATE")); 
 				ticketVO.setTotalStarRatings(rs.getInt("TOTAL_STAR_RATINGS")); 
 				ticketVO.setTotalStars(rs.getInt("TOTAL_STARS")); 
-				ticketVO.setAreaId(rs.getInt("AREA_ID"));
+//				ticketVO.setAreaId(rs.getInt("AREA_ID"));
 				ticketVO.setAddress(rs.getString("ADDRESS"));
 				ticketVO.setLongitude(rs.getDouble("LONGITUDE"));
 				ticketVO.setLatitude(rs.getDouble("LATITUDE"));
@@ -186,10 +186,10 @@ public class TicketJDBCDAO implements TicketDAO_Interface {
 				ticketVO.setStock(rs.getInt("STOCK")); 
 				ticketVO.setValidDays(rs.getInt("VALID_DAYS")); 	
 				ticketVO.setStatus(rs.getByte("STATUS")); 
-				ticketVO.setPublishedDate(rs.getTimestamp("PUBLISHED_DATE")); 
+//				ticketVO.setPublishedDate(rs.getTimestamp("PUBLISHED_DATE")); 
 				ticketVO.setTotalStarRatings(rs.getInt("TOTAL_STAR_RATINGS")); 
 				ticketVO.setTotalStars(rs.getInt("TOTAL_STARS")); 
-				ticketVO.setAreaId(rs.getInt("AREA_ID"));
+//				ticketVO.setAreaId(rs.getInt("AREA_ID"));
 				ticketVO.setAddress(rs.getString("ADDRESS"));
 				ticketVO.setLongitude(rs.getDouble("LONGITUDE"));
 				ticketVO.setLatitude(rs.getDouble("LATITUDE"));

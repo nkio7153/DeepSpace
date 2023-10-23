@@ -21,6 +21,7 @@ public class RestCollectionHibernateDAO {
 		List<RestCollectionVO> list = dao.CountfindByMemId(5);
 		for (RestCollectionVO rc : list) {
 			System.out.println(rc.getRestId());
+			System.out.println(rc.getRestVO().getRestName());
 		}
 		
 		// GETALL

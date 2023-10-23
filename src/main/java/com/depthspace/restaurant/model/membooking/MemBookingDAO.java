@@ -7,5 +7,6 @@ public interface MemBookingDAO {
 	int update(MemBookingVO memBookingVO);
 	int delete(Integer bookingId);
 	MemBookingVO findByPK(Integer bookingId);
+	List<MemBookingVO> findByRestID(Integer restId);
 	List<MemBookingVO> getAll();
 }
