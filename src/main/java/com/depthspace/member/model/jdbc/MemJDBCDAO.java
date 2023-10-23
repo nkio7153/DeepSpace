@@ -13,7 +13,7 @@ import com.depthspace.member.model.MemVO;
 import com.depthspace.utils.DBUtil;
 
 public class MemJDBCDAO implements MemDAO_Interface {
-	private static final String INSERT_STMT = "INSERT INTO MEM(MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH, MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_POINT, MEM_IMAGE) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+	private static final String INSERT_STMT = "INSERT INTO MEM(MEM_ACC, MEM_PWD, MEM_NAME, MEM_IDENTITY, MEM_BTH, MEM_SEX, MEM_EMAIL, MEM_TEL, MEM_ADD, ACC_STATUS, MEM_IMAGE) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 //	private static final String UPDATE_STMT = "UPDATE MEM SET MEM_ACC=? MEM_PWD=?, MEM_NAME=?, MEM_IDENTITY=?, MEM_BTH=?, MEM_SEX=?, MEM_EMAIL=?, MEM_TEL=?, MEM_ADD=?, ACC_STATUS=?, MEM_POINT=? WHERE MEM_ID=?";
 	private static final String UPDATE_STMT = "UPDATE MEM SET MEM_ACC=?, MEM_PWD=?, MEM_NAME=?, MEM_IDENTITY=?, MEM_BTH=?, MEM_SEX=?, MEM_EMAIL=?, MEM_TEL=?, MEM_ADD=?, ACC_STATUS=?, MEM_POINT=?, MEM_IMAGE=? WHERE MEM_ID=?";
 	private static final String DELETE_STMT = "DELETE FROM MEM WHERE MEM_ID=?";
@@ -40,9 +40,11 @@ public class MemJDBCDAO implements MemDAO_Interface {
 			ps.setInt(8, MemVO.getMemTel());
 			ps.setString(9, MemVO.getMemAdd());
 			ps.setByte(10, MemVO.getAccStatus());
-			ps.setInt(11, MemVO.getMemPoint());
-			ps.setBytes(12, MemVO.getMemImage());
-			
+			ps.setBytes(11, MemVO.getMemImage());
+//	System.out.println("--------------------------------------");		
+//	System.out.println(MemVO.getMemImage()==null);		
+//	System.out.println(MemVO.getMemImage().length);		
+//	System.out.println("--------------------------------------");		
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -198,6 +200,7 @@ public class MemJDBCDAO implements MemDAO_Interface {
 				memVO.setMemAdd(rs.getString("MEM_ADD"));
 				memVO.setAccStatus(rs.getByte("ACC_STATUS"));
 				memVO.setMemPoint(rs.getInt("MEM_POINT"));
+				memVO.setMemImage(rs.getBytes("MEM_IMAGE"));
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

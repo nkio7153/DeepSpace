@@ -32,7 +32,7 @@
 	<div class="register">
 		<p>
 			如果沒有帳號?
-			<a href="${pageContext.request.contextPath}/mem/addMember" class="register-link" value="update" method="post" >點擊註冊</a>
+			<a href="${pageContext.request.contextPath}/member/addMember.jsp" class="register-link" value="update" method="post" >點擊註冊</a>
 		</p>
 	</div>
 </body>

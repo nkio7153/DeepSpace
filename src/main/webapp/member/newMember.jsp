@@ -9,17 +9,13 @@
 
 <html>
 <head>
-<title>成功登入 success.jsp</title>
+<title>您好，您以加入會員 newMember.jsp</title>
 <style>
-  #myImage {
+  img {
       border-radius: 60px;
 	  width: 120px;
 	  height: 120px;
-	  z-index: 1;
   }
-  #image-container {
-    text-align: center; /* 让图片水平居中 */
-}
 </style>
 </head>
 <body>
@@ -29,30 +25,12 @@
 	<hr>
 	<h1 align="center">會員資訊</h1>
 	<table border="1px" align="center" width="50%">
-		
-			<th style="display: none;">會員編號</th><td  style="display: none;">${authenticatedMem.memId} </td>
-		
 		<tr>
-			<th>會員大頭貼</th>
-<!-- 			<td> -->
-<!-- 		        <div id="image-container"> -->
-<%-- 		            <c:choose> --%>
-<%-- 		                <c:when test="${not empty base64Image}"> --%>
-<%-- 		                    <img id="myImage" src="data:image/jpeg;base64,${base64Image}" /> --%>
-<%-- 		                </c:when> --%>
-<%-- 		                <c:otherwise> --%>
-<!-- 		                    <img src="http://localhost:8081/DepthSpace/member/images/1.png" alt="OtherImage" /> -->
-<%-- 		                </c:otherwise> --%>
-<%-- 		            </c:choose> --%>
-<!-- 		        </div> -->
-<%-- 		        <input type="hidden" name="memImage" value="${base64Image}" /> --%>
-<!-- 		    </td> -->
-				<td><img  id="myImage" src="data:image/jpeg;base64,${base64Image}" />
-				<input type="hidden" name="myImage" value="${base64Image}">
-			</td>
-			
+			<th>會員編號</th><td>${authenticatedMem.memId} </td>
 		</tr>
-		
+		<tr>
+			<th>會員大頭貼</th><td><img src="data:image/jpeg;base64, ${base64Image}" ></td>
+		</tr>
 		<tr>
 			<th>帳號</th><td>${authenticatedMem.memAcc}</td>
 		</tr>

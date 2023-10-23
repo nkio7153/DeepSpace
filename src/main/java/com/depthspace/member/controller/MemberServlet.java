@@ -1,24 +1,26 @@
 package com.depthspace.member.controller;
 
-import java.io.FileInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.sql.Date;
-import java.util.*;
+import java.io.InputStream;
+import java.util.Base64;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import com.depthspace.member.model.MemVO;
-import com.depthspace.member.model.jdbc.MemJDBCDAO;
 import com.depthspace.member.service.MemberService;
-import com.depthspace.ticketshoppingcart.model.TicketInfoVO;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
+import com.mysql.cj.protocol.x.SyncFlushDeflaterOutputStream;
 
 @WebServlet({ "/mem/*" })
+@MultipartConfig
 public class MemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -29,17 +31,130 @@ public class MemberServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html;charset=UTF-8");
 		String pathInfo = req.getPathInfo();
 		if ("/success".equals(pathInfo)) {
 			doSuccess(req, resp);
 		} else if ("/edit".equals(pathInfo)) {
 			doEdit(req, resp);
-		} else if ("/addMember".equals(pathInfo)) {
-			doAddMember(req, resp);
+//		} else if ("/addMember".equals(pathInfo)) {
+//			doAddMember(req, resp);
 		} else if ("/modify".equals(pathInfo)) {
 			doModify(req, resp);
+		} else if ("/save".equals(pathInfo)) {
+			doSave(req, resp);
 		}
 	}
+	
+	// ============================================================================================================================================
+
+	private void doSave(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<String> errorMsgs = new LinkedList<String>();
+		req.setAttribute("errorMsgs", errorMsgs);
+
+		String st2 = null;
+		String st3 = null;
+		String st4 = null;
+		String st5 = null;
+		java.sql.Date st6 = null;
+		Byte st7 = null;
+		String st8 = null;
+		Integer st9 = null;
+		String st10 = null;
+		Byte st11 = null;
+		byte[] byteArray = null;
+
+		try {
+			st2 = req.getParameter("memAcc");
+			if (st2 == null || st2.trim().length() == 0) {
+				errorMsgs.add("帳號請勿空白");
+			}
+
+			st3 = req.getParameter("memPwd");
+			if (st3 == null || st3.trim().length() == 0) {
+				errorMsgs.add("密碼請勿空白");
+			}
+
+			st4 = req.getParameter("memName");
+			if (st4 == null || st4.trim().length() == 0) {
+				errorMsgs.add("姓名請勿空白");
+			}
+
+			st5 = req.getParameter("memIdentity");
+			if (st5 == null || st5.trim().length() == 0) {
+				errorMsgs.add("身分證請勿空白");
+			}
+
+			String memBth = req.getParameter("memBth");
+			if (memBth != null && !memBth.isEmpty()) {
+				try {
+					st6 = java.sql.Date.valueOf(memBth);
+				} catch (IllegalArgumentException e) {
+					errorMsgs.add("生日請勿空白");
+				}
+			}
+
+			String memSex = req.getParameter("memSex");
+			st7 = Byte.parseByte(memSex);
+
+			st8 = req.getParameter("memEmail");
+			if (st8 == null || st8.trim().length() == 0) {
+				errorMsgs.add("Email請勿空白");
+			}
+
+			String memTel = req.getParameter("memTel");
+			st9 = Integer.valueOf(memTel);
+			if (st9 == null) {
+				errorMsgs.add("電話請勿空白");
+			}
+
+			st10 = req.getParameter("memAdd");
+			if (st10 == null || st10.trim().length() == 0) {
+				errorMsgs.add("地址請勿空白");
+			}
+			String accStatus = req.getParameter("accStatus");
+			st11 = Byte.parseByte(accStatus);
+
+	//      抓取上傳資料並且做base64的轉型
+			Part filePart = req.getPart("memImage");
+			
+			InputStream inputStream = filePart.getInputStream();
+	        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+	        int nRead;
+	        byte[] data = new byte[1024];
+	        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+	            buffer.write(data, 0, nRead);
+	        }
+	        buffer.flush();
+	        byteArray = buffer.toByteArray();
+	        inputStream.close();
+	        buffer.close();
+			
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return;
+		}
+		MemberService m = new MemberService();
+		MemVO memvo = null;
+		if (errorMsgs.isEmpty()) {
+			memvo = new MemVO(st2, st3, st4, st5, st6, st7, st8, st9, st10, st11, byteArray);
+		}
+		m.addMember(memvo);
+		req.setAttribute("authenticatedMem", memvo);
+		
+		String base64Image = Base64.getEncoder().encodeToString(byteArray);
+		req.setAttribute("base64Image", base64Image);
+		
+		if(st7 == 1 ) {
+			req.setAttribute("sex" , "男");
+		} else {
+			req.setAttribute("sex", "女");
+		}
+		req.getRequestDispatcher("/member/newMember.jsp").forward(req, resp);
+	}
+		
+	// ============================================================================================================================================
 
 	private void doModify(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<String> errorMsgs = new LinkedList<String>();
@@ -60,10 +175,10 @@ public class MemberServlet extends HttpServlet {
 		byte[] st13 = null;
 
 		try {
+			//多寫的
 			String memId = req.getParameter("memId");
-			System.out.println("1" + memId);
 			st1 = Integer.valueOf(memId);
-			System.out.println("2" + st1);
+			System.out.println("st1=" + st1);
 
 			st2 = req.getParameter("memAcc");
 			if (st2 == null || st2.trim().length() == 0) {
@@ -116,36 +231,85 @@ public class MemberServlet extends HttpServlet {
 			String accStatus = req.getParameter("accStatus");
 			st11 = Byte.parseByte(accStatus);
 
-			String memPoint = req.getParameter("memPoint");
-			st12 = Integer.valueOf(memPoint);
+//			String memPoint = req.getParameter("memPoint");
+//			st12 = Integer.valueOf(memPoint);
+			
+			MemberService ms = new MemberService();
+			MemVO mem = ms.findByMemId(st1);
+			st12 = mem.getMemPoint();
 
-			String memImage = req.getParameter("base64Image");
+			String memImage = req.getParameter("memImage");
 			st13 = memImage.getBytes();
+			System.out.println("st13=" + st13.length);			
+			
+//			Part filePart = req.getPart("memImage");
+//			System.out.println("filePart" + filePart);
+//			
+//			InputStream inputStream = filePart.getInputStream();
+//	        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+//	        int nRead;
+//	        byte[] data = new byte[1024];
+//	        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+//	            buffer.write(data, 0, nRead);
+//	        }
+//	        buffer.flush();
+//	        st13 = buffer.toByteArray();
+//	        System.out.println("st13=" + st13);
+//	        System.out.println("st13.length=" + st13.length);
+//	        inputStream.close();
+//	        buffer.close();
+//			
+//		} catch (NumberFormatException e) {
+//			e.printStackTrace();
+//			return;
+//		}
+			
+//			st13 = Base64.getDecoder().decode(memImage);
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			return;
 		}
+		
 		MemberService m = new MemberService();
 		MemVO memvo = null;
 		if (errorMsgs.isEmpty()) {
 			memvo = new MemVO(st1, st2, st3, st4, st5, st6, st7, st8, st9, st10, st11, st12, st13);
-			
 		}
 		m.updateMember(memvo);
-		System.out.println("3" + memvo.getMemName());
 		req.setAttribute("authenticatedMem", memvo);
-		req.setAttribute("base64Image", memvo.getMemImage());
+		
+//		st13 = mem.getMemImage();
+//		String base64Image = Base64.getEncoder().encodeToString(st13);
+//		System.out.println("base64Image=" + base64Image);
+//		req.setAttribute("base64Image", base64Image);
+		
+//		byte[] imageBytes = memvo.getMemImage();
+//		System.out.println("byte[]："+imageBytes);
+//		String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+//		req.setAttribute("base64Image", base64Image);
+//		req.setAttribute("imageBytes", imageBytes);
+		
+		String base64Image = Base64.getEncoder().encodeToString(st13);
+		req.setAttribute("base64Image", base64Image);
+		
+		if(st7 == 1 ) {
+			req.setAttribute("sex" , "男");
+		} else {
+			req.setAttribute("sex", "女");
+		}
+		
 		req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
 	}
 
-	// ===================================================================================
+	// ============================================================================================================================================
 
 	private void doAddMember(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		System.out.println("喔耶");
-		req.getRequestDispatcher("/member/addMember.jsp").forward(req, resp);
+	//加入會員資料收集
+		System.out.println("有跳");
+		req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
 	}
 
-// ===================================================================================
+	// ============================================================================================================================================
 
 	private void doEdit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		MemberService m = new MemberService();
@@ -159,9 +323,9 @@ public class MemberServlet extends HttpServlet {
 		MemVO memVo = m.findByMemId(memId);
 		if (memVo != null) {
 			byte[] imageBytes = memVo.getMemImage();
-
 			if (imageBytes != null) {
 				String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+				req.setAttribute("imageBytes", imageBytes);
 				req.setAttribute("base64Image", base64Image);
 			} else {
 				req.setAttribute("base64Image", null); // 如果 memImage 為 null，設定 base64Image 為 null
@@ -179,7 +343,6 @@ public class MemberServlet extends HttpServlet {
 	protected void doSuccess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String email = req.getParameter("email");
 		String password = req.getParameter("password");
-		System.out.println("4" + email);
 
 		MemberService ms = new MemberService();
 		List<MemVO> list = ms.getAll();
@@ -202,12 +365,29 @@ public class MemberServlet extends HttpServlet {
 				authenticatedMem.setAccStatus(mem.getAccStatus());
 				authenticatedMem.setMemPoint(mem.getMemPoint());
 				byte[] imageBytes = mem.getMemImage();
-				base64Image = Base64.getEncoder().encodeToString(imageBytes);
+					if(imageBytes != null) {
+						base64Image = Base64.getEncoder().encodeToString(imageBytes);
+//						System.out.println(base64Image);
+						req.setAttribute("base64Image", base64Image);
+					}else {
+						req.setAttribute("base64Image", null); // 如果 memImage 為 null，設定 base64Image 為 null
+					}
+//					System.out.println("登入的base64Image" + base64Image);
+					
+					byte memSexBytes = mem.getMemSex();
+//					System.out.println(memSexBytes);
+					    if (memSexBytes == 1) {
+					    	req.setAttribute("sex" ,"男");
+					    } else if (memSexBytes == 2) {
+					    	req.setAttribute("sex" ,"女");
+					    }
 				req.setAttribute("authenticatedMem", authenticatedMem);
-				req.setAttribute("base64Image", base64Image);
+				
 			}
 		}
 		req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
+	
+
 	}
 }
 //		if (isAuthenticated) {

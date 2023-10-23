@@ -1,8 +1,9 @@
-package com.depthspace.member.model;
+package com.depthspace.member.model.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.depthspace.member.model.MemVO;
 import com.depthspace.utils.HibernateUtil;
 
 public class TestMemSession {
