@@ -1,17 +1,17 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.depthspace.faq.model.service.*"%>
 <%@ page import="com.depthspace.faq.model.controller.*"%>
 <%@ page import="com.depthspace.faq.model.model.*"%>
 
-<% //¨£com.emp.controller.EmpServlet.java²Ä238¦æ¦s¤JreqªºempVOª«¥ó (¦¹¬°¿é¤J®æ¦¡¦³¿ù»~®ÉªºempVOª«¥ó)
+<% //è¦‹com.emp.controller.EmpServlet.javaç¬¬238è¡Œå­˜å…¥reqçš„empVOç‰©ä»¶ (æ­¤ç‚ºè¼¸å…¥æ ¼å¼æœ‰éŒ¯èª¤æ™‚çš„empVOç‰©ä»¶)
 	FaqVO faqVO = (FaqVO) request.getAttribute("faqVO");
 %>
 
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>Faq¸ê®Æ·s¼W - addFaq.jsp</title>
+<title>Faqè³‡æ–™æ–°å¢ž - addFaq.jsp</title>
 
 <style>
   table#table-1 {
@@ -50,16 +50,16 @@
 
 <table id="table-1">
 	<tr><td>
-		 <h3>Faq¸ê®Æ·s¼W - addFaq.jsp</h3></td><td>
-		 <h4><a href="select_page.jsp"><img src="images/tomcat.png" width="100" height="100" border="0">¦^­º­¶</a></h4>
+		 <h3>Faqè³‡æ–™æ–°å¢ž - addFaq.jsp</h3></td><td>
+		 <h4><a href="select_page.jsp"><img src="images/tomcat.png" width="100" height="100" border="0">å›žé¦–é </a></h4>
 	</td></tr>
 </table>
 
-<h3>¸ê®Æ·s¼W:</h3>
+<h3>è³‡æ–™æ–°å¢ž:</h3>
 
-<%-- ¿ù»~ªí¦C --%>
+<%-- éŒ¯èª¤è¡¨åˆ— --%>
 <c:if test="${not empty errorMsgs}">
-	<font style="color:red">½Ð­×¥¿¥H¤U¿ù»~:</font>
+	<font style="color:red">è«‹ä¿®æ­£ä»¥ä¸‹éŒ¯èª¤:</font>
 	<ul>
 		<c:forEach var="message" items="${errorMsgs}">
 			<li style="color:red">${message}</li>
@@ -73,30 +73,30 @@
 	
 	
 	
+<!-- 	<tr> -->
+<!-- 		<td>æµæ°´è™Ÿ:</td> -->
+<!-- 		<td><input type="TEXT" name="serialId" size="45"/></td> -->
+<!-- 	</tr> -->
 	<tr>
-		<td>¬y¤ô¸¹:</td>
-		<td><input type="TEXT" name="serialId" size="45"/></td>
+		<td>FAQç·¨è™Ÿ:</td>
+		<td><input type="TEXT" name="faqNo"   value="<%= (faqVO==null)? "1" : faqVO.getFaqNo()%>" size="45"/></td>
 	</tr>
 	<tr>
-		<td>FAQ½s¸¹:</td>
-		<td><input type="TEXT" name="faqNo"    size="45"/></td>
+		<td>FAQåç¨±:</td>
+		<td><input type="TEXT" name="faqName"  value="<%= (faqVO==null)? "æ„›èŽ‰" : faqVO.getFaqName()%>" size="45"/></td>
 	</tr>
 	<tr>
-		<td>FAQ¦WºÙ:</td>
-		<td><input type="TEXT" name="faqName"   size="45"/></td>
-	</tr>
-	<tr>
-		<td>FAQµª®×:</td>
-		<td><input type="TEXT" name="faqAns"    size="45"/></td>
+		<td>FAQç­”æ¡ˆ:</td>
+		<td><input type="TEXT" name="faqAns"   value="<%= (faqVO==null)? "æ®ºæ®º" : faqVO.getFaqName()%>" size="45"/></td>
 	</tr>
 <!-- 	<tr> -->
-<!-- 		<td>¼úª÷:</td> -->
+<!-- 		<td>çŽé‡‘:</td> -->
 <%-- 		<td><input type="TEXT" name="comm"  value="<%= (empVO==null)? "100" : empVO.getComm()%>" size="45"/></td> --%>
 <!-- 	</tr> -->
 
 <%-- 	<jsp:useBean id="deptSvc" scope="page" class="com.dept.model.DeptService" /> --%>
 <!-- 	<tr> -->
-<!-- 		<td>³¡ªù:<font color=red><b>*</b></font></td> -->
+<!-- 		<td>éƒ¨é–€:<font color=red><b>*</b></font></td> -->
 <!-- 		<td><select size="1" name="deptno"> -->
 <%-- 			<c:forEach var="deptVO" items="${deptSvc.all}"> --%>
 <%-- 				<option value="${deptVO.deptno}" ${(empVO.deptno==deptVO.deptno)? 'selected':'' } >${deptVO.dname} --%>
@@ -107,13 +107,13 @@
 </table>
 <br>
 <input type="hidden" name="action" value="insert">
-<input type="submit" value="°e¥X·s¼W"></FORM>
+<input type="submit" value="é€å‡ºæ–°å¢ž"></FORM>
 
 </body>
 
 
 
-<!-- =========================================¥H¤U¬° datetimepicker ¤§¬ÛÃö³]©w========================================== -->
+<!-- =========================================ä»¥ä¸‹ç‚º datetimepicker ä¹‹ç›¸é—œè¨­å®š========================================== -->
 <link rel="stylesheet" type="text/css"
  href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
 <script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>

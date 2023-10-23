@@ -32,6 +32,11 @@ public class TicketTypesVO implements Serializable {
 	@OneToMany(mappedBy="ticketType", cascade = CascadeType.ALL) //cascade是否級聯受影響
 	private Set<TicketVO> tickets;  //新增屬性
 
+	
+	public TicketTypesVO() {
+		super();
+	}
+
 	public Integer getTicketTypeId() {
 		return ticketTypeId;
 	}

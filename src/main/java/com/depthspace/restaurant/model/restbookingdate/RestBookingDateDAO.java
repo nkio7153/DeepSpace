@@ -85,8 +85,8 @@ public class RestBookingDateDAO implements RestBookingDateDAO_interface{
 		}
 	}
 	@Override
-	public RestBookingDateVO findByPrimaryKey(Integer restId, Date bookingDate) {
-		RestBookingDateVO restBookingDateVO = null;
+	public RestBookingDateVO findByPrimaryKey(RestBookingDateVO restBookingDateVO) {
+		RestBookingDateVO restBookingDateVO1 = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -96,19 +96,19 @@ public class RestBookingDateDAO implements RestBookingDateDAO_interface{
 			
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 			
-			pstmt.setInt(1, restId);
-			pstmt.setDate(2, bookingDate);
+			pstmt.setInt(1, restBookingDateVO1.getRestId());
+			pstmt.setDate(2, restBookingDateVO1.getBookingDate());
 			
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				restBookingDateVO = new RestBookingDateVO();
-				restBookingDateVO.setRestId(rs.getInt("REST_ID"));
-				restBookingDateVO.setBookingDate(rs.getDate("BOOKING_DATE"));
-				restBookingDateVO.setRestOpen(rs.getInt("REST_OPEN"));
-				restBookingDateVO.setMorningNum(rs.getInt("MORNING_NUM"));
-				restBookingDateVO.setNoonNum(rs.getInt("NOON_NUM"));
-				restBookingDateVO.setEveningNum(rs.getInt("EVENING_NUM"));
+				restBookingDateVO1 = new RestBookingDateVO();
+				restBookingDateVO1.setRestId(rs.getInt("REST_ID"));
+				restBookingDateVO1.setBookingDate(rs.getDate("BOOKING_DATE"));
+				restBookingDateVO1.setRestOpen(rs.getInt("REST_OPEN"));
+				restBookingDateVO1.setMorningNum(rs.getInt("MORNING_NUM"));
+				restBookingDateVO1.setNoonNum(rs.getInt("NOON_NUM"));
+				restBookingDateVO1.setEveningNum(rs.getInt("EVENING_NUM"));
 			}
 
 		} catch (SQLException e) {
@@ -117,7 +117,7 @@ public class RestBookingDateDAO implements RestBookingDateDAO_interface{
 			DBUtil.close(con, pstmt, null);
 		}
 		
-		return restBookingDateVO;
+		return restBookingDateVO1;
 	}
 	@Override
 	public List<RestBookingDateVO> getAll() {
