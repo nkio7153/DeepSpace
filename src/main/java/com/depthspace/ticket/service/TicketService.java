@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.depthspace.ticket.model.TicketVO;
 
+
 public interface TicketService {
 	
     int addTicket(TicketVO ticketVO);
@@ -22,6 +23,8 @@ public interface TicketService {
     int getPageTotal();
     
     List<TicketVO> getAllTicketsWithMainImages();
+    
+    List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map);
 
 	List<TicketVO> getAllTickets();
 

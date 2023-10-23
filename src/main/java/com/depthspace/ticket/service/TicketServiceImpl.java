@@ -60,6 +60,32 @@ public class TicketServiceImpl implements TicketService {
 	    return deletedCount;
 	}
 
+	//查詢票券
+	@Override
+	public List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map) {
+		Map<String, String> query = new HashMap<>();
+		// Map.Entry即代表一組key-value
+		Set<Map.Entry<String, String[]>> entry = map.entrySet();
+		
+		for (Map.Entry<String, String[]> row : entry) {
+			String key = row.getKey();
+			// 因為請求參數裡包含了action，做個去除動作
+			if ("action".equals(key)) {
+				continue;
+			}
+			// 若是value為空即代表沒有查詢條件，做個去除動作
+			String value = row.getValue()[0];
+			if (value.isEmpty() || value == null) {
+				continue;
+			}
+			query.put(key, value);
+		}
+		
+		System.out.println(query);
+		
+		return dao.getByCompositeQuery(query);
+	}
+	
 	@Override
 	public TicketVO getTicketById(Integer ticketId) {
 		dao.getById(ticketId);
@@ -112,10 +138,17 @@ public class TicketServiceImpl implements TicketService {
 		return dao.getAllTicketsWithCity();
 	}
 
-	// 票券主圖
 	@Override
 	public List<TicketVO> getAllTicketsWithMainImages() {
-		return dao.getAllTicketsWithMainImages();
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+
+//	// 票券主圖
+//	@Override
+//	public List<TicketVO> getAllTicketsWithMainImages() {
+//		return dao.getAllTicketsWithMainImages();
+//	}
 
 }

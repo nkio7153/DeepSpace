@@ -1,6 +1,8 @@
 package com.depthspace.ticket.dao;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +12,10 @@ import java.util.Map;
 import java.util.HashMap;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -204,16 +210,34 @@ public class TicketDAOImpl implements TicketDAO {
 	@Override
 	public List<TicketVO> getAll() {
 		return getSession().createQuery("from TicketVO", TicketVO.class).list();
-////		return getSession().createQuery("from TicketVO",TicketVO.class).list();
-//	    
-//	    Session session = getSession();
-//
-//	    // 创建HQL查询
-//	    String hql = "FROM TicketVO"; 
-//	    Query query = session.createQuery(hql);
-//
-//	    List<TicketVO> list = query.list();
-//	    return list;
+	}
+
+	@Override
+	public List<TicketVO> getByCompositeQuery(Map<String, String> query) {
+		if (query.size() == 0)
+			return getAll();
+
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<TicketVO> criteria = builder.createQuery(TicketVO.class);
+		Root<TicketVO> root = criteria.from(TicketVO.class);
+
+		List<Predicate> predicates = new ArrayList<>();
+
+		for (Map.Entry<String, String> row : query.entrySet()) {
+			if ("ticketName".equals(row.getKey())) {
+				predicates.add(builder.like(root.get("ticketName"), "%" + row.getValue() + "%"));
+			}
+
+			if ("ticketId".equals(row.getKey())) {
+				predicates.add(builder.equal(root.get("ticketId"), row.getValue()));
+			}
+		}
+
+		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
+		criteria.orderBy(builder.asc(root.get("ticketId")));
+		TypedQuery<TicketVO> typedQuery = getSession().createQuery(criteria);
+
+		return typedQuery.getResultList();
 	}
 
 }
