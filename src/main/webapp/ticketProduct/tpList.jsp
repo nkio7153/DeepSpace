@@ -33,6 +33,20 @@
 		.card {
 		    border: none;
 		}
+		.clickable-card {
+		    cursor: pointer;  /* 讓卡片呈現手指樣式 */
+		    border: 1px solid #ccc;  /* 加上淺灰色框線 */
+		    border-radius: 5px;  /* 加上圓角 */
+		}
+		    /* 刪除連結的底線 */
+	    a {
+	        text-decoration: none;
+	    }
+	        /* 增加hover效果 */
+	    .clickable-card:hover {
+	        opacity: 0.8;  /* 這會使整個卡片變為淺色 */
+	    }
+    
 	</style>
     
     
@@ -81,14 +95,15 @@
 			            <label for="sortDropdown" class="mr-2">排序方式：</label>
 			            <select class="form-control d-inline-block" id="sortDropdown" style="width:auto;">
 	                <option>按熱門程度排序</option>
-                <!-- 其他排序选项 -->
+                <!-- 其他排序 -->
                 </select>
             </div>
             </div>
             <!-- 票券列表 -->
             <div class="ticket-list">
               <c:forEach items="${ticketList}" var="ticket">
-                <div class="card mb-3">
+               <a href="${pageContext.request.contextPath}/ticketproduct/ticket?ticketId=${ticket.ticketId}">  <!-- 整張卡片點擊 -->
+                <div class="card mb-3 clickable-card">
                     <div class="row no-gutters">
                         <div class="col-md-4">
                             <img src="<%=request.getContextPath()%>/ticketimage?ticketId=${ticket.ticketId}" alt="Main Ticket Image" class="ticket-img">
@@ -104,6 +119,7 @@
                         </div>
                     </div>
                 </div>
+               </a> 
               </c:forEach>
             </div>
         </div>        
