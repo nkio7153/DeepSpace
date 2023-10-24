@@ -85,7 +85,7 @@
 			<th>地址</th><td>${authenticatedMem.memAdd}</td>
 		</tr>
 		<tr>
-			<th>狀態</th><td>${authenticatedMem.accStatus}</td>
+			<th>狀態</th><td>${status}</td>
 		</tr>
 		<tr>
 			<th>會員點數</th><td>${authenticatedMem.memPoint}</td>

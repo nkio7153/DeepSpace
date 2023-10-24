@@ -33,19 +33,13 @@
 			
 			<tr>
 				<th>會員大頭貼</th>
-				<td>
-<%-- 			         <c:choose> --%>
-<%-- 	                    <c:when test="${not empty base64Image}"> --%>
-	                        <img src="data:image/jpeg;base64,${base64Image}" alt="ProfileImage" />
-	                        <input type="file" id="memImage" name="memImage">
-	                        <!-- 將 base64Image 存儲在一個隱藏的表單字段中 -->
-	                        <input type="hidden" name="memImage" value="${base64Image}" />
-<%-- 	                    </c:when> --%>
-<%-- 	                    <c:otherwise> --%>
-<!-- 	                        <img src="http://localhost:8081/DepthSpace/member/images/1.png" alt="OtherImage" /> -->
-<%-- 	                    </c:otherwise> --%>
-<%-- 	                </c:choose> --%>
-			        
+					<td>
+	                	<img src="data:image/jpeg;base64,${base64Image}" alt="ProfileImage" />
+	                	<label>更新大頭貼</label>
+	                    <input type="file" id="memImage" name="memImage" onchange="loadFile(event)" />
+	                    <!-- 將 base64Image 存儲在一個隱藏的表單字段中 -->
+	                    <input type="hidden" name="memImage" value="${base64Image}" />
+	                  
 				</td>
 			</tr>
 			<tr>
@@ -75,7 +69,7 @@
 	        <tr>
 	            <th>性別</th>
 	            <td><input type="text" name="memSex"
-					value="${mem.memSex}" required></td>
+					value="${sex}" required></td>
 	        </tr>
 	        <tr>
 	            <th>電子郵件</th>
@@ -95,7 +89,7 @@
 	        <tr>
 	            <th>狀態</th>
 	            <td><input type="text" name="accStatus"
-					value="${mem.accStatus}" readonly></td>
+					value="${status}" readonly></td>
 	        </tr>
 	        <tr>
 	            <th>點數</th>
@@ -114,7 +108,13 @@
         <input type="button" value="取消" onclick="history.back()">
     </p>
     <script type="text/javascript">
-			function save() {
+	    var loadFile = function(event){
+	    	var reader = new FileReader();
+	    	reader.onload = function(){
+	    		var 
+	    	}
+	    }
+			function change() {
 			// 獲取修改後的資料
 				var modifiedData = {
 				// 這裡放入你的修改後的資料

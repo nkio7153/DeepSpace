@@ -65,6 +65,7 @@ public class MemberServlet extends HttpServlet {
 		Integer st9 = null;
 		String st10 = null;
 		Byte st11 = null;
+		String base64Image;
 		byte[] byteArray = null;
 
 		try {
@@ -120,18 +121,56 @@ public class MemberServlet extends HttpServlet {
 
 	//      抓取上傳資料並且做base64的轉型
 			Part filePart = req.getPart("memImage");
+			if(filePart != null &&  filePart.getSize() < 0) {
+				InputStream inputStream = filePart.getInputStream();
+		        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		        int nRead;
+		        byte[] data = new byte[1024];
+		        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+		            buffer.write(data, 0, nRead);
+		        }
+		        buffer.flush();
+		        byteArray = buffer.toByteArray();
+		        inputStream.close();
+		        buffer.close();
+			} else {
+				String webappPath = getServletContext().getRealPath("/");
+				// 构建相对路径
+				String relativeImagePath = "member/images/1.png";
+				String absoluteImagePath = webappPath + relativeImagePath;
+
+				File defaultImageFile = new File(absoluteImagePath);
+				String defaultImagePath =  defaultImageFile.getPath();
+				// 使用ServletContext获取资源流
+//				InputStream defaultImageStream = getServletContext().getResourceAsStream(defaultImagePath);
+				if (defaultImageFile.exists()) {
+					byte[] localImageBytes = Files.readAllBytes(Path.of(defaultImagePath));
+					base64Image = Base64.getEncoder().encodeToString(localImageBytes);
+			        
+			        resp.setContentType("text/plain");
+			        resp.getWriter().write(base64Image);
+					req.setAttribute("base64Image", base64Image);
+				} else {
+				   // 如無照片會處理錯誤
+					System.out.println("圖不存在");
+						}
+			}
 			
-			InputStream inputStream = filePart.getInputStream();
-	        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-	        int nRead;
-	        byte[] data = new byte[1024];
-	        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-	            buffer.write(data, 0, nRead);
-	        }
-	        buffer.flush();
-	        byteArray = buffer.toByteArray();
-	        inputStream.close();
-	        buffer.close();
+			
+			
+			
+			//=======================================================================
+//			InputStream inputStream = filePart.getInputStream();
+//	        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+//	        int nRead;
+//	        byte[] data = new byte[1024];
+//	        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+//	            buffer.write(data, 0, nRead);
+//	        }
+//	        buffer.flush();
+//	        byteArray = buffer.toByteArray();
+//	        inputStream.close();
+//	        buffer.close();
 			
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
@@ -145,8 +184,12 @@ public class MemberServlet extends HttpServlet {
 		m.addMember(memvo);
 		req.setAttribute("authenticatedMem", memvo);
 		
-		String base64Image = Base64.getEncoder().encodeToString(byteArray);
-		req.setAttribute("base64Image", base64Image);
+		if(byteArray != null) {
+		String base64Image2 = Base64.getEncoder().encodeToString(byteArray);
+		req.setAttribute("base64Image", base64Image2);
+		} else {
+			
+		}
 		
 		if(st7 == 1 ) {
 			req.setAttribute("sex" , "男");
@@ -177,7 +220,7 @@ public class MemberServlet extends HttpServlet {
 		byte[] st13 = null;
 
 		try {
-			//多寫的
+			//多寫的，先暫時當二次判斷使用
 			String memId = req.getParameter("memId");
 			st1 = Integer.valueOf(memId);
 //			System.out.println("st1=" + st1);
@@ -213,7 +256,14 @@ public class MemberServlet extends HttpServlet {
 			}
 
 			String memSex = req.getParameter("memSex");
-			st7 = Byte.parseByte(memSex);
+			if ("男".equals(memSex)) {
+				st7 = 1; // 如果 memSex 是 "男"，則將 memSexByte 設置為 1
+			} else {
+				st7 = 2; // 否則，將 memSexByte 設置為 2
+			}
+			
+//			System.out.println(memSex);
+//			st7 = Byte.parseByte(memSex);
 
 			st8 = req.getParameter("memEmail");
 			if (st8 == null || st8.trim().length() == 0) {
@@ -231,19 +281,53 @@ public class MemberServlet extends HttpServlet {
 				errorMsgs.add("地址請勿空白");
 			}
 			String accStatus = req.getParameter("accStatus");
-			st11 = Byte.parseByte(accStatus);
+			if ("正常使用中".equals(accStatus)) {
+				st11 = 1; // 如果 memSex 是 "男"，則將 memSexByte 設置為 1
+			} else {
+				st11 = 2; // 否則，將 memSexByte 設置為 2
+			}
+			
+//			st11 = Byte.parseByte(accStatus);
 			
 			MemberService ms = new MemberService();
 			MemVO mem = ms.findByMemId(st1);
 			st12 = mem.getMemPoint();
 
-			String memImage = req.getParameter("memImage");
-			st13 = memImage.getBytes();
 			
-//			Part filePart = req.getPart("memImage");
-//			System.out.println("filePart" + filePart);
-//			
-//			InputStream inputStream = filePart.getInputStream();
+			//========================================================================
+//			String memImage = req.getParameter("memImage");
+//			轉型成byte[]陣列
+//			st13 = memImage.getBytes();
+//			System.out.println("Bytes64=" + st13);
+//			解析byte[]變成Base64字串並存在st13裡
+//			st13 = Base64.getDecoder().decode(memImage);
+//			System.out.println("Base64=" + st13);
+			//=========修改圖片===============================================================
+
+
+			Part filePart = req.getPart("memImage");
+//			System.out.println("filePart=" + filePart);
+			if( filePart != null &&  filePart.getSize() < 0) {
+//				System.out.println("filePart=" + filePart);
+				InputStream inputStream = filePart.getInputStream();
+				st13 =new byte[inputStream.available()];
+				inputStream.read(st13);
+				inputStream.close();
+			} else {
+				String memImage = req.getParameter("memImage");
+//				轉型成byte[]陣列
+				st13 = memImage.getBytes();
+//				System.out.println("Bytes64=" + st13);
+//				解析byte[]變成Base64字串並存在st13裡
+				st13 = Base64.getDecoder().decode(memImage);
+//				System.out.println("Base64=" + st13);
+			}
+			
+			
+
+//			System.out.println("st13=" + st13);
+			
+			
 //	        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 //	        int nRead;
 //	        byte[] data = new byte[1024];
@@ -262,7 +346,7 @@ public class MemberServlet extends HttpServlet {
 //			return;
 //		}
 			
-			st13 = Base64.getDecoder().decode(memImage);
+			
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			return;
@@ -288,6 +372,7 @@ public class MemberServlet extends HttpServlet {
 //		req.setAttribute("imageBytes", imageBytes);
 		
 		String base64Image = Base64.getEncoder().encodeToString(st13);
+		
 //		System.out.println("base64Image=" + base64Image);
 		req.setAttribute("base64Image", base64Image);
 		
@@ -295,6 +380,12 @@ public class MemberServlet extends HttpServlet {
 			req.setAttribute("sex" , "男");
 		} else {
 			req.setAttribute("sex", "女");
+		}
+		
+		if(st11 == 1 ) {
+			req.setAttribute("status" , "正常使用中");
+		} else {
+			req.setAttribute("status", "此帳號停權");
 		}
 		
 		req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
@@ -319,9 +410,10 @@ public class MemberServlet extends HttpServlet {
 			e.printStackTrace();
 			return;
 		}
-		MemVO memVo = m.findByMemId(memId);
-		if (memVo != null) {
-			byte[] imageBytes = memVo.getMemImage();
+		MemVO memvo = m.findByMemId(memId);
+		if (memvo != null) {
+			//處理圖片
+			byte[] imageBytes = memvo.getMemImage();
 			if (imageBytes != null) {
 				String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 				req.setAttribute("imageBytes", imageBytes);
@@ -329,8 +421,23 @@ public class MemberServlet extends HttpServlet {
 			} else {
 				req.setAttribute("base64Image", null); // 如果 memImage 為 null，設定 base64Image 為 null
 			}
+			//處理性別
+			byte memSex = memvo.getMemSex();
+			if(memSex == 1 ) {
+				req.setAttribute("sex" , "男");
+			} else {
+				req.setAttribute("sex", "女");
+			}
+			
+			//處理狀態
+			byte accStatus = memvo.getAccStatus();
+			if(accStatus == 1) {
+				req.setAttribute("status" , "正常使用中");
+			} else {
+				req.setAttribute("status" , "此帳號停權");
+			}
 
-			req.setAttribute("mem", memVo);
+			req.setAttribute("mem", memvo);
 			req.getRequestDispatcher("/member/revise.jsp").forward(req, resp);
 		} else {
 			System.out.println("失敗QQ");
@@ -366,7 +473,6 @@ public class MemberServlet extends HttpServlet {
 				byte[] imageBytes = mem.getMemImage();
 					if(imageBytes != null) {
 						base64Image = Base64.getEncoder().encodeToString(imageBytes);
-						System.out.println("base64Image=" + base64Image);
 						req.setAttribute("base64Image", base64Image);
 					}else {
 						String webappPath = getServletContext().getRealPath("/");
@@ -380,26 +486,33 @@ public class MemberServlet extends HttpServlet {
 //						InputStream defaultImageStream = getServletContext().getResourceAsStream(defaultImagePath);
 						if (defaultImageFile.exists()) {
 							byte[] localImageBytes = Files.readAllBytes(Path.of(defaultImagePath));
-					        base64Image = Base64.getEncoder().encodeToString(localImageBytes);		   
-//							byte[] imageBytes2 = Files.readAllBytes(defaultImageFile.toPath());
-//							System.out.println(imageBytes2);
-////						String base64Path = Base64.getEncoder().encodeToString(defaultImagePath.getBytes(imageBytes2));
-//							base64Image = Base64.getEncoder().encodeToString(imageBytes2);
+					        base64Image = Base64.getEncoder().encodeToString(localImageBytes);
+					        
 					        resp.setContentType("text/plain");
 					        resp.getWriter().write(base64Image);
 							req.setAttribute("base64Image", base64Image);
 						} else {
-						   // 照片不再會處理錯誤
+						   // 如無照片會處理錯誤
 							System.out.println("圖不存在");
 								}
 					}
 					
+					//設定男女顯示
 					byte memSexBytes = mem.getMemSex();
 					    if (memSexBytes == 1) {
 					    	req.setAttribute("sex" ,"男");
 					    } else if (memSexBytes == 2) {
 					    	req.setAttribute("sex" ,"女");
 					    }
+					//設定狀態顯示
+					byte accStatus = mem.getAccStatus();
+					if(accStatus == 1) {
+						req.setAttribute("status" , "正常使用中");
+					} else {
+						req.setAttribute("status" , "此帳號停權");
+					}
+					    
+					    
 				req.setAttribute("authenticatedMem", authenticatedMem);
 			}
 		}
