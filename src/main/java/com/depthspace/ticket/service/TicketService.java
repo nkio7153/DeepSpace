@@ -27,6 +27,8 @@ public interface TicketService {
     List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map);
 
 	List<TicketVO> getAllTickets();
+	
+    long getTotalTickets(); //取得總票券數
 
 //    List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map);
 	
