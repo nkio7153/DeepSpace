@@ -10,15 +10,17 @@
  <jsp:include page="../indexpage/head.jsp" />
 <meta charset="UTF-8">
 <title>分帳表清單</title>
-<style>
-.btnContent {
-	width: 100px;
-}
-
-#btnAdd {
-	width: 100%;
-}
-</style>
+	<style>
+		.btnContent {
+		    text-align: left; /* 居中对齐按钮 */
+		}
+		
+		.btnContent input[type="button"] {
+		    margin: 0 10px; /* 为按钮之间添加一些间距，可以根据需要调整 */
+    		width: 100px; /* 设置按钮宽度为100像素，可以根据需要调整 */
+		    
+		}
+	</style>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script>
     $(document).ready(function() {
@@ -89,8 +91,9 @@
 		</table>
 	</div>
 	<div class="btnContent">
-		<input type="button" id="btnAdd" value="新增" onclick="window.location.href='<%=request.getContextPath()%>/account/add.jsp'">
+    <input type="button" id="btnAdd" value="新增" onclick="window.location.href='<%=request.getContextPath()%>/account/add.jsp'">
+    <input type="button" id="btnReturn" value="返回" onclick="window.location.href='<%=request.getContextPath()%>/account/index.jsp'">
 	</div>
-	 <jsp:include page="../indexpage/footer.jsp" />
+	<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

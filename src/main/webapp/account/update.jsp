@@ -10,6 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<jsp:include page="../indexpage/head.jsp" />
 <meta charset="UTF-8">
 <title>更新分帳表</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4" crossorigin="anonymous"></script>
@@ -52,6 +53,8 @@ function processUpdateSave() {
 </script>
 </head>
 <body>
+ <jsp:include page="../indexpage/header.jsp" />
+ <jsp:include page="../indexpage/headpic.jsp" />
     <div id="Add">
         <form id="updateForm" method="Post" accept-charset="UTF-8">
             <table>
@@ -72,5 +75,6 @@ function processUpdateSave() {
     </div>
     <input type="button" id="btnUpDateSave" value="儲存" onclick="processUpdateSave();">
     <input type="button" id="btnCancel" value="取消" onclick="window.location.href='<%=request.getContextPath()%>/account/list.jsp'">
+<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>
