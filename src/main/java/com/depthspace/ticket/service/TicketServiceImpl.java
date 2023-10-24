@@ -143,8 +143,11 @@ public class TicketServiceImpl implements TicketService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
+	
+	@Override  //取得總票券數
+    public long getTotalTickets() {
+        return dao.getTotal();
+    }
 //	// 票券主圖
 //	@Override
 //	public List<TicketVO> getAllTicketsWithMainImages() {

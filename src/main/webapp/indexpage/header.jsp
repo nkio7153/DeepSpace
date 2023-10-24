@@ -21,7 +21,7 @@
                             <a class="active" href="index.html">首頁</a>
                         </li>
                         <li class="nav-item">
-                            <a class="" href="play.html">票券</a>
+                            <a class="" href="${pageContext.request.contextPath}/ticketproduct/list">票券</a>
                         </li>
                         <li class="nav-item">
                             <a class="" href="#">論壇文章</a>
