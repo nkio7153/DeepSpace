@@ -39,7 +39,7 @@
 	                        <img src="data:image/jpeg;base64,${base64Image}" alt="ProfileImage" />
 	                        <input type="file" id="memImage" name="memImage">
 	                        <!-- 將 base64Image 存儲在一個隱藏的表單字段中 -->
-	                        <input type="hidden" name="memImage" value="${base64Image}">
+	                        <input type="hidden" name="memImage" value="${base64Image}" />
 <%-- 	                    </c:when> --%>
 <%-- 	                    <c:otherwise> --%>
 <!-- 	                        <img src="http://localhost:8081/DepthSpace/member/images/1.png" alt="OtherImage" /> -->

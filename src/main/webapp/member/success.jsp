@@ -47,8 +47,12 @@
 <!-- 		        </div> -->
 <%-- 		        <input type="hidden" name="memImage" value="${base64Image}" /> --%>
 <!-- 		    </td> -->
+
+
+<%-- 				<td><img id="myImage" src="data:image/jpeg;base64,${base64Image != null ? base64Image : 'data:image/jpeg;base64,DefaultImageBase64'}" /> --%>
+
 				<td><img  id="myImage" src="data:image/jpeg;base64,${base64Image}" />
-				<input type="hidden" name="myImage" value="${base64Image}">
+				<input type="hidden" name="myImage" value="${base64Image}" />
 			</td>
 			
 		</tr>

@@ -1,8 +1,11 @@
 package com.depthspace.member.controller;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +20,6 @@ import javax.servlet.http.Part;
 
 import com.depthspace.member.model.MemVO;
 import com.depthspace.member.service.MemberService;
-import com.mysql.cj.protocol.x.SyncFlushDeflaterOutputStream;
 
 @WebServlet({ "/mem/*" })
 @MultipartConfig
@@ -178,7 +180,7 @@ public class MemberServlet extends HttpServlet {
 			//多寫的
 			String memId = req.getParameter("memId");
 			st1 = Integer.valueOf(memId);
-			System.out.println("st1=" + st1);
+//			System.out.println("st1=" + st1);
 
 			st2 = req.getParameter("memAcc");
 			if (st2 == null || st2.trim().length() == 0) {
@@ -230,9 +232,6 @@ public class MemberServlet extends HttpServlet {
 			}
 			String accStatus = req.getParameter("accStatus");
 			st11 = Byte.parseByte(accStatus);
-
-//			String memPoint = req.getParameter("memPoint");
-//			st12 = Integer.valueOf(memPoint);
 			
 			MemberService ms = new MemberService();
 			MemVO mem = ms.findByMemId(st1);
@@ -240,7 +239,6 @@ public class MemberServlet extends HttpServlet {
 
 			String memImage = req.getParameter("memImage");
 			st13 = memImage.getBytes();
-			System.out.println("st13=" + st13.length);			
 			
 //			Part filePart = req.getPart("memImage");
 //			System.out.println("filePart" + filePart);
@@ -264,7 +262,7 @@ public class MemberServlet extends HttpServlet {
 //			return;
 //		}
 			
-//			st13 = Base64.getDecoder().decode(memImage);
+			st13 = Base64.getDecoder().decode(memImage);
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			return;
@@ -290,6 +288,7 @@ public class MemberServlet extends HttpServlet {
 //		req.setAttribute("imageBytes", imageBytes);
 		
 		String base64Image = Base64.getEncoder().encodeToString(st13);
+//		System.out.println("base64Image=" + base64Image);
 		req.setAttribute("base64Image", base64Image);
 		
 		if(st7 == 1 ) {
@@ -367,22 +366,41 @@ public class MemberServlet extends HttpServlet {
 				byte[] imageBytes = mem.getMemImage();
 					if(imageBytes != null) {
 						base64Image = Base64.getEncoder().encodeToString(imageBytes);
-//						System.out.println(base64Image);
+						System.out.println("base64Image=" + base64Image);
 						req.setAttribute("base64Image", base64Image);
 					}else {
-						req.setAttribute("base64Image", null); // 如果 memImage 為 null，設定 base64Image 為 null
+						String webappPath = getServletContext().getRealPath("/");
+						// 构建相对路径
+						String relativeImagePath = "member/images/1.png";
+						String absoluteImagePath = webappPath + relativeImagePath;
+
+						File defaultImageFile = new File(absoluteImagePath);
+						String defaultImagePath =  defaultImageFile.getPath();
+						// 使用ServletContext获取资源流
+//						InputStream defaultImageStream = getServletContext().getResourceAsStream(defaultImagePath);
+						if (defaultImageFile.exists()) {
+							byte[] localImageBytes = Files.readAllBytes(Path.of(defaultImagePath));
+					        base64Image = Base64.getEncoder().encodeToString(localImageBytes);		   
+//							byte[] imageBytes2 = Files.readAllBytes(defaultImageFile.toPath());
+//							System.out.println(imageBytes2);
+////						String base64Path = Base64.getEncoder().encodeToString(defaultImagePath.getBytes(imageBytes2));
+//							base64Image = Base64.getEncoder().encodeToString(imageBytes2);
+					        resp.setContentType("text/plain");
+					        resp.getWriter().write(base64Image);
+							req.setAttribute("base64Image", base64Image);
+						} else {
+						   // 照片不再會處理錯誤
+							System.out.println("圖不存在");
+								}
 					}
-//					System.out.println("登入的base64Image" + base64Image);
 					
 					byte memSexBytes = mem.getMemSex();
-//					System.out.println(memSexBytes);
 					    if (memSexBytes == 1) {
 					    	req.setAttribute("sex" ,"男");
 					    } else if (memSexBytes == 2) {
 					    	req.setAttribute("sex" ,"女");
 					    }
 				req.setAttribute("authenticatedMem", authenticatedMem);
-				
 			}
 		}
 		req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
