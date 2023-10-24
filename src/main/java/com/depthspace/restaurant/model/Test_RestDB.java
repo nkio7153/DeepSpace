@@ -13,12 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 
 import com.depthspace.restaurant.model.restaurant.RestDAO;
-import com.depthspace.restaurant.model.restaurant.RestDAOHibernateImpl;
 import com.depthspace.restaurant.model.restaurant.RestVO;
-import com.depthspace.restaurant.model.restaurant.DAO.RestDAO_interface;
-import com.depthspace.restaurant.model.restaurant.DAO.RestHibernateDAO;
-import com.depthspace.restaurant.model.restaurant.DAO.RestJDBCDAOImpl;
-import com.depthspace.restaurant.model.restbookingdate.RestBookingDateHibernateDAOImpl;
+import com.depthspace.restaurant.model.restaurant.dao.RestDAOHibernateImpl;
+import com.depthspace.restaurant.model.restaurant.dao.RestDAO_interface;
+import com.depthspace.restaurant.model.restaurant.dao.RestHibernateDAO;
+import com.depthspace.restaurant.model.restaurant.dao.RestJDBCDAOImpl;
+import com.depthspace.restaurant.model.restbookingdate.dao.RestBookingDateHibernateDAOImpl;
 import com.depthspace.utils.HibernateUtil;
 
 @WebServlet("/Test_RestDB")

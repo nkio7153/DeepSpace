@@ -1,8 +1,9 @@
-package com.depthspace.restaurant.model.restcollection;
+package com.depthspace.restaurant.model.restcollection.dao;
 
 import java.util.List;
 
 import com.depthspace.restaurant.model.restaurant.RestVO;
+import com.depthspace.restaurant.model.restcollection.RestCollectionVO;
 
 public interface RestCollectionDAO_interface {
 	public void insert(RestCollectionVO restCollectionVO);

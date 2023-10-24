@@ -1,6 +1,8 @@
-package com.depthspace.restaurant.model.restbookingdate;
+package com.depthspace.restaurant.model.restbookingdate.dao;
 
 import java.util.List;
+
+import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO;
 
 public interface RestBookingDateDAO_interface {
 	public void insert(RestBookingDateVO restBookingDateVO);

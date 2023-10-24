@@ -1,10 +1,11 @@
-package com.depthspace.restaurant.model.restcollection;
+package com.depthspace.restaurant.model.restcollection.dao;
 
 import java.util.List;
 
 
 import org.hibernate.Session;
 
+import com.depthspace.restaurant.model.restcollection.RestCollectionVO;
 import com.depthspace.utils.HibernateUtil;
 
 

@@ -1,4 +1,4 @@
-package com.depthspace.restaurant.model.restaurant.DAO;
+package com.depthspace.restaurant.model.restaurant.dao;
 
 import java.util.List;
 

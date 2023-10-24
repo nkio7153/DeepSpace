@@ -1,77 +1,85 @@
-package com.depthspace.restaurant.model.restbookingdate;
+package com.depthspace.restaurant.model.restaurant.dao;
 
 import java.util.List;
 
 import org.hibernate.Session;
 
-import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO.CompositeDetail;
+import com.depthspace.restaurant.model.restaurant.RestDAO;
+import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.utils.HibernateUtil;
 
-public class RestBookingDateHibernateDAOImpl implements RestBookingDateDAO_interface {
+public class RestDAOHibernateImpl implements RestDAO {
 
 	@Override
-	public void insert(RestBookingDateVO restBookingDateVO) {
+	public int add(RestVO restVO) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			session.save(restBookingDateVO);
+			Integer restId = (Integer) session.save(restVO);
 			session.getTransaction().commit();
+			return restId;
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		
+		return -1;
 	}
 
 	@Override
-	public void update(RestBookingDateVO restBookingDateVO) {
+	public int update(RestVO restVO) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			session.update(restBookingDateVO);
+			session.update(restVO);
 			session.getTransaction().commit();
+			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		
+		return -1;
 	}
 
 	@Override
-	public void delete(RestBookingDateVO restBookingDateVO) {
+	public int delete(Integer restId) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			session.delete(restBookingDateVO);
+			RestVO restVO = session.get(RestVO.class, restId);
+			if (restVO != null) {
+				session.delete(restVO);
+			}
 			session.getTransaction().commit();
+			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		
+		return -1;
 	}
 
 	@Override
-	public RestBookingDateVO findByPrimaryKey(RestBookingDateVO restBookingDateVO) {
+	public RestVO findByPK(Integer restId) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			RestBookingDateVO restBookingDateVO1 = session.get(RestBookingDateVO.class, new CompositeDetail(restBookingDateVO.getRestId(), restBookingDateVO.getBookingDate()));
+			RestVO restVO = session.get(RestVO.class, restId);
 			session.getTransaction().commit();
-			return restBookingDateVO1;
+			return restVO;
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 		}
 		return null;
+
 	}
 
 	@Override
-	public List<RestBookingDateVO> getAll() {
+	public List<RestVO> getAll() {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			List<RestBookingDateVO> list = session.createQuery("FROM RestBookingDateVO", RestBookingDateVO.class).list();
+			List<RestVO> list = session.createQuery("FROM RestVO", RestVO.class).list();
 			session.getTransaction().commit();
 			return list;
 		} catch (Exception e) {

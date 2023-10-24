@@ -1,9 +1,8 @@
-package com.depthspace.restaurant.model.restaurant.DAO;
+package com.depthspace.restaurant.model.restaurant.dao;
 
 import java.util.List;
 
 import com.depthspace.restaurant.model.restaurant.RestDAO;
-import com.depthspace.restaurant.model.restaurant.RestDAOHibernateImpl;
 import com.depthspace.restaurant.model.restaurant.RestDAOImpl;
 import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.utils.HibernateUtil;

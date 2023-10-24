@@ -1,6 +1,8 @@
-package com.depthspace.restaurant.model.restcollection;
+package com.depthspace.restaurant.model.restcollection.dao;
 
 import java.util.List;
+
+import com.depthspace.restaurant.model.restcollection.RestCollectionVO;
 
 public class RestCollectionHibernateDAO {
 	

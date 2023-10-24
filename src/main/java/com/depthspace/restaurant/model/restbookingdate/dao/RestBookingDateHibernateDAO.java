@@ -1,8 +1,8 @@
-package com.depthspace.restaurant.model.restbookingdate;
+package com.depthspace.restaurant.model.restbookingdate.dao;
 
 import java.util.List;
 
-import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO.CompositeDetail;
+import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO;
 
 public class RestBookingDateHibernateDAO {
 	public static void main(String[] args) {
