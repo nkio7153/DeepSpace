@@ -20,12 +20,8 @@
                         <li class="nav-item">
                             <a class="active" href="${pageContext.request.contextPath}/indexpage/index.jsp">首頁</a>
                         </li>
-                        <li class="nav-item">
-<<<<<<< HEAD
-                            <a class="" href="${pageContext.request.contextPath}/account/list.jsp">票券</a>
-=======
+                        <li class="nav-item">                         
                             <a class="" href="${pageContext.request.contextPath}/ticketproduct/list">票券</a>
->>>>>>> refs/heads/master
                         </li>
                         <li class="nav-item">
                             <a class="" href="#">論壇文章</a>
