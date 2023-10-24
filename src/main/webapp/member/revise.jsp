@@ -41,9 +41,8 @@
 	                    <input type="file" id="memImage" name="memImage" onchange="loadFile(event)" />
 	                    <!-- 將 base64Image 存儲在一個隱藏的表單字段中 -->
 	                    <input type="hidden" name="memImage" value="${base64Image}" />
-	                  
-				</td>
-			</tr>
+					</td>
+				</tr>
 			<tr>
 	            <th>帳號</th>
 	            <td><input type="text" name="memAcc" value="${mem.memAcc}" required readonly></td>
@@ -105,10 +104,12 @@
 		<input type="submit" value="儲存會員資料">
 		<input type="hidden" name="action" value="modify">
 	
-	</form>
+	
 <!--         <input type="button" value="儲存會員資料" onclick="save()" /> -->
         <input type="button" value="取消" onclick="history.back()">
+       
     </p>
+     </form>
     <script type="text/javascript">
 	    var loadFile = function(event){
 	    	var reader = new FileReader();
