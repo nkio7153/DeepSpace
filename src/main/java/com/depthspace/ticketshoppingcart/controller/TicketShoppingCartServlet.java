@@ -12,9 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 @WebServlet("/tsc/*")
@@ -219,9 +217,13 @@ public class TicketShoppingCartServlet extends HttpServlet {
             HbTiDao hbTiDao = new HbTiDao(HibernateUtil.getSessionFactory());
             TicketImagesVO tiVo = hbTiDao.getBySid(serialId);
             if (tiVo != null) {
-                System.out.println(tiVo);
                 byte[] image = tiVo.getImage();
-                outputStream.write(image);
+                BufferedInputStream in = new BufferedInputStream(new ByteArrayInputStream(image));
+                byte[] buf = new byte[4 * 1024]; // 4K buffer
+                int len;
+                while ((len = in.read(buf)) != -1) {
+                    outputStream.write(buf, 0, len);
+                }
                 outputStream.close();
             } else {
                 noImage(outputStream);
