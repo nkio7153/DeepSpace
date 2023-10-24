@@ -29,6 +29,7 @@ public class AccountServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		switch (action) {
 		case "add":
@@ -48,7 +49,7 @@ public class AccountServlet extends HttpServlet {
 
 	private void listAccounts(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<AccountVO> accounts = accountService.getAll();
-		JSONArray arr = JSONArray.parseArray(JSON.toJSONString(accounts));
+		JSONArray arr = JSONArray.parseArray(JSON.toJSONString(accounts));		
 		resp.setContentType("application/json; charset=UTF-8");
 		PrintWriter out = resp.getWriter();
 		out.print(arr.toString());
@@ -61,7 +62,8 @@ public class AccountServlet extends HttpServlet {
 		accountService.insert(account);
 	}
 
-	private void updateAccount(HttpServletRequest req, HttpServletResponse resp) throws IOException {		
+	private void updateAccount(HttpServletRequest req, HttpServletResponse resp) throws IOException {				
+		resp.setContentType("application/json; charset=UTF-8");
 		Integer accountId = Integer.parseInt(req.getParameter("accountId"));
 		String accountName = req.getParameter("accountName");
 		Integer memId = Integer.parseInt(req.getParameter("memId"));

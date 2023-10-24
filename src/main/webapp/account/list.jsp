@@ -7,6 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+ <jsp:include page="../indexpage/head.jsp" />
 <meta charset="UTF-8">
 <title>分帳表清單</title>
 <style>
@@ -73,6 +74,8 @@
 </script>
 </head>
 <body>
+ <jsp:include page="../indexpage/header.jsp" />
+ <jsp:include page="../indexpage/headpic.jsp" />
 	<div id="list">
 		<h1>分帳表清單</h1>
 		<table id='dataTable'>
@@ -88,5 +91,6 @@
 	<div class="btnContent">
 		<input type="button" id="btnAdd" value="新增" onclick="window.location.href='<%=request.getContextPath()%>/account/add.jsp'">
 	</div>
+	 <jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>
