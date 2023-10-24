@@ -3,7 +3,7 @@
     <div class="container" style="padding-right: 0;">
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid" style="padding: 20px 0;">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="${pageContext.request.contextPath}/indexpage/index.jsp">
                     <img src="${pageContext.request.contextPath}/indexpage/images/icon.png" alt="" width="30"
                          height="24"
                          class="d-inline-block align-text-top">
@@ -18,9 +18,9 @@
                     <ul class="navbar-nav menu ml-auto">
                         </li>
                         <li class="nav-item">
-                            <a class="active" href="index.html">首頁</a>
+                            <a class="active" href="${pageContext.request.contextPath}/indexpage/index.jsp">首頁</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item">                         
                             <a class="" href="${pageContext.request.contextPath}/ticketproduct/list">票券</a>
                         </li>
                         <li class="nav-item">
@@ -43,10 +43,5 @@
         </nav>
     </div>
 </header>
-<section class="banner-inner" id="home">
-    <div class="banner-inner_overlay">
-        <img src="${pageContext.request.contextPath}/indexpage/images/slowen.jpg"
-             class="banner-inner_overlay_pic w-100">
-    </div>
-</section>
+
 
