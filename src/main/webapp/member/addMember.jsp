@@ -46,7 +46,7 @@
         
         <label for="accStatus" >狀態:</label>
         <select id="accStatus" name="accStatus"  >
-            <option value="1" >正常</option>
+            <option value="1" >正常使用中</option>
 <!--             <option value="0"  style="display: none;">停用</option> -->
         </select><br><br>
         

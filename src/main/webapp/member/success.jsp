@@ -9,6 +9,7 @@
 
 <html>
 <head>
+<jsp:include page="../indexpage/head.jsp" />
 <title>成功登入 success.jsp</title>
 <style>
   #myImage {
@@ -18,11 +19,12 @@
 	  z-index: 1;
   }
   #image-container {
-    text-align: center; /* 让图片水平居中 */
+    text-align: center; /* 圖片置中 */
 }
 </style>
 </head>
 <body>
+<jsp:include page="../indexpage/header.jsp" />
 <%-- 	<form action="${pageContext.request.contextPath}/mem/success" method="post"> --%>
 	<h1 align="center">歡迎登入成功！</h1>
 	<p align="center">您已成功登入，歡迎回來，${authenticatedMem.memName}！</p>
@@ -94,8 +96,8 @@
 	<form align="center" action="${pageContext.request.contextPath}/mem/edit?memId=${authenticatedMem.memId}" method="post" >
 		<input type="submit" value="修改會員資料">
 		<input type="hidden" name="action"	value="update">
-	</form>
 	<input type="button" value="登出" align="center" onclick="index()">
+	</form>
 	<script type="text/javascript">
 	    function index() {
 	        document.location.href = "${pageContext.request.contextPath}/member/member.jsp";
@@ -104,6 +106,6 @@
 	        document.location.href = "${pageContext.request.contextPath}/member/revise.jsp";
 	    }
 	</script>
-
+<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

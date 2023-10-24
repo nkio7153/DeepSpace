@@ -6,6 +6,7 @@
 
 <html>
 <head>
+<jsp:include page="../indexpage/head.jsp" />
 <title>修改會員資料 revise.jsp</title>
 <style>
   img {
@@ -24,12 +25,13 @@
 </style>
 </head>
 <body>
+<jsp:include page="../indexpage/header.jsp" />
 	<h1 align="center">修改會員資料</h1>
 	<form align="center" action="${pageContext.request.contextPath}/mem/modify" method="post" enctype="multipart/form-data">
 		<table border="1" align="center" width="50%">
 			
 				<th style="display: none;">會員編號</th>
-				<input type="hidden" name="memId" value="${mem.memId}" readonly">
+				<input type="hidden" name="memId" value="${memId}" readonly">
 			
 			<tr>
 				<th>會員大頭貼</th>
@@ -111,7 +113,6 @@
 	    var loadFile = function(event){
 	    	var reader = new FileReader();
 	    	reader.onload = function(){
-	    		var 
 	    	}
 	    }
 			function change() {
@@ -144,5 +145,6 @@
 				document.location.href = "${pageContext.request.contextPath}/mem/success";
 			}
 	</script>
+	<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

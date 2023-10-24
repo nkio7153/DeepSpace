@@ -28,9 +28,9 @@ public class MemberService {
 		return memvo;
 	}
 	// 取得會員資訊(?)
-//	public MemVO addMemberInfo(Integer memId) {
-//		return dao.findByPrimaryKey(memId);
-//	}
+	public MemVO addMemberInfo(String memAcc) {
+		return dao.findAcc(memAcc);
+	}
 	//拿到所有會員資料
 	public List<MemVO> getAll(){
 		return dao.getAll();

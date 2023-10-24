@@ -8,14 +8,29 @@
 
 <html>
 <head>
+<jsp:include page="../indexpage/head.jsp" />
 <title>登入</title>
 </head>
 <body>
-	<form action="${pageContext.request.contextPath}/mem/success" method="post">
+<jsp:include page="../indexpage/header.jsp" />
+<%-- 錯誤表列 --%>
+<div style="text-align: center;">
+<c:if test="${not empty errorMsgs}">
+	<font  style="color:red" align="center">查無資料：帳號或密碼錯誤</font>
+	<ul>
+		<c:forEach var="message" items="${errorMsgs}">
+			<li style="color:red">${message}</li>
+		</c:forEach>
+	</ul>
+</c:if>
+</div>
+
+
+	<form align="center" action="${pageContext.request.contextPath}/mem/success" method="post">
 		<div class="main-box login">
 			<h3>登入</h3>
-			<label for="email">信箱</label>
-			<input type="email" name="email" id="email" value="${req.email}" required>
+			<label for="memAcc">帳號</label>
+			<input type="memAcc" name="memAcc" id="memAcc" value="${req.memAcc}" required>
 		</div>
 
 		<div class="input-box">
@@ -28,12 +43,14 @@
 		</div>
 
 		<input type="submit" value="登入">
-	</form>
+	
 	<div class="register">
 		<p>
 			如果沒有帳號?
 			<a href="${pageContext.request.contextPath}/member/addMember.jsp" class="register-link" value="update" method="post" >點擊註冊</a>
 		</p>
 	</div>
+	</form>
+	<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

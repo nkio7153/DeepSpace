@@ -10,6 +10,7 @@ import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -121,7 +122,7 @@ public class MemberServlet extends HttpServlet {
 
 	//      抓取上傳資料並且做base64的轉型
 			Part filePart = req.getPart("memImage");
-			if(filePart != null &&  filePart.getSize() < 0) {
+			if(filePart != null &&  filePart.getSize() > 0) {
 				InputStream inputStream = filePart.getInputStream();
 		        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		        int nRead;
@@ -156,9 +157,6 @@ public class MemberServlet extends HttpServlet {
 						}
 			}
 			
-			
-			
-			
 			//=======================================================================
 //			InputStream inputStream = filePart.getInputStream();
 //	        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -176,29 +174,67 @@ public class MemberServlet extends HttpServlet {
 			e.printStackTrace();
 			return;
 		}
+		//放入物件
 		MemberService m = new MemberService();
 		MemVO memvo = null;
 		if (errorMsgs.isEmpty()) {
 			memvo = new MemVO(st2, st3, st4, st5, st6, st7, st8, st9, st10, st11, byteArray);
 		}
 		m.addMember(memvo);
+		
+		//=======================================================================================
+		
+		//抓memId值讓修改頁面可以過
+		MemVO mem = new MemVO();
+		Integer memId;
+		String email = memvo.getMemEmail();
+//		System.out.println("email=" + email);
+		List<MemVO> a = m.getAll();
+		int lastIndex = a.size() - 1; // 找到最後一個元素的索引
+		mem = a.get(lastIndex); // 獲得最後一個元素的值
+//		System.out.println("mem=" + mem);
+		memId = mem.getMemId();
+//		System.out.println(memId);
+		req.setAttribute("memId", memId);
+//		authenticatedMem.setMemId(mem.getMemId());
+//		try {
+//			memId = mem.getMemId();
+//			System.out.println(memId);
+//		} catch (Exception e1) {
+//			e1.printStackTrace();
+//			return;
+//		}
+		
+		//=======================================================================================
 		req.setAttribute("authenticatedMem", memvo);
 		
+		//判斷是否要給預設圖
 		if(byteArray != null) {
 		String base64Image2 = Base64.getEncoder().encodeToString(byteArray);
 		req.setAttribute("base64Image", base64Image2);
-		} else {
-			
+		} else {//讓他保持預設圖
 		}
 		
+		//判斷男女
 		if(st7 == 1 ) {
 			req.setAttribute("sex" , "男");
 		} else {
 			req.setAttribute("sex", "女");
 		}
+		
+		//判斷帳戶
+		if(st11 == 1 ) {
+			req.setAttribute("status" , "正常使用中");
+		} else {
+			req.setAttribute("status", "此帳號停權");
+		}
+		
 		req.getRequestDispatcher("/member/newMember.jsp").forward(req, resp);
 	}
-		
+	
+	// ============================================================================================================================================
+	
+	
 	// ============================================================================================================================================
 
 	private void doModify(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -261,9 +297,6 @@ public class MemberServlet extends HttpServlet {
 			} else {
 				st7 = 2; // 否則，將 memSexByte 設置為 2
 			}
-			
-//			System.out.println(memSex);
-//			st7 = Byte.parseByte(memSex);
 
 			st8 = req.getParameter("memEmail");
 			if (st8 == null || st8.trim().length() == 0) {
@@ -282,12 +315,10 @@ public class MemberServlet extends HttpServlet {
 			}
 			String accStatus = req.getParameter("accStatus");
 			if ("正常使用中".equals(accStatus)) {
-				st11 = 1; // 如果 memSex 是 "男"，則將 memSexByte 設置為 1
+				st11 = 1;
 			} else {
-				st11 = 2; // 否則，將 memSexByte 設置為 2
+				st11 = 2;
 			}
-			
-//			st11 = Byte.parseByte(accStatus);
 			
 			MemberService ms = new MemberService();
 			MemVO mem = ms.findByMemId(st1);
@@ -302,13 +333,12 @@ public class MemberServlet extends HttpServlet {
 //			解析byte[]變成Base64字串並存在st13裡
 //			st13 = Base64.getDecoder().decode(memImage);
 //			System.out.println("Base64=" + st13);
-			//=========修改圖片===============================================================
+			//========================================================================
 
-
+//			修改圖片
 			Part filePart = req.getPart("memImage");
 //			System.out.println("filePart=" + filePart);
-			if( filePart != null &&  filePart.getSize() < 0) {
-//				System.out.println("filePart=" + filePart);
+			if( filePart != null && filePart.getSize() > 0 ) {
 				InputStream inputStream = filePart.getInputStream();
 				st13 =new byte[inputStream.available()];
 				inputStream.read(st13);
@@ -320,14 +350,9 @@ public class MemberServlet extends HttpServlet {
 //				System.out.println("Bytes64=" + st13);
 //				解析byte[]變成Base64字串並存在st13裡
 				st13 = Base64.getDecoder().decode(memImage);
-//				System.out.println("Base64=" + st13);
 			}
 			
-			
 
-//			System.out.println("st13=" + st13);
-			
-			
 //	        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 //	        int nRead;
 //	        byte[] data = new byte[1024];
@@ -340,12 +365,6 @@ public class MemberServlet extends HttpServlet {
 //	        System.out.println("st13.length=" + st13.length);
 //	        inputStream.close();
 //	        buffer.close();
-//			
-//		} catch (NumberFormatException e) {
-//			e.printStackTrace();
-//			return;
-//		}
-			
 			
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
@@ -372,8 +391,6 @@ public class MemberServlet extends HttpServlet {
 //		req.setAttribute("imageBytes", imageBytes);
 		
 		String base64Image = Base64.getEncoder().encodeToString(st13);
-		
-//		System.out.println("base64Image=" + base64Image);
 		req.setAttribute("base64Image", base64Image);
 		
 		if(st7 == 1 ) {
@@ -403,13 +420,36 @@ public class MemberServlet extends HttpServlet {
 
 	private void doEdit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		MemberService m = new MemberService();
-		Integer memId;
-		try {
-			memId = Integer.valueOf(req.getParameter("memId"));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
+		Integer memId = null;
+		String st1 = req.getParameter("memId");
+		
+		if (st1 != null && !st1.isEmpty()) {
+		    try {
+		        memId = Integer.valueOf(st1);
+		        req.setAttribute("memId", memId);
+		    } catch (NumberFormatException e) {
+		        // 轉換失敗時的處理
+		        e.printStackTrace();
+		        return;
+		    }
+		} else {
+			MemVO mem = new MemVO();
+			
+			List<MemVO> a = m.getAll();
+			int lastIndex = a.size() - 1; // 找到最後一個元素的索引
+			mem = a.get(lastIndex); // 獲得最後一個元素的值
+			memId = mem.getMemId();
+			req.setAttribute("memId", memId);
 		}
+		
+		//===================================================================================
+		//		try {
+		//			memId = Integer.valueOf(req.getParameter("memId"));
+		//		} catch (Exception e) {
+		//			e.printStackTrace();
+		//			return;
+		//		}
+		//===================================================================================
 		MemVO memvo = m.findByMemId(memId);
 		if (memvo != null) {
 			//處理圖片
@@ -447,88 +487,161 @@ public class MemberServlet extends HttpServlet {
 	// ============================================
 
 	protected void doSuccess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String email = req.getParameter("email");
+		String memAcc = req.getParameter("memAcc");
 		String password = req.getParameter("password");
-
+		
 		MemberService ms = new MemberService();
-		List<MemVO> list = ms.getAll();
+		MemVO mem = ms.addMemberInfo(memAcc);
 		String base64Image;
+		if(mem.getMemAcc().equals(memAcc) && mem.getMemPwd().equals(password)) {
+			// 創建一個 MemVO 物件並設定它的屬性
+			MemVO authenticatedMem = new MemVO();
+			authenticatedMem.setMemId(mem.getMemId());
+			authenticatedMem.setMemAcc(mem.getMemAcc());
+			authenticatedMem.setMemPwd(mem.getMemPwd());
+			authenticatedMem.setMemName(mem.getMemName());
+			authenticatedMem.setMemIdentity(mem.getMemIdentity());
+			authenticatedMem.setMemBth(mem.getMemBth());
+			authenticatedMem.setMemSex(mem.getMemSex());
+			authenticatedMem.setMemEmail(mem.getMemEmail());
+			authenticatedMem.setMemTel(mem.getMemTel());
+			authenticatedMem.setMemAdd(mem.getMemAdd());
+			authenticatedMem.setAccStatus(mem.getAccStatus());
+			authenticatedMem.setMemPoint(mem.getMemPoint());
+			byte[] imageBytes = mem.getMemImage();
+				if(imageBytes != null) {
+					base64Image = Base64.getEncoder().encodeToString(imageBytes);
+					req.setAttribute("base64Image", base64Image);
+				}else {
+					String webappPath = getServletContext().getRealPath("/");
+					// 取得相對路径
+					String relativeImagePath = "member/images/1.png";
+					String absoluteImagePath = webappPath + relativeImagePath;
 
-		for (MemVO mem : list) {
-			if (mem.getMemEmail().equals(email) && mem.getMemPwd().equals(password)) {
-				// 創建一個 MemVO 物件並設定它的屬性
-				MemVO authenticatedMem = new MemVO();
-				authenticatedMem.setMemId(mem.getMemId());
-				authenticatedMem.setMemAcc(mem.getMemAcc());
-				authenticatedMem.setMemPwd(mem.getMemPwd());
-				authenticatedMem.setMemName(mem.getMemName());
-				authenticatedMem.setMemIdentity(mem.getMemIdentity());
-				authenticatedMem.setMemBth(mem.getMemBth());
-				authenticatedMem.setMemSex(mem.getMemSex());
-				authenticatedMem.setMemEmail(mem.getMemEmail());
-				authenticatedMem.setMemTel(mem.getMemTel());
-				authenticatedMem.setMemAdd(mem.getMemAdd());
-				authenticatedMem.setAccStatus(mem.getAccStatus());
-				authenticatedMem.setMemPoint(mem.getMemPoint());
-				byte[] imageBytes = mem.getMemImage();
-					if(imageBytes != null) {
-						base64Image = Base64.getEncoder().encodeToString(imageBytes);
+					File defaultImageFile = new File(absoluteImagePath);
+					String defaultImagePath =  defaultImageFile.getPath();
+					// 使用ServletContext获取资源流
+//					InputStream defaultImageStream = getServletContext().getResourceAsStream(defaultImagePath);
+					if (defaultImageFile.exists()) {
+						byte[] localImageBytes = Files.readAllBytes(Path.of(defaultImagePath));
+				        base64Image = Base64.getEncoder().encodeToString(localImageBytes);
+				        
+				        resp.setContentType("text/plain");
+				        resp.getWriter().write(base64Image);
 						req.setAttribute("base64Image", base64Image);
-					}else {
-						String webappPath = getServletContext().getRealPath("/");
-						// 构建相对路径
-						String relativeImagePath = "member/images/1.png";
-						String absoluteImagePath = webappPath + relativeImagePath;
-
-						File defaultImageFile = new File(absoluteImagePath);
-						String defaultImagePath =  defaultImageFile.getPath();
-						// 使用ServletContext获取资源流
-//						InputStream defaultImageStream = getServletContext().getResourceAsStream(defaultImagePath);
-						if (defaultImageFile.exists()) {
-							byte[] localImageBytes = Files.readAllBytes(Path.of(defaultImagePath));
-					        base64Image = Base64.getEncoder().encodeToString(localImageBytes);
-					        
-					        resp.setContentType("text/plain");
-					        resp.getWriter().write(base64Image);
-							req.setAttribute("base64Image", base64Image);
-						} else {
-						   // 如無照片會處理錯誤
-							System.out.println("圖不存在");
-								}
-					}
-					
-					//設定男女顯示
-					byte memSexBytes = mem.getMemSex();
-					    if (memSexBytes == 1) {
-					    	req.setAttribute("sex" ,"男");
-					    } else if (memSexBytes == 2) {
-					    	req.setAttribute("sex" ,"女");
-					    }
-					//設定狀態顯示
-					byte accStatus = mem.getAccStatus();
-					if(accStatus == 1) {
-						req.setAttribute("status" , "正常使用中");
 					} else {
-						req.setAttribute("status" , "此帳號停權");
-					}
-					    
-					    
-				req.setAttribute("authenticatedMem", authenticatedMem);
-			}
+					   // 如無照片會處理錯誤
+						System.out.println("圖不存在");
+							}
+				}
+				
+				//設定男女顯示
+				byte memSexBytes = mem.getMemSex();
+				    if (memSexBytes == 1) {
+				    	req.setAttribute("sex" ,"男");
+				    } else if (memSexBytes == 2) {
+				    	req.setAttribute("sex" ,"女");
+				    }
+				//設定狀態顯示
+				byte accStatus = mem.getAccStatus();
+				if(accStatus == 1) {
+					req.setAttribute("status" , "正常使用中");
+				} else {
+					req.setAttribute("status" , "此帳號停權");
+				}
+				    
+				    
+			req.setAttribute("authenticatedMem", authenticatedMem);
+			req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
+		} else {
+			System.out.println("帳號密碼錯誤");
+			String errorMsgs = "帳號或密碼錯誤";
+			req.setAttribute("errorMsgs", errorMsgs);
+			RequestDispatcher failureView = req
+					.getRequestDispatcher("/member/member.jsp");
+			failureView.forward(req, resp);
+			return;//程式中斷
 		}
-		req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
 	
-
+	
 	}
+
+
 }
+		
+		//=========================================================================
+//		List<MemVO> list = ms.getAll();
+//		String base64Image;
+//
+//		for (MemVO mem : list) {
+//			if (mem.getMemAcc().equals(memAcc) && mem.getMemPwd().equals(password)) {
+//				// 創建一個 MemVO 物件並設定它的屬性
+//				MemVO authenticatedMem = new MemVO();
+//				authenticatedMem.setMemId(mem.getMemId());
+//				authenticatedMem.setMemAcc(mem.getMemAcc());
+//				authenticatedMem.setMemPwd(mem.getMemPwd());
+//				authenticatedMem.setMemName(mem.getMemName());
+//				authenticatedMem.setMemIdentity(mem.getMemIdentity());
+//				authenticatedMem.setMemBth(mem.getMemBth());
+//				authenticatedMem.setMemSex(mem.getMemSex());
+//				authenticatedMem.setMemEmail(mem.getMemEmail());
+//				authenticatedMem.setMemTel(mem.getMemTel());
+//				authenticatedMem.setMemAdd(mem.getMemAdd());
+//				authenticatedMem.setAccStatus(mem.getAccStatus());
+//				authenticatedMem.setMemPoint(mem.getMemPoint());
+//				byte[] imageBytes = mem.getMemImage();
+//					if(imageBytes != null) {
+//						base64Image = Base64.getEncoder().encodeToString(imageBytes);
+//						req.setAttribute("base64Image", base64Image);
+//					}else {
+//						String webappPath = getServletContext().getRealPath("/");
+//						// 取得相對路径
+//						String relativeImagePath = "member/images/1.png";
+//						String absoluteImagePath = webappPath + relativeImagePath;
+//
+//						File defaultImageFile = new File(absoluteImagePath);
+//						String defaultImagePath =  defaultImageFile.getPath();
+//						// 使用ServletContext获取资源流
+////						InputStream defaultImageStream = getServletContext().getResourceAsStream(defaultImagePath);
+//						if (defaultImageFile.exists()) {
+//							byte[] localImageBytes = Files.readAllBytes(Path.of(defaultImagePath));
+//					        base64Image = Base64.getEncoder().encodeToString(localImageBytes);
+//					        
+//					        resp.setContentType("text/plain");
+//					        resp.getWriter().write(base64Image);
+//							req.setAttribute("base64Image", base64Image);
+//						} else {
+//						   // 如無照片會處理錯誤
+//							System.out.println("圖不存在");
+//								}
+//					}
+//					
+//					//設定男女顯示
+//					byte memSexBytes = mem.getMemSex();
+//					    if (memSexBytes == 1) {
+//					    	req.setAttribute("sex" ,"男");
+//					    } else if (memSexBytes == 2) {
+//					    	req.setAttribute("sex" ,"女");
+//					    }
+//					//設定狀態顯示
+//					byte accStatus = mem.getAccStatus();
+//					if(accStatus == 1) {
+//						req.setAttribute("status" , "正常使用中");
+//					} else {
+//						req.setAttribute("status" , "此帳號停權");
+//					}
+//					    
+//					    
+//				req.setAttribute("authenticatedMem", authenticatedMem);
+			
 //		if (isAuthenticated) {
 //			// 帳號和密碼匹配，執行登入成功後的動作
 //			// 這裡可以設置登入成功後的跳轉頁面或其他處理
+//			//重導
 //			resp.sendRedirect("loginSuccess.jsp");
 //		} else {
 //			// 帳號和密碼不匹配，執行登入失敗後的動作
 //			// 這裡可以設置登入失敗後的跳轉頁面或其他處理
+//			//重導
 //			resp.sendRedirect("loginFailure.jsp");
 //		}
-
-//			req.setAttribute("email",email);
