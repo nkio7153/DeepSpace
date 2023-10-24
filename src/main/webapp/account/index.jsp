@@ -1,36 +1,43 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
-<script>
-    function processSelect() {
-        $.ajax({
-            type: 'GET',
-            url: 'list.jsp', // URL of the page you want to load
-            dataType: 'html',
-            success: function(data) {
-                // Replace the content of a specific element with the loaded content
-                $('#content-container').html(data);
-            },
-            error: function() {
-                alert('Failed to load the page.');
-            }
-        });
-    }
-</script>
-
-<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>首頁</title>
+    <jsp:include page="../indexpage/head.jsp" />
 </head>
 <body>
-    <div class="btnContent">
-        <input type="button" id="btnSelectAll" value="查詢所有分帳表" onclick="processSelect();">
+ <jsp:include page="../indexpage/header.jsp" />
+ <jsp:include page="../indexpage/headpic.jsp" />
+<!-- 主標題 -->
+<h1>分帳表查詢</h1>
+
+<!-- 錯誤信息顯示區 -->
+<c:if test="${not empty errorMsgs}">
+    <div style="color:red;">
+        <strong>請修正以下錯誤：</strong>
+        <ul>
+            <c:forEach var="message" items="${errorMsgs}">
+                <li>${message}</li>
+            </c:forEach>
+        </ul>
     </div>
-    
-    <!-- This is where the content will be loaded -->
-    <div id="content-container"></div>
+</c:if>
+
+<!-- 查詢表單 -->
+<form method="post" action="<%=request.getContextPath()%>/tsc/memCartList">
+    <label for="memId">選擇會員編號：</label>
+    <select id="memId" name="memId">
+        <c:forEach var="memId" items="${uniqueMemIds}">
+            <option value="${memId}">${memId}</option>
+        </c:forEach>
+    </select>
+    <input type="submit" value="查詢">
+</form>
+
+<!-- 其他操作 -->
+<ul>
+    <li><a href="<%=request.getContextPath()%>/account/list.jsp">查看所有分帳表列表</a></li>
+</ul>
+
+<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

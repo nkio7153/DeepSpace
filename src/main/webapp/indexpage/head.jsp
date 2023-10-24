@@ -5,7 +5,6 @@
 <link href="${pageContext.request.contextPath}/indexpage/css/bootstrap.min.css" rel="stylesheet">
 <!-- bookstrap css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/indexpage/css/style.css">
-<title>深度漫遊</title>
 <!-- 載入icon -->
 <link rel="shortcut icon" href="${pageContext.request.contextPath}/indexpage/images/icon.png" />
 <link rel="bookmark" href="${pageContext.request.contextPath}/indexpage/images/icon.png" />

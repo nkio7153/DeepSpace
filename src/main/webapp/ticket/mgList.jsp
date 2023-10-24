@@ -15,16 +15,46 @@
     <title>票券列表</title>
   
  <style>
-    img {
-        max-width: 100px;
-        max-height: 100px; 
-        display: block;
-        margin: 0 auto;
+ 
+    /* 自定義樣式：縮小字體大小和行距 */
+     body {
+         font-size: 0.9rem; /* 根據需要調整 */
+         line-height: 1.5; /* 根據需要調整 */
+     }
+     img {
+         max-width: 100px;
+         max-height: 100px;
+         display: block;
+         margin: 0 auto;
+     }
+/*      th, td { */
+/*          vertical-align: middle; */
+/*          text-align: center; */
+/*          white-space: nowrap; /* 防止標題或內容換行 */ */
+     }
+     img {
+         max-width: 100px;
+         max-height: 100px; 
+         display: block;
+         margin: 0 auto;
     }
-    th {
-        vertical-align: middle;
-        text-align: center;
-    }
+     th {
+         white-space: nowrap; /* 表頭文字不換行 */
+         vertical-align: middle;
+         text-align: center;
+     }
+
+     td {
+         /* 移除 td 的 white-space 屬性，允許內容自然斷行 */
+         vertical-align: middle;
+         text-align: center;
+        }
+         /* 避免橫向滾動設置表格最大寬度 */
+     .table {
+         width: 100%; /* 使表格寬度為100%，確保它在容器內自適應 */
+         max-width: 100%; /* 這確保表格不會超出父容器 */
+         overflow-x: auto; /* 若内容超出可滾動 */
+      }
 </style>
  
     

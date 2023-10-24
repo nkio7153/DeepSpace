@@ -65,10 +65,10 @@ public class TicketVO implements Serializable{
     private Date publishedDate;
 	
 	@Column(name="TOTAL_STAR_RATINGS")
-	private Integer totalStarRatings;
+	private Integer totalStarRatings;  //評分人數
 	
 	@Column(name="TOTAL_STARS")
-	private Integer totalStars;
+	private Integer totalStars; //總星星數
 	
 //	@Column(name="AREA_ID")
 //    private Integer areaId;  
