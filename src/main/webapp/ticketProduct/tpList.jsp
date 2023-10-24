@@ -54,6 +54,7 @@
 <body>
 
 <jsp:include page="../indexpage/header.jsp" />
+<jsp:include page="../indexpage/headpic.jsp" />
 <div class="container mt-5">
 
     <div class="row">

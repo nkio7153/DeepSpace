@@ -8,11 +8,16 @@
 <head>
     <meta charset="UTF-8">
     <title>票券詳情</title>
+    <jsp:include page="../indexpage/head.jsp" /> 
+        
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
 
 <body>
+
+<jsp:include page="../indexpage/header.jsp" />
+<jsp:include page="../indexpage/headpic.jsp" />
 
 <div class="container mt-5">
 
@@ -108,6 +113,8 @@
         });
     });
 </script>
+
+<jsp:include page="../indexpage/footer.jsp" /> 
 
 </body>
 
