@@ -11,9 +11,9 @@ public interface TicketDAO {
 
 		int update(TicketVO ticketVO); //更新票券物件
 		
-		int delete(Integer id); //刪除票券物件
+		int delete(Integer ticketId); //刪除票券物件
 		 
-		TicketVO getById(Integer id); //取得票券根據ID
+		TicketVO getTicketById(Integer ticketId); //取得票券根據ID
 		
 		List<TicketVO> getAll();
 		
