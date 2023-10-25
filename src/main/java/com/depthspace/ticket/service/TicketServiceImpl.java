@@ -4,6 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import java.util.ArrayList;
 
 import org.hibernate.Session;
@@ -45,25 +50,7 @@ public class TicketServiceImpl implements TicketService {
 		dao.delete(ticketId);
         return null;
 	}
-	
-	
-//	    Transaction transaction = null;
-//	    int deletedCount = 0;
-//
-//	    try {
-//	        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-//	        transaction = session.beginTransaction();
-//	        
-//	        deletedCount = dao.delete(ticketId);
-//
-//	        transaction.commit();
-//	    } catch (Exception e) {
-//	        if (transaction != null) {
-//	            transaction.rollback();
-//	        }
-//	        e.printStackTrace();
-//	    }
-//	}
+
 
 	//查詢票券
 	@Override
@@ -93,28 +80,8 @@ public class TicketServiceImpl implements TicketService {
 	
 	@Override
 	public TicketVO getTicketById(Integer ticketId) {
-		
 		return dao.getTicketById(ticketId);
-		
-//		Transaction transaction = null;
-//		TicketVO ticket = null;  
-//		
-//		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-//			transaction = session.beginTransaction();
-//			
-//			ticket = dao.getTicketById(ticketId);  // 賦值
-//			
-//			transaction.commit();
-//		} catch (Exception e) {
-//			if (transaction != null) {
-//				transaction.rollback();
-//			}
-//			throw new RuntimeException("Error", e);
-//		}
-//
-//		return ticket;  // 返回 ticket
-	}	
-
+	}		
 
 	@Override	
 	public List<TicketVO> getAllTickets() {
@@ -122,31 +89,31 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 
-	//取得所有票券
 	@Override
 	public List<TicketVO> getAllTickets(int currentPage) {
-		Transaction transaction = null;
-		List<TicketVO> tickets = new ArrayList<>();
+	    List<TicketVO> tickets = new ArrayList<>();
 
-		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			transaction = session.beginTransaction();
+	    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+	        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+	        CriteriaQuery<TicketVO> criteriaQuery = criteriaBuilder.createQuery(TicketVO.class);
+	        Root<TicketVO> root = criteriaQuery.from(TicketVO.class);
+	        criteriaQuery.select(root);
 
-			Query<TicketVO> query = session.createQuery("FROM TicketVO", TicketVO.class);
+	        // 添加过滤条件，例如根据某个字段进行过滤
+	        // criteriaQuery.where(criteriaBuilder.equal(root.get("fieldName"), value));
 
-			// 分頁
-			query.setFirstResult((currentPage - 1) * PAGE_MAX_RESULT);
-			query.setMaxResults(PAGE_MAX_RESULT);
+	        Query<TicketVO> query = session.createQuery(criteriaQuery);
 
-			tickets = query.list();
-			transaction.commit();
-		} catch (Exception e) {
-			if (transaction != null) {
-				transaction.rollback();
-			}
-			throw new RuntimeException("Error", e);
-		}
+	        // 分頁
+	        query.setFirstResult((currentPage - 1) * PAGE_MAX_RESULT);
+	        query.setMaxResults(PAGE_MAX_RESULT);
 
-		return tickets;
+	        tickets = query.list();
+	    } catch (Exception e) {
+	        throw new RuntimeException("Error", e);
+	    }
+
+	    return tickets;
 	}
 
 	//分頁
@@ -165,7 +132,7 @@ public class TicketServiceImpl implements TicketService {
 
 	@Override
 	public List<TicketVO> getAllTicketsWithMainImages() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	

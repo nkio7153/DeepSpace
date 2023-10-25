@@ -49,7 +49,7 @@
 		<div class="container mt-5">
 			<div class="container mt-5">
 				<h1>新增票券</h1>
-				<form action="<%= request.getContextPath()%>/backendticket/mgaddsuccess" method="post">
+				<form action="<%= request.getContextPath()%>/backendticket/mgadd" method="post">
 					<div class="row">
 						<!-- 類型 -->
 						<div class="form-group col-md-6">
@@ -148,7 +148,7 @@
 						</div>
 					</div>
 
-					<button type="submit" class="btn btn-primary" name="action">送出</button>
+					<button type="submit" class="btn btn-primary" name="action" >送出</button>
 				</form>
 			</div>
     			
