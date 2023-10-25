@@ -25,7 +25,8 @@
 </style>
 </head>
 <body>
-<jsp:include page="../indexpage/header.jsp" />
+ <jsp:include page="../indexpage/header.jsp" />
+ <jsp:include page="../indexpage/headpic.jsp" />
 	<h1 align="center">修改會員資料</h1>
 	<form align="center" action="${pageContext.request.contextPath}/mem/modify" method="post" enctype="multipart/form-data">
 		<table border="1" align="center" width="50%">
@@ -42,7 +43,7 @@
 	                    <!-- 將 base64Image 存儲在一個隱藏的表單字段中 -->
 	                    <input type="hidden" name="memImage" value="${base64Image}" />
 					</td>
-				</tr>
+			</tr>
 			<tr>
 	            <th>帳號</th>
 	            <td><input type="text" name="memAcc" value="${mem.memAcc}" required readonly></td>
@@ -59,7 +60,8 @@
 	        </tr>
 	        <tr>
 	            <th>身分證字號</th>
-	            <td><input type="text" name="memIdentity"
+	            <td><br>
+	            <input type="text" name="memIdentity"
 					value="${mem.memIdentity}" required></td>
 	        </tr>
 	        <tr>

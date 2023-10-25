@@ -12,7 +12,8 @@
 <title>登入</title>
 </head>
 <body>
-<jsp:include page="../indexpage/header.jsp" />
+ <jsp:include page="../indexpage/header.jsp" />
+ <jsp:include page="../indexpage/headpic.jsp" />
 <%-- 錯誤表列 --%>
 <div style="text-align: center;">
 <c:if test="${not empty errorMsgs}">

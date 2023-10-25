@@ -24,7 +24,8 @@
 </style>
 </head>
 <body>
-<jsp:include page="../indexpage/header.jsp" />
+ <jsp:include page="../indexpage/header.jsp" />
+ <jsp:include page="../indexpage/headpic.jsp" />
 <%-- 	<form action="${pageContext.request.contextPath}/mem/success" method="post"> --%>
 	<h1 align="center">歡迎登入成功！</h1>
 	<p align="center">您已成功登入，歡迎回來，${authenticatedMem.memName}！</p>
@@ -53,7 +54,7 @@
 
 <%-- 				<td><img id="myImage" src="data:image/jpeg;base64,${base64Image != null ? base64Image : 'data:image/jpeg;base64,DefaultImageBase64'}" /> --%>
 
-				<td><img  id="myImage" src="data:image/jpeg;base64,${base64Image}" />
+			<td><img  id="myImage" src="data:image/jpeg;base64,${base64Image}" />
 				<input type="hidden" name="myImage" value="${base64Image}" />
 			</td>
 			
