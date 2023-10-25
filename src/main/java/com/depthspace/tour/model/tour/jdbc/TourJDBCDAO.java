@@ -1,4 +1,4 @@
-package com.depthspace.tour.model;
+package com.depthspace.tour.model.tour.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.depthspace.tour.model.tour.TourVO;
 import com.depthspace.utils.DBUtil;
 
 public class TourJDBCDAO implements TourDAO_Interface {

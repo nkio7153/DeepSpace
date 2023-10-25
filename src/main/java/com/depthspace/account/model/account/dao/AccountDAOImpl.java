@@ -1,17 +1,16 @@
 package com.depthspace.account.model.account.dao;
 
-		import java.util.List;
+import java.util.List;
 
-		import org.hibernate.Session;
-		import org.hibernate.SessionFactory;
-		import org.hibernate.Transaction;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
-		import com.depthspace.account.model.account.AccountVO;
+import com.depthspace.account.model.account.AccountVO;
 
 public class AccountDAOImpl implements AccountDAO {
 	// SessionFactory 為 thread-safe，可宣告為屬性讓請求執行緒們共用
 	private SessionFactory factory;
-	private Session session;
 
 	public AccountDAOImpl(SessionFactory factory) {
 		this.factory = factory;
@@ -25,44 +24,31 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public int insert(AccountVO entity) {
-		Transaction tx = getSession().beginTransaction();
-		session = getSession();
-		int count = (int) session.save(entity);
-		tx.commit();
-		session.close();
+		int count = (int) getSession().save(entity);
 		return count;
 	}
 
 	@Override
 	public int update(AccountVO entity) {
-		Transaction tx = getSession().beginTransaction();
-		session = getSession();
-		AccountVO account = session.get(AccountVO.class, entity);
-		int state;
-		if (account != null) {
-			session.update(account);
-			tx.commit();
-			state = 1;
-		} else {
-			tx.rollback();
-			state = 0;
+		try {
+			getSession().update(entity);
+			return 1;
+		} catch (Exception e) {
+			return -1;
 		}
-		return state;
 	}
 
 	@Override
 	public int delete(Integer id) {
-		Transaction tx = getSession().beginTransaction();
-		session = getSession();
-		AccountVO account = session.get(AccountVO.class, id);
+		AccountVO account = getSession().get(AccountVO.class, id);
 		// 0:失敗 1:成功
 		int state;
 		if (account != null) {
-			session.delete(account);
-			tx.commit();
+			getSession().delete(account);
+		
 			state = 1;
 		} else {
-			tx.rollback();
+			
 			state = 0;
 		}
 		return state;
@@ -75,11 +61,6 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public List<AccountVO> getAll() {
-		Transaction tx = getSession().beginTransaction();
-		session = getSession();
-		List<AccountVO> list = session.createQuery("from AccountVO", AccountVO.class).list();
-		tx.commit();
-		session.close();
-		return list;
+		return getSession().createQuery("from AccountVO", AccountVO.class).list();
 	}
 }

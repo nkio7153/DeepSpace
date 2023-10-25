@@ -1,4 +1,4 @@
-package com.depthspace.tour.model;
+package com.depthspace.tour.model.tour;
 
 import java.io.Serializable;
 import java.util.Arrays;

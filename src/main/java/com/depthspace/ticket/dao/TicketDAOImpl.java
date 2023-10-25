@@ -23,6 +23,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import com.depthspace.attractions.model.CityVO;
+import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.ticket.model.*;
 import com.depthspace.utils.DBUtil;
 import com.depthspace.utils.HibernateUtil;
@@ -42,28 +43,29 @@ public class TicketDAOImpl implements TicketDAO {
 		return factory.getCurrentSession();
 	}
 	
-//	@Override
-//	public int insert(TicketVO ticketVO) {
-//		return (int) getSession().save(ticketVO);
-//	}
+	//插入一筆資料
 	@Override
 	public int insert(TicketVO ticketVO) {
-	    Transaction transaction = null;
-	    try {
-	        transaction = getSession().beginTransaction();
-	        Integer ticketId = (Integer) getSession().save(ticketVO);
-	        transaction.commit();
-
-	        return ticketId;
-	    } catch (Exception e) {
-	        if (transaction != null) {
-	            transaction.rollback();
-	        }
-	        throw e;
-	    }
+		return (Integer) getSession().save(ticketVO);
 	}
+//	@Override
+//	public TicketVO insert(TicketVO ticketVO) {
+//	    Transaction transaction = null;
+//	    try {
+//	        transaction = getSession().beginTransaction();
+//	        Integer ticketId = (Integer) getSession().save(ticketVO);
+//	        transaction.commit();
+//
+//	        return ticketId;
+//	    } catch (Exception e) {
+//	        if (transaction != null) {
+//	            transaction.rollback();
+//	        }
+//	        throw e;
+//	    }
+//	}
 	
-	
+	//更新一筆資料
 	@Override
 	public int update(TicketVO ticketVO) {
 		try {
@@ -74,9 +76,10 @@ public class TicketDAOImpl implements TicketDAO {
 		}
 	}
 	
+	//刪除一筆資料
 	@Override
-	public int delete(Integer id) {
-		TicketVO ticketVO =getSession().get(TicketVO.class, id);  //.class說明是要查資料庫，且標註為id的欄位
+	public int delete(Integer ticketId) {
+		TicketVO ticketVO =getSession().get(TicketVO.class, ticketId);  //.class說明是要查資料庫，且標註為id的欄位
 		if (ticketVO != null) {
 			getSession().delete(ticketVO);
 			return 1;
@@ -85,11 +88,13 @@ public class TicketDAOImpl implements TicketDAO {
 		}
 	}
 	
+	//根據票券ID取得一筆資料
 	@Override
-	public TicketVO getById(Integer id) {
-		return getSession().get(TicketVO.class, id); //.class說明是要查資料庫，且標註為id的欄位
+	public TicketVO getTicketById(Integer ticketId) {
+		return getSession().get(TicketVO.class, ticketId); //.class說明是要查資料庫，且標註為id的欄位
 	}
-	
+
+	//取得所有票券資料(分頁)
 	@Override
 	public List<TicketVO> getAll(int currentPage) {
 		int first = (currentPage - 1) * PAGE_MAX_RESULT; //計算當前頁面第一條索引
@@ -97,6 +102,12 @@ public class TicketDAOImpl implements TicketDAO {
 				.setFirstResult(first)
 				.setMaxResults(PAGE_MAX_RESULT) //每頁紀錄數量
 				.list(); //查出的資料存於此列表
+	}
+	
+	//取得所有票券
+	@Override
+	public List<TicketVO> getAll() {
+		return getSession().createQuery("from TicketVO", TicketVO.class).list();
 	}
 	
 	//取得票券區域對應縣市名
@@ -174,7 +185,7 @@ public class TicketDAOImpl implements TicketDAO {
 //		return query.getResultList();
 //	}
 	
-	
+	//取得所有票券數量
 	@Override
 	public long getTotal() {
 //		return getSession().createQuery("select count(*) from TicketVO", Long.class).uniqueResult();
@@ -206,12 +217,9 @@ public class TicketDAOImpl implements TicketDAO {
 		}
 
 	
+	
 
-	@Override
-	public List<TicketVO> getAll() {
-		return getSession().createQuery("from TicketVO", TicketVO.class).list();
-	}
-
+	//萬用查詢
 	@Override
 	public List<TicketVO> getByCompositeQuery(Map<String, String> query) {
 		if (query.size() == 0)

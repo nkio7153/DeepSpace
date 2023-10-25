@@ -1,10 +1,10 @@
-package com.depthspace.member.model;
+package com.depthspace.member.model.hibernate;
 
 import java.sql.Date;
 
 import org.hibernate.Session;
 
-import com.depthspace.member.model.hibernate.HibernateMemDAOImpl;
+import com.depthspace.member.model.MemVO;
 import com.depthspace.utils.HibernateUtil;
 
 public class TestSaveMem {

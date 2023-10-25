@@ -1,6 +1,8 @@
-package com.depthspace.tour.model;
+package com.depthspace.tour.model.tour.jdbc;
 
 import java.util.List;
+
+import com.depthspace.tour.model.tour.TourVO;
 
 public class TourTest {
 	public static void main(String[] args) {

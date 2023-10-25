@@ -14,6 +14,7 @@ import com.depthspace.ticket.dao.TicketDAO;
 import com.depthspace.ticket.dao.TicketDAOImpl;
 import com.depthspace.ticket.model.TicketImagesVO;
 import com.depthspace.ticket.model.TicketVO;
+import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 import com.depthspace.utils.HibernateUtil;
 
 public class TicketServiceImpl implements TicketService {
@@ -27,38 +28,42 @@ public class TicketServiceImpl implements TicketService {
 	
 	//新增票券
 	@Override
-	public int addTicket(TicketVO ticketVO) {
-		return dao.insert(ticketVO);
+	public void addTicket(TicketVO ticketVO) {
+		dao.insert(ticketVO);
 	}
 
 	//更新票券
 	@Override
 	public TicketVO updateTicket(TicketVO ticketVO) {
 		dao.update(ticketVO);
-		return ticketVO;
+        return null;
 	}
 	
 	//刪除票券
 	@Override
-	public int deleteTicket(Integer ticketId) {
-	    Transaction transaction = null;
-	    int deletedCount = 0;
-
-	    try {
-	        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-	        transaction = session.beginTransaction();
-	        
-	        deletedCount = dao.delete(ticketId);
-
-	        transaction.commit();
-	    } catch (Exception e) {
-	        if (transaction != null) {
-	            transaction.rollback();
-	        }
-	        e.printStackTrace();
-	    }
-	    return deletedCount;
+	public TicketVO deleteTicket(Integer ticketId) {
+		dao.delete(ticketId);
+        return null;
 	}
+	
+	
+//	    Transaction transaction = null;
+//	    int deletedCount = 0;
+//
+//	    try {
+//	        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//	        transaction = session.beginTransaction();
+//	        
+//	        deletedCount = dao.delete(ticketId);
+//
+//	        transaction.commit();
+//	    } catch (Exception e) {
+//	        if (transaction != null) {
+//	            transaction.rollback();
+//	        }
+//	        e.printStackTrace();
+//	    }
+//	}
 
 	//查詢票券
 	@Override
@@ -88,15 +93,35 @@ public class TicketServiceImpl implements TicketService {
 	
 	@Override
 	public TicketVO getTicketById(Integer ticketId) {
-		dao.getById(ticketId);
-		return null;
-	}
-	
+		
+		return dao.getTicketById(ticketId);
+		
+//		Transaction transaction = null;
+//		TicketVO ticket = null;  
+//		
+//		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+//			transaction = session.beginTransaction();
+//			
+//			ticket = dao.getTicketById(ticketId);  // 賦值
+//			
+//			transaction.commit();
+//		} catch (Exception e) {
+//			if (transaction != null) {
+//				transaction.rollback();
+//			}
+//			throw new RuntimeException("Error", e);
+//		}
+//
+//		return ticket;  // 返回 ticket
+	}	
 
+
+	@Override	
 	public List<TicketVO> getAllTickets() {
 		return dao.getAll();
 	}
-	
+
+
 	//取得所有票券
 	@Override
 	public List<TicketVO> getAllTickets(int currentPage) {
@@ -143,12 +168,9 @@ public class TicketServiceImpl implements TicketService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
-//	// 票券主圖
-//	@Override
-//	public List<TicketVO> getAllTicketsWithMainImages() {
-//		return dao.getAllTicketsWithMainImages();
-//	}
-
+	
+	@Override  //取得總票券數
+    public long getTotalTickets() {
+        return dao.getTotal();
+    }
 }

@@ -1,4 +1,4 @@
-package com.depthspace.tour.model;
+package com.depthspace.tour.model.tourtype;
 
 import org.hibernate.Session;
 

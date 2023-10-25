@@ -78,7 +78,24 @@ public class MemVO implements Serializable {
 		this.accStatus = accStatus;
 		this.memPoint = memPoint;
 		this.memImage = memImage;
+	}
+	
+	public MemVO(String memAcc, String memPwd, String memName, String memIdentity, java.sql.Date memBth,
+			byte memSex, String memEmail, Integer memTel, String memAdd, byte accStatus, byte[] memImage) {
+		super();
+		this.memAcc = memAcc;
+		this.memPwd = memPwd;
+		this.memName = memName;
+		this.memIdentity = memIdentity;
+		this.memBth = memBth;
+		this.memSex = memSex;
+		this.memEmail = memEmail;
+		this.memTel = memTel;
+		this.memAdd = memAdd;
+		this.accStatus = accStatus;
+		this.memImage = memImage;
 	}	
+
 
 	public Integer getMemId() {
 		return memId;

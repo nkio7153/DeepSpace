@@ -6,7 +6,7 @@ import com.depthspace.member.model.MemVO;
 
 public interface MemDAO_Interface {
 	//會員註冊
-	 public void insert(MemVO entity);
+	 public void insert(MemVO memVO);
 	//會員修改
 	 public void update(MemVO MemVO);
 	 public void delete(Integer memId);
@@ -14,4 +14,5 @@ public interface MemDAO_Interface {
 	 public List<MemVO> getAll();
 	 public MemVO findByMemId(Integer memId);
 	 public List<MemVO> getEmail(String memEmail);
+	 public MemVO findAcc(String memAcc);
 }

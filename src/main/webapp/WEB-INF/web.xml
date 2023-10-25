@@ -24,6 +24,24 @@
 		<servlet-name>AccountServlet</servlet-name>
 		<url-pattern>/account/account.do</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>AccountItemServlet</servlet-name>
+		<servlet-class>com.depthspace.account.model.accountitem.controller.AccountItemServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AccountItemServlet</servlet-name>
+		<url-pattern>/accountItem.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ForumArticlesServlet</servlet-name>
+		<servlet-class>com.depthspace.forum.model.forumarticles.controller.ForumArticlesServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ForumArticlesServlet</servlet-name>
+		<url-pattern>/forumArticles.do</url-pattern>
+	</servlet-mapping>
 
 	<listener>
 		<listener-class>com.depthspace.listener.InitializerListener</listener-class>
