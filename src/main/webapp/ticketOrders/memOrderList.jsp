@@ -12,6 +12,7 @@
 </head>
 <body>
 <jsp:include page="../indexpage/header.jsp" />
+<jsp:include page="../indexpage/headpic.jsp"/>
 
 <input type="button" value="返回" onclick="index()">
 <h3>歡迎會員${memId}</h3>

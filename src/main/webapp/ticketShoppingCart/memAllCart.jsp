@@ -12,7 +12,7 @@
 </head>
 <body class="bg-light">
 <jsp:include page="../indexpage/header.jsp"/>
-
+<jsp:include page="../indexpage/headpic.jsp"/>
 <h3>歡迎會員${memId}</h3>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -36,6 +36,7 @@
 
 <body class="bg-light">
 <jsp:include page="../indexpage/header.jsp" />
+<jsp:include page="../indexpage/headpic.jsp"/>
 <div class="container mt-4">
   <h1 class="text-center display-3 mb-4">結帳</h1>
   <div class="row">

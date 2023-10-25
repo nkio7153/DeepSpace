@@ -4,6 +4,7 @@
 <head>
   <title>訂單已成立</title>
   <jsp:include page="../indexpage/head.jsp" />
+  <jsp:include page="../indexpage/headpic.jsp"/>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->

@@ -7,6 +7,7 @@
 </head>
 <body>
 <jsp:include page="../indexpage/header.jsp" />
+<jsp:include page="../indexpage/headpic.jsp"/>
 <!-- 主標題 -->
 <h1>購物車資訊查詢</h1>
 

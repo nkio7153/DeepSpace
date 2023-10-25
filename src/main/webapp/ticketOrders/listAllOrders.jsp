@@ -18,6 +18,7 @@
 </head>
 <body>
 <jsp:include page="../indexpage/header.jsp" />
+<jsp:include page="../indexpage/headpic.jsp"/>
 <input type="button" value="返回" onclick="index()">
 <h1 align="center">票券訂單列表</h1>
 <hr>
@@ -49,7 +50,7 @@
             <td align="center">${order.paymentMethod}</td>
             <td align="center" width="100px">
 <%--                <a href="">刪除</a>--%>
-                <a href="">訂單明細</a>
+                <a href="${pageContext.request.contextPath}/tod/list?orderId=${order.orderId}">訂單明細</a>
             </td>
         </tr>
 
