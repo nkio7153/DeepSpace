@@ -93,23 +93,26 @@ public class TicketServiceImpl implements TicketService {
 	
 	@Override
 	public TicketVO getTicketById(Integer ticketId) {
-		Transaction transaction = null;
-		TicketVO ticket = null;  // 將 ticket 的宣告移到這裡
 		
-		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			transaction = session.beginTransaction();
-			
-			ticket = dao.getTicketById(ticketId);  // 賦值
-			
-			transaction.commit();
-		} catch (Exception e) {
-			if (transaction != null) {
-				transaction.rollback();
-			}
-			throw new RuntimeException("Error", e);
-		}
-
-		return ticket;  // 現在你可以正確地返回 ticket
+		return dao.getTicketById(ticketId);
+		
+//		Transaction transaction = null;
+//		TicketVO ticket = null;  
+//		
+//		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+//			transaction = session.beginTransaction();
+//			
+//			ticket = dao.getTicketById(ticketId);  // 賦值
+//			
+//			transaction.commit();
+//		} catch (Exception e) {
+//			if (transaction != null) {
+//				transaction.rollback();
+//			}
+//			throw new RuntimeException("Error", e);
+//		}
+//
+//		return ticket;  // 返回 ticket
 	}	
 
 
