@@ -16,7 +16,7 @@ pageContext.setAttribute("list", list);
 
 <html>
 <head>
-<title>FAQ - listAllFaq.jsp</title>
+<title>FAQ - 首頁</title>
 <jsp:include page="../indexpage/head.jsp" />
 
 <style>
@@ -38,33 +38,67 @@ h4 {
 }
 </style>
 
+
+
 <style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+#container {
+    width: 80%;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 table {
-	width: 800px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
+    width: 100%;
+    background-color: white;
+    margin-top: 20px;
+    border-collapse: collapse;
 }
 
 table, th, td {
-	border: 1px solid #CCCCFF;
+    border: 1px solid #ddd;
 }
 
 th, td {
-	padding: 5px;
-	text-align: center;
+    padding: 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+h3 {
+    color: #333;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 </style>
+
 
 </head>
 <body bgcolor='white'>
 <jsp:include page="../indexpage/header.jsp" />
 
-	<h4>此頁練習採用 EL 的寫法取值:</h4>
 	<table id="table-1">
 		<tr>
 			<td>
-				<h3>FAQ - listAllFaq.jsp</h3>
+				<h3>FAQ - 首頁</h3>
 				<h4>
 					<a href="select_page.jsp"><img src="images/back1.gif"
 						width="100" height="32" border="0">回首頁</a>
