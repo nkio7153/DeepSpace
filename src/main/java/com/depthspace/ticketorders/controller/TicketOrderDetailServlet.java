@@ -67,7 +67,9 @@ public class TicketOrderDetailServlet extends HttpServlet {
             e.printStackTrace();
             return;
         }
+        System.out.println(orderId);
         List<TicketOrderDetailVO> list = todSv.getAllbyOrderId(orderId);
+        System.out.println(list);
         req.setAttribute("list", list);
         req.getRequestDispatcher("/od/orderDetail.jsp").forward(req, resp);
     }

@@ -7,6 +7,7 @@
 </head>
 <body>
 <jsp:include page="../indexpage/header.jsp" />
+<jsp:include page="../indexpage/headpic.jsp"/>
 <!-- 主標題 -->
 <h1>購物車資訊查詢</h1>
 
@@ -35,11 +36,15 @@
 
 <!-- 其他操作 -->
 <ul>
-    <li><a href="<%=request.getContextPath()%>/tsc/listAll">查看所有購物車列表</a></li>
+    <li><a href="${pageContext.request.contextPath}/tsc/listAll">查看所有購物車列表</a></li>
     <br>
     <br>
     <br>
-    <li><a href="<%=request.getContextPath()%>/to/index?memId=${memId}">票券訂單索引頁面</a></li>
+    <li><a href="${pageContext.request.contextPath}/to/index?memId=${memId}">票券訂單索引頁面</a></li>
+    <br>
+    <br>
+    <br>
+    <li><a href="${pageContext.request.contextPath}/pro/getAll?memId=${memId}">促銷列表</a></li>
 </ul>
 
 <jsp:include page="../indexpage/footer.jsp" />

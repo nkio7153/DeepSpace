@@ -1,11 +1,12 @@
-package com.depthspace.tour.model;
+package com.depthspace.member.model.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.depthspace.member.model.MemVO;
 import com.depthspace.utils.HibernateUtil;
 
-public class TestTourTypeSession {
+public class TestMemSession {
 	public static void main(String[] args) {
 		// 系統組態檔裡一定要有 <property
 		// name="hibernate.current_session_context_class">thread</property> 的設定才可以
@@ -15,7 +16,7 @@ public class TestTourTypeSession {
 
 			tx1 = s1.beginTransaction();
 
-			TourTypeVO rest = s1.get(TourTypeVO.class, 1);
+			MemVO rest = s1.get(MemVO.class, 1);
 			System.out.println(rest);
 
 			tx1.commit();
@@ -27,5 +28,6 @@ public class TestTourTypeSession {
 		} finally {
 			HibernateUtil.shutdown();
 		}
+
 	}
 }

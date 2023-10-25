@@ -13,8 +13,11 @@
 <html>
 <head>
     <title>票券訂單</title>
+    <jsp:include page="../indexpage/head.jsp" />
 </head>
 <body>
+<jsp:include page="../indexpage/header.jsp" />
+<jsp:include page="../indexpage/headpic.jsp"/>
 <input type="button" value="返回" onclick="history.back()">
 <h1 align="center">訂單明細列表</h1>
 <hr>
@@ -60,5 +63,6 @@
             "${pageContext.request.contextPath}/to/index"
     }
     </script>
+<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

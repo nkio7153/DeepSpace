@@ -4,7 +4,7 @@ import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 
 import java.util.List;
 
-public interface HbTscDAO_Interface {
+public interface HbTscDao_Interface {
 
     // 插入一個新的購物車項目
     int insert(TicketShoppingCartVO entity);
@@ -14,6 +14,9 @@ public interface HbTscDAO_Interface {
 
     // 根據組合主鍵（會員ID和票券ID）刪除購物車項目
     int delete(TicketShoppingCartVO.CompositeDetail id);
+
+    //根據會員編號清空購物車
+    int deleteAll(Integer memId);
 
     // 根據會員ID獲取會員購物車項目
     List<TicketShoppingCartVO> getByMemId(Integer memId);
