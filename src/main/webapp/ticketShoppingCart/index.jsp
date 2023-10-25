@@ -40,6 +40,10 @@
     <br>
     <br>
     <li><a href="${pageContext.request.contextPath}/to/index?memId=${memId}">票券訂單索引頁面</a></li>
+    <br>
+    <br>
+    <br>
+    <li><a href="${pageContext.request.contextPath}/pro/getAll?memId=${memId}">促銷列表</a></li>
 </ul>
 
 <jsp:include page="../indexpage/footer.jsp" />

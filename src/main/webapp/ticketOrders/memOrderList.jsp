@@ -7,8 +7,11 @@
 <html>
 <head>
   <title>票券訂單資料</title>
+  <jsp:include page="../indexpage/head.jsp" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+<jsp:include page="../indexpage/header.jsp" />
 
 <input type="button" value="返回" onclick="index()">
 <h3>歡迎會員${memId}</h3>
@@ -27,41 +30,21 @@
   }
 
 </script>
-<style>
-  img {
-    width:150px;
-    height: 100px;
-  }
-  .hidden {
-    display: none;
-  }
-  .no-wrap {
-    white-space: nowrap;
-  }
-  .w150{
-    width:150px;
-  }
-  .w200{
-    width:200px;
-  }
 
-
-</style>
 <h1 align="center">會員訂單列表</h1>
 <hr>
 <table border="1px" align="center" width="80%">
-<%--  //票券圖片、票券名稱、票券介紹、價格、數量、小計--%>
-    <tr>
-      <th>序號</th>
-      <th>訂單編號</th>
-      <th>訂單日期</th>
-      <th>總金額</th>
-      <th>點數回饋</th>
-      <th>實付金額</th>
-      <th>支付方式</th>
-      <th>操作</th>
-    </tr>
-
+  <tr>
+    <th class="text-center">序號</th>
+    <th class="text-center">訂單編號</th>
+    <th class="text-center">訂單日期</th>
+    <th class="text-center">總金額</th>
+    <th class="text-center">使用點數</th>
+    <th class="text-center">實付金額</th>
+    <th class="text-center">點數回饋</th>
+    <th class="text-center">支付方式</th>
+    <th class="text-center">操作</th>
+  </tr>
 
   <c:forEach items="${list}" var="order" varStatus="orderStatus">
     <tr>
@@ -69,12 +52,11 @@
       <td align="center">${order.orderId}</td>
       <td align="center">${order.orderDate}</td>
       <td align="center">${order.totalAmount}</td>
-      <td align="center">${order.pointsFeedback}</td>
+      <td align="center">${order.amountPaid - order.totalAmount}</td>
       <td align="center">${order.amountPaid}</td>
+      <td align="center">${order.pointsFeedback}</td>
       <td align="center">${order.paymentMethod}</td>
       <td align="center" class="no-wrap w150">
-        <!-- 這裡添加你的後端刪除和修改的路徑 -->
-<%--        <a href="${pageContext.request.contextPath}/ticketOrders/edit.jsp?order=${order}" >修改</a>--%>
         <a href="${pageContext.request.contextPath}/tod/list?orderId=${order.orderId}" >訂單明細</a>
         <a href="">取消訂單</a>
       </td>
@@ -84,5 +66,6 @@
 <hr>
 <a href="${pageContext.request.contextPath}/ticketOrders/addOrder.jsp?memId=${memId}">添加訂單</a>
 <hr>
+<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

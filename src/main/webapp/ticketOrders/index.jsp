@@ -17,12 +17,14 @@
 <html>
 <head>
     <title>歡迎使票券訂單查詢</title>
+    <jsp:include page="../indexpage/head.jsp" />
     <style>
         /* 這裡是 CSS 樣式 */
         /* ... */
     </style>
 </head>
 <body>
+<jsp:include page="../indexpage/header.jsp" />
 
 <!-- 主標題 -->
 <h1>票券訂單資訊查詢</h1>
@@ -58,5 +60,6 @@
     <br>
     <li><a href="<%=request.getContextPath()%>/tsc/index?memId=${memId}">票券購物車索引頁面</a></li>
 </ul>
+<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

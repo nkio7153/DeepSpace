@@ -46,7 +46,11 @@
         })
         $('.sub2').text(totalPrice);
         let sub2 = parseFloat($('.sub2').text());
-        let coupen = parseFloat($('.coupen').text());
+        let coupen = parseFloat($('.coupen').val());
+        // if(coupen===null){
+        //     coupen=0;
+        //     return
+        // }
         let lastPrice = sub2 - coupen;
         $('.total').text(lastPrice);
 
@@ -101,7 +105,11 @@
             $('.sub2').text(totalPrice);//小計
 
             let sub2 = parseFloat($('.sub2').text());
-            let coupen = parseFloat($('.coupen').text());
+            let coupen = parseFloat($('.coupen').val());
+            // if(coupen===null){
+            //     coupen=0;
+            //     return
+            // }
             let lastPrice = sub2 - coupen;
             $('.total').text(lastPrice);//總金額
         })
@@ -207,14 +215,15 @@
 
 
 <div class="fs-3 bg-light p-4 rounded">
-    <span>小計:</span><span class="sub2 badge bg-primary"></span>
+    <span>小計:</span><span class="sub2"></span>
     <br>
-    <span>折扣:</span><span class="coupen badge bg-warning">0</span>
+    <span>點數:</span><input placeholder="請輸入欲使用點數" class="coupen w-10" value="0"></input>
+<%--    <span placehoder="請輸入欲使用點數" class="coupen">0</span>--%>
 </div>
 
 <div class="last fs-2 bg-light p-4 rounded">
     <span>總金額:</span><span class="total text-black-50"></span>
-    <input type="button" class="btn btn-primary btn-lg offset-1" value="前往結帳">
+    <input type="button" class="btn btn-primary btn-lg offset-1" onclick="location.href='${pageContext.request.contextPath}/tsc/checkout?memId=${memId}'" value="前往結帳">
 </div>
 
 <%--<div class="last fs-2 light p-4 rounded">--%>

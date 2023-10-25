@@ -20,4 +20,5 @@ public interface HbProDao_Interface {
     List<PromotionVO> getAll(int currentPage);
 
     long getTotal();
+    PromotionVO getLatestOrder();
 }

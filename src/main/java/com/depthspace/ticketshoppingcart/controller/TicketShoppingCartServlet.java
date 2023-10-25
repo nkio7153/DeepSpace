@@ -40,6 +40,9 @@ public class TicketShoppingCartServlet extends HttpServlet {
             case "/image":
                 doImage(req, resp);
                 break;
+            case "/checkout":
+                checkout(req, resp);
+                break;
             default:
                 // 在這裡處理所有其他情況
                 break;
@@ -184,9 +187,9 @@ public class TicketShoppingCartServlet extends HttpServlet {
             memId = Integer.valueOf(req.getParameter("memId"));
             ticketId = Integer.valueOf(req.getParameter("ticketId"));
             quantity = Integer.valueOf(req.getParameter("quantity"));
-            System.out.println(memId);
-            System.out.println(ticketId);
-            System.out.println(quantity);
+//            System.out.println(memId);
+//            System.out.println(ticketId);
+//            System.out.println(quantity);
         } catch (NumberFormatException e) {
             // 處理轉型錯誤
             e.printStackTrace();
@@ -231,6 +234,20 @@ public class TicketShoppingCartServlet extends HttpServlet {
         } catch (Exception e) {
             noImage(outputStream);
         }
+    }
+    //跳轉至結帳頁面
+    protected void checkout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Integer memId;
+        try {
+            memId = Integer.valueOf(req.getParameter("memId"));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return;
+        }
+        List<TicketInfoVO> list = tscSv.getList(memId);
+        req.setAttribute("list", list);
+        req.setAttribute("memId", memId);
+        req.getRequestDispatcher("/ticketShoppingCart/checkout.jsp").forward(req, resp);
     }
 
     //fetch返回json格式

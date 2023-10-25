@@ -36,6 +36,9 @@ public class TicketOrderstServlet extends HttpServlet {
             case "/index":
                 doIndex(req, resp);
                 break;
+            case "/save":
+                doSave(req, resp);
+                break;
             default:
                 // 在這裡處理所有其他情況
                 break;
@@ -139,24 +142,34 @@ public class TicketOrderstServlet extends HttpServlet {
             memId= Integer.valueOf(req.getParameter("memId"));
             orderDate=new Timestamp(System.currentTimeMillis());
             totalAmount = Integer.valueOf(req.getParameter("totalAmount"));
-            pointsFeedback=Integer.valueOf(req.getParameter("pointsFeedback"));
+            pointsFeedback = pointCal(totalAmount);
             amountPaid=Integer.valueOf(req.getParameter("amountPaid"));
             paymentMethod=Byte.valueOf(req.getParameter("paymentMethod"));
         }catch (NumberFormatException e){
             e.printStackTrace();
             return;
         }
+        TicketOrdersVO to2=null;
+
         if(memId != null && totalAmount !=null && pointsFeedback !=null && amountPaid  !=null && paymentMethod !=null){
 
             TicketOrdersVO to = new TicketOrdersVO(orderId, memId, orderDate, totalAmount, pointsFeedback, amountPaid, status, paymentMethod);
-            toSv.addTicektOrders(to);
-            System.out.println(to);
+            to2 = toSv.generateTicektOrders(to);
         }
-        System.out.println();
-        List<TicketOrdersVO> list = toSv.getbyMemId(memId);
-        req.setAttribute("list", list);
+//        List<TicketOrdersVO> list = toSv.getbyMemId(memId);
+//        req.setAttribute("list", list);
         req.setAttribute("memId",memId);
-        req.getRequestDispatcher("/ticketOrders/memOrderList.jsp").forward(req, resp);
+        req.setAttribute("ticketOrder",to2);
+        req.getRequestDispatcher("/ticketOrders/afterPay.jsp").forward(req, resp);
+    }
+
+    //點數計算公式
+    public Integer pointCal(Integer totalAmount){
+        Integer points =0;
+        if(totalAmount >= 100){
+            points=totalAmount/100;
+        }
+        return points;
     }
 
 }
