@@ -104,7 +104,7 @@ public class TicketServlet extends HttpServlet {
 	private void doEditSuccess(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
-	    TicketVO ticket = ticketService.getTicketById(ticketId); 
+	    TicketVO ticket = (TicketVO) ticketService.getTicketById(ticketId); 
 	    
 		ticket.setTicketName(req.getParameter("ticketName"));
 		ticket.setPrice(Integer.valueOf(req.getParameter("price")));
