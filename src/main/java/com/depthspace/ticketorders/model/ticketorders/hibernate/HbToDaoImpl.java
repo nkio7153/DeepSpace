@@ -4,6 +4,7 @@ import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 public class HbToDaoImpl implements HbToDao_Interface {
@@ -46,6 +47,7 @@ public class HbToDaoImpl implements HbToDao_Interface {
     //用主鍵查一列
     @Override
     public TicketOrdersVO getById(Integer id) {
+
         return getSession().get(TicketOrdersVO.class, id);
     }
 
@@ -57,6 +59,20 @@ public class HbToDaoImpl implements HbToDao_Interface {
                 .setParameter("memId", memId)
                 .list();
     }
+    //用會員編號取得最新一筆訂單物件(為了拿訂單流水號)
+    @Override
+    public TicketOrdersVO getLatestOrderByMemId(Integer memId) {
+        try {
+            return getSession()
+                    .createQuery("from TicketOrdersVO where memId= :memId order by orderId desc", TicketOrdersVO.class)
+                    .setParameter("memId", memId)
+                    .setMaxResults(1)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
 
     //查全部列表
     @Override

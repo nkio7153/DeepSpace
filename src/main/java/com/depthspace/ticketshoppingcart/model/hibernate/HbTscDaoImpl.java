@@ -1,16 +1,17 @@
 package com.depthspace.ticketshoppingcart.model.hibernate;
 
+import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
 
-public class HbTscDAOImpl implements HbTscDAO_Interface {
+public class HbTscDaoImpl implements HbTscDao_Interface {
     //宣告一個factory變數
     private SessionFactory factory;
     //構造器為該物件的factory變數賦值
-    public HbTscDAOImpl(SessionFactory factory) {
+    public HbTscDaoImpl(SessionFactory factory) {
         this.factory = factory;
     }
     //取得當前session
@@ -39,6 +40,22 @@ public class HbTscDAOImpl implements HbTscDAO_Interface {
         TicketShoppingCartVO tsc = getSession().get(TicketShoppingCartVO.class, id);
         if (tsc != null) {
             getSession().delete(tsc);
+            // 回傳給 service，1代表刪除成功
+            return 1;
+        } else {
+            // 回傳給 service，-1代表刪除失敗
+            return -1;
+        }
+    }
+
+    // 根據會員編號清空購物車
+    @Override
+    public int deleteAll(Integer memId) {
+        int deleteCount = getSession()
+                .createQuery("delete from TicketShoppingCartVO where memId= :memId")
+                .setParameter("memId",memId)
+                .executeUpdate();
+        if (deleteCount >0) {
             // 回傳給 service，1代表刪除成功
             return 1;
         } else {

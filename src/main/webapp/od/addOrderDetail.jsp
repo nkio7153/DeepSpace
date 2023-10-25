@@ -9,6 +9,7 @@
 <html>
 <head>
     <title>訂單添加頁面</title>
+    <jsp:include page="../indexpage/head.jsp" />
     <style>
         .hidden {
             display: none;
@@ -16,6 +17,8 @@
     </style>
 </head>
     <body>
+    <jsp:include page="../indexpage/header.jsp" />
+    <jsp:include page="../indexpage/headpic.jsp"/>
     <input type="button" value="返回" onclick="history.back()">
     <h1 align="center">訂單添加</h1>
     <hr>
@@ -27,6 +30,6 @@
             支付方式<input type="text" name="paymentMethod"><br>
             <input type="submit" value="保存">
         </form>
-
+    <jsp:include page="../indexpage/footer.jsp" />
     </body>
 </html>
