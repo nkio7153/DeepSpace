@@ -1,6 +1,9 @@
 <%@ page import="com.depthspace.restaurant.service.RestServiecImpl"%>
 <%@ page import="com.depthspace.restaurant.service.RestService"%>
 <%@ page import="com.depthspace.restaurant.model.restaurant.RestVO"%>
+<%@ page import="com.depthspace.admin.model.model.AdminDAO"%>
+<%@ page import="com.depthspace.admin.model.model.AdminDAOImpl"%>
+<%@ page import="com.depthspace.admin.model.model.AdminVO"%>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.HashSet" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -11,13 +14,21 @@
 	RestService restService = new RestServiecImpl();
 	List<RestVO> restList = restService.getAllRest();
 	request.setAttribute("RestList", restList);
+	
+	AdminDAO dao = new AdminDAOImpl();
+	List<AdminVO> adminList = dao.getAll();
+	request.setAttribute("adminList", adminList);
+	
 %>
 
 <html>
 <head>
-<meta charset="UTF-8">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/Rest/css/main.css">
-<title>餐廳查詢</title>
+	<jsp:include page="../indexpage/head.jsp" />
+	<jsp:include page="../indexpage/header.jsp" />
+	<jsp:include page="../indexpage/headpic.jsp" />
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/Rest/css/main.css">
+	<title>餐廳查詢</title>
 	<style>
 		img {
 		    width: 100%;
@@ -27,6 +38,7 @@
 </head>
 <body>
 	<h3><b>PK查詢：</b></h3>
+	<br><br><br><br>
 	<form action="${pageContext.request.contextPath}/Rest/Rest.do" method="post">
 		<label for="restId">選擇餐廳編號：</label>
     		<select id="restId" name="restId">
@@ -73,29 +85,43 @@
 	<br>
 	<form action="${pageContext.request.contextPath}/Rest/Rest.do" method="post">
 		<p><label>餐廳名稱：</label>
-		<input type="text" name="restName"><br>
+		<input type="text" name="restName" required><br>
 		<p><label>餐廳電話：</label>
-		<input type="text" name="restTel"><br>
+		<input type="text" name="restTel" required><br>
 		<p><label>餐廳地址：</label>
-		<input type="text" name="restAddress"><br>
+		<input type="text" name="restAddress" required><br>
 		<p><label>餐廳類型：</label>
-		<input type="text" name="restType"><br>
+		<input type="text" name="restType" required><br>
 		<p><label>營業時間：</label>
-		<input type="text" name="restOpen"><br>
+		<input type="text" name="restOpen" required><br>
 		<p><label>餐廳上下架 (0下架/1上架)：</label>
 		<select id="restStatus" name="restStatus">
 	        <option value=0>0</option>
 	        <option value=1>1</option>
 	   	</select>
 	   	<p><label>可預約組數：</label>
-		<input type="number" name="bookingLimit"><br>
+		<input type="number" name="bookingLimit" required><br>
 		<p><label>管理員ID：</label>
-		<input type="number" name="adminId" pattern="[1-5]"><br>
+		<select id="adminId" name="adminId">
+        	<c:forEach var="admin" items="${adminList}">
+           		<option value="${admin.adminId}">${admin.adminId}</option>
+       		</c:forEach>
+    	</select>
+<!-- 		<input type="number" name="adminId" pattern="[1-5]"><br> -->
 		<p><input type="submit" value="新增"></p>
 		<input type="hidden" name="action" value="add">
    	</form>
+   	<%-- 錯誤表列 --%>
+	<c:if test="${not empty errorMsgs}">
+		<font style="color:red">請修正以下錯誤:</font>
+		<ul>
+			<c:forEach var="message" items="${errorMsgs}">
+				<li style="color:red">${message}</li>
+			</c:forEach>
+		</ul>
+	</c:if>
 		
-		
+	<jsp:include page="../indexpage/footer.jsp" />
 	<br>
 	<a href="${pageContext.request.contextPath}/Rest/into.jsp">回首頁</a>	
 	<script src="${pageContext.request.contextPath}/Rest/js/jquery-3.7.1.min.js"></script>
