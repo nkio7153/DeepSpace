@@ -1,26 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html lang="en">
 
 <head>
 	<jsp:include page="../indexpage/head.jsp" />
+	<jsp:include page="../indexpage/header.jsp" />
+	<jsp:include page="../indexpage/headpic.jsp" />
     <style>
-
     </style>
 </head>
 
 <body>
-	<jsp:include page="../indexpage/header.jsp" />
-	<jsp:include page="../indexpage/headpic.jsp" />
-
 
     <!-- account/list.jsp 改成你的包跟jsp檔 -->
     <jsp:include page="../Rest/listAllRests.jsp" />
     <!-- account/list.jsp 改成你的包跟jsp檔 -->
 
 
-	<jsp:include page="../indexpage/footer.jsp" />
-
+    <!--footer -->
+    <jsp:include page="../indexpage/footer.jsp" />
+    <!-- //footer -->
 
     <script src="${pageContext.request.contextPath}/indexpage/js/popper.min.js"></script>
     <script src="${pageContext.request.contextPath}/indexpage/js/bootstrap.min.js"></script>
