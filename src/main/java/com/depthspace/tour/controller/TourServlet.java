@@ -20,7 +20,7 @@ public class TourServlet extends HttpServlet {
 	
 	public void init() throws ServletException{
 		ts = new TourService();
-		System.out.println("成功開啟");
+//		System.out.println("成功開啟");
 	}
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);
@@ -34,23 +34,39 @@ public class TourServlet extends HttpServlet {
 		switch (pathInfo) {
 		case "/tourList":
 			doTourList(req, resp);
-			break;
+			 break;
+		case "/memTourList":
+			domemTourList(req, resp);
+			 break;
 		}
 		
 	}
-	//查出該會員所有行程
+	
+	//用會員編號查出該會員所有行程
 	private void doTourList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Integer memId;
-//		ts = new TourService();
 		try {
             memId = Integer.valueOf(req.getParameter("memId"));
-//            System.out.println(memId);
+            System.out.println(memId);
         } catch (Exception e) {
             e.printStackTrace();
             return;
         }
 		List<TourVO> list = ts.getByMemId(memId);
+		System.out.println(list);
 		req.setAttribute("list" , list);
+		req.setAttribute("memId" , memId);
 		req.getRequestDispatcher("/tour/index.jsp").forward(req, resp);
 	}
+	
+	//查詢單獨行程
+	private void domemTourList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+//		System.out.println("成功跳轉");
+		String memId = req.getParameter("memId");
+//		System.out.println("memId=" + memId);
+		
+		req.getRequestDispatcher("/tour/memTourList.jsp").forward(req, resp);
+	}
+	
+	
 }

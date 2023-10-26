@@ -17,10 +17,11 @@
     }
 
     table {
-        width: 100%;
+        width: 80%;
+        
         border-collapse: collapse;
         border: 1px solid #ccc;
-        margin: 10px 0;
+       margin: 10px auto; /* 使用auto來置中 */
     }
 
     table th, table td {
@@ -34,18 +35,19 @@
         color: #fff;
     }
 
-    button {
-        background-color: #008CBA;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        cursor: pointer;
-        margin-top: 10px;
-    }
-    
-    button:hover {
-        background-color: #006688;
-    }
+	#btn {
+	    background-color: lightblue;
+	    color: #fff;
+	    border: none;
+	    border-radius: 10px;
+	    padding: 10px 20px;
+	    cursor: pointer;
+	}
+	
+	#btn:hover {
+	    background-color: #006688;
+	}
+
 
     h1 {
         font-size: 24px;
@@ -70,22 +72,26 @@
 <jsp:include page="../indexpage/headpic.jsp" />
 
 <h1 style="font-size: 24px; color: #333; text-align: center;">查看我的行程列表</h1>
-<form method="post" action="#"> <!-- 提交表單給保存行程的JSP頁面 -->
+<!-- <form method="" action=""> -->
     <table>
         <tr>
-            <th>行程名稱</th>
-            <th>查看行程</th>
+            <th style="text-align: center;">行程名稱</th>
+            <th style="text-align: center;">查看行程</th>
         </tr>
-        <c:forEach var="trip" items="${yourTripList}">
+        <c:forEach var="tour" items="${list}">
             <tr>
-                <td>${trip.tripName}</td>
-                <td>
-                    <button type="button" onclick="viewTrip('${trip.tripId}')">查看行程</button>
-                </td>
+                <td style="text-align: center;">${tour.tourName}</td>
+                <td align="center">
+<%--                 <c:set var="memId" value="${tour.memId}" /> --%>
+				    <a href="${pageContext.request.contextPath}/tr/memTourList?memId=${memId}" style="text-decoration: none; display: block; text-align: center;">
+				        <button id="btn">查看行程</button>
+				    </a>
+				</td>
+
             </tr>
         </c:forEach>
     </table>
-</form>
+<!-- </form> -->
 <jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>
