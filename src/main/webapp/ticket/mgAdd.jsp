@@ -99,6 +99,11 @@
 							</div>
 						</div>
 
+						<!-- 是否為主圖 -->
+						<div class="form-group col-md-6">
+						    <label for="isMainImage">是否為主圖</label>
+						    <input type="checkbox" id="isMainImage" name="isMainImage" value="1">
+						</div>
 
 						<!-- 使用天數 -->
 						<div class="form-group col-md-12">

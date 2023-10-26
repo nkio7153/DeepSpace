@@ -19,6 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import com.alibaba.fastjson.util.IOUtils;
 import com.depthspace.account.model.account.AccountVO;
 import com.depthspace.attractions.model.CityVO;
@@ -31,6 +34,7 @@ import com.depthspace.ticket.service.TicketImagesService;
 import com.depthspace.ticket.service.TicketImagesServiceImpl;
 import com.depthspace.ticket.service.TicketServiceImpl;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
+import com.depthspace.utils.HibernateUtil;
 
 @WebServlet("/backendticket/*")
 @MultipartConfig
@@ -39,10 +43,15 @@ public class TicketServlet extends HttpServlet {
 	// 一個 servlet 實體對應一個 service 實體
 	private TicketService ticketService;
 	private TicketImagesService ticketImagesService;
+	Session session;
 
 	@Override
 	public void init() throws ServletException {
 		ticketService = new TicketServiceImpl();
+		
+	    SessionFactory sessionFactory = HibernateUtil.getSessionFactory(); 
+	    session = sessionFactory.openSession();
+	    ticketImagesService = new TicketImagesServiceImpl(session); // 初始化ticketImagesService
 	}
 
 	@Override
@@ -93,10 +102,6 @@ public class TicketServlet extends HttpServlet {
 
 		// 取得所有票券內容(VO)
 		List<TicketVO> ticketList = ticketService.getAllTickets(currentPage);
-		// 取得票券區域
-//		List<TicketVO> ticketsWithCity = ticketService.getTicketsWithCity();
-//		//取得票券圖片
-//		List<TicketVO> ticketsWithMainImages = ticketService.getAllTicketsWithMainImages();
 
 		if (req.getSession().getAttribute("ticketPageQty") == null) {
 			int ticketPageQty = ticketService.getPageTotal();
@@ -161,68 +166,33 @@ public class TicketServlet extends HttpServlet {
         ticketType.setTicketTypeId(ticketTypeId);
         ticket.setTicketType(ticketType);
         
+        ticketService.addTicket(ticket);  //必須先將上述資料存入	
+        
+        // 創建 TicketImagesVO 對象並設定 IS_MAIN_IMAGE 屬性
+        TicketImagesVO ticketImage = new TicketImagesVO();
+        ticketImage.setTicket(ticket);
+       
+        //讀取 isMainImage 的值
+        String isMainImageValue = req.getParameter("isMainImage");
+        // 根據 isMainImage 的值來設定圖片的 IS_MAIN_IMAGE 屬性
+        byte isMainImage = (byte) ((isMainImageValue != null && isMainImageValue.equals("1")) ? 1 : 0);
+
+        ticketImage.setIsMainImage(isMainImage);
+        
         //readInput
         Part filePart = req.getPart("ticketImage");
         InputStream inputStream = filePart.getInputStream();
         byte[] imageBytes = readInputStream(inputStream);
-        
-        TicketImagesVO ticketImage = new TicketImagesVO();
-        ticketImage.setTicket(ticket); // 设置关联的 TicketVO 对象
-        ticketImage.setImage(imageBytes); // 设置图片数据
+        ticketImage.setTicket(ticket);  
+        ticketImage.setImage(imageBytes); 
     
 		ticketImagesService.save(ticketImage); 
 
-        ticketService.addTicket(ticket);  //上述資料存入		
         // 送出後導向以下頁面
         res.sendRedirect(req.getContextPath() + "/backendticket/mglist");
     	}
 	}
         
-//		byte[] byteArray = null;
-//		Part filePart = req.getPart("ticketImage");
-//		if(filePart != null &&  filePart.getSize() > 0) {
-//			InputStream inputStream = filePart.getInputStream();
-//	        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-//	        int nRead;
-//	        byte[] data = new byte[1024];
-//	        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-//	            buffer.write(data, 0, nRead);
-//	        }
-//	        buffer.flush();
-//	        byteArray = buffer.toByteArray();
-//	        inputStream.close();
-//	        buffer.close();
-//		} else {
-//			String webappPath = getServletContext().getRealPath("/");
-//			// 构建相对路径
-//			String relativeImagePath = "member/images/1.png";
-//			String absoluteImagePath = webappPath + relativeImagePath;
-//
-//			File defaultImageFile = new File(absoluteImagePath);
-//			String defaultImagePath =  defaultImageFile.getPath();
-//			// 使用ServletContext获取资源流
-////			InputStream defaultImageStream = getServletContext().getResourceAsStream(defaultImagePath);
-//			if (defaultImageFile.exists()) {
-//				byte[] localImageBytes = Files.readAllBytes(Path.of(defaultImagePath));
-//				base64Image = Base64.getEncoder().encodeToString(localImageBytes);
-//		        
-//		        resp.setContentType("text/plain");
-//		        resp.getWriter().write(base64Image);
-//				req.setAttribute("base64Image", base64Image);
-//			} else {
-//			   // 如無照片會處理錯誤
-//				System.out.println("圖不存在");
-//					}
-//		}
-
-
-//		List<TicketVO> ticketTypes = ticketTypeService.getAllTicketTypes();
-//		List<TicketVO> cities = cityService.getAllCities();
-//		req.setAttribute("ticketTypes", ticketTypes);
-//		req.setAttribute("cities", cities);
-//		        List<TicketVO> ticketsWithCity = ticketService.getTicketsWithCity();
-//		        req.setAttribute("city", ticketsWithCity);
-
 
 
 	/************ 票券修改 ************/
