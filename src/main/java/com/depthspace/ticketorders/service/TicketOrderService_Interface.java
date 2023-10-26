@@ -5,8 +5,8 @@ import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 import java.util.List;
 
 public interface TicketOrderService_Interface {
-    //新增一筆訂單
-    public TicketOrdersVO addTicektOrders(TicketOrdersVO entity);
+    //生成一筆訂單
+    public TicketOrdersVO generateTicektOrders(TicketOrdersVO entity);
     //更新一筆訂單
     public TicketOrdersVO updateTicektOrders(TicketOrdersVO entity);
     //刪除一筆訂單

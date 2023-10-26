@@ -3,36 +3,41 @@ package com.depthspace.ticket.service;
 import java.util.List;
 import java.util.Map;
 
+import com.depthspace.attractions.model.CityVO;
+import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
+import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 
 
 public interface TicketService {
 	
-    int addTicket(TicketVO ticketVO);
-    
+	//新增票券
+    void addTicket(TicketVO ticketVO);
+    //更新票券
     TicketVO updateTicket(TicketVO ticketVO);
-
-    int deleteTicket(Integer ticketId);
-
-    TicketVO getTicketById(Integer ticketId);
-    
-    List<TicketVO> getAllTickets(int currentPage);
-    
-    List<TicketVO> getTicketsWithCity();
-    
+    //刪除票券
+    TicketVO deleteTicket(Integer ticketId);
+    //根據票券ID取得票券
+    TicketVO getTicketById(Integer ticketId);  
+    //取得所有票券
+	List<TicketVO> getAllTickets();   
+    //取得所有票券(根據頁面)
+    List<TicketVO> getAllTickets(int currentPage);  
+    //取得所有票券總頁面數量
     int getPageTotal();
-    
-    List<TicketVO> getAllTicketsWithMainImages();
-    
-    List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map);
+    //取得總票券數
+    long getTotalTickets(); 
+    //取得票券主圖(沒用)
+    List<TicketVO> getAllTicketsWithMainImages(); 
+    //萬用查詢
+    List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map); 
+    //查詢所有票券類型
+    List<TicketTypesVO> getAllTicketTypes();
+    //查詢所有票券區域
+    List<CityVO> getAllCities();
 
-	List<TicketVO> getAllTickets();
-	
-    long getTotalTickets(); //取得總票券數
-
-//    List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map);
-	
- 
+ //    //取得票券對應的區域
+//    List<TicketVO> getTicketsWithCity();
 
 }
 

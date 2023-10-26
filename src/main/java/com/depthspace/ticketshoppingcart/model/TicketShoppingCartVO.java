@@ -1,6 +1,7 @@
 package com.depthspace.ticketshoppingcart.model;
 
 import com.depthspace.ticket.model.TicketVO;
+import com.google.gson.annotations.Expose;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,13 +11,15 @@ import java.util.Objects;
 @Table(name="TICKET_SHOPPING_CART")
 @IdClass(TicketShoppingCartVO.CompositeDetail.class)
 public class TicketShoppingCartVO implements Serializable {
+    @Expose
     @Id
     @Column(name = "MEM_ID")
     private Integer memId;
+    @Expose
     @Id
     @Column(name = "TICKET_ID")
     private Integer ticketId;
-
+    @Expose
     @Column(name = "QUANTITY", nullable = false)
     private Integer quantity;
 

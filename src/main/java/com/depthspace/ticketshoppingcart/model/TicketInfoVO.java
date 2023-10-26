@@ -3,12 +3,21 @@ package com.depthspace.ticketshoppingcart.model;
 public class TicketInfoVO {
     private Integer memId;
     private Integer ticketId;
+    private Integer serialId;
     private byte[] image;
     private String ticketName;
     private String description;
     private Integer price;
     private Integer quantity;
     private Integer subtotal;
+
+    public Integer getSerialId() {
+        return serialId;
+    }
+
+    public void setSerialId(Integer serialId) {
+        this.serialId = serialId;
+    }
 
     public String getBase64Image() {
         return base64Image;
@@ -23,9 +32,10 @@ public class TicketInfoVO {
     public TicketInfoVO() {
     }
 
-    public TicketInfoVO(Integer memId, Integer ticketId, byte[] image, String ticketName, String description, Integer price, Integer quantity, Integer subtotal) {
+    public TicketInfoVO(Integer memId, Integer ticketId, Integer serialId, byte[] image, String ticketName, String description, Integer price, Integer quantity, Integer subtotal) {
         this.memId = memId;
         this.ticketId=ticketId;
+        this.serialId=serialId;
         this.image = image;
         this.ticketName = ticketName;
         this.description = description;

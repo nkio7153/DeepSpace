@@ -1,5 +1,6 @@
 package com.depthspace.ticketorders.model.ticketorders.hibernate;
 
+import com.depthspace.promotion.model.promotion.PromotionVO;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 
 import java.util.List;
@@ -20,4 +21,8 @@ public interface HbToDao_Interface {
     List<TicketOrdersVO> getAll(int currentPage);
 
     long getTotal();
+    //取得最新一筆訂單
+
+    TicketOrdersVO getLatestOrderByMemId(Integer memId);
+
 }

@@ -1,12 +1,8 @@
 package com.depthspace.ticketshoppingcart.model.hibernate;
 
-import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 import com.depthspace.utils.HibernateUtil;
 import org.hibernate.Session;
-
-import java.sql.Date;
-import java.sql.Timestamp;
 
 public class HibernateTest {
     public static void main(String[] args) {
@@ -14,7 +10,7 @@ public class HibernateTest {
         //岔入
         try{
             session.beginTransaction();
-            HbTscDAOImpl hbTscDAO = new HbTscDAOImpl(session.getSessionFactory());
+            HbTscDaoImpl hbTscDAO = new HbTscDaoImpl(session.getSessionFactory());
             TicketShoppingCartVO tsc = new TicketShoppingCartVO();
             tsc.setMemId(7);
             tsc.setTicketId(324003);
