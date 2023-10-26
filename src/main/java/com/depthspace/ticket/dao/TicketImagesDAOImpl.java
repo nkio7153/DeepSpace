@@ -7,9 +7,10 @@ import org.hibernate.SessionFactory;
 
 import com.depthspace.ticket.model.TicketImagesVO;
 
-public class TicketImagesDAOImpl  implements TicketImagesDAO {
+public abstract class TicketImagesDAOImpl  implements TicketImagesDAO {
 
 	private SessionFactory factory;
+	private TicketImagesVO ticketImage;
 	
 	public TicketImagesDAOImpl(SessionFactory factory) {
 		this.factory = factory;		
@@ -18,6 +19,31 @@ public class TicketImagesDAOImpl  implements TicketImagesDAO {
 	private Session getSession() {
 		return factory.getCurrentSession();
 	}
+
+	public TicketImagesDAOImpl() {
+		super();
+		// TODO Auto-generated constructor stub
+	}	
+	
+	@Override
+	public TicketImagesVO saveImage(byte[] imageBytes) {
+        Session session = factory.openSession();
+
+        try {
+            
+            TicketImagesVO ticketImage = new TicketImagesVO();
+          
+            ticketImage.setImage(imageBytes);
+
+            session.save(ticketImage);
+
+        } catch (Exception e) {
+            e.printStackTrace(); 
+            }
+		return ticketImage;
+ 
+	}
+
 	
 	@Override
 	public void insert(TicketImagesVO ticketImagesVO) {
@@ -48,5 +74,7 @@ public class TicketImagesDAOImpl  implements TicketImagesDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 
 }
