@@ -47,6 +47,8 @@ public class MemberServlet extends HttpServlet {
 			doModify(req, resp);
 		} else if ("/save".equals(pathInfo)) {
 			doSave(req, resp);
+		} else {
+			System.out.println("error");
 		}
 	}
 	

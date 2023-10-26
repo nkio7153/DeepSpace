@@ -32,8 +32,8 @@
         <input type="date" id="memBth" name="memBth" value="${mem.memBth}" required><br><br>
         
         <label for="memSex">性別:</label>
-        <input type="radio" id="male" name="memSex" value="1"> 男
-        <input type="radio" id="female" name="memSex" value="2"> 女<br><br>
+        <input type="radio" id="memSex" name="memSex" value="1"> 男
+        <input type="radio" id="memSex" name="memSex" value="2"> 女<br><br>
         
         <label for="memEmail">電子郵件:</label>
         <input type="email" id="memEmail" name="memEmail" value="${mem.memEmail}" required><br><br>

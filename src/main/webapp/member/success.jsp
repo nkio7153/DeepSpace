@@ -28,10 +28,24 @@
  <jsp:include page="../indexpage/headpic.jsp" />
 <%-- 	<form action="${pageContext.request.contextPath}/mem/success" method="post"> --%>
 	<h1 align="center">歡迎登入成功！</h1>
-	<p align="center">您已成功登入，歡迎回來，${authenticatedMem.memName}！</p>
-	<hr>
-	<h1 align="center">會員資訊</h1>
-	<table border="1px" align="center" width="50%">
+<p align="center">您已成功登入，歡迎回來，${authenticatedMem.memName}！</p>
+<hr>
+
+	<!-- 新增行程規劃查詢按鈕 -->
+	<div style="display: flex; align-items: stretch;">
+    <!-- 切30%的寬度給行稱規劃查詢(找所有自己的旅遊規劃) -->
+    <div style="flex: 30%; margin-left: 10px;">
+	     <form action="${pageContext.request.contextPath}/tr/tourList" method="post">
+	     	<input type="hidden" name="memId" value="${authenticatedMem.memId}" readonly">
+            <input type="submit" value="我的行程查詢" style="height: 50px; width: 150px; font-size: 18px; color: #fff; background-color: #008CBA; border: none; padding: 10px; cursor: pointer; border-radius: 10px;">
+        </form>
+	</div>
+	
+	<div style="flex: 70%;">
+		
+		
+		<h1 align="center">會員資訊</h1>
+		<table border="1px" align="center" width="90%">
 		
 			<th style="display: none;">會員編號</th><td  style="display: none;">${authenticatedMem.memId} </td>
 		
@@ -99,6 +113,8 @@
 		<input type="hidden" name="action"	value="update">
 	<input type="button" value="登出" align="center" onclick="index()">
 	</form>
+	</div>
+    </div>
 	<script type="text/javascript">
 	    function index() {
 	        document.location.href = "${pageContext.request.contextPath}/member/member.jsp";
