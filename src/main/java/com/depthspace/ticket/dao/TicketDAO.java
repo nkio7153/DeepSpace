@@ -9,7 +9,7 @@ public interface TicketDAO {
 	
 		int insert(TicketVO ticketVO); //新增票券物件
 
-		int update(TicketVO ticketVO); //更新票券物件
+		TicketVO update(TicketVO ticketVO); //更新票券物件
 		
 		int delete(Integer ticketId); //刪除票券物件
 		 
