@@ -39,12 +39,13 @@ public class TicketServiceImpl implements TicketService {
 		dao.insert(ticketVO);
 	}
 
-	//更新票券
+	// 更新票券
 	@Override
 	public TicketVO updateTicket(TicketVO ticketVO) {
-		dao.update(ticketVO);
-        return null;
+	    TicketVO updatedTicket = dao.update(ticketVO);
+	    return updatedTicket;
 	}
+
 	
 	//刪除票券
 	@Override
