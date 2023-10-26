@@ -49,16 +49,20 @@
 		<div class="container mt-5">
 			<div class="container mt-5">
 				<h1>新增票券</h1>
-				<form action="<%= request.getContextPath()%>/backendticket/mgadd" method="post">
+				<form action="<%= request.getContextPath()%>/backendticket/mgadd" method="post" enctype="multipart/form-data">
 					<div class="row">
+
 						<!-- 類型 -->
+						<!-- 關聯表格說明，三個變數，itmes是servlet傳來的list、option value為其元素值、第三個為出現在選單的文字-->
+						<!-- forEach的var跟option的是有關連的，取自於其forEach遍歷的資料 -->
 						<div class="form-group col-md-6">
-							<label for="type">類型</label> <select name="type" id="type"
-								class="form-control">
-								<c:forEach var="typeItem" items="${ticket.ticketType.typeName}">
-									<option value="${typeItem}">${typeItem}</option>
-								</c:forEach>
-							</select>
+						    <label for="ticketTypeId">票券類型</label>
+						    <select name=ticketTypeId id="ticketTypeId" class="form-control"> 
+						        <option value="">請選擇票券類型</option>
+						        <c:forEach var="typeItem" items="${ticketTypes}">
+						            <option value="${typeItem.ticketTypeId}">${typeItem.typeName}</option>
+						        </c:forEach>
+						    </select>
 						</div>
 
 						<!-- 票券名稱 -->
@@ -112,12 +116,13 @@
 
 						<!-- 區域 -->
 						<div class="form-group col-md-6">
-							<label for="cityId">區域</label> <select name="cityId"
-								id="cityId" class="form-control">
-								<c:forEach var="cityItem" items="${ticket.city.cityName}">
-									<option value="${ticket.city.cityName}">${ticket.city.cityName}</option>
-								</c:forEach>
-							</select>
+						    <label for="cityId">區域</label> 
+						    <select name="cityId" id="cityIdhhshs" class="form-control">
+						        <option value="">請選擇縣市</option>
+						        <c:forEach var="cityItem" items="${cities}">
+						            <option value="${cityItem.cityId}">${cityItem.cityName}</option>
+						        </c:forEach>
+						    </select>
 						</div>
 
 						<!-- 地址 -->
@@ -140,7 +145,7 @@
 
 						<!-- 上下架狀況 -->
 						<div class="form-group col-md-6">
-							<label>上下架</label><br> <input type="radio" id="on"
+							<label>上下架</label><br> <input type="radio" id="on" checked="true"
 								name="status" value="1"> <label for="on">上架</label>
 
 							<input type="radio" id="off" name="status" value="0">
