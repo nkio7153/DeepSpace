@@ -57,7 +57,33 @@
       }
 </style>
  
-    
+    <!-- 引入Bootstrap JS 和 Popper.js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<script>
+	
+		/***處理上架狀態顯示文字***/
+	    var stockValue = "${ticket.status}"; 
+	    var stockStatusElement = document.getElementById('stockStatus'); // stock狀態的元素
+	
+	    if (stockValue === "1") {
+	        stockStatusElement.textContent = '上架';
+	    } else if (stockValue === "0") {
+	        stockStatusElement.textContent = '未上架';
+	    } 
+	    
+	    /***處理描述文字顯示***/
+	    var descElement = document.getElementById('description'); // s描述元素
+
+	    if (descElement.textContent.length > 50) {
+	        var shortDesc = descElement.textContent.substring(0, 50) + '...';
+	        descElement.textContent = shortDesc;
+	    }
+
+	</script>
+	
 </head>
 <body>
     <div class="container mt-5">
@@ -121,10 +147,12 @@
 			    <td><img src="<%=request.getContextPath()%>/ticketimage?ticketId=${ticket.ticketId}" alt="Main Ticket Image"></td>
 			    <td>${ticket.ticketName}</td>
 			    <td>${ticket.price}</td>
-			    <td>${ticket.stock}</td>
-			    <td>${ticket.description}</td>    
+				<td>${ticket.stock}</td>
+		        <c:set var="descValue" value="${ticket.description}" />
+		        <td>${descValue}</td>
 			    <td>${ticket.publishedDate}</td> 
-			    <td>${ticket.status}</td>      
+		        <c:set var="stockValue" value="${ticket.status}" />
+		        <td>${stockValue}</td>    
 			    <td>${ticket.city.cityName}</td>
 			     <td>
                     <a href="${pageContext.request.contextPath}/backendticket/mgedit?ticketId=${ticket.ticketId}" class="btn btn-primary btn-sm">修改</a>
@@ -181,60 +209,12 @@
 </nav>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-function ajaxSearch() {
-    var searchField = document.getElementById('searchField').value;
-
-    $.ajax({
-        type: "POST",
-        url: "${pageContext.request.contextPath}/backendticket/mgsearch", // 搜尋網址
-        data: { action: "doSearch", ticketName: searchField },
-        success: function(data) {
-            // 先清空目前的列表
-            var tableBody = document.querySelector('table tbody');
-            tableBody.innerHTML = "";
-
-            // 將查詢到的資料填回列表
-            data.forEach(function(ticket) {
-                
-                var row = `<tr>
-                	<td>${itemsPerPage * (currentPage - 1) + status.index + 1}</td>
-    				<td>${ticket.ticketType.typeName}</td>
-    				<td>${ticket.ticketId}</td>
-    			    <td><img src="<%=request.getContextPath()%>/ticketimage?ticketId=${ticket.ticketId}" alt="Main Ticket Image"></td>
-    			    <td>${ticket.ticketName}</td>
-    			    <td>${ticket.price}</td>
-    			    <td>${ticket.stock}</td>
-    			    <td>${ticket.description}</td>    
-    			    <td>${ticket.publishedDate}</td> 
-    			    <td>${ticket.status}</td>      
-    			    <td>${ticket.city.cityName}</td>
-    			    <td>
-                        <a href="${pageContext.request.contextPath}/backendticket/mgedit?ticketId=${ticket.ticketId}" class="btn btn-primary btn-sm">修改</a>
-    				    <a href="${pageContext.request.contextPath}/backendticket/mgdel?ticketId=${ticket.ticketId}" class="btn btn-danger btn-sm" onclick="return confirm('確定刪除？不要亂刪喔！');">删除</a>
-                </tr>`;                
-
-                tableBody.innerHTML += row;
-            });
-        },
-        error: function(err) {
-            console.log('Error:', err);
-        }
-    });
-}
-</script>
+	<!-- 回首頁 -->
+	<div class="page-item">
+	<a class="page-link" href="${pageContext.request.contextPath}/backendticket/">回首頁</a>
+	</div>
 
 
 
-<!-- 回首頁 -->
-<div class="page-item">
-<a class="page-link" href="${pageContext.request.contextPath}/backendticket/">回首頁</a>
-</div>
-
-    <!-- 引入Bootstrap JS 和 Popper.js -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

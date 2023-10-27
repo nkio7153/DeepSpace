@@ -73,7 +73,7 @@ public class TicketProductServlet extends HttpServlet {
 		//取得所有票券內容(VO)
 		List<TicketVO> ticketList = ticketService.getAllTickets(currentPage);
 		//取得票券區域
-		List<TicketVO> ticketsWithCity = ticketService.getTicketsWithCity();
+//		List<TicketVO> ticketsWithCity = ticketService.getTicketsWithCity();
 
 		if (req.getSession().getAttribute("ticketPageQty") == null) {
 			int ticketPageQty = ticketService.getPageTotal();
@@ -104,10 +104,10 @@ public class TicketProductServlet extends HttpServlet {
 		}
 
 		TicketVO ticket = ticketService.getTicketById(ticketId);
-		List<TicketVO> ticketsWithCity = ticketService.getTicketsWithCity();
+//		List<TicketVO> ticketsWithCity = ticketService.getTicketsWithCity();
 
 		req.setAttribute("ticket", ticket);
-		req.getRequestDispatcher("/ticketProduct/tp.jsp").forward(req, res);
+		req.getRequestDispatcher("/ticketProduct/tpItem.jsp").forward(req, res);
 	} 
 	
 
@@ -158,30 +158,5 @@ public class TicketProductServlet extends HttpServlet {
 //		}
 //
 //
-//
-//	/************票券新增************/
-//	private void doAddSuccess(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-//		//下列要有set，才能將前端的資料送進資料庫
-//		TicketVO ticket = new TicketVO();
-//		ticket.setTicketName(req.getParameter("ticketName"));
-//		ticket.setPrice(Integer.valueOf(req.getParameter("price")));
-//		ticket.setStock(Integer.valueOf(req.getParameter("stock")));
-////		Integer ticketTypeId = Integer.valueOf(req.getParameter("TICKET_TYPE_ID"));
-//		ticket.setValidDays(Integer.valueOf(req.getParameter("validDays")));
-//		ticket.setDescription(req.getParameter("description"));
-//		ticket.setAddress(req.getParameter("address"));
-//		ticket.setLongitude(Double.valueOf(req.getParameter("longitude")));
-//		ticket.setLatitude(Double.valueOf(req.getParameter("latitude")));
-//		ticket.setStatus(Byte.valueOf(req.getParameter("status")));
-//		
-//		ticketService.addTicket(ticket);
-//	}
-//	
-//	/************ 票券刪除 ************/
-//	private void doDel(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-//		Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
-//		ticketService.deleteTicket(ticketId);
-//	}
-
 }
 

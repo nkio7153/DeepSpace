@@ -18,7 +18,7 @@
 <div style="text-align: center;">
 <c:if test="${not empty errorMsgs}">
 	<font  style="color:red" align="center">查無資料：帳號或密碼錯誤</font>
-	<ul>
+	<ul style="list-style: none;">
 		<c:forEach var="message" items="${errorMsgs}">
 			<li style="color:red">${message}</li>
 		</c:forEach>
