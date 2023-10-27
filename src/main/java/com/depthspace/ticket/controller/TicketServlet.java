@@ -170,13 +170,14 @@ public class TicketServlet extends HttpServlet {
 
 			ticketImagesService.save(ticketImage);
 
-			// 送出後導向以下頁面
+			// 導向以下頁面
 			res.sendRedirect(req.getContextPath() + "/backendticket/mglist");
 		}
 	}
 
 	/************ 票券修改 ************/
 	private void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+
 		if (!req.getMethod().equalsIgnoreCase("POST")) {
 			// 若不是POST送出請求，就到編輯頁面 (將該id票券的值塞入)
 			Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
@@ -188,12 +189,15 @@ public class TicketServlet extends HttpServlet {
 			req.setAttribute("ticketTypes", ticketTypes);
 			req.setAttribute("cities", cities);
 			req.setAttribute("ticket", ticket);
-
+		
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgEdit.jsp");
 			dispatcher.forward(req, res);
+			
 		} else {
-			Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
+			
+			Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));			
 			TicketVO ticket = ticketService.getTicketById(ticketId);
+
 			// 送出更新後的資料
 			ticket.setTicketName(req.getParameter("ticketName"));
 			ticket.setPrice(Integer.valueOf(req.getParameter("price")));
@@ -216,6 +220,29 @@ public class TicketServlet extends HttpServlet {
 			TicketTypesVO ticketType = new TicketTypesVO();
 			ticketType.setTicketTypeId(ticketTypeId);
 			ticket.setTicketType(ticketType);
+			
+			///////////////////
+			// 創建 TicketImagesVO 對象並設定 IS_MAIN_IMAGE 屬性
+			TicketImagesVO ticketImage = new TicketImagesVO();
+			ticketImage.setTicket(ticket);
+
+			// 讀取 isMainImage 的值
+			String isMainImageValue = req.getParameter("isMainImage");
+			// 根據 isMainImage 的值來設定圖片的 IS_MAIN_IMAGE 屬性
+			byte isMainImage = (byte) ((isMainImageValue != null && isMainImageValue.equals("1")) ? 1 : 0);
+
+			ticketImage.setIsMainImage(isMainImage);
+
+			// readInput
+			Part filePart = req.getPart("ticketImage");
+			InputStream inputStream = filePart.getInputStream();
+			byte[] imageBytes = readInputStream(inputStream);
+			ticketImage.setTicket(ticket);
+			ticketImage.setImage(imageBytes);
+
+			ticketImagesService.save(ticketImage);
+			
+			////////////
 
 	        // 更新票券
 	        TicketVO updatedTicket = ticketService.updateTicket(ticket);

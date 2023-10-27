@@ -19,6 +19,8 @@
 				<h1>修改票券</h1>
 				<form action="<%= request.getContextPath()%>/backendticket/mgedit" method="post" enctype="multipart/form-data">
 					<div class="row">
+						<!-- ID -->
+						<input type="hidden" name="ticketId" value=${ticket.ticketId}>
 						<!-- 類型 -->
 						<div class="form-group col-md-6">
 						    <label for="ticketTypeId">票券類型</label>
@@ -60,18 +62,19 @@
 									onchange="previewImage(event)">
 							</div>
 
+						
 						<!-- 圖片預覽 -->
 							<div class="form-group col-md-6">
 								<label>圖片預覽</label> 
 								<img id="imagePreview" src="<%=request.getContextPath()%>/ticketimage?ticketId=${ticket.ticketId}" alt="圖片預覽"
-									style="max-width: 100%; max-height: 300px; display: none;" />
+									style="max-width: 100%; max-height: 300px;" />
 							</div>
 						</div>
 
 						<!-- 是否為主圖 -->
 						<div class="form-group col-md-6">
 						    <label for="isMainImage">是否為主圖</label>
-						    <input type="checkbox" id="isMainImage" name="isMainImage" value="1" ${ticketImages.isMainImage ? 'checked' : ''}>
+						    <input type="checkbox" id="isMainImage" name="isMainImage" value="1" ${ticketImages.isMainImage == 1 ? 'checked' : ''}>
 						</div>
 
 						<!-- 使用天數 -->

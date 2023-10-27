@@ -28,18 +28,18 @@
 
 <style>
         body, label {
-            font-size: 0.875rem; /* 調整字體大小，您可以根據需要修改這個值 */
-            line-height: 1.5; /* 調整行距，您可以根據需要修改這個值 */
+            font-size: 0.875rem; 
+            line-height: 1.5; 
         }
 
         h1 {
             white-space: nowrap; /* 防止標題斷行 */
-            font-size: 1.5rem; /* 如果您覺得標題太大，也可以稍微調小 */
-            overflow: hidden; /* 為了避免在某些極端情況下的布局問題 */
-            text-overflow: ellipsis; /* 如果標題過長，用省略號表示 */
+            font-size: 1.5rem; 
+            overflow: hidden; 
+            text-overflow: ellipsis; /* 標題過長省略號表示 */
         }
 
-        .form-control, .btn { /* 可選：如果您想要同時縮小表單控件和按鈕的大小 */
+        .form-control, .btn { /* 同時縮小表單控件和按鈕的大小 */
             font-size: 0.875rem;
         }
 </style>
