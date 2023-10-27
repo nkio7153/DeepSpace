@@ -1,6 +1,10 @@
 package com.depthspace.promotion.model.promotiondetails;
 
-import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
+
+
+
+
+import com.depthspace.promotion.model.promotion.PromotionTicketView;
 
 import java.util.List;
 import java.util.Map;
@@ -9,16 +13,19 @@ public interface HbProDeDao_Interface {
 
     int insert(PromotionDetailsVO entity);
 
+    void insertBatch(List<PromotionDetailsVO> entities);
+
     int update(PromotionDetailsVO entity);
 
     int delete(PromotionDetailsVO.CompositeDetail id);
 
     PromotionDetailsVO getById(PromotionDetailsVO.CompositeDetail id);
-    List<PromotionDetailsVO> getByProId(Integer id);
+    List<PromotionTicketView> getByProId(Integer proId);
 
     List<PromotionDetailsVO> getAll();
 
     List<PromotionDetailsVO> getAll(int currentPage);
 
     long getTotal();
+    //取促銷遍號取得所有促銷明細
 }

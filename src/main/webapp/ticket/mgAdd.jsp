@@ -122,7 +122,7 @@
 						<!-- 區域 -->
 						<div class="form-group col-md-6">
 						    <label for="cityId">區域</label> 
-						    <select name="cityId" id="cityIdhhshs" class="form-control">
+						    <select name="cityId" id="cityId" class="form-control">
 						        <option value="">請選擇縣市</option>
 						        <c:forEach var="cityItem" items="${cities}">
 						            <option value="${cityItem.cityId}">${cityItem.cityName}</option>

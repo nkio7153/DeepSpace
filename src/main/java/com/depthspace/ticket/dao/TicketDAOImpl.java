@@ -48,33 +48,19 @@ public class TicketDAOImpl implements TicketDAO {
 	public int insert(TicketVO ticketVO) {
 		return (Integer) getSession().save(ticketVO);
 	}
-//	@Override
-//	public TicketVO insert(TicketVO ticketVO) {
-//	    Transaction transaction = null;
-//	    try {
-//	        transaction = getSession().beginTransaction();
-//	        Integer ticketId = (Integer) getSession().save(ticketVO);
-//	        transaction.commit();
-//
-//	        return ticketId;
-//	    } catch (Exception e) {
-//	        if (transaction != null) {
-//	            transaction.rollback();
-//	        }
-//	        throw e;
-//	    }
-//	}
 	
-	//更新一筆資料
+	// 更新一筆資料
 	@Override
-	public int update(TicketVO ticketVO) {
-		try {
-			getSession().update(ticketVO);
-			return 1;
-		} catch (Exception e) {
-			return -1;
-		}
+	public TicketVO update(TicketVO ticketVO) {
+	    try {
+	        getSession().update(ticketVO);
+	        return ticketVO; // 返回更新后的 TicketVO 对象
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null; // 更新失败时返回 null 或者抛出异常
+	    }
 	}
+
 	
 	//刪除一筆資料
 	@Override

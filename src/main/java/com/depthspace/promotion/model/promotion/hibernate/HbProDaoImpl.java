@@ -12,8 +12,8 @@ public class HbProDaoImpl implements HbProDao_Interface {
 
     private SessionFactory factory;
 
-    public HbProDaoImpl() {
-        this.factory = HibernateUtil.getSessionFactory();
+    public HbProDaoImpl(SessionFactory factory) {
+        this.factory = factory;
     }
     private Session getSession(){
         return factory.getCurrentSession();
