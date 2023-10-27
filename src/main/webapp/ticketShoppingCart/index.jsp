@@ -36,10 +36,6 @@
 
 <!-- 其他操作 -->
 <ul>
-    <li><a href="${pageContext.request.contextPath}/tsc/listAll">查看所有購物車列表</a></li>
-    <br>
-    <br>
-    <br>
     <li><a href="${pageContext.request.contextPath}/to/index?memId=${memId}">票券訂單索引頁面</a></li>
     <br>
     <br>
