@@ -46,7 +46,7 @@ function processUpdateSave() {
         async: false,
         success: function(data) {
             alert('更新成功');
-            window.location.href = '<%=request.getContextPath()%>/account/list.jsp';
+            window.location.href='<%=request.getContextPath()%>/account/list.jsp';
         }
     });
 }

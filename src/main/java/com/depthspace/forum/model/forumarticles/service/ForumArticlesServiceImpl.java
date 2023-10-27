@@ -1,5 +1,6 @@
 package com.depthspace.forum.model.forumarticles.service;
 
+import java.util.Base64;
 import java.util.List;
 
 import com.depthspace.forum.model.forumarticles.ForumArticlesVO;
@@ -31,7 +32,11 @@ public class ForumArticlesServiceImpl implements ForumArticlesService{
 
 	@Override
 	public List<ForumArticlesVO> getAll() {
-		return dao.getAll();
+		List<ForumArticlesVO> list = dao.getAll();
+		for (ForumArticlesVO vo : list) {
+			vo.setBase64Str(Base64.getEncoder().encodeToString(vo.getAtriImg()));
+		}
+		return list;
 	}
 	
 }
