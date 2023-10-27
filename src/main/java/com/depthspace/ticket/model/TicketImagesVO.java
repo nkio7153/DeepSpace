@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -29,7 +30,8 @@ public class TicketImagesVO implements Serializable {
 	@JoinColumn(name="TICKET_ID", nullable = false)
 	private TicketVO ticket;
 	
-	@Column(name="IMAGE", columnDefinition = "mediumblob")
+    @Lob
+	@Column(name="IMAGE", columnDefinition = "MEDIUMBLOB")
 	private byte[] image; 
 	
 	@Column(name = "IS_MAIN_IMAGE") //1為主圖，0為多張圖

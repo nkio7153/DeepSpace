@@ -3,6 +3,8 @@ package com.depthspace.ticket.service;
 import java.util.List;
 import java.util.Map;
 
+import com.depthspace.attractions.model.CityVO;
+import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 
@@ -19,8 +21,6 @@ public interface TicketService {
     TicketVO getTicketById(Integer ticketId);  
     //取得所有票券
 	List<TicketVO> getAllTickets();   
-    //取得票券對應的區域
-    List<TicketVO> getTicketsWithCity();
     //取得所有票券(根據頁面)
     List<TicketVO> getAllTickets(int currentPage);  
     //取得所有票券總頁面數量
@@ -30,15 +30,14 @@ public interface TicketService {
     //取得票券主圖(沒用)
     List<TicketVO> getAllTicketsWithMainImages(); 
     //萬用查詢
-    List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map); //萬用查詢
+    List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map); 
+    //查詢所有票券類型
+    List<TicketTypesVO> getAllTicketTypes();
+    //查詢所有票券區域
+    List<CityVO> getAllCities();
 
-
-	
-    
-
-//    List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map);
-	
- 
+ //    //取得票券對應的區域
+//    List<TicketVO> getTicketsWithCity();
 
 }
 

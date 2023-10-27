@@ -86,8 +86,9 @@ public class TicketVO implements Serializable{
     @JoinColumn(name = "AREA_ID", referencedColumnName = "CITY_ID")
     private CityVO city;
     
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ticket", cascade = CascadeType.ALL)
-	private Set<TicketImagesVO>  images;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TicketImagesVO> images = new HashSet<>();
+
 
 	@Transient
     private String cityName;

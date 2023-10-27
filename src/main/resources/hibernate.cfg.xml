@@ -44,10 +44,10 @@
 		<mapping class="com.depthspace.attractions.model.CityVO"/>
 
 		<!--tour-->
-		<mapping class="com.depthspace.tour.model.TourVO"/>
+		<mapping class="com.depthspace.tour.model.tour.TourVO"/>
 		<mapping class="com.depthspace.tour.model.TourDetailVO"/>
 		<mapping class="com.depthspace.tour.model.TourDaysVO"/>
-		<mapping class="com.depthspace.tour.model.TourTypeVO"/>
+		<mapping class="com.depthspace.tour.model.tourtype.TourTypeVO"/>
 
 		<!-- Member-->
  		<mapping class="com.depthspace.member.model.MemVO"/>

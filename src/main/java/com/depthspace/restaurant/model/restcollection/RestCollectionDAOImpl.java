@@ -19,19 +19,13 @@ public class RestCollectionDAOImpl implements RestCollectionDAO {
 	
 	
 	@Override
-	public int add(RestCollectionVO restCollectionVO) {
-		return (Integer) getSession().save(restCollectionVO);
+	public void add(RestCollectionVO restCollectionVO) {
+		getSession().save(restCollectionVO);
 	}
 
 	@Override
-	public int delete(RestCollectionVO restCollectionVO) {
-		RestCollectionVO rc = getSession().get(RestCollectionVO.class, restCollectionVO);
-		if (rc != null) {
-			getSession().delete(rc);
-			return 1;
-		} else {
-			return -1;
-		}
+	public void delete(RestCollectionVO restCollectionVO) {
+		getSession().delete(restCollectionVO);
 	}
 
 	@Override

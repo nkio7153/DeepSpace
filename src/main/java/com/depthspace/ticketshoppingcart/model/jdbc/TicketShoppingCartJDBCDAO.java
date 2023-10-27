@@ -15,7 +15,7 @@ import java.util.List;
 
 public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interface {
     private static final String INSERT_STMT=
-            "INSERT INTO TICKET_SHOPPING_CART(MEM_ID, TICKET_ID, QUANTITY) VALUES(?,?,?,?)";
+            "INSERT INTO TICKET_SHOPPING_CART(MEM_ID, TICKET_ID, QUANTITY) VALUES(?,?,?)";
     private static final String DELETE_ONE=
             "DELETE FROM TICKET_SHOPPING_CART WHERE MEM_ID=? AND TICKET_ID=?";
     private static final String DELETE_ALL=
@@ -30,11 +30,17 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
     private static final String GET_ALL_STMT=
             "SELECT MEM_ID, TICKET_ID, QUANTITY FROM TICKET_SHOPPING_CART  ORDER BY MEM_ID";
     private static final String GET_ALL_STMT2_BY_MEMID =
-            "SELECT tsc.MEM_ID, tsc.TICKET_ID, ti.IMAGE, t.TICKET_NAME, t.DESCRIPTION, t.PRICE, tsc.QUANTITY, (t.PRICE * tsc.QUANTITY) as SUBTOTAL " +
+            "SELECT tsc.MEM_ID, tsc.TICKET_ID, ti.SERIAL_ID, ti.IMAGE, t.TICKET_NAME, t.DESCRIPTION, t.PRICE, tsc.QUANTITY, (t.PRICE * tsc.QUANTITY) as SUBTOTAL " +
                     "FROM TICKET_SHOPPING_CART tsc " +
                     "JOIN TICKET t ON tsc.TICKET_ID = t.TICKET_ID " +
                     "JOIN TICKET_IMAGES ti ON t.TICKET_ID = ti.TICKET_ID " +
                     "WHERE tsc.MEM_ID = ?";
+    private static final String GET_ALL_STMT3_BY_MEMID =
+            "SELECT tsc.MEM_ID, tsc.TICKET_ID, ti.SERIAL_ID, ti.IMAGE, t.TICKET_NAME, t.DESCRIPTION, t.PRICE, tsc.QUANTITY, (t.PRICE * tsc.QUANTITY) as SUBTOTAL " +
+                    "FROM TICKET_SHOPPING_CART tsc " +
+                    "JOIN TICKET t ON tsc.TICKET_ID = t.TICKET_ID " +
+                    "JOIN TICKET_IMAGES ti ON t.TICKET_ID = ti.TICKET_ID " +
+                    "WHERE tsc.MEM_ID = ? AND ti.IS_MAIN_IMAGE = 1";
 
     @Override
     public void insert(TicketShoppingCartVO tsc) {
@@ -183,21 +189,54 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
     }
     //取得 去票券及票券圖片表格
     //票券圖片、票券名稱、票券介紹、價格、數量、小計
+//    @Override
+//    public List<TicketInfoVO> getbyMemId(Integer memId) {
+//            ArrayList<TicketInfoVO> list = new ArrayList<>();
+//        Connection conn=null;
+//        PreparedStatement ps=null;
+//        ResultSet rs=null;
+//        try {
+//            conn = DBUtil.getConnection();
+//            ps = conn.prepareStatement(GET_ALL_STMT2_BY_MEMID);
+//            ps.setInt(1,memId);
+//            rs = ps.executeQuery();
+//            while(rs.next()){
+//                TicketInfoVO tif = new TicketInfoVO();
+//                tif.setImage(rs.getBytes("IMAGE"));
+//                tif.setTicketId(rs.getInt("TICKET_ID"));
+//                tif.setSerialId(rs.getInt("SERIAL_ID"));
+//                tif.setMemId(rs.getInt("MEM_ID"));
+//                tif.setTicketName(rs.getString("TICKET_NAME"));
+//                tif.setDescription(rs.getString("DESCRIPTION"));
+//                tif.setPrice(rs.getInt("PRICE"));
+//                tif.setQuantity(rs.getInt("QUANTITY"));
+//                tif.setSubtotal(rs.getInt("SUBTOTAL"));
+//                list.add(tif);
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }finally {
+//            DBUtil.close(conn, ps, rs);
+//        }
+//        return list;
+//    }
+
     @Override
     public List<TicketInfoVO> getbyMemId(Integer memId) {
-            ArrayList<TicketInfoVO> list = new ArrayList<>();
+        ArrayList<TicketInfoVO> list = new ArrayList<>();
         Connection conn=null;
         PreparedStatement ps=null;
         ResultSet rs=null;
         try {
             conn = DBUtil.getConnection();
-            ps = conn.prepareStatement(GET_ALL_STMT2_BY_MEMID);
+            ps = conn.prepareStatement(GET_ALL_STMT3_BY_MEMID);
             ps.setInt(1,memId);
             rs = ps.executeQuery();
             while(rs.next()){
                 TicketInfoVO tif = new TicketInfoVO();
                 tif.setImage(rs.getBytes("IMAGE"));
                 tif.setTicketId(rs.getInt("TICKET_ID"));
+                tif.setSerialId(rs.getInt("SERIAL_ID"));
                 tif.setMemId(rs.getInt("MEM_ID"));
                 tif.setTicketName(rs.getString("TICKET_NAME"));
                 tif.setDescription(rs.getString("DESCRIPTION"));

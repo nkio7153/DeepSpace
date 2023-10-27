@@ -1,6 +1,7 @@
 package com.depthspace.restaurant.controller;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -88,14 +89,44 @@ public class RestServlet extends HttpServlet {
 	}
 	
 	private String add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<String> errorMsgs = new LinkedList<String>();
+		req.setAttribute("errorMsgs", errorMsgs);
+		
+		String restName = req.getParameter("restName");
+		if (restName.isEmpty() || restName == null || restName.trim().length() == 0) {
+			errorMsgs.add("餐廳名稱請勿空白");
+		}
+		String restTel = req.getParameter("restTel");
+		if (restTel.isEmpty() || restTel == null || restTel.trim().length() == 0) {
+			errorMsgs.add("餐廳電話請勿空白");
+		}
+		String restAddress = req.getParameter("restAddress");
+		if (restAddress.isEmpty() || restAddress == null || restAddress.trim().length() == 0) {
+			errorMsgs.add("餐廳電話請勿空白");
+		}
+		String restType = req.getParameter("restType");
+		if (restType.isEmpty() || restType == null || restType.trim().length() == 0) {
+			errorMsgs.add("餐廳類型請勿空白");
+		}
+		String restOpen = req.getParameter("restOpen");
+		if (restOpen.isEmpty() || restOpen == null || restOpen.trim().length() == 0) {
+			errorMsgs.add("營業時間請勿空白");
+		}
+		Integer bookingLimit = null;
+		try {
+			bookingLimit = Integer.valueOf(req.getParameter("bookingLimit").trim());
+		} catch (Exception e) {
+			errorMsgs.add("可預約組數請勿空白");
+			bookingLimit = 0;
+		}
 		RestVO rest = new RestVO();
-		rest.setRestName(req.getParameter("restName"));
-		rest.setRestTel(req.getParameter("restTel"));
-		rest.setRestAddress(req.getParameter("restAddress"));
-		rest.setRestType(req.getParameter("restType"));
-		rest.setRestOpen(req.getParameter("restOpen"));
+		rest.setRestName(restName);
+		rest.setRestTel(restTel);
+		rest.setRestAddress(restAddress);
+		rest.setRestType(restType);
+		rest.setRestOpen(restOpen);
 		rest.setRestStatus(Integer.valueOf(req.getParameter("restStatus")));
-		rest.setBookingLimit(Integer.valueOf(req.getParameter("bookingLimit")));
+		rest.setBookingLimit(bookingLimit);
 		rest.setAdminId(Integer.valueOf(req.getParameter("adminId")));
 		restService.addRest(rest);
 		return "/Rest/listCompositeQuery.jsp";

@@ -13,24 +13,27 @@
 <html>
 <head>
     <title>票券訂單</title>
+    <jsp:include page="../indexpage/head.jsp" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+<jsp:include page="../indexpage/header.jsp" />
+<jsp:include page="../indexpage/headpic.jsp"/>
 <input type="button" value="返回" onclick="index()">
 <h1 align="center">票券訂單列表</h1>
 <hr>
-<table border="1px" align="center" width="50%">
+<table border="1px" align="center" width="80%">
     <tr>
-        <th>序號</th>
-        <th>訂單編號</th>
+        <th class="text-center">序號</th>
+        <th class="text-center">訂單編號</th>
 <%--        <th>總品項</th>--%>
-        <th>會員編號</th>
-        <th>訂單日期</th>
-        <th>總金額</th>
-        <th>點數回饋</th>
-        <th>實付金額</th>
-        <th>支付方式</th>
-        <th>操作</th>
+        <th class="text-center">會員編號</th>
+        <th class="text-center">訂單日期</th>
+        <th class="text-center">總金額</th>
+        <th class="text-center">點數回饋</th>
+        <th class="text-center">實付金額</th>
+        <th class="text-center">支付方式</th>
+        <th class="text-center">操作</th>
     </tr>
 
 
@@ -47,7 +50,7 @@
             <td align="center">${order.paymentMethod}</td>
             <td align="center" width="100px">
 <%--                <a href="">刪除</a>--%>
-                <a href="">訂單明細</a>
+                <a href="${pageContext.request.contextPath}/tod/list?orderId=${order.orderId}">訂單明細</a>
             </td>
         </tr>
 
@@ -56,6 +59,10 @@
 <hr>
     <script type="text/javascript">
 
+    function orderList(){
+        document.location.href=
+            "${pageContext.request.contextPath}/tod/list?orderId=${order.orderId}"
+    }
     function index(){
         document.location.href=
             "${pageContext.request.contextPath}/to/index"
@@ -69,5 +76,6 @@
     <%--    });--%>
     <%--});--%>
     </script>
+<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

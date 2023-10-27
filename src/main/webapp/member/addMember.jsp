@@ -1,57 +1,64 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.depthspace.faq.model.service.*"%>
-<%@ page import="com.depthspace.faq.model.controller.*"%>
-<%@ page import="com.depthspace.faq.model.model.*"%>
+<%@ page import="com.depthspace.member.service.MemberService"%>
+<%@ page import="com.depthspace.member.model.MemVO"%>
+
 
 <html>
 <head>
-    <title>µù¥U·|­û</title>
+    <title>è¨»å†Šæœƒå“¡</title>
+      <style>
+        label.hidden {
+            display: none; /* æˆ–è€…ä½¿ç”¨ visibility: hidden; */
+        }
+    </style>
 </head>
 <body>
-    <h1>µù¥U·|­û</h1>
-    <form action="·s¼W·|­ûªº«áºÝ³B²zURL" method="POST">
-        <label for="memAcc">±b¸¹:</label>
-        <input type="text" id="memAcc" name="memAcc" required><br><br>
+    <h1>è¨»å†Šæœƒå“¡</h1>
+    <form action="${pageContext.request.contextPath}/mem/save" method="post" enctype="multipart/form-data">
+        <label for="memAcc">å¸³è™Ÿ:</label>
+        <input type="text" id="memAcc" name="memAcc" value="${mem.memAcc}" required><br><br>
         
-        <label for="memPwd">±K½X:</label>
-        <input type="password" id="memPwd" name="memPwd" required><br><br>
+        <label for="memPwd">å¯†ç¢¼:</label>
+        <input type="password" id="memPwd" name="memPwd" value="${mem.memPwd}" required><br><br>
         
-        <label for="memName">·|­û©m¦W:</label>
-        <input type="text" id="memName" name="memName" required><br><br>
+        <label for="memName">æœƒå“¡å§“å:</label>
+        <input type="text" id="memName" name="memName" value="${mem.memName}" required><br><br>
         
-        <label for="memIdentity">¨­¤ÀÃÒ¦r¸¹:</label>
-        <input type="text" id="memIdentity" name="memIdentity" required><br><br>
+        <label for="memIdentity">èº«åˆ†è­‰å­—è™Ÿ:</label>
+        <input type="text" id="memIdentity" name="memIdentity" value="${mem.memIdentity}" required><br><br>
         
-        <label for="memBth">¥Í¤é:</label>
-        <input type="date" id="memBth" name="memBth" required><br><br>
+        <label for="memBth">ç”Ÿæ—¥:</label>
+        <input type="date" id="memBth" name="memBth" value="${mem.memBth}" required><br><br>
         
-        <label for="memSex">©Ê§O:</label>
-        <input type="radio" id="male" name="memSex" value="1"> ¨k
-        <input type="radio" id="female" name="memSex" value="0"> ¤k<br><br>
+        <label for="memSex">æ€§åˆ¥:</label>
+        <input type="radio" id="memSex" name="memSex" value="1"> ç”·
+        <input type="radio" id="memSex" name="memSex" value="2"> å¥³<br><br>
         
-        <label for="memEmail">¹q¤l¶l¥ó:</label>
-        <input type="email" id="memEmail" name="memEmail" required><br><br>
+        <label for="memEmail">é›»å­éƒµä»¶:</label>
+        <input type="email" id="memEmail" name="memEmail" value="${mem.memEmail}" required><br><br>
         
-        <label for="memTel">¤â¾÷¹q¸Ü:</label>
-        <input type="tel" id="memTel" name="memTel" required><br><br>
+        <label for="memTel">æ‰‹æ©Ÿé›»è©±:</label>
+        <input type="tel" id="memTel" name="memTel" value="${mem.memTel}" required><br><br>
         
-        <label for="memAdd">¦a§}:</label>
-        <input type="text" id="memAdd" name="memAdd" required><br><br>
+        <label for="memAdd">åœ°å€:</label>
+        <input type="text" id="memAdd" name="memAdd" value="${mem.memAdd}" required><br><br>
         
-        <label for="accStatus">ª¬ºA:</label>
-        <select id="accStatus" name="accStatus">
-            <option value="1">¥¿±`</option>
-            <option value="0">°±¥Î</option>
+        <label for="accStatus" >ç‹€æ…‹:</label>
+        <select id="accStatus" name="accStatus"  >
+            <option value="1" >æ­£å¸¸ä½¿ç”¨ä¸­</option>
+<!--             <option value="0"  style="display: none;">åœç”¨</option> -->
         </select><br><br>
         
-        <label for="memPoint">·|­ûÂI¼Æ:</label>
-        <input type="number" id="memPoint" name="memPoint" required><br><br>
+<!--         <label for="memPoint">æœƒå“¡é»žæ•¸:</label> -->
+<%--         <input type="number" id="memPoint" name="memPoint" value="${mem.memPoint}" ><br><br> --%>
         
-        <label for="memImage">·|­û¹Ï¤ù:</label>
+        <label for="memImage">æœƒå“¡åœ–ç‰‡:</label>
         <input type="file" id="memImage" name="memImage"><br><br>
+        <input type="hidden" name="base64Image" value="${base64Image}">
         
-        <input type="submit" value="·s¼W·|­û">
+        <input type="submit" value="åŠ å…¥æœƒå“¡">
+        <input type="hidden" name="action" value="save">
     </form>
 </body>
 </html>
