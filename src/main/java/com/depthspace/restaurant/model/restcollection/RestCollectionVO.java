@@ -13,15 +13,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.depthspace.restaurant.model.restaurant.RestVO;
+import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name = "RESTAURANT_COLLECTION")
 @IdClass(RestCollectionVO.CompositeDetail.class)
 public class RestCollectionVO implements Serializable {
+	@Expose
 	@Id
 	@Column(name = "REST_ID")
 	private Integer restId;
-	
+	@Expose
 	@Id
 	@Column(name = "MEM_ID")
 	private Integer memId;
@@ -76,7 +78,8 @@ public class RestCollectionVO implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "RestCollectionVO [restId=" + restId + ", memId=" + memId + "]";
+//		return "RestCollectionVO [restId=" + restId + ", memId=" + memId + "]";
+		return "[restId=" + restId + ", memId=" + memId + "]";
 	}
 
 

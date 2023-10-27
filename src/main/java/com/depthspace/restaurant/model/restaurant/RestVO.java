@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restcollection.RestCollectionVO;
+import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name = "RESTAURANT")
