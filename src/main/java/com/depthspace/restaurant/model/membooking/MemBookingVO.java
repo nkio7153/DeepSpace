@@ -43,7 +43,7 @@ public class MemBookingVO implements Serializable {
 	@Column(name = "BOOKING_DATE")
 	private Date bookingDate;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {})
 	@JoinColumn(name = "REST_ID", referencedColumnName = "REST_ID", insertable = false, updatable = false)
 	private RestVO restVO;
 
