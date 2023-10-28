@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
+import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO;
 import com.depthspace.restaurant.model.restcollection.RestCollectionVO;
 import com.depthspace.restaurant.service.MemBookingService;
 import com.depthspace.restaurant.service.MemBookingServiceImpl;
@@ -42,14 +43,18 @@ public class RestApiServlet extends HttpServlet {
 		restcollectionService = new RestcollectionServiceImpl();
 		memBookingService = new MemBookingServiceImpl();
 		restBookingDateService = new RestBookingDateServiceImpl();
-		gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-		
-		
+		gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+								.setDateFormat("yyyy-MM-dd").create();
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doPost(req, resp);
+		if (req.getPathInfo().startsWith("/get")) {
+			doPost(req, resp);
+		} else {
+			resp.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+	        resp.getWriter().println("Method Not Allowed");
+		}
 	}
 
 	@Override
@@ -63,14 +68,23 @@ public class RestApiServlet extends HttpServlet {
 			case "/getRestCollectionAll":
 				getRestCollectionAll(req, resp);
 				break;
-			case "/getMemCollection":
-				getMemCollection(req, resp);
-				break;
 			case "/getMemBooking":
 				getMemBooking(req, resp);
 				break;
+			case "/getMemCollection":
+				getMemCollection(req, resp);
+				break;
+			case "/getRestBooking":
+				getRestBooking(req, resp);
+				break;
 			case "/RestCollection":
 				doRestCollection(req, resp);
+				break;
+			case "/doRest":
+				doRest(req, resp);
+				break;
+			case "/doMemBooking":
+				doMemBooking(req, resp);
 				break;
 				
 		}
@@ -139,10 +153,140 @@ public class RestApiServlet extends HttpServlet {
 	}
 	
 	private void getRestAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<RestVO> list = restService.getAllRest();
+		if (req.getParameter("restId") != null) {
+			RestVO vo = restService.getRestByRestId(Integer.parseInt(req.getParameter("restId")));
+			PrintWriter out = resp.getWriter();
+			out.print(gson.toJson(vo));
+		} else {
+			List<RestVO> list = restService.getAllRest();
+			PrintWriter out = resp.getWriter();
+			out.print(gson.toJson(list));
+		}
+	}
+	
+	private void getRestBooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<RestBookingDateVO> list = restBookingDateService.getAll();
 		PrintWriter out = resp.getWriter();
 		out.print(gson.toJson(list));
 	}
+	
+	private void doRest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		PrintWriter out = resp.getWriter();
+		String action = "";
+		action = req.getParameter("action");
+		switch (action) {
+			case("add"):
+				try {
+					String restName = req.getParameter("restName");
+					String restTel = req.getParameter("restTel");
+					String restAddress = req.getParameter("restAddress");
+					String restType = req.getParameter("restType");
+					String restOpen = req.getParameter("restOpen");
+					Integer	bookingLimit = Integer.valueOf(req.getParameter("bookingLimit").trim());
+					RestVO rest = new RestVO();
+					rest.setRestName(restName);
+					rest.setRestTel(restTel);
+					rest.setRestAddress(restAddress);
+					rest.setRestType(restType);
+					rest.setRestOpen(restOpen);
+					rest.setRestStatus(Integer.valueOf(req.getParameter("restStatus")));
+					rest.setBookingLimit(bookingLimit);
+					rest.setAdminId(Integer.valueOf(req.getParameter("adminId")));
+					restService.addRest(rest);
+					out.print("SUCCESS");
+				} catch (Exception e) {
+					out.print("ERROR");
+					e.printStackTrace();
+				}
+				break;
+			case("update"):
+				try {
+					RestVO rest = new RestVO();
+					rest.setRestName(req.getParameter("restName"));
+					rest.setRestTel(req.getParameter("restTel"));
+					rest.setRestAddress(req.getParameter("restAddress"));
+					rest.setRestType(req.getParameter("restType"));
+					rest.setRestOpen(req.getParameter("restOpen"));
+					rest.setRestStatus(Integer.parseInt(req.getParameter("restStatus")));
+					rest.setBookingLimit(Integer.parseInt(req.getParameter("bookingLimit")));
+					rest.setAdminId(Integer.parseInt(req.getParameter("adminId")));
+					rest.setRestId(Integer.parseInt(req.getParameter("restId")));
+					restService.updateRest(rest);
+					out.print("SUCCESS");
+				} catch (Exception e) {
+					out.print("ERROR");
+					e.printStackTrace();
+				}
+				break;
+			case("delete"):
+				try {
+					String restId = req.getParameter("restId");
+					restService.deleteRest(Integer.parseInt(restId));
+					out.print("SUCCESS");
+				} catch (Exception e) {
+					out.print("ERROR");
+					e.printStackTrace();
+				}
+				break;
+		}
+	}
+	
+	private void doMemBooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		PrintWriter out = resp.getWriter();
+		String action = "";
+		action = req.getParameter("action");
+		switch (action) {
+			case("add"):
+				try {
+					MemBookingVO vo = new MemBookingVO();
+					vo.setRestId(Integer.parseInt(req.getParameter("restId")));
+					vo.setMemId(Integer.parseInt(req.getParameter("memId")));
+					vo.setCheckStatus(Integer.parseInt(req.getParameter("checkStatus")));
+					vo.setBookingTime(Integer.parseInt(req.getParameter("bookingTime")));
+					vo.setBookingNumber(Integer.parseInt(req.getParameter("bookingNumber")));
+					vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
+					memBookingService.add(vo);
+					out.print("SUCCESS");
+				} catch (Exception e) {
+					out.print("ERROR");
+					e.printStackTrace();
+				}
+				break;
+			case("update"):
+				try {
+					MemBookingVO vo = new MemBookingVO();
+					vo.setRestId(Integer.parseInt(req.getParameter("restId")));
+					vo.setMemId(Integer.parseInt(req.getParameter("memId")));
+					vo.setCheckStatus(Integer.parseInt(req.getParameter("checkStatus")));
+					vo.setBookingTime(Integer.parseInt(req.getParameter("bookingTime")));
+					vo.setBookingNumber(Integer.parseInt(req.getParameter("bookingNumber")));
+					vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
+					vo.setBookingId(Integer.parseInt(req.getParameter("bookingId")));
+					memBookingService.update(vo);
+					out.print("SUCCESS");
+				} catch (Exception e) {
+					out.print("ERROR");
+					e.printStackTrace();
+				}
+				break;
+			case("delete"):
+				try {
+					memBookingService.delete(Integer.parseInt(req.getParameter("bookingId")));
+					out.print("SUCCESS");
+				} catch (Exception e) {
+					out.print("ERROR");
+					e.printStackTrace();
+				}
+				break;
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 }
