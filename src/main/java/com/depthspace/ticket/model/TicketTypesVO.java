@@ -69,11 +69,13 @@ public class TicketTypesVO implements Serializable {
 		this.tickets = tickets;
 	}
 
-	@Override
-	public String toString() {
-		return "TicketTypesVO [ticketTypeId=" + ticketTypeId + ", typeName=" + typeName + ", description=" + description
-				+ ", tickets=" + tickets + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "TicketTypesVO [ticketTypeId=" + ticketTypeId + ", typeName=" + typeName + ", description=" + description
+//				+ ", tickets=" + tickets + "]";
+//	}
+
+
 	
 	
 			

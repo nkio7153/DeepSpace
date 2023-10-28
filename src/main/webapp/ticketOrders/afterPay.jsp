@@ -4,7 +4,6 @@
 <head>
   <title>訂單已成立</title>
   <jsp:include page="../indexpage/head.jsp" />
-  <jsp:include page="../indexpage/headpic.jsp"/>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
@@ -23,6 +22,7 @@
 </head>
 <body class="bg-light">
 <jsp:include page="../indexpage/header.jsp" />
+<jsp:include page="../indexpage/headpic.jsp"/>
 <div class="container mt-4">
   <h1 class="text-center display-3 mb-4">訂單已成立</h1>
   <div class="row">
@@ -46,7 +46,7 @@
           <p class="mt-0 ml-auto fs-5">信用卡</p>
         </div>
 
-        <a href="#" class="btn btn-primary mt-4">返回首頁</a>
+        <a href="#" class="btn btn-primary mt-4 rounded">返回首頁</a>
       </div>
     </div>
   </div>

@@ -83,6 +83,6 @@
         <mapping class="com.depthspace.forum.model.articlereport.ArticleReportVO"/>
         <mapping class="com.depthspace.forum.model.articlestype.ArticlesTypeVO"/>
         <mapping class="com.depthspace.forum.model.forumarticles.ForumArticlesVO"/>
-         
+        <mapping class="com.depthspace.promotion.model.promotion.PromotionTicketView"/>
     </session-factory>
 </hibernate-configuration>
