@@ -94,5 +94,11 @@ public class HbProDeDaoImpl implements HbProDeDao_Interface {
     public long getTotal() {
         return getSession().createQuery("select count(*) from PromotionDetailsVO", long.class).uniqueResult();
     }
+    //用促銷編號刪除所有對應的促銷明細
+    public int deleteByProId(Integer proId){
+        return getSession().createQuery("delete from PromotionDetailsVO where promotionId= :proId")
+                .setParameter("proId",proId)
+                .executeUpdate();
+    }
 
 }
