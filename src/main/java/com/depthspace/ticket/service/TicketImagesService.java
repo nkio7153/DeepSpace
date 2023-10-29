@@ -6,4 +6,6 @@ public interface TicketImagesService {
 	
 	void save(TicketImagesVO ticketImage);
 
+	TicketImagesVO getTicketImagesById(Integer ticketId);
+
 }

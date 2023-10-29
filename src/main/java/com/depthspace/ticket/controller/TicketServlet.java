@@ -80,7 +80,7 @@ public class TicketServlet extends HttpServlet {
 		case "/mgedit": // 票券修改
 			doEdit(req, res);
 			break;
-		case "/mgsearch": // 票券查找
+		case "/mgfind": // 票券查找
 			doSearch(req, res);
 			break;
 		case "/mgdel": // 票券刪除
@@ -94,23 +94,38 @@ public class TicketServlet extends HttpServlet {
 
 	/************ 票券列表 ************/
 	private void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		//取得所有票券內容 未分頁取這兩行即可
+	    List<TicketVO> ticketListAll = ticketService.getAllTickets(); 
+	    req.setAttribute("ticketListAll", ticketListAll);
+		
+		// 取得所有票券內容(VO) "分頁"		
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 
-		// 取得所有票券內容(VO)
-		List<TicketVO> ticketList = ticketService.getAllTickets(currentPage);
+		List<TicketVO> ticketList = ticketService.getAllTickets2(currentPage);
 
 		if (req.getSession().getAttribute("ticketPageQty") == null) {
 			int ticketPageQty = ticketService.getPageTotal();
 			req.getSession().setAttribute("ticketPageQty", ticketPageQty);
 		}
-
 		req.setAttribute("ticketList", ticketList);
 		req.setAttribute("currentPage", currentPage);
 
+		// 處理票券類型不重複
+		Set<TicketTypesVO> uniqueTicketTypes = new HashSet<>();
+		for (TicketVO ticket : ticketListAll) {
+		    uniqueTicketTypes.add(ticket.getTicketType());
+		}
+		req.setAttribute("uniqueTicketTypes", new ArrayList<>(uniqueTicketTypes));
+		
+		
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgList.jsp");
 		dispatcher.forward(req, res);
 	}
+
+	// 在后端 Java 代码中获取票券列表，假设你已经有了 ticketListAll
+
+
 
 	/************ 票券新增 ************/
 	private void doAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -150,33 +165,41 @@ public class TicketServlet extends HttpServlet {
 
 			ticketService.addTicket(ticket); // 必須先將上述資料存入
 
-			// 創建 TicketImagesVO 對象並設定 IS_MAIN_IMAGE 屬性
-			TicketImagesVO ticketImage = new TicketImagesVO();
-			ticketImage.setTicket(ticket);
+			// 存入多張圖片
+			Collection<Part> fileParts = req.getParts(); // 多份圖
+			boolean isFirstImage = true; // 標記是否為第一張圖
 
-			// 讀取 isMainImage 的值
-			String isMainImageValue = req.getParameter("isMainImage");
-			// 根據 isMainImage 的值來設定圖片的 IS_MAIN_IMAGE 屬性
-			byte isMainImage = (byte) ((isMainImageValue != null && isMainImageValue.equals("1")) ? 1 : 0);
+			for (Part filePart : fileParts) { // 對應前端上傳的圖片ticketImages
+				if (filePart.getName().equals("ticketImages[]") && filePart.getSize() > 0) { // 確認有上傳圖片
+					TicketImagesVO ticketImage = new TicketImagesVO();
+					ticketImage.setTicket(ticket);
 
-			ticketImage.setIsMainImage(isMainImage);
+					// 判斷第一張圖則為主圖→byte=1
+					if (isFirstImage) {
+						ticketImage.setIsMainImage((byte) 1);
+						isFirstImage = false;
+					} else {
+						ticketImage.setIsMainImage((byte) 0);
+					}
 
-			// readInput
-			Part filePart = req.getPart("ticketImage");
-			InputStream inputStream = filePart.getInputStream();
-			byte[] imageBytes = readInputStream(inputStream);
-			ticketImage.setTicket(ticket);
-			ticketImage.setImage(imageBytes);
+					// 讀取圖片並存入
+					try (InputStream inputStream = filePart.getInputStream()) {
 
-			ticketImagesService.save(ticketImage);
+						byte[] imageBytes = readInputStream(inputStream);
+						ticketImage.setImage(imageBytes);
 
-			// 送出後導向以下頁面
-			res.sendRedirect(req.getContextPath() + "/backendticket/mglist");
+						ticketImagesService.save(ticketImage);
+					}
+				}
+			}
 		}
+		// 導向以下頁面
+		res.sendRedirect(req.getContextPath() + "/backendticket/mglist");
 	}
 
 	/************ 票券修改 ************/
 	private void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+
 		if (!req.getMethod().equalsIgnoreCase("POST")) {
 			// 若不是POST送出請求，就到編輯頁面 (將該id票券的值塞入)
 			Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
@@ -184,16 +207,19 @@ public class TicketServlet extends HttpServlet {
 
 			List<TicketTypesVO> ticketTypes = ticketService.getAllTicketTypes();
 			List<CityVO> cities = ticketService.getAllCities();
-			
+
 			req.setAttribute("ticketTypes", ticketTypes);
 			req.setAttribute("cities", cities);
 			req.setAttribute("ticket", ticket);
 
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgEdit.jsp");
 			dispatcher.forward(req, res);
+
 		} else {
+
 			Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
 			TicketVO ticket = ticketService.getTicketById(ticketId);
+
 			// 送出更新後的資料
 			ticket.setTicketName(req.getParameter("ticketName"));
 			ticket.setPrice(Integer.valueOf(req.getParameter("price")));
@@ -217,66 +243,84 @@ public class TicketServlet extends HttpServlet {
 			ticketType.setTicketTypeId(ticketTypeId);
 			ticket.setTicketType(ticketType);
 
-	        // 更新票券
-	        TicketVO updatedTicket = ticketService.updateTicket(ticket);
+			///////////////////
+			// 創建 TicketImagesVO 對象並設定 IS_MAIN_IMAGE 屬性
+			TicketImagesVO ticketImage = new TicketImagesVO();
+			ticketImage.setTicket(ticket);
 
-	        if (updatedTicket != null) {
-	            // 更新成功
-	            res.sendRedirect(req.getContextPath() + "/backendticket/mglist");
-	        } else {
-	            // 更新失败
-	            req.setAttribute("errorMessage", "失敗");
-	            RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
-	            dispatcher.forward(req, res);
-	        }
-	    }
-	}
+			// 讀取 isMainImage 的值
+			String isMainImageValue = req.getParameter("isMainImage");
+			// 根據 isMainImage 的值來設定圖片的 IS_MAIN_IMAGE 屬性
+			byte isMainImage = (byte) ((isMainImageValue != null && isMainImageValue.equals("1")) ? 1 : 0);
 
-	/************ 票券搜尋 ************/
-	private void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+			ticketImage.setIsMainImage(isMainImage);
 
-		Map<String, String[]> map = req.getParameterMap();
+			// readInput
+			Part filePart = req.getPart("ticketImage");
+			InputStream inputStream = filePart.getInputStream();
+			byte[] imageBytes = readInputStream(inputStream);
+			ticketImage.setTicket(ticket);
+			ticketImage.setImage(imageBytes);
 
-		res.setContentType("application/json");
-		res.setCharacterEncoding("UTF-8");
+			ticketImagesService.save(ticketImage);
 
-		PrintWriter out = res.getWriter();
+			////////////
 
-		try {
-			List<TicketVO> ticketList = ticketService.getTicketsByCompositeQuery(map);
+			// 更新票券
+			TicketVO updatedTicket = ticketService.updateTicket(ticket);
 
-			StringBuilder json = new StringBuilder("[");
-			for (TicketVO ticket : ticketList) {
-				json.append(String.format(
-//		                "{\"類型\": \"%s\", \"編號\": \"%s\", \"圖片\": \"%s/ticketimage?ticketId=%s\", \"名稱\": \"%s\", \"價格\": \"%s\", \"數量\": \"%s\", \"描述\": \"%s\", \"發布日\": \"%s\", \"狀況\": \"%s\", \"區域\": \"%s\"},",
-						"{\"編號\": \"%s\", \"圖片\": \"%s/ticketimage?ticketId=%s\", \"名稱\": \"%s\", \"價格\": \"%s\", \"數量\": \"%s\", \"描述\": \"%s\", \"發布日\": \"%s\", \"狀況\": \"%s\"},",
-
-						// TicketVO的屬性
-//		                ticket.getTicketType(), //類型
-						ticket.getTicketId(), // 編號
-						req.getContextPath(), // 圖片的前半部分URL
-						ticket.getTicketId(), // 圖片的ticketId參數
-						ticket.getTicketName(), // 名稱
-						ticket.getPrice(), // 價格
-						ticket.getStock(), // 數量
-						ticket.getDescription(), // 描述
-						ticket.getPublishedDate(), // 發布日
-						ticket.getStatus() // 狀況
-//		                ticket.getCity().getCityName() //區域
-				));
+			if (updatedTicket != null) {
+				// 更新成功
+				res.sendRedirect(req.getContextPath() + "/backendticket/mglist");
+			} else {
+				// 更新失败
+				req.setAttribute("errorMessage", "失敗");
+				RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
+				dispatcher.forward(req, res);
 			}
-			json = new StringBuilder(json.toString().replaceAll(",$", ""));
-			json.append("]");
-
-			out.print(json);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			out.print("[]");
-		} finally {
-			out.flush();
 		}
 	}
+	
+
+	/************ 票券搜尋 ************/ 	
+	private void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+//	//票券名稱選單	(根據ID)
+//		Integer ticketId;
+//	    try {
+//	        ticketId = Integer.valueOf(req.getParameter("ticketId"));
+//	    } catch (Exception e) {
+//	        e.printStackTrace();
+//	        return;
+//	    }	    
+//	    //查詢存入list列表
+//	    List<TicketVO> list = ticketService.getTicketById2(ticketId);
+//	    req.setAttribute("list", list);
+//	    req.setAttribute("ticketId", ticketId);
+//	    req.getRequestDispatcher("/ticket/mgFind.jsp").forward(req, res);
+//	    System.out.println(list);
+//	}
+		
+	    // 获取前端选择的票券类别 ID
+	    Integer ticketTypeId;
+	    try {
+	        ticketTypeId = Integer.valueOf(req.getParameter("ticketTypeId"));
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return;
+	    }
+
+	    // 调用 ticketService 的方法，获取与票券类别相关的票券列表
+	    List<TicketTypesVO> list = ticketService.getAllTicketTypes();
+
+	    // 将票券列表存储在请求属性中，以便在 JSP 页面中使用
+	    req.setAttribute("list", list);
+	    req.setAttribute("TicketTypeId", ticketTypeId);
+
+	    // 转发到 JSP 页面显示结果
+	    req.getRequestDispatcher("/ticket/mgFind.jsp").forward(req, res);
+	    System.out.println(list);
+	}
+	
 
 
 	/************ 票券刪除 ************/
