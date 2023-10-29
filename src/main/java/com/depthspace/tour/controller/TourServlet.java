@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.depthspace.tour.model.tour.TourVO;
+import com.depthspace.tour.model.tour.TourView;
 import com.depthspace.tour.service.TourService;
 import com.depthspace.tour.service.TourService_Interface;
 
@@ -85,7 +86,11 @@ public class TourServlet extends HttpServlet {
             e.printStackTrace();
             return;
         }
-//		List<TourView> list = 
+		System.out.println("memId=" + memId + "," + "tourId=" + tourId);
+		List<TourView> list = ts.getOneTourList(tourId,memId);
+//		System.out.println(list);
+		
+		req.setAttribute("list", list);
 		
 		req.getRequestDispatcher("/tour/memTourList.jsp").forward(req, resp);
 	}

@@ -3,6 +3,7 @@ package com.depthspace.tour.model.tour.hibernate;
 import java.util.List;
 
 import com.depthspace.tour.model.tour.TourVO;
+import com.depthspace.tour.model.tour.TourView;
 
 public interface HbTourDAO_Interface {
 	int insert(TourVO entity);
@@ -13,6 +14,7 @@ public interface HbTourDAO_Interface {
 	List<TourVO> getAll();
 	//取得該會員行程資料
 	List<TourVO> getByMemId(Integer memId);
+	List<TourView> getOneTourList(Integer tourId, Integer memId);
 
 	
 }

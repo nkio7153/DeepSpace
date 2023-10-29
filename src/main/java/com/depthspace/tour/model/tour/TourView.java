@@ -7,12 +7,14 @@ import java.util.Objects;
 import javax.persistence.*;
 
 import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.Subselect;
 
 import com.depthspace.promotion.model.promotion.PromotionTicketView.CompositeDetail;
 
 
 @Entity
 @Immutable
+@Subselect("SELECT TOUR_ID, MEM_ID, TOUR_NAME, ALL_DAYS, TOUR_DESCRIPTION, TOUR_DAYS, START, END, ATTRACTIONS_NAME, ADDRESS FROM TourView")
 @Table(name ="TourView")
 @IdClass(TourView.CompositeDetail.class)
 public class TourView {
