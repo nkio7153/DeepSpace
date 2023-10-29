@@ -8,6 +8,6 @@ public interface RestBookingDateService {
 	RestBookingDateVO add(RestBookingDateVO restBookingDateVO);
 	RestBookingDateVO update(RestBookingDateVO restBookingDateVO);
 	void delete(RestBookingDateVO restBookingDateVO);
-	RestBookingDateVO findByPK(RestBookingDateVO restBookingDateVO);
+	List<RestBookingDateVO> findByPK(RestBookingDateVO restBookingDateVO);
 	List<RestBookingDateVO> getAll();
 }

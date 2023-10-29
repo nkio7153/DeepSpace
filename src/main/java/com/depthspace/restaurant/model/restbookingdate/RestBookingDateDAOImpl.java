@@ -17,8 +17,8 @@ private SessionFactory factory;
 	}
 
 	@Override
-	public int add(RestBookingDateVO restBookingDateVO) {
-		return (Integer) getSession().save(restBookingDateVO);
+	public void add(RestBookingDateVO restBookingDateVO) {
+		getSession().save(restBookingDateVO);
 	}
 
 	@Override
@@ -43,8 +43,13 @@ private SessionFactory factory;
 	}
 
 	@Override
-	public RestBookingDateVO findByPK(RestBookingDateVO restBookingDateVO) {
-		return getSession().get(RestBookingDateVO.class, restBookingDateVO);
+	public List<RestBookingDateVO> findByPK(RestBookingDateVO restBookingDateVO) {
+		String sql = "from RestBookingDateVO where REST_ID = :restId AND BOOKING_DATE = :bookingDate";
+		List<RestBookingDateVO> list = getSession().createQuery(sql, RestBookingDateVO.class)
+										.setParameter("restId", restBookingDateVO.getRestId())
+										.setParameter("bookingDate", restBookingDateVO.getBookingDate())
+										.list();
+		return list;
 	}
 
 	@Override

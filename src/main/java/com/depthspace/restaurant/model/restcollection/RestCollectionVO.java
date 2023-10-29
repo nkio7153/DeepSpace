@@ -27,7 +27,7 @@ public class RestCollectionVO implements Serializable {
 	@Id
 	@Column(name = "MEM_ID")
 	private Integer memId;
-	
+	// @JoinColumn(name=FKColumn, referencedColumnName=PKColumn)
 	@ManyToOne(cascade = {})
 	@JoinColumn(name = "REST_ID", referencedColumnName = "REST_ID", insertable = false, updatable = false)
 	private RestVO restVO;

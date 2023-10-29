@@ -6,7 +6,7 @@ import com.depthspace.restaurant.model.restaurant.RestVO;
 
 
 public interface RestService {
-	RestVO addRest(RestVO restVO);
+	int addRest(RestVO restVO);
 	RestVO updateRest(RestVO restVO);
 	void deleteRest(Integer restId);
 	RestVO getRestByRestId(Integer restId);

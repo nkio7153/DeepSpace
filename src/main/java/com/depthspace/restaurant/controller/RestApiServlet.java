@@ -2,6 +2,7 @@ package com.depthspace.restaurant.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO;
+import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO.CompositeDetail;
+import com.depthspace.restaurant.model.restbookingdate.dao.RestBookingDateHibernateDAOImpl;
 import com.depthspace.restaurant.model.restcollection.RestCollectionVO;
 import com.depthspace.restaurant.service.MemBookingService;
 import com.depthspace.restaurant.service.MemBookingServiceImpl;
@@ -68,16 +71,16 @@ public class RestApiServlet extends HttpServlet {
 			case "/getRestCollectionAll":
 				getRestCollectionAll(req, resp);
 				break;
-			case "/getMemBooking":
-				getMemBooking(req, resp);
-				break;
 			case "/getMemCollection":
 				getMemCollection(req, resp);
 				break;
-			case "/getRestBooking":
-				getRestBooking(req, resp);
+			case "/getMemBooking":
+				getMemBooking(req, resp);
 				break;
-			case "/RestCollection":
+			case "/getRestBookingDate":
+				getRestBookingDate(req, resp);
+				break;
+			case "/doRestCollection":
 				doRestCollection(req, resp);
 				break;
 			case "/doRest":
@@ -86,7 +89,9 @@ public class RestApiServlet extends HttpServlet {
 			case "/doMemBooking":
 				doMemBooking(req, resp);
 				break;
-				
+			case "/doRestBookingDate":
+				doRestBookingDate(req, resp);
+				break;
 		}
 		
 	}
@@ -147,9 +152,21 @@ public class RestApiServlet extends HttpServlet {
 	}
 		
 	private void getMemBooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<MemBookingVO> list = memBookingService.getAllMembooking();
 		PrintWriter out = resp.getWriter();
-		out.print(gson.toJson(list));
+		if (req.getParameter("bookingId") != null) {
+			MemBookingVO vo = memBookingService.getByMembookingId(Integer.valueOf(req.getParameter("bookingId")));
+			out.print(gson.toJson(vo));
+		} else if (req.getParameter("memId") != null) {
+			List<MemBookingVO> list = memBookingService.getByMemId(Integer.valueOf(req.getParameter("memId")));
+			out.print(gson.toJson(list));
+		} else if (req.getParameter("restId") != null) {
+			List<MemBookingVO> list = memBookingService.getByRestId(Integer.valueOf(req.getParameter("restId")));
+			out.print(gson.toJson(list));
+		} else {
+			List<MemBookingVO> list = memBookingService.getAllMembooking();
+			out.print(gson.toJson(list));
+		}
+		
 	}
 	
 	private void getRestAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -164,10 +181,20 @@ public class RestApiServlet extends HttpServlet {
 		}
 	}
 	
-	private void getRestBooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<RestBookingDateVO> list = restBookingDateService.getAll();
-		PrintWriter out = resp.getWriter();
-		out.print(gson.toJson(list));
+	private void getRestBookingDate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		if (req.getParameter("restId") != null && req.getParameter("bookingDate") != null) {
+			RestBookingDateVO vo = new RestBookingDateVO();
+			vo.setRestId(Integer.valueOf(req.getParameter("restId")));
+			vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
+			List<RestBookingDateVO> list = restBookingDateService.findByPK(vo);
+			PrintWriter out = resp.getWriter();
+			out.print(gson.toJson(list));
+		} else {
+			List<RestBookingDateVO> list = restBookingDateService.getAll();
+			PrintWriter out = resp.getWriter();
+			out.print(gson.toJson(list));
+		}
+			
 	}
 	
 	private void doRest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -192,8 +219,7 @@ public class RestApiServlet extends HttpServlet {
 					rest.setRestStatus(Integer.valueOf(req.getParameter("restStatus")));
 					rest.setBookingLimit(bookingLimit);
 					rest.setAdminId(Integer.valueOf(req.getParameter("adminId")));
-					restService.addRest(rest);
-					out.print("SUCCESS");
+					out.print("SUCCESS" + " " + restService.addRest(rest));
 				} catch (Exception e) {
 					out.print("ERROR");
 					e.printStackTrace();
@@ -282,7 +308,44 @@ public class RestApiServlet extends HttpServlet {
 		
 	}
 	
-	
+	private void doRestBookingDate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		PrintWriter out = resp.getWriter();
+		String action = "";
+		action = req.getParameter("action");
+		switch (action) {
+			case("add"):
+				try {
+					RestBookingDateVO vo = new RestBookingDateVO();
+					vo.setRestId(Integer.valueOf(req.getParameter("restId")));
+					vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
+					vo.setRestOpen(Integer.valueOf(req.getParameter("restOpen")));
+					vo.setMorningNum(Integer.valueOf(req.getParameter("morningNum")));
+					vo.setNoonNum(Integer.valueOf(req.getParameter("noonNum")));
+					vo.setEveningNum(Integer.valueOf(req.getParameter("eveningNum")));
+					restBookingDateService.add(vo);
+					out.print("SUCCESS");
+				} catch (Exception e) {
+					out.print("ERROR");
+					e.printStackTrace();
+				}
+				break;
+			case("update"):
+				
+				break;
+			case("delete"):
+				try {
+					RestBookingDateVO vo = new RestBookingDateVO();
+					vo.setRestId(Integer.valueOf(req.getParameter("restId")));
+					vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
+					restBookingDateService.delete(vo);
+					out.print("SUCCESS");
+				} catch (Exception e) {
+					out.print("ERROR");
+					e.printStackTrace();
+				}
+				break;
+		}
+	}
 	
 	
 	

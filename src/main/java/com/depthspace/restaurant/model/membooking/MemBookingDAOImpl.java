@@ -49,6 +49,14 @@ public class MemBookingDAOImpl implements MemBookingDAO {
 	}
 
 	@Override
+	public List<MemBookingVO> findByMemID(Integer memId) {
+		List<MemBookingVO> list = getSession().createQuery("from MemBookingVO mb  where MEM_ID = :MEMID", MemBookingVO.class)
+									.setParameter("MEMID", memId)
+									.list();
+		return list;
+	}
+	
+	@Override
 	public List<MemBookingVO> findByRestID(Integer restId) {
 		List<MemBookingVO> list = getSession().createQuery("from MemBookingVO mb  where REST_ID = :RESTID", MemBookingVO.class)
 									.setParameter("RESTID", restId)

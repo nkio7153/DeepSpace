@@ -34,7 +34,7 @@ public class RestBookingDateServiceImpl implements RestBookingDateService {
 	}
 
 	@Override
-	public RestBookingDateVO findByPK(RestBookingDateVO restBookingDateVO) {
+	public List<RestBookingDateVO> findByPK(RestBookingDateVO restBookingDateVO) {
 		return dao.findByPK(restBookingDateVO);
 	}
 

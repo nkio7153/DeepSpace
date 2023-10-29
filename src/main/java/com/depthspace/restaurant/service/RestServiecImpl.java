@@ -20,9 +20,9 @@ public class RestServiecImpl implements RestService {
 	}
 	
 	@Override
-	public RestVO addRest(RestVO restVO) {
-		dao.add(restVO);
-		return restVO;
+	public int addRest(RestVO restVO) {
+		return dao.add(restVO);
+		
 	}
 
 	@Override
