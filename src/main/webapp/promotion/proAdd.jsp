@@ -43,6 +43,16 @@
             margin-top:-3px;
             margin-left:-1px;
         }
+        .preview_jpg{
+            max-width:200px ;
+            max-height:100px ;
+        }
+        .dis_bd{
+            height:230px;
+        }
+        .mb-10{
+            margin-bottom: -10px;
+        }
     </style>
 </head>
 <body>
@@ -68,36 +78,40 @@
             <div class="col-md-2"></div>
             <div class="col-md-4">
                 <label for="description" class="form-label">描述:</label>
-                <textarea class="form-control" name="description" id="description" rows="5"></textarea>
+                <textarea class="form-control dis_bd" name="description" id="description" rows="5"></textarea>
             </div>
 
             <div class="col-md-4">
                 <label for="endDate" class="form-label">結束日期:</label>
                 <input type="datetime-local" class="form-control" name="endDate" id="endDate"><br>
                 <label for="picture" class="form-label">圖片</label>
+                <div class="preview">
+                    <img id="preview_img" src="" name="pciture1" alt="請上傳促銷圖片" class="preview_jpg">
+                </div>
                 <input type="file" class="form-control" id="picture" name="picture"><br>
-                <input type="hidden" name="base64Image" value="${base64Image}">
+                <%--                <input type="hidden" name="base64Image" value="${base64Image}">--%>
             </div>
             <div class="col-md-2"></div>
 <%--            第四排--%>
-            <div class="col-md-2"></div>
-            <div class="col-md-2">
-                <label for="discount" class="form-label">折扣:</label>
-                <select id="discount" name="discount" >
-                    <c:forEach var="discount" items="${discountList}">
-                        <option value="${discount}">${discount}</option>
-                    </c:forEach>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label for="ticketId" class="form-label">選擇促銷票券:</label>
-                    <select id="ticketId" name="ticketId" >
-                        <c:forEach var="ticket" items="${list}">
-                            <option value="${ticket.ticketId}">${ticket.ticketName}</option>
+                <div class="col-md-2 mt-2 mb-10"></div>
+                <div class="col-md-2 mt-2 mb-10">
+                    <label for="discount" class="form-label">折扣:</label>
+                    <select id="discount" name="discount" >
+                        <c:forEach var="discount" items="${discountList}">
+                            <option value="${discount}">${discount}</option>
                         </c:forEach>
                     </select>
-            </div>
-            <div class="col-md-4 mt-2"></div>
+                    <label class="form-label">折</label>
+                </div>
+                <div class="col-md-4 mt-2 mb-10">
+                    <label for="ticketId" class="form-label">選擇促銷票券:</label>
+                        <select id="ticketId" name="ticketId" >
+                            <c:forEach var="ticket" items="${list}">
+                                <option value="${ticket.ticketId}">${ticket.ticketName}</option>
+                            </c:forEach>
+                        </select>
+                </div>
+                <div class="col-md-4 mt-2 mb-10"></div>
     <%--            第四排--%>
             <div class="container offset-5" id="afterSelector">
                 <div class="col-md-5 mt-2"></div>
@@ -179,7 +193,31 @@
         $('body').on('click', '.circle2', function() {
             $(this).closest(".container").remove();
         });
+        //讀取圖片
+        // var preview_img = function(file) {
+        //
+        //     var reader = new FileReader(); // 用來讀取檔案
+        //     reader.readAsDataURL(file); // 讀取檔案
+        //     reader.addEventListener("load", function () {
+        //         let img_str = '<img src="' + reader.result + '" class="preview_img" >';
+        //         preview_el.innerHTML = img_str;
+        //     })
+        // }
     })
+    var file = $("#picture"); // 獲取input file元素
+    var preview_el = $("#preview_img"); // 獲取預覽圖片元素
+    //上傳檔案觸發change事件時，更換預覽圖
+    file.on("change", function() {
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview_el.attr("src", e.target.result);
+            }
+
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
 </script>
 <jsp:include page="../indexpage/footer.jsp"/>
 </body>

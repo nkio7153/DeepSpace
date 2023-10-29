@@ -108,8 +108,6 @@ public class TicketShoppingCartServlet extends HttpServlet {
 
             String base64Image = Base64.getEncoder().encodeToString(imageBytes);
             vo.setBase64Image(base64Image);
-
-
         }
 
         req.setAttribute("list", list);
