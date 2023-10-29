@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Session;
+import org.hibernate.query.Query; // 這是用於創建查詢的類
+
 
 import com.depthspace.ticket.model.TicketImagesVO;
 
@@ -44,6 +47,22 @@ public abstract class TicketImagesDAOImpl  implements TicketImagesDAO {
  
 	}
 
+    @Override
+    public List<TicketImagesVO> findImagesByTicketId(Integer ticketId) {
+    	
+        List<TicketImagesVO> images = null;
+        
+        Session session = factory.openSession();
+
+        try {
+            Query query = session.createQuery("FROM TicketImagesVO WHERE ticketId = :ticketId", TicketImagesVO.class);
+            query.setParameter("ticketId", ticketId);
+            images = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace(); // 更好的做法是使用日誌系統
+        }
+        return images;
+    }
 	
 	@Override
 	public void insert(TicketImagesVO ticketImagesVO) {

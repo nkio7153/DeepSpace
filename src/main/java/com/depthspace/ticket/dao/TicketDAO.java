@@ -13,6 +13,8 @@ public interface TicketDAO {
 		
 		int delete(Integer ticketId); //刪除票券物件
 		 
+		List<TicketVO> getTicketById2(Integer ticketId); //取得票券根據ID
+		
 		TicketVO getTicketById(Integer ticketId); //取得票券根據ID
 		
 		List<TicketVO> getAll();
@@ -21,7 +23,7 @@ public interface TicketDAO {
 		
 		List<TicketVO> getAllTicketsWithCity(); //取得縣市名
 		
-		List<TicketVO> getAllTicketsWithMainImages();
+//		List<TicketVO> getAllTicketsWithMainImages();
 		
 		long getTotal();
 
