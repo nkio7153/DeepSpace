@@ -40,7 +40,11 @@
     <br>
     <br>
     <br>
-    <li><a href="${pageContext.request.contextPath}/pro/getAll?memId=${memId}">促銷列表</a></li>
+    <li><a href="${pageContext.request.contextPath}/pro/getAll">後台促銷列表</a></li>
+    <br>
+    <br>
+    <br>
+    <li><a href="${pageContext.request.contextPath}/pro/getCard?memId=${memId}">前台促銷列表</a></li>
 </ul>
 
 <jsp:include page="../indexpage/footer.jsp" />
