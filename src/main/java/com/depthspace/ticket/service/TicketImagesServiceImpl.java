@@ -26,10 +26,16 @@ public class TicketImagesServiceImpl implements TicketImagesService {
 				transaction.rollback();
 			}
 			e.printStackTrace();
-
-		} finally {
-
-			session.close();
+//
+//		} finally {
+//
+//			session.close();
 		}
+	}
+
+	@Override
+	public TicketImagesVO getTicketImagesById(Integer ticketId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
