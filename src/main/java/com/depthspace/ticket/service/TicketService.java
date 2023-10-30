@@ -35,8 +35,10 @@ public interface TicketService {
     List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map); 
     //查詢所有票券類型
     List<TicketTypesVO> getAllTicketTypes();
+    List<TicketVO> getAllTicketTypeIds(Integer ticketTypeId);
     //查詢所有票券區域
     List<CityVO> getAllCities();
+    List<TicketVO> getAllTicketAreaId(Integer areaId);
 
  //    //取得票券對應的區域
 //    List<TicketVO> getTicketsWithCity();

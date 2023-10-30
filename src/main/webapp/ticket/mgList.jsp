@@ -67,7 +67,7 @@ td {
 	option的value是實際傳遞值、第二的表單顯示的資料-->
 	<form method="get"
 		action="<%=request.getContextPath()%>/backendticket/mgfind">
-		<label for="ticketId">選擇票券編號：</label> <select id="ticketId"
+		<label for="ticketId">票券名稱</label> <select id="ticketId"
 			name="ticketId">
 			<c:forEach var="ticket" items="${ticketListAll}">
 				<option value="${ticket.ticketId}">${ticket.ticketName}</option>
@@ -75,41 +75,41 @@ td {
 		</select> <input type="submit" value="查詢">
 	</form>
 
-	<!-- 查詢票券類型選單
-	此處使用的是ticketTypeVO -->
+	<!-- 查詢票券類型選單  此處使用的是ticketTypeVO -->
 	<form method="get"
 		action="<%=request.getContextPath()%>/backendticket/mgfind">
-		<label for="ticketTypeId">選擇票券類型：</label> <select id="ticketTypeId"
+				<label for="ticketTypeId">票券類型</label> <select id="ticketTypeId"
 			name="ticketTypeId">
 			<c:forEach var="typeItem" items="${uniqueTicketTypes}">
 				<option value="${typeItem.ticketTypeId}">${typeItem.typeName}</option>
 			</c:forEach>
 		</select> <input type="submit" value="查詢">
 	</form>
-
-
-
-
+	
+		<!-- 查詢票券區域選單 -->
+	<form method="get"
+		action="<%=request.getContextPath()%>/backendticket/mgfind">
+		<label for="ticketCityName">票券區域</label> <select id="ticketCityName"
+			name="ticketCityName">
+			<c:forEach var="typeItem" items="${uniqueTicketArea}">
+				<option value="${typeItem.cityId}">${typeItem.cityName}</option>
+			</c:forEach>
+		</select> <input type="submit" value="查詢">
+	</form>
 
 	<div class="container mt-5">
-		<!-- 搜尋框 -->
+		<!-- 票券名稱模糊查詢 -->
 		<div class="row mb-3">
 			<div class="col-md-12 col-sm-12 mb-2">
-				<form
-					action="${pageContext.request.contextPath}/backendticket/mgsearch"
-					method="GET">
+				<form method="get"
+					action="<%=request.getContextPath()%>/backendticket/mgfind">
 					<div class="input-group">
-						<!-- 票券名稱模糊查詢 -->
 						<input type="text" id="ticketName" name="ticketName"
 							class="form-control" placeholder="票券名稱"
-							value="${ticket.ticketName}">
-						<!-- 提交按鈕 -->
-						<span class="input-group-btn">
+							value="${ticket.ticketName}"> <span
+							class="input-group-btn">
 							<button class="btn btn-primary" type="submit">搜索</button>
 						</span>
-
-						<h3>資料查詢:</h3>
-
 						<%-- 錯誤表列 --%>
 						<c:if test="${not empty errorMsgs}">
 							<font style="color: red">請修正以下錯誤:</font>
@@ -119,66 +119,6 @@ td {
 								</c:forEach>
 							</ul>
 						</c:if>
-
-						<ul>
-							<li><a href='listAllEmp.jsp'>List</a> all Emps. <br> <br></li>
-
-
-							<li>
-								<FORM METHOD="post" ACTION="doSearch">
-									<b>輸入員工編號 (如7001):</b> <input type="text" name="ticketId">
-									<input type="hidden" name="action" value="getOne_For_Display">
-									<input type="submit" value="送出">
-								</FORM>
-							</li>
-
-
-							<li>
-								<FORM METHOD="post" ACTION="doList">
-									<b>選擇員工編號:</b> <select size="1" name="ticketId">
-										<c:forEach var="tickeVO" items="${ticketList}">
-											<option value="${ticket.ticketId}">${ticket.ticketId}
-										</c:forEach>
-									</select> <input type="hidden" name="action" value="getOne_For_Display">
-									<input type="submit" value="送出">
-								</FORM>
-							</li>
-
-							<li>
-								<FORM METHOD="post" ACTION="emp.do">
-									<b>選擇員工姓名:</b> <select size="1" name="empno">
-										<c:forEach var="empVO" items="${empSvc.all}">
-											<option value="${empVO.empno}">${empVO.ename}
-										</c:forEach>
-									</select> <input type="hidden" name="action" value="getOne_For_Display">
-									<input type="submit" value="送出">
-								</FORM>
-							</li>
-						</ul>
-
-						<!-- <!-- 票券類型篩選 -->
-						-->
-						<!-- <div class="form-group col-md-6"> -->
-						<!--     <label for="ticketTypeId">票券類型</label>  -->
-						<!--     <select name="ticketTypeId" id="ticketTypeId" class="form-control"> -->
-						<!--         <option value="">請選擇票券類型</option> -->
-						<%--         <c:forEach var="typeItem" items="${ticketTypes}"> --%>
-						<%--             <option value="${typeItem.ticketTypeId}"  --%>
-						<%--                 <c:if test="${param.ticketTypeId == typeItem.ticketTypeId}">selected="selected"</c:if> --%>
-						<%--             >${typeItem.typeName}</option> --%>
-						<%--         </c:forEach> --%>
-						<!--     </select> -->
-						<!-- </div> -->
-
-
-						<!--                         票券區域篩選，假設ticketRegions是所有區域的列表 -->
-						<!--                         <select name="ticketRegion" class="form-control"> -->
-						<!--                             <option selected value="">選擇區域</option> -->
-						<%--                             <c:forEach var="region" items="${ticketRegions}"> --%>
-						<%--                                 <option value="${region.id}" ${region.id == param.ticketRegion ? 'selected' : ''}>${region.regionName}</option> --%>
-						<%--                             </c:forEach> --%>
-						<!--                         </select> -->
-
 
 					</div>
 				</form>
@@ -219,11 +159,9 @@ td {
 						<td>${ticket.ticketName}</td>
 						<td>${ticket.price}</td>
 						<td>${ticket.stock}</td>
-						<c:set var="descValue" value="${ticket.description}" />
-						<td>${descValue}</td>
+						<td>${ticket.description}</td>
 						<td>${ticket.publishedDate}</td>
-						<c:set var="stockValue" value="${ticket.status}" />
-						<td>${stockValue}</td>
+						<td>${ticket.status}</td>
 						<td>${ticket.city.cityName}</td>
 						<td><a
 							href="${pageContext.request.contextPath}/backendticket/mgedit?ticketId=${ticket.ticketId}"

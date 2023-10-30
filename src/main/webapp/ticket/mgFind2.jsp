@@ -75,7 +75,7 @@
 	    <c:forEach items="${list}" var="ticket" varStatus="ticketStatus">
 	        <tr>
 	        	<td>${ticketStatus.count}</td>
-				<td>${ticket.ticketType.typeName}</td>
+				<td>${ticketType.typeName}</td>
 				<td>${ticket.ticketId}</td>
 			    <td><img src="<%=request.getContextPath()%>/ticketimage?ticketId=${ticket.ticketId}&isMainImage=1" alt="Main Ticket Image"></td>
 			    <td>${ticket.ticketName}</td>

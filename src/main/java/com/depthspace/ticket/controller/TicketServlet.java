@@ -36,6 +36,7 @@ import com.depthspace.ticket.service.TicketServiceImpl;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 import com.depthspace.utils.HibernateUtil;
 
+
 @WebServlet("/backendticket/*")
 @MultipartConfig
 public class TicketServlet extends HttpServlet {
@@ -117,13 +118,16 @@ public class TicketServlet extends HttpServlet {
 		    uniqueTicketTypes.add(ticket.getTicketType());
 		}
 		req.setAttribute("uniqueTicketTypes", new ArrayList<>(uniqueTicketTypes));
-		
-		
+		// 處理票券區域不重複
+		Set<CityVO> uniqueTicketArea = new HashSet<>();
+		for (TicketVO ticket : ticketListAll) {
+		    uniqueTicketArea.add(ticket.getCity());
+		}
+		req.setAttribute("uniqueTicketArea", new ArrayList<>(uniqueTicketArea));
+			
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgList.jsp");
 		dispatcher.forward(req, res);
 	}
-
-	// 在后端 Java 代码中获取票券列表，假设你已经有了 ticketListAll
 
 
 
@@ -270,10 +274,8 @@ public class TicketServlet extends HttpServlet {
 			TicketVO updatedTicket = ticketService.updateTicket(ticket);
 
 			if (updatedTicket != null) {
-				// 更新成功
 				res.sendRedirect(req.getContextPath() + "/backendticket/mglist");
 			} else {
-				// 更新失败
 				req.setAttribute("errorMessage", "失敗");
 				RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
 				dispatcher.forward(req, res);
@@ -282,46 +284,59 @@ public class TicketServlet extends HttpServlet {
 	}
 	
 
-	/************ 票券搜尋 ************/ 	
+	/************ 票券搜尋 ************/
 	private void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-//	//票券名稱選單	(根據ID)
-//		Integer ticketId;
-//	    try {
-//	        ticketId = Integer.valueOf(req.getParameter("ticketId"));
-//	    } catch (Exception e) {
-//	        e.printStackTrace();
-//	        return;
-//	    }	    
-//	    //查詢存入list列表
-//	    List<TicketVO> list = ticketService.getTicketById2(ticketId);
-//	    req.setAttribute("list", list);
-//	    req.setAttribute("ticketId", ticketId);
-//	    req.getRequestDispatcher("/ticket/mgFind.jsp").forward(req, res);
-//	    System.out.println(list);
-//	}
-		
-	    // 获取前端选择的票券类别 ID
-	    Integer ticketTypeId;
+	    Integer ticketTypeId = null;
+	    Integer ticketId = null;
+	    Integer areaId = null;
+	    Map<String, String[]> map = req.getParameterMap();
+
+	    // 查詢票券類型
 	    try {
 	        ticketTypeId = Integer.valueOf(req.getParameter("ticketTypeId"));
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return;
+	    } catch (NumberFormatException e) {
+	        ticketTypeId = null;
+	    }
+	    // 查詢票券名稱
+	    try {
+	        ticketId = Integer.valueOf(req.getParameter("ticketId"));
+	    } catch (NumberFormatException e) {
+	        ticketId = null;
+	    }	    
+	    // 查詢票券區域
+	    try {
+	        areaId = Integer.valueOf(req.getParameter("areaId"));
+	    } catch (NumberFormatException e) {
+	        areaId = null;
+	    }
+	    // 儲存list
+	    List<TicketVO> list = new ArrayList<>();
+
+	    // 票券類型不為空就加入列表
+	    if (ticketTypeId != null) {
+	        List<TicketVO> ticketTypeList = ticketService.getAllTicketTypeIds(ticketTypeId);
+	        list.addAll(ticketTypeList);
+	    }
+	    // 票券ID不為空就加入列表
+	    if (ticketId != null) {
+	        List<TicketVO> ticketIdList = ticketService.getTicketById2(ticketId);
+	        list.addAll(ticketIdList);
+	    }
+	    // 票券區域不為空就加入列表
+	    if (areaId != null) {
+	        List<TicketVO> areaList = ticketService.getAllTicketAreaId(areaId);
+	        list.addAll(areaList);
+	    }
+	    //票券名稱的模糊查詢參數
+	    String[] ticketNameQueries = map.get("ticketName");
+	    if (ticketNameQueries != null && ticketNameQueries.length > 0 && !ticketNameQueries[0].isEmpty()) {
+	        List<TicketVO> ticketNameList = ticketService.getTicketsByCompositeQuery(map);
+	        list.addAll(ticketNameList);
 	    }
 
-	    // 调用 ticketService 的方法，获取与票券类别相关的票券列表
-	    List<TicketTypesVO> list = ticketService.getAllTicketTypes();
-
-	    // 将票券列表存储在请求属性中，以便在 JSP 页面中使用
 	    req.setAttribute("list", list);
-	    req.setAttribute("TicketTypeId", ticketTypeId);
-
-	    // 转发到 JSP 页面显示结果
 	    req.getRequestDispatcher("/ticket/mgFind.jsp").forward(req, res);
-	    System.out.println(list);
 	}
-	
-
 
 	/************ 票券刪除 ************/
 	private void doDel(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
