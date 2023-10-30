@@ -1,9 +1,11 @@
-package com.depthspace.restaurant.model.restaurant;
+package com.depthspace.restaurant.model.restaurant.dao;
 
 import java.util.List;
 
 import org.hibernate.Session;
 
+import com.depthspace.restaurant.model.restaurant.RestDAO;
+import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.utils.HibernateUtil;
 
 public class RestDAOHibernateImpl implements RestDAO {
