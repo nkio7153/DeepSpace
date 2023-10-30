@@ -5,7 +5,6 @@ import java.util.List;
 import com.depthspace.restaurant.model.restaurant.RestDAO;
 import com.depthspace.restaurant.model.restaurant.RestDAOImpl;
 import com.depthspace.restaurant.model.restaurant.RestVO;
-import com.depthspace.restaurant.model.restaurant.dao.RestDAOHibernateImpl;
 import com.depthspace.utils.HibernateUtil;
 
 public class RestServiecImpl implements RestService {
