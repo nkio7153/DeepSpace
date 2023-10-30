@@ -1,83 +1,65 @@
-package com.depthspace.restaurant.model.membooking.dao;
+package com.depthspace.restaurant.model.restbookingdate.dao;
 
 import java.util.List;
 
 import org.hibernate.Session;
 
-import com.depthspace.restaurant.model.membooking.MemBookingDAO;
-import com.depthspace.restaurant.model.membooking.MemBookingVO;
+import com.depthspace.promotion.model.promotiondetails.PromotionDetailsVO.CompositeDetail;
+import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO;
 import com.depthspace.utils.HibernateUtil;
 
-public class MemBookingDAOHibernatelmpl implements MemBookingDAO {
+public class RestBookingDateHibernateDAOImpl implements RestBookingDateDAO_interface {
 
 	@Override
-	public List<MemBookingVO> findByRestID(Integer restId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<MemBookingVO> findByMemID(Integer memId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int add(MemBookingVO memBookingVO) {
+	public void insert(RestBookingDateVO restBookingDateVO) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			Integer bookingId = (Integer) session.save(memBookingVO);
+			session.save(restBookingDateVO);
 			session.getTransaction().commit();
-			return bookingId;
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		return -1;
+		
 	}
 
 	@Override
-	public int update(MemBookingVO memBookingVO) {
+	public void update(RestBookingDateVO restBookingDateVO) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			session.update(memBookingVO);
+			session.update(restBookingDateVO);
 			session.getTransaction().commit();
-			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		return -1;
+		
 	}
 
 	@Override
-	public int delete(Integer bookingId) {
+	public void delete(RestBookingDateVO restBookingDateVO) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			MemBookingVO memBookingVO = session.get(MemBookingVO.class, bookingId);
-			if (memBookingVO != null) {
-				session.delete(memBookingVO);
-			}
+			session.delete(restBookingDateVO);
 			session.getTransaction().commit();
-			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 		}
-		return -1;
+		
 	}
 
 	@Override
-	public MemBookingVO findByPK(Integer bookingId) {
+	public RestBookingDateVO findByPrimaryKey(RestBookingDateVO restBookingDateVO) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			MemBookingVO memBookingVO = session.get(MemBookingVO.class, bookingId);
+//			RestBookingDateVO restBookingDateVO1 = session.get(RestBookingDateVO.class, new CompositeDetail(restBookingDateVO.getRestId(), restBookingDateVO.getBookingDate()));
 			session.getTransaction().commit();
-			return memBookingVO;
+//			return restBookingDateVO1;
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
@@ -86,11 +68,11 @@ public class MemBookingDAOHibernatelmpl implements MemBookingDAO {
 	}
 
 	@Override
-	public List<MemBookingVO> getAll() {
+	public List<RestBookingDateVO> getAll() {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			List<MemBookingVO> list = session.createQuery("FROM MemBookingVO", MemBookingVO.class).list();
+			List<RestBookingDateVO> list = session.createQuery("FROM RestBookingDateVO", RestBookingDateVO.class).list();
 			session.getTransaction().commit();
 			return list;
 		} catch (Exception e) {

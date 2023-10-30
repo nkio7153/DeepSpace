@@ -38,10 +38,15 @@ public class MemBookingServiceImpl implements MemBookingService {
 	}
 
 	@Override
+	public List<MemBookingVO> getByMemId(Integer memId) {
+		return dao.findByMemID(memId);
+	}
+
+	@Override
 	public List<MemBookingVO> getByRestId(Integer restId) {
 		return dao.findByRestID(restId);
 	}
-
+	
 	@Override
 	public List<MemBookingVO> getAllMembooking() {
 		return dao.getAll();
