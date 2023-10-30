@@ -48,6 +48,7 @@
 		<mapping class="com.depthspace.tour.model.TourDetailVO"/>
 		<mapping class="com.depthspace.tour.model.TourDaysVO"/>
 		<mapping class="com.depthspace.tour.model.tourtype.TourTypeVO"/>
+		<mapping class="com.depthspace.tour.model.tour.TourView"/>
 
 		<!-- Member-->
  		<mapping class="com.depthspace.member.model.MemVO"/>
