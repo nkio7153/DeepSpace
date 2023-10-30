@@ -1,9 +1,12 @@
 package com.depthspace.restaurant.model.restbookingdate;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO.CompositeDetail;
 
 public class RestBookingDateDAOImpl implements RestBookingDateDAO {
 private SessionFactory factory;
@@ -33,7 +36,7 @@ private SessionFactory factory;
 
 	@Override
 	public int delete(RestBookingDateVO restBookingDateVO) {
-		RestBookingDateVO bookingDate = getSession().get(RestBookingDateVO.class, restBookingDateVO);
+		RestBookingDateVO bookingDate = getSession().get(RestBookingDateVO.class, restBookingDateVO.getCompositeKey());
 		if (bookingDate != null) {
 			getSession().delete(bookingDate);
 			return 1;
@@ -43,13 +46,8 @@ private SessionFactory factory;
 	}
 
 	@Override
-	public List<RestBookingDateVO> findByPK(RestBookingDateVO restBookingDateVO) {
-		String sql = "from RestBookingDateVO where REST_ID = :restId AND BOOKING_DATE = :bookingDate";
-		List<RestBookingDateVO> list = getSession().createQuery(sql, RestBookingDateVO.class)
-										.setParameter("restId", restBookingDateVO.getRestId())
-										.setParameter("bookingDate", restBookingDateVO.getBookingDate())
-										.list();
-		return list;
+	public RestBookingDateVO findByPK(RestBookingDateVO restBookingDateVO) {
+		return getSession().get(RestBookingDateVO.class, restBookingDateVO.getCompositeKey());
 	}
 
 	@Override

@@ -184,11 +184,13 @@ public class RestApiServlet extends HttpServlet {
 	private void getRestBookingDate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		if (req.getParameter("restId") != null && req.getParameter("bookingDate") != null) {
 			RestBookingDateVO vo = new RestBookingDateVO();
-			vo.setRestId(Integer.valueOf(req.getParameter("restId")));
-			vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
-			List<RestBookingDateVO> list = restBookingDateService.findByPK(vo);
+			CompositeDetail key = new CompositeDetail();
+			key.setRestId(Integer.valueOf(req.getParameter("restId")));
+			key.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
+			vo.setCompositeKey(key);
+			RestBookingDateVO rs = restBookingDateService.findByPK(vo);
 			PrintWriter out = resp.getWriter();
-			out.print(gson.toJson(list));
+			out.print(gson.toJson(rs));
 		} else {
 			List<RestBookingDateVO> list = restBookingDateService.getAll();
 			PrintWriter out = resp.getWriter();
@@ -330,13 +332,28 @@ public class RestApiServlet extends HttpServlet {
 				}
 				break;
 			case("update"):
-				
-				break;
-			case("delete"):
 				try {
 					RestBookingDateVO vo = new RestBookingDateVO();
 					vo.setRestId(Integer.valueOf(req.getParameter("restId")));
 					vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
+					vo.setRestOpen(Integer.valueOf(req.getParameter("restOpen")));
+					vo.setMorningNum(Integer.valueOf(req.getParameter("morningNum")));
+					vo.setNoonNum(Integer.valueOf(req.getParameter("noonNum")));
+					vo.setEveningNum(Integer.valueOf(req.getParameter("eveningNum")));
+					restBookingDateService.update(vo);
+					out.print("SUCCESS");
+				} catch (Exception e) {
+					out.print("ERROR");
+					e.printStackTrace();
+				}
+				break;
+			case("delete"):
+				try {
+					RestBookingDateVO vo = new RestBookingDateVO();
+					CompositeDetail key = new CompositeDetail();
+					key.setRestId(Integer.valueOf(req.getParameter("restId")));
+					key.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
+					vo.setCompositeKey(key);
 					restBookingDateService.delete(vo);
 					out.print("SUCCESS");
 				} catch (Exception e) {
