@@ -12,7 +12,7 @@
 <head>
   <style>
     .data-width{
-      max-width:110px;
+      width:110px;
     }
     .dis-width{
       max-width:150px;
@@ -23,6 +23,15 @@
     img.jpg {
       width:200px;
       height:100px;
+    }
+    .hidden{
+      display: none;
+    }
+    .img-bd{
+      width:210px;
+    }
+    .num-width{
+      width:50px;
     }
   </style>
   <title>促銷管理</title>
@@ -36,27 +45,29 @@
 <div class="container mt-5">
   <h1 class="text-center">促銷管理</h1>
   <hr>
-  <table class="table table-bordered table-hover">
+  <div class="row">
+    <div class="col-md-12">
+  <table class="table table-bordered table-hover" width="70%">
     <thead>
     <tr>
-      <th scope="col">序號</th>
-      <th scope="col">促銷編號</th>
-      <th scope="col">促銷名稱</th>
-      <th scope="col">開始日期</th>
-      <th scope="col">結束日期</th>
+      <th scope="col"class="num-width">序號</th>
+      <th scope="col" class="hidden">促銷編號</th>
+      <th scope="col" class="data-width">促銷名稱</th>
+      <th scope="col" class="data-width">開始日期</th>
+      <th scope="col" class="data-width">結束日期</th>
       <th scope="col">描述</th>
-      <th scope="col">圖片</th>
-      <th scope="col">操作</th>
+      <th scope="col" class="img-bd">圖片</th>
+      <th scope="col" class="img-bd">操作</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach items="${list}" var="pro" varStatus="proStatus">
       <tr>
         <td>${proStatus.count}</td>
-        <td name="proId"class="data-width">${pro.promotionId}</td>
+        <td name="proId"class="data-width hidden">${pro.promotionId}</td>
         <td name="proName">${pro.promoName}</td>
-        <td class="data-width" name="startDate">${pro.startDate}</td>
-        <td class="data-width" name="endDate">${pro.endDate}</td>
+        <td name="startDate">${pro.startDate}</td>
+        <td name="endDate">${pro.endDate}</td>
         <td class="dis-width" name="disc">${pro.description}</td>
         <td>
 <%--            ${pro.picture}--%>
@@ -64,12 +75,14 @@
         </td>
         <td>
           <a href="#" class="badge btn-secondary rounded fs-5" onclick="showProDetail()">促銷明細</a>
-          <a href="#" class="badge btn-warning rounded fs-5">下架</a>
+          <a href="#" class="badge btn-warning rounded fs-5" onclick="deleteUpdate()">下架</a>
         </td>
       </tr>
     </c:forEach>
     </tbody>
   </table>
+    </div>
+  </div>
   <hr>
   <div class="text-end">
   <a class="btn btn-primary badge badge-info rounded" href="${pageContext.request.contextPath}/pro/getAllTid">新增促銷活動</a>
@@ -101,6 +114,31 @@
     let itemList=$("#itemList");
     itemList.html(html);
   }
+  function deleteByProId(proId){
+    let url="${pageContext.request.contextPath}/pro/delete?proId="+ proId;
+    fetch(url)
+            .then(function(response) {
+              return response.text()
+            })
+            .then(function(data){
+              console.log(data)
+            })
+            .catch(function(error){
+              console.log(error);
+            })
+  }
+  function deleteUpdate() {
+    var ok = window.confirm("確定要下架嗎");
+    if (ok) {
+    let tr = $(event.target).closest("tr");
+    let proId = tr.find('td[name="proId"]').text();
+    tr.remove();
+    deleteByProId(proId);
+    }
+  }
+
+
+
   //發送fetch請求取得促銷明細資料
   function getProDetail(proId) {
     let url = "${pageContext.request.contextPath}/pro/showDetail?proId=" + proId;
@@ -116,10 +154,11 @@
               console.log(error);
             })
   }
+    var proId;
     function showProDetail() {
     //數據
       let tr =$(event.target).closest('tr');
-      let proId=tr.find('td[name="proId"]').text();
+      proId=tr.find('td[name="proId"]').text();
       getProDetail(proId);
 
 
@@ -137,6 +176,9 @@
     // 使用Bootstrap的JavaScript函數來顯示模態對話框
       $('#orderDetailModal').modal('show');
 
+  }
+  function promotionEdit(){
+      window.location.href="${pageContext.request.contextPath}/pro/doEdit?proId="+proId;
   }
 </script>
 <!-- 添加 Bootstrap JavaScript 链接（必须在body结束前） -->
@@ -175,7 +217,8 @@
             </ul>
           </div>
           <div class="card-body">
-            <a href="#" class="card-link">編輯</a>
+<%--            <a href="'${pageContext.request.contextPath}/pro/edit?proId='+proId" class="card-link">編輯</a>--%>
+            <button class="btn btn-link card-link" onclick="promotionEdit()" >編輯</button>
           </div>
         </div>
 

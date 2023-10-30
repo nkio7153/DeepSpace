@@ -22,6 +22,7 @@ import com.depthspace.ticket.model.TicketImagesVO;
 import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
+import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 import com.depthspace.utils.HibernateUtil;
 
 public class TicketServiceImpl implements TicketService {
@@ -58,42 +59,61 @@ public class TicketServiceImpl implements TicketService {
 	//查詢票券
 	@Override
 	public List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map) {
-		Map<String, String> query = new HashMap<>();
-		// Map.Entry即代表一組key-value
-		Set<Map.Entry<String, String[]>> entry = map.entrySet();
-		
-		for (Map.Entry<String, String[]> row : entry) {
-			String key = row.getKey();
-			// 因為請求參數裡包含了action，做個去除動作
-			if ("action".equals(key)) {
-				continue;
-			}
-			// 若是value為空即代表沒有查詢條件，做個去除動作
-			String value = row.getValue()[0];
-			if (value.isEmpty() || value == null) {
-				continue;
-			}
-			query.put(key, value);
-		}
-		
-		System.out.println(query);
-		
-		return dao.getByCompositeQuery(query);
+	    Map<String, String> query = new HashMap<>();
+	    // Map.Entry即代表一組key-value
+	    Set<Map.Entry<String, String[]>> ticketVO = map.entrySet();
+	    
+	    for (Map.Entry<String, String[]> row : ticketVO) {
+	        String key = row.getKey();
+	        // 因為請求參數裡包含了action，做個去除動作
+	        if ("action".equals(key)) {
+	            continue;
+	        }
+	        // 若是value為空即代表沒有查詢條件，做個去除動作
+	        String value = row.getValue()[0];
+	        if (value == null || value.isEmpty()) {
+	            continue;
+	        }
+	        query.put(key, value);
+	    }
+	    
+	    System.out.println(query);
+	    
+	    return dao.getByCompositeQuery(query);
 	}
+
 	
 	@Override
 	public TicketVO getTicketById(Integer ticketId) {
 		return dao.getTicketById(ticketId);
+	}	
+	@Override
+	public List<TicketVO> getTicketById2(Integer ticketId) {
+		return dao.getTicketById2(ticketId);
 	}		
-
+	
 	@Override	
-	public List<TicketVO> getAllTickets() {
-		return dao.getAll();
-	}
+	public List<TicketVO> getAllTickets() {	
+     
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<TicketVO> criteriaQuery = criteriaBuilder.createQuery(TicketVO.class);
+            Root<TicketVO> root = criteriaQuery.from(TicketVO.class);
+            criteriaQuery.select(root);
+
+            Query<TicketVO> query = session.createQuery(criteriaQuery);
+
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new RuntimeException("Error", e);
+        }
+    }        
+     
+	
 
 
 	@Override
-	public List<TicketVO> getAllTickets(int currentPage) {
+	public List<TicketVO> getAllTickets2(int currentPage) {
 	    List<TicketVO> tickets = new ArrayList<>();
 
 	    try (Session session = HibernateUtil.getSessionFactory().openSession()) {

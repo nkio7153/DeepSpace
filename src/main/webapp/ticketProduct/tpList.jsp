@@ -107,7 +107,7 @@
                 <div class="card mb-3 clickable-card">
                     <div class="row no-gutters">
                         <div class="col-md-4">
-                            <img src="<%=request.getContextPath()%>/ticketimage?ticketId=${ticket.ticketId}" alt="Main Ticket Image" class="ticket-img">
+                            <img src="<%=request.getContextPath()%>/ticketimage?ticketId=${ticket.ticketId}&isMainImage=1" alt="Main Ticket Image" class="ticket-img">
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">

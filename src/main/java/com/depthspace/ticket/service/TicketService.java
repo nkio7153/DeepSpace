@@ -19,10 +19,12 @@ public interface TicketService {
     TicketVO deleteTicket(Integer ticketId);
     //根據票券ID取得票券
     TicketVO getTicketById(Integer ticketId);  
+    //根據票券ID取得票券
+    List<TicketVO> getTicketById2(Integer ticketId);  
     //取得所有票券
 	List<TicketVO> getAllTickets();   
     //取得所有票券(根據頁面)
-    List<TicketVO> getAllTickets(int currentPage);  
+    List<TicketVO> getAllTickets2(int currentPage);  
     //取得所有票券總頁面數量
     int getPageTotal();
     //取得總票券數

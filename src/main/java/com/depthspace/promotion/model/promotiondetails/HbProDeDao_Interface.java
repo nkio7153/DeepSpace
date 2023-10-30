@@ -27,5 +27,8 @@ public interface HbProDeDao_Interface {
     List<PromotionDetailsVO> getAll(int currentPage);
 
     long getTotal();
-    //取促銷遍號取得所有促銷明細
+
+    public int deleteByProId(Integer proId);
+
+
 }
