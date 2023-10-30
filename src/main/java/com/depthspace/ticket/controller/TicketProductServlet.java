@@ -14,8 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.depthspace.account.model.account.AccountVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
+import com.depthspace.ticket.model.TicketImagesVO;
 import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
+import com.depthspace.ticket.service.TicketImagesService;
 import com.depthspace.ticket.service.TicketService;
 import com.depthspace.ticket.service.TicketServiceImpl;
 import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
@@ -25,6 +27,7 @@ import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 public class TicketProductServlet extends HttpServlet {
 
 	private TicketService ticketService;
+	private TicketImagesService ticketImagesService;
 
 	@Override
 	public void init() throws ServletException {
@@ -71,7 +74,7 @@ public class TicketProductServlet extends HttpServlet {
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 
 		//取得所有票券內容(VO)
-		List<TicketVO> ticketList = ticketService.getAllTickets(currentPage);
+		List<TicketVO> ticketList = ticketService.getAllTickets2(currentPage);
 		//取得票券區域
 //		List<TicketVO> ticketsWithCity = ticketService.getTicketsWithCity();
 
@@ -79,11 +82,9 @@ public class TicketProductServlet extends HttpServlet {
 			int ticketPageQty = ticketService.getPageTotal();
 			req.getSession().setAttribute("ticketPageQty", ticketPageQty);
 		}
+		
 		long totalTickets = ticketService.getTotalTickets();
-		req.setAttribute("totalTickets", totalTickets);
-
 		req.setAttribute("totalTickets", totalTickets); //總票券數量
-
 		req.setAttribute("ticketList", ticketList); //票券內容
 		req.setAttribute("currentPage", currentPage); //分頁
 
@@ -104,9 +105,10 @@ public class TicketProductServlet extends HttpServlet {
 		}
 
 		TicketVO ticket = ticketService.getTicketById(ticketId);
-//		List<TicketVO> ticketsWithCity = ticketService.getTicketsWithCity();
+//		TicketImagesVO ticketImages =ticketImagesService.getTicketImagesById(ticketId);
 
 		req.setAttribute("ticket", ticket);
+//		req.setAttribute("ticketImages", ticketImages);
 		req.getRequestDispatcher("/ticketProduct/tpItem.jsp").forward(req, res);
 	} 
 	

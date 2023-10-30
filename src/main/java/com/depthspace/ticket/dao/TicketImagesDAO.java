@@ -19,4 +19,6 @@ public interface TicketImagesDAO {
 	void TicketIsMainImage (byte isMainImage) ;
     
     List<TicketImagesVO> getAll();
+    
+    List<TicketImagesVO> findImagesByTicketId(Integer ticketId);
 }

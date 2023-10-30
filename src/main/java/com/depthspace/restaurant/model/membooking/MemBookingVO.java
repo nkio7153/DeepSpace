@@ -14,28 +14,36 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.depthspace.restaurant.model.restaurant.RestVO;
+import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name = "MEM_BOOKING")
 public class MemBookingVO implements Serializable {
+	@Expose
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "BOOKING_ID", updatable = false)
 	private Integer bookingId;
+	@Expose
 	@Column(name = "REST_ID")
 	private Integer restId;
+	@Expose
 	@Column(name = "MEM_ID")
 	private Integer memId;
+	@Expose
 	@Column(name = "CHECK_STATUS")
 	private Integer checkStatus;
+	@Expose
 	@Column(name = "BOOKING_TIME")
 	private Integer bookingTime;
+	@Expose
 	@Column(name = "BOOKING_NUMBER")
 	private Integer bookingNumber;
+	@Expose
 	@Column(name = "BOOKING_DATE")
 	private Date bookingDate;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {})
 	@JoinColumn(name = "REST_ID", referencedColumnName = "REST_ID", insertable = false, updatable = false)
 	private RestVO restVO;
 

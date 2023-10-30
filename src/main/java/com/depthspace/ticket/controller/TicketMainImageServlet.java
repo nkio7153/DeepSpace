@@ -15,68 +15,90 @@ public class TicketMainImageServlet extends HttpServlet {
 
 	Connection con;
 
-	public void doGet(HttpServletRequest req, HttpServletResponse res)
-			throws ServletException, IOException {
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
-		res.setContentType("image/gif");
-		ServletOutputStream out = res.getOutputStream();
+		String ticketId = req.getParameter("ticketId").trim();
+		String isMainImage = req.getParameter("isMainImage").trim();
+		String serialId = req.getParameter("serialId");
 
-		try {
-			Statement stmt = con.createStatement();
-			String ticketId =req.getParameter("ticketId").trim();//加上trim()
-			ResultSet rs = stmt.executeQuery(
-				"SELECT IMAGE FROM TICKET_IMAGES WHERE TICKET_ID="+ticketId+" AND IS_MAIN_IMAGE = 1"); 
+		if (isMainImage != null && !isMainImage.isEmpty()) {
+			try {
+				int isMainImageValue = Integer.parseInt(isMainImage);
+				String sql;
+				PreparedStatement pstmt;
 
-			if (rs.next()) {
-				BufferedInputStream in = new BufferedInputStream(rs.getBinaryStream("IMAGE"));
-				byte[] buf = new byte[4 * 1024]; // 4K buffer
-				int len;
-				while ((len = in.read(buf)) != -1) {
-					out.write(buf, 0, len);
+				if (isMainImageValue == 1) {
+
+					sql = "SELECT IMAGE FROM TICKET_IMAGES WHERE TICKET_ID=? AND IS_MAIN_IMAGE=1";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setString(1, ticketId);
+				} else {
+
+					sql = "SELECT IMAGE FROM TICKET_IMAGES WHERE TICKET_ID=? AND IS_MAIN_IMAGE=0 AND SERIAL_ID=?";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setString(1, ticketId);
+					pstmt.setString(2, serialId);
 				}
-				in.close();
-			} else {
-//				res.sendError(HttpServletResponse.SC_NOT_FOUND);//404碼
-				InputStream in = getServletContext().getResourceAsStream("/images/none3.jpg");
-				byte[] b = new byte[in.available()];
-				in.read(b);
-				out.write(b);
+
+				ResultSet rs = pstmt.executeQuery();
+
+				if (rs.next()) {
+					InputStream in = rs.getBinaryStream("IMAGE");
+					if (in != null) {
+						int length = in.available();
+						byte[] imageBytes = new byte[length];
+						in.read(imageBytes, 0, length);
+
+						res.setContentType("image/jpeg");
+						ServletOutputStream out = res.getOutputStream();
+						out.write(imageBytes);
+						out.close();
+					}
+				} else {
+					// 如果没有找到
+					InputStream defaultImageStream = getServletContext().getResourceAsStream("/images/none3.jpg");
+					int defaultImageLength = defaultImageStream.available();
+					byte[] defaultImageBytes = new byte[defaultImageLength];
+					defaultImageStream.read(defaultImageBytes, 0, defaultImageLength);
+
+					res.setContentType("image/jpeg");
+					ServletOutputStream out = res.getOutputStream();
+					out.write(defaultImageBytes);
+					out.close();
+				}
+
+				rs.close();
+				pstmt.close();
+			} catch (Exception e) {
+				InputStream in = getServletContext().getResourceAsStream("/images/null.jpg");
+				byte[] b = in.readAllBytes();
+//    			out.write(b);
 				in.close();
 			}
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			InputStream in = getServletContext().getResourceAsStream("/images/null.jpg");
-			byte[] b = in.readAllBytes();  // Java 9 的新方法(要留意2G內才建議)
-//			byte[] b = new byte[in.available()];//(要留意2G內才建議) 
-//			in.read(b);
-			out.write(b);
-			in.close();
+		} else {
+			// isMainImage 為空
+			res.sendError(HttpServletResponse.SC_BAD_REQUEST, "isMainImage 不能為空");
 		}
-	
 	}
 
 	public void init() throws ServletException {
 		try {
 			Context ctx = new javax.naming.InitialContext();
-			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/CHA103G3"); //資料庫連線
+			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/CHA103G3");
 			con = ds.getConnection();
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	public void destroy() {
 		try {
-			if (con != null) con.close();
+			if (con != null)
+				con.close();
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
 	}
-
 }
