@@ -19,6 +19,7 @@ import com.depthspace.restaurant.model.restaurant.dao.RestDAO_interface;
 import com.depthspace.restaurant.model.restaurant.dao.RestHibernateDAO;
 import com.depthspace.restaurant.model.restaurant.dao.RestJDBCDAOImpl;
 import com.depthspace.restaurant.model.restbookingdate.dao.RestBookingDateHibernateDAOImpl;
+import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.utils.HibernateUtil;
 
 @WebServlet("/Test_RestDB")
