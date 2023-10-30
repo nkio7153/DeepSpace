@@ -1,6 +1,8 @@
-package com.depthspace.ticket.model;
+package com.depthspace.ticket.model.old;
 
 import java.util.List;
+
+import com.depthspace.ticket.model.TicketImagesVO;
 
 public interface TicketImagesDAO_Interface {
     void insert(TicketImagesVO ticketImagesVO);

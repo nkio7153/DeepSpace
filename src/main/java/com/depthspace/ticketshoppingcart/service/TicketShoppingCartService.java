@@ -1,9 +1,9 @@
 package com.depthspace.ticketshoppingcart.service;
 
-import com.depthspace.ticket.model.TicketImagesJDBCDAO;
 import com.depthspace.ticket.model.TicketImagesVO;
-import com.depthspace.ticket.model.TicketJDBCDAO;
 import com.depthspace.ticket.model.TicketVO;
+import com.depthspace.ticket.model.old.TicketImagesJDBCDAO;
+import com.depthspace.ticket.model.old.TicketJDBCDAO;
 import com.depthspace.ticketshoppingcart.model.TicketInfoVO;
 import com.depthspace.ticketshoppingcart.model.jdbc.TicketShoppingCartDAO_Interface;
 import com.depthspace.ticketshoppingcart.model.jdbc.TicketShoppingCartJDBCDAO;

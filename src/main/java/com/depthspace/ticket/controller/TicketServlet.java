@@ -37,7 +37,7 @@ import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 import com.depthspace.utils.HibernateUtil;
 
 
-@WebServlet("/backendticket/*")
+@WebServlet("/ticketmg/*")
 @MultipartConfig
 public class TicketServlet extends HttpServlet {
 
@@ -70,21 +70,21 @@ public class TicketServlet extends HttpServlet {
 
 		switch (pathInfo) {
 		case "/": // 票券管理頁面
-			res.sendRedirect(req.getContextPath() + "/ticket/mg.jsp");
+			res.sendRedirect(req.getContextPath() + "/backend/ticket/mg.jsp");
 			break;
-		case "/mglist": // 票券總列表
+		case "/list": // 票券總列表
 			doList(req, res);
 			break;
-		case "/mgadd": // 票券新增
+		case "/add": // 票券新增
 			doAdd(req, res);
 			break;
-		case "/mgedit": // 票券修改
+		case "/edit": // 票券修改
 			doEdit(req, res);
 			break;
-		case "/mgfind": // 票券查找
+		case "/find": // 票券查找
 			doSearch(req, res);
 			break;
-		case "/mgdel": // 票券刪除
+		case "/del": // 票券刪除
 			doDel(req, res);
 			break;
 
@@ -125,7 +125,7 @@ public class TicketServlet extends HttpServlet {
 		}
 		req.setAttribute("uniqueTicketArea", new ArrayList<>(uniqueTicketArea));
 			
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgList.jsp");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/ticket/list.jsp");
 		dispatcher.forward(req, res);
 	}
 
@@ -142,7 +142,7 @@ public class TicketServlet extends HttpServlet {
 			req.setAttribute("ticketTypes", ticketTypes);
 			req.setAttribute("cities", cities);
 
-			RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgAdd.jsp");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/ticket/add.jsp");
 			dispatcher.forward(req, res);
 		} else {
 			// 完成表單填寫，按下送出觸發POST，就將下列的資料送出
@@ -198,7 +198,7 @@ public class TicketServlet extends HttpServlet {
 			}
 		}
 		// 導向以下頁面
-		res.sendRedirect(req.getContextPath() + "/backendticket/mglist");
+		res.sendRedirect(req.getContextPath() + "/ticketmg/list");
 	}
 
 	/************ 票券修改 ************/
@@ -216,7 +216,7 @@ public class TicketServlet extends HttpServlet {
 			req.setAttribute("cities", cities);
 			req.setAttribute("ticket", ticket);
 
-			RequestDispatcher dispatcher = req.getRequestDispatcher("/ticket/mgEdit.jsp");
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/ticket/edit.jsp");
 			dispatcher.forward(req, res);
 
 		} else {
@@ -274,7 +274,7 @@ public class TicketServlet extends HttpServlet {
 			TicketVO updatedTicket = ticketService.updateTicket(ticket);
 
 			if (updatedTicket != null) {
-				res.sendRedirect(req.getContextPath() + "/backendticket/mglist");
+				res.sendRedirect(req.getContextPath() + "/ticketmg/list");
 			} else {
 				req.setAttribute("errorMessage", "失敗");
 				RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
@@ -288,7 +288,7 @@ public class TicketServlet extends HttpServlet {
 	private void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 	    Integer ticketTypeId = null;
 	    Integer ticketId = null;
-	    Integer areaId = null;
+	    Integer cityId = null;
 	    Map<String, String[]> map = req.getParameterMap();
 
 	    // 查詢票券類型
@@ -305,9 +305,9 @@ public class TicketServlet extends HttpServlet {
 	    }	    
 	    // 查詢票券區域
 	    try {
-	        areaId = Integer.valueOf(req.getParameter("areaId"));
+	        cityId = Integer.valueOf(req.getParameter("areaId"));
 	    } catch (NumberFormatException e) {
-	        areaId = null;
+	        cityId = null;
 	    }
 	    // 儲存list
 	    List<TicketVO> list = new ArrayList<>();
@@ -323,8 +323,8 @@ public class TicketServlet extends HttpServlet {
 	        list.addAll(ticketIdList);
 	    }
 	    // 票券區域不為空就加入列表
-	    if (areaId != null) {
-	        List<TicketVO> areaList = ticketService.getAllTicketAreaId(areaId);
+	    if (cityId != null) {
+	        List<TicketVO> areaList = ticketService.getAllTicketAreaId(cityId);
 	        list.addAll(areaList);
 	    }
 	    //票券名稱的模糊查詢參數
@@ -333,9 +333,9 @@ public class TicketServlet extends HttpServlet {
 	        List<TicketVO> ticketNameList = ticketService.getTicketsByCompositeQuery(map);
 	        list.addAll(ticketNameList);
 	    }
-
+//	    System.out.println(list);
 	    req.setAttribute("list", list);
-	    req.getRequestDispatcher("/ticket/mgFind.jsp").forward(req, res);
+	    req.getRequestDispatcher("/backend/ticket/find.jsp").forward(req, res);
 	}
 
 	/************ 票券刪除 ************/

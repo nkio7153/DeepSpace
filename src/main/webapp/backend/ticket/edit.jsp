@@ -12,13 +12,17 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	rel="stylesheet">
 <title>修改票券</title>
+
+<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+
+
 </head>
 <body>
 	<div class="container mt-5">
 		<div class="container mt-5">
 			<div class="container mt-5">
 				<h1>修改票券</h1>
-				<form action="<%=request.getContextPath()%>/backendticket/mgedit"
+				<form action="<%=request.getContextPath()%>/ticketmg/edit"
 					method="post" enctype="multipart/form-data">
 					<div class="row">
 						<!-- ID -->
@@ -71,7 +75,7 @@
 							<!-- 圖片預覽 -->
 							<div class="form-group col-md-6">
 								<label>圖片預覽</label> <img id="imagePreview"
-									src="<%=request.getContextPath()%>/ticketimage?ticketId=${ticket.ticketId}"
+									src="<%=request.getContextPath()%>/ticketmainimage?ticketId=${ticket.ticketId}"
 									alt="圖片預覽" style="max-width: 100%; max-height: 300px;" />
 							</div>
 						</div>
@@ -95,7 +99,12 @@
 							<label for="description">描述</label>
 							<textarea class="form-control" id="description"
 								name="description" rows="4">${ticket.description}</textarea>
+						<script>
+									CKEDITOR.replace('description');
+								</script>
 						</div>
+						
+						
 
 						<!-- 區域 -->
 						<div class="form-group col-md-6">

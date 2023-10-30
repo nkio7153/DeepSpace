@@ -14,6 +14,10 @@
 	rel="stylesheet">
 <title>新增票券</title>
 
+<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+
+
+
 <style>
 body, label {
 	font-size: 0.875rem;
@@ -63,7 +67,7 @@ h1 {
 		<div class="container mt-5">
 			<div class="container mt-5">
 				<h1>新增票券</h1>
-				<form action="<%=request.getContextPath()%>/backendticket/mgadd"
+				<form action="<%=request.getContextPath()%>/ticketmg/add"
 					method="post" enctype="multipart/form-data">
 					<div class="row">
 
@@ -99,7 +103,7 @@ h1 {
 						</div>
 
 						<div class="row">
-							<!-- 						測試多圖片上傳 -->
+							<!-- 測試多圖片上傳 -->
 
 							<!-- 票券圖片 -->
 							<div class="form-group col-md-6">
@@ -113,8 +117,6 @@ h1 {
 								<div id="imagesPreview"></div>
 							</div>
 
-
-
 							<!-- 使用天數 -->
 							<div class="form-group col-md-12">
 								<label for="validDays">使用天數</label> <input type="text"
@@ -127,6 +129,9 @@ h1 {
 								<label for="description">描述</label>
 								<textarea class="form-control" id="description"
 									name="description" rows="4"></textarea>
+								<script>
+									CKEDITOR.replace('description');
+								</script>
 							</div>
 
 							<!-- 區域 -->

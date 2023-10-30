@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>票券詳情</title>
-<jsp:include page="../indexpage/head.jsp" />
+<%-- <jsp:include page="../indexpage/head.jsp" /> --%>
 
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -51,8 +51,8 @@
 
 <body>
 
-	<jsp:include page="../indexpage/header.jsp" />
-	<jsp:include page="../indexpage/headpic.jsp" />
+<%-- 	<jsp:include page="../indexpage/header.jsp" /> --%>
+<%-- 	<jsp:include page="../indexpage/headpic.jsp" /> --%>
 
 	<div class="container mt-5">
 
@@ -77,7 +77,7 @@
 					<div class="carousel-inner">
 						<div class="carousel-item active">
 							<img
-								src="<%=request.getContextPath()%>/ticketimage?ticketId=${ticket.ticketId}&isMainImage=1"
+								src="<%=request.getContextPath()%>/ticketmainimage?ticketId=${ticket.ticketId}"
 								class="d-block w-100 rounded" alt="..."
 								style="height: 350px; object-fit: cover;">
 						</div>
@@ -146,7 +146,7 @@
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
-	<jsp:include page="../indexpage/footer.jsp" />
+<%-- 	<jsp:include page="../indexpage/footer.jsp" /> --%>
 
 </body>
 

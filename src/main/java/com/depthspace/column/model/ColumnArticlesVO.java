@@ -6,10 +6,15 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.depthspace.ticket.model.TicketTypesVO;
 
 @Entity
 @Table(name="COLUMN_ARTICLES")
@@ -18,9 +23,12 @@ public class ColumnArticlesVO implements Serializable{
 	@Column(name="ARTI_ID" , updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer aritId;
-	
-	@Column(name="COL_TYPE_ID")
-	private Integer colTypeId;
+
+	@ManyToOne(fetch = FetchType.EAGER) //多方Many搭配Join，name為自己要映射的表格欄位名、ref為對方要被關聯的表格欄位名
+	@JoinColumn(name="COL_TYPE_ID",referencedColumnName = "COL_TYPE_ID")
+	private ColumnTypesVO colType;
+//	@Column(name="COL_TYPE_ID")
+//	private Integer colTypeId;	
 	
 	@Column(name="ARTI_TITLE")
 	private String aritTitle;
@@ -37,21 +45,25 @@ public class ColumnArticlesVO implements Serializable{
 	@Column(name="ARTI_STATUS")
 	private byte artiStatus;
 	
+	@Column(name = "IS_MAIN_IMAGE") //1為主圖，0為多張圖
+	private byte isMainImage;
+
 	public ColumnArticlesVO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ColumnArticlesVO(Integer aritId, Integer colTypeId, String aritTitle, String artiContent, Timestamp articleDate,
-			Integer adminId, byte artiStatus) {
+	public ColumnArticlesVO(Integer aritId, ColumnTypesVO colType, String aritTitle, String artiContent,
+			Timestamp articleDate, Integer adminId, byte artiStatus, byte isMainImage) {
 		super();
 		this.aritId = aritId;
-		this.colTypeId = colTypeId;
+		this.colType = colType;
 		this.aritTitle = aritTitle;
 		this.artiContent = artiContent;
 		this.articleDate = articleDate;
 		this.adminId = adminId;
 		this.artiStatus = artiStatus;
+		this.isMainImage = isMainImage;
 	}
 
 	public Integer getAritId() {
@@ -62,12 +74,12 @@ public class ColumnArticlesVO implements Serializable{
 		this.aritId = aritId;
 	}
 
-	public Integer getColTypeId() {
-		return colTypeId;
+	public ColumnTypesVO getColType() {
+		return colType;
 	}
 
-	public void setColTypeId(Integer colTypeId) {
-		this.colTypeId = colTypeId;
+	public void setColType(ColumnTypesVO colType) {
+		this.colType = colType;
 	}
 
 	public String getAritTitle() {
@@ -86,7 +98,7 @@ public class ColumnArticlesVO implements Serializable{
 		this.artiContent = artiContent;
 	}
 
-	public Date getArticleDate() {
+	public Timestamp getArticleDate() {
 		return articleDate;
 	}
 
@@ -109,7 +121,21 @@ public class ColumnArticlesVO implements Serializable{
 	public void setArtiStatus(byte artiStatus) {
 		this.artiStatus = artiStatus;
 	}
-	
+
+	public byte getIsMainImage() {
+		return isMainImage;
+	}
+
+	public void setIsMainImage(byte isMainImage) {
+		this.isMainImage = isMainImage;
+	}
+
+	@Override
+	public String toString() {
+		return "ColumnArticlesVO [aritId=" + aritId + ", colType=" + colType + ", aritTitle=" + aritTitle
+				+ ", artiContent=" + artiContent + ", articleDate=" + articleDate + ", adminId=" + adminId
+				+ ", artiStatus=" + artiStatus + ", isMainImage=" + isMainImage + "]";
+	}
 	
 	
 }

@@ -1,4 +1,4 @@
-package com.depthspace.ticket.model;
+package com.depthspace.ticket.model.old;
 
 
 import java.sql.Connection;
@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.ticketcollection.model.TicketCollectionVO;
 import com.depthspace.utils.DBUtil;

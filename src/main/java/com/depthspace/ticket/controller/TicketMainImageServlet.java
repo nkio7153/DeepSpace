@@ -10,7 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
 
-@WebServlet("/ticketimage")
+@WebServlet("/ticketmainimage")
 public class TicketMainImageServlet extends HttpServlet {
 
 	Connection con;
@@ -18,66 +18,46 @@ public class TicketMainImageServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		String ticketId = req.getParameter("ticketId").trim();
-		String isMainImage = req.getParameter("isMainImage").trim();
-		String serialId = req.getParameter("serialId");
+		try {
+			String sql;
+			PreparedStatement pstmt;
+			sql = "SELECT IMAGE FROM TICKET_IMAGES WHERE TICKET_ID=? AND IS_MAIN_IMAGE=1";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, ticketId);
 
-		if (isMainImage != null && !isMainImage.isEmpty()) {
-			try {
-				int isMainImageValue = Integer.parseInt(isMainImage);
-				String sql;
-				PreparedStatement pstmt;
+			ResultSet rs = pstmt.executeQuery();
 
-				if (isMainImageValue == 1) {
-
-					sql = "SELECT IMAGE FROM TICKET_IMAGES WHERE TICKET_ID=? AND IS_MAIN_IMAGE=1";
-					pstmt = con.prepareStatement(sql);
-					pstmt.setString(1, ticketId);
-				} else {
-
-					sql = "SELECT IMAGE FROM TICKET_IMAGES WHERE TICKET_ID=? AND IS_MAIN_IMAGE=0 AND SERIAL_ID=?";
-					pstmt = con.prepareStatement(sql);
-					pstmt.setString(1, ticketId);
-					pstmt.setString(2, serialId);
-				}
-
-				ResultSet rs = pstmt.executeQuery();
-
-				if (rs.next()) {
-					InputStream in = rs.getBinaryStream("IMAGE");
-					if (in != null) {
-						int length = in.available();
-						byte[] imageBytes = new byte[length];
-						in.read(imageBytes, 0, length);
-
-						res.setContentType("image/jpeg");
-						ServletOutputStream out = res.getOutputStream();
-						out.write(imageBytes);
-						out.close();
-					}
-				} else {
-					// 如果没有找到
-					InputStream defaultImageStream = getServletContext().getResourceAsStream("/images/none3.jpg");
-					int defaultImageLength = defaultImageStream.available();
-					byte[] defaultImageBytes = new byte[defaultImageLength];
-					defaultImageStream.read(defaultImageBytes, 0, defaultImageLength);
+			if (rs.next()) {
+				InputStream in = rs.getBinaryStream("IMAGE");
+				if (in != null) {
+					int length = in.available();
+					byte[] imageBytes = new byte[length];
+					in.read(imageBytes, 0, length);
 
 					res.setContentType("image/jpeg");
 					ServletOutputStream out = res.getOutputStream();
-					out.write(defaultImageBytes);
+					out.write(imageBytes);
 					out.close();
 				}
+			} else {
+				// 如果没有找到
+				InputStream defaultImageStream = getServletContext().getResourceAsStream("/images/none3.jpg");
+				int defaultImageLength = defaultImageStream.available();
+				byte[] defaultImageBytes = new byte[defaultImageLength];
+				defaultImageStream.read(defaultImageBytes, 0, defaultImageLength);
 
-				rs.close();
-				pstmt.close();
-			} catch (Exception e) {
-				InputStream in = getServletContext().getResourceAsStream("/images/null.jpg");
-				byte[] b = in.readAllBytes();
-//    			out.write(b);
-				in.close();
+				res.setContentType("image/jpeg");
+				ServletOutputStream out = res.getOutputStream();
+				out.write(defaultImageBytes);
+				out.close();
 			}
-		} else {
-			// isMainImage 為空
-			res.sendError(HttpServletResponse.SC_BAD_REQUEST, "isMainImage 不能為空");
+
+			rs.close();
+			pstmt.close();
+		} catch (Exception e) {
+			InputStream in = getServletContext().getResourceAsStream("/images/null.jpg");
+			byte[] b = in.readAllBytes();
+			in.close();
 		}
 	}
 

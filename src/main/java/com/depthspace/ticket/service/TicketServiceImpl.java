@@ -66,11 +66,11 @@ public class TicketServiceImpl implements TicketService {
 		
 		for (Map.Entry<String, String[]> row : entry) {
 			String key = row.getKey();
-			// 因為請求參數裡包含了action，做個去除動作
+			// 請求參數包含action，去除
 			if ("action".equals(key)) {
 				continue;
 			}
-			// 若是value為空即代表沒有查詢條件，做個去除動作
+			// 若是value為空即代表沒有查詢條件，去除
 			String value = row.getValue()[0];
 			if (value.isEmpty() || value == null) {
 				continue;
@@ -136,11 +136,11 @@ public class TicketServiceImpl implements TicketService {
 		return tickets;
 	}
 
-	// 分頁
+	// 計算數量每頁*筆的話總共有幾頁
 	@Override
 	public int getPageTotal() {
 		long total = dao.getTotal();
-		// 計算數量每頁3筆的話總共有幾頁
+
 		int pageQty = (int) (total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
 		return pageQty;
 	}
@@ -210,8 +210,8 @@ public class TicketServiceImpl implements TicketService {
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 			CriteriaQuery<TicketVO> criteriaQuery = criteriaBuilder.createQuery(TicketVO.class);
 			Root<TicketVO> root = criteriaQuery.from(TicketVO.class);
-
-			criteriaQuery.where(criteriaBuilder.equal(root.get("city").get("areaId"), areaId));
+			//criteriaQuery查詢對象、criteriaBuilder查詢=>從root查詢ticketVO實體中的city屬性→他表的名稱cityId 要equal=,areaId值
+			criteriaQuery.where(criteriaBuilder.equal(root.get("city").get("cityId"), areaId));
 			criteriaQuery.select(root);
 
 			Query<TicketVO> query = session.createQuery(criteriaQuery);
@@ -227,8 +227,6 @@ public class TicketServiceImpl implements TicketService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 
 //	//取得票券區域 沒用
 //	public List<TicketVO> getTicketsWithCity() {

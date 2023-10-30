@@ -1,7 +1,7 @@
 package com.depthspace.ticketshoppingcart.model;
 
-import com.depthspace.ticket.model.TicketImagesJDBCDAO;
 import com.depthspace.ticket.model.TicketImagesVO;
+import com.depthspace.ticket.model.old.TicketImagesJDBCDAO;
 
 import java.io.*;
 import java.nio.file.Files;

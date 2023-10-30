@@ -4,13 +4,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>票券管理系統</title>
+	<title>專欄管理系統</title>
 </head>
 <body>
-	<h1>票券管理系統</h1>
-	<h2>票券查詢</h2>
+	<h1>專欄管理系統</h1>
+	<h2>專欄查詢</h2>
 		<ul>
-		<li><a href="${pageContext.request.contextPath}/backendticket/mglist">查看所有票券列表</a></li>
+		<li><a href="${pageContext.request.contextPath}/columnmg/list">查看所有列表</a></li>
 		</ul>
 
 </body>
