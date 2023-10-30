@@ -86,7 +86,7 @@ public class TicketVO implements Serializable{
     @JoinColumn(name = "AREA_ID", referencedColumnName = "CITY_ID")
     private CityVO city;
     
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TicketImagesVO> images = new HashSet<>();
 
 
@@ -331,11 +331,13 @@ public class TicketVO implements Serializable{
 
 	@Override
 	public String toString() {
-		return "TicketVO [ticketId=" + ticketId + ", ticketType=" + ticketType + ", ticketName=" + ticketName
-				+ ", description=" + description + ", price=" + price + ", stock=" + stock + ", validDays=" + validDays
-				+ ", status=" + status + ", publishedDate=" + publishedDate + ", totalStarRatings=" + totalStarRatings
-				+ ", totalStars=" + totalStars + ", address=" + address + ", longitude="
-				+ longitude + ", latitude=" + latitude + ", images=" + images + ", cityName=" + cityName + "]";
+	    String imagesInfo = (images != null) ? "imagesSize=" + images.size() : "images=null";
+
+	    return "TicketVO [ticketId=" + ticketId + ", ticketType=" + ticketType + ", ticketName=" + ticketName
+	            + ", description=" + description + ", price=" + price + ", stock=" + stock + ", validDays=" + validDays
+	            + ", status=" + status + ", publishedDate=" + publishedDate + ", totalStarRatings=" + totalStarRatings
+	            + ", totalStars=" + totalStars + ", address=" + address + ", longitude="
+	            + longitude + ", latitude=" + latitude + ", " + imagesInfo + ", cityName=" + cityName + "]";
 	}
 
 

@@ -25,6 +25,7 @@ import org.hibernate.query.Query;
 import com.depthspace.attractions.model.CityVO;
 import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.ticket.model.*;
+import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 import com.depthspace.utils.DBUtil;
 import com.depthspace.utils.HibernateUtil;
 
@@ -76,8 +77,19 @@ public class TicketDAOImpl implements TicketDAO {
 	
 	//根據票券ID取得一筆資料
 	@Override
+	public List<TicketVO> getTicketById2(Integer ticketId) {
+	    return getSession()
+	            .createQuery("from TicketVO where ticketId= :ticketId",TicketVO.class)
+	            .setParameter("ticketId", ticketId)
+	            .list();
+	
+	}
+	
+	//根據票券ID取得一筆資料
+	@Override
 	public TicketVO getTicketById(Integer ticketId) {
 		return getSession().get(TicketVO.class, ticketId); //.class說明是要查資料庫，且標註為id的欄位
+
 	}
 
 	//取得所有票券資料(分頁)
@@ -103,24 +115,24 @@ public class TicketDAOImpl implements TicketDAO {
         }
     }
 	
-	//取得票券對應主圖片
-	@Override
-    public List<TicketVO> getAllTicketsWithMainImages() {		
-        List<TicketVO> tickets = null;
-        Session session = factory.getCurrentSession(); 
-
-        try {
-            String hql = "SELECT distinct t FROM Ticket t JOIN FETCH t.images i WHERE i.isMainImage = :value";
-
-            Query<TicketVO> query = session.createQuery(hql, TicketVO.class);
-            query.setParameter("value", (byte) 1); 
-            tickets = query.getResultList(); 
-
-        } catch (Exception e) {
-            e.printStackTrace(); 
-        }
-        return tickets;
-    }
+//	//取得票券對應主圖片
+//	@Override
+//    public List<TicketVO> getAllTicketsWithMainImages() {		
+//        List<TicketVO> tickets = null;
+//        Session session = factory.getCurrentSession(); 
+//
+//        try {
+//            String hql = "SELECT distinct t FROM Ticket t JOIN FETCH t.images i WHERE i.isMainImage = :value";
+//
+//            Query<TicketVO> query = session.createQuery(hql, TicketVO.class);
+//            query.setParameter("value", (byte) 1); 
+//            tickets = query.getResultList(); 
+//
+//        } catch (Exception e) {
+//            e.printStackTrace(); 
+//        }
+//        return tickets;
+//    }
 
 	
 //	@Override
@@ -174,65 +186,114 @@ public class TicketDAOImpl implements TicketDAO {
 	//取得所有票券數量
 	@Override
 	public long getTotal() {
-//		return getSession().createQuery("select count(*) from TicketVO", Long.class).uniqueResult();
-
-		    Session session = null;
-		    Transaction transaction = null;
-		    long count = 0;
-
-		    try {
-		        session = getSession(); 
-		        transaction = session.beginTransaction(); 
+		return getSession().createQuery("select count(*) from TicketVO", Long.class).uniqueResult();
+//
+//		    Session session = null;
+//		    Transaction transaction = null;
+//		    long count = 0;
+//
+//		    try {
+//		        session = getSession(); 
+//		        transaction = session.beginTransaction(); 
 		        
-		        Query<Long> countQuery = session.createQuery("select count(*) from TicketVO", Long.class);
-		        count = countQuery.uniqueResult(); 
-		        
-		        transaction.commit(); 
-		    } catch (RuntimeException e) {
-		        if (transaction != null) {
-		            transaction.rollback();
-		        }
-		        throw e; 
-		    } finally {
-		        if (session != null) {
-		             session.close();
-		        }
-		    }
-
-		    return count;
+//		        Query<Long> countQuery = session.createQuery("select count(*) from TicketVO", Long.class);
+//		        count = countQuery.uniqueResult(); 
+//		        
+//		        transaction.commit(); 
+//		    } catch (RuntimeException e) {
+//		        if (transaction != null) {
+//		            transaction.rollback();
+//		        }
+//		        throw e; 
+//		    } finally {
+//		        if (session != null) {
+//		             session.close();
+//		        }
+//		    }
+//
+//		    return count;
 		}
 
 	
 	
 
 	//萬用查詢
-	@Override
-	public List<TicketVO> getByCompositeQuery(Map<String, String> query) {
-		if (query.size() == 0)
-			return getAll();
+    @Override
+    public List<TicketVO> getByCompositeQuery(Map<String, String> map) {
+        Transaction transaction = null;
+        List<TicketVO> results = null;
+        
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<TicketVO> criteria = builder.createQuery(TicketVO.class);
+            Root<TicketVO> root = criteria.from(TicketVO.class); 
+            
+            List<Predicate> predicates = new ArrayList<>();
+            for (Map.Entry<String, String> row : map.entrySet()) {
+                if ("ticketName".equals(row.getKey())) {
+                    predicates.add(builder.like(root.get("ticketName"), "%" + row.getValue() + "%"));
+                }
 
-		CriteriaBuilder builder = getSession().getCriteriaBuilder();
-		CriteriaQuery<TicketVO> criteria = builder.createQuery(TicketVO.class);
-		Root<TicketVO> root = criteria.from(TicketVO.class);
+                if ("ticketId".equals(row.getKey())) {
+                    predicates.add(builder.equal(root.get("ticketId"), row.getValue()));
+                }
+            }
 
-		List<Predicate> predicates = new ArrayList<>();
+            criteria.where(builder.and(predicates.toArray(new Predicate[0])));
+            criteria.orderBy(builder.asc(root.get("ticketId")));
 
-		for (Map.Entry<String, String> row : query.entrySet()) {
-			if ("ticketName".equals(row.getKey())) {
-				predicates.add(builder.like(root.get("ticketName"), "%" + row.getValue() + "%"));
-			}
+            TypedQuery<TicketVO> query = session.createQuery(criteria);
+            results = query.getResultList();
 
-			if ("ticketId".equals(row.getKey())) {
-				predicates.add(builder.equal(root.get("ticketId"), row.getValue()));
-			}
-		}
-
-		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
-		criteria.orderBy(builder.asc(root.get("ticketId")));
-		TypedQuery<TicketVO> typedQuery = getSession().createQuery(criteria);
-
-		return typedQuery.getResultList();
-	}
+            
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback(); // 如果出现异常，回滚事务
+            }
+            e.printStackTrace(); // 或其他异常处理
+        }
+        
+        return results;
+    }
 
 }
 
+////票券ID範圍查詢
+//if(map.containsKey("startTicketId") && map.containsKey("endTicketId")) {
+//	predicates.add(builder.between(root.get("ticketId"),
+//			Integer.valueOf(map.get("startTicketId")),
+//			Integer.valueOf(map.get("endTicketId"))));
+//}
+//
+//// 依照縣市查詢
+//if (map.containsKey("areaId")) {
+//    predicates.add(builder.equal(root.get("areaId"), map.get("areaId")));
+//}
+//// 依照票券類型查詢
+//if (map.containsKey("ticketType")) {
+//    predicates.add(builder.equal(root.get("ticketType"), map.get("ticketType")));
+//}
+//
+//for (Map.Entry<String, String> row : map.entrySet()) {
+//	
+//	//票券名稱模糊查詢
+//	if ("ticketName".equals(row.getKey())) {
+//		predicates.add(builder.like(root.get("ticketName"), "%" + row.getValue() + "%"));
+//	}
+//	if ("areaId".equals(row.getKey())) {
+//		predicates.add(builder.equal(root.get("areaId"), row.getValue()));
+//	}
+//	if ("ticketType".equals(row.getKey())) {
+//		predicates.add(builder.equal(root.get("ticketType"), row.getValue()));
+//	}
+//}
+//
+//criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
+//criteria.orderBy(builder.asc(root.get("ticketId")));
+//TypedQuery<TicketVO> query = getSession().createQuery(criteria);
+//
+//return query.getResultList();
+//}
