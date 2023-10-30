@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/Rest/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/main.css">
 <title>餐廳列表</title>
 	<style>
 	img {
@@ -59,10 +59,10 @@
 	</table>
 	<br>
 	
-	<a href="${pageContext.request.contextPath}/Rest/into.jsp">回首頁</a>
+	<a href="${pageContext.request.contextPath}/backend/Rest/into.jsp">回首頁</a>
 	
-	<script src="${pageContext.request.contextPath}/Rest/js/jquery-3.7.1.min.js"></script>
-	<script src="${pageContext.request.contextPath}/Rest/js/rest.js"></script>
+	<script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
+	<script src="${pageContext.request.contextPath}/static/js/rest.js"></script>
 	
 </body>
 </html>

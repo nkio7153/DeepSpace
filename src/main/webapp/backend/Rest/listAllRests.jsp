@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/Rest/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/main.css">
 <title>餐廳列表</title>
 	<style>
 	img {
@@ -31,7 +31,7 @@
 		</tr>
 		<c:forEach var="rest" items="${restList}">
 			<tr>
-				<td><img src="images/r_${rest.restId}.jpg" onerror="this.src='images/404.jpg'"></td>
+				<td><img src="${pageContext.request.contextPath}/static/images/rest/r_${rest.restId}.jpg" onerror="this.src='${pageContext.request.contextPath}/static/images/rest/404.jpg'"></td>
 				<td>${rest.restId}</td>
 				<td>${rest.restName}</td>
 				<td>${rest.restTel}</td>
@@ -74,10 +74,10 @@
 	</table>
 	<br>
 	
-	<a href="${pageContext.request.contextPath}/Rest/into.jsp">回首頁</a>
+	<a href="${pageContext.request.contextPath}/backend/Rest/into.jsp">回首頁</a>
 	
-	<script src="${pageContext.request.contextPath}/Rest/js/jquery-3.7.1.min.js"></script>
-	<script src="${pageContext.request.contextPath}/Rest/js/rest.js"></script>
+	<script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
+	<script src="${pageContext.request.contextPath}/static/js/rest.js"></script>
 	
 </body>
 </html>

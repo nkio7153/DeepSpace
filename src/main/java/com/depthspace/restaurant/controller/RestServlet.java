@@ -75,17 +75,17 @@ public class RestServlet extends HttpServlet {
 		List<RestVO> restList = restService.getAllRest();
 		req.setAttribute("restList", restList);
 //		return "/Rest/listAllRests.jsp";
-		return "/Rest/demoRestList.jsp";
+		return "/backend/Rest/demoRestList.jsp";
 	}
 	
 	private String getCompositeEmpsQuery(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String restId = req.getParameter("restId");
 		if (restId == null) { 
-			return "/Rest/listCompositeQuery.jsp";
+			return "/backend/Rest/listCompositeQuery.jsp";
 		}
 		RestVO restList = restService.getRestByRestId(Integer.parseInt(restId));
 		req.setAttribute("rest", restList);
-		return "/Rest/listCompositeQuery.jsp";
+		return "/backend/Rest/listCompositeQuery.jsp";
 	}
 	
 	private String add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -129,7 +129,7 @@ public class RestServlet extends HttpServlet {
 		rest.setBookingLimit(bookingLimit);
 		rest.setAdminId(Integer.valueOf(req.getParameter("adminId")));
 		restService.addRest(rest);
-		return "/Rest/listCompositeQuery.jsp";
+		return "/backend/Rest/listCompositeQuery.jsp";
 	}
 	
 	private String delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -142,7 +142,7 @@ public class RestServlet extends HttpServlet {
 		String restId = req.getParameter("restId");
 		RestVO restList = restService.getRestByRestId(Integer.parseInt(restId));
 		req.setAttribute("rest", restList);
-		return "/Rest/Update_Rest.jsp";
+		return "/backend/Rest/Update_Rest.jsp";
 	}
 	
 	private String update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -165,9 +165,9 @@ public class RestServlet extends HttpServlet {
 		List<MemBookingVO> mb = membookingService.getByRestId(Integer.valueOf(restId));
 		req.setAttribute("mbList", mb);
 		if (mb == null) {
-			return "/Rest/demoRestList.jsp";
+			return "/backend/Rest/demoRestList.jsp";
 		}
 		System.out.println(mb.toString());
-		return "/Rest/membooking.jsp";
+		return "/backend/Rest/membooking.jsp";
 	}
 }

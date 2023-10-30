@@ -23,11 +23,11 @@
 
 <html>
 <head>
-	<jsp:include page="../indexpage/head.jsp" />
-	<jsp:include page="../indexpage/header.jsp" />
-	<jsp:include page="../indexpage/headpic.jsp" />
+	<jsp:include page="./indexpage/head.jsp" />
+	<jsp:include page="./indexpage/header.jsp" />
+	<jsp:include page="./indexpage/headpic.jsp" />
 	<meta charset="UTF-8">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/Rest/css/main.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/main.css">
 	<title>餐廳查詢</title>
 	<style>
 		img {
@@ -63,7 +63,7 @@
 			<th>管理員ID</th>
 		</tr>
 		<tr>
-			<td><img src="images/r_${rest.restId}.jpg" onerror="this.src='images/404.jpg'"></td>
+			<td><img src="images/r_${rest.restId}.jpg" onerror="this.src='/static/images/404.jpg'"></td>
 			<td>${rest.restId}</td>
 			<td>${rest.restName}</td>
 			<td>${rest.restTel}</td>
@@ -121,11 +121,11 @@
 		</ul>
 	</c:if>
 		
-	<jsp:include page="../indexpage/footer.jsp" />
+	<jsp:include page="./indexpage/footer.jsp" />
 	<br>
-	<a href="${pageContext.request.contextPath}/Rest/into.jsp">回首頁</a>	
-	<script src="${pageContext.request.contextPath}/Rest/js/jquery-3.7.1.min.js"></script>
-	<script src="${pageContext.request.contextPath}/Rest/js/rest.js"></script>
+	<a href="${pageContext.request.contextPath}/static/into.jsp">回首頁</a>	
+	<script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
+	<script src="${pageContext.request.contextPath}/static/js/rest.js"></script>
 	
 </body>
 </html>

@@ -3,10 +3,6 @@ package com.depthspace.restaurant.model.restaurant.dao;
 import java.util.List;
 
 import com.depthspace.restaurant.model.restaurant.RestDAO;
-<<<<<<< HEAD
-=======
-import com.depthspace.restaurant.model.restaurant.RestDAOHibernateImpl;
->>>>>>> master
 import com.depthspace.restaurant.model.restaurant.RestDAOImpl;
 import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.utils.HibernateUtil;

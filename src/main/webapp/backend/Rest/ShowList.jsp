@@ -5,9 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-	<jsp:include page="../indexpage/head.jsp" />
-	<jsp:include page="../indexpage/header.jsp" />
-	<jsp:include page="../indexpage/headpic.jsp" />
+	<jsp:include page="./indexpage/head.jsp" />
+	<jsp:include page="./indexpage/header.jsp" />
+	<jsp:include page="./indexpage/headpic.jsp" />
 </head>
 <body>
 
@@ -24,6 +24,6 @@
 		</c:forEach>
 	</table>
 
-	<jsp:include page="../indexpage/footer.jsp" />
+	<jsp:include page="./indexpage/footer.jsp" />
 </body>
 </html>

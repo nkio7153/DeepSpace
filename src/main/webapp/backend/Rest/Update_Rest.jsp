@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/Rest/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/main.css">
 <title>餐廳修改</title>
 </head>
 <body>
@@ -45,7 +45,7 @@
 		
 		
 	<br>
-	<a href="${pageContext.request.contextPath}/Rest/into.jsp">回首頁</a>
+	<a href="${pageContext.request.contextPath}/backend/Rest/into.jsp">回首頁</a>
 	
 	<script>
     	// 將下拉框的預設選項設定為第二個選項（索引為1）
