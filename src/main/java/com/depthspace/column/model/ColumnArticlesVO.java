@@ -16,6 +16,10 @@ import javax.persistence.Table;
 
 import com.depthspace.ticket.model.TicketTypesVO;
 
+/**
+ * @author Tibame_T14
+ *
+ */
 @Entity
 @Table(name="COLUMN_ARTICLES")
 public class ColumnArticlesVO implements Serializable{
@@ -44,27 +48,14 @@ public class ColumnArticlesVO implements Serializable{
 	
 	@Column(name="ARTI_STATUS")
 	private byte artiStatus;
-	
-	@Column(name = "IS_MAIN_IMAGE") //1為主圖，0為多張圖
-	private byte isMainImage;
 
 	public ColumnArticlesVO() {
+
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ColumnArticlesVO(Integer aritId, ColumnTypesVO colType, String aritTitle, String artiContent,
-			Timestamp articleDate, Integer adminId, byte artiStatus, byte isMainImage) {
-		super();
-		this.aritId = aritId;
-		this.colType = colType;
-		this.aritTitle = aritTitle;
-		this.artiContent = artiContent;
-		this.articleDate = articleDate;
-		this.adminId = adminId;
-		this.artiStatus = artiStatus;
-		this.isMainImage = isMainImage;
-	}
+
 
 	public Integer getAritId() {
 		return aritId;
@@ -122,20 +113,29 @@ public class ColumnArticlesVO implements Serializable{
 		this.artiStatus = artiStatus;
 	}
 
-	public byte getIsMainImage() {
-		return isMainImage;
-	}
 
-	public void setIsMainImage(byte isMainImage) {
-		this.isMainImage = isMainImage;
-	}
 
 	@Override
 	public String toString() {
 		return "ColumnArticlesVO [aritId=" + aritId + ", colType=" + colType + ", aritTitle=" + aritTitle
 				+ ", artiContent=" + artiContent + ", articleDate=" + articleDate + ", adminId=" + adminId
-				+ ", artiStatus=" + artiStatus + ", isMainImage=" + isMainImage + "]";
+				+ ", artiStatus=" + artiStatus + "]";
 	}
-	
+
+
+
+	public ColumnArticlesVO(Integer aritId, ColumnTypesVO colType, String aritTitle, String artiContent,
+			Timestamp articleDate, Integer adminId, byte artiStatus) {
+		super();
+		this.aritId = aritId;
+		this.colType = colType;
+		this.aritTitle = aritTitle;
+		this.artiContent = artiContent;
+		this.articleDate = articleDate;
+		this.adminId = adminId;
+		this.artiStatus = artiStatus;
+	}
+
+
 	
 }
