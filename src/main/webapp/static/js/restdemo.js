@@ -11,14 +11,19 @@ $(function() {
 			console.log(data);
 			data.forEach(function(rest){
 				let html = `
-					<td><img src="../../static/images/rest/r_${rest.restId}.jpg" onerror="this.src='../../static/images/rest/404.jpg'"></td>
+					<td>${rest.restId}</td>
 					<td>${rest.restName}</td>
+					<td>${rest.restTel}</td>
+					<td>${rest.restAddress}</td>
 					<td>${rest.restType}</td>
 					<td>${rest.restOpen}</td>
-					`;
+					<td>${rest.restStatus}</td>
+					<td>${rest.bookingLimit}</td>
+					<td>${rest.adminId}</td>
+					<td><img src="../../static/images/rest/r_${rest.restId}.jpg" onerror="this.src='../../static/images/rest/404.jpg'"></td>
+				`;
 			let tr = document.createElement("tr");
 			tr.innerHTML = html;
-//			document.getElementById("Restdata").appendChild(tr);
 			$("table#Restdata").append(tr);
 			})
 		})
