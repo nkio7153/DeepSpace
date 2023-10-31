@@ -24,6 +24,10 @@ public class ColumnImagesVO implements Serializable{
 	
 	@Column(name="COL_IMG", columnDefinition = "mediumblob")
 	private byte[] colImg;
+	
+	
+	@Column(name = "IS_MAIN_IMAGE") //1為主圖，0為多張圖
+	private byte isMainImage;
 
 	public ColumnImagesVO() {
 		super();
