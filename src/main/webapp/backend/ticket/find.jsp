@@ -75,21 +75,19 @@
 	    <c:forEach items="${list}" var="ticket" varStatus="ticketStatus">
 	        <tr>
 	        	<td>${ticketStatus.count}</td>
-				<td>${ticketType.typeName}</td>
+				<td>${ticket.ticketType.typeName}</td>
 				<td>${ticket.ticketId}</td>
-			    <td><img src="<%=request.getContextPath()%>/ticketimage?ticketId=${ticket.ticketId}&isMainImage=1" alt="Main Ticket Image"></td>
+			    <td><img src="<%=request.getContextPath()%>/ticketmainimage?ticketId=${ticket.ticketId}" alt="Main Ticket Image"></td>
 			    <td>${ticket.ticketName}</td>
 			    <td>${ticket.price}</td>
 				<td>${ticket.stock}</td>
 		        <td>${ticket.description}</td>
-		        <td>${descValue}</td>
 			    <td>${ticket.publishedDate}</td> 
 		        <td>${ticket.status}</td>
-		        <td>${stockValue}</td>    
 			    <td>${ticket.city.cityName}</td>
 			     <td>
-                    <a href="${pageContext.request.contextPath}/backendticket/mgedit?ticketId=${ticket.ticketId}" class="btn btn-primary btn-sm">修改</a>
-				    <a href="${pageContext.request.contextPath}/backendticket/mgdel?ticketId=${ticket.ticketId}" class="btn btn-danger btn-sm" onclick="return confirm('確定刪除？不要亂刪喔！');">删除</a>
+                    <a href="${pageContext.request.contextPath}/ticketmg/edit?ticketId=${ticket.ticketId}" class="btn btn-primary btn-sm">修改</a>
+				    <a href="${pageContext.request.contextPath}/ticketmg/del?ticketId=${ticket.ticketId}" class="btn btn-danger btn-sm" onclick="return confirm('確定刪除？不要亂刪喔！');">删除</a>
                 </td>  
 	        </tr>
 	    </c:forEach>
@@ -97,7 +95,7 @@
 
 	<!-- 回首頁 -->
 	<div class="page-item">
-	<a class="page-link" href="${pageContext.request.contextPath}/backendticket/">回首頁</a>
+	<a class="page-link" href="${pageContext.request.contextPath}/ticketmg/">回首頁</a>
 	</div>
 
 

@@ -1,5 +1,6 @@
-package com.depthspace.column.model;
+package com.depthspace.column.model.old;
 
+import com.depthspace.column.model.ColumnTypesVO;
 import com.depthspace.utils.DBUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

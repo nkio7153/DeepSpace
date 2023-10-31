@@ -1,6 +1,8 @@
-package com.depthspace.column.model;
+package com.depthspace.column.model.old;
 
 import java.util.List;
+
+import com.depthspace.column.model.ColumnImagesVO;
 
 public interface ColumnImagesDAO_Interface {
     

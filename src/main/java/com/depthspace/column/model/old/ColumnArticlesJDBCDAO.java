@@ -1,5 +1,6 @@
-package com.depthspace.column.model;
+package com.depthspace.column.model.old;
 
+import com.depthspace.column.model.ColumnArticlesVO;
 import com.depthspace.notifications.model.NotificationsVO;
 import com.depthspace.utils.DBUtil;
 import java.sql.Connection;
@@ -32,7 +33,7 @@ public class ColumnArticlesJDBCDAO implements ColumnArticlesDAO_Interface {
             con = DBUtil.getConnection();
             pstmt = con.prepareStatement(INSERT_STMT);
             
-            pstmt.setInt(1, columnArticlesVO.getColTypeId());
+//            pstmt.setInt(1, columnArticlesVO.getColTypeId());
             pstmt.setString(2, columnArticlesVO.getAritTitle());
             pstmt.setString(3, columnArticlesVO.getArtiContent());
             pstmt.setTimestamp(4, (Timestamp) columnArticlesVO.getArticleDate());
@@ -55,7 +56,7 @@ public class ColumnArticlesJDBCDAO implements ColumnArticlesDAO_Interface {
             con = DBUtil.getConnection();
             pstmt = con.prepareStatement(UPDATE_STMT);
 
-            pstmt.setInt(1, columnArticlesVO.getColTypeId());
+//            pstmt.setInt(1, columnArticlesVO.getColTypeId());
             pstmt.setString(2, columnArticlesVO.getAritTitle());
             pstmt.setString(3, columnArticlesVO.getArtiContent());
             pstmt.setTimestamp(4, (Timestamp) columnArticlesVO.getArticleDate());
@@ -106,7 +107,7 @@ public class ColumnArticlesJDBCDAO implements ColumnArticlesDAO_Interface {
                 while (rs.next()) {
                     columnArticlesVO = new ColumnArticlesVO();
                     columnArticlesVO.setAritId(rs.getInt("ARTI_ID"));
-                    columnArticlesVO.setColTypeId(rs.getInt("COL_TYPE_ID"));
+//                    columnArticlesVO.setColTypeId(rs.getInt("COL_TYPE_ID"));
                     columnArticlesVO.setAritTitle(rs.getString("ARTI_TITLE"));
                     columnArticlesVO.setArtiContent(rs.getString("ARTI_CONTENT"));
                     columnArticlesVO.setArticleDate(rs.getTimestamp("ARTICLE_DATE"));
@@ -135,7 +136,7 @@ public class ColumnArticlesJDBCDAO implements ColumnArticlesDAO_Interface {
             while (rs.next()) {
                 ColumnArticlesVO columnArticlesVO = new ColumnArticlesVO();
                 columnArticlesVO.setAritId(rs.getInt("ARTI_ID"));
-                columnArticlesVO.setColTypeId(rs.getInt("COL_TYPE_ID"));
+//                columnArticlesVO.setColTypeId(rs.getInt("COL_TYPE_ID"));
                 columnArticlesVO.setAritTitle(rs.getString("ARTI_TITLE"));
                 columnArticlesVO.setArtiContent(rs.getString("ARTI_CONTENT"));
                 columnArticlesVO.setArticleDate(rs.getTimestamp("ARTICLE_DATE"));
@@ -150,39 +151,4 @@ public class ColumnArticlesJDBCDAO implements ColumnArticlesDAO_Interface {
         return list;
     }
 
-//    public static void main(String[] args) {
-//        ColumnArticlesJDBCDAO dao = new ColumnArticlesJDBCDAO();
-//
-//        // Test Insert
-////        ColumnArticlesVO columnArticlesVO1 = new ColumnArticlesVO();
-////        columnArticlesVO1.setColTypeId(1);
-////        columnArticlesVO1.setAritTitle("台南熱門伴手禮");
-////        columnArticlesVO1.setArtiContent("台南伴手禮是來台南旅遊必須存在也必須要買啊！這次熱血製作這篇台南伴手禮懶人包特輯，要把台南最好吃最美味的台南伴手禮帶給大家，希望大家在觀看之餘也幫我們多多分享出去，當然最好就是可以把這篇文章給加入我的最愛收藏起來，這樣以後來台南買伴手禮就不用擔心囉！");
-////        columnArticlesVO1.setArticleDate(new Timestamp(System.currentTimeMillis()));
-////        columnArticlesVO1.setAdminId(1);
-////        columnArticlesVO1.setArtiStatus((byte) 1);
-////        dao.insert(columnArticlesVO1);
-////        System.out.println("Insert complete!");
-//
-////        // Test Update
-////        ColumnArticlesVO columnArticlesVO2 = dao.findByPrimaryKey(2);
-////        columnArticlesVO2.setAritTitle("永樂町鼓茶樓");
-////        columnArticlesVO2.setArticleDate(new Timestamp(System.currentTimeMillis()));
-////        dao.update(columnArticlesVO2);
-////        System.out.println("Update complete!");
-////
-////        // Test Find By Primary Key
-////        ColumnArticlesVO columnArticlesVO3 = dao.findByPrimaryKey(1);
-////        System.out.println(columnArticlesVO3.getAritTitle());
-////
-////        // Test Get All
-////        List<ColumnArticlesVO> list = dao.getAll();
-////        for (ColumnArticlesVO all : list) {
-////            System.out.println(all.getAritId() + ", " + all.getAritTitle());
-////        }
-////
-////        // Test Delete
-////        dao.delete(5);
-////        System.out.println("Delete complete!");
-//    }
 }

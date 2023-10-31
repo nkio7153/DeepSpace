@@ -8,7 +8,7 @@
 <html>
 <head>
     <title>選擇票券體驗</title>
-    <jsp:include page="../indexpage/head.jsp" /> 
+<%--     <jsp:include page="../indexpage/head.jsp" />  --%>
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -53,15 +53,15 @@
 </head>
 <body>
 
-<jsp:include page="../indexpage/header.jsp" />
-<jsp:include page="../indexpage/headpic.jsp" />
+<%-- <jsp:include page="../indexpage/header.jsp" /> --%>
+<%-- <jsp:include page="../indexpage/headpic.jsp" /> --%>
 <div class="container mt-5">
 
     <div class="row">
 
         <!-- 左側篩選條件 -->
         <div class="col-md-3">
-            <!-- 搜尋框與放大鏡按鈕 -->
+            <!-- 搜尋框 -->
 		    <div class="input-group mb-3">
 		        <input type="text" class="form-control" placeholder="搜尋..." aria-label="Search">
 		        <div class="input-group-append">
@@ -103,11 +103,11 @@
             <!-- 票券列表 -->
             <div class="ticket-list">
               <c:forEach items="${ticketList}" var="ticket">
-               <a href="${pageContext.request.contextPath}/ticketproduct/ticket?ticketId=${ticket.ticketId}">  <!-- 整張卡片點擊 -->
+               <a href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=${ticket.ticketId}">  <!-- 整張卡片點擊 -->
                 <div class="card mb-3 clickable-card">
                     <div class="row no-gutters">
                         <div class="col-md-4">
-                            <img src="<%=request.getContextPath()%>/ticketimage?ticketId=${ticket.ticketId}&isMainImage=1" alt="Main Ticket Image" class="ticket-img">
+                            <img src="<%=request.getContextPath()%>/ticketmainimage?ticketId=${ticket.ticketId}" alt="Main Ticket Image" class="ticket-img">
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
@@ -134,7 +134,7 @@
         <!-- "至第一頁" 只在非第一頁時顯示 -->
         <c:if test="${currentPage > 1}">
             <li class="page-item">
-                <a class="page-link" href="${pageContext.request.contextPath}/ticketproduct/list?page=1">首頁</a>
+                <a class="page-link" href="${pageContext.request.contextPath}/ticketproduct/list?page=1">第一頁</a>
             </li>
         </c:if>
         
@@ -177,7 +177,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<jsp:include page="../indexpage/footer.jsp" /> 
+<%-- <jsp:include page="../indexpage/footer.jsp" />  --%>
 
 </body>
 </html>

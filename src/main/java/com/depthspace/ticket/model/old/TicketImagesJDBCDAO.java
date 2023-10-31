@@ -1,5 +1,6 @@
-package com.depthspace.ticket.model;
+package com.depthspace.ticket.model.old;
 
+import com.depthspace.ticket.model.TicketImagesVO;
 import com.depthspace.utils.DBUtil;
 
 import java.io.FileInputStream;

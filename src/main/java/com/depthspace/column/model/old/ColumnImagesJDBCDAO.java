@@ -1,5 +1,6 @@
-package com.depthspace.column.model;
+package com.depthspace.column.model.old;
 
+import com.depthspace.column.model.ColumnImagesVO;
 import com.depthspace.utils.DBUtil;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

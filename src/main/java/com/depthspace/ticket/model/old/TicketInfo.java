@@ -1,4 +1,4 @@
-package com.depthspace.ticket.model;
+package com.depthspace.ticket.model.old;
 
 import java.sql.Timestamp;
 

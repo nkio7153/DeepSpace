@@ -1,4 +1,4 @@
-package com.depthspace.ticket.model;
+package com.depthspace.ticket.model.old;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.utils.DBUtil;
 
 public class TicketJDBCDAO implements TicketDAO_Interface {
