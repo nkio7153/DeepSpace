@@ -11,22 +11,21 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="COLUMN_IMAGES")
-public class ColumnImagesVO implements Serializable{
-	
+@Table(name = "COLUMN_IMAGES")
+public class ColumnImagesVO implements Serializable {
+
 	@Id
-	@Column(name="COL_IMG_ID" , updatable=false)
+	@Column(name = "COL_IMG_ID", updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer colImgId;
-	
-	@Column(name="ARTI_ID")
+
+	@Column(name = "ARTI_ID")
 	private Integer artiId;
-	
-	@Column(name="COL_IMG", columnDefinition = "mediumblob")
+
+	@Column(name = "COL_IMG", columnDefinition = "mediumblob")
 	private byte[] colImg;
-	
-	
-	@Column(name = "IS_MAIN_IMAGE") //1為主圖，0為多張圖
+
+	@Column(name = "IS_MAIN_IMAGE") // 1為主圖，0為多張圖
 	private byte isMainImage;
 
 	public ColumnImagesVO() {
@@ -34,11 +33,18 @@ public class ColumnImagesVO implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public ColumnImagesVO(Integer colImgId, Integer artiId, byte[] colImg) {
+	public ColumnImagesVO(Integer colImgId, Integer artiId, byte[] colImg, byte isMainImage) {
 		super();
 		this.colImgId = colImgId;
 		this.artiId = artiId;
 		this.colImg = colImg;
+		this.isMainImage = isMainImage;
+	}
+
+	@Override
+	public String toString() {
+		return "ColumnImagesVO [colImgId=" + colImgId + ", artiId=" + artiId + ", colImg=" + Arrays.toString(colImg)
+				+ ", isMainImage=" + isMainImage + "]";
 	}
 
 	public Integer getColImgId() {
@@ -65,12 +71,14 @@ public class ColumnImagesVO implements Serializable{
 		this.colImg = colImg;
 	}
 
-	@Override
-	public String toString() {
-		return "ColumnImagesVO [colImgId=" + colImgId + ", artiId=" + artiId + ", colImg=" + Arrays.toString(colImg)
-				+ "]";
+	public byte getIsMainImage() {
+		return isMainImage;
 	}
-	
 
+	public void setIsMainImage(byte isMainImage) {
+		this.isMainImage = isMainImage;
+	}
+
+	
 	
 }

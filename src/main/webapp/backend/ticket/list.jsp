@@ -100,8 +100,8 @@ td {
 					action="<%=request.getContextPath()%>/ticketmg/find">
 					<label for="cityId">票券區域</label> <select id="cityId" name="areaId"
 						class="form-control mb-2">
-						<c:forEach var="typeItem" items="${uniqueTicketArea}">
-							<option value="${typeItem.cityId}">${typeItem.cityName}</option>
+						<c:forEach var="areaItem" items="${uniqueTicketArea}">
+							<option value="${areaItem.cityId}">${areaItem.cityName}</option>
 						</c:forEach>
 					</select> <input type="submit" value="查詢" class="btn btn-primary">
 				</form>

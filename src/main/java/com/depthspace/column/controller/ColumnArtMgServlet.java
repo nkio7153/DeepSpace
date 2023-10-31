@@ -106,7 +106,7 @@ public class ColumnArtMgServlet extends HttpServlet {
 //		}
 //		req.setAttribute("uniqueTicketTypes", new ArrayList<>(uniqueTicketTypes));
 
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/ticket/list.jsp");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/column/list.jsp");
 		dispatcher.forward(req, res);
 	}
 
