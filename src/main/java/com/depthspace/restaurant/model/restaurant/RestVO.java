@@ -14,28 +14,38 @@ import javax.persistence.Table;
 
 import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restcollection.RestCollectionVO;
+import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name = "RESTAURANT")
 public class RestVO implements Serializable {
+	@Expose
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "REST_ID", insertable = false, updatable = false)
 	private Integer restId;
+	@Expose
 	@Column(name = "REST_NAME")
 	private String restName;
+	@Expose
 	@Column(name = "REST_TEL")
 	private String restTel;
+	@Expose
 	@Column(name = "REST_ADDRESS")
 	private String restAddress;
+	@Expose
 	@Column(name = "REST_TYPE")
 	private String restType;
+	@Expose
 	@Column(name = "REST_OPEN")
 	private String restOpen;
+	@Expose
 	@Column(name = "REST_STATUS")
 	private Integer restStatus;
+	@Expose
 	@Column(name = "BOOKING_LIMIT")
 	private Integer bookingLimit;
+	@Expose
 	@Column(name = "ADMIN_ID")
 	private Integer adminId;
 	

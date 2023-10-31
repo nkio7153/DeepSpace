@@ -49,12 +49,12 @@ public class TicketProductServlet extends HttpServlet {
 
 		switch (pathInfo) {
 		case "/": // 票券進入連結
-			res.sendRedirect(req.getContextPath() + "/ticketproduct/tpindex.jsp");
+			res.sendRedirect(req.getContextPath() + "/frontend/ticketproduct/info.jsp");
 			break;
 		case "/list": // 票券總列表
 			doList(req, res);
 			break;	
-		case "/ticket": // 票券單一頁面
+		case "/item": // 票券單一頁面
 			doProduct(req,res);
 		    break;
 //			
@@ -88,7 +88,7 @@ public class TicketProductServlet extends HttpServlet {
 		req.setAttribute("ticketList", ticketList); //票券內容
 		req.setAttribute("currentPage", currentPage); //分頁
 
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/ticketProduct/tpList.jsp");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/ticketproduct/list.jsp");
 		dispatcher.forward(req, res);
 	}
 
@@ -105,60 +105,11 @@ public class TicketProductServlet extends HttpServlet {
 		}
 
 		TicketVO ticket = ticketService.getTicketById(ticketId);
-//		TicketImagesVO ticketImages =ticketImagesService.getTicketImagesById(ticketId);
 
 		req.setAttribute("ticket", ticket);
-//		req.setAttribute("ticketImages", ticketImages);
-		req.getRequestDispatcher("/ticketProduct/tpItem.jsp").forward(req, res);
+		req.getRequestDispatcher("/frontend/ticketproduct/item.jsp").forward(req, res);
 	} 
 	
 
-////	/************ 票券搜尋 ************/	
-//	private void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-//
-//		    Map<String, String[]> map = req.getParameterMap();
-//
-//		    res.setContentType("application/json"); 
-//		    res.setCharacterEncoding("UTF-8");
-//
-//		    PrintWriter out = res.getWriter();
-//
-//		    try {
-//		        List<TicketVO> ticketList = ticketService.getTicketsByCompositeQuery(map);
-//		        
-//		        StringBuilder json = new StringBuilder("[");
-//		        for (TicketVO ticket : ticketList) {
-//		            json.append(String.format(
-////		                "{\"類型\": \"%s\", \"編號\": \"%s\", \"圖片\": \"%s/ticketimage?ticketId=%s\", \"名稱\": \"%s\", \"價格\": \"%s\", \"數量\": \"%s\", \"描述\": \"%s\", \"發布日\": \"%s\", \"狀況\": \"%s\", \"區域\": \"%s\"},",
-//			            "{\"編號\": \"%s\", \"圖片\": \"%s/ticketimage?ticketId=%s\", \"名稱\": \"%s\", \"價格\": \"%s\", \"數量\": \"%s\", \"描述\": \"%s\", \"發布日\": \"%s\", \"狀況\": \"%s\"},",
-//
-//		            		// TicketVO的屬性
-////		                ticket.getTicketType(), //類型
-//		                ticket.getTicketId(), //編號
-//		                req.getContextPath(), //圖片的前半部分URL
-//		                ticket.getTicketId(), //圖片的ticketId參數
-//		                ticket.getTicketName(), //名稱
-//		                ticket.getPrice(), //價格
-//		                ticket.getStock(), //數量
-//		                ticket.getDescription(), //描述
-//		                ticket.getPublishedDate(), //發布日
-//		                ticket.getStatus() //狀況
-////		                ticket.getCity().getCityName() //區域
-//		            ));
-//		        }
-//		        json = new StringBuilder(json.toString().replaceAll(",$", "")); 
-//		        json.append("]");
-//
-//		        out.print(json); 
-//
-//		    } catch (Exception e) { 
-//		        e.printStackTrace(); 
-//		        out.print("[]");
-//		    } finally {
-//		        out.flush();
-//		    }
-//		}
-//
-//
 }
 

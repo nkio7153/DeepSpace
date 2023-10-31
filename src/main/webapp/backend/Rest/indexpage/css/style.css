@@ -1,0 +1,213 @@
+.changetext {
+    text-align: center;
+}
+
+@media (min-width: 992px) {
+    .collapse {
+        display: flex;
+        justify-content: flex-end;
+    }
+}
+
+nav a {
+    color: #ddd;
+    letter-spacing: 1px;
+    padding: 5px 13px;
+    vertical-align: middle;
+    font-size: 15px;
+}
+
+body a {
+    text-decoration: none;
+    font-family: "Open Sans", sans-serif;
+}
+
+nav a.booking {
+    border-radius: 30px;
+    background: #09777d;
+    padding: 10px 25px;
+    display: block;
+    margin-top: -7px;
+    text-transform: uppercase;
+    color: #fff;
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+
+header {
+    position: absolute;
+    z-index: 9;
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.about-right img.abt-image {
+    border-radius: 6%;
+    width: 100%;
+}
+
+.book {
+    background: #09777d;
+}
+
+.footer_w3layouts_section_1its {
+    background: #151515;
+}
+
+.footer_w3layouts_section_1its h3,
+.footer_w3layouts_section_1its h2 {
+    font-size: 1.3em;
+    color: #eee;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+ul.social_section_1info a {
+    margin-right: 10px;
+    font-size: 13.5px;
+    margin-right: 2px;
+    width: 35px;
+    height: 35px;
+    display: block;
+    text-align: center;
+    line-height: 35px;
+    letter-spacing: 1px;
+}
+
+.footer p,
+.footer a {
+    color: #707070;
+    margin: 5px 0;
+}
+
+body img {
+    max-width: 100%;
+}
+
+img,
+svg {
+    vertical-align: middle;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+user agent stylesheet img {
+    overflow-clip-margin: content-box;
+    overflow: clip;
+}
+
+ul.social_section_1info a {
+    margin-right: 10px;
+    font-size: 13.5px;
+    margin-right: 2px;
+    width: 35px;
+    height: 35px;
+    display: block;
+    text-align: center;
+    line-height: 35px;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 1080px) {
+
+    .footer p,
+    .footer a {
+        font-size: 14px;
+    }
+}
+
+.footer p,
+.footer a {
+    color: #707070;
+    margin: 5px 0;
+}
+
+body a {
+    text-decoration: none;
+    transition: 0.5s all;
+    -webkit-transition: 0.5s all;
+    -moz-transition: 0.5s all;
+    -o-transition: 0.5s all;
+    -ms-transition: 0.5s all;
+    /* font-family: "Open Sans", sans-serif; */
+}
+
+.copyright {
+    background: #222;
+}
+
+p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.8em;
+    letter-spacing: 1px;
+    color: #707579;
+    font-family: "Open Sans", sans-serif;
+}
+
+.grid-info p {
+    color: #ddd;
+}
+
+@media (max-width: 991px) {
+    .navbar-toggler {
+        display: block;
+        font-size: 20px;
+        text-decoration: none;
+        border: none;
+        float: right;
+        background-color: #14959b;
+        color: #fff;
+    }
+}
+
+.icon {
+    background: #fff;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    margin: 0em auto 1.5em;
+    border-radius: 50%;
+}
+
+a.btn {
+    border: 2px solid #fff;
+    border-radius: 0px;
+    padding: 11px 30px;
+    color: #fff;
+    font-size: 15px;
+    letter-spacing: 2px;
+    text-transform: capitalize;
+    transition: all 0.5s ease;
+    /* font-family: "Raleway", sans-serif; */
+}
+
+.carousel-caption {
+    top: 50%;
+    transform: translateY(-30%);
+}
+
+.picfak {
+    filter: brightness(0.6);
+}
+
+.banner-inner_overlay_pic {
+    filter: brightness(0.6);
+    max-height: 300px;
+    width: auto;
+    /* 保持原始宽高比 */
+    display: block;
+    /* 确保图像是块级元素，以便设置最大高度有效 */
+    margin: 0 auto;
+    /* 如果需要居中图像 */
+    overflow: hidden;
+    /* 超过最大高度时隐藏内容 */
+}

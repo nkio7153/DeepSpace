@@ -10,23 +10,31 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
+import com.google.gson.annotations.Expose;
+
 
 @Entity
 @Table(name = "RESTAURANT_BOOKINGDATE")
 @IdClass(RestBookingDateVO.CompositeDetail.class)
 public class RestBookingDateVO implements Serializable {
+	@Expose
 	@Id
 	@Column(name = "REST_ID")
 	private Integer restId;
+	@Expose
 	@Id
 	@Column(name = "BOOKING_DATE")
 	private Date bookingDate;
+	@Expose
 	@Column(name = "REST_OPEN")
 	private Integer restOpen;
+	@Expose
 	@Column(name = "MORNING_NUM")
 	private Integer morningNum;
+	@Expose
 	@Column(name = "NOON_NUM")
 	private Integer noonNum;
+	@Expose
 	@Column(name = "EVENING_NUM")
 	private Integer eveningNum;
 
@@ -108,7 +116,7 @@ public class RestBookingDateVO implements Serializable {
 				+ ", morningNum=" + morningNum + ", noonNum=" + noonNum + ", eveningNum=" + eveningNum + "]";
 	}
 	
-	static class CompositeDetail implements Serializable {
+	public static class CompositeDetail implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
 		private Integer restId;

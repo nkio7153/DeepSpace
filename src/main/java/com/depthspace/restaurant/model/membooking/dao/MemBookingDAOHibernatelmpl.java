@@ -17,6 +17,12 @@ public class MemBookingDAOHibernatelmpl implements MemBookingDAO {
 	}
 
 	@Override
+	public List<MemBookingVO> findByMemID(Integer memId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public int add(MemBookingVO memBookingVO) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {

@@ -1,6 +1,7 @@
 package com.depthspace.column.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,34 +25,52 @@ public class ColumnImagesVO implements Serializable{
 	@Column(name="COL_IMG", columnDefinition = "mediumblob")
 	private byte[] colImg;
 	
+	
+	@Column(name = "IS_MAIN_IMAGE") //1為主圖，0為多張圖
+	private byte isMainImage;
+
 	public ColumnImagesVO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public ColumnImagesVO(Integer colImgId, Integer artiId, byte[] colImg) {
 		super();
 		this.colImgId = colImgId;
 		this.artiId = artiId;
 		this.colImg = colImg;
 	}
+
 	public Integer getColImgId() {
 		return colImgId;
 	}
+
 	public void setColImgId(Integer colImgId) {
 		this.colImgId = colImgId;
 	}
+
 	public Integer getArtiId() {
 		return artiId;
 	}
+
 	public void setArtiId(Integer artiId) {
 		this.artiId = artiId;
 	}
+
 	public byte[] getColImg() {
 		return colImg;
 	}
+
 	public void setColImg(byte[] colImg) {
 		this.colImg = colImg;
 	}
+
+	@Override
+	public String toString() {
+		return "ColumnImagesVO [colImgId=" + colImgId + ", artiId=" + artiId + ", colImg=" + Arrays.toString(colImg)
+				+ "]";
+	}
 	
+
 	
 }
