@@ -8,6 +8,6 @@ public interface AccountService {
 	int insert(AccountVO tod);
 	int update(AccountVO tod);
     public int delete(Integer accountId);
-    AccountVO findByPrimaryKey(Integer accountId);
+    List<AccountVO> getbyMemId(Integer MemId);
     List<AccountVO> getAll();
 }

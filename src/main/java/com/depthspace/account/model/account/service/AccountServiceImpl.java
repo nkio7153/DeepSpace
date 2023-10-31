@@ -30,9 +30,8 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public AccountVO findByPrimaryKey(Integer accountId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<AccountVO> getbyMemId(Integer MemId) {
+		return dao.getByMemId(MemId);
 	}
 
 	@Override

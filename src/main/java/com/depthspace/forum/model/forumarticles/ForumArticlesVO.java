@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 @Entity
 @Table(name = "FORUM_ARTICLES")
 public class ForumArticlesVO implements Serializable {
@@ -36,6 +37,9 @@ public class ForumArticlesVO implements Serializable {
 	private Integer artiStatus;
 	@Column(name = "ARTI_IMG" , columnDefinition = "BLOB")
 	private byte[] artiImg;
+	
+	@Transient
+	private String base64Str;
 
 	public ForumArticlesVO() {
 
@@ -136,6 +140,16 @@ public class ForumArticlesVO implements Serializable {
 
 	public void setAtriImg(byte[] atriImg) {
 		this.artiImg = atriImg;
+	}
+	
+	
+
+	public String getBase64Str() {
+		return base64Str;
+	}
+
+	public void setBase64Str(String base64Str) {
+		this.base64Str = base64Str;
 	}
 
 	@Override
