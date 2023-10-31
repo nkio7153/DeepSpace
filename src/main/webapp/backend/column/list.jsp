@@ -14,7 +14,7 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	rel="stylesheet">
 
-<title>票券列表</title>
+<title>專欄列表</title>
 
 <style>
 
@@ -65,10 +65,10 @@ td {
 
 <!-- 	<div class="container mt-5"> -->
 
-<!-- 		<!-- 三個查詢表單並排顯示 --> -->
+<!-- 		<!-- 三個查詢表單並排顯示 --> 
 <!-- 		<div class="row"> -->
 
-<!-- 			<!-- 查詢票券名稱 注意：forEach的是未分頁的全部資料items=ticketListAll、option的value是實際傳遞值、第二的表單顯示的資料 --> -->
+<!-- 			<!-- 查詢票券名稱 注意：forEach的是未分頁的全部資料items=ticketListAll、option的value是實際傳遞值、第二的表單顯示的資料 --> 
 <!-- 			<div class="col-md-4"> -->
 <!-- 				<form method="get" -->
 <%-- 					action="<%=request.getContextPath()%>/ticketmg/find"> --%>
@@ -81,7 +81,7 @@ td {
 <!-- 				</form> -->
 <!-- 			</div> -->
 
-<!-- 			<!-- 查詢票券類型 --> -->
+<!-- 			<!-- 查詢票券類型 --> 
 <!-- 			<div class="col-md-4"> -->
 <!-- 				<form method="get" -->
 <%-- 					action="<%=request.getContextPath()%>/ticketmg/find"> --%>
@@ -94,7 +94,7 @@ td {
 <!-- 				</form> -->
 <!-- 			</div> -->
 
-<!-- 			<!-- 查詢票券區域  注意name是要查詢的值(servlet的查詢,areaId)--> -->
+<!-- 			<!-- 查詢票券區域  注意name是要查詢的值(servlet的查詢,areaId)--> 
 <!-- 			<div class="col-md-4"> -->
 <!-- 				<form method="get" -->
 <%-- 					action="<%=request.getContextPath()%>/ticketmg/find"> --%>
@@ -108,11 +108,11 @@ td {
 <!-- 			</div> -->
 
 <!-- 		</div> -->
-<!-- 		<!-- end of row --> -->
+<!-- 		<!-- end of row --> 
 
 
 <!-- 		<div class="container mt-5"> -->
-<!-- 			<!-- 票券名稱模糊查詢 --> -->
+<!-- 			<!-- 票券名稱模糊查詢 --> 
 <!-- 			<div class="row mb-3"> -->
 <!-- 				<div class="col-md-12 col-sm-12 mb-2"> -->
 <!-- 					<form method="get" -->
@@ -154,31 +154,20 @@ td {
 			</thead>
 			<tbody>
 				<!-- 所有資料 -->
-				<c:forEach var="column" items="${columnList}" varStatus="status">
-					<tr>
-										<th>文章編號</th>
-					<th>專欄類型</th>
-					<th>圖片</th>
-					<th>專欄標題</th>
-					<th>專欄文章</th>
-					<th>發布日</th>
-					<th>管理者</th>
-					<th>狀況</th>
-					<th>操作</th>
+				<c:forEach var="column" items="${columnList}" varStatus="status">					
 						<!-- 用當前頁數和每頁的數量計算項目序號 -->
-						<td>${itemsPerPage * (currentPage - 1) + status.index + 1}</td>
 						<td>${columnarticles.artiId}</td>
 						<td>${columnarticles.artiTypeId}</td>
 						<td><img
 							src="<%=request.getContextPath()%>"
-							alt="Main Ticket Image"></td>
+							alt="Main Image"></td>
 						<td>${columnarticles.artiTitle}</td>
 						<td><c:choose>
 								<c:when test="${fn:length(columnarticles.articontent) > 30}">
 								${fn:substring(columnarticles.articontent,0,30)}...
 								</c:when>
 								<c:otherwise>
-								${ticket.description}
+								${columnarticles.articontent}
 								</c:otherwise>
 							</c:choose></td>
 						<td>${columnarticles.articleDate}</td>

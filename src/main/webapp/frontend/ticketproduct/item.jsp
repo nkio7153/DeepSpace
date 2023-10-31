@@ -28,22 +28,19 @@
     
    
  	//購物車加入
-    $(document).ready(function() {
-      $(".btn").on("click", function() {
-        let url = "${pageContext.request.contextPath}/tsc/save?ticketId=" + ${ticket.ticketId};
-        fetch(url)
-          .then(function(response) {
-            return response.text();
-          })
-          .then(function(data) {
-            console.log(data);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      });
-    });
-    
+  $(".btn").on("click",function(){
+    let url="${pageContext.request.contextPath}/tsc/save?ticketId="+${ticket.ticketId}&memId=1;
+    fetch(url)
+            .then(function(response){
+              return response.text();
+            })
+            .then(function(data){
+              console.log(data);
+            })
+            .catch(function(error){
+              console.log(error);
+            })
+  })
 
 </script>
 

@@ -333,7 +333,7 @@ public class TicketServlet extends HttpServlet {
 	        List<TicketVO> ticketNameList = ticketService.getTicketsByCompositeQuery(map);
 	        list.addAll(ticketNameList);
 	    }
-//	    System.out.println(list);
+	    System.out.println(list);
 	    req.setAttribute("list", list);
 	    req.getRequestDispatcher("/backend/ticket/find.jsp").forward(req, res);
 	}
