@@ -19,4 +19,10 @@ public class HbTiDao {
                 .setParameter("serialId", serialId)
                 .uniqueResult();
     }
+    public TicketImagesVO getByTicketId(Integer ticketId){
+        return getSession().createQuery("from TicketImagesVO where ticket= :ticketId and isMainImage= :isMainImage",TicketImagesVO.class)
+                .setParameter("ticketId",ticketId)
+                .setParameter("isMainImage",1)
+                .uniqueResult();
+    }
 }

@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TicketOrdersJDBCDAO implements TicketOrdersDAO_Interface {
+public class ToDaoImpl implements ToDao {
     private static final String INSERT_STMT =
             "INSERT INTO TICKET_ORDERS(ORDER_ID, MEM_ID, ORDER_DATE, TOTAL_AMOUNT, POINTS_FEEDBACK, AMOUNT_PAID, STATUS, PAYMENT_METHOD) VALUES(?,?,?,?,?,?,?,?)";
     private static final String DELETE =

@@ -6,7 +6,9 @@ import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 
 import java.util.List;
 
-public interface HbTodDao_Interface {
+public interface HbTodDao {
+    void insertBatch(List<TicketOrderDetailVO> todList);
+
     int insert(TicketOrderDetailVO entity);
 
     int update(TicketOrderDetailVO entity);

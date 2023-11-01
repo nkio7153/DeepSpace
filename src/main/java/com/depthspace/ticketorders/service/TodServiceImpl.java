@@ -2,18 +2,15 @@ package com.depthspace.ticketorders.service;
 
 import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 import com.depthspace.ticketorders.model.ticketorderdetail.hibernate.HbTodDaoImpl;
-import com.depthspace.ticketorders.model.ticketorderdetail.hibernate.HbTodDao_Interface;
-import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
-import com.depthspace.ticketorders.model.ticketorders.hibernate.HbToDaoImpl;
-import com.depthspace.ticketorders.model.ticketorders.hibernate.HbToDao_Interface;
+import com.depthspace.ticketorders.model.ticketorderdetail.hibernate.HbTodDao;
 import com.depthspace.utils.HibernateUtil;
 
 import java.util.List;
 
-public class TicketOrderDetailService implements TicketOrderDetailService_Interface{
-    private HbTodDao_Interface dao;
+public class TodServiceImpl implements TodService {
+    private HbTodDao dao;
     //創建票券訂單dao的方法
-    public TicketOrderDetailService(){
+    public TodServiceImpl(){
 
         dao=new HbTodDaoImpl(HibernateUtil.getSessionFactory());
     }

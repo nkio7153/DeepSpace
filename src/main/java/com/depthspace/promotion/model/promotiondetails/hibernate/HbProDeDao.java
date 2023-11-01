@@ -1,15 +1,15 @@
-package com.depthspace.promotion.model.promotiondetails;
+package com.depthspace.promotion.model.promotiondetails.hibernate;
 
 
 
 
 
 import com.depthspace.promotion.model.promotion.PromotionTicketView;
+import com.depthspace.promotion.model.promotiondetails.PromotionDetailsVO;
 
 import java.util.List;
-import java.util.Map;
 
-public interface HbProDeDao_Interface {
+public interface HbProDeDao {
 
     int insert(PromotionDetailsVO entity);
 

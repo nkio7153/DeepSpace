@@ -1,13 +1,14 @@
 package com.depthspace.ticketshoppingcart.model.hibernate;
 
-import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
+import com.depthspace.ticketshoppingcart.model.CartInfo;
 import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
+import java.util.Set;
 
-public class HbTscDaoImpl implements HbTscDao_Interface {
+public class HbTscDaoImpl implements HbTscDao {
     //宣告一個factory變數
     private SessionFactory factory;
     //構造器為該物件的factory變數賦值
@@ -87,5 +88,12 @@ public class HbTscDaoImpl implements HbTscDao_Interface {
     @Override
     public long getTotal() {
         return getSession().createQuery("select count(*) from TicketShoppingCartVO", Long.class).uniqueResult();
+    }
+    //根據ticketId集合取得對應的購物車清單
+    @Override
+    public List<CartInfo> getByTicketIds(Set<Integer> ticketIds) {
+        return getSession().createQuery("FROM CartInfo WHERE ticketId IN (:ticketIds)", CartInfo.class)
+        .setParameterList("ticketIds", ticketIds)
+        .list();
     }
 }

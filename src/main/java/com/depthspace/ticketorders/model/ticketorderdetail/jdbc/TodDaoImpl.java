@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TicketOrderDetailJDBCDAO implements TicketOrderDetailDAO_Interface {
+public class TodDaoImpl implements TodDao {
     private static final String INSERT_STMT =
             "INSERT INTO TICKET_ORDER_DETAIL(ORDER_ID, TICKET_ID ,QUANTITY, UNIT_PRICE, DISCOUNT_PRICE, SUBTOTAL, TICKET_REVIEWS, STARS) VALUES(?,?,?,?,?,?,?,?)";
     private static final String DELETE =

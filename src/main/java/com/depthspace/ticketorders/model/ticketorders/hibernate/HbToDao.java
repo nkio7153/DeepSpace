@@ -1,11 +1,10 @@
 package com.depthspace.ticketorders.model.ticketorders.hibernate;
 
-import com.depthspace.promotion.model.promotion.PromotionVO;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 
 import java.util.List;
 
-public interface HbToDao_Interface {
+public interface HbToDao {
     int insert(TicketOrdersVO entity);
 
     int update(TicketOrdersVO entity);
