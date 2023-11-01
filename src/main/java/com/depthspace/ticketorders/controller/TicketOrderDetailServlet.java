@@ -1,10 +1,8 @@
 package com.depthspace.ticketorders.controller;
 
 import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
-import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
-import com.depthspace.ticketorders.service.TicketOrderDetailService;
-import com.depthspace.ticketorders.service.TicketOrderDetailService_Interface;
-import com.depthspace.ticketorders.service.TicketOrderService;
+import com.depthspace.ticketorders.service.TodServiceImpl;
+import com.depthspace.ticketorders.service.TodService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,19 +14,22 @@ import java.util.List;
 
 @WebServlet("/tod/*")
 public class TicketOrderDetailServlet extends HttpServlet {
-    private TicketOrderDetailService_Interface todSv;
+    private TodService todSv;
 
     @Override
     public void init() throws ServletException {
-        todSv = new TicketOrderDetailService();
+        todSv = new TodServiceImpl();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
         switch (pathInfo) {
-            case "/list":
-                doList(req, resp);
+            case "/backList":
+                backList(req, resp);
+                break;
+            case "/frontList":
+                frontList(req, resp);
                 break;
 //            case "/delete1":
 //                doDelete1(req, resp);
@@ -58,35 +59,51 @@ public class TicketOrderDetailServlet extends HttpServlet {
         }
 
     }
-    //用訂單編號查出所有訂單明細
-    protected void doList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    //後台用訂單編號查出所有訂單明細
+    protected void backList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Integer orderId;
+        Integer totalAmount;
+        Integer amountPaid;
+
         try{
         orderId = Integer.valueOf(req.getParameter("orderId"));
+        totalAmount=Integer.valueOf(req.getParameter("totalAmount"));
+        amountPaid=Integer.valueOf(req.getParameter("amountPaid"));
         }catch(Exception e){
             e.printStackTrace();
             return;
         }
         System.out.println(orderId);
+        //取得訂單明細列表
         List<TicketOrderDetailVO> list = todSv.getAllbyOrderId(orderId);
         System.out.println(list);
+        req.setAttribute("totalAmount", totalAmount);
+        req.setAttribute("amountPaid", amountPaid);
         req.setAttribute("list", list);
-        req.getRequestDispatcher("/od/orderDetail.jsp").forward(req, resp);
+        req.getRequestDispatcher("/od/backOrderDetail.jsp").forward(req, resp);
     }
-    //查出會員訂單
-    protected void doMemList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        Integer memId;
-//        try {
-//            memId = Integer.valueOf(req.getParameter("memId"));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return;
-//        }
-//        List<TicketOrdersVO> list = toSv.getbyMemId(memId);
-//        req.setAttribute("list", list);
-//        req.setAttribute("memId",memId);
-//        req.getRequestDispatcher("/ticketOrders/memOrderList.jsp").forward(req, resp);
-//        System.out.println(list);
+    //查出前台會員訂單明細
+    protected void frontList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Integer orderId;
+        Integer totalAmount;
+        Integer amountPaid;
+
+        try{
+            orderId = Integer.valueOf(req.getParameter("orderId"));
+            totalAmount=Integer.valueOf(req.getParameter("totalAmount"));
+            amountPaid=Integer.valueOf(req.getParameter("amountPaid"));
+        }catch(Exception e){
+            e.printStackTrace();
+            return;
+        }
+        System.out.println(orderId);
+        //取得訂單明細列表
+        List<TicketOrderDetailVO> list = todSv.getAllbyOrderId(orderId);
+        System.out.println(list);
+        req.setAttribute("totalAmount", totalAmount);
+        req.setAttribute("amountPaid", amountPaid);
+        req.setAttribute("list", list);
+        req.getRequestDispatcher("/od/frontOrderDetail.jsp").forward(req, resp);
     }
     //進入會員訂單索引頁面(跳轉)
 

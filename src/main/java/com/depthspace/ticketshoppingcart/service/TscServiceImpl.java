@@ -1,30 +1,29 @@
 package com.depthspace.ticketshoppingcart.service;
 
-import com.depthspace.ticket.model.TicketImagesJDBCDAO;
-import com.depthspace.ticket.model.TicketImagesVO;
-import com.depthspace.ticket.model.TicketJDBCDAO;
-import com.depthspace.ticket.model.TicketVO;
+import com.depthspace.ticketshoppingcart.model.CartInfo;
 import com.depthspace.ticketshoppingcart.model.TicketInfoVO;
-import com.depthspace.ticketshoppingcart.model.jdbc.TicketShoppingCartDAO_Interface;
-import com.depthspace.ticketshoppingcart.model.jdbc.TicketShoppingCartJDBCDAO;
+import com.depthspace.ticketshoppingcart.model.hibernate.HbTscDaoImpl;
+import com.depthspace.ticketshoppingcart.model.hibernate.HbTscDao;
+import com.depthspace.ticketshoppingcart.model.jdbc.TscDao;
+import com.depthspace.ticketshoppingcart.model.jdbc.TscDaoImpl;
 import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
+import com.depthspace.utils.HibernateUtil;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-public class TicketShoppingCartService {
-    private TicketShoppingCartDAO_Interface dao;
+public class TscServiceImpl {
+    private HbTscDao tscDao;
 
-    public TicketShoppingCartService() {
-        dao=new TicketShoppingCartJDBCDAO();
+    private TscDao dao;
+
+    public TscServiceImpl() {
+
+        dao=new TscDaoImpl();
+        tscDao=new HbTscDaoImpl(HibernateUtil.getSessionFactory());
     }
-//    private Integer memId;
-//    private Integer ticketId;
-//    private Integer quantity;
-//    private Timestamp addedDate;
+
     //購物車添加票券
     public TicketShoppingCartVO addTicketShoppingCart(TicketShoppingCartVO tsc){
         dao.insert(tsc);
@@ -61,6 +60,17 @@ public class TicketShoppingCartService {
     //票券圖片、票券名稱、票券介紹、價格、數量、小計
     public List<TicketInfoVO> getList(Integer memId){
         return dao.getbyMemId(memId);
+    }
+    //根據ticketId集合取得對應的購物車清單
+    public List<CartInfo>getByTicketIds(Set<Integer> ticketIds, Map<Integer, Integer> items){
+        List<CartInfo> cartInfoList = tscDao.getByTicketIds(ticketIds);
+        for(CartInfo cartInfo:cartInfoList){
+            Integer ticketId = cartInfo.getTicketId();
+            if(items.containsKey(ticketId)){
+                cartInfo.setQuantity(items.get(ticketId));
+            }
+        }
+        return cartInfoList;
     }
 
 

@@ -1,13 +1,11 @@
 package com.depthspace.ticketshoppingcart.model.jdbc;
 
-import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
-import com.depthspace.ticketshoppingcart.CartVO;
 import com.depthspace.ticketshoppingcart.model.TicketInfoVO;
 import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 
 import java.util.List;
 
-public interface TicketShoppingCartDAO_Interface {
+public interface TscDao {
     public void insert(TicketShoppingCartVO tsc);
     public void update(TicketShoppingCartVO tsc);
     public void delete(Integer memId, Integer ticketId);

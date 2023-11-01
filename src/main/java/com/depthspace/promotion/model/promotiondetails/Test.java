@@ -1,10 +1,10 @@
 package com.depthspace.promotion.model.promotiondetails;
 
-import com.depthspace.promotion.model.promotiondetails.jdbc.PromotionDetailsJDBCDAO;
+import com.depthspace.promotion.model.promotiondetails.jdbc.ProDeDaoImpl;
 
 public class Test {
     public static void main(String[] args) {
-        PromotionDetailsJDBCDAO pdoDAO = new PromotionDetailsJDBCDAO();
+        ProDeDaoImpl pdoDAO = new ProDeDaoImpl();
 
         // 測試用插入一筆資料
 //        PromotionDetailsVO pdoVO = new PromotionDetailsVO(4, 1, 10.5);

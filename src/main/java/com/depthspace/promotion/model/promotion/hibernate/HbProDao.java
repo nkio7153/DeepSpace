@@ -4,7 +4,7 @@ import com.depthspace.promotion.model.promotion.PromotionVO;
 
 import java.util.List;
 
-public interface HbProDao_Interface {
+public interface HbProDao {
 
     int insert(PromotionVO entity);
 

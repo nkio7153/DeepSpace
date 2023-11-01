@@ -2,18 +2,10 @@ package com.depthspace.promotion.controller;
 
 import com.depthspace.promotion.model.promotion.PromotionTicketView;
 import com.depthspace.promotion.model.promotion.PromotionVO;
-import com.depthspace.promotion.model.promotion.hibernate.HbProDaoImpl;
-import com.depthspace.promotion.model.promotion.jdbc.PromotionDAO_Interface;
-import com.depthspace.promotion.model.promotiondetails.HbProDeDaoImpl;
-import com.depthspace.promotion.model.promotiondetails.PromotionDetailsVO;
-import com.depthspace.promotion.service.ProService;
-import com.depthspace.ticket.model.TicketImagesVO;
+import com.depthspace.promotion.service.ProServiceImpl;
 import com.depthspace.ticket.model.TicketVO;
-import com.depthspace.ticket.oscardao.HbTiDao;
 import com.depthspace.ticket.service.TicketService;
 import com.depthspace.ticket.service.TicketServiceImpl;
-import com.depthspace.ticketshoppingcart.service.TicketShoppingCartService;
-import com.depthspace.utils.HibernateUtil;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -28,8 +20,6 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -38,17 +28,15 @@ import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
 
-import static java.awt.SystemColor.text;
-
 @WebServlet("/pro/*")
 @MultipartConfig
 public class ProServlet extends HttpServlet {
-    private ProService proSv;
+    private ProServiceImpl proSv;
     private TicketService tiSv;
 
     @Override
     public void init() throws ServletException {
-        proSv = new ProService();
+        proSv = new ProServiceImpl();
         tiSv = new TicketServiceImpl();
     }
 

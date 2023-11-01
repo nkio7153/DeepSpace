@@ -1,10 +1,12 @@
 package com.depthspace.ticketshoppingcart.model.hibernate;
 
+import com.depthspace.ticketshoppingcart.model.CartInfo;
 import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 
 import java.util.List;
+import java.util.Set;
 
-public interface HbTscDao_Interface {
+public interface HbTscDao {
 
     // 插入一個新的購物車項目
     int insert(TicketShoppingCartVO entity);
@@ -30,4 +32,7 @@ public interface HbTscDao_Interface {
 
     // 獲取購物車項目的總數量
     long getTotal();
+
+    //根據ticketId集合取得對應的購物車清單
+    List<CartInfo> getByTicketIds(Set<Integer> ticketIds);
 }

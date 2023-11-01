@@ -1,19 +1,14 @@
-package com.depthspace.promotion.model.promotiondetails;
+package com.depthspace.promotion.model.promotiondetails.hibernate;
 
 import com.depthspace.promotion.model.promotion.PromotionTicketView;
-import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
-import com.depthspace.utils.HibernateUtil;
+import com.depthspace.promotion.model.promotiondetails.PromotionDetailsVO;
+import com.depthspace.promotion.model.promotiondetails.hibernate.HbProDeDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.jdbc.Work;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
-public class HbProDeDaoImpl implements HbProDeDao_Interface {
+public class HbProDeDaoImpl implements HbProDeDao {
     //宣告一個factory變數
     private SessionFactory factory;
     //建構子為factory變數賦值，取得工具類的工廠

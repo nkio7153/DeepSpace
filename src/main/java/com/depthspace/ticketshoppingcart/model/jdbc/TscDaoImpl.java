@@ -4,8 +4,6 @@ import com.depthspace.ticketshoppingcart.model.TicketInfoVO;
 import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 import com.depthspace.utils.DBUtil;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interface {
+public class TscDaoImpl implements TscDao {
     private static final String INSERT_STMT=
             "INSERT INTO TICKET_SHOPPING_CART(MEM_ID, TICKET_ID, QUANTITY) VALUES(?,?,?)";
     private static final String DELETE_ONE=

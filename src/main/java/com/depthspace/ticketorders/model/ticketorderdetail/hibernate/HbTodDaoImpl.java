@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 
 import java.util.List;
 
-public class HbTodDaoImpl implements HbTodDao_Interface{
+public class HbTodDaoImpl implements HbTodDao {
     private SessionFactory factory;
     public HbTodDaoImpl(SessionFactory factory){
         this.factory=factory;
@@ -14,11 +14,22 @@ public class HbTodDaoImpl implements HbTodDao_Interface{
     private Session getSession(){
         return factory.getCurrentSession();
     }
+
+    @Override
+    public void insertBatch(List<TicketOrderDetailVO> todList) {
+        for(TicketOrderDetailVO todVo:todList){
+            getSession().save(todVo);
+        }
+    }
+
     //插入一筆資料
     @Override
     public int insert(TicketOrderDetailVO entity) {
         return (Integer)getSession().save(entity);
     }
+
+
+
     //更新一筆資料
     @Override
     public int update(TicketOrderDetailVO entity) {

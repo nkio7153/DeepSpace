@@ -196,7 +196,7 @@
             <td align="center" class="price vertical">${cart.price}</td>
             <td class="vertical">
                 <input type="number" min="1" max="99" step="1" value="${cart.quantity}" class="num"></td>
-            <td align="center" class="sub vertical">${cart.subtotal}</td>
+            <td align="center" class="sub vertical"></td>
             <td align="center" class="no-wrap w150 vertical">
 <%--                刪除--%>
                 <button class="btn btn-primary btn-del delete1" type="button" data-bs-toggle="modal">
