@@ -35,7 +35,7 @@ public class ColumnArticlesServiceImpl implements ColumnArticlesService {
 	}
 
 	@Override
-	public ColumnArticlesVO updateEmp(ColumnArticlesVO columnArticlesVO) {
+	public ColumnArticlesVO updateColumnArticles(ColumnArticlesVO columnArticlesVO) {
 		dao.update(columnArticlesVO);
 		return columnArticlesVO;
 	}
@@ -92,7 +92,7 @@ public class ColumnArticlesServiceImpl implements ColumnArticlesService {
 
 		return columnArticles;
 	}
-
+	//根據文章ID取得專欄VO
 	@Override
 	public ColumnArticlesVO getArtiByArtiId(Integer artiId) {
 		return dao.getById(artiId);
@@ -113,7 +113,7 @@ public class ColumnArticlesServiceImpl implements ColumnArticlesService {
 			throw new RuntimeException("Error",e);
 		}
 	}
-
+	//取得所有管理者的管理者VO
 	@Override
 	public List<AdminVO> getAllAdmins() {
 		try(Session session = HibernateUtil.getSessionFactory().openSession()){

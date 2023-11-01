@@ -29,7 +29,7 @@
    
  	//購物車加入
   $(".btn").on("click",function(){
-    let url="${pageContext.request.contextPath}/tsc/save?ticketId="+${ticket.ticketId}&memId=1;
+	let url = "${pageContext.request.contextPath}/tsc/save?ticketId=" + ${ticket.ticketId} + "&memId=1";
     fetch(url)
             .then(function(response){
               return response.text();

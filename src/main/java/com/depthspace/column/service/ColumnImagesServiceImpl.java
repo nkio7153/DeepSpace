@@ -1,34 +1,30 @@
 package com.depthspace.column.service;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import com.depthspace.column.dao.ColumnImagesDAO;
+import com.depthspace.column.dao.ColumnImagesDAOImpl;
 import com.depthspace.column.model.ColumnImagesVO;
+import com.depthspace.utils.HibernateUtil;
 
 public class ColumnImagesServiceImpl implements ColumnImagesService{
-	
-//	private ColumnImagesDAO dao;
-	private Session session;
-	
-	public ColumnImagesServiceImpl(Session session) {
-		this.session = session;
+	private ColumnImagesDAO dao;
+
+	public ColumnImagesServiceImpl() {
+        dao = new ColumnImagesDAOImpl(HibernateUtil.getSessionFactory());
+    }
+
+	@Override
+	public ColumnImagesVO save(ColumnImagesVO colImg) {
+		dao.add(colImg);
+		return colImg;
 	}
 	
 	@Override
-	public void save(ColumnImagesVO colImg) {
-//		dao.save(colImg);
-		Transaction transaction = null;
-		try {
-			transaction = session.beginTransaction();
-			session.save(colImg);
-			transaction.commit();
-		} catch (Exception e) {
-			if (transaction != null) {
-				transaction.rollback();
-			}
-			e.printStackTrace();
-		}
+	public ColumnImagesVO update(ColumnImagesVO colImg) {
+		dao.update(colImg);
+		return colImg;
 	}
-
 }
