@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import com.depthspace.tour.model.tour.TourVO;
+import com.depthspace.tour.model.tour.TourView;
 
 public class HbTourDAOImpl implements HbTourDAO_Interface{
 	//宣告一個factory變數
@@ -61,5 +63,44 @@ public class HbTourDAOImpl implements HbTourDAO_Interface{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+
+	@Override
+	public List<TourView> getOneTourList(Integer tourId, Integer memId) {
+//		System.out.println("tourId=" + tourId + "memId=" + memId);
+	    Session session = getSession();
+	    Transaction tx = null;
+	    List<TourView> list = null;
+	    
+	    try {
+//	        tx = session.beginTransaction();
+
+	        list = session.createQuery("SELECT DISTINCT tv from TourView tv where tv.tourId= :tourId AND tv.memId = :memId", TourView.class)
+	            .setParameter("tourId", tourId)
+	            .setParameter("memId", memId)
+	            .list();
+	        
+//	        tx.commit();
+	    } catch (Exception e) {
+	        if (tx != null) {
+//	            tx.rollback();
+	        	System.out.println("錯誤");
+	        }
+	        e.printStackTrace();
+	    } finally {
+	        session.close();
+	    }
+
+	    return list;
+	}
+		
+//		return getSession()
+//				.createQuery("SELECT DISTINCT tv from TourView tv where tv.tourId= :tourId AND tv.memId = :memId" , TourView.class)
+//				.setParameter("tourId", tourId)
+//			    .setParameter("memId", memId)
+//			    .list();
+//	}
+	
+	
 
 }

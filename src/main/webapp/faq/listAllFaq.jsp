@@ -16,14 +16,21 @@ pageContext.setAttribute("list", list);
 
 <html>
 <head>
-<title>FAQ - 首頁</title>
+<title>FAQ</title>
 <jsp:include page="../indexpage/head.jsp" />
 
 <style>
+ #table-1 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center; /* 水平置中 */
+    }
 table#table-1 {
 	background-color: #ffcccc;
 	border: 2px solid black;
 	text-align: center;
+	margin: 0 auto;
 }
 
 table#table-1 h4 {
@@ -102,7 +109,7 @@ a:hover {
 			<td>
 				<h3>FAQ - 首頁</h3>
 				<h4>
-					<a href="select_page.jsp"><img src="images/back1.gif"
+					<a href="select_page.jsp"><img src="images/bear.gif"
 						width="100" height="32" border="0">回首頁</a>
 				</h4>
 			</td>

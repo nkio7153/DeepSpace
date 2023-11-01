@@ -69,10 +69,7 @@ public class TicketVO implements Serializable{
 	
 	@Column(name="TOTAL_STARS")
 	private Integer totalStars; //總星星數
-	
-//	@Column(name="AREA_ID")
-//    private Integer areaId;  
-//    
+
 	@Column(name="ADDRESS")
     private String address;  
     
@@ -85,6 +82,9 @@ public class TicketVO implements Serializable{
     @ManyToOne
     @JoinColumn(name = "AREA_ID", referencedColumnName = "CITY_ID")
     private CityVO city;
+//	@Column(name="AREA_ID")
+//    private Integer areaId;  
+//    
     
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TicketImagesVO> images = new HashSet<>();
