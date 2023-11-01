@@ -35,7 +35,7 @@
 
 <p>Faq: Home</p>
 
-<h3>資料查詢:</h3>
+<h3>FAQ資料查詢:</h3>
 	
 <%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
@@ -90,7 +90,7 @@
 </ul>
 
 
-<h3>員工管理</h3>
+<h3>FAQ管理</h3>
 
 <ul>
   <li><a href='addFaq.jsp'>新增</a> a new Faq.</li>
