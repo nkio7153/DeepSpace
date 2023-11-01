@@ -126,6 +126,7 @@ td {
 							</span>
 						</div>
 					</form>
+					<!-- 新增票券 -->
 					<form method="get"
 						action="<%=request.getContextPath()%>/ticketmg/add">
 						<button class="btn btn-primary" type="submit">新增</button>
@@ -241,7 +242,7 @@ td {
 		<!-- 回首頁 -->
 		<div class="page-item">
 			<a class="page-link"
-				href="${pageContext.request.contextPath}/ticketmg/">回首頁</a>
+				href="${pageContext.request.contextPath}/ticketmg/list">回首頁</a>
 		</div>
 </body>
 </html>

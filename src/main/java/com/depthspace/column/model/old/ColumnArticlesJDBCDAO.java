@@ -34,10 +34,10 @@ public class ColumnArticlesJDBCDAO implements ColumnArticlesDAO_Interface {
             pstmt = con.prepareStatement(INSERT_STMT);
             
 //            pstmt.setInt(1, columnArticlesVO.getColTypeId());
-            pstmt.setString(2, columnArticlesVO.getAritTitle());
+//            pstmt.setString(2, columnArticlesVO.getAritTitle());
             pstmt.setString(3, columnArticlesVO.getArtiContent());
             pstmt.setTimestamp(4, (Timestamp) columnArticlesVO.getArticleDate());
-            pstmt.setInt(5, columnArticlesVO.getAdminId());
+//            pstmt.setInt(5, columnArticlesVO.getAdminId());
             pstmt.setByte(6, columnArticlesVO.getArtiStatus());
 
             pstmt.executeUpdate();
@@ -57,12 +57,12 @@ public class ColumnArticlesJDBCDAO implements ColumnArticlesDAO_Interface {
             pstmt = con.prepareStatement(UPDATE_STMT);
 
 //            pstmt.setInt(1, columnArticlesVO.getColTypeId());
-            pstmt.setString(2, columnArticlesVO.getAritTitle());
+//            pstmt.setString(2, columnArticlesVO.getAritTitle());
             pstmt.setString(3, columnArticlesVO.getArtiContent());
             pstmt.setTimestamp(4, (Timestamp) columnArticlesVO.getArticleDate());
-            pstmt.setInt(5, columnArticlesVO.getAdminId());
+//            pstmt.setInt(5, columnArticlesVO.getAdminId());
             pstmt.setByte(6, columnArticlesVO.getArtiStatus());
-            pstmt.setInt(7, columnArticlesVO.getAritId());
+//            pstmt.setInt(7, columnArticlesVO.getAritId());
 
             pstmt.executeUpdate();
 
@@ -106,12 +106,12 @@ public class ColumnArticlesJDBCDAO implements ColumnArticlesDAO_Interface {
             
                 while (rs.next()) {
                     columnArticlesVO = new ColumnArticlesVO();
-                    columnArticlesVO.setAritId(rs.getInt("ARTI_ID"));
+//                    columnArticlesVO.setAritId(rs.getInt("ARTI_ID"));
 //                    columnArticlesVO.setColTypeId(rs.getInt("COL_TYPE_ID"));
-                    columnArticlesVO.setAritTitle(rs.getString("ARTI_TITLE"));
+//                    columnArticlesVO.setAritTitle(rs.getString("ARTI_TITLE"));
                     columnArticlesVO.setArtiContent(rs.getString("ARTI_CONTENT"));
                     columnArticlesVO.setArticleDate(rs.getTimestamp("ARTICLE_DATE"));
-                    columnArticlesVO.setAdminId(rs.getInt("ADMIN_ID"));
+//                    columnArticlesVO.setAdminId(rs.getInt("ADMIN_ID"));
                     columnArticlesVO.setArtiStatus(rs.getByte("ARTI_STATUS"));
                 }
 
@@ -135,12 +135,12 @@ public class ColumnArticlesJDBCDAO implements ColumnArticlesDAO_Interface {
 
             while (rs.next()) {
                 ColumnArticlesVO columnArticlesVO = new ColumnArticlesVO();
-                columnArticlesVO.setAritId(rs.getInt("ARTI_ID"));
+//                columnArticlesVO.setAritId(rs.getInt("ARTI_ID"));
 //                columnArticlesVO.setColTypeId(rs.getInt("COL_TYPE_ID"));
-                columnArticlesVO.setAritTitle(rs.getString("ARTI_TITLE"));
+//                columnArticlesVO.setAritTitle(rs.getString("ARTI_TITLE"));
                 columnArticlesVO.setArtiContent(rs.getString("ARTI_CONTENT"));
                 columnArticlesVO.setArticleDate(rs.getTimestamp("ARTICLE_DATE"));
-                columnArticlesVO.setAdminId(rs.getInt("ADMIN_ID"));
+//                columnArticlesVO.setAdminId(rs.getInt("ADMIN_ID"));
                 columnArticlesVO.setArtiStatus(rs.getByte("ARTI_STATUS"));
                 list.add(columnArticlesVO);
             }

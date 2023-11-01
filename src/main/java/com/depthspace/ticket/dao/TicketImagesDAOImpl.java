@@ -4,82 +4,67 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Session;
-import org.hibernate.query.Query; // 這是用於創建查詢的類
-
-
+import org.hibernate.query.Query;
 import com.depthspace.ticket.model.TicketImagesVO;
 
-public abstract class TicketImagesDAOImpl  implements TicketImagesDAO {
-
+public class TicketImagesDAOImpl implements TicketImagesDAO {
 	private SessionFactory factory;
-	private TicketImagesVO ticketImage;
-	
+
 	public TicketImagesDAOImpl(SessionFactory factory) {
-		this.factory = factory;		
-	}
-	
-	private Session getSession() {
-		return factory.getCurrentSession();
+		this.factory = factory;
 	}
 
-	public TicketImagesDAOImpl() {
-		super();
-		// TODO Auto-generated constructor stub
-	}	
-	
+//	private Session getSession() {
+//		return factory.getCurrentSession();
+//	}
+
+//	@Override
+//	public TicketImagesVO saveImage(byte[] imageBytes) {
+//		Session session = factory.openSession();
+//		TicketImagesVO ticketImage = new TicketImagesVO();
+//		try {
+//
+//			ticketImage.setImage(imageBytes);
+//			session.save(ticketImage);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return ticketImage;
+//	}
+
 	@Override
-	public TicketImagesVO saveImage(byte[] imageBytes) {
-        Session session = factory.openSession();
+	public List<TicketImagesVO> findImagesByTicketId(Integer ticketId) {
 
-        try {
-            
-            TicketImagesVO ticketImage = new TicketImagesVO();
-          
-            ticketImage.setImage(imageBytes);
+		List<TicketImagesVO> images = null;
 
-            session.save(ticketImage);
+		Session session = factory.openSession();
 
-        } catch (Exception e) {
-            e.printStackTrace(); 
-            }
-		return ticketImage;
- 
+		try {
+			Query query = session.createQuery("FROM TicketImagesVO WHERE ticketId = :ticketId", TicketImagesVO.class);
+			query.setParameter("ticketId", ticketId);
+			images = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return images;
 	}
 
-    @Override
-    public List<TicketImagesVO> findImagesByTicketId(Integer ticketId) {
-    	
-        List<TicketImagesVO> images = null;
-        
-        Session session = factory.openSession();
-
-        try {
-            Query query = session.createQuery("FROM TicketImagesVO WHERE ticketId = :ticketId", TicketImagesVO.class);
-            query.setParameter("ticketId", ticketId);
-            images = query.getResultList();
-        } catch (Exception e) {
-            e.printStackTrace(); // 更好的做法是使用日誌系統
-        }
-        return images;
-    }
-	
 	@Override
 	public void insert(TicketImagesVO ticketImagesVO) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void update(TicketImagesVO ticketImagesVO) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void delete(Integer serialId) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -94,6 +79,10 @@ public abstract class TicketImagesDAOImpl  implements TicketImagesDAO {
 		return null;
 	}
 
+	@Override
+	public void TicketIsMainImage(byte isMainImage) {
+		// TODO Auto-generated method stub
 
+	}
 
 }

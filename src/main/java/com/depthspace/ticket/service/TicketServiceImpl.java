@@ -21,11 +21,8 @@ import org.hibernate.query.Query;
 import com.depthspace.attractions.model.CityVO;
 import com.depthspace.ticket.dao.TicketDAO;
 import com.depthspace.ticket.dao.TicketDAOImpl;
-import com.depthspace.ticket.model.TicketImagesVO;
 import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
-import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
-import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 import com.depthspace.utils.HibernateUtil;
 
 public class TicketServiceImpl implements TicketService {
@@ -87,12 +84,12 @@ public class TicketServiceImpl implements TicketService {
 	public TicketVO getTicketById(Integer ticketId) {
 		return dao.getTicketById(ticketId);
 	}
-
+	//取得所有票券VO 根據票券ID
 	@Override
 	public List<TicketVO> getTicketById2(Integer ticketId) {
 		return dao.getTicketById2(ticketId);
 	}
-
+	//取得所有票券VO 
 	@Override
 	public List<TicketVO> getAllTickets() {
 
@@ -109,7 +106,7 @@ public class TicketServiceImpl implements TicketService {
 			throw new RuntimeException("Error", e);
 		}
 	}
-
+	//取得所有票券VO 根據分頁
 	@Override
 	public List<TicketVO> getAllTickets2(int currentPage) {
 		List<TicketVO> tickets = new ArrayList<>();

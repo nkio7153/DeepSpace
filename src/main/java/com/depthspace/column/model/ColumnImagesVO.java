@@ -5,9 +5,13 @@ import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,10 +23,14 @@ public class ColumnImagesVO implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer colImgId;
 
-	@Column(name = "ARTI_ID")
-	private Integer artiId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="ARTI_ID", nullable = false)
+	private ColumnArticlesVO columnArticles;
+//	@Column(name = "ARTI_ID")
+//	private Integer artiId;
 
-	@Column(name = "COL_IMG", columnDefinition = "mediumblob")
+	@Lob
+	@Column(name = "COL_IMG", columnDefinition = "MEDIUMBLOB")
 	private byte[] colImg;
 
 	@Column(name = "IS_MAIN_IMAGE") // 1為主圖，0為多張圖
@@ -33,18 +41,10 @@ public class ColumnImagesVO implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ColumnImagesVO(Integer colImgId, Integer artiId, byte[] colImg, byte isMainImage) {
-		super();
-		this.colImgId = colImgId;
-		this.artiId = artiId;
-		this.colImg = colImg;
-		this.isMainImage = isMainImage;
-	}
-
 	@Override
 	public String toString() {
-		return "ColumnImagesVO [colImgId=" + colImgId + ", artiId=" + artiId + ", colImg=" + Arrays.toString(colImg)
-				+ ", isMainImage=" + isMainImage + "]";
+		return "ColumnImagesVO [colImgId=" + colImgId + ", columnArticles=" + columnArticles + ", colImg="
+				+ Arrays.toString(colImg) + ", isMainImage=" + isMainImage + "]";
 	}
 
 	public Integer getColImgId() {
@@ -55,12 +55,12 @@ public class ColumnImagesVO implements Serializable {
 		this.colImgId = colImgId;
 	}
 
-	public Integer getArtiId() {
-		return artiId;
+	public ColumnArticlesVO getColumnArticles() {
+		return columnArticles;
 	}
 
-	public void setArtiId(Integer artiId) {
-		this.artiId = artiId;
+	public void setColumnArticles(ColumnArticlesVO columnArticles) {
+		this.columnArticles = columnArticles;
 	}
 
 	public byte[] getColImg() {
@@ -79,6 +79,14 @@ public class ColumnImagesVO implements Serializable {
 		this.isMainImage = isMainImage;
 	}
 
-	
+	public ColumnImagesVO(Integer colImgId, ColumnArticlesVO columnArticles, byte[] colImg, byte isMainImage) {
+		super();
+		this.colImgId = colImgId;
+		this.columnArticles = columnArticles;
+		this.colImg = colImg;
+		this.isMainImage = isMainImage;
+	}
+
+
 	
 }

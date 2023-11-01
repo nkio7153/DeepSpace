@@ -34,7 +34,7 @@ public class ColumnImagesJDBCDAO implements ColumnImagesDAO_Interface {
             con = DBUtil.getConnection();
             pstmt = con.prepareStatement(INSERT_STMT);
             
-            pstmt.setInt(1, columnImagesVO.getArtiId());
+//            pstmt.setInt(1, columnImagesVO.getArtiId());
             pstmt.setBytes(2, columnImagesVO.getColImg());
             pstmt.executeUpdate();
             
@@ -54,7 +54,7 @@ public class ColumnImagesJDBCDAO implements ColumnImagesDAO_Interface {
             con = DBUtil.getConnection();
             pstmt = con.prepareStatement(UPDATE_STMT);
             
-            pstmt.setInt(1, columnImagesVO.getArtiId());
+//            pstmt.setInt(1, columnImagesVO.getArtiId());
             pstmt.setBytes(2, columnImagesVO.getColImg());
             pstmt.setInt(3, columnImagesVO.getColImgId());
             pstmt.executeUpdate();
@@ -102,7 +102,7 @@ public class ColumnImagesJDBCDAO implements ColumnImagesDAO_Interface {
             while(rs.next()) {
                 columnImagesVO = new ColumnImagesVO();
                 columnImagesVO.setColImgId(rs.getInt("COL_IMG_ID"));
-                columnImagesVO.setArtiId(rs.getInt("ARTI_ID"));
+//                columnImagesVO.setArtiId(rs.getInt("ARTI_ID"));
                 columnImagesVO.setColImg(rs.getBytes("COL_IMG"));
             }
             
@@ -130,7 +130,7 @@ public class ColumnImagesJDBCDAO implements ColumnImagesDAO_Interface {
             while(rs.next()) {
                 columnImagesVO = new ColumnImagesVO();
                 columnImagesVO.setColImgId(rs.getInt("COL_IMG_ID"));
-                columnImagesVO.setArtiId(rs.getInt("ARTI_ID"));
+//                columnImagesVO.setArtiId(rs.getInt("ARTI_ID"));
                 columnImagesVO.setColImg(rs.getBytes("COL_IMG"));
                 list.add(columnImagesVO);
             }

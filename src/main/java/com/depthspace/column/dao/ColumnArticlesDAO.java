@@ -6,11 +6,11 @@ import com.depthspace.column.model.ColumnArticlesVO;
 
 public interface ColumnArticlesDAO {
 	
-	void insert(ColumnArticlesVO entity);
+	void insert(ColumnArticlesVO columnArticlesVO);
 
-	void update(ColumnArticlesVO entity);
+	void update(ColumnArticlesVO columnArticlesVO);
 	
-	void delete(Integer id);
+	void delete(Integer artiId);
 	
 	long getTotal();
 	
@@ -18,7 +18,7 @@ public interface ColumnArticlesDAO {
 	
 	List<ColumnArticlesVO> getAll();
 
-	ColumnArticlesVO getById(Integer id);
+	ColumnArticlesVO getById(Integer artiId);
 	
 		
 }
