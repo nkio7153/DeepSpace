@@ -11,9 +11,11 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import com.depthspace.admin.model.model.AdminVO;
 import com.depthspace.column.dao.ColumnArticlesDAO;
 import com.depthspace.column.dao.ColumnArticlesDAOImpl;
 import com.depthspace.column.model.ColumnArticlesVO;
+import com.depthspace.column.model.ColumnTypesVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.utils.HibernateUtil;
 
@@ -94,6 +96,38 @@ public class ColumnArticlesServiceImpl implements ColumnArticlesService {
 	@Override
 	public ColumnArticlesVO getArtiByArtiId(Integer artiId) {
 		return dao.getById(artiId);
+	}
+	//取得所有專欄類型
+	@Override
+	public List<ColumnTypesVO> getAllColumnTypes() {
+		try(Session session = HibernateUtil.getSessionFactory().openSession()){
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<ColumnTypesVO> criteriaQuery = criteriaBuilder.createQuery(ColumnTypesVO.class);
+			Root<ColumnTypesVO> root = criteriaQuery.from(ColumnTypesVO.class);
+			criteriaQuery.select(root);
+			
+			Query<ColumnTypesVO> query = session.createQuery(criteriaQuery);
+			
+			return query.getResultList();
+		} catch (Exception e) {
+			throw new RuntimeException("Error",e);
+		}
+	}
+
+	@Override
+	public List<AdminVO> getAllAdmins() {
+		try(Session session = HibernateUtil.getSessionFactory().openSession()){
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<AdminVO> criteriaQuery = criteriaBuilder.createQuery(AdminVO.class);
+			Root<AdminVO> root = criteriaQuery.from(AdminVO.class);
+			criteriaQuery.select(root);
+			
+			Query<AdminVO> query = session.createQuery(criteriaQuery);
+			
+			return query.getResultList();
+		} catch (Exception e) {
+			throw new RuntimeException("Error",e);
+		}
 	}
 
 }

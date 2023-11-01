@@ -36,7 +36,6 @@ import com.depthspace.ticket.service.TicketServiceImpl;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 import com.depthspace.utils.HibernateUtil;
 
-
 @WebServlet("/ticketmg/*")
 @MultipartConfig
 public class TicketServlet extends HttpServlet {
@@ -48,11 +47,11 @@ public class TicketServlet extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
-		ticketService = new TicketServiceImpl();
-
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		session = sessionFactory.openSession();
-		ticketImagesService = new TicketImagesServiceImpl(session); // 初始化ticketImagesService
+		ticketService = new TicketServiceImpl();
+		ticketImagesService = new TicketImagesServiceImpl(session);
+
 	}
 
 	@Override
@@ -95,11 +94,11 @@ public class TicketServlet extends HttpServlet {
 
 	/************ 票券列表 ************/
 	private void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		//取得所有票券內容 未分頁取這兩行即可
-	    List<TicketVO> ticketListAll = ticketService.getAllTickets(); 
-	    req.setAttribute("ticketListAll", ticketListAll);
-		
-		// 取得所有票券內容(VO) "分頁"		
+		// 取得所有票券內容 未分頁取這兩行即可(處理篩選故要留)
+		List<TicketVO> ticketListAll = ticketService.getAllTickets();
+		req.setAttribute("ticketListAll", ticketListAll);
+
+		// 取得所有票券內容(VO) "分頁"
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 
@@ -115,21 +114,19 @@ public class TicketServlet extends HttpServlet {
 		// 處理票券類型不重複
 		Set<TicketTypesVO> uniqueTicketTypes = new HashSet<>();
 		for (TicketVO ticket : ticketListAll) {
-		    uniqueTicketTypes.add(ticket.getTicketType());
+			uniqueTicketTypes.add(ticket.getTicketType());
 		}
 		req.setAttribute("uniqueTicketTypes", new ArrayList<>(uniqueTicketTypes));
 		// 處理票券區域不重複
 		Set<CityVO> uniqueTicketArea = new HashSet<>();
 		for (TicketVO ticket : ticketListAll) {
-		    uniqueTicketArea.add(ticket.getCity());
+			uniqueTicketArea.add(ticket.getCity());
 		}
 		req.setAttribute("uniqueTicketArea", new ArrayList<>(uniqueTicketArea));
-			
+
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/ticket/list.jsp");
 		dispatcher.forward(req, res);
 	}
-
-
 
 	/************ 票券新增 ************/
 	private void doAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -172,9 +169,10 @@ public class TicketServlet extends HttpServlet {
 			// 存入多張圖片
 			Collection<Part> fileParts = req.getParts(); // 多份圖
 			boolean isFirstImage = true; // 標記是否為第一張圖
+			List<TicketImagesVO> ticketImagesList = new ArrayList<>(); // 創建一個列表來收集所有的TicketImagesVO
 
-			for (Part filePart : fileParts) { // 對應前端上傳的圖片ticketImages
-				if (filePart.getName().equals("ticketImages[]") && filePart.getSize() > 0) { // 確認有上傳圖片
+			for (Part filePart : fileParts) {
+				if (filePart.getName().equals("ticketImages[]") && filePart.getSize() > 0) {
 					TicketImagesVO ticketImage = new TicketImagesVO();
 					ticketImage.setTicket(ticket);
 
@@ -187,13 +185,12 @@ public class TicketServlet extends HttpServlet {
 					}
 
 					// 讀取圖片並存入
-					try (InputStream inputStream = filePart.getInputStream()) {
-
-						byte[] imageBytes = readInputStream(inputStream);
-						ticketImage.setImage(imageBytes);
-
-						ticketImagesService.save(ticketImage);
-					}
+					InputStream inputStream = filePart.getInputStream();
+					byte[] imageBytes = readInputStream(inputStream);
+					ticketImage.setImage(imageBytes);
+					ticketImagesList.add(ticketImage);
+					// 儲存所有圖片
+					ticketImagesService.saveAll(ticketImagesList);
 				}
 			}
 		}
@@ -201,7 +198,7 @@ public class TicketServlet extends HttpServlet {
 		res.sendRedirect(req.getContextPath() + "/ticketmg/list");
 	}
 
-	/************ 票券修改 ************/
+	/************ 票券修改 圖片更新尚須修正************/
 	private void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		if (!req.getMethod().equalsIgnoreCase("POST")) {
@@ -266,8 +263,6 @@ public class TicketServlet extends HttpServlet {
 			ticketImage.setTicket(ticket);
 			ticketImage.setImage(imageBytes);
 
-			ticketImagesService.save(ticketImage);
-
 			////////////
 
 			// 更新票券
@@ -282,60 +277,59 @@ public class TicketServlet extends HttpServlet {
 			}
 		}
 	}
-	
 
 	/************ 票券搜尋 ************/
 	private void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-	    Integer ticketTypeId = null;
-	    Integer ticketId = null;
-	    Integer cityId = null;
-	    Map<String, String[]> map = req.getParameterMap();
+		Integer ticketTypeId = null;
+		Integer ticketId = null;
+		Integer cityId = null;
+		Map<String, String[]> map = req.getParameterMap();
 
-	    // 查詢票券類型
-	    try {
-	        ticketTypeId = Integer.valueOf(req.getParameter("ticketTypeId"));
-	    } catch (NumberFormatException e) {
-	        ticketTypeId = null;
-	    }
-	    // 查詢票券名稱
-	    try {
-	        ticketId = Integer.valueOf(req.getParameter("ticketId"));
-	    } catch (NumberFormatException e) {
-	        ticketId = null;
-	    }	    
-	    // 查詢票券區域
-	    try {
-	        cityId = Integer.valueOf(req.getParameter("areaId"));
-	    } catch (NumberFormatException e) {
-	        cityId = null;
-	    }
-	    // 儲存list
-	    List<TicketVO> list = new ArrayList<>();
+		// 查詢票券類型
+		try {
+			ticketTypeId = Integer.valueOf(req.getParameter("ticketTypeId"));
+		} catch (NumberFormatException e) {
+			ticketTypeId = null;
+		}
+		// 查詢票券名稱
+		try {
+			ticketId = Integer.valueOf(req.getParameter("ticketId"));
+		} catch (NumberFormatException e) {
+			ticketId = null;
+		}
+		// 查詢票券區域
+		try {
+			cityId = Integer.valueOf(req.getParameter("areaId"));
+		} catch (NumberFormatException e) {
+			cityId = null;
+		}
+		// 儲存list
+		List<TicketVO> list = new ArrayList<>();
 
-	    // 票券類型不為空就加入列表
-	    if (ticketTypeId != null) {
-	        List<TicketVO> ticketTypeList = ticketService.getAllTicketTypeIds(ticketTypeId);
-	        list.addAll(ticketTypeList);
-	    }
-	    // 票券ID不為空就加入列表
-	    if (ticketId != null) {
-	        List<TicketVO> ticketIdList = ticketService.getTicketById2(ticketId);
-	        list.addAll(ticketIdList);
-	    }
-	    // 票券區域不為空就加入列表
-	    if (cityId != null) {
-	        List<TicketVO> areaList = ticketService.getAllTicketAreaId(cityId);
-	        list.addAll(areaList);
-	    }
-	    //票券名稱的模糊查詢參數
-	    String[] ticketNameQueries = map.get("ticketName");
-	    if (ticketNameQueries != null && ticketNameQueries.length > 0 && !ticketNameQueries[0].isEmpty()) {
-	        List<TicketVO> ticketNameList = ticketService.getTicketsByCompositeQuery(map);
-	        list.addAll(ticketNameList);
-	    }
-	    System.out.println(list);
-	    req.setAttribute("list", list);
-	    req.getRequestDispatcher("/backend/ticket/find.jsp").forward(req, res);
+		// 票券類型不為空就加入列表
+		if (ticketTypeId != null) {
+			List<TicketVO> ticketTypeList = ticketService.getAllTicketTypeIds(ticketTypeId);
+			list.addAll(ticketTypeList);
+		}
+		// 票券ID不為空就加入列表
+		if (ticketId != null) {
+			List<TicketVO> ticketIdList = ticketService.getTicketById2(ticketId);
+			list.addAll(ticketIdList);
+		}
+		// 票券區域不為空就加入列表
+		if (cityId != null) {
+			List<TicketVO> areaList = ticketService.getAllTicketAreaId(cityId);
+			list.addAll(areaList);
+		}
+		// 票券名稱的模糊查詢參數
+		String[] ticketNameQueries = map.get("ticketName");
+		if (ticketNameQueries != null && ticketNameQueries.length > 0 && !ticketNameQueries[0].isEmpty()) {
+			List<TicketVO> ticketNameList = ticketService.getTicketsByCompositeQuery(map);
+			list.addAll(ticketNameList);
+		}
+		System.out.println(list);
+		req.setAttribute("list", list);
+		req.getRequestDispatcher("/backend/ticket/find.jsp").forward(req, res);
 	}
 
 	/************ 票券刪除 ************/
