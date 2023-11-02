@@ -1,11 +1,10 @@
 package com.depthspace.ticketorders.model.ticketorderdetail.jdbc;
 
 import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
-import com.depthspace.ticketorders.model.ticketorderdetail.jdbc.TicketOrderDetailJDBCDAO;
 
 public class Test {
     public static void main(String[] args) {
-        TicketOrderDetailJDBCDAO todDAO = new TicketOrderDetailJDBCDAO();
+        TodDaoImpl todDAO = new TodDaoImpl();
 
         //測試用插入一筆資料
 //        TicketOrderDetailVO todvo = new TicketOrderDetailVO(6, 7, 4, 600, 700, 900, "很好", Byte.valueOf("4"));

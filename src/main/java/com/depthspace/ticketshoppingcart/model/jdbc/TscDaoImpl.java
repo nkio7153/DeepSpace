@@ -4,8 +4,6 @@ import com.depthspace.ticketshoppingcart.model.TicketInfoVO;
 import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 import com.depthspace.utils.DBUtil;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interface {
+public class TscDaoImpl implements TscDao {
     private static final String INSERT_STMT=
             "INSERT INTO TICKET_SHOPPING_CART(MEM_ID, TICKET_ID, QUANTITY) VALUES(?,?,?)";
     private static final String DELETE_ONE=
@@ -29,12 +27,21 @@ public class TicketShoppingCartJDBCDAO implements TicketShoppingCartDAO_Interfac
             "SELECT MEM_ID, TICKET_ID, QUANTITY FROM TICKET_SHOPPING_CART WHERE MEM_ID=?";
     private static final String GET_ALL_STMT=
             "SELECT MEM_ID, TICKET_ID, QUANTITY FROM TICKET_SHOPPING_CART  ORDER BY MEM_ID";
-    private static final String GET_ALL_STMT2_BY_MEMID =
-            "SELECT tsc.MEM_ID, tsc.TICKET_ID, ti.SERIAL_ID, ti.IMAGE, t.TICKET_NAME, t.DESCRIPTION, t.PRICE, tsc.QUANTITY, (t.PRICE * tsc.QUANTITY) as SUBTOTAL " +
-                    "FROM TICKET_SHOPPING_CART tsc " +
-                    "JOIN TICKET t ON tsc.TICKET_ID = t.TICKET_ID " +
-                    "JOIN TICKET_IMAGES ti ON t.TICKET_ID = ti.TICKET_ID " +
-                    "WHERE tsc.MEM_ID = ?";
+    //非會員存購物車查詢
+    private static final String GET_ALL_BY_TICKET_ID =
+            "SELECT " +
+                    "T.TICKET_ID AS ticketId, " +
+                    "TI.SERIAL_ID AS serialId, " +
+                    "T.TICKET_NAME AS ticketName, " +
+                    "T.DESCRIPTION AS description, " +
+                    "T.PRICE AS price, " +
+                    "T.STOCK AS stock " +
+                    "FROM " +
+                    "TICKET T " +
+                    "JOIN " +
+                    "TICKET_IMAGES TI ON T.TICKET_ID = TI.TICKET_ID " +
+                    "WHERE " +
+                    "T.TICKET_ID = 324012 AND TI.IS_MAIN_IMAGE = 1";
     private static final String GET_ALL_STMT3_BY_MEMID =
             "SELECT tsc.MEM_ID, tsc.TICKET_ID, ti.SERIAL_ID, ti.IMAGE, t.TICKET_NAME, t.DESCRIPTION, t.PRICE, tsc.QUANTITY, (t.PRICE * tsc.QUANTITY) as SUBTOTAL " +
                     "FROM TICKET_SHOPPING_CART tsc " +

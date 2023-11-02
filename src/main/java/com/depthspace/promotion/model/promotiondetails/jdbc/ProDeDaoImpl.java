@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PromotionDetailsJDBCDAO implements PromotionDetailsDAO_Interface {
+public class ProDeDaoImpl implements ProDeDao {
     public static final String INSERT_STMT=
             "INSERT INTO PROMOTION_DETAILS(PROMOTION_ID, TICKET_ID, DISCOUNT) VALUES(?,?,?)";
     public static final String DELETE=

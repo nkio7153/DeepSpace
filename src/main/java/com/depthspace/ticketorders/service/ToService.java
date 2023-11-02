@@ -1,12 +1,13 @@
 package com.depthspace.ticketorders.service;
 
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
+import com.depthspace.ticketshoppingcart.model.CartInfo;
 
 import java.util.List;
 
-public interface TicketOrderService_Interface {
+public interface ToService {
     //生成一筆訂單
-    public TicketOrdersVO generateTicektOrders(TicketOrdersVO entity);
+    public TicketOrdersVO generateTicektOrders(TicketOrdersVO entity, List<CartInfo> ciList);
     //更新一筆訂單
     public TicketOrdersVO updateTicektOrders(TicketOrdersVO entity);
     //刪除一筆訂單
