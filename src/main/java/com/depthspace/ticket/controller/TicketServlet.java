@@ -200,12 +200,11 @@ public class TicketServlet extends HttpServlet {
 
 	/************ 票券修改 圖片更新尚須修正************/
 	private void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-
-		if (!req.getMethod().equalsIgnoreCase("POST")) {
-			// 若不是POST送出請求，就到編輯頁面 (將該id票券的值塞入)
 			Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
 			TicketVO ticket = ticketService.getTicketById(ticketId);
 
+		if (!req.getMethod().equalsIgnoreCase("POST")) {
+			// 若不是POST送出請求，就到編輯頁面 (將該id票券的值塞入)
 			List<TicketTypesVO> ticketTypes = ticketService.getAllTicketTypes();
 			List<CityVO> cities = ticketService.getAllCities();
 
@@ -217,10 +216,6 @@ public class TicketServlet extends HttpServlet {
 			dispatcher.forward(req, res);
 
 		} else {
-
-			Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
-			TicketVO ticket = ticketService.getTicketById(ticketId);
-
 			// 送出更新後的資料
 			ticket.setTicketName(req.getParameter("ticketName"));
 			ticket.setPrice(Integer.valueOf(req.getParameter("price")));
@@ -263,18 +258,9 @@ public class TicketServlet extends HttpServlet {
 			ticketImage.setTicket(ticket);
 			ticketImage.setImage(imageBytes);
 
-			////////////
-
-			// 更新票券
-			TicketVO updatedTicket = ticketService.updateTicket(ticket);
-
-			if (updatedTicket != null) {
-				res.sendRedirect(req.getContextPath() + "/ticketmg/list");
-			} else {
-				req.setAttribute("errorMessage", "失敗");
-				RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
-				dispatcher.forward(req, res);
-			}
+			
+			ticketService.updateTicket(ticket);
+			res.sendRedirect(req.getContextPath() + "/ticketmg/list");
 		}
 	}
 

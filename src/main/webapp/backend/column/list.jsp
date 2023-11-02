@@ -112,7 +112,7 @@ td {
 								<c:otherwise>未上架</c:otherwise>
 							</c:choose></td>
 						<td><a
-							href="${pageContext.request.contextPath}/ticketmg/edit?ticketId=${ticket.ticketId}"
+							href="${pageContext.request.contextPath}/columnmg/edit?artiId=${column.artiId}"
 							class="btn btn-primary btn-sm">修改</a> <a
 							href="${pageContext.request.contextPath}/ticketmg/del?ticketId=${ticket.ticketId}"
 							class="btn btn-danger btn-sm"
