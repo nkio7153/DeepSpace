@@ -6,5 +6,7 @@ public interface ColumnImagesDAO {
 	
 	int add(ColumnImagesVO columnImagesVO);
 	
-	void update(ColumnImagesVO columnImagesVO);
+    ColumnImagesVO findByArticleId(Integer artiId);
+    
+    void updateImg(ColumnImagesVO colImg);
 }

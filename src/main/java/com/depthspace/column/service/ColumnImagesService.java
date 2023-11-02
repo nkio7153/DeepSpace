@@ -6,5 +6,7 @@ public interface ColumnImagesService {
 	
 	ColumnImagesVO save(ColumnImagesVO colImg);
 	
-	ColumnImagesVO update(ColumnImagesVO colImg);
+	ColumnImagesVO getMainImageByArticleId(Integer artiId);
+	
+	void updateImg(ColumnImagesVO colImg);
 }

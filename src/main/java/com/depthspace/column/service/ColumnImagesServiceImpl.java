@@ -22,9 +22,15 @@ public class ColumnImagesServiceImpl implements ColumnImagesService{
 		return colImg;
 	}
 	
-	@Override
-	public ColumnImagesVO update(ColumnImagesVO colImg) {
-		dao.update(colImg);
-		return colImg;
-	}
+    @Override
+    public ColumnImagesVO getMainImageByArticleId(Integer artiId) {
+        return dao.findByArticleId(artiId);
+    }
+
+    @Override
+    public void updateImg(ColumnImagesVO colImg) {
+    	dao.updateImg(colImg);
+    }
+
+	
 }

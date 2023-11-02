@@ -32,7 +32,7 @@
 					method="post" enctype="multipart/form-data">
 					<div class="row">
 						<!-- ID -->
-						<input type="hidden" name="artiId" value=${columnArticles.artiId}>
+						<input type="hidden" name="artiId" value=${columnArticles.artiId}></input>
 						<!-- 類型 -->
 						<div class="form-group col-md-6">
 							<label for="colTypeId">專欄類型</label> <select name=colTypeId
@@ -55,7 +55,7 @@
 						<!-- 圖片上傳 -->
 						<div class="row">
 							<div class="form-group col-md-6">
-								<label for="ticketImage">圖片</label> <input type="file"
+								<label for="colImg">圖片</label> <input type="file"
 									class="form-control-file" id="colImg" name="colImg"
 									onchange="previewImage(event)">
 							</div>
@@ -71,7 +71,7 @@
 						<div class="form-group col-md-12">
 							<label for="description">描述</label>
 							<textarea class="form-control" id="description"
-								name="description" rows="4">${columnArticles.artiContent}</textarea>
+								name="artiContent" rows="4">${columnArticles.artiContent}</textarea>
 							<script>
 								CKEDITOR.replace('description');
 							</script>
@@ -94,20 +94,17 @@
 							class="form-control" id="adminId" name="adminId"
 							value="${columnArticles.admin}">
 					</div>
+					<button type="submit" class="btn btn-primary" name="action">送出</button>
+				</form>
 			</div>
 
-			<button type="submit" class="btn btn-primary" name="action">送出</button>
-			</form>
-		</div>
-	</div>
 
 
-
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+			<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+			<script
+				src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+			<script
+				src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 	<script>
 		function previewImage(event) {
@@ -115,7 +112,8 @@
 			if (file) {
 				var reader = new FileReader();
 				reader.onload = function(e) {
-					var imagesPreview = document.getElementById('imagePreview');
+					var imagesPreview = document
+							.getElementById('imagePreview');
 
 					// 創建一個div容器，包含圖片和刪除按鈕
 					var container = document.createElement('div');

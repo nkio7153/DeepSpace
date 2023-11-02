@@ -148,17 +148,7 @@ public class ColumnArtMgServlet extends HttpServlet {
 		res.sendRedirect(req.getContextPath() + "/columnmg/list");
 	}
 
-	/************ 圖片讀入DB ************/
-	public byte[] readInputStream(InputStream inputStream) throws IOException {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		byte[] buffer = new byte[1024];
-		int bytesRead;
 
-		while ((bytesRead = inputStream.read(buffer)) != -1) {
-			outputStream.write(buffer, 0, bytesRead);
-		}
-		return outputStream.toByteArray();
-	}
 
 	/************ 專欄修改 ************/
 	private void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -176,7 +166,7 @@ public class ColumnArtMgServlet extends HttpServlet {
 			req.setAttribute("admin",admin);
 			
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/column/edit.jsp");
-			dispatcher.forward(req,res);
+			dispatcher.forward(req, res);
 		} else {
 			//更新後的資料送出
 			columnArticles.setArtiTitle(req.getParameter("artiTitle"));
@@ -193,21 +183,54 @@ public class ColumnArtMgServlet extends HttpServlet {
 //			admin.setAdminId(adminId);
 //			columnArticles.setAdmin(admin);
 			
-			columnArticlesService.updateColumnArticles(columnArticles);
+
 			
+//			Part filePart = req.getPart("colImg");
+//			if (filePart != null && filePart.getSize() > 0) {
+//				ColumnImagesVO colImg = new ColumnImagesVO();
+//				colImg.setColumnArticles(columnArticles);
+//				colImg.setIsMainImage((byte) 1);
+//				InputStream inputStream = filePart.getInputStream();
+//				byte[] imageBytes = readInputStream(inputStream);
+//				colImg.setColImg(imageBytes);
+//				columnImagesService.save(colImg);			
+//			}
 			Part filePart = req.getPart("colImg");
 			if (filePart != null && filePart.getSize() > 0) {
-				ColumnImagesVO colImg = new ColumnImagesVO();
-				colImg.setColumnArticles(columnArticles);
-				colImg.setIsMainImage((byte) 1);
-				InputStream inputStream = filePart.getInputStream();
-				byte[] imageBytes = readInputStream(inputStream);
-				colImg.setColImg(imageBytes);
-				
-				columnImagesService.update(colImg);
+			    InputStream inputStream = filePart.getInputStream();
+			    byte[] imageBytes = readInputStream(inputStream);
+			    
+			    // 檢查是否已有圖片
+			    ColumnImagesVO existingImage = columnImagesService.getMainImageByArticleId(columnArticles.getArtiId());
+			    if (existingImage != null) {
+			        // 如果有，更新現有圖片
+			        existingImage.setColImg(imageBytes);
+			        columnImagesService.updateImg(existingImage);
+			    } else {
+			        // 如果沒有，創建新的圖片記錄
+			        ColumnImagesVO newImage = new ColumnImagesVO();
+			        newImage.setColumnArticles(columnArticles);
+			        newImage.setIsMainImage((byte) 1);
+			        newImage.setColImg(imageBytes);
+			        columnImagesService.save(newImage);
+			    }
 			}
-			
-		}	
-		res.sendRedirect(req.getContextPath() + "/columnmg/list");
+			columnArticlesService.updateColumnArticles(columnArticles);		
+		res.sendRedirect(req.getContextPath() + "/columnmg/list");		
+		}
+		
+	}
+	
+	
+	/************ 圖片讀入DB ************/
+	public byte[] readInputStream(InputStream inputStream) throws IOException {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		byte[] buffer = new byte[1024];
+		int bytesRead;
+
+		while ((bytesRead = inputStream.read(buffer)) != -1) {
+			outputStream.write(buffer, 0, bytesRead);
+		}
+		return outputStream.toByteArray();
 	}
 }
