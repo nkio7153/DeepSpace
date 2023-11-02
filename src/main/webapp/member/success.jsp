@@ -39,6 +39,12 @@
 	     	<input type="hidden" name="memId" value="${authenticatedMem.memId}" readonly">
             <input type="submit" value="我的行程查詢" style="height: 50px; width: 150px; font-size: 18px; color: #fff; background-color: #008CBA; border: none; padding: 10px; cursor: pointer; border-radius: 10px;">
         </form>
+<%--         <form action="${pageContext.request.contextPath}/tour/newTour.jsp?memId=${authenticatedMem.memId}" method="post"> --%>
+<%-- 	     	<input type="hidden" name="memId" value="${authenticatedMem.memId}" readonly"> --%>
+<!--             <input type="submit" value="新增行程" style="height: 50px; width: 150px; font-size: 18px; color: #fff; background-color: #008CBA; border: none; padding: 10px; cursor: pointer; border-radius: 10px;"> -->
+<!--         </form> -->
+		<a href="${pageContext.request.contextPath}/tour/newTour.jsp?memId=${authenticatedMem.memId}">新增行程</a>
+	
 	</div>
 	
 	<div style="flex: 70%;">

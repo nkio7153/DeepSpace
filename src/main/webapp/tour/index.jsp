@@ -77,22 +77,7 @@ form {
 			<th style="text-align: center;">查看行程</th>
 		</tr>
 		
-<%-- 		<c:forEach var="tour" items="${list}"> --%>
-<!-- 		    <tr> -->
-<%-- 		        <input type="text" name="tourId" value="${tour.tourId}" /> --%>
-<%-- 		        <td name="tourName" style="text-align: center;">${tour.tourName}</td> --%>
-<!-- 		        <td align="center"> -->
-<%-- 		            <a href="${pageContext.request.contextPath}/tr/memTourList?memId=${memId}&tourIdStr=<c:forEach var='id' items='${tourIds}'> --%>
-<%-- 		            <c:out value='${id}' /> --%>
-<%-- 		            <c:if test='${not loop.last}'>,</c:if></c:forEach>" style="text-decoration: none; display: block; text-align: center;"> --%>
-<!-- 		                <button id="btn">查看行程</button> -->
-<!-- 		            </a> -->
-<!-- 		        </td> -->
-<!-- 		    </tr> -->
-<%-- 		</c:forEach> --%>
-		
-		
-		
+				
 		<c:forEach var="tour" items="${list}">
 			<tr>
 <%-- 			<input type="text" name="tourId" value="${tour.tourId}" readonly"> --%>
