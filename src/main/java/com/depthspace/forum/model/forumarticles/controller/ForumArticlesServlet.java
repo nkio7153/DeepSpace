@@ -58,6 +58,7 @@ public class ForumArticlesServlet extends HttpServlet {
 		JSONArray arr = JSONArray.parseArray(JSON.toJSONString(forum));
 		resp.setContentType("application/json; charset=UTF-8");
 		PrintWriter out = resp.getWriter();
+		System.out.println(arr.toString());
 		out.print(arr.toString());
 	}
 

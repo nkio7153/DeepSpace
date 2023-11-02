@@ -1,10 +1,10 @@
 package com.depthspace.promotion.model.promotion;
 
-import com.depthspace.promotion.model.promotion.jdbc.PromotionJDBCDAO;
+import com.depthspace.promotion.model.promotion.jdbc.ProDaoImpl;
 
 public class Test {
     public static void main(String[] args) {
-        PromotionJDBCDAO proDAO = new PromotionJDBCDAO();
+        ProDaoImpl proDAO = new ProDaoImpl();
 
         // 測試用插入一筆資料
 //        PromotionVO proVO = new PromotionVO(4, "Promo1", new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), "This is a test promotion", null);

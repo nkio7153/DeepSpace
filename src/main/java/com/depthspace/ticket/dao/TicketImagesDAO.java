@@ -6,7 +6,7 @@ import com.depthspace.ticket.model.TicketImagesVO;
 
 public interface TicketImagesDAO {
 	
-	TicketImagesVO saveImage(byte[] imageBytes);
+//	TicketImagesVO saveImage(byte[] imageBytes);
 	
     void insert(TicketImagesVO ticketImagesVO);
     

@@ -3,7 +3,7 @@
 
 <html>
 <head>
-<title>IBM Faq: Home</title>
+<title>Faq: Home</title>
 
 <style>
   table#table-1 {
@@ -33,9 +33,9 @@
    <tr><td><h3>IBM Faq: Home</h3><h4>( MVC )</h4></td></tr>
 </table>
 
-<p>This is the Home page for IBM Faq: Home</p>
+<p>Faq: Home</p>
 
-<h3>資料查詢:</h3>
+<h3>FAQ資料查詢:</h3>
 	
 <%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
@@ -48,7 +48,7 @@
 </c:if>
 
 <ul>
-  <li><a href='listAllFaq.jsp'>List</a> all Faqs.  <br><br></li>
+  <li><a href='listAllFaq.jsp'>列表</a> all Faqs.  <br><br></li>
   
   
   <li>
@@ -77,7 +77,7 @@
   
   <li>
      <FORM METHOD="post" ACTION="faq.do" >
-       <b>選擇員工姓名:</b>
+       <b>選擇FAQ問題:</b>
        <select size="1" name="serialId">
          <c:forEach var="faqVO" items="${faqSvc.all}" > 
           <option value="${faqVO.serialId}">${faqVO.faqName}
@@ -90,10 +90,10 @@
 </ul>
 
 
-<h3>員工管理</h3>
+<h3>FAQ管理</h3>
 
 <ul>
-  <li><a href='addFaq.jsp'>Add</a> a new Faq.</li>
+  <li><a href='addFaq.jsp'>新增</a> a new Faq.</li>
 </ul>
 
 </body>

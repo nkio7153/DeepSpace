@@ -1,4 +1,4 @@
-<%@ page import="com.depthspace.ticketshoppingcart.service.TicketShoppingCartService" %>
+<%@ page import="com.depthspace.ticketshoppingcart.service.TscServiceImpl" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>

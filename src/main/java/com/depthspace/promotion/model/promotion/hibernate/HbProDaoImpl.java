@@ -1,14 +1,12 @@
 package com.depthspace.promotion.model.promotion.hibernate;
 import com.depthspace.promotion.model.promotion.PromotionVO;
-import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
-import com.depthspace.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import javax.persistence.NoResultException;
 import java.util.List;
 
-public class HbProDaoImpl implements HbProDao_Interface {
+public class HbProDaoImpl implements HbProDao {
 
     private SessionFactory factory;
 

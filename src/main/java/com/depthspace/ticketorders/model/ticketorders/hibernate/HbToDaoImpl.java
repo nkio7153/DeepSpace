@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import javax.persistence.NoResultException;
 import java.util.List;
 
-public class HbToDaoImpl implements HbToDao_Interface {
+public class HbToDaoImpl implements HbToDao {
     //SessionFactory物件，用於取得與資料庫的連線Session。
     private SessionFactory factory;
     //factory 用於建立與資料庫的連線的SessionFactory物件
