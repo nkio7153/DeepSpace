@@ -30,17 +30,16 @@ import com.depthspace.utils.HibernateUtil;
 @WebServlet("/columnmg/*")
 @MultipartConfig
 public class ColumnArtMgServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 
 	private ColumnArticlesService columnArticlesService;
 	private ColumnImagesService columnImagesService;
 	Session session;
 
 	public void init() throws ServletException {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		session = sessionFactory.openSession();
+//		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+//		session = sessionFactory.openSession();
 		columnArticlesService = new ColumnArticlesServiceImpl();
-		columnImagesService = new ColumnImagesServiceImpl(session); 
+		columnImagesService = new ColumnImagesServiceImpl();
 	}
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -64,9 +63,9 @@ public class ColumnArtMgServlet extends HttpServlet {
 		case "/add": // 專欄新增
 			doAdd(req, res);
 			break;
-//		case "/edit": // 專欄修改
-//			doEdit(req, res);
-//			break;
+		case "/edit": // 專欄修改
+			doEdit(req, res);
+			break;
 //		case "/find": // 專欄查找
 //			doSearch(req, res);
 //			break;
@@ -149,6 +148,80 @@ public class ColumnArtMgServlet extends HttpServlet {
 		res.sendRedirect(req.getContextPath() + "/columnmg/list");
 	}
 
+
+
+	/************ 專欄修改 ************/
+	private void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+
+		Integer artiId = Integer.valueOf(req.getParameter("artiId"));
+		ColumnArticlesVO columnArticles = columnArticlesService.getArtiByArtiId(artiId);
+
+		if(!req.getMethod().equalsIgnoreCase("POST")) {
+			//編輯頁面(傳既有資料)
+			List<ColumnTypesVO> columnTypes = columnArticlesService.getAllColumnTypes();
+			List<AdminVO> admin = columnArticlesService.getAllAdmins();
+			
+			req.setAttribute("columnArticles",columnArticles);
+			req.setAttribute("columnTypes",columnTypes);
+			req.setAttribute("admin",admin);
+			
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/column/edit.jsp");
+			dispatcher.forward(req, res);
+		} else {
+			//更新後的資料送出
+			columnArticles.setArtiTitle(req.getParameter("artiTitle"));
+			columnArticles.setArtiContent(req.getParameter("artiContent"));
+			columnArticles.setArtiStatus(Byte.valueOf(req.getParameter("artiStatus")));
+
+			Integer colTypeId = Integer.valueOf(req.getParameter("colTypeId"));
+			ColumnTypesVO colType = new ColumnTypesVO();
+			colType.setColTypeId(colTypeId);
+			columnArticles.setColType(colType);
+			
+//			Integer adminId = Integer.valueOf(req.getParameter("adminId"));
+//			AdminVO admin = new AdminVO();
+//			admin.setAdminId(adminId);
+//			columnArticles.setAdmin(admin);
+			
+
+			
+//			Part filePart = req.getPart("colImg");
+//			if (filePart != null && filePart.getSize() > 0) {
+//				ColumnImagesVO colImg = new ColumnImagesVO();
+//				colImg.setColumnArticles(columnArticles);
+//				colImg.setIsMainImage((byte) 1);
+//				InputStream inputStream = filePart.getInputStream();
+//				byte[] imageBytes = readInputStream(inputStream);
+//				colImg.setColImg(imageBytes);
+//				columnImagesService.save(colImg);			
+//			}
+			Part filePart = req.getPart("colImg");
+			if (filePart != null && filePart.getSize() > 0) {
+			    InputStream inputStream = filePart.getInputStream();
+			    byte[] imageBytes = readInputStream(inputStream);
+			    
+			    // 檢查是否已有圖片
+			    ColumnImagesVO existingImage = columnImagesService.getMainImageByArticleId(columnArticles.getArtiId());
+			    if (existingImage != null) {
+			        // 如果有，更新現有圖片
+			        existingImage.setColImg(imageBytes);
+			        columnImagesService.updateImg(existingImage);
+			    } else {
+			        // 如果沒有，創建新的圖片記錄
+			        ColumnImagesVO newImage = new ColumnImagesVO();
+			        newImage.setColumnArticles(columnArticles);
+			        newImage.setIsMainImage((byte) 1);
+			        newImage.setColImg(imageBytes);
+			        columnImagesService.save(newImage);
+			    }
+			}
+			columnArticlesService.updateColumnArticles(columnArticles);		
+		res.sendRedirect(req.getContextPath() + "/columnmg/list");		
+		}
+		
+	}
+	
+	
 	/************ 圖片讀入DB ************/
 	public byte[] readInputStream(InputStream inputStream) throws IOException {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -160,5 +233,4 @@ public class ColumnArtMgServlet extends HttpServlet {
 		}
 		return outputStream.toByteArray();
 	}
-
 }

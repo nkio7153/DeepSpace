@@ -9,13 +9,13 @@ import com.depthspace.column.model.ColumnTypesVO;
 
 
 public interface ColumnArticlesService {
-	
+	//新增
 	ColumnArticlesVO addArt(ColumnArticlesVO columnArticlesVO);
-	
-	ColumnArticlesVO updateEmp(ColumnArticlesVO columnArticlesVO);
-	
+	//更新
+	ColumnArticlesVO updateColumnArticles(ColumnArticlesVO columnArticlesVO);
+	//刪除
 	void deleteEmp(Integer artiId);
-	
+	//根據文章ID取得專欄VO
 	ColumnArticlesVO getArtiByArtiId(Integer artiId);
 	//取得所有專欄VO
 	List<ColumnArticlesVO> getAllArti();

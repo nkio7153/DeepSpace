@@ -50,8 +50,8 @@ public class ColumnArticlesDAOImpl implements ColumnArticlesDAO {
 	}
 
 	@Override
-	public ColumnArticlesVO getById(Integer id) {
-		return getSession().get(ColumnArticlesVO.class, id);
+	public ColumnArticlesVO getById(Integer artiId) {
+		return getSession().get(ColumnArticlesVO.class, artiId);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class ColumnArticlesDAOImpl implements ColumnArticlesDAO {
 			if (tx != null) {
 				tx.rollback();
 			}
-			throw e; // 或者可以做一些自定義的異常處理
+			throw e;
 		}
 
 	}

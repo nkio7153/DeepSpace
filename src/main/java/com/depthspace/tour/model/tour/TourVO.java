@@ -1,6 +1,7 @@
 package com.depthspace.tour.model.tour;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Arrays;
 
 import javax.persistence.Column;
@@ -34,6 +35,12 @@ public class TourVO implements Serializable{
 	
 	@Column(name="TOUR_IMG" , columnDefinition = "MEDIUMBLOB")
 	private byte[] tourImg;
+	
+	@Column(name="START_DATE")
+    private Timestamp startDate;
+	
+	@Column(name="END_DATE")
+    private Timestamp endDate;
 	
 	public TourVO() {
 	}
