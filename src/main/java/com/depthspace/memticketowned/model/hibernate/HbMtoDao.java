@@ -1,9 +1,11 @@
-package com.depthspace.memticketowned.model;
+package com.depthspace.memticketowned.model.hibernate;
+
+import com.depthspace.memticketowned.model.MemTicketOwnedVO;
 
 import java.util.List;
 
-public interface HbMtoDao_Interface {
-    int insert(MemTicketOwnedVO entity);
+public interface HbMtoDao {
+    void insertBatch(List<MemTicketOwnedVO> mtoList);
 
     int update(MemTicketOwnedVO entity);
 

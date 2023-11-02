@@ -3,6 +3,7 @@ package com.depthspace.memticketowned.model;
 import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Timestamp;  // 引入 Timestamp 類型
 @Entity
 @Table(name="MEM_TICKET_OWNED")
@@ -16,16 +17,16 @@ public class MemTicketOwnedVO implements Serializable {
     @Column(name="TICKET_ID",nullable=false)
     private Integer ticketId;
     @Column(name="RELEASE_DATE")
-    private Timestamp releaseDate;
+    private Date releaseDate;
     @Column(name="EXPIRY_DATE")
-    private Timestamp expiryDate;
+    private Date expiryDate;
     @Column(name="STATUS_OF_USE", columnDefinition = "TINYINT")
     private Integer statusOfUse;
 
     public MemTicketOwnedVO() {
     }
 
-    public MemTicketOwnedVO(Integer ticketOwnedId, Integer memId, Integer ticketId, Timestamp releaseDate, Timestamp expiryDate, Integer statusOfUse) {
+    public MemTicketOwnedVO(Integer ticketOwnedId, Integer memId, Integer ticketId, Date releaseDate, Date expiryDate, Integer statusOfUse) {
         this.ticketOwnedId = ticketOwnedId;
         this.memId = memId;
         this.ticketId = ticketId;
@@ -58,19 +59,19 @@ public class MemTicketOwnedVO implements Serializable {
         this.ticketId = ticketId;
     }
 
-    public Timestamp getReleaseDate() {
+    public Date getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Timestamp releaseDate) {
+    public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
 
-    public Timestamp getExpiryDate() {  // 使用 Timestamp
+    public Date getExpiryDate() {  // 使用 Timestamp
         return expiryDate;
     }
 
-    public void setExpiryDate(Timestamp expiryDate) {  // 使用 Timestamp
+    public void setExpiryDate(Date expiryDate) {  // 使用 Timestamp
         this.expiryDate = expiryDate;
     }
 

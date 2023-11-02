@@ -1,9 +1,11 @@
 package com.depthspace.memticketowned.model;
 
+import com.depthspace.memticketowned.model.hibernate.HbMtoDaoImpl;
 import com.depthspace.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 public class HbTest {
@@ -19,10 +21,9 @@ public class HbTest {
         long oneYearMillis = 365L * 24 * 60 * 60 * 1000;
         // 计算加一年后的时间戳
         long newTimeMillis = currentTimeMillis + oneYearMillis;
-        Timestamp now = new Timestamp(currentTimeMillis);
-        Timestamp later = new Timestamp(newTimeMillis);
+        Date now = new Date(currentTimeMillis);
+        Date later = new Date(newTimeMillis);
         MemTicketOwnedVO mto = new MemTicketOwnedVO(null,4,4,now, later,null);
-        int answer = dao.insert(mto);
         session.getTransaction().commit();
     }
 }

@@ -1,11 +1,13 @@
-package com.depthspace.memticketowned.model;
+package com.depthspace.memticketowned.model.hibernate;
 
+import com.depthspace.memticketowned.model.MemTicketOwnedVO;
+import com.depthspace.memticketowned.model.hibernate.HbMtoDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
 
-public class HbMtoDaoImpl implements HbMtoDao_Interface {
+public class HbMtoDaoImpl implements HbMtoDao {
     //宣告一個factory變數
     private SessionFactory factory;
     //構造器為該物件的factory變數賦值
@@ -18,9 +20,13 @@ public class HbMtoDaoImpl implements HbMtoDao_Interface {
     }
     //插入一筆資料
     @Override
-    public int insert(MemTicketOwnedVO entity) {
-        return (Integer)getSession().save(entity);
+    public void insertBatch(List<MemTicketOwnedVO> mtoList) {
+        for(MemTicketOwnedVO vo:mtoList){
+            getSession().save(vo);
+        }
     }
+
+
     //更新一筆資料
     @Override
     public int update(MemTicketOwnedVO entity) {

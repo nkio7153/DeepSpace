@@ -80,9 +80,14 @@ public class HbToDaoImpl implements HbToDao {
         System.out.println("test getAll");
         return getSession().createQuery("from TicketOrdersVO",TicketOrdersVO.class).list();
     }
-
+    //用會員編號取得當前頁面的所有列表
     @Override
-    public List<TicketOrdersVO> getAll(int currentPage) {
+    public List<TicketOrdersVO> getAllByMemId(int currentPage) {
+//        int first = (currentPage - 1) * PAGE_MAX_RESULT;
+//        return getSession().createQuery("from Emp", Emp.class)
+//                .setFirstResult(first)
+//                .setMaxResults(PAGE_MAX_RESULT)
+//                .list();
         return null;
     }
     //取得列表總數
@@ -90,4 +95,14 @@ public class HbToDaoImpl implements HbToDao {
     public long getTotal() {
         return getSession().createQuery("select count(*) from TicketOrdersVO", Long.class).uniqueResult();
     }
+
+//    @Override
+//    public List<Emp> getAll(int currentPage) {
+//        int first = (currentPage - 1) * PAGE_MAX_RESULT;
+//        return getSession().createQuery("from Emp", Emp.class)
+//                .setFirstResult(first)
+//                .setMaxResults(PAGE_MAX_RESULT)
+//                .list();
+//    }
+
 }

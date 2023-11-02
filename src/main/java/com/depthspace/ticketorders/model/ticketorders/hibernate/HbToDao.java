@@ -17,11 +17,12 @@ public interface HbToDao {
 
     List<TicketOrdersVO> getAll();
 
-    List<TicketOrdersVO> getAll(int currentPage);
+    List<TicketOrdersVO> getAllByMemId(int currentPage);
 
     long getTotal();
     //取得最新一筆訂單
 
     TicketOrdersVO getLatestOrderByMemId(Integer memId);
+
 
 }

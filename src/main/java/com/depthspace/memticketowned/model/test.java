@@ -1,18 +1,18 @@
 package com.depthspace.memticketowned.model;
 
 
-import com.depthspace.memticketowned.model.jdbc.MemTicketOwnedJDBCDAO;
+import com.depthspace.memticketowned.model.jdbc.MtoDaoImpl;
 
 import java.sql.Timestamp;
 
 public class test {
     public static void main(String[] args) {
-        MemTicketOwnedJDBCDAO memTicketOwnedDAO = new MemTicketOwnedJDBCDAO();
+        MtoDaoImpl memTicketOwnedDAO = new MtoDaoImpl();
         //測試用插入一筆資料
-        Timestamp releaseDate = Timestamp.valueOf("2022-02-20 00:00:00");
-        Timestamp expiryDate = Timestamp.valueOf("2023-02-20 00:00:00");
-        MemTicketOwnedVO insertVO = new MemTicketOwnedVO(null, 3, 3, releaseDate, expiryDate, 0);
-        memTicketOwnedDAO.insert(insertVO);
+//        Timestamp releaseDate = Timestamp.valueOf("2022-02-20 00:00:00");
+//        Timestamp expiryDate = Timestamp.valueOf("2023-02-20 00:00:00");
+//        MemTicketOwnedVO insertVO = new MemTicketOwnedVO(null, 3, 3, releaseDate, expiryDate, 0);
+//        memTicketOwnedDAO.insert(insertVO);
         System.out.println("插入成功");
 
         //測試更新一筆資料

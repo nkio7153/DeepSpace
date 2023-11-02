@@ -178,7 +178,6 @@ public class TscServlet extends HttpServlet {
     }
 
     protected void doIndex(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        TscServiceImpl tscSv = new TscServiceImpl();
         List<TicketShoppingCartVO> list = tscSv.getAll();
         HashSet<Integer> uniqueMemIds = new HashSet<>();
         for (TicketShoppingCartVO vo : list) {
