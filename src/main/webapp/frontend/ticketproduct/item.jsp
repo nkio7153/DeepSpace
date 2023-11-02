@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>票券詳情</title>
-<%-- <jsp:include page="../indexpage/head.jsp" /> --%>
+<jsp:include page="/indexpage/head.jsp" />
 
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -16,6 +16,28 @@
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
 <script>
+$(document).ready(function() {
+	//JQuery請求圖片ID列表
+	const ticketId = ${ticket.ticketId}; //取得票券ID
+    $.getJSON("<%=request.getContextPath()%>/ticketallimage?action=getIds&ticketId=" + ticketId, function(serialIds) {
+        var carouselInner = $("#carouselExampleIndicators .carousel-inner").empty(); // 清空輪播內容
+
+        serialIds.forEach(function(id, index) {
+            // 抓取票券ID每個圖
+            var carouselItem = $("<div>").addClass("carousel-item").addClass(index === 0 ? "active" : "");
+            var img = $("<img>")
+                .attr("src", "<%=request.getContextPath()%>/ticketallimage?action=getImage&imageId="  + id + "&ticketId=" + ticketId)
+                .addClass("d-block w-100 rounded")
+                .css("height", "350px")
+                .css("object-fit", "cover");
+
+            carouselItem.append(img);
+            carouselInner.append(carouselItem);
+        });
+    });
+
+	
+	//收藏動態
     $(document).ready(function() {
         $("#favoriteIcon").click(function() {
             if ($(this).hasClass("far")) {
@@ -41,15 +63,15 @@
               console.log(error);
             })
   })
-
+});
 </script>
 
 </head>
 
 <body>
 
-<%-- 	<jsp:include page="../indexpage/header.jsp" /> --%>
-<%-- 	<jsp:include page="../indexpage/headpic.jsp" /> --%>
+	<jsp:include page="/indexpage/header.jsp" />
+	<jsp:include page="/indexpage/headpic.jsp" />
 
 	<div class="container mt-5">
 
@@ -65,24 +87,44 @@
 				</nav>
 			</div>
 		</div>
-
-		<!--     商品大圖輪播 -->
+		<!-- 商品大圖輪播 -->
 		<div class="row mb-4">
 			<div class="col-12">
 				<div id="carouselExampleIndicators" class="carousel slide"
 					data-ride="carousel">
 					<div class="carousel-inner">
-						<div class="carousel-item active">
-							<img
-								src="<%=request.getContextPath()%>/ticketmainimage?ticketId=${ticket.ticketId}"
-								class="d-block w-100 rounded" alt="..."
-								style="height: 350px; object-fit: cover;">
-						</div>
-						更多圖片...
+						<!-- jQuery -->
 					</div>
+					<a class="carousel-control-prev" href="#carouselExampleIndicators"
+						role="button" data-slide="prev"> <span
+						class="carousel-control-prev-icon" aria-hidden="true"></span> <span
+						class="sr-only">Previous</span>
+					</a> <a class="carousel-control-next" href="#carouselExampleIndicators"
+						role="button" data-slide="next"> <span
+						class="carousel-control-next-icon" aria-hidden="true"></span> <span
+						class="sr-only">Next</span>
+					</a>
 				</div>
 			</div>
 		</div>
+
+		<!--     商品大圖輪播 -->
+		<!-- 		<div class="row mb-4"> -->
+		<!-- 			<div class="col-12"> -->
+		<!-- 				<div id="carouselExampleIndicators" class="carousel slide" -->
+		<!-- 					data-ride="carousel"> -->
+		<!-- 					<div class="carousel-inner"> -->
+		<!-- 						<div class="carousel-item active"> -->
+		<!-- 							<img -->
+		<%-- 								src="<%=request.getContextPath()%>/ticketmainimage?ticketId=${ticket.ticketId}" --%>
+		<!-- 								class="d-block w-100 rounded" alt="..." -->
+		<!-- 								style="height: 350px; object-fit: cover;"> -->
+		<!-- 						</div> -->
+		<!-- 						更多圖片... -->
+		<!-- 					</div> -->
+		<!-- 				</div> -->
+		<!-- 			</div> -->
+		<!-- 		</div> -->
 
 		<!-- 商品基本資訊 -->
 		<div class="row mb-4">
@@ -143,7 +185,7 @@
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
-<%-- 	<jsp:include page="../indexpage/footer.jsp" /> --%>
+	<jsp:include page="/indexpage/footer.jsp" />
 
 </body>
 

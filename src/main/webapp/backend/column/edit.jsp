@@ -107,36 +107,18 @@
 				src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 	<script>
-		function previewImage(event) {
-			var file = event.target.files[0];
-			if (file) {
-				var reader = new FileReader();
-				reader.onload = function(e) {
-					var imagesPreview = document
-							.getElementById('imagePreview');
-
-					// 創建一個div容器，包含圖片和刪除按鈕
-					var container = document.createElement('div');
-					container.className = 'imageContainer';
-
-					var img = document.createElement('img');
-					img.src = e.target.result;
-					img.className = 'previewImg';
-					container.appendChild(img);
-
-					var deleteButton = document.createElement('div');
-					deleteButton.innerText = 'x';
-					deleteButton.className = 'deleteIcon';
-					deleteButton.onclick = function() {
-						imagesPreview.removeChild(container);
-					};
-					container.appendChild(deleteButton);
-
-					imagesPreview.appendChild(container);
-				}
-				reader.readAsDataURL(file);
+	function previewImage(event) {
+		var file = event.target.files[0];
+		if (file) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				var imagePreview = document.getElementById('imagePreview');
+				imagePreview.src = e.target.result;
+				imagePreview.style.display = 'block'; 
 			}
+			reader.readAsDataURL(file);
 		}
-	</script>
+	}
+</script>
 </body>
 </html>
