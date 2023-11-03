@@ -107,25 +107,6 @@ $(document).ready(function() {
 				</div>
 			</div>
 		</div>
-
-		<!--     商品大圖輪播 -->
-		<!-- 		<div class="row mb-4"> -->
-		<!-- 			<div class="col-12"> -->
-		<!-- 				<div id="carouselExampleIndicators" class="carousel slide" -->
-		<!-- 					data-ride="carousel"> -->
-		<!-- 					<div class="carousel-inner"> -->
-		<!-- 						<div class="carousel-item active"> -->
-		<!-- 							<img -->
-		<%-- 								src="<%=request.getContextPath()%>/ticketmainimage?ticketId=${ticket.ticketId}" --%>
-		<!-- 								class="d-block w-100 rounded" alt="..." -->
-		<!-- 								style="height: 350px; object-fit: cover;"> -->
-		<!-- 						</div> -->
-		<!-- 						更多圖片... -->
-		<!-- 					</div> -->
-		<!-- 				</div> -->
-		<!-- 			</div> -->
-		<!-- 		</div> -->
-
 		<!-- 商品基本資訊 -->
 		<div class="row mb-4">
 			<div class="col-10">

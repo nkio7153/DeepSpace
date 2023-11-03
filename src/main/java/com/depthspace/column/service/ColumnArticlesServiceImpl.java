@@ -130,4 +130,9 @@ public class ColumnArticlesServiceImpl implements ColumnArticlesService {
 		}
 	}
 
+	@Override
+	public long getTotal() {
+		return dao.getTotal();
+	}
+
 }
