@@ -1,7 +1,24 @@
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="com.depthspace.restaurant.service.RestcollectionServiceImpl"%>
+<%@ page import="com.depthspace.restaurant.service.RestcollectionService"%>
+<%@ page import="com.depthspace.restaurant.model.restcollection.RestCollectionVO"%>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
+
+<% 
+	Integer memId = 1;
+	if (memId != null) {
+		RestcollectionService rcs = new RestcollectionServiceImpl();
+		List<RestCollectionVO> rcList = rcs.findByMemId(memId);
+		request.setAttribute("rcList", rcList);
+	}
+	
+%>
+
+
 <head>
 <jsp:include page="../indexpage/head.jsp" />
 <jsp:include page="../indexpage/header.jsp" />
@@ -36,7 +53,7 @@
 				<div class="col-md-4 p-3">
 					<div class="card shadow-lg">
 						<a
-							href="${pageContext.request.contextPath}/frontend/rest/demo.jsp">
+							href="${pageContext.request.contextPath}/Rest/Restinfo?restId=${rest.restId}">
 							<img class="card-img-top img-thumbnail"
 							src="${pageContext.request.contextPath}/static/images/rest/r_${rest.restId}.jpg"
 							onerror="this.src='${pageContext.request.contextPath}/static/images/rest/404.jpg'">
@@ -48,10 +65,25 @@
 							<h6>${rest.restAddress}</h6>
 							<div class="d-flex justify-content-between">
 								<span class="d-inline">
-									<img class="collection-icon" src="${pageContext.request.contextPath}/static/images/rest/heart.png">
+ 									<!-- 判斷會員已收藏顯示愛心 -->
+									<c:set var="status" value="0" scope="request" />
+									<c:forEach var="rc" items="${rcList}">
+									    <c:if test="${rc.restId eq rest.restId}">
+									        <c:set var="status" value="1" scope="request" />
+									    </c:if>
+									</c:forEach>
+									<c:choose>
+									    <c:when test="${status eq 1}">
+									        <img class="collection-icon -on" style="cursor: pointer;" src="${pageContext.request.contextPath}/static/images/rest/fullheart.png">
+									    </c:when>
+									    <c:otherwise>
+									        <img class="collection-icon" style="cursor: pointer;" src="${pageContext.request.contextPath}/static/images/rest/heart.png">
+									    </c:otherwise>
+									</c:choose>
+									
 								</span>
 								<span class="d-inline">
-									<a href="${pageContext.request.contextPath}/frontend/rest/demo.jsp">
+									<a href="${pageContext.request.contextPath}/Rest/Restinfo?restId=${rest.restId}">
 										<button class="btn btn-primary">進入</button>
 									</a>
 								</span>
@@ -72,25 +104,31 @@
 	<%-- 		<script src="${pageContext.request.contextPath}/static/js/rest.js"></script> --%>
 	<script>
 		$(function() {
+			
+			
 			$(".collection-icon").click(function() {
 				let restId = $(this).closest("div.card-body").find(".restId").text();
 				if ($(this).attr("class") === "collection-icon") {
 					$(this).attr("src", "${pageContext.request.contextPath}/static/images/rest/fullheart.png");
-					addCollection(restId);
+					doCollection("add", restId);
 				} else if ($(this).attr("class") === "collection-icon -on") {
 					$(this).attr("src", "${pageContext.request.contextPath}/static/images/rest/heart.png");
-					delCollection(restId);
+					doCollection("delete", restId);
 				}
 				$(this).toggleClass("-on");
 			});
 			
-			function addCollection(restId) {
-				console.log("add");
+			function doCollection(action, restId) {
 				let memId = 1;
-				let url = "http://localhost:8080/DepthSpace/RestApi/doRestCollection?action=add&memId="+memId+"&restId="+restId;
+				let url = "http://localhost:8080/DepthSpace/RestApi/doRestCollection?action="+action+"&memId="+memId+"&restId="+restId;
+				console.log(url);
+				
 				fetch(url, {
 					method: "POST",
-// 					headers: {"Content-Type": "application/json"},
+// 					headers: {
+// 			        	'Accept': 'application/json',
+// 			            'Content-Type': 'application/json'
+// 			        },
 // 					body: JSON.stringify(postData)
 					})
 					.then(response => {
@@ -107,28 +145,6 @@
 					});
 			}
 			
-			function delCollection(restId) {
-				console.log("del");
-				let memId = 1;
-				let url = "http://localhost:8080/DepthSpace/RestApi/doRestCollection?action=delete&memId="+memId+"&restId="+restId;
-				fetch(url, {
-					method: "POST",
-// 					headers: {"Content-Type": "application/json"},
-// 					body: JSON.stringify(postData)
-					})
-					.then(response => {
-			            if (!response.ok) {
-			                throw new Error(`HTTP error! status: ${response.status}`);
-			            }
-						return response.text();
-					})
-					.then(data => {
-						alert(data);
-					})
-					.catch(error => {
-						console.error(error);
-					});
-			}
 			
 			
 		})

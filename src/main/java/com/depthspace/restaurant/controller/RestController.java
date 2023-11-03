@@ -1,6 +1,7 @@
 package com.depthspace.restaurant.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -15,6 +16,7 @@ import com.depthspace.restaurant.service.MemBookingService;
 import com.depthspace.restaurant.service.MemBookingServiceImpl;
 import com.depthspace.restaurant.service.RestService;
 import com.depthspace.restaurant.service.RestServiecImpl;
+import com.google.gson.Gson;
 
 @WebServlet("/Rest/*")
 public class RestController extends HttpServlet {
@@ -40,9 +42,12 @@ public class RestController extends HttpServlet {
 		String forwardPath = "";
 		switch (pathInfo) {
 			case "/getRests":
-				forwardPath = getAllRests(req, resp);
+				forwardPath = getRests(req, resp);
 				break;
-
+			case "/Restinfo":
+				forwardPath = toRestinfo(req, resp);
+				break;
+				
 		}
 		
 		resp.setContentType("text/html; charset=UTF-8");
@@ -50,10 +55,15 @@ public class RestController extends HttpServlet {
 		dispatcher.forward(req, resp);
 	}
 	
-	private String getAllRests(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<RestVO> restList = restService.getAllRest();
+	private String getRests(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<RestVO> restList = restService.showRest();
 		req.setAttribute("restList", restList);
 		return "/frontend/rest/rest.jsp";
 	}
 	
+	private String toRestinfo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setAttribute("restId", req.getParameter("restId"));
+		return "/frontend/rest/restinfo.jsp";
+		
+	}
 }

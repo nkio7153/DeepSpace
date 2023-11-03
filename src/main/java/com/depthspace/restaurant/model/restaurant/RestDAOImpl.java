@@ -52,5 +52,10 @@ public class RestDAOImpl implements RestDAO {
 	public List<RestVO> getAll() {
 		return getSession().createQuery("from RestVO", RestVO.class).list();
 	}
+
+	@Override
+	public List<RestVO> showRest() {
+		return getSession().createQuery("from RestVO where REST_STATUS = 1", RestVO.class).list();
+	}
 	
 }

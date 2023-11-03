@@ -8,5 +8,5 @@ public interface RestDAO {
 	int delete(Integer restId);
 	RestVO findByPK(Integer restId);
 	List<RestVO> getAll();
-
+	List<RestVO> showRest();
 }
