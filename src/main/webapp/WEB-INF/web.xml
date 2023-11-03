@@ -47,7 +47,7 @@
 		<listener-class>com.depthspace.listener.InitializerListener</listener-class>
 	</listener>
 	
-		<servlet>
+	<servlet>
 		<servlet-name>FaqServlet</servlet-name>
 		<servlet-class>com.depthspace.faq.model.controller.FaqServlet</servlet-class>
 	</servlet>
@@ -55,6 +55,16 @@
 	<servlet-mapping>
 		<servlet-name>FaqServlet</servlet-name>
 		<url-pattern>/faq/faq.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>FaqTypesServlet</servlet-name>
+		<servlet-class>com.depthspace.faqtypes.model.controller.FaqTypesServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>FaqTypesServlet</servlet-name>
+		<url-pattern>/faqtypes/faq.do1</url-pattern>
 	</servlet-mapping>
 	
 </web-app>
