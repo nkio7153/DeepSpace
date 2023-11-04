@@ -106,7 +106,6 @@
 		}
 		
 		
-		
 		/* 给新增的时间和输入框容器添加样式，调整它们的位置 */
 		.new {
 		    display: flex;
@@ -120,7 +119,7 @@
 		
 		/* 调整景点输入框的样式 */
 		.new-input-container input[type="text"] {
-		    width: 100%; /* 取消宽度100% */
+/* 		    width: 100%; /* 取消宽度100% */ */
 		}
 		/*覆蓋之前的input type=text*/
 		#newAttraction {
@@ -132,7 +131,6 @@
 		div.row{
 			line-height : 1;
 		}
-
 		
 	</style>
 </head>
@@ -180,7 +178,10 @@
 			<div class="row">
 			</div>
 		</div>
-			<input type="submit" name="newTour" id="newTour" value="儲存行程">
+		
+<!-- 		讓總天數也可以傳到servlet -->
+		<input type="hidden" name="tripDuration" id="tripDurationInput" value="">
+		<input type="submit" name="newTour" id="newTour" value="儲存行程" >
 	</form>
 
 	<script src = "${pageContext.request.contextPath}/tour/js/tour.js"></script>
