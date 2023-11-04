@@ -1,4 +1,4 @@
-package com.depthspace.faqtypes.model;
+package com.depthspace.faqtypes.model.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,11 +11,11 @@ import com.depthspace.utils.DBUtil;
 
 public class FaqTypesDAOImpl implements FaqTypesDAO{
 
-	private static final String INSERT_STMT = "INSERT INTO FAQ_TYPES values (?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO FAQ_TYPES(Q_TYPES) values (?)";
 	private static final String UPDATE_STMT = "UPDATE FAQ_TYPES SET Q_TYPES = ? WHERE FAQ_NO = ?";
 	private static final String DELETE_STMT = "DELETE FROM FAQ_TYPES WHERE FAQ_NO = ?";
 	private static final String FIND_BY_SERIALID = "SELECT * FROM FAQ_TYPES WHERE FAQ_NO = ?";
-	private static final String GET_ALL = "SELECT * FROM FAQ_TYPES";
+	private static final String GET_ALL = "SELECT * FROM FAQ_TYPES order by FAQ_NO";
 
 	@Override
 	public void insert(FaqTypesVO faqtypesVO) {
@@ -24,8 +24,8 @@ public class FaqTypesDAOImpl implements FaqTypesDAO{
 		try {
 			conn = DBUtil.getConnection();
 			pstmt = conn.prepareStatement(INSERT_STMT);
-			pstmt.setInt(1, faqtypesVO.getFaqNo());
-			pstmt.setString(2, faqtypesVO.getqTypes());
+			
+			pstmt.setString(1, faqtypesVO.getqTypes());
 
 			pstmt.executeUpdate();
 

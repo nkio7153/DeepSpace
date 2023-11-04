@@ -1,21 +1,11 @@
-package com.depthspace.faqtypes.model;
+package com.depthspace.faqtypes.model.model;
 
 import java.util.Objects;
 
 // 定義了一個FaqTypesVO類別（根據慣例，類別名稱以大寫字母開頭）
-public class FaqTypesVO {
+public class FaqTypesVO implements java.io.Serializable{
 	private Integer faqNo;
 	private String qTypes;
-
-	// 建構函數，用於初始化faqNo和qTypes屬性
-	public FaqTypesVO(Integer faqNo, String qTypes) {
-		this.faqNo = faqNo;
-		this.qTypes = qTypes;
-	}
-	
-	public FaqTypesVO() {
-		
-	}
 
 	// Getter 和 Setter 方法（方法名稱以小寫字母開頭，符合慣例）
 	public Integer getFaqNo() {

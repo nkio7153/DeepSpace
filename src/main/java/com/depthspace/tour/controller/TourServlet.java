@@ -1,7 +1,10 @@
 package com.depthspace.tour.controller;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,17 +15,17 @@ import javax.servlet.http.HttpServletResponse;
 import com.depthspace.tour.model.tour.TourVO;
 import com.depthspace.tour.model.tour.TourView;
 import com.depthspace.tour.service.TourService;
-import com.depthspace.tour.service.TourService_Interface;
 
 @WebServlet({ "/tr/*" })
 public class TourServlet extends HttpServlet {
 //	private static final long serialVersionUID = 1L;
 	private TourService ts;
-	
-	public void init() throws ServletException{
+
+	public void init() throws ServletException {
 		ts = new TourService();
 //		System.out.println("成功開啟");
 	}
+
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);
 	}
@@ -35,65 +38,113 @@ public class TourServlet extends HttpServlet {
 		switch (pathInfo) {
 		case "/tourList":
 			doTourList(req, resp);
-			 break;
+			break;
 		case "/memTourList":
 			domemTourList(req, resp);
-			 break;
+			break;
 		case "/showDetail":
 			showDetail(req, resp);
 			break;
+		case "/addTour":
+			addTour(req, resp);
+			break;
 		}
-		
+
 	}
-	
+
+	// 新增新行程
+	private void addTour(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String memId = req.getParameter("memId");
+		String tourName = req.getParameter("tourName");
+		String tourDescription = req.getParameter("tourDescription");
+		String startDate = req.getParameter("startDate");
+		String endDate = req.getParameter("endDate");
+		String tripDuration = req.getParameter("tripDuration");
+//		Map<String, String> attractionsMap = new HashMap<>();
+		String[] attractionTime = req.getParameterValues("attractionTime");
+		String[] attraction = req.getParameterValues("attraction");
+		String[] tourDays = req.getParameterValues("days");
+		for (String addTourDays : tourDays) {
+			
+				System.out.println("天數=" + addTourDays);
+			}
+//		}
+//		用迴圈將所有景點及時間對應
+		Map<String, String> attractionsMap = new HashMap<>();
+		for(int i = 0 ; i < attractionTime.length ; i++) {
+				attractionsMap.put("attractionTime", attractionTime[i]);
+				attractionsMap.put("attraction", attraction[i]);
+//				System.out.println("attractionsMap=" + attractionsMap);
+		}
+//		System.out.println("tourDays="+tourDays);
+		
+//		System.out.println("會員編號=" + memId + ", 行程名稱(使用者自訂)=" + tourName + ", 行程敘述=" + tourDescription + ", 開始日期="
+//		+ startDate + ", 結束日期=" + endDate + ", 總天數=" + tripDuration);
+		
+		
+		// 確認長度相同
+//		if (attractionTime != null && attraction != null && attractionTime.length == attraction.length) {
+//			for (int i = 0; i < attractionTime.length; i++) {
+//				Map<String, String> attractionData = new HashMap<>();
+//				attractionData.put("attraction", attraction[i]);
+//				attractionData.put("attractionTime", attractionTime[i]);
+//				attractionsList.add(attractionData);
+//			}
+//			System.out.println("attractionsList=" + attractionsList);
+//		}
+		// 用迴圈把所有已輸入的景點取出來
+//		for (String addAttraction : attraction) {
+//			for (String addAttractionTime : attractionTime) {
+//				System.out.println("景點=" + addAttraction);
+//				System.out.println("時間=" + addAttractionTime);
+//			}
+//		}
+
+
+		req.getRequestDispatcher("/tour/newTour.jsp").forward(req, resp);
+
+	}
+
 	private void showDetail(HttpServletRequest req, HttpServletResponse resp) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	//用會員編號查出該會員所有行程
+
+	// 用會員編號查出該會員所有行程
 	private void doTourList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Integer memId;
-//		String tourId = req.getParameter("tourId");
-//		System.out.println("tourId=" + tourId);
 		try {
-            memId = Integer.valueOf(req.getParameter("memId"));
+			memId = Integer.valueOf(req.getParameter("memId"));
 //          System.out.println(memId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
 		List<TourVO> list = ts.getByMemId(memId);
 //		System.out.println(list);
-		req.setAttribute("list" , list);
-		req.setAttribute("memId" , memId);
-
-//		List<Integer> tourIds = new ArrayList<>(); // 创建一个用于存储tourId的列表
-//		for (TourVO tour : list) {
-//		    tourIds.add(tour.getTourId()); // 将每个TourVO对象的tourId添加到列表中
-//		}
-//		req.setAttribute("tourIds", tourIds); // 将tourIds列表设置为请求属性
+		req.setAttribute("list", list);
+		req.setAttribute("memId", memId);
 		req.getRequestDispatcher("/tour/index.jsp").forward(req, resp);
 	}
-	
-	//查詢單獨行程
-	private void domemTourList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
-		Integer memId ;
-		Integer tourId ;
+
+	// 查詢單獨行程
+	private void domemTourList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Integer memId;
+		Integer tourId;
 		try {
-            memId = Integer.valueOf(req.getParameter("memId"));
-            tourId = Integer.valueOf( req.getParameter("tourId"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-		System.out.println("memId=" + memId + "," + "tourId=" + tourId);
-		List<TourView> list = ts.getOneTourList(tourId,memId);
+			memId = Integer.valueOf(req.getParameter("memId"));
+			tourId = Integer.valueOf(req.getParameter("tourId"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+//		System.out.println("memId=" + memId + "," + "tourId=" + tourId);
+		List<TourView> list = ts.getOneTourList(tourId, memId);
 //		System.out.println(list);
-		
+
 		req.setAttribute("list", list);
-		
+
 		req.getRequestDispatcher("/tour/memTourList.jsp").forward(req, resp);
 	}
-	
-	
+
 }
