@@ -35,7 +35,7 @@ public class ForumArticlesVO implements Serializable {
 	private Integer artiLk;
 	@Column(name = "ARTI_STATUS")
 	private Integer artiStatus;
-	@Column(name = "ARTI_IMG" , columnDefinition = "BLOB")
+	@Column(name = "ARTI_IMG" , columnDefinition = "MEDIUMBLOB")
 	private byte[] artiImg;
 	
 	@Transient
