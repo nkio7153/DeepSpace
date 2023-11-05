@@ -12,6 +12,9 @@
 <div class="container mt-4">
     <button type="button" class="btn btn-secondary" onclick="history.back()">返回</button>
     <h1 class="text-center my-4">訂單列表</h1>
+    <c:if test="${toPageQty > 0}">
+        <b><font color=red>第${currentPage}/${toPageQty}頁</font></b>
+    </c:if>
     <table class="table table-bordered table-hover">
         <thead>
         <tr>
@@ -44,6 +47,18 @@
         </c:forEach>
         </tbody>
     </table>
+    <c:if test="${currentPage > 1}">
+        <a href="${pageContext.request.contextPath}/to/listAll?page=1">至第一頁</a>&nbsp;
+    </c:if>
+    <c:if test="${currentPage - 1 != 0}">
+        <a href="${pageContext.request.contextPath}/to/listAll?page=${currentPage - 1}">上一頁</a>&nbsp;
+    </c:if>
+    <c:if test="${currentPage + 1 <= toPageQty}">
+        <a href="${pageContext.request.contextPath}/to/listAll?page=${currentPage + 1}">下一頁</a>&nbsp;
+    </c:if>
+    <c:if test="${currentPage != toPageQty}">
+        <a href="${pageContext.request.contextPath}/to/listAll?page=${toPageQty}">至最後一頁</a>&nbsp;
+    </c:if>
 </div>
 <script type="text/javascript">
     function orderList(){

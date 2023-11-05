@@ -34,7 +34,7 @@ public class HbTodDaoImpl implements HbTodDao {
     @Override
     public int update(TicketOrderDetailVO entity) {
         try{
-            getSession().update(entity);
+            getSession().merge(entity);
             return 1;
         }catch (Exception e){
             e.printStackTrace();
@@ -68,11 +68,14 @@ public class HbTodDaoImpl implements HbTodDao {
                 .setParameter("orderId", orderId)
                 .list();
     }
-    //取得所有訂單明細
-    @Override
-    public List<TicketOrderDetailVO> getAll() {
-        return getSession()
-                .createQuery("from TicketOrderDetailVO", TicketOrderDetailVO.class)
+
+    //join票券表格取得訂單明細中的票券名稱
+    public List<Object[]> getResult(Integer orderId){
+        String hql="select a.orderId, a.ticketId, b.ticketName, a.unitPrice, a.discountPrice, a.quantity, a.subtotal, a.ticketReviews, a.stars " +
+                "from TicketOrderDetailVO a, TicketVO b " +
+                "where a.orderId = :orderId AND a.ticketId = b.ticketId";
+        return getSession().createQuery(hql)
+                .setParameter("orderId",orderId)
                 .list();
     }
     //取得當前頁面資料

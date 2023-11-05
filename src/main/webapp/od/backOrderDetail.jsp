@@ -9,6 +9,11 @@
     <title>票券訂單明細</title>
     <jsp:include page="../indexpage/head.jsp" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        .hidden{
+            display:none;
+        }
+    </style>
 </head>
 <body>
 <jsp:include page="../indexpage/header.jsp" />
@@ -21,7 +26,8 @@
         <tr>
             <th class="text-center">序號</th>
             <th class="text-center">訂單編號</th>
-            <th class="text-center">票券編號</th>
+            <th class="text-center hidden">票券編號</th>
+            <th class="text-center">票券名稱</th>
             <th class="text-center">單價</th>
             <th class="text-center">商品折扣價</th>
             <th class="text-center">數量</th>
@@ -35,16 +41,17 @@
         <c:forEach items="${list}" var="od" varStatus="odst">
             <tr>
                 <td class="text-center">${odst.count}</td>
-                <td class="text-center">${od.orderId}</td>
-                <td class="text-center">${od.ticketId}</td>
-                <td class="text-center">${od.unitPrice}</td>
-                <td class="text-center">${od.discountPrice}</td>
-                <td class="text-center">${od.quantity}</td>
-                <td class="text-center">${od.subtotal}</td>
-                <td class="text-center">${od.ticketReviews}</td>
-                <td class="text-center">${od.stars}</td>
+                <td class="text-center" name="orderId">${od[0]}</td>
+                <td class="text-center hidden">${od[1]}</td>
+                <td class="text-center" name="ticketId">${od[2]}</td>
+                <td class="text-center">${od[3]}</td>
+                <td class="text-center">${od[4]}</td>
+                <td class="text-center">${od[5]}</td>
+                <td class="text-center">${od[6]}</td>
+                <td class="text-center" name="ticketReviews">${od[7]}</td>
+                <td class="text-center" name="stars">${od[8]}</td>
                 <td class="text-center">
-                    <a href="#" class="btn btn-primary">商品連結</a>
+<%--                    <a href="#" class="btn btn-primary">商品連結</a>--%>
                 </td>
             </tr>
         </c:forEach>
