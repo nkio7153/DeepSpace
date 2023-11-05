@@ -64,18 +64,49 @@ public class TourServlet extends HttpServlet {
 		String[] attractionTime = req.getParameterValues("attractionTime");
 		String[] attraction = req.getParameterValues("attraction");
 		String[] tourDays = req.getParameterValues("days");
-		for (String addTourDays : tourDays) {
-			
-				System.out.println("天數=" + addTourDays);
-			}
-//		}
+//		for (String addTourDays : tourDays) {
+//				System.out.println("天數=" + addTourDays);
+//			}
+////		}
 //		用迴圈將所有景點及時間對應
-		Map<String, String> attractionsMap = new HashMap<>();
-		for(int i = 0 ; i < attractionTime.length ; i++) {
-				attractionsMap.put("attractionTime", attractionTime[i]);
-				attractionsMap.put("attraction", attraction[i]);
-//				System.out.println("attractionsMap=" + attractionsMap);
-		}
+//		Map<String, String> attractionsMap = new HashMap<>();
+//		for(int i = 0 ; i < attractionTime.length ; i++) {
+//			
+//				attractionsMap.put("attractionTime", attractionTime[i]);
+//				attractionsMap.put("attraction", attraction[i]);
+////				System.out.println("attractionsMap=" + attractionsMap);
+//		}
+		 String[] container = req.getParameterValues("container");
+		 if (container != null) {
+	            for (String day : container) {
+	                // 根据类名获取每一天的景点
+	                String dayNumber = req.getParameter("day-" + day); // 使用 "day-" + day 作为参数名称
+	                String[] attractions = req.getParameterValues("attraction-" + day); // 使用 "attraction-" + day 作为参数名称
+
+	                // 处理每一天的景点数据
+	                System.out.println("第 " + dayNumber + " 天的景点：");
+	                if (attractions != null) {
+	                    for (String attraction2 : attractions) {
+	                        System.out.println(attraction2);
+	                    }
+	                }
+	            }
+	        }
+		 
+		 
+		 //==============================================================
+//		List<Map<String, String>> tourDaysList = new ArrayList<>();
+//		if (attractionTime != null && attraction != null && tourDays != null) {
+//		    for (int i = 0; i < attractionTime.length; i++) {
+//		        Map<String, String> dayInfo = new HashMap<>();
+//		        dayInfo.put("attractionTime", attractionTime[i]);
+//		        dayInfo.put("attraction", attraction[i]);
+//		        dayInfo.put("day", tourDays[i]);
+//		        tourDaysList.add(dayInfo);
+//		        System.out.println(tourDaysList);
+//		    }
+//		}
+		//==============================================================
 //		System.out.println("tourDays="+tourDays);
 		
 //		System.out.println("會員編號=" + memId + ", 行程名稱(使用者自訂)=" + tourName + ", 行程敘述=" + tourDescription + ", 開始日期="

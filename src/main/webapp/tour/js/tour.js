@@ -175,31 +175,31 @@ $('body').on('click', '.circle2', function() {
 	$(this).closest(".row").remove();
 });
 
+document.addEventListener("DOMContentLoaded", function() {
+	// 获取景点数量，假设您有一个输入框用于输入景点数量，假设它的ID为"attractionCount"
+	var attractionCountInput = document.getElementById("attraction");
+	var attractionCount = parseInt(attractionCountInput.value);
 
-// 获取景点数量，假设您有一个输入框用于输入景点数量，假设它的ID为"attractionCount"
-var attractionCountInput = document.getElementById("attractionCount");
-var attractionCount = parseInt(attractionCountInput.value);
+	// 获取要添加元素的父元素
+	var parentElement = document.getElementById("tourdays");
 
-// 获取要添加元素的父元素
-var parentElement = document.getElementById("tourdays");
+	// 创建对应数量的元素
+	for (var i = 1; i <= attractionCount; i++) {
+		// 创建<span>元素
+		var spanElement = document.createElement("span");
+		spanElement.textContent = "第 " + i + " 天";
 
-// 创建对应数量的元素
-for (var i = 1; i <= attractionCount; i++) {
-    // 创建<span>元素
-    var spanElement = document.createElement("span");
-    spanElement.textContent = "第 " + i + " 天";
+		// 创建<input>元素
+		var inputElement = document.createElement("input");
+		inputElement.setAttribute("type", "hidden");
+		inputElement.setAttribute("name", "days");
+		inputElement.setAttribute("value", i);
 
-    // 创建<input>元素
-    var inputElement = document.createElement("input");
-    inputElement.setAttribute("type", "hidden");
-    inputElement.setAttribute("name", "days");
-    inputElement.setAttribute("value", i);
-
-    // 将这些元素添加到父元素中
-    parentElement.appendChild(spanElement);
-    parentElement.appendChild(inputElement);
-}
-
+		// 将这些元素添加到父元素中
+		parentElement.appendChild(spanElement);
+		parentElement.appendChild(inputElement);
+	}
+})
 
 
 //========================================以下無程式碼=========================================================
@@ -212,7 +212,7 @@ for (var i = 1; i <= attractionCount; i++) {
 //	     });
 //
 //    });
-//		 
+//
 ////	    circle.on("mouseover", function () {
 ////	        $(this).css({
 ////	            "background-color": "blue",
@@ -227,9 +227,8 @@ for (var i = 1; i <= attractionCount; i++) {
 //	            "height":"21px"
 //	        });
 //	    })
-//	   
+//
 //	    $(document).on("click",".circle",  function () {
 //	    	$(this).closest(".row").find("[name='afterSelector']").before(select_html);
 //    	});
-//	    
 //    });
