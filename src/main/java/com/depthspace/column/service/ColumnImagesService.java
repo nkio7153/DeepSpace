@@ -4,5 +4,9 @@ import com.depthspace.column.model.ColumnImagesVO;
 
 public interface ColumnImagesService {
 	
-	void save(ColumnImagesVO colImg);
+	ColumnImagesVO save(ColumnImagesVO colImg);
+	
+	ColumnImagesVO getMainImageByArticleId(Integer artiId);
+	
+	void updateImg(ColumnImagesVO colImg);
 }

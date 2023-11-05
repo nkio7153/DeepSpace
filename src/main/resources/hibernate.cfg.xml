@@ -57,7 +57,7 @@
         <mapping class="com.depthspace.admin.model.model.AdminVO"/>
 		<mapping class="com.depthspace.adminfunclist.model.AdminFuncListVO"/>
 		<mapping class="com.depthspace.faq.model.model.FaqVO"/>
-		<mapping class="com.depthspace.faqtypes.model.FaqTypesVO"/>
+		<mapping class="com.depthspace.faqtypes.model.model.FaqTypesVO"/>
 		<mapping class="com.depthspace.function.model.FunctionVO"/>
 		<mapping class="com.depthspace.keywordqa.model.KeywordQaVO"/>
         
@@ -67,7 +67,7 @@
         <mapping class="com.depthspace.restaurant.model.restcollection.RestCollectionVO"/>
         <mapping class="com.depthspace.restaurant.model.membooking.MemBookingVO"/>
 
-		
+        <mapping class="com.depthspace.memticketowned.model.MemTicketDetails"/>
 	    <mapping class="com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO"/>
         <mapping class="com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO"/>
         <mapping class="com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO"/>

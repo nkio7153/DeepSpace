@@ -12,15 +12,26 @@
 <jsp:include page="../indexpage/head.jsp" />
 <title>成功登入 success.jsp</title>
 <style>
-  #myImage {
-      border-radius: 60px;
-	  width: 120px;
-	  height: 120px;
-	  z-index: 1;
-  }
-  #image-container {
-    text-align: center; /* 圖片置中 */
-}
+	 #myImage {
+		 border-radius: 60px;
+		 width: 120px;
+		 height: 120px;
+		 z-index: 1;
+	 }
+	 #image-container {
+	     text-align: center; /* 圖片置中 */
+	 }
+	.btn_style {
+		height: 50px;
+	    width: 150px;
+	    font-size: 20px;
+	    color: #fff;
+	    background-color: #008CBA;
+	    border: none;
+	    padding: 10px;
+	    cursor: pointer;
+	    border-radius: 10px;
+	}
 </style>
 </head>
 <body>
@@ -37,8 +48,14 @@
     <div style="flex: 30%; margin-left: 10px;">
 	     <form action="${pageContext.request.contextPath}/tr/tourList" method="post">
 	     	<input type="hidden" name="memId" value="${authenticatedMem.memId}" readonly">
-            <input type="submit" value="我的行程查詢" style="height: 50px; width: 150px; font-size: 18px; color: #fff; background-color: #008CBA; border: none; padding: 10px; cursor: pointer; border-radius: 10px;">
+            <input type="submit" value="我的行程查詢"  class="btn_style" >
         </form>
+<%--         <form action="${pageContext.request.contextPath}/tour/newTour.jsp?memId=${authenticatedMem.memId}" method="post"> --%>
+<%-- 	     	<input type="hidden" name="memId" value="${authenticatedMem.memId}" readonly"> --%>
+<!--             <input type="submit" value="新增行程" style="height: 50px; width: 150px; font-size: 18px; color: #fff; background-color: #008CBA; border: none; padding: 10px; cursor: pointer; border-radius: 10px;"> -->
+<!--         </form> -->
+		<a href="${pageContext.request.contextPath}/tour/newTour.jsp?memId=${authenticatedMem.memId}" class="btn_style">新增行程</a>
+	
 	</div>
 	
 	<div style="flex: 70%;">

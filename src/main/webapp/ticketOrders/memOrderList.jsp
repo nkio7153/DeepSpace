@@ -19,6 +19,11 @@
   <button type="button" class="btn btn-secondary mb-3" onclick="index()">返回</button>
   <h3>歡迎會員${memId}</h3>
   <h1 class="text-center my-4">會員訂單列表</h1>
+
+  <c:if test="${toMemPageQty > 0}">
+    <b><font color=red>第${currentPage}/${toMemPageQty}頁</font></b>
+  </c:if>
+
   <table class="table table-bordered">
     <thead>
     <tr>
@@ -52,6 +57,19 @@
     </c:forEach>
     </tbody>
   </table>
+  <c:if test="${currentPage > 1}">
+    <a href="${pageContext.request.contextPath}/to/memOrderList?page=1&memId=${memId}">至第一頁</a>&nbsp;
+  </c:if>
+  <c:if test="${currentPage - 1 != 0}">
+    <a href="${pageContext.request.contextPath}/to/memOrderList?page=${currentPage - 1}&memId=${memId}">上一頁</a>&nbsp;
+  </c:if>
+  <c:if test="${currentPage + 1 <= toMemPageQty}">
+    <a href="${pageContext.request.contextPath}/to/memOrderList?page=${currentPage + 1}&memId=${memId}">下一頁</a>&nbsp;
+  </c:if>
+  <c:if test="${currentPage != toMemPageQty}">
+    <a href="${pageContext.request.contextPath}/to/memOrderList?page=${toMemPageQty}&memId=${memId}">至最後一頁</a>&nbsp;
+  </c:if>
+
 </div>
 
 <script type="text/javascript">

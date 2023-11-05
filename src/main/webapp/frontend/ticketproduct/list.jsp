@@ -8,7 +8,7 @@
 <html>
 <head>
     <title>選擇票券體驗</title>
-<%--     <jsp:include page="../indexpage/head.jsp" />  --%>
+    <jsp:include page="/indexpage/head.jsp" /> 
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -53,8 +53,8 @@
 </head>
 <body>
 
-<%-- <jsp:include page="../indexpage/header.jsp" /> --%>
-<%-- <jsp:include page="../indexpage/headpic.jsp" /> --%>
+<jsp:include page="/indexpage/header.jsp" />
+<jsp:include page="/indexpage/headpic.jsp" />
 <div class="container mt-5">
 
     <div class="row">
@@ -177,7 +177,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<%-- <jsp:include page="../indexpage/footer.jsp" />  --%>
+<jsp:include page="/indexpage/footer.jsp" /> 
 
 </body>
 </html>

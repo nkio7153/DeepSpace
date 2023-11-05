@@ -23,7 +23,6 @@ public class HbTourDAOImpl implements HbTourDAO_Interface{
     //新增行程
 	@Override
 	public int insert(TourVO entity) {
-		
 		return (Integer) getSession().save(entity);
 	}
 	//更新行程
@@ -67,29 +66,29 @@ public class HbTourDAOImpl implements HbTourDAO_Interface{
 
 	@Override
 	public List<TourView> getOneTourList(Integer tourId, Integer memId) {
-//		System.out.println("tourId=" + tourId + "memId=" + memId);
-	    Session session = getSession();
-	    Transaction tx = null;
+////		System.out.println("tourId=" + tourId + "memId=" + memId);
+//	    Session session = getSession();
+//	    Transaction tx = null;
 	    List<TourView> list = null;
-	    
-	    try {
-//	        tx = session.beginTransaction();
-
-	        list = session.createQuery("SELECT DISTINCT tv from TourView tv where tv.tourId= :tourId AND tv.memId = :memId", TourView.class)
-	            .setParameter("tourId", tourId)
-	            .setParameter("memId", memId)
-	            .list();
-	        
-//	        tx.commit();
-	    } catch (Exception e) {
-	        if (tx != null) {
-//	            tx.rollback();
-	        	System.out.println("錯誤");
-	        }
-	        e.printStackTrace();
-	    } finally {
-	        session.close();
-	    }
+//	    
+//	    try {
+////	        tx = session.beginTransaction();
+//
+//	        list = session.createQuery("SELECT DISTINCT tv from TourView tv where tv.tourId= :tourId AND tv.memId = :memId", TourView.class)
+//	            .setParameter("tourId", tourId)
+//	            .setParameter("memId", memId)
+//	            .list();
+//	        
+////	        tx.commit();
+//	    } catch (Exception e) {
+//	        if (tx != null) {
+////	            tx.rollback();
+//	        	System.out.println("錯誤");
+//	        }
+//	        e.printStackTrace();
+//	    } finally {
+//	        session.close();
+//	    }
 
 	    return list;
 	}
