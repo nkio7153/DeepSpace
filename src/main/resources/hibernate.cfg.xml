@@ -67,7 +67,7 @@
         <mapping class="com.depthspace.restaurant.model.restcollection.RestCollectionVO"/>
         <mapping class="com.depthspace.restaurant.model.membooking.MemBookingVO"/>
 
-		
+        <mapping class="com.depthspace.memticketowned.model.MemTicketDetails"/>
 	    <mapping class="com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO"/>
         <mapping class="com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO"/>
         <mapping class="com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO"/>

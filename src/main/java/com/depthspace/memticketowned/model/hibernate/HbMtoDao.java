@@ -1,5 +1,6 @@
 package com.depthspace.memticketowned.model.hibernate;
 
+import com.depthspace.memticketowned.model.MemTicketDetails;
 import com.depthspace.memticketowned.model.MemTicketOwnedVO;
 
 import java.util.List;
@@ -13,10 +14,8 @@ public interface HbMtoDao {
 
     MemTicketOwnedVO getById(Integer id);
 
-    List<MemTicketOwnedVO> getByMemId(Integer memId);
+    List<MemTicketDetails> getByMemId(Integer memId, int currentPage);
+
+    long getTotalByMemId(Integer memId);
     List<MemTicketOwnedVO> getAll();
-
-    List<MemTicketOwnedVO> getAll(int currentPage);
-
-    long getTotal();
 }

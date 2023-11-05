@@ -5,13 +5,8 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
+
 @Entity
 @Table(name = "FORUM_ARTICLES")
 public class ForumArticlesVO implements Serializable {
@@ -35,7 +30,8 @@ public class ForumArticlesVO implements Serializable {
 	private Integer artiLk;
 	@Column(name = "ARTI_STATUS")
 	private Integer artiStatus;
-	@Column(name = "ARTI_IMG" , columnDefinition = "BLOB")
+	@Lob
+	@Column(name = "ARTI_IMG" , columnDefinition = "MEDIUMBLOB")
 	private byte[] artiImg;
 	
 	@Transient

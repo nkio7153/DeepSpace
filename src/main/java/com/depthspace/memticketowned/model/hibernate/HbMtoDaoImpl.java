@@ -1,11 +1,14 @@
 package com.depthspace.memticketowned.model.hibernate;
 
+import com.depthspace.memticketowned.model.MemTicketDetails;
 import com.depthspace.memticketowned.model.MemTicketOwnedVO;
 import com.depthspace.memticketowned.model.hibernate.HbMtoDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
+
+import static com.depthspace.ticketorders.model.ticketorders.hibernate.HbToDaoImpl.PAGE_MAX_RESULT;
 
 public class HbMtoDaoImpl implements HbMtoDao {
     //宣告一個factory變數
@@ -55,28 +58,30 @@ public class HbMtoDaoImpl implements HbMtoDao {
 
         return getSession().get(MemTicketOwnedVO.class, id);
     }
-    //用會員編號取得所有資料
+    //用會員編號取得當前頁面的所有資料
     @Override
-    public List<MemTicketOwnedVO> getByMemId(Integer memId) {
-        return getSession()
-                .createQuery("from MemTicketOwnedVO where memId= :memId",MemTicketOwnedVO.class)
-                .setParameter("memId", memId)
+    public List<MemTicketDetails> getByMemId(Integer memId, int currentPage) {
+        int first = (currentPage - 1) * PAGE_MAX_RESULT;
+        return getSession().createQuery("from MemTicketDetails where memId= :memId order by statusOfUse", MemTicketDetails.class)
+                .setParameter("memId",memId)
+                .setFirstResult(first)
+                .setMaxResults(PAGE_MAX_RESULT)
                 .list();
     }
 
-    //取得
+
+
+    @Override
+    public long getTotalByMemId(Integer memId) {
+        return getSession().createQuery("select count(*) from MemTicketOwnedVO where memId= :memId", Long.class)
+                .setParameter("memId",memId)
+                .uniqueResult();
+    }
+
+
     @Override
     public List<MemTicketOwnedVO> getAll() {
-        return getSession().createQuery("from MemTicketOwnedVO ", MemTicketOwnedVO.class).list();
-    }
-
-    @Override
-    public List<MemTicketOwnedVO> getAll(int currentPage) {
-        return null;
-    }
-
-    @Override
-    public long getTotal() {
-        return getSession().createQuery("select count(*) from MemTicketOwnedVO", Long.class).uniqueResult();
+        return getSession().createQuery("from MemTicketOwnedVO",MemTicketOwnedVO.class)
+                .list();
     }
 }

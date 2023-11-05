@@ -15,14 +15,19 @@ public interface HbToDao {
 
     List<TicketOrdersVO> getByMemId(Integer MemId);
 
+    List<TicketOrdersVO> getAll(int currentPage);
     List<TicketOrdersVO> getAll();
 
-    List<TicketOrdersVO> getAllByMemId(int currentPage);
+    List<TicketOrdersVO> getAllByMemId(int currentPage, Integer memId);
 
     long getTotal();
     //取得最新一筆訂單
 
     TicketOrdersVO getLatestOrderByMemId(Integer memId);
+
+    long getTotalByMemId(Integer memId);
+
+
 
 
 }

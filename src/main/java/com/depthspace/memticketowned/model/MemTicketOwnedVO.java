@@ -16,6 +16,8 @@ public class MemTicketOwnedVO implements Serializable {
     private Integer memId;
     @Column(name="TICKET_ID",nullable=false)
     private Integer ticketId;
+    @Column(name="ORDER_ID",nullable=false)
+    private Integer orderId;
     @Column(name="RELEASE_DATE")
     private Date releaseDate;
     @Column(name="EXPIRY_DATE")
@@ -26,13 +28,22 @@ public class MemTicketOwnedVO implements Serializable {
     public MemTicketOwnedVO() {
     }
 
-    public MemTicketOwnedVO(Integer ticketOwnedId, Integer memId, Integer ticketId, Date releaseDate, Date expiryDate, Integer statusOfUse) {
+    public MemTicketOwnedVO(Integer ticketOwnedId, Integer memId, Integer ticketId, Integer orderId, Date releaseDate, Date expiryDate, Integer statusOfUse) {
         this.ticketOwnedId = ticketOwnedId;
         this.memId = memId;
         this.ticketId = ticketId;
+        this.orderId=orderId;
         this.releaseDate = releaseDate;
         this.expiryDate = expiryDate;
         this.statusOfUse = statusOfUse;
+    }
+
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 
     public Integer getTicketOwnedId() {

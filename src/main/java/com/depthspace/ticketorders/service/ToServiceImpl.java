@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.depthspace.ticketorders.model.ticketorders.hibernate.HbToDaoImpl.PAGE_MAX_RESULT;
+
 public class ToServiceImpl implements ToService {
     private HbToDao dao;
     private HbTodDao todDao;
@@ -61,6 +63,7 @@ public class ToServiceImpl implements ToService {
             Integer status=0;//使用狀態預設為0
             //創建一個集合裝會員擁有票券物件
             List<MemTicketOwnedVO> mtoList = new ArrayList<>();
+//           遍歷購物車資訊集合
             for (CartInfo cart:ciList){
                 //訂單明細包裝物件
                 Integer discountPrice;
@@ -86,9 +89,11 @@ public class ToServiceImpl implements ToService {
                 todVo.setSubtotal(subtotal);
                 //訂單明細放入訂單明細集合
                 todList.add(todVo);
-                //會員擁有票券包裝物件
-                MemTicketOwnedVO mtoVo = new MemTicketOwnedVO(null, memId, cart.getTicketId(), releaseDate, expiryDate, status);
-                mtoList.add(mtoVo);
+                //會員擁有票券包裝物件，依據數量加入會員擁有票券
+                for(int i=0;i<cart.getQuantity();i++) {
+                    MemTicketOwnedVO mtoVo = new MemTicketOwnedVO(null, memId, cart.getTicketId(),vo.getOrderId(), releaseDate, expiryDate, status);
+                    mtoList.add(mtoVo);
+                }
             }
             //調用訂單明細dao生成多筆訂單明細
             todDao.insertBatch(todList);
@@ -116,19 +121,37 @@ public class ToServiceImpl implements ToService {
 
         return dao.getByMemId(MemId);
     }
-
+    //取得當前頁面所有訂單資料
+    @Override
+    public List<TicketOrdersVO> getAll(int currentPage) {
+        return dao.getAll(currentPage);
+    }
+    //取得所有訂單資料
     @Override
     public List<TicketOrdersVO> getAll() {
         return dao.getAll();
     }
 
     @Override
-    public List<TicketOrdersVO> getAll(int currentPage) {
-        return dao.getAllByMemId(currentPage);
+    public List<TicketOrdersVO> getAllByMemId(int currentPage, Integer memId) {
+        return dao.getAllByMemId(currentPage, memId);
     }
     //取得一筆訂單列表總數
     @Override
-    public long getTotal(Integer orderId) {
-        return todDao.getTotal(orderId);
+    public long getTotal() {
+        long total = dao.getTotal();
+        System.out.println("total="+total);
+        int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
+        System.out.println("pageQty="+pageQty);
+        return pageQty;
     }
+
+    @Override
+    public int getMemPageTotal(Integer memId) {
+        long total = dao.getTotalByMemId(memId);
+        int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
+        return pageQty;
+    }
+    //join票券表格取得訂單明細中的票券名稱
+
 }

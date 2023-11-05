@@ -1,5 +1,6 @@
 package com.depthspace.memticketowned.controller;
 
+import com.depthspace.memticketowned.model.MemTicketDetails;
 import com.depthspace.memticketowned.model.MemTicketOwnedVO;
 import com.depthspace.memticketowned.model.hibernate.HbMtoDao;
 import com.depthspace.memticketowned.service.MtoService;
@@ -27,6 +28,9 @@ public class MtoServlet extends HttpServlet {
             case "/index":
                 doIndex(req,resp);
                 break;
+            case "/memList":
+                doMemList(req,resp);
+                break;
         }
     }
 
@@ -48,13 +52,20 @@ public class MtoServlet extends HttpServlet {
     }
     //查出會員擁有的所有票券
     private void doMemList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer memId=null;
-        try{
-            memId=Integer.valueOf(req.getParameter("memId"));
-        }catch(Exception e){
-            e.printStackTrace();
+        Integer memId=Integer.parseInt(req.getParameter("memId"));
+
+        //用會員id取得當前頁面的list
+        String page=req.getParameter("page");
+        int currentPage=(page==null) ? 1 : Integer.parseInt(page);
+
+        List<MemTicketDetails> list = mtoSv.getByMemId(memId, currentPage);
+
+        if (req.getSession().getAttribute("mtoPageQty") == null) {
+            int mtoPageQty=mtoSv.getTotalByMemId(memId);
+            req.getSession().setAttribute("mtoPageQty", mtoPageQty);
         }
-        List<MemTicketOwnedVO> list = mtoSv.getByMemId(memId);
+
+        req.setAttribute("currentPage",currentPage);
         req.setAttribute("list",list);
         req.setAttribute("memId",memId);
         req.getRequestDispatcher("/frontend/memticketowned/mto.jsp").forward(req,resp);
