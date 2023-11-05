@@ -27,4 +27,7 @@ public interface HbTodDao {
     List<TicketOrderDetailVO> getAll(int currentPage);
 
     long getTotal(Integer orderId);
+    
+    //取得一個票券的所有訂單明細
+	List<TicketOrderDetailVO> findByTicketId(Integer ticketId);
 }
