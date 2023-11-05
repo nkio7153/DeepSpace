@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 @Entity
@@ -35,7 +36,7 @@ public class ForumArticlesVO implements Serializable {
 	private Integer artiLk;
 	@Column(name = "ARTI_STATUS")
 	private Integer artiStatus;
-	@Column(name = "ARTI_IMG" , columnDefinition = "BLOB")
+	@Column(name = "ARTI_IMG" , columnDefinition = "MEDIUMBLOB")
 	private byte[] artiImg;
 	
 	@Transient
@@ -134,15 +135,13 @@ public class ForumArticlesVO implements Serializable {
 		this.artiStatus = artiStatus;
 	}
 
-	public byte[] getAtriImg() {
+	public byte[] getArtiImg() {
 		return artiImg;
 	}
 
-	public void setAtriImg(byte[] atriImg) {
-		this.artiImg = atriImg;
+	public void setArtiImg(byte[] artiImg) {
+		this.artiImg = artiImg;
 	}
-	
-	
 
 	public String getBase64Str() {
 		return base64Str;
