@@ -45,6 +45,10 @@
     <br>
     <br>
     <li><a href="${pageContext.request.contextPath}/pro/getCard?memId=${memId}">前台促銷列表</a></li>
+    <br>
+    <br>
+    <br>
+    <li><a href="${pageContext.request.contextPath}/mto/index">查看我的票券索引頁面</a></li>
 </ul>
 
 <jsp:include page="../indexpage/footer.jsp" />

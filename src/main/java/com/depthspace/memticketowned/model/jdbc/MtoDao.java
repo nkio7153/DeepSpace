@@ -4,7 +4,7 @@ import com.depthspace.memticketowned.model.MemTicketOwnedVO;
 
 import java.util.List;
 
-public interface MemTicketOwnedDAO_Interface {
+public interface MtoDao {
     public void insert(MemTicketOwnedVO memTicketOwnedVO);
     public void update(MemTicketOwnedVO memTicketOwnedVO);
     public void delete(Integer ticketOwnedId);

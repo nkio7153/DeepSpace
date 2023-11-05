@@ -32,13 +32,29 @@ public class TodServiceImpl implements TodService {
 
     @Override
     public List<TicketOrderDetailVO> getAll(int currentPage, Integer orderId) {
+
         return null;
     }
     //取得一筆訂單列表總數
     @Override
     public long getTotal(Integer orderId) {
+
         return dao.getTotal(orderId);
     }
-//    新增多筆訂單明細
-
+    //join票券表格取得訂單明細中的票券名稱
+    @Override
+    public List<Object[]> getResult(Integer orderId) {
+        return dao.getResult(orderId);
+    }
+    //更新訂單明細
+    @Override
+    public void updateTod(TicketOrderDetailVO entity){
+         dao.update(entity);
+    }
+//    取得一筆訂單明細
+    @Override
+    public TicketOrderDetailVO getById(Integer orderId, Integer ticketId){
+        TicketOrderDetailVO.CompositeDetail id = new TicketOrderDetailVO.CompositeDetail(orderId, ticketId);
+        return dao.getById(id);
+    }
 }

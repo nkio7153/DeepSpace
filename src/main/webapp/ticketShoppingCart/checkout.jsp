@@ -152,8 +152,8 @@
                 <span>點數:</span><span class="coupen badge bg-warning">${coupen}</span>
             </div>
             <div class="last fs-2 bg-light p-4 rounded border rounded shadow-sm">
-                <span class="fs-4">總金額:$</span>
-                <div class="total text-black-50 fs-4"></div>
+                <span class="fs-5">總金額:$</span>
+                <div class="total text-black-50 fs-5"></div>
                 <br>
                 <input type="button" class="btn btn-primary btn-lg ms-2" value="確認付款" id="confirmPaymentButton">
             </div>
