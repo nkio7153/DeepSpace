@@ -12,8 +12,10 @@ import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import com.depthspace.ticket.model.*;
+import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 import com.depthspace.utils.Constants;
 import com.depthspace.utils.HibernateUtil;
 
@@ -100,7 +102,25 @@ public class TicketDAOImpl implements TicketDAO {
 	// 取得所有票券數量
 	@Override
 	public long getTotal() {
-		return getSession().createQuery("select count(*) from TicketVO", Long.class).uniqueResult();
+//		return getSession().createQuery("select count(*) from TicketVO", Long.class).uniqueResult();
+	    Session session = null;
+	    Transaction tx = null;
+	    try {
+	        session = factory.openSession();  // 打开一个新的会话
+	        tx = session.beginTransaction();  // 开始一个新的事务
+
+	        // 执行查询
+	        long count = (Long) session.createQuery("select count(*) from TicketVO").uniqueResult();
+
+	        tx.commit();  // 提交事务
+	        return count;
+	    } catch (RuntimeException e) {
+	        if (tx != null) tx.rollback();  // 发生异常，回滚事务
+	        throw e;  // 抛出异常以便调用者可以处理
+	    } finally {
+	        if (session != null) session.close();  // 关闭会话
+	    }
+	
 	}
 
 	// 萬用查詢
@@ -153,49 +173,43 @@ public class TicketDAOImpl implements TicketDAO {
 
 	    return query.getResultList();
 	}
+	
+//    private EntityManager entityManager;
 
-//	public List<TicketVO> getByCompositeQuery(Map<String, String> map) {
-//
-//		if (map.size() == 0)
-//			return getAll();
-//
-//		CriteriaBuilder builder = getSession().getCriteriaBuilder();
-//		CriteriaQuery<TicketVO> criteria = builder.createQuery(TicketVO.class);
-//		Root<TicketVO> root = criteria.from(TicketVO.class);
-//
-//		List<Predicate> predicates = new ArrayList<>();
-//
-//		for (Map.Entry<String, String> row : map.entrySet()) {
-//			if ("ticketName".equals(row.getKey())) {
-//				predicates.add(builder.like(root.get("ticketName"), "%" + row.getValue() + "%"));
-//			}
-//		}
-//		
-//	    for (Map.Entry<String, String> entry : map.entrySet()) {
-//	        String key = entry.getKey();
-//	        String value = entry.getValue();
-//
-//	        switch (key) {
-//	            case "ticketName":
-//	                predicates.add(builder.like(root.get("ticketName"), "%" + value + "%"));
-//	                break;
-//	            case "ticketTypeId":
-//	                predicates.add(builder.equal(root.get("ticketType").get("ticketTypeId"), Integer.parseInt(value)));
-//	                break;
-//	            case "ticketId":
-//	                predicates.add(builder.equal(root.get("ticketId"), Integer.parseInt(value)));
-//	                break;
-//	            case "areaId":
-//	                predicates.add(builder.equal(root.get("city").get("cityId"), Integer.parseInt(value)));
-//	                break;
-//	        }
-//	    }
-//
-//		criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
-//		criteria.orderBy(builder.asc(root.get("ticketId")));
-//		TypedQuery<TicketVO> query = getSession().createQuery(criteria);
-//
-//		return query.getResultList();
+    public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId) {
+        EntityManager localEntityManager = null;
+        try {
+            localEntityManager = factory.createEntityManager(); // Manually obtaining EntityManager
+            String jpql = "SELECT detail FROM TicketOrderDetailVO detail WHERE detail.ticketId = :ticketId";
+            return localEntityManager.createQuery(jpql, TicketOrderDetailVO.class)
+                    .setParameter("ticketId", ticketId)
+                    .getResultList();
+        } finally {
+            if (localEntityManager != null && localEntityManager.isOpen()) {
+                localEntityManager.close(); // Ensure the EntityManager is closed after the operation
+            }
+        }
+    }
+
+//	//取得有評價該票券的單數
+//	@Override
+//	public int countOrderRatingsByTicketId(Integer ticketId) {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+//	
+//	//取得該票券的總星星評價數
+//	@Override
+//	public List<Integer> getStarsByTicketId(Integer ticketId) {
+//		String sql = "SELECT STARS FORM TICKET_ORDER_DETAIL WHERE TICKET_ID=?";
+//		return null;
+//	}
+//	
+//	//取得該票券評價內容
+//	@Override
+//	public List<String> getReviewsByTicketId(Integer ticketId) {
+//		// TODO Auto-generated method stub
+//		return null;
 //	}
 
 }

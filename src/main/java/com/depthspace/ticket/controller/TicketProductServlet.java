@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -120,7 +121,27 @@ public class TicketProductServlet extends HttpServlet {
 
 		long totalTickets = ticketService.getTotalTickets();
 		req.setAttribute("totalTickets", totalTickets); // 總票券數量
+/////////////////////////////////
+		// 创建一个Map来存储评分和评价数量
+		Map<Integer, Double> averageStarsMap = new HashMap<>();
+		Map<Integer, Integer> totalRatingCountMap = new HashMap<>();
 
+		// 对于每个TicketVO计算平均星级和评价数量
+		for (TicketVO ticket : ticketList) {
+		    Integer ticketId = ticket.getTicketId();
+		    Integer totalStars = ticketService.getTotalStars(ticketId);
+		    Integer totalRatingCount = ticketService.getTotalRatingCount(ticketId);
+		    
+		    double averageStars = totalRatingCount > 0 ? (double) totalStars / totalRatingCount : 0;
+		    
+		    averageStarsMap.put(ticketId, averageStars);
+		    totalRatingCountMap.put(ticketId, totalRatingCount);
+		}
+
+		// 将评分信息添加到request对象
+		req.setAttribute("averageStarsMap", averageStarsMap);
+		req.setAttribute("totalRatingCountMap", totalRatingCountMap);
+		/////////////////////////////////////
 		searchList(req, res);
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/ticketproduct/list.jsp");
 		dispatcher.forward(req, res);
@@ -165,8 +186,42 @@ public class TicketProductServlet extends HttpServlet {
 		}
 
 		TicketVO ticket = ticketService.getTicketById(ticketId);
+		if(ticket == null) {
+			return;
+		}
+		
+	    // 获取评价列表
+//	    List<TicketOrderDetailVO> reviews = ticketService.findTicketOrderDetailsByTicketId(ticketId);
 
-		req.setAttribute("ticket", ticket);
+	    // 计算平均星星数
+//	    double averageStars = reviews.stream()
+//	                                 .filter(r -> r.getStars() != null)
+//	                                 .mapToInt(TicketOrderDetailVO::getStars)
+//	                                 .average()
+//	                                 .orElse(0);
+//
+//	    // 计算总评价单数
+//	    long totalRatingCount = reviews.stream()
+//	                                   .filter(r -> r.getStars() != null)
+//	                                   .count();
+//
+//	    // 获取所有评价内容
+//	    List<String> reviewContents = reviews.stream()
+//	                                         .map(TicketOrderDetailVO::getTicketReviews)
+//	                                         .filter(Objects::nonNull)
+//	                                         .collect(Collectors.toList());
+
+
+	    
+	    // 设置属性，以便在JSP中使用
+	    req.setAttribute("ticket", ticket);
+//	    req.setAttribute("averageStars", averageStars);
+//	    req.setAttribute("totalRatingCount", totalRatingCount);
+//	    req.setAttribute("reviews", reviews);
+//	    req.setAttribute("reviewContents", reviewContents);
+	    
+		
+//		req.setAttribute("ticket", ticket);
 		req.getRequestDispatcher("/frontend/ticketproduct/item.jsp").forward(req, res);
 	}
 }

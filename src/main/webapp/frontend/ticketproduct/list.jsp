@@ -142,7 +142,9 @@
 												</c:choose>
 											</p>
 											<p class="card-text">
-												<small class="text-muted">4.4 ★★★★★ (520)</small>
+												<small class="text-muted">
+            ${averageStarsMap[ticket.ticketId]} ★★★★★ (${totalRatingCountMap[ticket.ticketId]})
+        </small>
 											</p>
 											<p class="card-text">NT$ ${ticket.price}</p>
 										</div>

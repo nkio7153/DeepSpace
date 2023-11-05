@@ -6,6 +6,7 @@ import java.util.Map;
 import com.depthspace.attractions.model.CityVO;
 import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
+import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 
 
@@ -39,6 +40,11 @@ public interface TicketService {
     //查詢所有票券區域
     List<CityVO> getAllCities();
     List<TicketVO> getAllTicketAreaId(Integer areaId);
+    
+    public Integer getTotalStars(Integer ticketId);
+    public Integer getTotalRatingCount(Integer ticketId);
+    public List<String> getReviews(Integer ticketId);
+//    public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId);
 
 }
 

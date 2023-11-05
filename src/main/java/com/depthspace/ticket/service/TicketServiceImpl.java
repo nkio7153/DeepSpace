@@ -3,7 +3,9 @@ package com.depthspace.ticket.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -24,16 +26,23 @@ import com.depthspace.ticket.dao.TicketDAO;
 import com.depthspace.ticket.dao.TicketDAOImpl;
 import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
+import com.depthspace.ticketorders.model.ticketorderdetail.hibernate.HbTodDaoImpl;
+import com.depthspace.ticketorders.model.ticketorderdetail.hibernate.HbTodDao;
+import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 import com.depthspace.utils.HibernateUtil;
 import com.depthspace.utils.Constants;
+
 
 public class TicketServiceImpl implements TicketService {
 
 	private TicketDAO dao;
-
+	private HbTodDao hbTodDao;
 	public TicketServiceImpl() {
 		dao = new TicketDAOImpl(HibernateUtil.getSessionFactory());
+		hbTodDao = new HbTodDaoImpl(HibernateUtil.getSessionFactory());
 	}
+	
+
 
 	// 新增票券
 	@Override
@@ -217,4 +226,32 @@ public class TicketServiceImpl implements TicketService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+    public Integer getTotalStars(Integer ticketId) {
+        List<TicketOrderDetailVO> details = dao.findTicketOrderDetailsByTicketId(ticketId);
+        return details.stream()
+                .filter(detail -> detail.getStars() != null)
+                .mapToInt(TicketOrderDetailVO::getStars)
+                .sum();
+    }
+
+    public Integer getTotalRatingCount(Integer ticketId) {
+        List<TicketOrderDetailVO> details = dao.findTicketOrderDetailsByTicketId(ticketId);
+        return (int) details.stream()
+                .filter(detail -> detail.getStars() != null)
+                .count();
+    }
+
+    public List<String> getReviews(Integer ticketId) {
+        List<TicketOrderDetailVO> details = dao.findTicketOrderDetailsByTicketId(ticketId);
+        return details.stream()
+                .map(TicketOrderDetailVO::getTicketReviews)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+    
+//    public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId) {
+//        return hbTodDao.findByTicketId(ticketId);
+//    }
+
 }
