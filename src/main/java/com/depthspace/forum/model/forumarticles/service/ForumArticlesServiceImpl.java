@@ -34,7 +34,15 @@ public class ForumArticlesServiceImpl implements ForumArticlesService{
 	public List<ForumArticlesVO> getAll() {
 		List<ForumArticlesVO> list = dao.getAll();
 		for (ForumArticlesVO vo : list) {
-			vo.setBase64Str(Base64.getEncoder().encodeToString(vo.getAtriImg()));
+			if ( vo.getArtiImg() != null) {
+		        // 獲取 Base64 編碼器
+		        Base64.Encoder encoder = Base64.getEncoder();
+		        // 將二進制數據編碼為字符串
+		        String base64EncodedString = encoder.encodeToString(vo.getArtiImg());
+		        // 輸出編碼後的字符串
+		        System.out.println("Base64 Encoded String : " + base64EncodedString);
+				vo.setBase64Str(base64EncodedString);
+			}
 		}
 		return list;
 	}
