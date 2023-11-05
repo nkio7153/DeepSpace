@@ -44,7 +44,7 @@ public interface TicketService {
     public Integer getTotalStars(Integer ticketId);
     public Integer getTotalRatingCount(Integer ticketId);
     public List<String> getReviews(Integer ticketId);
-//    public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId);
+    public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId);
 
 }
 

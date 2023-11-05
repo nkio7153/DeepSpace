@@ -250,8 +250,8 @@ public class TicketServiceImpl implements TicketService {
                 .collect(Collectors.toList());
     }
     
-//    public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId) {
-//        return hbTodDao.findByTicketId(ticketId);
-//    }
+    public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId) {
+        return hbTodDao.findByTicketId(ticketId);
+    }
 
 }

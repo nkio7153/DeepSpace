@@ -10,23 +10,26 @@
 <title>票券詳情</title>
 <jsp:include page="/indexpage/head.jsp" />
 
-<link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	rel="stylesheet">
+<!-- Leaflet的CSS -->
+<link rel="stylesheet"
+	href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
 <style>
-  /* 評價的星星樣式(實) */
-  .gold-star {
-    color: gold;
-  }
-  /* 評價的星星樣式(虛) */
-  .fa-star, .fa-star-half-alt {
-    border: none;
-  }
+/* 評價的星星樣式(實) */
+.gold-star {
+	color: gold;
+}
+/* 評價的星星樣式(虛) */
+.fa-star, .fa-star-half-alt {
+	border: none;
+}
 </style>
-
+<!-- Leaflet的JS -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
 <script>
@@ -50,9 +53,8 @@ $(document).ready(function() {
             carouselInner.append(carouselItem);
         });
     });
-
 	
-	//收藏動態
+//收藏動態
     $(document).ready(function() {
         $("#favoriteIcon").click(function() {
             if ($(this).hasClass("far")) {
@@ -62,9 +64,8 @@ $(document).ready(function() {
             }
         });
     });
-    
    
- 	//購物車加入
+//購物車加入
   $(".btn").on("click",function(){
 	let url = "${pageContext.request.contextPath}/tsc/save?ticketId=" + ${ticket.ticketId} + "&memId=1";
     fetch(url)
@@ -78,6 +79,31 @@ $(document).ready(function() {
               console.log(error);
             })
   })
+});
+
+//地圖
+$(document).ready(function() {
+    // 初始化
+    function initMap(latitude, longitude) {
+        var map = L.map('map').setView([latitude, longitude], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        L.marker([latitude, longitude]).addTo(map);
+    }
+
+    <%if (request.getAttribute("ticket") != null) {%>
+        var ticketLatitude = ${ticket.latitude};
+        var ticketLongitude = ${ticket.longitude};
+
+        if(!isNaN(ticketLatitude) && !isNaN(ticketLongitude)) {
+            initMap(ticketLatitude, ticketLongitude);
+        } else {
+            console.error('Invalid latitude or longitude for ticketVO.');
+        }
+    <%} else {%>
+        console.error('TicketVO object not found in request.');
+    <%}%>
 });
 </script>
 
@@ -125,86 +151,145 @@ $(document).ready(function() {
 		</div>
 		<!-- 商品基本資訊 -->
 		<div class="row mb-4">
-			<div class="col-10">
-				<h3>${ticket.ticketName}
-					<i class="far fa-heart favorite-icon" id="favoriteIcon"></i>
-				</h3>
+			<div class="col-12 d-flex justify-content-between align-items-center">
+				<h3>${ticket.ticketName}</h3>
+				<i class="far fa-heart favorite-icon" id="favoriteIcon"
+					style="cursor: pointer;"></i>
 			</div>
-			<div class="col-12 mt-3">
-				<div class="d-flex justify-content-between align-items-center">
-					<div class="rating">
-						<p class="mb-0">${averageStars}★★★★★(${totalRatingCount})</p>
-					</div>
-					<h4>NT$ ${ticket.price}</h4>
-				</div>
-				<div class="d-flex justify-content-between align-items-center mt-2">
-					<select name="quant[1]" class="form-control w-auto">
-						<c:forEach var="i" begin="1" end="10">
-							<option value="${i}">${i}</option>
+		</div>
+		<div class="col-12 mt-3">
+			<div class="d-flex justify-content-between align-items-center">
+				<div class="rating">
+					<p class="mb-0">${formattedAverageStars}
+						<!-- 實星 -->
+						<c:forEach begin="1" end="${averageStars}" var="i">
+							<i class="fas fa-star gold-star"></i>
 						</c:forEach>
-					</select>
-					<button class="btn btn-dark">加入購物車</button>
+						<!-- 半星 -->
+						<c:if test="${averageStars % 1 != 0}">
+							<i class="fas fa-star-half-alt gold-star"></i>
+							<!-- 有半星就+ -->
+							<c:set var="emptyStarsStart"
+								value="${Math.floor(averageStars) + 2}" />
+						</c:if>
+						<!-- 沒有半星就往下一個數 -->
+						<c:if test="${averageStars % 1 == 0}">
+							<c:set var="emptyStarsStart" value="${averageStars + 1}" />
+						</c:if>
+						<!-- 空星 -->
+						<c:forEach begin="${emptyStarsStart}" end="5" var="j">
+							<i class="far fa-star gold-star"></i>
+						</c:forEach>
+						(${totalRatingCount})
+					</p>
+					<div class="row mb-4">
+						<div class="col-12">
+							<h2 class="display-4">NT$ ${ticket.price}</h2>
+						</div>
+					</div>
+					<!-- Quantity Selector -->
+					<div class="row mb-4">
+						<div class="col-12">
+							<label for="ticketQuantity" class="mr-2">數量</label> <select
+								id="ticketQuantity" name="quant[1]" class="custom-select w-auto">
+								<c:forEach var="i" begin="1" end="10">
+									<option value="${i}">${i}</option>
+								</c:forEach>
+							</select>
+						</div>
+					</div>
+					<!-- Add to Cart Button -->
+					<div class="row mb-4">
+						<div class="col-12">
+							<button class="btn btn-dark btn-lg btn-block">加入購物車</button>
+						</div>
+					</div>
+				</div>
+			  </div>
+			</div>
+			<!-- 商品描述、位置、評價 -->
+			<div class="row mt-5">
+				<div class="col-12">
+					<h4>票券介紹</h4>
+					<p>${ticket.description}</p>
 				</div>
 			</div>
-		</div>
 
-		<!-- 商品描述、位置、評價... -->
-		<div class="row mt-5">
-			<div class="col-12">
-				<h4>票券介紹</h4>
-				<p>${ticket.description}</p>
+			<div class="row mt-5">
+				<div class="col-12">
+					<h4>位置資訊</h4>
+
+					<div id="map" style="width: 100%; height: 400px;"></div>
+				</div>
 			</div>
-		</div>
 
-		<div class="row mt-5">
-			<div class="col-12">
-				<h4>位置資訊</h4>
-				<div id="map" style="width: 100%; height: 400px;"></div>
+			<div class="row mt-5">
+				<div class="col-12">
+					<h4>使用者評價</h4>
+					<c:forEach var="reviews" items="${reviews}">
+						<div class="review border-top py-3">
+							<strong>${review.userName}匿名用戶</strong>
+							<div>
+								<!-- 實星 -->
+								<c:forEach begin="1" end="${reviews.stars}" var="i">
+									<i class="fas fa-star gold-star"></i>
+								</c:forEach>
+								<!-- 半星 -->
+								<c:if test="${reviews.stars % 1 != 0}">
+									<i class="fas fa-star-half-alt gold-star"></i>
+									<!-- 有半星就+ -->
+									<c:set var="emptyStarsStart"
+										value="${Math.floor(reviews.stars) + 2}" />
+								</c:if>
+								<!-- 沒有半星就往下一個數 -->
+								<c:if test="${reviews.stars % 1 == 0}">
+									<c:set var="emptyStarsStart" value="${reviews.stars + 1}" />
+								</c:if>
+								<!-- 空星 -->
+								<c:forEach begin="${emptyStarsStart}" end="5" var="j">
+									<i class="far fa-star gold-star"></i>
+								</c:forEach>
+							</div>
+							<p>${reviews.ticketReviews}</p>
+						</div>
+					</c:forEach>
+				</div>
 			</div>
+
 		</div>
 
-<div class="row mt-5">
-    <div class="col-12">
-        <h4>使用者評價</h4>
-        <c:forEach var="reviews" items="${reviews}">
-            <div class="review border-top py-3">
-                <strong>${review.userName}匿名用戶</strong>
-                <div>
-                    <!-- 显示实星 -->
-                    <c:forEach begin="1" end="${reviews.stars}" var="i">
-                        <i class="fas fa-star gold-star"></i>
-                    </c:forEach>
-                    <!-- 显示半星 -->
-                    <c:if test="${reviews.stars % 1 != 0}">
-                        <i class="fas fa-star-half-alt gold-star"></i>
-                        <!-- 为了计算开始的空星，如果有半星，则加一 -->
-                        <c:set var="emptyStarsStart" value="${Math.floor(reviews.stars) + 2}" />
-                    </c:if>
-                    <!-- 如果没有半星，空星从下一个整数开始 -->
-                    <c:if test="${reviews.stars % 1 == 0}">
-                        <c:set var="emptyStarsStart" value="${reviews.stars + 1}" />
-                    </c:if>
-                    <!-- 显示空星 -->
-                    <c:forEach begin="${emptyStarsStart}" end="5" var="j">
-                        <i class="far fa-star gold-star"></i>
-                    </c:forEach>
-                </div>
-                <p>${reviews.ticketReviews}</p>
-            </div>
-        </c:forEach>
-    </div>
-</div>
+		<script
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+		<script>
+    $(document).ready(function() {
+ 
+        // 初始化地图
+        function initMap(latitude, longitude) {
+            
+           
+var map = L.map('map').setView([latitude, longitude], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            var marker = L.marker([latitude, longitude]).addTo(map);
+        }
 
-</div>
+        // 假设ticketVO对象通过服务器端代码传递到JSP，并存在于页面中
+        <%if (request.getAttribute("ticket") != null) {%>
+            var ticketVO = {
+                latitude: ${ticket.latitude},
+                longitude: ${ticket.longitude}
+            };
+            initMap(ticket.latitude, ticket.longitude);
+        <%} else {%>
+            console.error('ticketVO对象未在请求中找到！');
+        <%}%>
+    });
+</script>
 
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
-	<jsp:include page="/indexpage/footer.jsp" />
-
+		<jsp:include page="/indexpage/footer.jsp" />
 </body>
 
 </html>
