@@ -11,7 +11,7 @@ public interface AccountDAO {
 	
 	int delete(Integer id);
 	 
-	AccountVO getById(Integer id);
+	List<AccountVO> getByMemId(Integer MemId);
 	
 	List<AccountVO> getAll();
 }

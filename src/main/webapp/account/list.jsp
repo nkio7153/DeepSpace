@@ -45,7 +45,6 @@
             }
         })  
     });
-
     function processDelete(accountId) {
         var jsonObj = { accountId: accountId };
         $.ajax({

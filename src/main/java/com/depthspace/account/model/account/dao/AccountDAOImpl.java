@@ -55,8 +55,10 @@ public class AccountDAOImpl implements AccountDAO {
 	}
 
 	@Override
-	public AccountVO getById(Integer id) {
-		return getSession().get(AccountVO.class, id);
+	public List<AccountVO> getByMemId(Integer memId) {
+		return getSession().createQuery("from AccountVO where memId= :memId", AccountVO.class)
+				.setParameter("memId", memId)
+                .list();
 	}
 
 	@Override

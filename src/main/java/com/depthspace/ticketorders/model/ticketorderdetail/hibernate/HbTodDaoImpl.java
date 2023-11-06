@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 
 import java.util.List;
 
-public class HbTodDaoImpl implements HbTodDao_Interface{
+public class HbTodDaoImpl implements HbTodDao {
     private SessionFactory factory;
     public HbTodDaoImpl(SessionFactory factory){
         this.factory=factory;
@@ -14,16 +14,27 @@ public class HbTodDaoImpl implements HbTodDao_Interface{
     private Session getSession(){
         return factory.getCurrentSession();
     }
+
+    @Override
+    public void insertBatch(List<TicketOrderDetailVO> todList) {
+        for(TicketOrderDetailVO todVo:todList){
+            getSession().save(todVo);
+        }
+    }
+
     //插入一筆資料
     @Override
     public int insert(TicketOrderDetailVO entity) {
         return (Integer)getSession().save(entity);
     }
+
+
+
     //更新一筆資料
     @Override
     public int update(TicketOrderDetailVO entity) {
         try{
-            getSession().update(entity);
+            getSession().merge(entity);
             return 1;
         }catch (Exception e){
             e.printStackTrace();
@@ -57,11 +68,14 @@ public class HbTodDaoImpl implements HbTodDao_Interface{
                 .setParameter("orderId", orderId)
                 .list();
     }
-    //取得所有訂單明細
-    @Override
-    public List<TicketOrderDetailVO> getAll() {
-        return getSession()
-                .createQuery("from TicketOrderDetailVO", TicketOrderDetailVO.class)
+
+    //join票券表格取得訂單明細中的票券名稱
+    public List<Object[]> getResult(Integer orderId){
+        String hql="select a.orderId, a.ticketId, b.ticketName, a.unitPrice, a.discountPrice, a.quantity, a.subtotal, a.ticketReviews, a.stars " +
+                "from TicketOrderDetailVO a, TicketVO b " +
+                "where a.orderId = :orderId AND a.ticketId = b.ticketId";
+        return getSession().createQuery(hql)
+                .setParameter("orderId",orderId)
                 .list();
     }
     //取得當前頁面資料
@@ -76,5 +90,15 @@ public class HbTodDaoImpl implements HbTodDao_Interface{
                 .createQuery("select count(*) from TicketOrderDetailVO where orderId= :orderId", Long.class)
                 .setParameter("orderId", orderId)
                 .uniqueResult();
+    }
+    
+    //取得一個票券的所有訂單明細
+    @Override
+    public List<TicketOrderDetailVO> findByTicketId(Integer ticketId) {
+        
+    return getSession()
+                .createQuery("from TicketOrderDetailVO where ticketId = :ticketId", TicketOrderDetailVO.class)
+                .setParameter("ticketId", ticketId)
+                .list();
     }
 }

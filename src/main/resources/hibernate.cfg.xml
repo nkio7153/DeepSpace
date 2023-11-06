@@ -48,6 +48,7 @@
 		<mapping class="com.depthspace.tour.model.TourDetailVO"/>
 		<mapping class="com.depthspace.tour.model.TourDaysVO"/>
 		<mapping class="com.depthspace.tour.model.tourtype.TourTypeVO"/>
+		<mapping class="com.depthspace.tour.model.tour.TourView"/>
 
 		<!-- Member-->
  		<mapping class="com.depthspace.member.model.MemVO"/>
@@ -56,7 +57,7 @@
         <mapping class="com.depthspace.admin.model.model.AdminVO"/>
 		<mapping class="com.depthspace.adminfunclist.model.AdminFuncListVO"/>
 		<mapping class="com.depthspace.faq.model.model.FaqVO"/>
-		<mapping class="com.depthspace.faqtypes.model.FaqTypesVO"/>
+		<mapping class="com.depthspace.faqtypes.model.model.FaqTypesVO"/>
 		<mapping class="com.depthspace.function.model.FunctionVO"/>
 		<mapping class="com.depthspace.keywordqa.model.KeywordQaVO"/>
         
@@ -66,14 +67,14 @@
         <mapping class="com.depthspace.restaurant.model.restcollection.RestCollectionVO"/>
         <mapping class="com.depthspace.restaurant.model.membooking.MemBookingVO"/>
 
-		
+        <mapping class="com.depthspace.memticketowned.model.MemTicketDetails"/>
 	    <mapping class="com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO"/>
         <mapping class="com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO"/>
         <mapping class="com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO"/>
         <mapping class="com.depthspace.promotion.model.promotion.PromotionVO"/>
         <mapping class="com.depthspace.promotion.model.promotiondetails.PromotionDetailsVO"/>
         <mapping class="com.depthspace.memticketowned.model.MemTicketOwnedVO"/>
-                
+        <mapping class="com.depthspace.ticketshoppingcart.model.CartInfo"/>
                 
         <mapping class="com.depthspace.account.model.accountitem.AccountItemVO"/>
         <mapping class="com.depthspace.account.model.accountper.AccountPerVO"/>

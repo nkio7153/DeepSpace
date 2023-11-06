@@ -1,13 +1,12 @@
 package com.depthspace.ticketorders.model.ticketorders.jdbc;
 
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
-import com.depthspace.ticketorders.model.ticketorders.jdbc.TicketOrdersJDBCDAO;
 
 import java.sql.Timestamp;
 
 public class Test {
     public static void main(String[] args) {
-        TicketOrdersJDBCDAO toDAO = new TicketOrdersJDBCDAO();
+        ToDaoImpl toDAO = new ToDaoImpl();
 
         // 測試用插入一筆資料
          TicketOrdersVO tovo = new TicketOrdersVO(1, 9, new Timestamp(System.currentTimeMillis()), 1000, 100, 900, Byte.valueOf("1"), Byte.valueOf("1"));

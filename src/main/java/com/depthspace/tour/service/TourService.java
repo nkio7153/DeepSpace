@@ -2,13 +2,17 @@ package com.depthspace.tour.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import com.depthspace.tour.model.tour.TourVO;
+import com.depthspace.tour.model.tour.TourView;
 import com.depthspace.tour.model.tour.hibernate.HbTourDAOImpl;
 import com.depthspace.tour.model.tour.hibernate.HbTourDAO_Interface;
 import com.depthspace.utils.HibernateUtil;
 
 public class TourService implements TourService_Interface{
 	private HbTourDAO_Interface dao;
+//	private HbTourDAOImpl dao;
 
 	public TourService() {
 		dao = new HbTourDAOImpl(HibernateUtil.getSessionFactory());
@@ -40,9 +44,14 @@ public class TourService implements TourService_Interface{
 	@Override
 	public List<TourVO> getByMemId(Integer memId) {
 		return dao.getByMemId(memId);
-		
 	}
 	
+	@Transactional
+	public List<TourView> getOneTourList(Integer tourId,Integer memId) {
+			List<TourView> list = dao.getOneTourList(tourId,memId);
+			return list;
+	}
+
 	
 	
 }

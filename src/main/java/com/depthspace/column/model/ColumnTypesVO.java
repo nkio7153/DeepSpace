@@ -10,10 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 
-
 @Entity
 @Table(name="COLUMN_TYPES")
-
 public class ColumnTypesVO implements Serializable {
 	@Id
 	@Column(name="COL_TYPE_ID" ,updatable = false)
@@ -22,7 +20,7 @@ public class ColumnTypesVO implements Serializable {
 	
 	@Column(name="COL_TYPE_NAME")
 	private String colTypeName;
-	
+
 	public ColumnTypesVO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -50,6 +48,11 @@ public class ColumnTypesVO implements Serializable {
 		this.colTypeName = colTypeName;
 	}
 
+	@Override
+	public String toString() {
+		return "ColumnTypesVO [colTypeId=" + colTypeId + ", colTypeName=" + colTypeName + "]";
+	}
+	
 
 	
 }

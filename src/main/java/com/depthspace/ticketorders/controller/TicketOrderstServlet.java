@@ -1,8 +1,14 @@
 package com.depthspace.ticketorders.controller;
 
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
-import com.depthspace.ticketorders.service.TicketOrderService;
-import com.depthspace.ticketorders.service.TicketOrderService_Interface;
+import com.depthspace.ticketorders.service.ToServiceImpl;
+import com.depthspace.ticketorders.service.ToService;
+import com.depthspace.ticketshoppingcart.model.CartInfo;
+import com.depthspace.ticketshoppingcart.model.RedisCart;
+import com.depthspace.ticketshoppingcart.service.RedisCartServiceImpl;
+import com.depthspace.ticketshoppingcart.service.TscServiceImpl;
+import com.depthspace.utils.JedisUtil;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,15 +18,21 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @WebServlet("/to/*")
 public class TicketOrderstServlet extends HttpServlet {
-    private TicketOrderService_Interface toSv;
+    private ToService toSv;
+    private RedisCartServiceImpl cartSv;
+    private TscServiceImpl tscSv;
 
 
     @Override
     public void init() throws ServletException {
-        toSv = new TicketOrderService();
+        toSv = new ToServiceImpl();
+        cartSv = new RedisCartServiceImpl(JedisUtil.getJedisPool());
+        tscSv=new TscServiceImpl();
     }
 
     @Override
@@ -38,6 +50,9 @@ public class TicketOrderstServlet extends HttpServlet {
                 break;
             case "/save":
                 doSave(req, resp);
+                break;
+            case "/memOrderList":
+                doMemList(req, resp);
                 break;
             default:
                 // 在這裡處理所有其他情況
@@ -63,35 +78,45 @@ public class TicketOrderstServlet extends HttpServlet {
     }
     //查出所有訂單(後台功能)
     protected void doList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        TicketOrderService toSv = new TicketOrderService();
-        List<TicketOrdersVO> list = toSv.getAll();
-        //創建一個集合存放訂單總品項
-//        List<Long> orderItems = new ArrayList<>();
-//        for(TicketOrdersVO vo: list) {
-//            long total = toSv.getTotal(vo.getOrderId());
-//            orderItems.add(total);
-//        }
-//        System.out.println(orderItems);
-//        Gson gson = new Gson();
-//        String itemsJson = gson.toJson(orderItems);
+
+        String page=req.getParameter("page");
+        int currentPage=(page==null) ? 1 : Integer.parseInt(page);
+
+        List<TicketOrdersVO> list = toSv.getAll(currentPage);
+        if(req.getSession().getAttribute("toPageQty")==null){
+            int toPageQty = (int)toSv.getTotal();
+            System.out.println(toPageQty);
+            req.getSession().setAttribute("toPageQty",toPageQty);
+        }
+
         req.setAttribute("list", list);
+        req.setAttribute("currentPage",currentPage);
 //        req.setAttribute("items",itemsJson);
         req.getRequestDispatcher("/ticketOrders/listAllOrders.jsp").forward(req, resp);
     }
     //查出會員訂單
     protected void doMemList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer memId;
-        try {
-            memId = Integer.valueOf(req.getParameter("memId"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
+        Integer memId = Integer.parseInt(req.getParameter("memId"));
+
+
+
+        //用會員id取得當前頁面的list
+        String page=req.getParameter("page");
+        int currentPage=(page==null) ? 1 : Integer.parseInt(page);
+
+        List<TicketOrdersVO> list = toSv.getAllByMemId(currentPage, memId);
+
+        if (req.getSession().getAttribute("toMemPageQty") == null) {
+            int toMemPageQty=toSv.getMemPageTotal(memId);
+            req.getSession().setAttribute("toMemPageQty", toMemPageQty);
         }
-        List<TicketOrdersVO> list = toSv.getbyMemId(memId);
+
         req.setAttribute("list", list);
+        req.setAttribute("currentPage",currentPage);
         req.setAttribute("memId",memId);
+
         req.getRequestDispatcher("/ticketOrders/memOrderList.jsp").forward(req, resp);
-        System.out.println(list);
+//        System.out.println(list);
     }
     //進入會員訂單索引頁面(跳轉)
     protected void doIndex(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -130,6 +155,7 @@ public class TicketOrderstServlet extends HttpServlet {
     }
     //會員添加訂單(前台跳轉)
     protected void doSave(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //訂單欄位
         Integer orderId=null;
         Integer memId;
         Timestamp orderDate;
@@ -150,11 +176,22 @@ public class TicketOrderstServlet extends HttpServlet {
             return;
         }
         TicketOrdersVO to2=null;
+        //從redis中取出會員編號對應的購物車 票券編號及數量
+        RedisCart cart = cartSv.getCart(memId);
+        //再取出票券id及數量的map集合
+        Map<Integer, Integer> items = cart.getItems();
+        //取出票勸id集合
+        Set<Integer> ticketIds = items.keySet();
+        //用票券編號集合調用hibernate的方法取得資料庫所需要的所有資訊
+        List<CartInfo> list = tscSv.getByTicketIds(ticketIds, items);
 
         if(memId != null && totalAmount !=null && pointsFeedback !=null && amountPaid  !=null && paymentMethod !=null){
 
             TicketOrdersVO to = new TicketOrdersVO(orderId, memId, orderDate, totalAmount, pointsFeedback, amountPaid, status, paymentMethod);
-            to2 = toSv.generateTicektOrders(to);
+            //redis會員購物車清空
+            cartSv.deleteAllCart(to.getMemId());
+            //生成一筆訂單及多對應的多筆訂單明細
+            to2 = toSv.generateTicektOrders(to, list);
         }
 //        List<TicketOrdersVO> list = toSv.getbyMemId(memId);
 //        req.setAttribute("list", list);
