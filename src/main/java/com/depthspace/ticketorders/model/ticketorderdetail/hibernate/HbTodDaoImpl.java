@@ -91,4 +91,14 @@ public class HbTodDaoImpl implements HbTodDao {
                 .setParameter("orderId", orderId)
                 .uniqueResult();
     }
+    
+    //取得一個票券的所有訂單明細
+    @Override
+    public List<TicketOrderDetailVO> findByTicketId(Integer ticketId) {
+        
+    return getSession()
+                .createQuery("from TicketOrderDetailVO where ticketId = :ticketId", TicketOrderDetailVO.class)
+                .setParameter("ticketId", ticketId)
+                .list();
+    }
 }

@@ -18,7 +18,6 @@ public class TourTest {
 			System.out.println(tour.getTourTypeId());
 			System.out.println(tour.getAllDays());
 			System.out.println(tour.getTourDescription());
-			System.out.println(tour.getTourImg());
 			System.out.println("已取得全部資料");
 		}
 	}

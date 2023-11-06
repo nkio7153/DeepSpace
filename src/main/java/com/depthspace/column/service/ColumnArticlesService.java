@@ -17,6 +17,8 @@ public interface ColumnArticlesService {
 	void deleteEmp(Integer artiId);
 	//根據文章ID取得專欄VO
 	ColumnArticlesVO getArtiByArtiId(Integer artiId);
+    //取得總票券數
+    long getTotal(); 
 	//取得所有專欄VO
 	List<ColumnArticlesVO> getAllArti();
 	//取得所有專欄VO根據分頁

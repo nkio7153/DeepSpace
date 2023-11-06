@@ -158,6 +158,11 @@
 		<label for="tourDescription">為你規劃的行程寫下簡介吧!</label>
 		<br>
 		<textarea rows="2" cols="100" name="tourDescription" value="${tr.tourDescription}" ></textarea>
+		<br>
+		
+<!-- 		下拉式選單 -->
+		<label style="margin-left: 10px;">選擇旅遊行程類型:</label>
+  		<select name="tourType" id="tourType" style="margin-left: 10px;"></select>
 		
 		<div class="form-container">
 			<div class="left-div">
@@ -175,8 +180,7 @@
 		<br><br>
 		
 		<div class="tourdays" id="tourdays">
-			<div class="row">
-			</div>
+			
 		</div>
 		
 <!-- 		讓總天數也可以傳到servlet -->

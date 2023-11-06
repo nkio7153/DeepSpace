@@ -60,6 +60,7 @@ public class AdminVO {
 
 	public void setAdminPwd(String adminPwd) {
 		this.adminPwd = adminPwd;
+		
 	}
 
 	public Integer getAdminStatus() {

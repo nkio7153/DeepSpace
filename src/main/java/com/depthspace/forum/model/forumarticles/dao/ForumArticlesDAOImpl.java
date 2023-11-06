@@ -6,6 +6,8 @@ import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
 import com.depthspace.forum.model.forumarticles.ForumArticlesVO;
 public class ForumArticlesDAOImpl implements ForumArticlesDAO {
 	// SessionFactory 為 thread-safe，可宣告為屬性讓請求執行緒們共用
@@ -55,8 +57,7 @@ public class ForumArticlesDAOImpl implements ForumArticlesDAO {
 
 	@Override
 	public List<ForumArticlesVO> getAll() {
-		return getSession().createQuery("SELECT "
-				+ "articleId, memId, msgId, artiTypeId, artiTitle, artiTime, artiText, artiLk, artiStatus, artiImg "
-				+ "FROM ForumArticlesVO", ForumArticlesVO.class).list();
+		List<ForumArticlesVO> dataList= getSession().createQuery("FROM ForumArticlesVO", ForumArticlesVO.class).getResultList();
+		return  dataList ;
 	}
 }

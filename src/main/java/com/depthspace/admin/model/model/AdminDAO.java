@@ -21,3 +21,4 @@ public interface AdminDAO {
 	
 	long getTotal();
 }
+
