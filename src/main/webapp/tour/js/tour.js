@@ -38,9 +38,10 @@ function updateDurationSelect() {
 			//count++;
 			var newTourDay = document.createElement("div");
 			newTourDay.classList.add("container");
-
+//<form action="${pageContext.request.contextPath}/tr/save" method="post">
 			newTourDay.innerHTML = `
-	   			 	<!--  1031  -->
+	   			 	
+	   			 	
 	   			 	<div class="row">
 	   			 		<br><br>
 		   			  		<span>第 ${i} 天</span>
@@ -54,7 +55,7 @@ function updateDurationSelect() {
 	   			   		</div>
 	   			  	</div>
 	   			
-	   			<!-- 1031 -->
+	   		
 	   			 <div class="container offset-5" name="afterSelector">
 	   			 	<div class="col-md-5 mt-2"></div>
 	   			   		<div class="col-md-4 d-flex align-items-center">
@@ -68,6 +69,7 @@ function updateDurationSelect() {
 	   			   		</div>
 	   				 </div>
 	   			</div>`;
+//	   			</form>
 
 			tourdays.appendChild(newTourDay);
 		}

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.depthspace.tour.model.TourDetailVO;
 import com.depthspace.tour.model.tour.TourVO;
 import com.depthspace.tour.model.tour.TourView;
 import com.depthspace.tour.service.TourService;
@@ -45,29 +46,45 @@ public class TourServlet extends HttpServlet {
 		case "/showDetail":
 			showDetail(req, resp);
 			break;
-		case "/addTour":
-			addTour(req, resp);
+		case "/save":
+			doSave(req, resp);
 			break;
 		}
 
 	}
 
 	// 新增新行程
-	private void addTour(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void doSave(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Integer tourId = null;
 		String memId = req.getParameter("memId");
 		String tourName = req.getParameter("tourName");
 		String tourDescription = req.getParameter("tourDescription");
 		String startDate = req.getParameter("startDate");
 		String endDate = req.getParameter("endDate");
+		
+		try {
+			
+		} catch (NumberFormatException e) {
+			
+		}
+		
 		String tripDuration = req.getParameter("tripDuration");
-//		Map<String, String> attractionsMap = new HashMap<>();
+		Map<String, String> attractionsMap = new HashMap<>();
 		String[] attractionTime = req.getParameterValues("attractionTime");
 		String[] attraction = req.getParameterValues("attraction");
-		String[] tourDays = req.getParameterValues("days");
+		
+		//新增一個行程時要先把TOUR的流水號取出，再存行程天數(TOURDAYS)的ID 再到行程明細
+//		List<TourDetailVO> trds = new ArrayList<>();//宣告一個行程明細的物件集合
+//		變例行程天數
+//		String[] tourDays = req.getParameterValues("days");
 //		for (String addTourDays : tourDays) {
+//			
+//			String[] attractionTime = req.getParameterValues("attractionTime");//取得每日景點時間
+//			String[] attraction = req.getParameterValues("attraction");//取得每日景點數
 //				System.out.println("天數=" + addTourDays);
+//				
 //			}
-////		}
+//		}
 //		用迴圈將所有景點及時間對應
 //		Map<String, String> attractionsMap = new HashMap<>();
 //		for(int i = 0 ; i < attractionTime.length ; i++) {
@@ -76,23 +93,23 @@ public class TourServlet extends HttpServlet {
 //				attractionsMap.put("attraction", attraction[i]);
 ////				System.out.println("attractionsMap=" + attractionsMap);
 //		}
-		 String[] container = req.getParameterValues("container");
-		 if (container != null) {
-	            for (String day : container) {
-	                // 根据类名获取每一天的景点
-	                String dayNumber = req.getParameter("day-" + day); // 使用 "day-" + day 作为参数名称
-	                String[] attractions = req.getParameterValues("attraction-" + day); // 使用 "attraction-" + day 作为参数名称
-
-	                // 处理每一天的景点数据
-	                System.out.println("第 " + dayNumber + " 天的景点：");
-	                if (attractions != null) {
-	                    for (String attraction2 : attractions) {
-	                        System.out.println(attraction2);
-	                    }
-	                }
-	            }
-	        }
-		 
+//		 String[] container = req.getParameterValues("container");
+//		 if (container != null) {
+//	            for (String day : container) {
+//	                // 根据类名获取每一天的景点
+//	                String dayNumber = req.getParameter("day-" + day); // 使用 "day-" + day 作为参数名称
+//	                String[] attractions = req.getParameterValues("attraction-" + day); // 使用 "attraction-" + day 作为参数名称
+//
+//	                // 处理每一天的景点数据
+//	                System.out.println("第 " + dayNumber + " 天的景点：");
+//	                if (attractions != null) {
+//	                    for (String attraction2 : attractions) {
+//	                        System.out.println(attraction2);
+//	                    }
+//	                }
+//	            }
+//	        }
+//		 
 		 
 		 //==============================================================
 //		List<Map<String, String>> tourDaysList = new ArrayList<>();
