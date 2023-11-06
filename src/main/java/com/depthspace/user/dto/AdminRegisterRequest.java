@@ -3,7 +3,7 @@ package com.depthspace.user.dto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-public class UserRegisterRequest {
+public class AdminRegisterRequest {
 
     @NotBlank
     @Email
