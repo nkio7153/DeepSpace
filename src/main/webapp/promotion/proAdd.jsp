@@ -6,9 +6,11 @@
   Time: 上午 08:41
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Title</title>
     <jsp:include page="../indexpage/head.jsp"/>
     <style>
@@ -60,8 +62,17 @@
 <jsp:include page="../indexpage/headpic.jsp"/>
 <div class="container mt-5">
     <h1 class="text-center">促銷資訊</h1>
+    <%-- 錯誤表列 --%>
+    <c:if test="${not empty errorMsgs}">
+        <font style="color:red">請修正以下錯誤:</font>
+        <ul>
+            <c:forEach var="message" items="${errorMsgs}">
+                <li style="color:red">${message}</li>
+            </c:forEach>
+        </ul>
+    </c:if>
         <hr>
-        <form action="${pageContext.request.contextPath}/pro/save" method="post" class="row" enctype="multipart/form-data">
+        <form action="${pageContext.request.contextPath}/pro/save" method="post" class="row" enctype="multipart/form-data" accept-charset="UTF-8">
 <%--            第一排--%>
             <div class="col-md-2"></div>
             <div class="col-md-4">

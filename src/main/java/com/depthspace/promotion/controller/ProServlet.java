@@ -157,6 +157,7 @@ public class ProServlet extends HttpServlet {
     //新增促銷及對應的票券促銷明細
     private void doSave(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
         System.out.println("進入save方法");
         List<String> errorMsgs = new LinkedList<String>();
         req.setAttribute("errorMsgs", errorMsgs);
@@ -171,7 +172,7 @@ public class ProServlet extends HttpServlet {
             //促銷
             promoName = req.getParameter("promoName");
             if (promoName == null || promoName.trim().length() == 0) {
-                errorMsgs.add("票券名稱請勿空白");
+                errorMsgs.add("票券名稱請勿空白");//錯誤驗證
             }
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -185,7 +186,7 @@ public class ProServlet extends HttpServlet {
                     e.printStackTrace();
                 }
             } else {
-                errorMsgs.add("開始日期請勿空白");
+                errorMsgs.add("開始日期請勿空白");//錯誤驗證
             }
 
             String end = req.getParameter("endDate");
@@ -197,15 +198,15 @@ public class ProServlet extends HttpServlet {
                     e.printStackTrace();
                 }
             } else {
-                errorMsgs.add("結束日期請勿空白");
+                errorMsgs.add("結束日期請勿空白");//錯誤驗證
             }
 
-            if (endDate.before(startDate)) {
-                errorMsgs.add("結束日期有誤");
+            if (endDate!=null && startDate!=null && endDate.before(startDate)) {
+                errorMsgs.add("結束日期有誤");//錯誤驗證
             }
             description = req.getParameter("description");
             if (description == null || description.trim().length() == 0) {
-                errorMsgs.add("描述請勿空白");
+                errorMsgs.add("描述請勿空白");//錯誤驗證
             }
             Part picture = req.getPart("picture");
             if (picture != null && picture.getSize() > 0) {
@@ -250,6 +251,10 @@ public class ProServlet extends HttpServlet {
         if (errorMsgs.isEmpty()) {
             //新增一筆促銷物件
             proVo = new PromotionVO(null, promoName, startDate, endDate, description, pic);
+        }else{
+            resp.setContentType("text/html;charset=UTF-8");
+            req.getRequestDispatcher("/promotion/proAdd.jsp").forward(req, resp);
+            return;//程式中斷
         }
         //創建存放促銷明細的的票券編號集合及折扣
         String[] ticketIds = null;
