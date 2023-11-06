@@ -242,13 +242,13 @@ public class TicketServiceImpl implements TicketService {
                 .count();
     }
 
-    public List<String> getReviews(Integer ticketId) {
-        List<TicketOrderDetailVO> details = dao.findTicketOrderDetailsByTicketId(ticketId);
-        return details.stream()
-                .map(TicketOrderDetailVO::getTicketReviews)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }
+//    public List<String> getReviews(Integer ticketId) {
+//        List<TicketOrderDetailVO> details = dao.findTicketOrderDetailsByTicketId(ticketId);
+//        return details.stream()
+//                .map(TicketOrderDetailVO::getTicketReviews)
+//                .filter(Objects::nonNull)
+//                .collect(Collectors.toList());
+//    }
     
     public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId) {
         return hbTodDao.findByTicketId(ticketId);

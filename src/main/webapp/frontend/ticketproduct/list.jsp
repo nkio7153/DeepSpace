@@ -93,14 +93,10 @@
 
 					<c:choose>
 						<c:when test="${not empty searchCount}">
-							<h3 class="mb-0">
-								搜尋結果 ${searchCount} 項票券
-								</h2>
+							<h3 class="mb-0">搜尋結果 ${searchCount} 項票券</h3>
 						</c:when>
 						<c:otherwise>
-							<h3 class="mb-0">
-								共有 ${totalTickets} 項票券體驗
-								</h2>
+							<h3 class="mb-0">共有 ${totalTickets} 項票券體驗</h3>
 						</c:otherwise>
 					</c:choose>
 
@@ -143,8 +139,25 @@
 											</p>
 											<p class="card-text">
 												<small class="text-muted">
-            ${averageStarsMap[ticket.ticketId]} ★★★★★ (${totalRatingCountMap[ticket.ticketId]})
-        </small>
+													${averageStarsMap[ticket.ticketId]} <!-- 實星 --> <c:forEach
+														begin="1" end="${averageStarsMap[ticket.ticketId]}"
+														var="i">
+														<i class="fas fa-star gold-star"></i>
+													</c:forEach> <!-- 半星 --> <c:if
+														test="${averageStarsMap[ticket.ticketId] % 1 != 0}">
+														<i class="fas fa-star-half-alt gold-star"></i>
+														<!-- 有半星就+ -->
+														<c:set var="emptyStarsStart"
+															value="${Math.floor(averageStarsMap[ticket.ticketId]) + 2}" />
+													</c:if> <!-- 沒有半星就往下一個數 --> <c:if
+														test="${averageStarsMap[ticket.ticketId] % 1 == 0}">
+														<c:set var="emptyStarsStart"
+															value="${averageStarsMap[ticket.ticketId] + 1}" />
+													</c:if> <!-- 空星 --> <c:forEach begin="${emptyStarsStart}" end="5"
+														var="j">
+														<i class="far fa-star gold-star"></i>
+													</c:forEach> (${totalRatingCountMap[ticket.ticketId]})  銷售量${ticketOrderCountMap[ticket.ticketId]}
+												</small>
 											</p>
 											<p class="card-text">NT$ ${ticket.price}</p>
 										</div>

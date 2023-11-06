@@ -122,9 +122,10 @@ public class TicketProductServlet extends HttpServlet {
 		long totalTickets = ticketService.getTotalTickets();
 		req.setAttribute("totalTickets", totalTickets); // 總票券數量
 
-		// 存放星星數跟評價數
+		// 存放星星數跟評價數、訂單數
 		Map<Integer, Double> averageStarsMap = new HashMap<>();
 		Map<Integer, Integer> totalRatingCountMap = new HashMap<>();
+		Map<Integer, Integer> ticketOrderCountMap = new HashMap<>();
 
 		//計算星星跟評價平均數
 		for (TicketVO ticket : ticketList) {
@@ -133,14 +134,23 @@ public class TicketProductServlet extends HttpServlet {
 		    Integer totalRatingCount = ticketService.getTotalRatingCount(ticketId);
 		    
 		    double averageStars = totalRatingCount > 0 ? (double) totalStars / totalRatingCount : 0;
-		    
-		    averageStarsMap.put(ticketId, averageStars);
+		    String formattedAverageStars = String.format("%.1f", averageStars);
+
+		    averageStarsMap.put(ticketId, Double.parseDouble(formattedAverageStars));
 		    totalRatingCountMap.put(ticketId, totalRatingCount);
+	
+		    //查詢訂單數
+		    List<TicketOrderDetailVO> ticketOrderDetails = ticketService.findTicketOrderDetailsByTicketId(ticketId);
+	        int orderCount = ticketOrderDetails.size();  // 訂單數為票券訂單明細列表的大小
+	        ticketOrderCountMap.put(ticketId, orderCount);  // 將票券ID和對應的訂單數存放到map中
+	 
 		}
 
+		
 		req.setAttribute("averageStarsMap", averageStarsMap);
 		req.setAttribute("totalRatingCountMap", totalRatingCountMap);
-
+		req.setAttribute("ticketOrderCountMap", ticketOrderCountMap);
+		
 		searchList(req, res);
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/ticketproduct/list.jsp");
 		dispatcher.forward(req, res);
