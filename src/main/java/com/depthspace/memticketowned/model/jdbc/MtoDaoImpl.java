@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemTicketOwnedJDBCDAO implements MemTicketOwnedDAO_Interface {
+public class MtoDaoImpl implements MtoDao {
     private static final String INSERT_STMT =
             "INSERT INTO MEM_TICKET_OWNED( MEM_ID, TICKET_ID, RELEASE_DATE, EXPIRY_DATE, STATUS_OF_USE) VALUES ( ?, ?, ?, ?, ?)";
     private static final String DELETE =
@@ -31,8 +31,8 @@ public class MemTicketOwnedJDBCDAO implements MemTicketOwnedDAO_Interface {
                 ps = conn.prepareStatement(INSERT_STMT);
                 ps.setInt(1, memTicketOwnedVO.getMemId());
                 ps.setInt(2, memTicketOwnedVO.getTicketId());
-                ps.setTimestamp(3, memTicketOwnedVO.getReleaseDate());
-                ps.setTimestamp(4, memTicketOwnedVO.getExpiryDate());
+                ps.setDate(3, memTicketOwnedVO.getReleaseDate());
+                ps.setDate(4, memTicketOwnedVO.getExpiryDate());
                 ps.setInt(5, memTicketOwnedVO.getStatusOfUse());
                 ps.executeUpdate();
             } catch (SQLException e) {
@@ -51,8 +51,8 @@ public class MemTicketOwnedJDBCDAO implements MemTicketOwnedDAO_Interface {
             ps = conn.prepareStatement(UPDATE);
             ps.setInt(1, memTicketOwnedVO.getMemId());
             ps.setInt(2, memTicketOwnedVO.getTicketId());
-            ps.setTimestamp(3, memTicketOwnedVO.getReleaseDate());
-            ps.setTimestamp(4, memTicketOwnedVO.getExpiryDate());
+            ps.setDate(3, memTicketOwnedVO.getReleaseDate());
+            ps.setDate(4, memTicketOwnedVO.getExpiryDate());
             ps.setInt(5, memTicketOwnedVO.getStatusOfUse());
             ps.setInt(6, memTicketOwnedVO.getTicketOwnedId());
             ps.executeUpdate();
@@ -95,8 +95,8 @@ public class MemTicketOwnedJDBCDAO implements MemTicketOwnedDAO_Interface {
                 memTicketOwnedVO.setTicketOwnedId(rs.getInt("TICKET_OWNED_ID"));
                 memTicketOwnedVO.setMemId(rs.getInt("MEM_ID"));
                 memTicketOwnedVO.setTicketId(rs.getInt("TICKET_ID"));
-                memTicketOwnedVO.setReleaseDate(rs.getTimestamp("RELEASE_DATE"));
-                memTicketOwnedVO.setExpiryDate(rs.getTimestamp("EXPIRY_DATE"));
+                memTicketOwnedVO.setReleaseDate(rs.getDate("RELEASE_DATE"));
+                memTicketOwnedVO.setExpiryDate(rs.getDate("EXPIRY_DATE"));
                 memTicketOwnedVO.setStatusOfUse(rs.getInt("STATUS_OF_USE"));
             }
         } catch (SQLException e) {
@@ -123,8 +123,8 @@ public class MemTicketOwnedJDBCDAO implements MemTicketOwnedDAO_Interface {
                 memTicketOwnedVO.setTicketOwnedId(rs.getInt("TICKET_OWNED_ID"));
                 memTicketOwnedVO.setMemId(rs.getInt("MEM_ID"));
                 memTicketOwnedVO.setTicketId(rs.getInt("TICKET_ID"));
-                memTicketOwnedVO.setReleaseDate(rs.getTimestamp("RELEASE_DATE"));
-                memTicketOwnedVO.setExpiryDate(rs.getTimestamp("EXPIRY_DATE"));
+                memTicketOwnedVO.setReleaseDate(rs.getDate("RELEASE_DATE"));
+                memTicketOwnedVO.setExpiryDate(rs.getDate("EXPIRY_DATE"));
                 memTicketOwnedVO.setStatusOfUse(rs.getInt("STATUS_OF_USE"));
                 list.add(memTicketOwnedVO);
             }
