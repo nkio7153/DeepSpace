@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+.ticket-img {
+	width: 100%;
+	height: auto;
+	object-fit: cover; /* 使圖片覆蓋整個容器 */
+	object-position: center; /* 確保圖片在容器中央 */
+	border-radius: 0.25rem 0 0 0.25rem;
+}
+
+.card {
+	border: none;
+}
+
+.card img {
+	border-radius: 0.25rem 0 0 0.25rem;
+}
+
+.clickable-card {
+	cursor: pointer; /* 讓卡片呈現手指樣式 */
+	border: 1px solid #ccc; /* 加上淺灰色框線 */
+	border-radius: 5px; /* 加上圓角 */
+}
+/* 刪除連結的底線 */
+a.no-underline, a.no-underline:hover {
+	text-decoration: none;
+}
+/* 增加hover效果 */
+.clickable-card:hover {
+	opacity: 0.7; /* 這會使整個卡片變為淺色 */
+}
+
+.card.row.col-md-4 {
+	padding: 0;
+}
+
+.card.row.col-md-8 {
+	padding: 0;
+}

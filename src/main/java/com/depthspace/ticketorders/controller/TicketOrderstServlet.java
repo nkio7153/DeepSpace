@@ -51,6 +51,9 @@ public class TicketOrderstServlet extends HttpServlet {
             case "/save":
                 doSave(req, resp);
                 break;
+            case "/memOrderList":
+                doMemList(req, resp);
+                break;
             default:
                 // 在這裡處理所有其他情況
                 break;
@@ -75,35 +78,45 @@ public class TicketOrderstServlet extends HttpServlet {
     }
     //查出所有訂單(後台功能)
     protected void doList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ToServiceImpl toSv = new ToServiceImpl();
-        List<TicketOrdersVO> list = toSv.getAll();
-        //創建一個集合存放訂單總品項
-//        List<Long> orderItems = new ArrayList<>();
-//        for(TicketOrdersVO vo: list) {
-//            long total = toSv.getTotal(vo.getOrderId());
-//            orderItems.add(total);
-//        }
-//        System.out.println(orderItems);
-//        Gson gson = new Gson();
-//        String itemsJson = gson.toJson(orderItems);
+
+        String page=req.getParameter("page");
+        int currentPage=(page==null) ? 1 : Integer.parseInt(page);
+
+        List<TicketOrdersVO> list = toSv.getAll(currentPage);
+        if(req.getSession().getAttribute("toPageQty")==null){
+            int toPageQty = (int)toSv.getTotal();
+            System.out.println(toPageQty);
+            req.getSession().setAttribute("toPageQty",toPageQty);
+        }
+
         req.setAttribute("list", list);
+        req.setAttribute("currentPage",currentPage);
 //        req.setAttribute("items",itemsJson);
         req.getRequestDispatcher("/ticketOrders/listAllOrders.jsp").forward(req, resp);
     }
     //查出會員訂單
     protected void doMemList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer memId;
-        try {
-            memId = Integer.valueOf(req.getParameter("memId"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
+        Integer memId = Integer.parseInt(req.getParameter("memId"));
+
+
+
+        //用會員id取得當前頁面的list
+        String page=req.getParameter("page");
+        int currentPage=(page==null) ? 1 : Integer.parseInt(page);
+
+        List<TicketOrdersVO> list = toSv.getAllByMemId(currentPage, memId);
+
+        if (req.getSession().getAttribute("toMemPageQty") == null) {
+            int toMemPageQty=toSv.getMemPageTotal(memId);
+            req.getSession().setAttribute("toMemPageQty", toMemPageQty);
         }
-        List<TicketOrdersVO> list = toSv.getbyMemId(memId);
+
         req.setAttribute("list", list);
+        req.setAttribute("currentPage",currentPage);
         req.setAttribute("memId",memId);
+
         req.getRequestDispatcher("/ticketOrders/memOrderList.jsp").forward(req, resp);
-        System.out.println(list);
+//        System.out.println(list);
     }
     //進入會員訂單索引頁面(跳轉)
     protected void doIndex(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

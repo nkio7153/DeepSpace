@@ -3,13 +3,16 @@ package com.depthspace.ticket.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -23,16 +26,23 @@ import com.depthspace.ticket.dao.TicketDAO;
 import com.depthspace.ticket.dao.TicketDAOImpl;
 import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
+import com.depthspace.ticketorders.model.ticketorderdetail.hibernate.HbTodDaoImpl;
+import com.depthspace.ticketorders.model.ticketorderdetail.hibernate.HbTodDao;
+import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 import com.depthspace.utils.HibernateUtil;
+import com.depthspace.utils.Constants;
+
 
 public class TicketServiceImpl implements TicketService {
 
-	public static final int PAGE_MAX_RESULT = 10;
 	private TicketDAO dao;
-
+	private HbTodDao hbTodDao;
 	public TicketServiceImpl() {
 		dao = new TicketDAOImpl(HibernateUtil.getSessionFactory());
+		hbTodDao = new HbTodDaoImpl(HibernateUtil.getSessionFactory());
 	}
+	
+
 
 	// 新增票券
 	@Override
@@ -54,32 +64,30 @@ public class TicketServiceImpl implements TicketService {
 		return null;
 	}
 
-	// 查詢票券
 	@Override
-	public List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> map) {
-		Map<String, String> query = new HashMap<>();
-		// Map.Entry即代表一組key-value
-		Set<Map.Entry<String, String[]>> entry = map.entrySet();
-		
-		for (Map.Entry<String, String[]> row : entry) {
-			String key = row.getKey();
-			// 請求參數包含action，去除
-			if ("action".equals(key)) {
-				continue;
-			}
-			// 若是value為空即代表沒有查詢條件，去除
-			String value = row.getValue()[0];
-			if (value.isEmpty() || value == null) {
-				continue;
-			}
-			query.put(key, value);
-		}
-		
-		System.out.println(query);
-		
-		return dao.getByCompositeQuery(query);
+	public List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> queryMap) {
+	    Map<String, List<String>> criteriaMap = new HashMap<>();
+	    // 遍歷參數，將action非查詢條件的key排除，非空值加入查詢條件(可多個)
+	    for (Map.Entry<String, String[]> entry : queryMap.entrySet()) {
+	        String key = entry.getKey();
+	        // 排除非查询条件的 key，例如 "action"
+	        if ("action".equals(key)) {
+	            continue;
+	        }
+	        String[] values = entry.getValue();
+	        
+	        if (values == null || values.length == 0) {
+	            continue;
+	        }
+	        
+	        criteriaMap.put(key, Arrays.asList(values));
+	    }
+	    
+	    // 將上述查到的條件交由dao的方法查詢
+	    return dao.getByCompositeQuery(criteriaMap);
 	}
 
+	
 	@Override
 	public TicketVO getTicketById(Integer ticketId) {
 		return dao.getTicketById(ticketId);
@@ -117,13 +125,11 @@ public class TicketServiceImpl implements TicketService {
 			Root<TicketVO> root = criteriaQuery.from(TicketVO.class);
 			criteriaQuery.select(root);
 
-			// criteriaQuery.where(criteriaBuilder.equal(root.get("fieldName"), value));
-
 			Query<TicketVO> query = session.createQuery(criteriaQuery);
 
 			// 分頁
-			query.setFirstResult((currentPage - 1) * PAGE_MAX_RESULT);
-			query.setMaxResults(PAGE_MAX_RESULT);
+			query.setFirstResult((currentPage - 1) * Constants.PAGE_MAX_RESULT);
+			query.setMaxResults(Constants.PAGE_MAX_RESULT);
 
 			tickets = query.list();
 		} catch (Exception e) {
@@ -138,14 +144,10 @@ public class TicketServiceImpl implements TicketService {
 	public int getPageTotal() {
 		long total = dao.getTotal();
 
-		int pageQty = (int) (total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
+		int pageQty = (int) (total % Constants.PAGE_MAX_RESULT == 0 ? (total / Constants.PAGE_MAX_RESULT) : (total / Constants.PAGE_MAX_RESULT + 1));
 		return pageQty;
 	}
 
-//	@Override
-//	public List<TicketVO> getAllTicketsWithMainImages() {		
-//		return null;
-//	}
 
 	@Override // 取得總票券數
 	public long getTotalTickets() {
@@ -224,10 +226,32 @@ public class TicketServiceImpl implements TicketService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+    public Integer getTotalStars(Integer ticketId) {
+        List<TicketOrderDetailVO> details = dao.findTicketOrderDetailsByTicketId(ticketId);
+        return details.stream()
+                .filter(detail -> detail.getStars() != null)
+                .mapToInt(TicketOrderDetailVO::getStars)
+                .sum();
+    }
 
-//	//取得票券區域 沒用
-//	public List<TicketVO> getTicketsWithCity() {
-//		return dao.getAllTicketsWithCity();
-//	}
+    public Integer getTotalRatingCount(Integer ticketId) {
+        List<TicketOrderDetailVO> details = dao.findTicketOrderDetailsByTicketId(ticketId);
+        return (int) details.stream()
+                .filter(detail -> detail.getStars() != null)
+                .count();
+    }
+
+    public List<String> getReviews(Integer ticketId) {
+        List<TicketOrderDetailVO> details = dao.findTicketOrderDetailsByTicketId(ticketId);
+        return details.stream()
+                .map(TicketOrderDetailVO::getTicketReviews)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+    
+    public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId) {
+        return hbTodDao.findByTicketId(ticketId);
+    }
 
 }

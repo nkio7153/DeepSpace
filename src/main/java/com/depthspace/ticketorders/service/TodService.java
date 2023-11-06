@@ -15,4 +15,10 @@ public interface TodService {
     public List<TicketOrderDetailVO> getAll(int currentPage, Integer orderId);
 //    //取得一筆訂單列表總數
     public long getTotal(Integer orderId);
+    //join票券表格取得訂單明細中的票券名稱
+    List<Object[]> getResult(Integer orderId);
+
+    void updateTod(TicketOrderDetailVO entity);
+    //    取得一筆訂單明細
+    TicketOrderDetailVO getById(Integer orderId, Integer ticketId);
 }
