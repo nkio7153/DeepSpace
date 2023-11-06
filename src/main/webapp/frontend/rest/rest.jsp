@@ -1,21 +1,23 @@
 <%@ page import="java.util.ArrayList"%>
-<%@ page import="com.depthspace.restaurant.service.RestcollectionServiceImpl"%>
-<%@ page import="com.depthspace.restaurant.service.RestcollectionService"%>
-<%@ page import="com.depthspace.restaurant.model.restcollection.RestCollectionVO"%>
-<%@ page import="java.util.List" %>
+<%@ page
+	import="com.depthspace.restaurant.service.RestcollectionServiceImpl"%>
+<%@ page
+	import="com.depthspace.restaurant.service.RestcollectionService"%>
+<%@ page
+	import="com.depthspace.restaurant.model.restcollection.RestCollectionVO"%>
+<%@ page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 
-<% 
+<%
 	Integer memId = 1;
 	if (memId != null) {
 		RestcollectionService rcs = new RestcollectionServiceImpl();
 		List<RestCollectionVO> rcList = rcs.findByMemId(memId);
 		request.setAttribute("rcList", rcList);
 	}
-	
 %>
 
 
@@ -28,19 +30,17 @@
 	rel="stylesheet"
 	integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
 	crossorigin="anonymous">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/static/css/main.css">
 <style>
-	.card-img-top {
-		width: 450px;
-		height: 250px;
-		object-fit: cover; /* 保持圖片比例並填充圖片框 */
-	}
-	.collection-icon, .collection-icon -on {
-		width: 30px;
-		height: 30px;
-	}
+.card-img-top {
+	width: 450px;
+	height: 250px;
+	object-fit: cover; /* 保持圖片比例並填充圖片框 */
+}
 
+.collection-icon, .collection-icon -on {
+	width: 30px;
+	height: 30px;
+}
 </style>
 
 </head>
@@ -64,28 +64,27 @@
 							<h6>${rest.restType}</h6>
 							<h6>${rest.restAddress}</h6>
 							<div class="d-flex justify-content-between">
-								<span class="d-inline">
- 									<!-- 判斷會員已收藏顯示愛心 -->
-									<c:set var="status" value="0" scope="request" />
-									<c:forEach var="rc" items="${rcList}">
-									    <c:if test="${rc.restId eq rest.restId}">
-									        <c:set var="status" value="1" scope="request" />
-									    </c:if>
-									</c:forEach>
-									<c:choose>
-									    <c:when test="${status eq 1}">
-									        <img class="collection-icon -on" style="cursor: pointer;" src="${pageContext.request.contextPath}/static/images/rest/fullheart.png">
-									    </c:when>
-									    <c:otherwise>
-									        <img class="collection-icon" style="cursor: pointer;" src="${pageContext.request.contextPath}/static/images/rest/heart.png">
-									    </c:otherwise>
+								<span class="d-inline"> <!-- 判斷會員已收藏顯示愛心 --> <c:set
+										var="status" value="0" scope="request" /> <c:forEach var="rc"
+										items="${rcList}">
+										<c:if test="${rc.restId eq rest.restId}">
+											<c:set var="status" value="1" scope="request" />
+										</c:if>
+									</c:forEach> <c:choose>
+										<c:when test="${status eq 1}">
+											<img class="collection-icon -on" style="cursor: pointer;"
+												src="${pageContext.request.contextPath}/static/images/rest/fullheart.png">
+										</c:when>
+										<c:otherwise>
+											<img class="collection-icon" style="cursor: pointer;"
+												src="${pageContext.request.contextPath}/static/images/rest/heart.png">
+										</c:otherwise>
 									</c:choose>
-									
-								</span>
-								<span class="d-inline">
-									<a href="${pageContext.request.contextPath}/Rest/Restinfo?restId=${rest.restId}">
+
+								</span> <span class="d-inline"> <a
+									href="${pageContext.request.contextPath}/Rest/Restinfo?restId=${rest.restId}">
 										<button class="btn btn-primary">進入</button>
-									</a>
+								</a>
 								</span>
 							</div>
 						</div>
@@ -99,8 +98,12 @@
 
 
 	<jsp:include page="../indexpage/footer.jsp" />
-	<script	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-	<script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+		crossorigin="anonymous"></script>
+	<script
+		src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
 	<%-- 		<script src="${pageContext.request.contextPath}/static/js/rest.js"></script> --%>
 	<script>
 		$(function() {
@@ -119,10 +122,10 @@
 			});
 			
 			function doCollection(action, restId) {
-				let memId = 1;
-				let url = "http://localhost:8080/DepthSpace/RestApi/doRestCollection?action="+action+"&memId="+memId+"&restId="+restId;
+				let memId = <%= memId %>;
+				let origin = window.location.origin; // http://hostname:port
+				let url = origin+"/DepthSpace/RestApi/doRestCollection?action="+action+"&memId="+memId+"&restId="+restId;
 				console.log(url);
-				
 				fetch(url, {
 					method: "POST",
 // 					headers: {
