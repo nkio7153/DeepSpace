@@ -150,48 +150,81 @@
 	
 	<form action="${pageContext.request.contextPath}/tr/save" method="post" id="form">
 	<!-- 	存會員編號 -->
-	<input type="hidden" name="memId" value="${param.memId}">
+	<input type="hidden" name="memId" value="${tourVO.memId}">
 
 		<label for="tourName">行程名稱:</label>
-		<input type="text" name="tourName" value="${tr.tourName}" required><br><br>
+		<input type="text" name="tourName" value="${tourVO.tourName}" readonly><br><br>
 		
 		<label for="tourDescription">為你規劃的行程寫下簡介吧!</label>
 		<br>
-		<textarea rows="2" cols="100" name="tourDescription" value="${tr.tourDescription}" ></textarea>
+		<input type="text" rows="2" cols="100" name="tourDescription" value="${tourVO.tourDescription}" readonly>
 		<br>
 		
 <!-- 		下拉式選單:行程類型 -->
-		<label style="margin-left: 10px;">選擇旅遊行程類型:</label>
-  		<select name="tourType" id="tourType" style="margin-left: 10px;">
-	  		<c:forEach var="tourType" items="${list}">
-	            <option value="${tourType.tourTypeId}">${tourType.tourTypName}</option>
-	        </c:forEach>
-  		</select>
+		<label style="margin-left: 10px;">行程類型:</label>
+  		<input type="text" name="tourTypeName" value="${ttvo.tourTypName}" readonly><br><br>
 		
 		<div class="form-container">
 			<div class="left-div">
 				<label for="startDate">出發日期:</label>
-				<input type="date" name="startDate" required onchange="updateDurationSelect()">
+				<input type="text" name="startDate" value="${tourVO.startDate}" readonly>
 			</div>
 			
 		<div class="right-div">
 				<label for="endDate">結束日期:</label>
-				<input type="date" name="endDate" required onchange="updateDurationSelect()">
+				<input type="text" name="endDate" value="${tourVO.endDate}" readonly>
 			</div>
 		</div>
 
-		<label for="tripDuration" id="tripDuration">總天數:</label>
-		<br><br>	
+		<label for="tripDuration" id="tripDuration">總天數:${tourVO.allDays}</label>
+		<br><br>
+		
+		
+		<!-- 		下拉式選單:選擇縣市 -->
+		<label style="margin-left: 10px;">選擇你想去的縣市:</label>
+  		<select name="city" id="city" style="margin-left: 10px;">
+	  		<c:forEach var="cityList" items="${cityList}">
+	            <option value="${cityList.cityId}">${cityList.cityName}</option>
+	        </c:forEach>
+  		</select>
+		
+		<!-- 		下拉式選單:選擇地區 -->
+		<label style="margin-left: 10px;">選擇你想查的地區:</label>
+  		<select name="city" id="city" style="margin-left: 10px;">
+	  		<c:forEach var="areaList" items="${areaList}">
+	            <option value="${areaList.cityId}">${areaList.areaName}</option>
+	        </c:forEach>
+  		</select>
+		
+		
 		
 		<div class="tourdays" id="tourdays">
+			
 		</div>
 		
 <!-- 		讓總天數也可以傳到servlet -->
 		<input type="hidden" name="tripDuration" id="tripDurationInput" value="">
 		<input type="submit" name="newTour" id="newTour" value="儲存行程" >
 	</form>
-
-	<script src = "${pageContext.request.contextPath}/tour/js/tour.js"></script>
+	
+	
+	<script>
+	let cityId=$("#city").val();
+		$("#city").on("change",function(){
+		    let url="${pageContext.request.contextPath}/tr/getArea?cityId="+cityId;
+		    fetch(url)
+		            .then(function(response){
+		              return response.json();
+		            })
+		            .then(function(data){
+		              console.log("取得data");
+		            })
+		            .catch(function(error){
+		              console.log(error);
+		            })
+		  })
+	</script>
+	<script src = "${pageContext.request.contextPath}/tour/js/tour2.js"></script>
 	<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>
