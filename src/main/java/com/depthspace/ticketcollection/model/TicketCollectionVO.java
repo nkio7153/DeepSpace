@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="TICKET_COLLECTION")
-@IdClass(TicketCollectionVO.CompositeDetail.class)
+@IdClass(TicketCollectionVO.CompositeDetail.class) //內嵌類別 CompositeDetail 為複合主鍵
 public class TicketCollectionVO implements Serializable {
 	
 	@Id

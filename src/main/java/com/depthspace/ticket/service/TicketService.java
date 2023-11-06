@@ -41,10 +41,14 @@ public interface TicketService {
     List<CityVO> getAllCities();
     List<TicketVO> getAllTicketAreaId(Integer areaId);
     
-    public Integer getTotalStars(Integer ticketId);
-    public Integer getTotalRatingCount(Integer ticketId);
-    public List<String> getReviews(Integer ticketId);
-    public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId);
+    //查詢票券的總星星數
+    Integer getTotalStars(Integer ticketId);
+    //查詢票券的評價單數
+    Integer getTotalRatingCount(Integer ticketId);
+    //查詢票券的評價內容
+//    List<String> getReviews(Integer ticketId);
+    //查詢票券的評價內容
+    List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId);
 
 }
 
