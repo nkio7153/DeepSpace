@@ -32,7 +32,6 @@ public class TourJDBCDAO implements TourDAO_Interface {
 			pstmt.setInt(3, TourVO.getTourTypeId());
 			pstmt.setInt(4, TourVO.getAllDays());
 			pstmt.setString(5, TourVO.getTourDescription());
-			pstmt.setBytes(6, TourVO.getTourImg());
 
 			pstmt.executeUpdate();
 
@@ -57,7 +56,6 @@ public class TourJDBCDAO implements TourDAO_Interface {
 			pstmt.setInt(4, TourVO.getTourTypeId());
 			pstmt.setInt(5, TourVO.getAllDays());
 			pstmt.setString(6, TourVO.getTourDescription());
-			pstmt.setBytes(7, TourVO.getTourImg());
 
 			pstmt.executeUpdate();
 
@@ -113,7 +111,6 @@ public class TourJDBCDAO implements TourDAO_Interface {
 				tourVO.setTourTypeId(rs.getInt("TOUR_TYPE_ID"));
 				tourVO.setAllDays(rs.getInt("ALL_DAYS"));
 				tourVO.setTourDescription(rs.getString("TOUR_DESCRIPTION"));
-				tourVO.setTourImg(rs.getBytes("TOUR_IMG"));
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -143,7 +140,6 @@ public class TourJDBCDAO implements TourDAO_Interface {
 				tourVO.setTourTypeId(rs.getInt("TOUR_TYPE_ID"));
 				tourVO.setAllDays(rs.getInt("ALL_DAYS"));
 				tourVO.setTourDescription(rs.getString("TOUR_DESCRIPTION"));
-				tourVO.setTourImg(rs.getBytes("TOUR_IMG"));
 				tourList.add(tourVO);
 			}
 		} catch (SQLException e) {
