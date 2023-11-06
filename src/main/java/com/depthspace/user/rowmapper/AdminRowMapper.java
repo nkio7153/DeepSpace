@@ -2,16 +2,16 @@ package com.depthspace.user.rowmapper;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.depthspace.user.model.User;
+import com.depthspace.user.model.Admin;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserRowMapper implements RowMapper<User> {
+public class AdminRowMapper implements RowMapper<Admin> {
 
     @Override
-    public User mapRow(ResultSet resultSet, int i) throws SQLException {
-        User user = new User();
+    public Admin mapRow(ResultSet resultSet, int i) throws SQLException {
+        Admin user = new Admin();
         user.setUserId(resultSet.getInt("user_id"));
         user.setEmail(resultSet.getString("email"));
         user.setPassword(resultSet.getString("password"));
