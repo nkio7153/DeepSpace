@@ -70,7 +70,7 @@ public class TicketServiceImpl implements TicketService {
 	    // 遍歷參數，將action非查詢條件的key排除，非空值加入查詢條件(可多個)
 	    for (Map.Entry<String, String[]> entry : queryMap.entrySet()) {
 	        String key = entry.getKey();
-	        // 排除非查询条件的 key，例如 "action"
+
 	        if ("action".equals(key)) {
 	            continue;
 	        }
@@ -79,7 +79,6 @@ public class TicketServiceImpl implements TicketService {
 	        if (values == null || values.length == 0) {
 	            continue;
 	        }
-	        
 	        criteriaMap.put(key, Arrays.asList(values));
 	    }
 	    

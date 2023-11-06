@@ -1,7 +1,10 @@
 package com.depthspace.column.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -133,6 +136,27 @@ public class ColumnArticlesServiceImpl implements ColumnArticlesService {
 	@Override
 	public long getTotal() {
 		return dao.getTotal();
+	}
+
+	@Override
+	public List<ColumnArticlesVO> getColumnArticlesByCompositeQuery(Map<String, String[]> queryMap) {
+	    Map<String, List<String>> criteriaMap = new HashMap<>();
+	    // 遍歷參數，將action非查詢條件的key排除，非空值加入查詢條件(可多個)
+	    for (Map.Entry<String, String[]> entry : queryMap.entrySet()) {
+	        String key = entry.getKey();
+	        if ("action".equals(key)) {
+	            continue;
+	        }
+	        String[] values = entry.getValue();
+	        
+	        if (values == null || values.length == 0) {
+	            continue;
+	        }	        
+	        criteriaMap.put(key, Arrays.asList(values));
+	    }
+	    
+	    // 將上述查到的條件交由dao的方法查詢
+	    return dao.getByCompositeQuery(criteriaMap);
 	}
 
 }

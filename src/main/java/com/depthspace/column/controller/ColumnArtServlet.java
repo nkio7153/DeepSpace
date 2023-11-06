@@ -3,7 +3,11 @@ package com.depthspace.column.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,10 +25,13 @@ import com.depthspace.column.model.ColumnArticlesVO;
 import com.depthspace.column.model.ColumnTypesVO;
 import com.depthspace.column.model.ColumnImagesVO;
 import com.depthspace.admin.model.model.AdminVO;
+import com.depthspace.attractions.model.CityVO;
 import com.depthspace.column.service.ColumnArticlesService;
 import com.depthspace.column.service.ColumnArticlesServiceImpl;
 import com.depthspace.column.service.ColumnImagesService;
 import com.depthspace.column.service.ColumnImagesServiceImpl;
+import com.depthspace.ticket.model.TicketTypesVO;
+import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.utils.HibernateUtil;
 
 @WebServlet("/columnarticles/*")
@@ -55,14 +62,24 @@ public class ColumnArtServlet extends HttpServlet {
 			res.sendRedirect(req.getContextPath() + "/frontend/columnarticles/info.jsp");
 			break;
 		case "/list": // 專欄總列表
-			doList(req, res);
-			break;
+			String searchTerm = req.getParameter("searchTerm");
+			if (searchTerm == null || searchTerm.trim().isEmpty()) {
+				// 如果為空沒有觸發搜尋，則列出全部
+				doList(req, res);
+				return;
+			} else {
+				// 否則執行搜尋
+				doSearch(req, res);
+				return;
+			}
+//			doList(req, res);
+//			break;
 		case "/item": // 專欄單一頁面
 			doItem(req, res);
 			break;
-//		case "/find": // 專欄查找
-//			doSearch(req, res);
-//			break;
+		case "/search": // 專欄查找
+			doSearch(req, res);
+			break;
 
 		default:
 			System.out.println("Path not handled: " + pathInfo);
@@ -88,6 +105,7 @@ public class ColumnArtServlet extends HttpServlet {
 		req.setAttribute("currentPage", currentPage); //分頁數
 		req.setAttribute("columnList", columnList);  
 
+		searchList(req, res);
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/columnarticles/list.jsp");
 		dispatcher.forward(req, res);
 	}
@@ -108,4 +126,45 @@ public class ColumnArtServlet extends HttpServlet {
 		req.setAttribute("columnArticles", columnArticles);
 		req.getRequestDispatcher("/frontend/columnarticles/item.jsp").forward(req, res);
 	} 
+	
+	/************ 左側搜尋欄 **********/
+	public void searchList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+
+		List<ColumnArticlesVO> columnArticlesAll = columnArticlesService.getAllArti();
+		req.setAttribute("columnArticlesAll", columnArticlesAll);
+
+		// 處理類型不重複
+		Set<ColumnTypesVO> uniqueColTypes = new HashSet<>();
+		for (ColumnArticlesVO column : columnArticlesAll) {
+			uniqueColTypes.add(column.getColType());
+		}
+		req.setAttribute("uniqueColTypes", new ArrayList<>(uniqueColTypes));
+
+	}
+	
+	/************ 搜尋 ************/	
+	private void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	    res.setContentType("application/json");
+	    res.setCharacterEncoding("UTF-8");
+
+	    // 創建查詢map
+	    Map<String, String[]> parameterMap = req.getParameterMap();
+	    // 調用萬用查詢方法
+	    List<ColumnArticlesVO> resultList = columnArticlesService.getColumnArticlesByCompositeQuery(parameterMap);
+	    Set<ColumnArticlesVO> resultSet = new HashSet<>(resultList);
+	    
+		req.setAttribute("paramValues", parameterMap);
+		
+	    // 查詢結果的數量
+	    int searchCount = resultSet.size();
+	    req.setAttribute("searchCount", searchCount);
+
+	    // 查詢結果存入
+	    req.setAttribute("resultSet", resultSet);
+	    
+	    System.out.println(resultSet);
+		searchList(req, res);
+	    req.getRequestDispatcher("/frontend/columnarticles/list.jsp").forward(req, res);
+	}
+
 }

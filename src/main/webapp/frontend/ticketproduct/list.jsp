@@ -21,16 +21,6 @@
 	href="<c:url value='/static/css/frontendlist.css'/>">
 
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
-	//左邊搜尋條件
-	$(document).ready(function() {
-		// 根據checkbox勾選狀態動態調整
-		$('input[type=checkbox]').change(function() {
-			$('#searchForm').submit();
-		});
-	});
-</script>
 </head>
 <body>
 
@@ -100,14 +90,21 @@
 						</c:otherwise>
 					</c:choose>
 
-					<div class="form-group mb-0">
-						<label for="sortDropdown" class="mr-2">排序方式：</label> <select
-							class="form-control d-inline-block" id="sortDropdown"
-							style="width: auto;">
-							<option>按熱門程度排序</option>
-							<!-- 其他排序 -->
-						</select>
-					</div>
+					<form action="<%=request.getContextPath()%>/ticketproduct/list"
+						method="get">
+						<input type="hidden" name="sortField" value="${param.sortField}">
+						<input type="hidden" name="sortOrder" value="${param.sortOrder}">
+						<input type="hidden" name="sortBuy" value="${param.sortBuy}">
+						<div class="form-group mb-0">
+							<label for="sortDropdown" class="mr-2">排序方式：</label> <select
+								class="form-control d-inline-block" id="sortDropdown"
+								name="sort" onchange="this.form.submit()">
+								<option value="popularity">按熱門程度排序</option>
+								<option value="ticketName">按票券名稱排序</option>
+								<!-- 其他排序選項 -->
+							</select>
+						</div>
+					</form>
 				</div>
 				<!-- 票券列表 -->
 				<div class="ticket-list">
@@ -156,7 +153,8 @@
 													</c:if> <!-- 空星 --> <c:forEach begin="${emptyStarsStart}" end="5"
 														var="j">
 														<i class="far fa-star gold-star"></i>
-													</c:forEach> (${totalRatingCountMap[ticket.ticketId]})  銷售量${ticketOrderCountMap[ticket.ticketId]}
+													</c:forEach> (${totalRatingCountMap[ticket.ticketId]})
+													銷售量${ticketOrderCountMap[ticket.ticketId]}
 												</small>
 											</p>
 											<p class="card-text">NT$ ${ticket.price}</p>
@@ -224,7 +222,39 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+    
+	//左邊搜尋條件
+        $(document).ready(function() {
+            // 根據checkbox勾選狀態動態調整
+            $('input[type=checkbox]').change(function() {
+                $('#searchForm').submit();
+            });
+	//右邊排序
+            // 排序下拉選單的變化
+            $('#sortDropdown').on('change', function() {
+                var sortValue = $(this).val();
+                var sortField = 'ticketName'; // 預設排序依據為票券名稱
+                var sortOrder = 'asc'; // 預設排序方式為升序
 
+                // 根據選項修改排序參數
+                if (sortValue === 'popularity') {
+                    sortField = 'sales';
+                    sortOrder = 'desc'; // 熱門銷售降序
+                } else if (sortValue === 'ticketName') {
+                    sortField = 'ticketName';
+                    sortOrder = 'asc';
+                }
+
+                // 更新隱藏輸入欄位的值
+                $('input[name="sortField"]').val(sortField);
+                $('input[name="sortOrder"]').val(sortOrder);
+
+                // 提交表單
+                $('#searchForm').submit();
+            });
+        });
+    </script>
 	<jsp:include page="/indexpage/footer.jsp" />
 
 </body>
