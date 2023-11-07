@@ -1,4 +1,4 @@
-// 更新日期并計算天數
+// 更新日期及計算天數
 function updateDurationSelect() {
 	var startDateInput = document.querySelector("input[name='startDate']");
 	var endDateInput = document.querySelector("input[name='endDate']");

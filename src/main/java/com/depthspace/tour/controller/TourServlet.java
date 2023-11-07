@@ -109,7 +109,7 @@ public class TourServlet extends HttpServlet {
 		TourVO tourVO = new TourVO(tourId,memId,tourName,tourTypeId,allDays,tourDescription,startDate,endDate);
 //		新增一筆行程資料
 		TourVO tvo = null;
-//		tvo = ts.insert(tourVO);
+		tvo = ts.insert(tourVO);
 //		System.out.println("新增的那些東西"+ tourVO);
 		
 		TourTypeVO ttvo = new TourTypeVO();
