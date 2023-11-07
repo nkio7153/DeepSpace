@@ -37,3 +37,12 @@ a.no-underline, a.no-underline:hover {
 .card.row.col-md-8 {
 	padding: 0;
 }
+
+/* 評價的星星樣式(實) */
+.gold-star {
+	color: gold;
+}
+/* 評價的星星樣式(虛) */
+.fa-star, .fa-star-half-alt {
+	border: none;
+}

@@ -7,11 +7,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<jsp:include page="../indexpage/head.jsp" />
 <title>論壇文章清單</title>
 <!-- 引入 Bootstrap CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script>
 
@@ -27,25 +27,20 @@ $(document).ready(function() {
                 var base64ImageData = item.base64Str;
                 var date = new Date(item.artiTime);
                 var formattedDate = formatDate(date);
+                var likesSpan = '<span class="likes float-right"><i class="fas fa-thumbs-up"></i> ' + item.artiLk + '</span>';
                 var card = $('<div class="col-md-4 mb-3">')
                 .append('<div class="card h-100">' +
+                		'<li class="list-group-item d-flex justify-content-between align-items-center">會員ID: ' + item.memId + likesSpan + '</li>' +
                     '<img src="data:image/jpeg;base64,' + base64ImageData + '" class="card-img-top fixed-height-img">' +
                     '<div class="card-body card-content">' +
                         '<h5 class="card-title">' + item.artiTitle + '</h5>' +
                         '<p class="card-text">' + item.artiText + '</p>' +
                     '</div>' +
-                    '<ul class="list-group list-group-flush">' +
-                        '<li class="list-group-item">會員ID: ' + item.memId + '</li>' +
-                        '<li class="list-group-item">訊息ID: ' + item.msgId + '</li>' +
-                        '<li class="list-group-item hidden-status">文章狀態: ' + (item.artiStatus === 1 ? '啟用' : '禁用') + '</li>' +
+                    '<ul class="list-group list-group-flush">' +                       
+                        '<li class="list-group-item hidden-status">訊息ID: ' + item.msgId + '</li>' +
                     '</ul>' +
-                    '<div class="card-footer d-flex justify-content-between align-items-center">' +
+                    '<div class="card-footer">' +
                         '<small class="text-muted">發布時間: ' + formattedDate + '</small>' +
-                        '<div>' +
-                            '<button class="btn btn-primary btn-sm">修改</button>' +
-                            '<button class="btn btn-danger btn-sm ml-2">刪除</button>' +
-                            '<span class="likes"><i class="fas fa-thumbs-up"></i> ' + item.artiLk + '</span>' +
-                        '</div>' +
                     '</div>' +
                 '</div>');
                 $('#articlesRow').append(card);
@@ -77,22 +72,18 @@ $(document).ready(function() {
 
     .card-footer {
         padding: 0.5rem 1rem; /* 保留原有的 padding */
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .card-footer .btn {
-        margin-right: 10px; /* 為按鈕增加右邊距 */
-    }
-
-    .card-footer .btn:last-child {
-        margin-right: 0; /* 最後一個按鈕不加右邊距 */
     }
 
     .likes {
         display: flex;
         align-items: center;
+        justify-content: flex-end; /* 將點讚數靠右顯示 */
+    }
+    
+    .list-group-item {
+        display: flex;
+        justify-content: space-between; /* 新增：使內容分佈左右兩端 */
+        align-items: center; /* 新增：垂直居中對齊 */
     }
 
     .hidden-status {
@@ -102,13 +93,18 @@ $(document).ready(function() {
 
 </head>
 <body>
+<jsp:include page="../indexpage/header.jsp" />
+<jsp:include page="../indexpage/headpic.jsp" />
 <div id="list" class="container mt-5">
-    <h1 class="mb-4">文章清單</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>文章清單</h1>
+        <button type="button" class="btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles/add.jsp'">新增文章</button>
+    </div>
     <div id="articlesRow" class="row">
         <!-- 卡片內容將會通過 jQuery 動態加載到這裡 -->
     </div>
 </div>
-<!-- 引入 Bootstrap JS 和 Popper.js 依賴 -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

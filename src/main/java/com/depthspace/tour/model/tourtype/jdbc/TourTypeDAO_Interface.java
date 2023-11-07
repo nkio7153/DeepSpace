@@ -1,6 +1,8 @@
-package com.depthspace.tour.model.tourtype;
+package com.depthspace.tour.model.tourtype.jdbc;
 
 import java.util.List;
+
+import com.depthspace.tour.model.tourtype.TourTypeVO;
 
 public interface TourTypeDAO_Interface {
 	public void insert(TourTypeVO TourTypeVO);

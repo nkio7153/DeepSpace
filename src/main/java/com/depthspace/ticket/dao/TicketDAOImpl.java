@@ -106,19 +106,19 @@ public class TicketDAOImpl implements TicketDAO {
 	    Session session = null;
 	    Transaction tx = null;
 	    try {
-	        session = factory.openSession();  // 打开一个新的会话
-	        tx = session.beginTransaction();  // 开始一个新的事务
+	        session = factory.openSession(); 
+	        tx = session.beginTransaction();
 
-	        // 执行查询
+	       
 	        long count = (Long) session.createQuery("select count(*) from TicketVO").uniqueResult();
 
-	        tx.commit();  // 提交事务
+	        tx.commit(); 
 	        return count;
 	    } catch (RuntimeException e) {
-	        if (tx != null) tx.rollback();  // 发生异常，回滚事务
-	        throw e;  // 抛出异常以便调用者可以处理
+	        if (tx != null) tx.rollback();  
+	        throw e;  
 	    } finally {
-	        if (session != null) session.close();  // 关闭会话
+	        if (session != null) session.close();  
 	    }
 	
 	}
@@ -146,7 +146,7 @@ public class TicketDAOImpl implements TicketDAO {
 	                predicates.add(builder.like(root.get("ticketName"), "%" + values.get(0) + "%"));
 	                break;
 	            case "ticketTypeId":
-	                // 使用 builder.in 构建多值条件
+	                // 使用 builder.in 
 	                CriteriaBuilder.In<Integer> inTicketTypeId = builder.in(root.get("ticketType").get("ticketTypeId"));
 	                for (String value : values) {
 	                    inTicketTypeId.value(Integer.parseInt(value));
@@ -157,7 +157,7 @@ public class TicketDAOImpl implements TicketDAO {
 	                predicates.add(builder.equal(root.get("ticketId"), Integer.parseInt(values.get(0))));
 	                break;
 	            case "areaId":
-	                // 使用 builder.in 构建多值条件
+	                // 使用 builder.in 
 	                CriteriaBuilder.In<Integer> inAreaId = builder.in(root.get("city").get("cityId"));
 	                for (String value : values) {
 	                    inAreaId.value(Integer.parseInt(value));

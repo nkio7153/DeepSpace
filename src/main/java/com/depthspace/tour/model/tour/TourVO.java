@@ -1,6 +1,7 @@
 package com.depthspace.tour.model.tour;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Arrays;
 
@@ -37,16 +38,16 @@ public class TourVO implements Serializable{
 //	private byte[] tourImg;
 	
 	@Column(name="START_DATE")
-    private Timestamp startDate;
+    private Date startDate;
 	
 	@Column(name="END_DATE")
-    private Timestamp endDate;
+    private Date endDate;
 	
 	public TourVO() {
 	}
 	
 	public TourVO(Integer tourId, Integer memId, String tourName, Integer tourTypeId, Integer allDays,
-			String tourDescription, byte[] tourImg) {
+			String tourDescription, Date startDate, Date endDate) {
 		super();
 		this.tourId = tourId;
 		this.memId = memId;
@@ -54,7 +55,8 @@ public class TourVO implements Serializable{
 		this.tourTypeId = tourTypeId;
 		this.allDays = allDays;
 		this.tourDescription = tourDescription;
-		
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 	
 	public Integer getTourId() {
@@ -104,11 +106,28 @@ public class TourVO implements Serializable{
 	public void setTourDescription(String tourDescription) {
 		this.tourDescription = tourDescription;
 	}
-
 	
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "TourVO [tourId=" + tourId + ", memId=" + memId + ", tourName=" + tourName + ", tourTypeId=" + tourTypeId
-				+ ", allDays=" + allDays + ", tourDescription=" + tourDescription + ", tourImg=" + "]";
+				+ ", allDays=" + allDays + ", tourDescription=" + tourDescription + "]";
 	}
 }

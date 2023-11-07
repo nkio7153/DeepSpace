@@ -1,4 +1,4 @@
-package com.depthspace.ticketcollection.model;
+package com.depthspace.ticketcollection.model.old;
 
 
 import java.sql.Connection;
@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import com.depthspace.ticket.model.TicketVO;
+import com.depthspace.ticketcollection.model.TicketCollectionVO;
 import com.depthspace.utils.DBUtil;
 
 public class TicketCollectionJDBCDAO implements TicketCollectionDAO_Interface {

@@ -54,7 +54,7 @@
 <%-- 	     	<input type="hidden" name="memId" value="${authenticatedMem.memId}" readonly"> --%>
 <!--             <input type="submit" value="新增行程" style="height: 50px; width: 150px; font-size: 18px; color: #fff; background-color: #008CBA; border: none; padding: 10px; cursor: pointer; border-radius: 10px;"> -->
 <!--         </form> -->
-		<a href="${pageContext.request.contextPath}/tour/newTour.jsp?memId=${authenticatedMem.memId}" class="btn_style">新增行程</a>
+		<a href="${pageContext.request.contextPath}/tr/addTour?memId=${authenticatedMem.memId}" class="btn_style">新增行程</a>
 	
 	</div>
 	

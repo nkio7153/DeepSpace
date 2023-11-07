@@ -222,5 +222,3 @@ public class ColumnImagesJDBCDAO implements ColumnImagesDAO_Interface {
 //    }
 }
     
-
-
