@@ -47,11 +47,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(UserLoginRequest userLoginRequest) {
-        User user = userDao.getUserByEmail(userLoginRequest.getEmail());
+        User user = userDao.getUserByEmail(userLoginRequest.getemail());
 
         // 檢查 user 是否存在
         if (user == null) {
-            log.warn("該 email {} 尚未註冊", userLoginRequest.getEmail());
+            log.warn("該 email {} 尚未註冊", userLoginRequest.getemail());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
         if (user.getPassword().equals(hashedPassword)) {
             return user;
         } else {
-            log.warn("email {} 的密碼不正確", userLoginRequest.getEmail());
+            log.warn("email {} 的密碼不正確", userLoginRequest.getemail());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }

@@ -11,11 +11,11 @@ public class UserLoginRequest {
     @NotBlank
     private String password;
 
-    public String getEmail() {
+    public String getemail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setemail(String email) {
         this.email = email;
     }
 
