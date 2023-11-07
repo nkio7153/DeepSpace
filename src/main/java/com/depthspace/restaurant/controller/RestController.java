@@ -58,12 +58,12 @@ public class RestController extends HttpServlet {
 	private String getRests(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<RestVO> restList = restService.showRest();
 		req.setAttribute("restList", restList);
-		return "/frontend/rest/rest.jsp";
+		return "/frontend/rest/restlist.jsp";
 	}
 	
 	private String toRestinfo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setAttribute("restId", req.getParameter("restId"));
-		return "/frontend/rest/restinfo.jsp";
+		return "/frontend/rest/rest.jsp";
 		
 	}
 }
