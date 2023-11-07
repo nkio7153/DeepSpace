@@ -1,6 +1,8 @@
-package com.depthspace.attractions.model;
+package com.depthspace.attractions.model.city.hibernate;
 
 import java.util.List;
+
+import com.depthspace.attractions.model.CityVO;
 
 
 public interface CityDAO_Interface {

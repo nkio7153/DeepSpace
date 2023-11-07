@@ -2,10 +2,13 @@ package com.depthspace.tour.model.tour.hibernate;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import com.depthspace.promotion.model.promotion.PromotionVO;
 import com.depthspace.tour.model.tour.TourVO;
 import com.depthspace.tour.model.tour.TourView;
 
@@ -63,6 +66,18 @@ public class HbTourDAOImpl implements HbTourDAO_Interface{
 		return 0;
 	}
 	
+	//查詢最後一筆行程
+	@Override
+	public TourVO getLastTourId(Integer memId) {
+		 try {
+	            return getSession()
+	            		.createQuery("from TourVO order by memId desc", TourVO.class)
+	                    .setMaxResults(1)
+	                    .getSingleResult();
+	        } catch (NoResultException e) {
+	            return null;
+	        }
+	    }
 
 	@Override
 	public List<TourView> getOneTourList(Integer tourId, Integer memId) {
@@ -92,6 +107,7 @@ public class HbTourDAOImpl implements HbTourDAO_Interface{
 
 	    return list;
 	}
+
 		
 //		return getSession()
 //				.createQuery("SELECT DISTINCT tv from TourView tv where tv.tourId= :tourId AND tv.memId = :memId" , TourView.class)
