@@ -16,10 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @WebServlet("/to/*")
 public class TicketOrderstServlet extends HttpServlet {
@@ -199,6 +196,69 @@ public class TicketOrderstServlet extends HttpServlet {
         req.setAttribute("ticketOrder",to2);
         req.getRequestDispatcher("/ticketOrders/afterPay.jsp").forward(req, resp);
     }
+    //複合查詢
+    protected void doQuery(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Map<String, String[]> map = req.getParameterMap();
+        String page = req.getParameter("page");
+//        if (map != null) {
+//            List<TicketOrdersVO> empList = toSv.getToByCompositeQuery(map);
+//            req.setAttribute("empList", empList);
+//        } else {
+//            return "/index.jsp";
+//        }
+//        return "/emp/listCompositeQueryEmps.jsp";
+    }
+
+
+//    Map<String, String[]> map = new HashMap<>(req.getParameterMap());
+//
+//    String page = req.getParameter("page");
+//    int pageNow = (page == null) ? 1 : Integer.parseInt(page);
+//
+//    // 第一次進來
+//		if (page == null) {
+//        String itemNameSearch = req.getParameter("itemNameSearch");
+//        req.getSession().setAttribute("itemNameSearch", itemNameSearch);
+//        // 其他參數比照
+//        String itemPriceSearchStart = req.getParameter("itemPriceSearchStart");
+//        req.getSession().setAttribute("itemPriceSearchStart", itemPriceSearchStart);
+//
+//        String itemPriceSearchEnd = req.getParameter("itemPriceSearchEnd");
+//        req.getSession().setAttribute("itemPriceSearchEnd", itemPriceSearchEnd);
+//        // 後續切頁
+//    } else {
+//        String itemNameSearch = (String) req.getSession().getAttribute("itemNameSearch");
+//        if (itemNameSearch != null) {
+//            map.put("itemNameSearch", new String[] { itemNameSearch });
+//        }
+//
+//        String itemPriceSearchStart = (String) req.getSession().getAttribute("itemPriceSearchStart");
+//        if (itemPriceSearchStart != null) {
+//            map.put("itemPriceSearchStart", new String[] { itemPriceSearchStart });
+//        }
+//
+//        String itemPriceSearchEnd = (String) req.getSession().getAttribute("itemPriceSearchEnd");
+//        if (itemPriceSearchEnd != null) {
+//            map.put("itemPriceSearchEnd", new String[] { itemPriceSearchEnd });
+//        }
+//    }
+//
+//		if (map.size() != 0) {
+//
+//        List<Item> itemList = itemService.getItemByCompositeQuery(map, pageNow);
+//        int total = itemService.getResultTotalCondition(map);
+//
+//        if (req.getAttribute("itemPageQty") == null) {
+//            int pageQty = (int) (total % ITEM_PAGE_MAX_RESULT == 0 ? (total / ITEM_PAGE_MAX_RESULT)
+//                    : (total / ITEM_PAGE_MAX_RESULT + 1));
+//            req.setAttribute("itemPageQty", pageQty);
+//        }
+//        req.setAttribute("pageNow", pageNow);
+//        req.setAttribute("itemList", itemList);
+//    } else {
+//        System.out.println("map.sizes()==0");
+
+
 
     //點數計算公式
     public Integer pointCal(Integer totalAmount){

@@ -72,7 +72,7 @@
         </ul>
     </c:if>
     <hr>
-    <form action="${pageContext.request.contextPath}/pro/modify" method="post" class="row" enctype="multipart/form-data">
+    <form action="${pageContext.request.contextPath}/pro/modify" id="form" method="post" class="row" enctype="multipart/form-data">
         <%--            第一排--%>
         <div class="col-md-2"></div>
         <div class="col-md-4">
@@ -149,12 +149,51 @@
 
 
         <div class="col-md-12 mt-2 d-flex justify-content-center">
-            <button type="submit" class="btn btn-primary">更新</button>
+            <button type="button" id="editCheck" class="btn btn-primary">更新</button>
+
         </div>
 
     </form>
 </div>
 <script>
+
+    $("#editCheck").on("click", function (){
+        let promoName=$("#promoName").val();
+        let description=$("#description").val();
+        let startDate=$("#startDate").val();
+        let endDate=$("#endDate").val();
+        //----------- 打包資料 (start)
+        let data = {
+            promoName:promoName,
+            description:description,
+            startDate:startDate,
+            endDate:endDate
+        };
+
+// 將資料打包進 URLSearchParams()
+        let formDataUrlEncoded = new URLSearchParams();
+        for (let key in data) {
+            formDataUrlEncoded.append(key, data[key]);
+        }
+//----------- 打包資料 (end)
+
+// --------------------------------- 送出 Ajax 請求
+        fetch("${pageContext.request.contextPath}/pro/check", {
+            method: "post",
+            body: formDataUrlEncoded
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                var alertMessage = data.join('\n');
+                if(alertMessage !== "新增成功") {
+                    window.alert(alertMessage);
+                }else{
+                    $("#form").submit();
+                }
+            });
+    });
     let circle=$("#circle");
     let circle2=$("#circle2");
     //新增版本

@@ -3,9 +3,17 @@ package com.depthspace.ticketorders.model.ticketorders.hibernate;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class HbToDaoImpl implements HbToDao {
     public static final int PAGE_MAX_RESULT = 10;
@@ -114,5 +122,97 @@ public class HbToDaoImpl implements HbToDao {
                 .uniqueResult();
     }
 
+    @Override
+    public List<TicketOrdersVO> getByCompositeQuery(Map<String, String> map, int page) {
+        System.out.println("***map***"+map);
+		if(map.size()==0) {
+			System.out.println("map:沒資料"+map);
+			return getAll(page);
+		}
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<TicketOrdersVO> criteria = builder.createQuery(TicketOrdersVO.class);
+        Root<TicketOrdersVO> root = criteria.from(TicketOrdersVO.class);
+//
+        ArrayList<Predicate> predicates = new ArrayList<>();
 
+        // 處理訂單日期範圍的查詢
+        if (map.containsKey("startOrderDate") && map.containsKey("endOrderDate")) {
+            predicates.add(builder.between(root.get("orderDate"), Timestamp.valueOf(map.get("startOrderDate")), Timestamp.valueOf(map.get("endOrderDate"))));
+        } else {
+            // 分別處理只有開始日期或結束日期的情況
+            if (map.containsKey("startOrderDate")) {
+                predicates.add(builder.greaterThanOrEqualTo(root.get("orderDate"), Timestamp.valueOf(map.get("startOrderDate"))));
+            }
+            if (map.containsKey("endOrderDate")) {
+                predicates.add(builder.lessThanOrEqualTo(root.get("orderDate"), Timestamp.valueOf(map.get("endOrderDate"))));
+            }
+        }
+        // 處理會員編號的查詢
+        if (map.containsKey("memId")) {
+            predicates.add(builder.equal(root.get("memId"), Integer.valueOf(map.get("memId"))));
+        }
+
+        // 添加其他可能的篩選條件
+        // 例如：處理訂單狀態的查詢
+        if (map.containsKey("status")) {
+            predicates.add(builder.equal(root.get("status"), Integer.valueOf(map.get("status"))));
+        }
+
+        // 將所有條件組合在一起
+        criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
+        // 執行查詢
+        Query<TicketOrdersVO> query = getSession().createQuery(criteria);
+
+        // 分頁處理
+        int first = (page - 1) * PAGE_MAX_RESULT;
+        query.setFirstResult(first);
+        query.setMaxResults(PAGE_MAX_RESULT);
+
+        // 獲取結果並返回
+        return query.getResultList();
+     }
+    @Override
+    public int getResultTotal(Map<String, String> map) {
+        if(map.size()==0) {
+            System.out.println("map:沒資料"+map);
+        }
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<TicketOrdersVO> criteria = builder.createQuery(TicketOrdersVO.class);
+        Root<TicketOrdersVO> root = criteria.from(TicketOrdersVO.class);
+//
+        ArrayList<Predicate> predicates = new ArrayList<>();
+
+        // 處理訂單日期範圍的查詢
+        if (map.containsKey("startOrderDate") && map.containsKey("endOrderDate")) {
+            predicates.add(builder.between(root.get("orderDate"), Timestamp.valueOf(map.get("startOrderDate")), Timestamp.valueOf(map.get("endOrderDate"))));
+        } else {
+            // 分別處理只有開始日期或結束日期的情況
+            if (map.containsKey("startOrderDate")) {
+                predicates.add(builder.greaterThanOrEqualTo(root.get("orderDate"), Timestamp.valueOf(map.get("startOrderDate"))));
+            }
+            if (map.containsKey("endOrderDate")) {
+                predicates.add(builder.lessThanOrEqualTo(root.get("orderDate"), Timestamp.valueOf(map.get("endOrderDate"))));
+            }
+        }
+        // 處理會員編號的查詢
+        if (map.containsKey("memId")) {
+            predicates.add(builder.equal(root.get("memId"), Integer.valueOf(map.get("memId"))));
+        }
+
+        // 添加其他可能的篩選條件
+        // 例如：處理訂單狀態的查詢
+        if (map.containsKey("status")) {
+            predicates.add(builder.equal(root.get("status"), Integer.valueOf(map.get("status"))));
+        }
+
+        // 將所有條件組合在一起
+        criteria.where(builder.and(predicates.toArray(new Predicate[predicates.size()])));
+        // 執行查詢
+        Query<TicketOrdersVO> query = getSession().createQuery(criteria);
+
+        // 獲取結果並返回
+        List<TicketOrdersVO> resultList = query.getResultList();
+        int total = resultList.size();
+        return total;
+    }
 }

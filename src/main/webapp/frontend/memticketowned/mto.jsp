@@ -38,7 +38,8 @@
         }
         .voucher-sent{
             font-weight:bold;
-            color:green
+            color:green;
+            font-size:20px;
         }
         .card-body{
             position:relative;
@@ -56,6 +57,9 @@
              top: 50%; /* 定位 */
              left: 50%;
              transform: translate(-50%, -50%) rotate(-35deg);
+         }
+         .card-text{
+             line-height:25px;
          }
 
     </style>
@@ -80,21 +84,21 @@
                         <div class="row g-0">
                             <div class="col-md-5 position-relative"> <!-- 调整图片区域的宽度 -->
                                 <img src="${pageContext.request.contextPath}/tsc/image?serialId=${mto.serialId}" class="card-img-top rounded-start" alt="..."> <!-- 图片覆盖整个卡片顶部宽度 -->
-                                <div class="position-absolute bottom-0 start-0 m-3 mx-2">
-                                    <button type="button" class="btn btn-primary btn-sm">票券詳情</button>
+                                <div class="position-absolute bottom-0 start-0 m-3 mx-2 px-2">
+                                    <button type="button" class="btn btn-primary btn-sm fs-4">票券詳情</button>
                                 </div>
-                                <div class="position-absolute bottom-0 end-0 m-3 mx-2">
-                                    <span class="badge bg-success rounded-pill p-2">$${mto.discountPrice}</span>
+                                <div class="position-absolute bottom-0 end-0 m-3 mx-2 px-2">
+                                    <span class="badge bg-success rounded-pill p-2 fs-4">$${mto.discountPrice}</span>
                                 </div>
                             </div>
                             <div class="col-md-7 d-flex flex-column justify-content-between"><!-- 调整文本区域的宽度 -->
                                 <div class="card-body">
                                     <div class="watermark">深度漫遊-電子票券</div>
                                     <span class="voucher-sent">憑證已發送</span>
-                                    <h5 class="card-title fs-3"> ${mto.ticketName}</h5>
-                                    <p class="card-text">訂單編號: ${mto.orderId}</p>
-                                    <p class="card-text" name="status">${mto.statusOfUse}</p>
-                                    <p class="card-text offset-8">使用期限: ${mto.expiryDate}</p>
+                                    <h5 class="card-title fs-3 fw-bold"> ${mto.ticketName}</h5>
+                                    <p class="card-text fs-5">訂單編號: ${mto.orderId}</p>
+                                    <p class="card-text fs-5" name="status">${mto.statusOfUse}</p>
+                                    <p class="card-text offset-7 fs-4">使用期限: ${mto.expiryDate}</p>
                                 </div>
                                 <div class="card-footer bg-transparent border-0">
                                     <button type="button" class="btn btn-primary w-100">憑證下載</button>

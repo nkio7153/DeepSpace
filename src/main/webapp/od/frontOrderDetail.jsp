@@ -7,33 +7,37 @@
 <html>
 <head>
     <title>票券訂單明細</title>
-    <jsp:include page="../indexpage/head.jsp" />
+    <jsp:include page="../indexpage/head.jsp"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
     <style>
-        .hidden{
-            display:none;
+        .hidden {
+            display: none;
         }
+
         /* ===== 重要性的星號 ===== */
-        div.star_block{
+        div.star_block {
             display: inline-block;
         }
-        div.star_block > span.star{
+
+        div.star_block > span.star {
             cursor: pointer;
             display: inline-block;
             margin-right: 3px;
         }
-        div.star_block > span.star.-on{
+
+        div.star_block > span.star.-on {
             color: yellow;
         }
+
         span.editable, input[type="text"] {
             width: 100px; /* 或其他固定的值 */
         }
     </style>
 </head>
 <body>
-<jsp:include page="../indexpage/header.jsp" />
-<jsp:include page="../indexpage/headpic.jsp" />
+<jsp:include page="../indexpage/header.jsp"/>
+<jsp:include page="../indexpage/headpic.jsp"/>
 
 <div class="container mt-4">
     <button type="button" class="btn btn-secondary mb-3" onclick="history.back()">返回</button>
@@ -70,14 +74,15 @@
                     <input type="text" class="form-control hidden" name="inputTicketReviews">
                 </td>
                 <td class="text-center">
-<%--                    <span class="editable" name="stars">${od[8]}</span>--%>
-<%--                    <input type="text" class="form-control hidden" name="inputStars">--%>
+                        <%--                    <span class="editable" name="stars">${od[8]}</span>--%>
+                        <%--                    <input type="text" class="form-control hidden" name="inputStars">--%>
                     <div class="star_block">
-                        <span class="star" data-star="1"><i class="fas fa-star"></i></span>
-                        <span class="star" data-star="2"><i class="fas fa-star"></i></span>
-                        <span class="star" data-star="3"><i class="fas fa-star"></i></span>
-                        <span class="star" data-star="4"><i class="fas fa-star"></i></span>
-                        <span class="star" data-star="5"><i class="fas fa-star"></i></span>
+                            ${od[8]}
+                            <%--                        <span class="star" data-star="1"><i class="fas fa-star"></i></span>--%>
+                            <%--                        <span class="star" data-star="2"><i class="fas fa-star"></i></span>--%>
+                            <%--                        <span class="star" data-star="3"><i class="fas fa-star"></i></span>--%>
+                            <%--                        <span class="star" data-star="4"><i class="fas fa-star"></i></span>--%>
+                            <%--                        <span class="star" data-star="5"><i class="fas fa-star"></i></span>--%>
                     </div>
                 </td>
                 <td class="text-center">
@@ -103,38 +108,64 @@
         document.location.href = "${pageContext.request.contextPath}/to/index";
     }
 
-    $(document).ready(function(){
+    $(document).ready(function () {
+        console.log("乾")
+        //判斷星星是否為空
+        //如果不為空，按照星星數序加上-on，div.star_block.html()
+        //如果為空，預設為黑星星，div.star_block.html()
+        $(".star_block").each(function () {
+            var starText = $(this).text();
+            var starNum = parseInt(starText, 10);
+            html="";
+            if (starNum) {
+                //我想依照startText取得的數字給span標籤，由上往下addClass("-on")
+                for (var i = 1; i <= 5; i++) {
+                    // 为每个星星创建一个span标签
+                    html += '<span class="star' + (i <= starNum ? ' -on' : '') + '" data-star="' + i + '"><i class="fas fa-star"></i></span>';
+                }
+            }else{
+                html+=`
+                      <span class="star" data-star="1"><i class="fas fa-star"></i></span>
+                      <span class="star" data-star="2"><i class="fas fa-star"></i></span>
+                      <span class="star" data-star="3"><i class="fas fa-star"></i></span>
+                      <span class="star" data-star="4"><i class="fas fa-star"></i></span>
+                      <span class="star" data-star="5"><i class="fas fa-star"></i></span>`;
+            }
+            $(this).html(html);
+        })
+
+
         $("[name='save']").hide();
         //按下編輯鍵
-    $("table").on("click", "[name='edit']", function () {//按下編輯鍵
-        let tr = $(this).closest("tr");
-        tr.find("[name='edit']").hide();//編輯鍵隱藏
-        tr.find("[name='save']").show();//保存鍵顯現
+        $("table").on("click", "[name='edit']", function () {//按下編輯鍵
+            let tr = $(this).closest("tr");
+            tr.find("[name='edit']").hide();//編輯鍵隱藏
+            tr.find("[name='save']").show();//保存鍵顯現
 
-        tr.find("[name='inputTicketReviews']").val(tr.find("[name='ticketReviews']").text()).show();//輸入欄顯示
-        tr.find("[name='ticketReviews']").hide();//span標籤隱藏
+            tr.find("[name='inputTicketReviews']").val(tr.find("[name='ticketReviews']").text()).show();//輸入欄顯示
+            tr.find("[name='ticketReviews']").hide();//span標籤隱藏
 
-        // 啟動編輯模式時，允許編輯星星評級
-        tr.find(".star_block").addClass("editable-stars");
-    });
+            // 啟動編輯模式時，允許編輯星星評級
+            tr.find(".star_block").addClass("editable-stars");
+        });
         //按下保存鍵
-    $("table").on("click", "[name='save']", function () {
-        let tr = $(this).closest("tr");
-        let orderId=tr.find("[name='orderId']").text();
-        let ticketId=tr.find("[name='ticketId']").text();
-        let ticketReviews=tr.find("[name='inputTicketReviews']").val();//取得輸入的評價
-        let stars=tr.find(".star.-on").length//取得給予的星星數
+        $("table").on("click", "[name='save']", function () {
+            let tr = $(this).closest("tr");
+            let orderId = tr.find("[name='orderId']").text();
+            let ticketId = tr.find("[name='ticketId']").text();
+            let ticketReviews = tr.find("[name='inputTicketReviews']").val();//取得輸入的評價
+            let stars = tr.find(".star.-on").length//取得給予的星星數
 
-        tr.find("[name='save']").hide();//保存鍵隱藏
-        tr.find("[name='edit']").show();//編輯鍵顯示
+            tr.find("[name='save']").hide();//保存鍵隱藏
+            tr.find("[name='edit']").show();//編輯鍵顯示
 
-        tr.find("[name='ticketReviews']").text(ticketReviews);
+            tr.find("[name='ticketReviews']").text(ticketReviews);
 
-        tr.find("input").hide();
-        tr.find(".editable").show();
+            tr.find("input").hide();
+            tr.find(".editable").show();
 
-        // 保存時，禁止編輯星星評級
-        tr.find(".star_block").removeClass("editable-stars");
+            // 保存時，禁止編輯星星評級
+            tr.find(".star_block").removeClass("editable-stars");
 
 
 //----------- 打包資料 (start)
@@ -163,13 +194,13 @@
                 .then(function (data) {
                     console.log(data);
                 })
-                .catch(function(error){
+                .catch(function (error) {
                     console.log(error);
                 });
 
-    });
+        });
         //按下星星修改數量
-        $("table").on("click", ".star", function(){
+        $("table").on("click", ".star", function () {
             if ($(this).closest("div").hasClass("editable-stars")) {
                 $(this).closest("div").find(".star").removeClass("-on");
                 $(this).addClass("-on").prevAll().addClass("-on");
@@ -179,6 +210,6 @@
 
 </script>
 
-<jsp:include page="../indexpage/footer.jsp" />
+<jsp:include page="../indexpage/footer.jsp"/>
 </body>
 </html>

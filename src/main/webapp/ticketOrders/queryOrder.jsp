@@ -5,39 +5,12 @@
     <title>票券訂單</title>
     <jsp:include page="../indexpage/head.jsp" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <style>
-        .wd100{
-            width:100px;
-        }
-    </style>
 </head>
 <body>
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp"/>
 <div class="container mt-4">
     <button type="button" class="btn btn-secondary" onclick="history.back()">返回</button>
-    <h3>訂單查詢</h3>
-
-    <form class="form_search" method="post" action="${pageContext.request.contextPath}/to/query">
-        <label>會員編號</label>
-        <input type="text" class ="wd100" name="memId" >
-
-        <label class="offset-1">訂單狀態</label>
-        <input type="text" class ="wd100" name="status">
-
-        <label class="offset-1">訂單日期區間</label>
-        <input type="Date" name="startOrderDate"> ～ <input type="Date" class ="wd-100" name="endOrdateDate">
-
-        <!--         <br> -->
-        <!--         <label>商品新舊程度</label> -->
-        <!--         <input type="text" name="itemGradeSearch"> -->
-        <!--         <br> -->
-        <!--         <label>商品尺寸</label> -->
-        <!--         <input type="text" name="itemSizeSearch"> -->
-        <!--         <br> -->
-
-        <input type="hidden" name="choice" value="searchCondition">
-        <input type="submit" value="查詢">
     <h1 class="text-center my-4">訂單列表</h1>
     <c:if test="${toPageQty > 0}">
         <b><font color=red>第${currentPage}/${toPageQty}頁</font></b>
@@ -53,7 +26,6 @@
             <th class="text-center">點數回饋</th>
             <th class="text-center">實付金額</th>
             <th class="text-center">支付方式</th>
-            <th class="text-center">訂單狀態</th>
             <th class="text-center">操作</th>
         </tr>
         </thead>
@@ -68,7 +40,6 @@
                 <td align="center">${order.pointsFeedback}</td>
                 <td align="center">${order.amountPaid}</td>
                 <td align="center" name="paymentMethod">${order.paymentMethod}</td>
-                <td align="center">${order.status}</td>
                 <td align="center">
                     <a href="${pageContext.request.contextPath}/tod/backList?orderId=${order.orderId}&totalAmount=${order.totalAmount}&amountPaid=${order.amountPaid}" class="btn btn-secondary">訂單明細</a>
                 </td>

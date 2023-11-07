@@ -63,7 +63,7 @@ public class ProServlet extends HttpServlet {
                 delete(req, resp);
                 break;
             case "/getCard":
-                getAllCard(req,resp);
+                getAllCard(req, resp);
                 break;
             default:
                 break;
@@ -80,6 +80,9 @@ public class ProServlet extends HttpServlet {
                 break;
             case "/modify":
                 doModify(req, resp);
+                break;
+            case "/check":
+                doCheck(req, resp);
                 break;
             default:
                 break;
@@ -154,13 +157,71 @@ public class ProServlet extends HttpServlet {
 
     }
 
+    //新增及修改時錯誤驗證
+    private void doCheck(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String promoName;
+        String description;
+        Timestamp startDate = null;
+        Timestamp endDate = null;
+        List<String> errorMsgs = new LinkedList<String>();
+
+        promoName = req.getParameter("promoName");
+        if (promoName == null || promoName.trim().length() == 0) {
+            errorMsgs.add("票券名稱請勿空白");//錯誤驗證
+        }
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+
+        String start = req.getParameter("startDate");
+        if (start != null && !start.isEmpty()) {
+            try {
+                java.util.Date parsedDate = dateFormat.parse(start);
+                startDate = new Timestamp(parsedDate.getTime());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            errorMsgs.add("開始日期請勿空白");//錯誤驗證
+        }
+
+        String end = req.getParameter("endDate");
+        if (end != null && !end.isEmpty()) {
+            try {
+                java.util.Date parsedDate2 = dateFormat.parse(end);
+                endDate = new Timestamp(parsedDate2.getTime());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            errorMsgs.add("結束日期請勿空白");//錯誤驗證
+        }
+
+        if (endDate != null && startDate != null) {
+            if (endDate.before(startDate)) {
+                errorMsgs.add("結束日期有誤");//錯誤驗證
+            }
+        }
+        description = req.getParameter("description");
+
+        ArrayList<String> success = new ArrayList<>();
+        if (description == null || description.trim().length() == 0) {
+            errorMsgs.add("描述請勿空白");//錯誤驗證
+        } else {
+            String test = "新增成功";
+            success.add(test);
+        }
+
+        if (!errorMsgs.isEmpty()) {
+            setJsonResponse(resp, errorMsgs);
+        } else {
+            setJsonResponse(resp, success);
+        }
+    }
+
     //新增促銷及對應的票券促銷明細
     private void doSave(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        resp.setCharacterEncoding("UTF-8");
         System.out.println("進入save方法");
-        List<String> errorMsgs = new LinkedList<String>();
-        req.setAttribute("errorMsgs", errorMsgs);
         String promoName = null;
         Timestamp startDate = null;
         Timestamp endDate = null;
@@ -171,12 +232,8 @@ public class ProServlet extends HttpServlet {
         try {
             //促銷
             promoName = req.getParameter("promoName");
-            if (promoName == null || promoName.trim().length() == 0) {
-                errorMsgs.add("票券名稱請勿空白");//錯誤驗證
-            }
-
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-
+            description = req.getParameter("description");
             String start = req.getParameter("startDate");
             if (start != null && !start.isEmpty()) {
                 try {
@@ -185,10 +242,7 @@ public class ProServlet extends HttpServlet {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else {
-                errorMsgs.add("開始日期請勿空白");//錯誤驗證
             }
-
             String end = req.getParameter("endDate");
             if (end != null && !end.isEmpty()) {
                 try {
@@ -197,16 +251,6 @@ public class ProServlet extends HttpServlet {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else {
-                errorMsgs.add("結束日期請勿空白");//錯誤驗證
-            }
-
-            if (endDate!=null && startDate!=null && endDate.before(startDate)) {
-                errorMsgs.add("結束日期有誤");//錯誤驗證
-            }
-            description = req.getParameter("description");
-            if (description == null || description.trim().length() == 0) {
-                errorMsgs.add("描述請勿空白");//錯誤驗證
             }
             Part picture = req.getPart("picture");
             if (picture != null && picture.getSize() > 0) {
@@ -248,14 +292,9 @@ public class ProServlet extends HttpServlet {
         }
 
         PromotionVO proVo = null;
-        if (errorMsgs.isEmpty()) {
             //新增一筆促銷物件
             proVo = new PromotionVO(null, promoName, startDate, endDate, description, pic);
-        }else{
-            resp.setContentType("text/html;charset=UTF-8");
-            req.getRequestDispatcher("/promotion/proAdd.jsp").forward(req, resp);
-            return;//程式中斷
-        }
+//        }
         //創建存放促銷明細的的票券編號集合及折扣
         String[] ticketIds = null;
         BigDecimal discount = null;
@@ -281,8 +320,6 @@ public class ProServlet extends HttpServlet {
     private void doModify(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         System.out.println("進入modify方法");
-        List<String> errorMsgs = new LinkedList<String>();
-        req.setAttribute("errorMsgs", errorMsgs);
         String promoName = null;
         Integer promotionId;
         Timestamp startDate = null;
@@ -295,9 +332,7 @@ public class ProServlet extends HttpServlet {
             //促銷
             promotionId = Integer.valueOf(req.getParameter("promotionId"));
             promoName = req.getParameter("promoName");
-            if (promoName == null || promoName.trim().length() == 0) {
-                errorMsgs.add("票券名稱請勿空白");
-            }
+
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
@@ -310,9 +345,8 @@ public class ProServlet extends HttpServlet {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else {
-                errorMsgs.add("開始日期請勿空白");
             }
+
 
             String end = req.getParameter("endDate");
             if (end != null && !end.isEmpty()) {
@@ -323,17 +357,10 @@ public class ProServlet extends HttpServlet {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else {
-                errorMsgs.add("結束日期請勿空白");
             }
 
-            if (endDate.before(startDate)) {
-                errorMsgs.add("結束日期有誤");
-            }
             description = req.getParameter("description");
-            if (description == null || description.trim().length() == 0) {
-                errorMsgs.add("描述請勿空白");
-            }
+
             Part picture2 = req.getPart("picture2");//上傳檔案
             base64Image = req.getParameter("base64Image");//原本圖片
             if (picture2 != null && picture2.getSize() > 0) {
@@ -359,11 +386,9 @@ public class ProServlet extends HttpServlet {
         }
 
         PromotionVO proVo = null;
-        if (errorMsgs.isEmpty()) {
             //新增一筆促銷物件
             proVo = new PromotionVO(promotionId, promoName, startDate, endDate, description, picture);
             System.out.println(proVo);
-        }
 
 
         //創建存放促銷明細的的票券編號集合及折扣
@@ -385,7 +410,7 @@ public class ProServlet extends HttpServlet {
             System.out.println("成功更新一筆促銷資料及多筆促銷明細");
         }
 
-            resp.sendRedirect(req.getContextPath() + "/pro/getAll");
+        resp.sendRedirect(req.getContextPath() + "/pro/getAll");
 
 
     }
@@ -423,18 +448,20 @@ public class ProServlet extends HttpServlet {
         setJsonResponse(resp, list);
 
     }
+
     //下架促銷方案
     private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        Integer proId=null;
-        try{
-            proId=Integer.valueOf(req.getParameter("proId"));
-        }catch(Exception e){
+        Integer proId = null;
+        try {
+            proId = Integer.valueOf(req.getParameter("proId"));
+        } catch (Exception e) {
             e.printStackTrace();
         }
         proSv.delete(proId);
-        setJsonResponse(resp,"刪除成功");
+        setJsonResponse(resp, "刪除成功");
     }
+
     protected void doImage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("image/jpeg");
         ServletOutputStream outputStream = resp.getOutputStream();
@@ -478,7 +505,6 @@ public class ProServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         resp.getWriter().write(jsonData);
     }
-
 
 
 }
