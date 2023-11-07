@@ -1,8 +1,9 @@
-package com.depthspace.ticketcollection.model;
+package com.depthspace.ticketcollection.model.old;
 
 import java.util.*;
 
 import com.depthspace.ticket.model.TicketVO;
+import com.depthspace.ticketcollection.model.TicketCollectionVO;
 
 public interface TicketCollectionDAO_Interface {
 	public void insert(TicketCollectionVO ticketCollectionVO);

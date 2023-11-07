@@ -1,9 +1,11 @@
 package com.depthspace.tour.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.depthspace.tour.model.TourDaysVO;
 import com.depthspace.tour.model.tour.TourVO;
 import com.depthspace.tour.model.tour.TourView;
 import com.depthspace.tour.model.tour.hibernate.HbTourDAOImpl;
@@ -18,15 +20,24 @@ public class TourService implements TourService_Interface{
 		dao = new HbTourDAOImpl(HibernateUtil.getSessionFactory());
 	}
 	@Override
-	public int insert(TourVO entity) {
-		// TODO Auto-generated method stub
-		return 0;
+	public TourVO insert(TourVO entity) {
+		TourVO tourvo = null;
+		//先新增一筆會員行程資料
+		dao.insert(entity);
+//		再找出會員資料的最後一筆(就會是剛才新增的行程)
+		tourvo= dao.getLastTourId(entity.getMemId());
+		//new 一個list集合把所有天數及會員編號放進去
+		List<TourDaysVO> tourDaysVO = new ArrayList<>();
+		TourDaysVO tdvo = new TourDaysVO();
+		tdvo.setTourId(tourvo.getTourId());
+		tdvo.setTourDays(null);
+		return null;
 	}
 
 	@Override
 	public int update(TourVO entity) {
-		// TODO Auto-generated method stub
-		return 0;
+		   dao.update(entity);
+		   return 0;
 	}
 
 	@Override

@@ -12,12 +12,12 @@
 <title>分帳表清單</title>
 	<style>
 		.btnContent {
-		    text-align: left; /* 居中对齐按钮 */
+		    text-align: left;
 		}
 		
 		.btnContent input[type="button"] {
-		    margin: 0 10px; /* 为按钮之间添加一些间距，可以根据需要调整 */
-    		width: 100px; /* 设置按钮宽度为100像素，可以根据需要调整 */
+		    margin: 0 10px;
+    		width: 100px;
 		    
 		}
 	</style>
@@ -69,7 +69,6 @@
     	 var accountId = $tr.find('td').eq(0).text();
     	 var accountName = $tr.find('td').eq(1).text();
     	 var memId = $tr.find('td').eq(2).text();
-//     	 // 使用URL參數將值傳送到update.jsp
     	 window.location.href = '<%=request.getContextPath()%>/account/update.jsp?accountId=' + accountId + '&accountName=' + accountName + '&memId=' + memId;
 	}
 </script>
