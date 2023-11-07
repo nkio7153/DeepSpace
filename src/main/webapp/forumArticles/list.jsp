@@ -38,7 +38,6 @@ $(document).ready(function() {
                     '</div>' +
                     '<ul class="list-group list-group-flush">' +                       
                         '<li class="list-group-item hidden-status">訊息ID: ' + item.msgId + '</li>' +
-                        '<li class="list-group-item hidden-status">文章狀態: ' + (item.artiStatus === 1 ? '啟用' : '禁用') + '</li>' +
                     '</ul>' +
                     '<div class="card-footer">' +
                         '<small class="text-muted">發布時間: ' + formattedDate + '</small>' +
@@ -105,7 +104,6 @@ $(document).ready(function() {
         <!-- 卡片內容將會通過 jQuery 動態加載到這裡 -->
     </div>
 </div>
-<!-- 引入 Bootstrap JS 和 Popper.js 依賴 -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <jsp:include page="../indexpage/footer.jsp" />
 </body>

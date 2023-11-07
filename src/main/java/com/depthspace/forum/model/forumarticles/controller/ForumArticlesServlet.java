@@ -75,23 +75,23 @@ public class ForumArticlesServlet extends HttpServlet {
 	private void addForumArticles(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
 		try {
+			req.setCharacterEncoding("UTF-8");
+			resp.setCharacterEncoding("UTF-8");
 			Integer memId = parseIntegerParameter(req.getParameter("memId"));
 			Integer msgId = parseIntegerParameter(req.getParameter("msgId"));
 			Integer artiTypeId = parseIntegerParameter(req.getParameter("artiTypeId"));
 			String artiTitle = req.getParameter("artiTitle");
 			String artiTimeStr = req.getParameter("artiTime");
 			Timestamp artiTime = parseTimestamp(artiTimeStr);
-			String artiText = req.getParameter("artiText");
+			String artiText =req.getParameter("artiText");
+			System.out.println("artiText"+artiText);
 			Integer artiLk = parseIntegerParameter(req.getParameter("artiLk"));
-			Integer artiStatus = parseIntegerParameter(req.getParameter("artiStatus"));
 			String artiImgStr = req.getParameter("artiImg");
 			byte[] artiImg = artiImgStr != null ? Base64.getDecoder().decode(artiImgStr) : null;
-
 			ForumArticlesVO forum = new ForumArticlesVO(null, memId, msgId, artiTypeId, artiTitle, artiTime, artiText,
-					artiLk, artiStatus, artiImg);
+					artiLk, artiImg);
 			forumArticlesService.insert(forum);
 			req.getRequestDispatcher("/forumArticles/list.jsp").forward(req, resp);
-
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input: " + e.getMessage());
@@ -102,7 +102,6 @@ public class ForumArticlesServlet extends HttpServlet {
 		if (param != null && !param.trim().isEmpty()) {
 			return Integer.parseInt(param);
 		} else {
-			// 可以选择返回默认值，例如 0，或继续抛出异常
 			return 0;
 		}
 	}
@@ -117,7 +116,6 @@ public class ForumArticlesServlet extends HttpServlet {
 				throw new IllegalArgumentException("Invalid timestamp format: " + timestampStr);
 			}
 		} else {
-			// 返回當前時間或其他默認值，或者拋出異常
 			return new Timestamp(System.currentTimeMillis());
 		}
 	}

@@ -11,54 +11,27 @@
 <title>新增論壇文章</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4" crossorigin="anonymous"></script>
 <script>
-    function processAddSave() {
-    	   	
-        // 收集論壇文章資料
-        var artiTitle = document.getElementById("artiTitle").value;
-        var memId = document.getElementById("memId").value;
-        var msgId = document.getElementById("msgId").value;
-        var artiTypeId = document.getElementById("artiTypeId").value;
-        var artiTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        document.getElementById("artiTime").value = artiTime;
-        var artiText = document.getElementById("artiText").value;
-        var artiLk = document.getElementById("artiLk").value;
-        var artiStatus = document.getElementById("artiStatus").value;
-        var artiImgStr = document.getElementById("artiImg").value;
+function handleFileSelect(evt) {
+    var fileInput = evt.target;
+    if (fileInput.files && fileInput.files[0]) {
+        var file = fileInput.files[0];
 
-        $.ajax({
-            type: 'post',
-            data: $('#addForm').serialize(),
-            url: '<%=request.getContextPath()%>/forumArticles.do?action=add',
-            success: function(data) {
-                alert('新增成功');
-                window.location.href = '<%=request.getContextPath()%>/forumArticles/list.jsp';
-            }
-        });
-    }
-    function handleFileSelect(evt) {
-        var fileInput = evt.target;
-        if (fileInput.files && fileInput.files[0]) {
-            var file = fileInput.files[0];
-
-            if (file.type !== "image/jpeg") {
-                alert("只能選擇 JPG 檔案");
-                return;
-            }
-
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                var preview = document.getElementById("preview");
-                var artiImg = document.getElementById("artiImg");
-
-                artiImg.value = e.target.result;
-                preview.src = e.target.result;
-                preview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        } else {
-            alert("未選擇檔案或不支持的檔案類型");
+        if (file.type !== "image/jpeg") {
+            alert("只能選擇 JPG 檔案");
+            return;
         }
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var preview = document.getElementById("preview");
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    } else {
+        alert("未選擇檔案或不支持的檔案類型");
     }
+}
 </script>
 <style>
         body {
@@ -110,7 +83,7 @@
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp" />
 <div id="Add">
-    <form id="addForm" method="Post">
+    <form id="addForm" method="Post" action="${pageContext.request.contextPath}/forumArticles.do?action=add" enctype="multipart/form-data">
         <table>
             <tr>
                 <th>會員ID</th>
@@ -136,10 +109,7 @@
                 <th>讚數</th>
                 <td><input type="text" name="artiLk" id="artiLk"></td>
             </tr>
-            <tr>
-                <th>文章狀態</th>
-                <td><input type="text" name="artiStatus" id="artiStatus"></td>
-            </tr>
+           
             <tr>
                 <th>文章圖片</th>
                 <td>
@@ -149,9 +119,9 @@
 				</td>
            </tr>
             </table>
-            <input type="hidden" name="artiTime" id="artiTime">
-            <input type="button" id="btnAddSave" value="儲存" onclick="processAddSave();">
-            <input type="button" id="btnCancel" value="取消" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles/list.jsp'">
+        <input type="hidden" name="artiTime" id="artiTime" value="<%= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) %>">
+        <input type="submit" id="btnAddSave" value="儲存">
+        <input type="button" id="btnCancel" value="取消" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles/list.jsp'">
         </form>
 </div>
 <jsp:include page="../indexpage/footer.jsp" />
