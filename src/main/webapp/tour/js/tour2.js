@@ -21,8 +21,12 @@
 	    		   			  	<div class="col-md-12 d-flex justify-content-center">
 	    		   			    	<label for="attractionTime">時間:</label>
 	    		   			    	<input type="time" name="attractionTime" style="margin-right: 10px;" required>
-	    		   			    	<input type="text" name="attraction" class="attraction" required placeholder="輸入景點" 
-	    	   			     			onfocus="clearPlaceholder(this)" onblur="restorePlaceholder(this)">
+	    		   			    	<label style="margin-left: 10px;">你要去哪兒?</label>
+								        <select name="attractions" id="attractions"  style="margin-left: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #f5f5f5; font-family: Arial; font-size: 14px;">
+								            <c:forEach var="attraction" items="${data}">
+								                <option value="${attraction.attractionsId}">${attraction.attractionName}</option>
+								            </c:forEach>
+								        </select>
 	    	   			   			<br>
 	    	   			   		</div>
 	    	   			  	</div>
@@ -124,3 +128,17 @@
 		$('body').on('click', '.circle2', function() {
 			$(this).closest(".row").remove();
 		});
+		
+		$("#city").on("change" , function(){
+//			先抓取該鎮縣市的景點
+		})
+		
+		
+		
+//		change需測試
+		$(document).on("change" , "select.attraction" , function(){
+//			
+		})
+		
+		
+		

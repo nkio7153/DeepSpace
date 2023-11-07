@@ -68,8 +68,31 @@ public class TourServlet extends HttpServlet {
 		case "/getArea":
 			doGetArea(req, resp);
 			break;
+		case "/getAttractions":
+			doGetAttractions(req, resp);
+			break;
 		}
 
+	}
+
+//	ajax傳遞找尋景點選項
+	private void doGetAttractions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		//依據cityId找尋對應的areaId及name的集合
+				Integer cityId;
+				
+				try {
+					cityId =  Integer.valueOf(req.getParameter("cityId"));
+//					System.out.println("cityId="+cityId);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return;
+				}
+				
+				List<AreaVO> list = as.getAllArea(cityId);
+//				System.out.println("list="+list);
+
+		        setJsonResponse(resp, list);
+		
 	}
 
 	private void doaddTour(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

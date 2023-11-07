@@ -181,44 +181,69 @@
                 <option value="${cityList.cityId}">${cityList.cityName}</option>
             </c:forEach>
         </select>
-        <!-- 		下拉式選單:選擇地區 -->
-        <label style="margin-left: 10px;">選擇你想搜尋的地區:</label>
-        <select name="area" id="area"  style="margin-left: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #f5f5f5; font-family: Arial; font-size: 14px;">
-            <c:forEach var="area" items="${data}">
-                <option value="${area.areaId}">${area.areaName}</option>
-            </c:forEach>
-        </select>
+<!--         		下拉式選單:選擇地區 -->
+<!--         <label style="margin-left: 10px;">選擇你想搜尋的地區:</label> -->
+<!--         <select name="area" id="area"  style="margin-left: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #f5f5f5; font-family: Arial; font-size: 14px;"> -->
+<%--             <c:forEach var="area" items="${data}"> --%>
+<%--                 <option value="${area.areaId}">${area.areaName}</option> --%>
+<%--             </c:forEach> --%>
+<!--         </select> -->
         <div class="tourdays" id="tourdays"></div>
         <!-- 		讓總天數也可以傳到servlet -->
         <input type="hidden" name="tripDuration" id="tripDurationInput" value="">
         <input type="submit" name="newTour" id="newTour" value="儲存行程">
     </form>
     <script>
-    $("#city").on("change",function(){
-    	let cityId=$("#city").find("option:selected").val();
-//         console.log(cityId);
-        let url="${pageContext.request.contextPath}/tr/getArea?cityId="+cityId;
-        fetch(url)
-                .then(function(response){
-                  return response.json();
-                })
-                .then(function(data){
-//                   console.log(data);
-                  let areaSelect = $("#area");
-//               要先清空原本選項
-                  areaSelect.empty();
-               // 遍歷從伺服器獲取的地區資料，並動態生成選項
-                  data.forEach(function(area){
-                      let option = document.createElement("option");
-                      option.value = area.areaId;
-                      option.text = area.areaName;
-                      areaSelect.append(option);
-                  });
-                })
-                .catch(function(error){
-                  console.log(error);
-                })
-      });
+//     $("#city").on("change",function(){
+//     	let cityId=$("#city").find("option:selected").val();
+// //         console.log(cityId);
+//         let url="${pageContext.request.contextPath}/tr/getArea?cityId="+cityId;
+//         fetch(url)
+//                 .then(function(response){
+//                   return response.json();
+//                 })
+//                 .then(function(data){
+// //                   console.log(data);
+//                   let areaSelect = $("#area");
+// //               要先清空原本選項
+//                   areaSelect.empty();
+//                // 遍歷從伺服器獲取的地區資料，並動態生成選項
+//                   data.forEach(function(area){
+//                       let option = document.createElement("option");
+//                       option.value = area.areaId;
+//                       option.text = area.areaName;
+//                       areaSelect.append(option);
+//                   });
+//                 })
+//                 .catch(function(error){
+//                   console.log(error);
+//                 })
+//       });
+		 $("#city").on("change",function(){
+		    	let cityId=$("#city").find("option:selected").val();
+		//         console.log(cityId);
+		        let url="${pageContext.request.contextPath}/tr/getAttractions?cityId="+cityId;
+		        fetch(url)
+		                .then(function(response){
+		                  return response.json();
+		                })
+		                .then(function(data){
+		                  console.log(data);
+		                  let attractionsSelect = $("#attractions");
+		               // 要先清空原本選項
+		                  attractionsSelect.empty();
+		               // 遍歷從伺服器獲取的景點資料，並動態生成選項
+		                  data.forEach(function(attractions){
+		                      let option = document.createElement("option");
+		                      option.value = attraction.attractionsId;
+		                      option.text = attraction.attractionName;
+		                      attractionsSelect.append(option);
+		                  });
+		                })
+		                .catch(function(error){
+		                  console.log(error);
+		                })
+		      });
     </script>
     <script src="${pageContext.request.contextPath}/tour/js/tour2.js"></script>
     <jsp:include page="../indexpage/footer.jsp" />
