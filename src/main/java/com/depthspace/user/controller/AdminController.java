@@ -9,33 +9,33 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.depthspace.user.dto.UserLoginRequest;
-import com.depthspace.user.dto.UserRegisterRequest;
-import com.depthspace.user.model.User;
-import com.depthspace.user.service.UserService;
+import com.depthspace.user.dto.AdminLoginRequest;
+import com.depthspace.user.dto.AdminRegisterRequest;
+import com.depthspace.user.model.Admin;
+import com.depthspace.user.service.AdminService;
 
 import javax.validation.Valid;
 
 @Validated
 @CrossOrigin(origins = "http://localhost:8080") // 假設你的前端跑在 localhost:8080
 @RestController
-public class UserController {
+public class AdminController {
 
     @Autowired
-    private UserService userService;
+    private AdminService adminService;
 
     @PostMapping("/users/register")
-    public ResponseEntity<User> register(@RequestBody @Valid UserRegisterRequest userRegisterRequest) {
-        Integer userId = userService.register(userRegisterRequest);
+    public ResponseEntity<Admin> register(@RequestBody @Valid AdminRegisterRequest adminRegisterRequest) {
+        Integer userId = adminService.register(adminRegisterRequest);
 
-        User user = userService.getUserById(userId);
+        Admin user = adminService.getUserById(userId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PostMapping("/users/login")
-    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userLoginRequest) {
-       User user = userService.login(userLoginRequest);
+    public ResponseEntity<Admin> login(@RequestBody @Valid AdminLoginRequest adminLoginRequest) {
+       Admin user = adminService.login(adminLoginRequest);
 
        return ResponseEntity.status(HttpStatus.OK).body(user);
     }

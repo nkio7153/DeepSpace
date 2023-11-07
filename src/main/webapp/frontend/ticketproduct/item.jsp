@@ -27,6 +27,15 @@
 .fa-star, .fa-star-half-alt {
 	border: none;
 }
+/* 加入購物車的閃爍 */
+.flash-effect {
+    animation: flash-animation 1s;
+}
+
+@keyframes flash-animation {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
 </style>
 <!-- Leaflet的JS -->
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
@@ -46,14 +55,14 @@ $(document).ready(function() {
             var img = $("<img>")
                 .attr("src", "<%=request.getContextPath()%>/ticketallimage?action=getImage&imageId="  + id + "&ticketId=" + ticketId)
                 .addClass("d-block w-100 rounded")
-                .css("height", "350px")
+                .css("height", "500px")
                 .css("object-fit", "cover");
 
             carouselItem.append(img);
             carouselInner.append(carouselItem);
         });
     });
-	
+}); 	
 //收藏動態
     $(document).ready(function() {
         $("#favoriteIcon").click(function() {
@@ -65,22 +74,26 @@ $(document).ready(function() {
         });
     });
    
-//購物車加入
-  $(".btn").on("click",function(){
-	let url = "${pageContext.request.contextPath}/tsc/save?ticketId=" + ${ticket.ticketId} + "&memId=1";
-    fetch(url)
-            .then(function(response){
-              return response.text();
+ // 購物車加入
+    $(".btn").on("click", function() {
+        let button = $(this);
+        let url = "${pageContext.request.contextPath}/tsc/save?ticketId=" + ${ticket.ticketId} + "&memId=1";
+        fetch(url)
+            .then(function(response) {
+                return response.text();
             })
-            .then(function(data){
-              console.log(data);
+            .then(function(data) {
+                console.log(data);
+                button.addClass('flash-effect');
+                // 1 秒後移除閃爍效果
+                setTimeout(() => {
+                    button.removeClass('flash-effect');
+                }, 1000);
             })
-            .catch(function(error){
-              console.log(error);
-            })
-  })
-});
-
+            .catch(function(error) {
+                console.log(error);
+            });
+    });
 //地圖
 $(document).ready(function() {
     // 初始化
@@ -102,7 +115,7 @@ $(document).ready(function() {
             console.error('Invalid latitude or longitude for ticketVO.');
         }
     <%} else {%>
-        console.error('TicketVO object not found in request.');
+        console.error('TicketVO not found in request.');
     <%}%>
 });
 </script>
@@ -122,9 +135,9 @@ $(document).ready(function() {
 			<div class="col-12">
 				<nav aria-label="breadcrumb">
 					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="#">首頁</a></li>
-						<li class="breadcrumb-item"><a href="#">商品</a></li>
-						<li class="breadcrumb-item active" aria-current="page">商品名稱</li>
+						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/ticketproduct/">首頁</a></li>
+						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/ticketproduct/list">票券列表</a></li>
+						<li class="breadcrumb-item active" aria-current="page">${ticket.ticketName}</li>
 					</ol>
 				</nav>
 			</div>
@@ -198,85 +211,83 @@ $(document).ready(function() {
 							</select>
 						</div>
 					</div>
-					<!-- Add to Cart Button -->
+					<!-- 加入購物車 -->
 					<div class="row mb-4">
 						<div class="col-12">
 							<button class="btn btn-dark btn-lg btn-block">加入購物車</button>
 						</div>
 					</div>
 				</div>
-			  </div>
 			</div>
-			<!-- 商品描述、位置、評價 -->
-			<div class="row mt-5">
-				<div class="col-12">
-					<h4>票券介紹</h4>
-					<p>${ticket.description}</p>
-				</div>
+		</div>
+		<!-- 商品描述、位置、評價 -->
+		<div class="row mt-5">
+			<div class="col-12">
+				<h4>票券介紹</h4>
+				<p>${ticket.description}</p>
 			</div>
-
-			<div class="row mt-5">
-				<div class="col-12">
-					<h4>位置資訊</h4>
-
-					<div id="map" style="width: 100%; height: 400px;"></div>
-				</div>
-			</div>
-
-			<div class="row mt-5">
-				<div class="col-12">
-					<h4>使用者評價</h4>
-					<c:forEach var="reviews" items="${reviews}">
-						<div class="review border-top py-3">
-							<strong>${review.userName}匿名用戶</strong>
-							<div>
-								<!-- 實星 -->
-								<c:forEach begin="1" end="${reviews.stars}" var="i">
-									<i class="fas fa-star gold-star"></i>
-								</c:forEach>
-								<!-- 半星 -->
-								<c:if test="${reviews.stars % 1 != 0}">
-									<i class="fas fa-star-half-alt gold-star"></i>
-									<!-- 有半星就+ -->
-									<c:set var="emptyStarsStart"
-										value="${Math.floor(reviews.stars) + 2}" />
-								</c:if>
-								<!-- 沒有半星就往下一個數 -->
-								<c:if test="${reviews.stars % 1 == 0}">
-									<c:set var="emptyStarsStart" value="${reviews.stars + 1}" />
-								</c:if>
-								<!-- 空星 -->
-								<c:forEach begin="${emptyStarsStart}" end="5" var="j">
-									<i class="far fa-star gold-star"></i>
-								</c:forEach>
-							</div>
-							<p>${reviews.ticketReviews}</p>
-						</div>
-					</c:forEach>
-				</div>
-			</div>
-
 		</div>
 
-		<script
-			src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-		<script
-			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-		<script>
+		<div class="row mt-5">
+			<div class="col-12">
+				<h4>位置資訊</h4>
+				<p>${ticket.address}</p>
+				<div id="map" style="width: 100%; height: 500px;"></div>
+			</div>
+		</div>
+
+		<div class="row mt-5">
+			<div class="col-12">
+				<h4>使用者評價</h4>
+				<c:forEach var="reviews" items="${reviews}">
+					<div class="review border-top py-3">
+						<strong>${review.userName}匿名用戶</strong>
+						<div>
+							<!-- 實星 -->
+							<c:forEach begin="1" end="${reviews.stars}" var="i">
+								<i class="fas fa-star gold-star"></i>
+							</c:forEach>
+							<!-- 半星 -->
+							<c:if test="${reviews.stars % 1 != 0}">
+								<i class="fas fa-star-half-alt gold-star"></i>
+								<!-- 有半星就+ -->
+								<c:set var="emptyStarsStart"
+									value="${Math.floor(reviews.stars) + 2}" />
+							</c:if>
+							<!-- 沒有半星就往下一個數 -->
+							<c:if test="${reviews.stars % 1 == 0}">
+								<c:set var="emptyStarsStart" value="${reviews.stars + 1}" />
+							</c:if>
+							<!-- 空星 -->
+							<c:forEach begin="${emptyStarsStart}" end="5" var="j">
+								<i class="far fa-star gold-star"></i>
+							</c:forEach>
+						</div>
+						<p>${reviews.ticketReviews}</p>
+					</div>
+				</c:forEach>
+			</div>
+		</div>
+
+	</div>
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script>
+//地圖
     $(document).ready(function() {
- 
-        // 初始化地图
+        // 初始化
         function initMap(latitude, longitude) {
-            
            
-var map = L.map('map').setView([latitude, longitude], 13);
+		var map = L.map('map').setView([latitude, longitude], 13);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
             var marker = L.marker([latitude, longitude]).addTo(map);
         }
 
-        // 假设ticketVO对象通过服务器端代码传递到JSP，并存在于页面中
         <%if (request.getAttribute("ticket") != null) {%>
             var ticketVO = {
                 latitude: ${ticket.latitude},
@@ -284,12 +295,12 @@ var map = L.map('map').setView([latitude, longitude], 13);
             };
             initMap(ticket.latitude, ticket.longitude);
         <%} else {%>
-            console.error('ticketVO对象未在请求中找到！');
+            console.error('找不到');
         <%}%>
     });
 </script>
 
-		<jsp:include page="/indexpage/footer.jsp" />
+	<jsp:include page="/indexpage/footer.jsp" />
 </body>
 
 </html>

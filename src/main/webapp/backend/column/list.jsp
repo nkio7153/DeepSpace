@@ -64,7 +64,7 @@ td {
 <body>
 
 	<div class="container mt-5">
-		<!-- 新增票券 -->
+		<!-- 新增 -->
 		<form method="get" action="<%=request.getContextPath()%>/columnmg/add">
 			<button class="btn btn-primary" type="submit">新增</button>
 		</form>

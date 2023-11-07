@@ -24,7 +24,7 @@
                             <a class="" href="${pageContext.request.contextPath}/ticketproduct/list">票券</a>
                         </li>
                         <li class="nav-item">
-                            <a class="" href="#">論壇文章</a>
+                            <a class="" href="${pageContext.request.contextPath}/forumArticles/list.jsp">論壇文章</a>
                         </li>
                         <li class="nav-item">
                             <a class="" href="#">餐廳</a>

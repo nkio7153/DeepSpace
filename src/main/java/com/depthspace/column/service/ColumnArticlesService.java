@@ -1,6 +1,7 @@
 package com.depthspace.column.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.depthspace.admin.model.model.AdminVO;
 import com.depthspace.column.dao.ColumnArticlesDAO;
@@ -29,5 +30,7 @@ public interface ColumnArticlesService {
 	List<AdminVO> getAllAdmins();
 	
 	int getPageTotal();
+	
+	List<ColumnArticlesVO> getColumnArticlesByCompositeQuery(Map<String, String[]> queryMap);
 
 }

@@ -7,10 +7,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import com.depthspace.user.rowmapper.UserRowMapper;
-import com.depthspace.user.dao.UserDao;
-import com.depthspace.user.dto.UserRegisterRequest;
-import com.depthspace.user.model.User;
+import com.depthspace.user.rowmapper.AdminRowMapper;
+import com.depthspace.user.dao.AdminDao;
+import com.depthspace.user.dto.AdminRegisterRequest;
+import com.depthspace.user.model.Admin;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -18,20 +18,20 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class UserDaoImpl implements UserDao {
+public class AdminDaoImpl implements AdminDao {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public User getUserById(Integer userId) {
+    public Admin getUserById(Integer userId) {
         String sql = "SELECT user_id, email, password, created_date, last_modified_date " +
                 "FROM user WHERE user_id = :userId";
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
 
-        List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
+        List<Admin> userList = namedParameterJdbcTemplate.query(sql, map, new AdminRowMapper());
 
         if (userList.size() > 0) {
             return userList.get(0);
@@ -41,14 +41,14 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUserByEmail(String email) {
+    public Admin getUserByEmail(String email) {
         String sql = "SELECT user_id, email, password, created_date, last_modified_date " +
                 "FROM user WHERE email = :email";
 
         Map<String, Object> map = new HashMap<>();
         map.put("email", email);
 
-        List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
+        List<Admin> userList = namedParameterJdbcTemplate.query(sql, map, new AdminRowMapper());
 
         if (userList.size() > 0) {
             return userList.get(0);
@@ -58,13 +58,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Integer createUser(UserRegisterRequest userRegisterRequest) {
+    public Integer createUser(AdminRegisterRequest adminRegisterRequest) {
         String sql = "INSERT INTO user(email, password, created_date, last_modified_date) " +
                 "VALUES (:email, :password, :createdDate, :lastModifiedDate)";
 
         Map<String, Object> map = new HashMap<>();
-        map.put("email", userRegisterRequest.getEmail());
-        map.put("password", userRegisterRequest.getPassword());
+        map.put("email", adminRegisterRequest.getEmail());
+        map.put("password", adminRegisterRequest.getPassword());
 
         Date now = new Date();
         map.put("createdDate", now);

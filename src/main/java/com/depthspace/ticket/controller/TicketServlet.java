@@ -327,14 +327,22 @@ public class TicketServlet extends HttpServlet {
 	/************ 圖片讀入DB ************/
 
 	public byte[] readInputStream(InputStream inputStream) throws IOException {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		byte[] buffer = new byte[1024];
-		int bytesRead;
-
-		while ((bytesRead = inputStream.read(buffer)) != -1) {
-			outputStream.write(buffer, 0, bytesRead);
-		}
-
-		return outputStream.toByteArray();
+//		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//		byte[] buffer = new byte[1024];
+//		int bytesRead;
+//
+//		while ((bytesRead = inputStream.read(buffer)) != -1) {
+//			outputStream.write(buffer, 0, bytesRead);
+//		}
+//
+//		return outputStream.toByteArray();
+	    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+	    int nRead;
+	    byte[] data = new byte[1024];
+	    while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+	        buffer.write(data, 0, nRead);
+	    }
+	    buffer.flush();
+	    return buffer.toByteArray();
 	}
 }
