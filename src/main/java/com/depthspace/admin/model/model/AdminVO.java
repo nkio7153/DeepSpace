@@ -8,27 +8,50 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="ADMIN")
+@Table(name = "ADMIN")
 
 public class AdminVO {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) //AI鍵要加
-	@Column(name="ADMIN_ID", updatable = false)
-	private Integer adminId;
-	
-	@Column(name="ADMIN_NAME")
-	private String adminName;
-	
-	@Column(name="ADMIN_ACC")
-	private String adminAcc;
-	
-	@Column(name="ADMIN_PWD")
-	private String adminPwd;
-	
-	@Column(name="ADMIN_STATUS" , columnDefinition = "TINYINT")
-	private Integer adminStatus;
-	
 
+	public enum AdminStatus {
+		NO_ACCESS(0), GENERAL_ADMIN(1), RESTAURANT_ADMIN(2), SUPER_ADMIN(99);
+
+		private final int value;
+
+		AdminStatus(int value) {
+			this.value = value;
+		}
+
+		public int getValue() {
+			return this.value;
+		}
+
+		// 添加一個從int到enum的轉換方法
+		public static AdminStatus fromInt(int value) {
+			for (AdminStatus status : AdminStatus.values()) {
+				if (status.getValue() == value) {
+					return status;
+				}
+			}
+			throw new IllegalArgumentException("No constant with value " + value + " found");
+		}
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // AI鍵要加
+	@Column(name = "ADMIN_ID", updatable = false)
+	private Integer adminId;
+
+	@Column(name = "ADMIN_NAME")
+	private String adminName;
+
+	@Column(name = "ADMIN_ACC")
+	private String adminAcc;
+
+	@Column(name = "ADMIN_PWD")
+	private String adminPwd;
+
+	@Column(name = "ADMIN_STATUS", columnDefinition = "TINYINT")
+	private Integer adminStatus;
 
 	public Integer getAdminId() {
 		return adminId;
@@ -60,7 +83,7 @@ public class AdminVO {
 
 	public void setAdminPwd(String adminPwd) {
 		this.adminPwd = adminPwd;
-		
+
 	}
 
 	public Integer getAdminStatus() {
@@ -71,11 +94,11 @@ public class AdminVO {
 		this.adminStatus = adminStatus;
 	}
 
-	@Override
-	public String toString() {
-		return "AdminVO [adminId=" + adminId + ", adminName=" + adminName + ", adminAcc=" + adminAcc + ", adminPwd="
-				+ adminPwd + ", adminStatus=" + adminStatus + "]";
+	public AdminStatus getAdminStatusEnum() {
+		return AdminStatus.fromInt(this.adminStatus);
 	}
-		
-	
+
+	public void setAdminStatusEnum(AdminStatus adminStatus) {
+		this.adminStatus = adminStatus.getValue();
+	}
 }

@@ -1,21 +1,18 @@
 package com.depthspace.admin.model.model;
 
 import java.util.List;
-import java.util.Map;
 
 public interface AdminDAO {
 
-	int insert(AdminVO entity);
+	int insert(AdminVO adminVO);
 
-	int update(AdminVO entity);
+	int update(AdminVO adminVO);
 	
-	int delete(AdminVO id);
+	int delete(Integer id);
 	 
 	AdminVO getById(Integer id);
 	
 	List<AdminVO> getAll();
-	
-	List<AdminVO> getByCompositeQuery(Map<String, String> map);
 	
 	List<AdminVO> getAll(int currentPage);
 	

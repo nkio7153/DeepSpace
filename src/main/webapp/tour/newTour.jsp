@@ -148,7 +148,7 @@
 	<jsp:include page="../indexpage/headpic.jsp" />
 	<h1 style="font-size: 24px; color: #333; text-align: center;">旅遊行程列表新增</h1>
 	
-	<form action="${pageContext.request.contextPath}/tr/addTour" method="post" id="form">
+	<form action="${pageContext.request.contextPath}/tr/save" method="post" id="form">
 	<!-- 	存會員編號 -->
 	<input type="hidden" name="memId" value="${param.memId}">
 
@@ -157,12 +157,16 @@
 		
 		<label for="tourDescription">為你規劃的行程寫下簡介吧!</label>
 		<br>
-		<textarea rows="2" cols="100" name="tourDescription" value="${tr.tourDescription}" ></textarea>
+		<textarea rows="2" cols="100" name="tourDescription" ></textarea>
 		<br>
 		
-<!-- 		下拉式選單 -->
+<!-- 		下拉式選單:行程類型 -->
 		<label style="margin-left: 10px;">選擇旅遊行程類型:</label>
-  		<select name="tourType" id="tourType" style="margin-left: 10px;"></select>
+  		<select name="tourType" id="tourType" style="margin-left: 10px;">
+	  		<c:forEach var="tourType" items="${list}">
+	            <option value="${tourType.tourTypeId}">${tourType.tourTypName}</option>
+	        </c:forEach>
+  		</select>
 		
 		<div class="form-container">
 			<div class="left-div">
@@ -177,18 +181,50 @@
 		</div>
 
 		<label for="tripDuration" id="tripDuration">總天數:</label>
-		<br><br>
+		<br><br>	
 		
 		<div class="tourdays" id="tourdays">
-			
 		</div>
 		
 <!-- 		讓總天數也可以傳到servlet -->
 		<input type="hidden" name="tripDuration" id="tripDurationInput" value="">
-		<input type="submit" name="newTour" id="newTour" value="儲存行程" >
+		<input type="submit" name="newTour" id="newTour" value="進行下一步" >
 	</form>
 
-	<script src = "${pageContext.request.contextPath}/tour/js/tour.js"></script>
+	<script>
+	// 更新日期及計算天數
+	function updateDurationSelect() {
+		var startDateInput = document.querySelector("input[name='startDate']");
+		var endDateInput = document.querySelector("input[name='endDate']");
+		var tripDuration = document.getElementById("tripDuration");
+		//	    var selectedDays = document.getElementById("selectedDays");
+		var tourdays = document.getElementById("tourdays");
+		var tripDurationInput = document.getElementById("tripDurationInput");
+
+		if (startDateInput.value && endDateInput.value) {
+			var startDate = new Date(startDateInput.value);
+			var endDate = new Date(endDateInput.value);
+
+			var timeDiff = Math.abs(endDate - startDate);
+			var daysDifference = Math.ceil(timeDiff / (1000 * 3600 * 24) + 1);
+
+			tripDuration.innerText = "總天數: 共 " + daysDifference + " 天";
+			tripDurationInput.value = daysDifference;
+
+			// 清除先前的 tourdays 内容
+			tourdays.innerHTML = "";
+
+		} else {
+			tripDuration.innerText = "總天數:";
+			//	        selectedDays.innerHTML = "";
+			tourdays.innerHTML = ""; // 清除 tourdays 内容
+		}
+	}
+	// 添加日期選擇框的事件監聽器
+	document.querySelector("input[name='startDate']").addEventListener("change", updateDurationSelect);
+	document.querySelector("input[name='endDate']").addEventListener("change", updateDurationSelect);
+	</script>
+<%-- 	<script src = "${pageContext.request.contextPath}/tour/js/tour.js"></script> --%>
 	<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

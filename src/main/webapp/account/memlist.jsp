@@ -118,8 +118,8 @@ input[type="button"] {
 </script>
 </head>
 <body>
-    <jsp:include page="../indexpage/header.jsp" />
-    <jsp:include page="../indexpage/headpic.jsp" />
+<jsp:include page="../indexpage/header.jsp" />
+<jsp:include page="../indexpage/headpic.jsp" />
 <h1 align="center">會員分帳表列表</h1>
 <hr>
 <table border="1px" align="center" width="80%">

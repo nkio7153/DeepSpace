@@ -6,7 +6,7 @@ import com.depthspace.tour.model.tour.TourVO;
 import com.depthspace.tour.model.tour.TourView;
 
 public interface TourService_Interface {
-	int insert(TourVO entity);
+	TourVO insert(TourVO entity);
 	int update(TourVO entity);
 	int delete(Integer tourId);
 	
