@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import com.depthspace.attractions.model.AreaVO;
 import com.depthspace.attractions.model.CityVO;
 import com.depthspace.attractions.service.AreaService;
@@ -19,6 +22,7 @@ import com.depthspace.tour.model.tour.TourView;
 import com.depthspace.tour.model.tourtype.TourTypeVO;
 import com.depthspace.tour.service.TourService;
 import com.depthspace.tour.service.TourTypeService;
+import com.depthspace.utils.HibernateUtil;
 import com.google.gson.Gson;
 
 @WebServlet({ "/tr/*" })
@@ -34,7 +38,6 @@ public class TourServlet extends HttpServlet {
 		tts = new TourTypeService();
 		cs = new CityService();
 		as = new AreaService();
-//		System.out.println("成功開啟");
 	}
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -45,7 +48,7 @@ public class TourServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 		String pathInfo = req.getPathInfo();
-		System.out.println("pathInfo=" + pathInfo);
+//		System.out.println("pathInfo=" + pathInfo);
 		switch (pathInfo) {
 		case "/tourList":
 			doTourList(req, resp);
@@ -63,7 +66,7 @@ public class TourServlet extends HttpServlet {
 			doaddTour(req, resp);
 			break;
 		case "/getArea":
-			dogetArea(req, resp);
+			doGetArea(req, resp);
 			break;
 		}
 
@@ -111,18 +114,17 @@ public class TourServlet extends HttpServlet {
 		
 		TourTypeVO ttvo = new TourTypeVO();
 		ttvo = tts.findByPrimaryKey(tourTypeId);
-//		System.out.println("ttvo= " + ttvo);
 		
 		//尋找所有縣市
 		List<CityVO> cityList = cs.getAll();
-//		System.out.println("list=" + list);
-		
 		//尋找所有縣市及景點
-		List<AreaVO> areaList = as.getAll();
+		List<AreaVO> data = as.getAllArea(101);
 		
-		
+		//設定所有縣市
 		req.setAttribute("cityList", cityList);
-		req.setAttribute("areaList", areaList);
+		//找尋地區 預設為台北市，其他縣市則由ajax去發送請求
+		req.setAttribute("data", data);
+		//傳送上一個頁面新增的物件到下一個頁面顯示
 		req.setAttribute("tourVO", tourVO);
 		//設定對應的行程類型
 		req.setAttribute("ttvo", ttvo);
@@ -169,20 +171,25 @@ public class TourServlet extends HttpServlet {
 
 		req.getRequestDispatcher("/tour/memTourList.jsp").forward(req, resp);
 	}
-	
-	private void dogetArea(HttpServletRequest req, HttpServletResponse resp) {
+//	ajax傳遞找尋縣市選項
+	private void doGetArea(HttpServletRequest req, HttpServletResponse resp) throws  ServletException, IOException {
 		//依據cityId找尋對應的areaId及name的集合
 		Integer cityId;
+		
 		try {
 			cityId =  Integer.valueOf(req.getParameter("cityId"));
+//			System.out.println("cityId="+cityId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
-		List<AreaVO> areaList = as.getAllArea(cityId);
 		
-	}
+		List<AreaVO> list = as.getAllArea(cityId);
+//		System.out.println("list="+list);
+
+        setJsonResponse(resp, list);
 	
+	}
 	
 	//fetch返回json格式
     private void setJsonResponse(HttpServletResponse resp, Object obj) throws IOException {
@@ -193,3 +200,4 @@ public class TourServlet extends HttpServlet {
         resp.getWriter().write(jsonData);
     }
 }
+

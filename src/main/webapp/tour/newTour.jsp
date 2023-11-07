@@ -188,7 +188,7 @@
 		
 <!-- 		讓總天數也可以傳到servlet -->
 		<input type="hidden" name="tripDuration" id="tripDurationInput" value="">
-		<input type="submit" name="newTour" id="newTour" value="儲存行程" >
+		<input type="submit" name="newTour" id="newTour" value="進行下一步" >
 	</form>
 
 	<script src = "${pageContext.request.contextPath}/tour/js/tour.js"></script>

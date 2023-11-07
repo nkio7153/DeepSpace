@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import com.depthspace.attractions.model.AreaVO;
 import com.depthspace.attractions.model.CityVO;
@@ -15,7 +16,9 @@ public class AreaDAOImpl implements AreaDAO_Interface{
     public AreaDAOImpl(SessionFactory factory) {
         this.factory = factory;
     }
-    //取得當前session
+    public AreaDAOImpl() {
+	}
+	//取得當前session
     private Session getSession() {
         return factory.getCurrentSession();
     }
@@ -44,11 +47,16 @@ public class AreaDAOImpl implements AreaDAO_Interface{
 
 	@Override
 	public List<AreaVO> getAll() {
-		return getSession().createQuery("from AreaVO",AreaVO.class).list();
+		return getSession().createQuery("FROM AreaVO",AreaVO.class).list();
 	}
 	@Override
 	public List<AreaVO> getAllArea(Integer cityId) {
-		return getSession().createQuery("from AreaVO",AreaVO.class).list();
+		
+		Query<AreaVO> query = getSession().createQuery("FROM AreaVO WHERE cityId = :cityId", AreaVO.class);
+		query.setParameter("cityId", cityId); // 將cityId綁定到命名參數
+		List<AreaVO> list = query.list();
+		return list;
+
 	}
 	@Override
 	public List<AreaVO> getArea(Integer cityId) {

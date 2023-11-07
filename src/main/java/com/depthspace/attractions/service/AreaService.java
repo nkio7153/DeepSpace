@@ -24,7 +24,9 @@ public class AreaService {
 		return list;
 	}
 	public List<AreaVO> getAllArea(Integer cityId) {
+		
 		List<AreaVO> list = dao.getAllArea(cityId);
+//		System.out.println("AreaService="+list);
 		return list;
 	}
 	
