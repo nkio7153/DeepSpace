@@ -28,9 +28,8 @@ public class TicketCollectionServiceImpl implements TicketCollectionService{
 	}
 	//刪除一筆(根據主鍵)
 	@Override
-	public void deleteByCom(Integer memId, TicketVO ticketVO) {
-		TicketCollectionVO.CompositeDetail id = new TicketCollectionVO.CompositeDetail(memId, ticketVO);
-        dao.delete(id);
+	public boolean deleteByCom(Integer memId, Integer ticketId) {
+		return dao.delete(memId,ticketId);
 	}
 	//刪除(根據會員)
 	@Override
@@ -52,4 +51,10 @@ public class TicketCollectionServiceImpl implements TicketCollectionService{
 	public long getTotalTickets(Integer memId) {
 		return dao.getTotal(memId);
 	}
+	//取得一筆(組合主鍵)
+	@Override
+	public TicketCollectionVO getOne(Integer memId, Integer ticketId) {
+		return dao.findByMemberAndTicket(memId, ticketId);
+	}
+	
 }

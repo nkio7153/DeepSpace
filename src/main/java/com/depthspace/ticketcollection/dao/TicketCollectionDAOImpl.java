@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.ticketcollection.model.TicketCollectionVO;
@@ -39,14 +40,13 @@ public class TicketCollectionDAOImpl implements TicketCollectionDAO{
     }
 	//刪除(根據主鍵)
 	@Override
-	public int delete(TicketCollectionVO.CompositeDetail id) {
-		TicketCollectionVO ticketCollection = getSession().get(TicketCollectionVO.class, id);
-        if (ticketCollection != null) {
-            getSession().delete(ticketCollection);
-            return 1;
-        } else {
-            return -1;
-        }
+	public boolean delete(Integer memId, Integer ticketId) {
+		Session session = getSession(); 
+	    Query<?> query = session.createQuery("DELETE FROM TicketCollectionVO tc WHERE tc.memId = :memId AND tc.ticketVO.id = :ticketId");
+	    query.setParameter("memId", memId);
+	    query.setParameter("ticketId", ticketId);
+	    int result = query.executeUpdate();  // 更新
+	    return result > 0;  // 不為空值則為true
     }
 	//刪除全部(根據會員)
 	@Override
@@ -83,4 +83,15 @@ public class TicketCollectionDAOImpl implements TicketCollectionDAO{
 	            .setParameter("memId", memId)
 	            .uniqueResult();
 	}
+	//查找(根據會員+票券)
+    public TicketCollectionVO findByMemberAndTicket(Integer memId, Integer ticketId) {
+    	Session session = getSession();
+        Query<TicketCollectionVO> query = session.createQuery(
+            "FROM TicketCollectionVO tc WHERE tc.memId = :memId AND tc.ticketVO.ticketId = :ticketId", 
+            TicketCollectionVO.class
+        );
+        query.setParameter("memId", memId);
+        query.setParameter("ticketId", ticketId);
+        return query.uniqueResult();  // 返回單一結果或 null
+    }
 }

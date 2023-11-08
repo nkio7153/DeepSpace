@@ -11,11 +11,11 @@ public interface TicketCollectionService {
 	//更新
 	TicketCollectionVO update(TicketCollectionVO ticketCollection);
 	//刪除一筆(組合主鍵)
-	void deleteByCom(Integer memId, TicketVO ticketId);
+	boolean deleteByCom(Integer memId, Integer ticketId);
 	//刪除(根據會員)
 	int deleteBymemId(Integer memId);
-//	//取得一筆(組合主鍵)
-//	public TicketCollectionVO getOne(Integer memId, Integer ticketId);
+	//取得一筆(組合主鍵)
+	TicketCollectionVO getOne(Integer memId, Integer ticketId);
 	//取得(會員)
 	List<TicketCollectionVO> getOne(Integer memId);	
 	//取得全部

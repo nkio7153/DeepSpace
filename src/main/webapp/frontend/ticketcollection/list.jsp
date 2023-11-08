@@ -96,11 +96,11 @@
 													</c:if> <!-- 空星 --> <c:forEach begin="${emptyStarsStart}" end="5"
 														var="j">
 														<i class="far fa-star gold-star"></i>
-													</c:forEach> (${totalRatingCountMap[ticketCollection.ticket.ticketId]})
+													</c:forEach> (${totalRatingCountMap[ticketCollection.ticketVO.ticketId]})
 													銷售量${ticketOrderCountMap[ticketCollection.ticketVO.ticketId]}
 												</small>
 											</p>
-											<p class="card-text">NT$ ${ticketCollection.ticketVO.price}</p>
+											<p class="card-text">NT$ ${ticketCollection.ticketVO.ticketId}</p>
 										</div>
 									</div>
 								</div>
