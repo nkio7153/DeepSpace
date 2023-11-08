@@ -54,13 +54,13 @@ public class TicketCollectionServlet extends HttpServlet {
 		case "/login": // 登入
 			login(req, res);
 			break;
-		case "/list": // 收藏列表
+		case "/list": // 列表
 			doList(req, res);
 			break;
 		case "/add": // 新增
 			doAdd(req, res);
 			break;
-		case "/find": // 移除
+		case "/find": // 篩選
 			doFind(req, res);
 			break;
 		case "/del": // 移除
@@ -88,45 +88,50 @@ public class TicketCollectionServlet extends HttpServlet {
 
 		// 從 session 中取得會員 ID，假設會員已經登入並存於 session
 //	    Integer memId = (Integer) req.getSession().getAttribute("memId"); 
-		Integer memId = 2; // ****測試寫死****
+		Integer memId = 3; // ****測試寫死****
 		
-		List<TicketVO> ticketList = ticketService.getAllTickets(); 
-		req.setAttribute("resultSet", ticketList); // 票券內容
+		 // 取得會員收藏
+		List<TicketCollectionVO> ticketList = ticketCollectionService.getOne(memId); 
+		req.setAttribute("resultSet", ticketList);
 		
-		// 存放星星數跟評價數、訂單數
-		Map<Integer, Double> averageStarsMap = new HashMap<>();
-		Map<Integer, Integer> totalRatingCountMap = new HashMap<>();
-		Map<Integer, Integer> ticketOrderCountMap = new HashMap<>();
-
-		//計算星星跟評價平均數
-		for (TicketVO ticket : ticketList) {
-		    Integer ticketId = ticket.getTicketId();
-		    Integer totalStars = ticketService.getTotalStars(ticketId);
-		    Integer totalRatingCount = ticketService.getTotalRatingCount(ticketId);
-		    
-		    double averageStars = totalRatingCount > 0 ? (double) totalStars / totalRatingCount : 0;
-		    String formattedAverageStars = String.format("%.1f", averageStars);
-
-		    averageStarsMap.put(ticketId, Double.parseDouble(formattedAverageStars));
-		    totalRatingCountMap.put(ticketId, totalRatingCount);
-	
-		    //查詢訂單數
-		    List<TicketOrderDetailVO> ticketOrderDetails = ticketService.findTicketOrderDetailsByTicketId(ticketId);
-	        int orderCount = ticketOrderDetails.size();  // 訂單數為票券訂單明細列表的大小
-	        ticketOrderCountMap.put(ticketId, orderCount);  // 將票券ID和對應的訂單數存放到map中
-	 
+		for (TicketCollectionVO collection : ticketList) {
+		    System.out.println(collection.getTicketVO().getTicketName()); // 檢查
 		}
 
-		
-		req.setAttribute("averageStarsMap", averageStarsMap);
-		req.setAttribute("totalRatingCountMap", totalRatingCountMap);
-		req.setAttribute("ticketOrderCountMap", ticketOrderCountMap);
+//		// 存放星星數跟評價數、訂單數
+//		Map<Integer, Double> averageStarsMap = new HashMap<>();
+//		Map<Integer, Integer> totalRatingCountMap = new HashMap<>();
+//		Map<Integer, Integer> ticketOrderCountMap = new HashMap<>();
+//
+//		//計算星星跟評價平均數
+//		for (TicketVO ticket : ticket) {
+//		    Integer ticketId = ticket.getTicketId();
+//		    Integer totalStars = ticketService.getTotalStars(ticketId);
+//		    Integer totalRatingCount = ticketService.getTotalRatingCount(ticketId);
+//		    
+//		    double averageStars = totalRatingCount > 0 ? (double) totalStars / totalRatingCount : 0;
+//		    String formattedAverageStars = String.format("%.1f", averageStars);
+//
+//		    averageStarsMap.put(ticketId, Double.parseDouble(formattedAverageStars));
+//		    totalRatingCountMap.put(ticketId, totalRatingCount);
+//	
+//		    //查詢訂單數
+//		    List<TicketOrderDetailVO> ticketOrderDetails = ticketService.findTicketOrderDetailsByTicketId(ticketId);
+//	        int orderCount = ticketOrderDetails.size();  // 訂單數為票券訂單明細列表的大小
+//	        ticketOrderCountMap.put(ticketId, orderCount);  // 將票券ID和對應的訂單數存放到map中
+//	 
+//		}
+//		
+//		req.setAttribute("averageStarsMap", averageStarsMap);
+//		req.setAttribute("totalRatingCountMap", totalRatingCountMap);
+//		req.setAttribute("ticketOrderCountMap", ticketOrderCountMap);
 	
 //		List<TicketCollectionVO> ticketCollectionListAll = ticketCollectionService.getAll();
 //		req.setAttribute("ticketCollectionListAll", ticketCollectionListAll);
-
+		
+		// 會員收藏票券數
 		long totalTickets = ticketCollectionService.getTotalTickets(memId);
-		req.setAttribute("totalTickets", totalTickets); // 會員收藏票券數
+		req.setAttribute("totalTickets", totalTickets); 
 		
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/ticketcollection/list.jsp");
 		dispatcher.forward(req, res);
@@ -137,19 +142,19 @@ public class TicketCollectionServlet extends HttpServlet {
 		// 從 session 中取得會員 ID，假設會員已經登入並存於 session
 //	    Integer memId = (Integer) req.getSession().getAttribute("memId"); 
 		Integer memId = 2; // ****測試寫死****
-		Integer ticketId;
+		TicketVO ticketVO = null;
 
-		try {
-//			memId = Integer.valueOf(req.getParameter("memId"));
-			ticketId = Integer.valueOf(req.getParameter("ticketId"));
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-			return;
-		}
+//		try {
+////			memId = Integer.valueOf(req.getParameter("memId"));
+//			ticketId = Integer.valueOf(req.getParameter("ticketId"));
+//		} catch (NumberFormatException e) {
+//			e.printStackTrace();
+//			return;
+//		}
 		// 判斷是否處於會員登入狀況
 		if (memId != null) {
 
-			TicketCollectionVO ticketCollection = new TicketCollectionVO(memId, ticketId);
+			TicketCollectionVO ticketCollection = new TicketCollectionVO(memId, ticketVO);
 			ticketCollectionService.add(ticketCollection);
 
 			List<TicketCollectionVO> list = ticketCollectionService.getOne(memId);
@@ -165,10 +170,10 @@ public class TicketCollectionServlet extends HttpServlet {
 	/*************** 刪除一個 *****************/
 	protected void doDeleteBy(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		Integer memId;
-		Integer ticketId;
+		TicketVO ticketVO =null;
 		memId = Integer.valueOf(req.getParameter("memId"));
-		ticketId = Integer.parseInt(req.getParameter("ticketId"));
-		ticketCollectionService.deleteByCom(memId, ticketId);
+//		TicketVO = Integer.parseInt(req.getParameter("ticketId"));
+		ticketCollectionService.deleteByCom(memId, ticketVO);
 		setJsonResponse(res, "刪除成功");
 	}
 	

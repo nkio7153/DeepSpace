@@ -7,7 +7,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.depthspace.ticket.model.TicketVO;
 
 @Entity
 @Table(name="TICKET_COLLECTION")
@@ -19,15 +23,18 @@ public class TicketCollectionVO implements Serializable {
     private Integer memId; 
 	
 	@Id
-	@Column(name="TICKET_ID")
-    private Integer ticketId; 
+//	@Column(name="TICKET_ID")
+	@ManyToOne
+    @JoinColumn(name="TICKET_ID", referencedColumnName="TICKET_ID", insertable=false, updatable=false)
+    private TicketVO ticketVO;
+	//    private Integer ticketId; 
 
     public TicketCollectionVO() {
     }
 
-    public TicketCollectionVO(Integer memId, Integer ticketId) {
+    public TicketCollectionVO(Integer memId, TicketVO ticketVO) {
         this.memId = memId;
-        this.ticketId = ticketId;
+        this.ticketVO = ticketVO;
     }
 
     public Integer getMemId() {
@@ -38,29 +45,28 @@ public class TicketCollectionVO implements Serializable {
         this.memId = memId;
     }
 
-    public Integer getTicketId() {
-        return ticketId;
+    public TicketVO getTicketVO() {
+        return ticketVO;
     }
 
-    public void setTicketId(Integer ticketId) {
-        this.ticketId = ticketId;
+    public void setTicketVO(TicketVO ticketVO) {
+        this.ticketVO = ticketVO;
     }
     
     public static class CompositeDetail implements Serializable {
-		private static final long serialVersionUID = 1L;
 
 		private Integer memId;
-		private Integer ticketId;
+		private TicketVO ticketVO;
 		
 		public CompositeDetail() {
 			super();
 			
 		}
 
-		public CompositeDetail(Integer memId, Integer ticketId) {
+		public CompositeDetail(Integer memId,TicketVO ticketVO) {
 			super();
 			this.memId = memId;
-			this.ticketId = ticketId;
+			this.ticketVO = ticketVO;
 		}
 
 		public Integer getMemId() {
@@ -71,17 +77,17 @@ public class TicketCollectionVO implements Serializable {
 			this.memId = memId;
 		}
 
-		public Integer getTicketId() {
-			return ticketId;
+		public TicketVO getTicketVO() {
+			return ticketVO;
 		}
 
-		public void setTicketId(Integer ticketId) {
-			this.ticketId = ticketId;
+		public void setTticketVO(TicketVO ticketVO) {
+			this.ticketVO = ticketVO;
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(memId, ticketId);
+			return Objects.hash(memId, ticketVO);
 		}
 
 		@Override
@@ -93,7 +99,7 @@ public class TicketCollectionVO implements Serializable {
 			if (getClass() != obj.getClass())
 				return false;
 			CompositeDetail other = (CompositeDetail) obj;
-			return Objects.equals(memId, other.memId) && Objects.equals(ticketId, other.ticketId);
+			return Objects.equals(memId, other.memId) && Objects.equals(ticketVO, other.ticketVO);
 		}
 
 		

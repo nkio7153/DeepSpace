@@ -51,56 +51,56 @@
 				</div>
 				<!-- 票券列表 -->
 				<div class="ticket-list">
-					<c:forEach items="${resultSet}" var="ticket">
+					<c:forEach items="${resultSet}" var="ticketCollection">
 						<a
-							href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=${ticket.ticketId}"
+							href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=${ticketCollection.ticketVO.ticketId}"
 							class="no-underline"> <!-- 整張卡片點擊 -->
 							<div class="card mb-3 clickable-card">
 								<div class="row no-gutters">
 									<div class="col-md-4">
 										<img
-											src="<%=request.getContextPath()%>/ticketmainimage?ticketId=${ticket.ticketId}"
+											src="<%=request.getContextPath()%>/ticketmainimage?ticketId=${ticketCollection.ticketVO.ticketId}"
 											alt="Main Ticket Image" class="ticket-img">
 									</div>
 									<div class="col-md-8">
 										<div class="card-body">
-											<h5 class="card-title">${ticket.ticketName}</h5>
-											<p class="card-title">${ticket.ticketType.typeName}|
-												${ticket.city.cityName}</p>
+											<h5 class="card-title">${ticketCollection.ticketVO.ticketName}</h5>
+											<p class="card-title">${icketCollection.ticketVO.ticketType.typeName}|
+												${ticketCollection.ticketVO.city.cityName}</p>
 											<p class="card-title">
 												<c:choose>
-													<c:when test="${fn:length(ticket.description) > 30}">
-								${fn:substring(ticket.description,0,30)}...
+													<c:when test="${fn:length(ticketCollection.ticketVO.description) > 30}">
+								${fn:substring(ticketCollection.ticketVO.description,0,30)}...
 								</c:when>
 													<c:otherwise>
-								${ticket.description}
+								${ticketCollection.ticketVO.description}
 								</c:otherwise>
 												</c:choose>
 											</p>
 											<p class="card-text">
 												<small class="text-muted">
-													${averageStarsMap[ticket.ticketId]} <!-- 實星 --> <c:forEach
-														begin="1" end="${averageStarsMap[ticket.ticketId]}"
+													${averageStarsMap[ticketCollection.ticketVO.ticketId]} <!-- 實星 --> <c:forEach
+														begin="1" end="${averageStarsMap[ticketCollection.ticketVO.ticketId]}"
 														var="i">
 														<i class="fas fa-star gold-star"></i>
 													</c:forEach> <!-- 半星 --> <c:if
-														test="${averageStarsMap[ticket.ticketId] % 1 != 0}">
+														test="${averageStarsMap[ticketCollection.ticketVO.ticketId] % 1 != 0}">
 														<i class="fas fa-star-half-alt gold-star"></i>
 														<!-- 有半星就+ -->
 														<c:set var="emptyStarsStart"
-															value="${Math.floor(averageStarsMap[ticket.ticketId]) + 2}" />
+															value="${Math.floor(averageStarsMap[ticketCollection.ticketVO.ticketId]) + 2}" />
 													</c:if> <!-- 沒有半星就往下一個數 --> <c:if
-														test="${averageStarsMap[ticket.ticketId] % 1 == 0}">
+														test="${averageStarsMap[ticketCollection.ticketVO.ticketId] % 1 == 0}">
 														<c:set var="emptyStarsStart"
-															value="${averageStarsMap[ticket.ticketId] + 1}" />
+															value="${averageStarsMap[ticketCollection.ticketVO.ticketId] + 1}" />
 													</c:if> <!-- 空星 --> <c:forEach begin="${emptyStarsStart}" end="5"
 														var="j">
 														<i class="far fa-star gold-star"></i>
-													</c:forEach> (${totalRatingCountMap[ticket.ticketId]})
-													銷售量${ticketOrderCountMap[ticket.ticketId]}
+													</c:forEach> (${totalRatingCountMap[ticketCollection.ticket.ticketId]})
+													銷售量${ticketOrderCountMap[ticketCollection.ticketVO.ticketId]}
 												</small>
 											</p>
-											<p class="card-text">NT$ ${ticket.price}</p>
+											<p class="card-text">NT$ ${ticketCollection.ticketVO.price}</p>
 										</div>
 									</div>
 								</div>

@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.ticketcollection.model.TicketCollectionVO;
 import com.depthspace.ticketcollection.model.TicketCollectionVO.CompositeDetail;
 
@@ -64,7 +65,8 @@ public class TicketCollectionDAOImpl implements TicketCollectionDAO{
 	@Override
 	public List<TicketCollectionVO> getByMemId(Integer memId) {
         return getSession()
-                .createQuery("from TicketCollectionVO where memId= :memId", TicketCollectionVO.class)
+//                .createQuery("from TicketCollectionVO where memId= :memId", TicketCollectionVO.class)
+        		.createQuery("SELECT tc FROM TicketCollectionVO tc JOIN FETCH tc.ticketVO WHERE tc.memId = :memId", TicketCollectionVO.class)
                 .setParameter("memId", memId)
                 .list();
 	}
@@ -73,7 +75,7 @@ public class TicketCollectionDAOImpl implements TicketCollectionDAO{
 	public List<TicketCollectionVO> getAll() {
         return getSession().createQuery("from TicketCollectionVO", TicketCollectionVO.class).list();
     }
-
+	//取得會員ID的收藏票券數
 	@Override
 	public long getTotal(Integer memId) {
 	    return (Long) getSession()
