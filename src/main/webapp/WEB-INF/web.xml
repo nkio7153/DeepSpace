@@ -57,14 +57,5 @@
 		<url-pattern>/faq/faq.do</url-pattern>
 	</servlet-mapping>
 	
-	<servlet>
-		<servlet-name>FaqTypesServlet</servlet-name>
-		<servlet-class>com.depthspace.faqtypes.model.controller.FaqTypesServlet</servlet-class>
-	</servlet>
 
-	<servlet-mapping>
-		<servlet-name>FaqTypesServlet</servlet-name>
-		<url-pattern>/faqtypes/faq.do1</url-pattern>
-	</servlet-mapping>
-	
 </web-app>
