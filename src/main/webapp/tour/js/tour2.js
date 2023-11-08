@@ -10,6 +10,7 @@
         	        // 如果找到匹配的數字部分，就轉型變成數字
         	        let alldays = parseInt(alldaysMatch[0]);
         	        console.log("alldays=" + alldays)
+        	      
 	        	for(var i=1;i<=alldays;i++) {
 	        		var newTourDay = document.createElement("div");
 	    			newTourDay.classList.add("container");
@@ -23,8 +24,8 @@
 	    		   			    	<input type="time" name="attractionTime" style="margin-right: 10px;" required>
 	    		   			    	<label style="margin-left: 10px;">你要去哪兒?</label>
 								        <select name="attractions" id="attractions"  style="margin-left: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #f5f5f5; font-family: Arial; font-size: 14px;">
-								            <c:forEach var="attraction" items="${data}">
-								                <option value="${attraction.attractionsId}">${attraction.attractionName}</option>
+								            <c:forEach var="attraction" items="${attrvo}">
+								                <option value="${attraction.attractionsId}">${attraction.attractionsName}</option>
 								            </c:forEach>
 								        </select>
 	    	   			   			<br>

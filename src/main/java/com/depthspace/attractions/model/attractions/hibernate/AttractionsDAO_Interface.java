@@ -20,4 +20,6 @@ public interface AttractionsDAO_Interface {
 
 	public List<AttractionsVO> findOneAttractions();
 
+	List<AttractionsVO> findOtherAttractions(String cityName);
+
 }

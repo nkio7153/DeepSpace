@@ -106,7 +106,7 @@
         /* 给新增的时间和输入框容器添加样式，调整它们的位置 */
         .new {
             display: flex;
-            align-items: center;
+/*             align-items: center;  */
         }
 
         /* 调整景点输入框的样式 */
@@ -124,7 +124,7 @@
         }
 
         div.row {
-            line-height: 1;
+            line-height: 1; 
         }
         .oneDay {
 		    margin-top: 10px;
@@ -175,12 +175,12 @@
         <br>
         <br>
         <!-- 		下拉式選單:選擇縣市 -->
-        <label style="margin-left: 10px;">選擇你想去的縣市:</label>
-        <select name="city" id="city"  style="margin-left: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #f5f5f5; font-family: Arial; font-size: 14px;">
-            <c:forEach var="cityList" items="${cityList}">
-                <option value="${cityList.cityId}">${cityList.cityName}</option>
-            </c:forEach>
-        </select>
+<!--         <label style="margin-left: 10px;">選擇你想去的縣市:</label> -->
+<!--         <select name="city" id="city"  style="margin-left: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #f5f5f5; font-family: Arial; font-size: 14px;"> -->
+<%--             <c:forEach var="cityList" items="${cityList}"> --%>
+<%--                 <option value="${cityList.cityId}">${cityList.cityName}</option> --%>
+<%--             </c:forEach> --%>
+<!--         </select> -->
 <!--         		下拉式選單:選擇地區 -->
 <!--         <label style="margin-left: 10px;">選擇你想搜尋的地區:</label> -->
 <!--         <select name="area" id="area"  style="margin-left: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #f5f5f5; font-family: Arial; font-size: 14px;"> -->
@@ -219,33 +219,220 @@
 //                   console.log(error);
 //                 })
 //       });
-		 $("#city").on("change",function(){
-		    	let cityId=$("#city").find("option:selected").val();
-		//         console.log(cityId);
-		        let url="${pageContext.request.contextPath}/tr/getAttractions?cityId="+cityId;
+
+		//=====================================================================
+			
+$(document).ready(function () {
+    // 獲取alldays的文字資料
+    let alldaysText = $("#tripDuration").text();
+
+    // 使用政則表達式提取數字部分\d來匹配數字
+    let alldaysMatch = alldaysText.match(/\d+/);
+    if (alldaysMatch) {
+        // 如果找到匹配的數字部分，就轉型變成數字
+        let alldays = parseInt(alldaysMatch[0]);
+//         console.log("alldays=" + alldays)
+
+//         for (var i = 1; i <= alldays; i++) {
+            var newTourDay = document.createElement("div");
+            newTourDay.classList.add("container");
+            
+            newTourDay.innerHTML = `
+               <c:forEach var="day" items="${dayList}">
+                  <div class="row">
+                    <br><br>
+                    <div>
+                        <br><br>
+                        <span class="oneDay"> 第 ${day} 天 </span>
+                        
+                       
+                        	 <!-- 		下拉式選單:選擇縣市 -->
+				        <label style="margin-left: 10px;" >選擇你想去的縣市:</label>
+				        <select name="city" id="city" class="city" data-day="${day}" style="padding: 5px; border: 1px; border-radius: 5px; background-color: #f5f5f5; font-family: Arial; font-size: 14px;">
+				            <c:forEach var="cityList" items="${cityList}">
+				                <option value="${cityList.cityId}">${cityList.cityName}</option>
+				            </c:forEach>
+				        </select>
+                       
+                        
+                        <div class="col-md-12 d-flex justify-content-center">
+                            <label for="attractionTime">時間:</label>
+                            <input type="time" name="attractionTime" style="margin-right: 10px;" required>
+                            <label style="margin-left: 10px;">你要去哪兒?</label>
+                            <select name="attractions" id="attractions" style="margin-left: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 50px; background-color: #f5f5f5; font-family: Arial; font-size: 14px;">
+                            <option value="" selected disabled>請選擇</option>
+                            	<c:forEach var="attraction" items="${attrvo}">
+                                    <option value="${attraction.attractionsId}">${attraction.attractionsName}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="container offset-5" name="afterSelector">
+                        <div class="col-md-5 mt-2"></div>
+                        	<div class="col-md-4 d-flex align-items-center">
+                            <!-- 使用 d-flex 和 align-items-center 使內容垂直居中 -->
+                            <label for="tourAttr" class="form-label mt-3">新增景點</label>
+                            	<div class="circle d-flex align-items-center justify-content-center ml-2 mt-2" name="circle">
+                                	<span class="plus" >+</span>
+                            	</div>
+                        	</div>
+                        	<div class="col-md-3 mt-2">
+                        	</div>
+                    	</div>
+                    </div>
+                    </div>
+                </c:forEach>`;
+            tourdays.appendChild(newTourDay);
+//         }
+    }
+})
+
+          
+          //輸入景點的焦點文字框
+			function clearPlaceholder(input) {
+				if (input.value === "輸入景點") {
+					input.value = "";
+				}
+			}
+			
+			function restorePlaceholder(input) {
+				if (input.value === "") {
+					input.value = "輸入景點";
+				}
+			}
+          
+          //增加行程選項(圓形)
+		let circle = $("[name='circle']");
+		let circle2 = $("#circle2");
+		let select_html = `
+		        	<div class="row">
+						<div class="col-md-12 justify-content-center d-flex align-items-center">
+					 		
+					 		<div class="new">
+					 		<label for="attractionTime">時間:</label>
+					 		<input type="time" name="attractionTime" id="newTime" style="margin-right: 10px;" required>
+					 		<label style="margin-left: 10px;">你要去哪兒?</label>
+                            <select name="attractions" id="attractions" style="margin-left: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #f5f5f5; font-family: Arial; font-size: 14px;">
+                            	<option value="" selected disabled>請選擇</option>
+	                            	<c:forEach var="attraction" items="${attrvo}">
+	                                    <option value="${attraction.attractionsId}">${attraction.attractionsName}</option>
+	                                </c:forEach>
+                            </select>
+							</div>
+						</div>
+						<div class="circle2 d-flex align-items-center justify-content-center ms-auto ml-2" id="dash">
+							<span class="dash ">-</span>
+				    	</div>
+				    </div>`;
+		
+		$('body').on('mouseover', '[name="circle"]', function() {
+			console.log("mouseover觸發了");
+			$(this).css({
+				"background-color": "blue",
+				"width": "25px",
+				"height": "25px"
+			});
+		});
+		
+		$('body').on('mouseout', '[name="circle"]', function() {
+			$(this).css({
+				"background-color": "lightskyblue",
+				"width": "21px",
+				"height": "21px"
+			});
+		});
+		
+		$('body').on('click', '[name="circle"]', function() {
+			console.log("click事件觸發了")
+			$(this).closest("[name='afterSelector']").before(select_html);
+		
+			//		    $(this).closest(".row").find("[name='afterSelector']").before(select_html);
+		});
+		
+		
+		
+		// 圓形-
+		// 委派事件到動態生成的 .circle2 元素
+		$('body').on('mouseover', '.circle2', function() {
+			$(this).css({
+				"background-color": "red",
+				"width": "25px",
+				"height": "25px"
+			});
+		});
+		
+		$('body').on('mouseout', '.circle2', function() {
+			$(this).css({
+				"background-color": "lightcoral",
+				"width": "21px",
+				"height": "21px"
+			});
+		});
+		
+		$('body').on('click', '.circle2', function() {
+			$(this).closest(".row").remove();
+		});
+			
+		//=====================================================================
+			
+			function getSelectedAttraction(event) {
+			    let selectedAttraction =  $(event.target).find("option:selected").text();
+			    console.log("拿到的地點" + selectedAttraction);
+			}
+			$(document).ready(function () {
+			// 解綁 city 的 change 事件
+// 			$(".city").off("change");
+			
+			$(".city").on("change",function(event){
+				 getSelectedAttraction(event);
+				
+				 let selectedCity = $(this).val();
+				 console.log("selectedCity=" + selectedCity)
+		    	let cityName=$(this).find("option:selected").text();
+		        console.log("cityName="+cityName);
+		        
+		        let attractionsSelect=$(this).closest(".row").find("[name='attractions']");
+		        
+		        let url="${pageContext.request.contextPath}/tr/getAttractions?cityName="+cityName;
 		        fetch(url)
 		                .then(function(response){
 		                  return response.json();
 		                })
 		                .then(function(data){
-		                  console.log(data);
-		                  let attractionsSelect = $("#attractions");
+// 		                  console.log(data);
+// 		                  let attractionsSelect = $("[name='attractions']")
 		               // 要先清空原本選項
 		                  attractionsSelect.empty();
+		                  let option = document.createElement("option");
+		                  option.text="請選擇";
+		                  attractionsSelect.append(option);
 		               // 遍歷從伺服器獲取的景點資料，並動態生成選項
 		                  data.forEach(function(attractions){
 		                      let option = document.createElement("option");
-		                      option.value = attraction.attractionsId;
-		                      option.text = attraction.attractionName;
-		                      attractionsSelect.append(option);
+		                      option.value = attractions.attractionsId;
+		                      option.text = attractions.attractionsName;
+		                      attractionsSelect.append(option);                   
+		                  
 		                  });
+
+
 		                })
+		                
 		                .catch(function(error){
 		                  console.log(error);
 		                })
+		        
+// 		        $(this).find("[name='attractions']").each(function(){
+// 					 $(this).text(attractionsSelect);
+// 				 })
+				       
 		      });
+			});
+// 		// 解綁 change 事件
+// 		 $("#city").off("change");
     </script>
-    <script src="${pageContext.request.contextPath}/tour/js/tour2.js"></script>
+<%--     <script src="${pageContext.request.contextPath}/tour/js/tour2.js"></script> --%>
     <jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

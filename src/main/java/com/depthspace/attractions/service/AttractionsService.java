@@ -30,5 +30,12 @@ public class AttractionsService {
 		return list;
 		
 	}
+	//尋找其他景點
+	public List<AttractionsVO> findOtherAttractions(String cityName) {
+		
+		List<AttractionsVO> list = dao.findOtherAttractions(cityName);
+		return list;
+		
+	}
 	
 }
