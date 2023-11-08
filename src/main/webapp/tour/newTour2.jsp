@@ -415,8 +415,6 @@ $(document).ready(function () {
 		                      attractionsSelect.append(option);                   
 		                  
 		                  });
-
-
 		                })
 		                
 		                .catch(function(error){
