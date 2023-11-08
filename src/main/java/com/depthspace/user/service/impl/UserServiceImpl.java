@@ -1,5 +1,7 @@
 package com.depthspace.user.service.impl;
 
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.server.ResponseStatusException;
+
 
 import com.depthspace.user.dao.UserDao;
 import com.depthspace.user.dto.UserLoginRequest;
@@ -47,11 +50,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(UserLoginRequest userLoginRequest) {
-        User user = userDao.getUserByEmail(userLoginRequest.getemail());
+        User user = userDao.getUserByEmail(userLoginRequest.getEmail());
 
         // 檢查 user 是否存在
         if (user == null) {
-            log.warn("該 email {} 尚未註冊", userLoginRequest.getemail());
+            log.warn("該 email {} 尚未註冊", userLoginRequest.getEmail());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
@@ -62,7 +65,7 @@ public class UserServiceImpl implements UserService {
         if (user.getPassword().equals(hashedPassword)) {
             return user;
         } else {
-            log.warn("email {} 的密碼不正確", userLoginRequest.getemail());
+            log.warn("email {} 的密碼不正確", userLoginRequest.getEmail());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }

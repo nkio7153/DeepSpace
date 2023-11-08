@@ -7,16 +7,16 @@ public class UserLoginRequest {
 
     @NotBlank
     @Email
-    private String email;
+    private String Email;
     @NotBlank
     private String password;
 
-    public String getemail() {
-        return email;
+    public String getEmail() {
+        return Email;
     }
 
-    public void setemail(String email) {
-        this.email = email;
+    public void setEmail(String email) {
+        Email = email;
     }
 
     public String getPassword() {
