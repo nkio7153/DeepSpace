@@ -14,8 +14,10 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.depthspace.attractions.model.AreaVO;
+import com.depthspace.attractions.model.AttractionsVO;
 import com.depthspace.attractions.model.CityVO;
 import com.depthspace.attractions.service.AreaService;
+import com.depthspace.attractions.service.AttractionsService;
 import com.depthspace.attractions.service.CityService;
 import com.depthspace.tour.model.tour.TourVO;
 import com.depthspace.tour.model.tour.TourView;
@@ -32,12 +34,15 @@ public class TourServlet extends HttpServlet {
 	private TourTypeService tts;
 	private CityService cs;
 	private AreaService as;
+	private AttractionsService attrs;
+	
 
 	public void init() throws ServletException {
 		ts = new TourService();
 		tts = new TourTypeService();
 		cs = new CityService();
 		as = new AreaService();
+		attrs = new AttractionsService();
 	}
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -132,23 +137,40 @@ public class TourServlet extends HttpServlet {
 		TourVO tourVO = new TourVO(tourId,memId,tourName,tourTypeId,allDays,tourDescription,startDate,endDate);
 //		新增一筆行程資料
 		TourVO tvo = null;
-		tvo = ts.insert(tourVO);
+//		tvo = ts.insert(tourVO);
 //		System.out.println("新增的那些東西"+ tourVO);
-		
+		//找尋對應的行程類型
 		TourTypeVO ttvo = new TourTypeVO();
 		ttvo = tts.findByPrimaryKey(tourTypeId);
 		
 		//尋找所有縣市
 		List<CityVO> cityList = cs.getAll();
-		//尋找所有縣市及景點
-		List<AreaVO> data = as.getAllArea(101);
+//		//尋找所有縣市及景點
+//		List<AreaVO> data = as.getAllArea(101);
 		
-		//設定所有縣市
+		//尋找所有的景點
+		List<AttractionsVO> attrList = attrs.getAll();
+//		變例出來看看
+//		for (AttractionsVO attraction : attrList) {
+//		    System.out.println(attraction.getAttractionsName());
+//		}
+		
+		//尋找台北市對應景點
+		List<AttractionsVO> attrvo = attrs.findOneAttractions();
+//		for (AttractionsVO attraction : attrvo) {
+//			System.out.println(attraction);
+//		}
+		
+		//傳送所有縣市
 		req.setAttribute("cityList", cityList);
-		//找尋地區 預設為台北市，其他縣市則由ajax去發送請求
-		req.setAttribute("data", data);
+//		//找尋地區 預設為台北市，其他縣市則由ajax去發送請求
+//		req.setAttribute("data", data);
 		//傳送上一個頁面新增的物件到下一個頁面顯示
 		req.setAttribute("tourVO", tourVO);
+		//傳送所有景點
+		req.setAttribute("attrList", attrList);
+		//傳送台北市景點(預設)
+		req.setAttribute("attrvo", attrvo);
 		//設定對應的行程類型
 		req.setAttribute("ttvo", ttvo);
 		req.getRequestDispatcher("/tour/newTour2.jsp").forward(req, resp);

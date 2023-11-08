@@ -1,8 +1,9 @@
-package com.depthspace.attractions.model;
+package com.depthspace.attractions.model.attractions;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.depthspace.attractions.model.AttractionsVO;
 import com.depthspace.utils.HibernateUtil;
 
 public class TsetAttractionsSession {

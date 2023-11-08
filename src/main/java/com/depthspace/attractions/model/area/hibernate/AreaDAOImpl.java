@@ -53,7 +53,7 @@ public class AreaDAOImpl implements AreaDAO_Interface{
 	public List<AreaVO> getAllArea(Integer cityId) {
 		
 		Query<AreaVO> query = getSession().createQuery("FROM AreaVO WHERE cityId = :cityId", AreaVO.class);
-		query.setParameter("cityId", cityId); // 將cityId綁定到命名參數
+		query.setParameter("cityId", cityId); // 將cityId綁定
 		List<AreaVO> list = query.list();
 		return list;
 

@@ -1,10 +1,12 @@
-package com.depthspace.attractions.model;
+package com.depthspace.attractions.model.attractions;
 
 import java.util.List;
 
+import com.depthspace.attractions.model.AttractionsVO;
+
 public interface AttractionsDAO_Interface {
-	 public void insert(AttractionsVO AttractionsVO);
-	 public void update(AttractionsVO AttractionsVO);
+	 public void insert(AttractionsVO entity);
+	 public int update(AttractionsVO entity);
 	 public void delete(Integer attractionsId);
 	 public AttractionsVO findByPrimaryKey(Integer attractionsId);
 	 public List<AttractionsVO> getAll();
