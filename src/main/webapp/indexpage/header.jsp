@@ -30,7 +30,7 @@
                             <a class="" href="${pageContext.request.contextPath}/Rest/getRests">餐廳</a>
                         </li>
                         <li class="nav-item">
-                            <a class="booking" href="#">登入/註冊</a>
+                            <a class="booking" href="${pageContext.request.contextPath}/member/member.jsp">登入/註冊</a>
                         <li class="">
                             <a href="${pageContext.request.contextPath}/tsc/index"><img
                                     src="${pageContext.request.contextPath}/indexpage/images/shoppingcar.svg"

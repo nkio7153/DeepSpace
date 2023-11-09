@@ -15,7 +15,7 @@ public interface HbTourDAO_Interface {
 	//取得該會員行程資料
 	List<TourVO> getByMemId(Integer memId);
 	List<TourView> getOneTourList(Integer tourId, Integer memId);
-	TourVO getLastTourId(Integer memId);
+	TourVO getLastTourId(Integer tourId);
 
 	
 }
