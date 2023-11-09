@@ -132,9 +132,6 @@ public class TicketCollectionServlet extends HttpServlet {
 		req.setAttribute("totalRatingCountMap", totalRatingCountMap);
 		req.setAttribute("ticketOrderCountMap", ticketOrderCountMap);
 	
-//		List<TicketCollectionVO> ticketCollectionListAll = ticketCollectionService.getAll();
-//		req.setAttribute("ticketCollectionListAll", ticketCollectionListAll);
-		
 		// 會員收藏票券數
 		long totalTickets = ticketCollectionService.getTotalTickets(memId);
 		req.setAttribute("totalTickets", totalTickets); 
@@ -144,69 +141,44 @@ public class TicketCollectionServlet extends HttpServlet {
 	}
 
 	/*************** 加入 *****************/
-	private void toggleFavorite(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-	    // 從 session 中取得會員 ID
-//	    Integer memId = (Integer) req.getSession().getAttribute("memId");
-		Integer memId = 2; // ****測試寫死****
-		// 從前端請求中取得票券
-	    String ticketIdStr = req.getParameter("ticketId");
-	    Integer ticketId = Integer.parseInt(ticketIdStr);
-	    
-	 // 判斷是否處於會員登入狀況
-	    if (memId != null && ticketId != null) {
-//	        // 根據ticketId找到對應的TicketVO
-	        TicketCollectionVO ticketCollection = ticketCollectionService.getOne(memId, ticketId);
+		private void toggleFavorite(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		    // Integer memId = (Integer) req.getSession().getAttribute("memId");
+		    Integer memId = 2; // ****測試寫死****
+		    
+		    // 從前端請求中取得票券 ID
+		    String ticketIdStr = req.getParameter("ticketId");
+		    Integer ticketId = Integer.parseInt(ticketIdStr); 
+		    
+		    if (memId != null) {
 
-	        boolean isFavorite;
-	        if(ticketCollection != null) {
-	            // 不為空值，則移除
-	            ticketCollectionService.deleteByCom(memId, ticketId);
-	            isFavorite = false;
-	        } else {
-	            // 是空值，則加入
-	        	TicketVO ticketVO = new TicketVO();
-	            ticketVO.setTicketId(ticketId);
-	        	ticketCollection = new TicketCollectionVO();
-	            ticketCollection.setMemId(2);
+		        TicketCollectionVO ticketCollection = ticketCollectionService.getOne(memId, ticketId);
+		        boolean isFavorite;
 
-	            ticketCollectionService.add(ticketCollection);
-	            isFavorite = true;
-	        }
+		        if(ticketCollection != null) {
+		            // 存在於收藏中，則移除
+		            ticketCollectionService.deleteByCom(memId, ticketId);
+		            isFavorite = false;
+		        } else {
+		            // 不在收藏中，則加入
+		            ticketCollection = new TicketCollectionVO();
+		            ticketCollection.setTicketId(ticketId);
+		            ticketCollection.setMemId(memId);
 
-	        // 返回更新後的收藏狀態
-	        res.setContentType("application/json");
-	        res.setCharacterEncoding("UTF-8");
-	        PrintWriter out = res.getWriter();
-	        out.print("{ \"isFavorite\": " + isFavorite + " }");
-	        out.flush();
-	    } else {
-	        // 未登入，返回錯誤狀態碼
-	        res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-	    }
-	}
-	
-//	/*************** 新增 *****************/
-//	private void doAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-//		// 從 session 中取得會員 ID，假設會員已經登入並存於 session
-////	    Integer memId = (Integer) req.getSession().getAttribute("memId"); 
-//		Integer memId = 2; // ****測試寫死****
-//		TicketVO ticketVO = null;
-//
-//		// 判斷是否處於會員登入狀況
-//		if (memId != null) {
-//
-//			TicketCollectionVO ticketCollection = new TicketCollectionVO(memId, ticketVO);
-//			ticketCollectionService.add(ticketCollection);
-//
-//			List<TicketCollectionVO> list = ticketCollectionService.getOne(memId);
-//			req.setAttribute("list", list);
-//			req.setAttribute("memId", memId);
-//			req.getRequestDispatcher("/frontend/ticketcollection/list.jsp").forward(req, res);
-//		} else {
-//			// 未登入，重定向到登入頁面
-//			res.sendRedirect(req.getContextPath() + "/frontend/ticketcollection/login.jsp");
-//		}
-//	}
+		            ticketCollectionService.add(ticketCollection);
+		            isFavorite = true;
+		        }
+
+		        // 返回更新後的收藏狀態
+		        res.setContentType("application/json");
+		        res.setCharacterEncoding("UTF-8");
+		        PrintWriter out = res.getWriter();
+		        out.print("{ \"isFavorite\": " + isFavorite + " }");
+		        out.flush();
+		    } else {
+		        //memId 未提供，返回錯誤狀態碼(應返回登入頁面)
+		        res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		    }
+		}
 
 	/*************** 刪除一個 *****************/
 	protected void doDeleteBy(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -218,13 +190,6 @@ public class TicketCollectionServlet extends HttpServlet {
 		setJsonResponse(res, "刪除成功");
 	}
 	
-//	/*************** 全清空 *****************/
-//	protected void doDel(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-//		Integer memId;
-//		memId = Integer.valueOf(req.getParameter("memId"));
-//		ticketCollectionService.deleteBymemId(memId);
-//		 setJsonResponse(res, "清空成功");
-//	}
 	
 	/************ 搜尋 ************/
 	private void doFind(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {

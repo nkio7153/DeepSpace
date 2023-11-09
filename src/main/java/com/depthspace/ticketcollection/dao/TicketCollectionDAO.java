@@ -8,7 +8,7 @@ import com.depthspace.ticketcollection.model.TicketCollectionVO;
 public interface TicketCollectionDAO {
 	
 	//新增
-	int insert(TicketCollectionVO ticketCollection);
+	void insert(TicketCollectionVO ticketCollection);
 	//更新
 	int update(TicketCollectionVO ticketCollection);	
 	//刪除(根據主鍵)

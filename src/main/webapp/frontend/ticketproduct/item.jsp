@@ -48,146 +48,7 @@
 }
 </style>
 
-<!-- Leaflet的JS -->
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
 
-$(document).ready(function() {
-//求圖片ID列表
-	const ticketId = ${ticket.ticketId}; //取得票券ID
-    $.getJSON("<%=request.getContextPath()%>/ticketallimage?action=getIds&ticketId=" + ticketId, function(serialIds) {
-        var carouselInner = $("#carouselExampleIndicators .carousel-inner").empty(); // 清空輪播內容
-
-        serialIds.forEach(function(id, index) {
-            // 抓取票券ID每個圖
-            var carouselItem = $("<div>").addClass("carousel-item").addClass(index === 0 ? "active" : "");
-            var img = $("<img>")
-                .attr("src", "<%=request.getContextPath()%>/ticketallimage?action=getImage&imageId="  + id + "&ticketId=" + ticketId)
-                .addClass("d-block w-100 rounded")
-                .css("height", "500px")
-                .css("object-fit", "cover");
-
-            carouselItem.append(img);
-            carouselInner.append(carouselItem);
-        });
-    });
-});
-
-$(document).ready(function() {
-    $("#favoriteIcon").click(function() {
-        // 將 memId 設置為 2，用於測試
-        var memId = 2;
-        var ticketId = $(this).data('ticketId');
-        var requestData = { "ticketId": ticketId};
-        var iconElement = $(this);
-
-        $.post("${pageContext.request.contextPath}/ticketcollection/toggleFavorite", requestData, function(response) {
-            if (response.isFavorite) {
-                iconElement.removeClass("far").addClass("fas");
-            } else {
-                iconElement.removeClass("fas").addClass("far");
-            }
-        }).fail(function(xhr, status, error) {
-            if(xhr.status == 401) { 
-                alert("請先登入！");
-            } else {
-                alert("發生錯誤： " + error);
-            }
-        });
-    });
-});
-
-//  document.addEventListener('DOMContentLoaded', function() {
-//     var favoriteIcon = document.getElementById("favoriteIcon");
-
-//     favoriteIcon.addEventListener('click', function() {
-//         var memId = 2; // 測試用途
-//         var ticketId = this.dataset.ticketId;
-//         var requestData = { "ticketId": ticketId };
-
-//         fetch("${pageContext.request.contextPath}/ticketcollection/toggleFavorite", {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 // 如果你有使用CSRF保護，記得也要加上CSRF token
-//                 // 'X-CSRF-Token': csrfToken
-//             },
-//             body: JSON.stringify(requestData)
-//         })
-//         .then(function(response) {
-//             if (!response.ok) {
-//                 throw new Error('Network response was not ok ' + response.status);
-//             }
-//             return response.json();
-//         })
-//         .then(function(responseData) {
-//             if (responseData.isFavorite) {
-//                 favoriteIcon.classList.remove("far");
-//                 favoriteIcon.classList.add("fas");
-//             } else {
-//                 favoriteIcon.classList.remove("fas");
-//                 favoriteIcon.classList.add("far");
-//             }
-//         })
-//         .catch(function(error) {
-//             if (error.message.includes('401')) {
-//                 alert("請先登入！");
-//             } else {
-//                 alert("發生錯誤：" + error.message);
-//             }
-//         });
-//     });
-// });
-  
- // 購物車加入
-    $(".btn").on("click", function() {
-        let button = $(this);
-        let url = "${pageContext.request.contextPath}/tsc/save?ticketId=" + ${ticket.ticketId} + "&memId=1";
-        fetch(url)
-            .then(function(response) {
-                return response.text();
-            })
-            .then(function(data) {
-                console.log(data);
-                button.addClass('flash-effect');
-                // 1 秒後移除閃爍效果
-                setTimeout(() => {
-                    button.removeClass('flash-effect');
-                }, 1000);
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
-    });
- 
-//地圖
-$(document).ready(function() {
-    // 初始化
-    function initMap(latitude, longitude) {
-        var map = L.map('map').setView([latitude, longitude], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-        L.marker([latitude, longitude]).addTo(map);
-    }
-
-    <%if (request.getAttribute("ticket") != null) {%>
-        var ticketLatitude = ${ticket.latitude};
-        var ticketLongitude = ${ticket.longitude};
-
-        if(!isNaN(ticketLatitude) && !isNaN(ticketLongitude)) {
-            initMap(ticketLatitude, ticketLongitude);
-        } else {
-            console.error('Invalid latitude or longitude for ticketVO.');
-        }
-    <%} else {%>
-        console.error('TicketVO not found in request.');
-    <%}%>
-});
-</script>
 
 </head>
 
@@ -236,7 +97,7 @@ $(document).ready(function() {
 			<div class="col-12 d-flex justify-content-between align-items-center">
 				<h3>${ticket.ticketName}</h3>
 				<i class="far fa-heart favorite-icon" id="favoriteIcon"
-					style="cursor: pointer;" data-ticketId="${ticket.ticketId}"></i>
+					style="cursor: pointer;"></i>
 			</div>
 				<div class="col-12 d-flex justify-content-between align-items-center">
 				<h6>${ticket.ticketType.typeName}&emsp;|&emsp;${ticket.city.cityName}</h6>
@@ -343,7 +204,149 @@ $(document).ready(function() {
 
 	</div>
 
+<!-- Leaflet的JS -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
 
+$(document).ready(function() {
+//求圖片ID列表
+	const ticketId = ${ticket.ticketId}; //取得票券ID
+    $.getJSON("<%=request.getContextPath()%>/ticketallimage?action=getIds&ticketId=" + ticketId, function(serialIds) {
+        var carouselInner = $("#carouselExampleIndicators .carousel-inner").empty(); // 清空輪播內容
+
+        serialIds.forEach(function(id, index) {
+            // 抓取票券ID每個圖
+            var carouselItem = $("<div>").addClass("carousel-item").addClass(index === 0 ? "active" : "");
+            var img = $("<img>")
+                .attr("src", "<%=request.getContextPath()%>/ticketallimage?action=getImage&imageId="  + id + "&ticketId=" + ticketId)
+                .addClass("d-block w-100 rounded")
+                .css("height", "500px")
+                .css("object-fit", "cover");
+
+            carouselItem.append(img);
+            carouselInner.append(carouselItem);
+        });
+    });
+});
+
+$(document).ready(function() {
+    $(".favorite-icon").click(function() {
+        var memId;
+        var ticketId;
+        var ticketId = ${ticket.ticketId};
+//         var ticketId = $(this).data('ticketId');
+        var requestData = { "ticketId": ticketId, "memId": memId};
+        var iconElement = $(this);
+
+        console.log("Request Data:", requestData);
+        
+        $.get("${pageContext.request.contextPath}/ticketcollection/toggleFavorite", requestData, function(response) {
+            if (response.isFavorite) {
+                iconElement.removeClass("far").addClass("fas");
+            } else {
+                iconElement.removeClass("fas").addClass("far");
+            }
+        }).fail(function(xhr, status, error) {
+            if(xhr.status == 401) { 
+                alert("請先登入！");
+            } else {
+                alert("發生錯誤： " + error);
+            }
+        });
+    });
+});
+
+//  document.addEventListener('DOMContentLoaded', function() {
+//     var favoriteIcon = document.getElementById("favoriteIcon");
+
+//     favoriteIcon.addEventListener('click', function() {
+//         var memId = 2; // 測試用途
+//         var ticketId = this.dataset.ticketId;
+//         var requestData = { "ticketId": ticketId };
+
+//         fetch("${pageContext.request.contextPath}/ticketcollection/toggleFavorite", {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 // 如果你有使用CSRF保護，記得也要加上CSRF token
+//                 // 'X-CSRF-Token': csrfToken
+//             },
+//             body: JSON.stringify(requestData)
+//         })
+//         .then(function(response) {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok ' + response.status);
+//             }
+//             return response.json();
+//         })
+//         .then(function(responseData) {
+//             if (responseData.isFavorite) {
+//                 favoriteIcon.classList.remove("far");
+//                 favoriteIcon.classList.add("fas");
+//             } else {
+//                 favoriteIcon.classList.remove("fas");
+//                 favoriteIcon.classList.add("far");
+//             }
+//         })
+//         .catch(function(error) {
+//             if (error.message.includes('401')) {
+//                 alert("請先登入！");
+//             } else {
+//                 alert("發生錯誤：" + error.message);
+//             }
+//         });
+//     });
+// });
+  
+ // 購物車加入
+    $(".btn").on("click", function() {
+        let button = $(this);
+        let url = "${pageContext.request.contextPath}/tsc/save?ticketId=" + ${ticket.ticketId} + "&memId=1";
+        fetch(url)
+            .then(function(response) {
+                return response.text();
+            })
+            .then(function(data) {
+                console.log(data);
+                button.addClass('flash-effect');
+                // 1 秒後移除閃爍效果
+                setTimeout(() => {
+                    button.removeClass('flash-effect');
+                }, 1000);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+    });
+ 
+//地圖
+$(document).ready(function() {
+    // 初始化
+    function initMap(latitude, longitude) {
+        var map = L.map('map').setView([latitude, longitude], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        L.marker([latitude, longitude]).addTo(map);
+    }
+
+    <%if (request.getAttribute("ticket") != null) {%>
+        var ticketLatitude = ${ticket.latitude};
+        var ticketLongitude = ${ticket.longitude};
+
+        if(!isNaN(ticketLatitude) && !isNaN(ticketLongitude)) {
+            initMap(ticketLatitude, ticketLongitude);
+        } else {
+            console.error('Invalid latitude or longitude for ticketVO.');
+        }
+    <%} else {%>
+        console.error('TicketVO not found in request.');
+    <%}%>
+});
+</script>
 
 
 	<jsp:include page="/indexpage/footer.jsp" />

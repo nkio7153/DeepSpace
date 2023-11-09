@@ -24,8 +24,8 @@ public class TicketCollectionDAOImpl implements TicketCollectionDAO{
 	
 	//新增一筆
 	@Override 
-	public int insert(TicketCollectionVO ticketCollection) {
-		return (Integer) getSession().save(ticketCollection);
+	public void insert(TicketCollectionVO ticketCollection) {
+		getSession().save(ticketCollection);
 	}
 	//更新
 	@Override
@@ -87,7 +87,7 @@ public class TicketCollectionDAOImpl implements TicketCollectionDAO{
     public TicketCollectionVO findByMemberAndTicket(Integer memId, Integer ticketId) {
     	Session session = getSession();
         Query<TicketCollectionVO> query = session.createQuery(
-            "FROM TicketCollectionVO tc WHERE tc.memId = :memId AND tc.ticketVO.ticketId = :ticketId", 
+            "FROM TicketCollectionVO WHERE memId = :memId AND ticketId = :ticketId", 
             TicketCollectionVO.class
         );
         query.setParameter("memId", memId);
