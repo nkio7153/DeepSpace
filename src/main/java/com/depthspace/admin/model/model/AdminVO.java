@@ -8,27 +8,26 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="ADMIN")
+@Table(name = "ADMIN")
 
 public class AdminVO {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) //AI鍵要加
-	@Column(name="ADMIN_ID", updatable = false)
-	private Integer adminId;
-	
-	@Column(name="ADMIN_NAME")
-	private String adminName;
-	
-	@Column(name="ADMIN_ACC")
-	private String adminAcc;
-	
-	@Column(name="ADMIN_PWD")
-	private String adminPwd;
-	
-	@Column(name="ADMIN_STATUS" , columnDefinition = "TINYINT")
-	private Integer adminStatus;
-	
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // AI鍵要加
+	@Column(name = "ADMIN_ID", updatable = false)
+	private Integer adminId;
+
+	@Column(name = "ADMIN_NAME")
+	private String adminName;
+
+	@Column(name = "ADMIN_ACC")
+	private String adminAcc;
+
+	@Column(name = "ADMIN_PWD")
+	private String adminPwd;
+
+	@Column(name = "ADMIN_STATUS", columnDefinition = "TINYINT")
+	private Integer adminStatus;
 
 	public Integer getAdminId() {
 		return adminId;
@@ -60,7 +59,7 @@ public class AdminVO {
 
 	public void setAdminPwd(String adminPwd) {
 		this.adminPwd = adminPwd;
-		
+
 	}
 
 	public Integer getAdminStatus() {
@@ -70,12 +69,4 @@ public class AdminVO {
 	public void setAdminStatus(Integer adminStatus) {
 		this.adminStatus = adminStatus;
 	}
-
-	@Override
-	public String toString() {
-		return "AdminVO [adminId=" + adminId + ", adminName=" + adminName + ", adminAcc=" + adminAcc + ", adminPwd="
-				+ adminPwd + ", adminStatus=" + adminStatus + "]";
-	}
-		
-	
 }

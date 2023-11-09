@@ -99,43 +99,12 @@ public class TicketServiceImpl implements TicketService {
 	//取得所有票券VO 
 	@Override
 	public List<TicketVO> getAllTickets() {
-
-		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<TicketVO> criteriaQuery = criteriaBuilder.createQuery(TicketVO.class);
-			Root<TicketVO> root = criteriaQuery.from(TicketVO.class);
-			criteriaQuery.select(root);
-
-			Query<TicketVO> query = session.createQuery(criteriaQuery);
-
-			return query.getResultList();
-		} catch (Exception e) {
-			throw new RuntimeException("Error", e);
-		}
+		return dao.getAll();
 	}
 	//取得所有票券VO 根據分頁
 	@Override
 	public List<TicketVO> getAllTickets2(int currentPage) {
-		List<TicketVO> tickets = new ArrayList<>();
-
-		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<TicketVO> criteriaQuery = criteriaBuilder.createQuery(TicketVO.class);
-			Root<TicketVO> root = criteriaQuery.from(TicketVO.class);
-			criteriaQuery.select(root);
-
-			Query<TicketVO> query = session.createQuery(criteriaQuery);
-
-			// 分頁
-			query.setFirstResult((currentPage - 1) * Constants.PAGE_MAX_RESULT);
-			query.setMaxResults(Constants.PAGE_MAX_RESULT);
-
-			tickets = query.list();
-		} catch (Exception e) {
-			throw new RuntimeException("Error", e);
-		}
-
-		return tickets;
+		return dao.getAll2(currentPage);
 	}
 
 	// 計算數量每頁*筆的話總共有幾頁
@@ -153,7 +122,7 @@ public class TicketServiceImpl implements TicketService {
 		return dao.getTotal();
 	}
 
-	// 取得所有類型
+	// 取得所有類型(TypeVO)
 	public List<TicketTypesVO> getAllTicketTypes() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -169,6 +138,7 @@ public class TicketServiceImpl implements TicketService {
 		}
 	}
 
+	// 取得所有類型(TicketId)
 	public List<TicketVO> getAllTicketTypeIds(Integer ticketTypeId) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -241,14 +211,6 @@ public class TicketServiceImpl implements TicketService {
                 .count();
     }
 
-//    public List<String> getReviews(Integer ticketId) {
-//        List<TicketOrderDetailVO> details = dao.findTicketOrderDetailsByTicketId(ticketId);
-//        return details.stream()
-//                .map(TicketOrderDetailVO::getTicketReviews)
-//                .filter(Objects::nonNull)
-//                .collect(Collectors.toList());
-//    }
-    
     public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId) {
         return hbTodDao.findByTicketId(ticketId);
     }

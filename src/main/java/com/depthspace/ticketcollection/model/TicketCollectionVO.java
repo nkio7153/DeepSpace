@@ -46,7 +46,7 @@ public class TicketCollectionVO implements Serializable {
         this.ticketId = ticketId;
     }
     
-	static class CompositeDetail implements Serializable {
+    public static class CompositeDetail implements Serializable {
 		private static final long serialVersionUID = 1L;
 
 		private Integer memId;

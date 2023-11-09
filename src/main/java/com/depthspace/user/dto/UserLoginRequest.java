@@ -3,20 +3,20 @@ package com.depthspace.user.dto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-public class AdminRegisterRequest {
+public class UserLoginRequest {
 
     @NotBlank
     @Email
-    private String email;
+    private String Email;
     @NotBlank
     private String password;
 
     public String getEmail() {
-        return email;
+        return Email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        Email = email;
     }
 
     public String getPassword() {
