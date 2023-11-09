@@ -1,3 +1,9 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.depthspace.admin.model.model.*" %>
+<%
+	AdminVO admin = (AdminVO) request.getAttribute("admin");
+%>
 <html>
 <head>
 <!-- 日期的套版 -->
@@ -6,23 +12,8 @@
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-twzipcode@1.7.14/jquery.twzipcode.min.js"></script>
 <meta charset="UTF-8">
-<title>administrator</title>
-<script>
-      //日期格式
-    $(function() {
-        $("#ADMIN_HD").datepicker({ dateFormat: 'yy-mm-dd' });
-        $("#twzipcode").twzipcode({
-         zipcodeIntoDistrict: true, // 郵遞區號自動顯示在區別選單中
-         css: ["city form-control", "town form-control"], // 自訂 "城市"、"地別" class 名稱 
-         countyName: "city", // 自訂城市 select 標籤的 name 值
-         districtName: "town" // 自訂區別 select 標籤的 name 值
-        });
-        $('select[name=city],select[name=town]').change(function(){
-         $('#ADMIN_ADDRESS').val('');
-         $('#ADMIN_ADDRESS').val($('select[name=city]').val()+$('select[name=town]').val());
-        })
-    });
-</script>
+<title>admin</title>
+
 <style>
     body {
       font-family: Arial, sans-serif;
@@ -95,34 +86,40 @@
 </head>
 <body>
 <!-- request.getContextPath()動態根路徑，action=add找到後端switch(action)的add-->
- <form method="post" action="<%=request.getContextPath()%>/administrator.do?action=add" accept-charset="UTF-8" enctype="multipart/form-data">
-  <table>
-  <tr>
-   <th>管理員帳號</th>
-   <td>
-    <input type="text" name="ADMIN_ACC" id="ADMIN_ACC" required>
-   </td>
-  </tr>
-  <tr>
-   <th>管理員密碼</th>
-   <td>
-    <input type="password" name="ADMIN_PWD" id="ADMIN_PWD" required>
-   </td>
-  </tr>
-  <tr>
-   <th>管理員帳號狀態</th>
-   <td>
-    <input type="radio" name="ADMIN_STATUS" value="0">離職
-    <input type="radio" name="ADMIN_STATUS" value="1" checked>在職
-    <input type="radio" name="ADMIN_STATUS" value="2">停職
-   </td>
- 
-  </table>
+	<form method="post" action="<%=request.getContextPath()%>/admin.do?action=add" accept-charset="UTF-8" enctype="multipart/form-data">
+		<table>
+		<tr>
+			<th>管理員名字</th>
+			<td>
+				<input type="text" name="ADMIN_NAME" id="ADMIN_NAME" required >
+			</td>
+		</tr>
+		<tr>
+			<th>管理員帳號</th>
+			<td>
+				<input type="text" name="ADMIN_ACC" id="ADMIN_ACC" required>
+			</td>
+		</tr>
+		<tr>
+			<th>管理員密碼</th>
+			<td>
+				<input type="password" name="ADMIN_PWD" id="ADMIN_PWD" required>
+			</td>
+		</tr>
+		<tr>
+			<th>管理員帳號狀態</th>
+			<td>
+				<input type="radio" name="ADMIN_STATUS" value="0">離職
+				<input type="radio" name="ADMIN_STATUS" value="1" checked>在職
+				<input type="radio" name="ADMIN_STATUS" value="2">停職
+			</td>
+		</tr>
+		</table>
 
-  
-  <button type="submit">送出</button>
-  <!--   點擊取消後跳轉回去首頁 -->
-  <input  type="button" onclick="window.location.href='<%=request.getContextPath()%>/frontend/administrator/logout1.jsp'" value="取消">
- </form>
+		
+		<button type="submit">送出</button>
+		<!-- 		點擊取消後跳轉回去首頁 -->
+		<input  type="button" onclick="window.location.href='<%=request.getContextPath()%>/admin/admin.jsp'" value="取消">
+	</form>
 </body>
 </html>

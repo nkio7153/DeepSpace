@@ -36,7 +36,7 @@ public class TicketCollectionJDBCDAO implements TicketCollectionDAO_Interface {
 			pstmt = con.prepareStatement(INSERT_STMT);
 			
 			pstmt.setInt(1, ticketCollectionVO.getMemId());
-			pstmt.setInt(2, ticketCollectionVO.getTicketId());
+//			pstmt.setInt(2, ticketCollectionVO.getTicketId());
 			pstmt.executeUpdate();
 			
 		} catch (SQLException se) {
@@ -55,8 +55,8 @@ public class TicketCollectionJDBCDAO implements TicketCollectionDAO_Interface {
 			con = DBUtil.getConnection();
 			pstmt = con.prepareStatement(DELETE_STMT);
 			pstmt.setInt(1, ticketCollectionVO.getMemId());
-			pstmt.setInt(2, ticketCollectionVO.getTicketId());
-			pstmt.executeUpdate();
+//			pstmt.setInt(2, ticketCollectionVO.getTicketId());
+//			pstmt.executeUpdate();
 		}catch (SQLException se) {
 			throw new RuntimeException("A database error occured." + se.getMessage());			
 		} finally {
@@ -81,7 +81,7 @@ public class TicketCollectionJDBCDAO implements TicketCollectionDAO_Interface {
 	        if(rs.next()) {
 	        	ticketCollectionVO = new TicketCollectionVO();
 	        	ticketCollectionVO.setMemId(rs.getInt("MEM_ID"));
-	        	ticketCollectionVO.setTicketId(rs.getInt("TICKET_ID"));
+//	        	ticketCollectionVO.setTicketId(rs.getInt("TICKET_ID"));
 	        }
 	    } catch (SQLException se) {
 	        throw new RuntimeException("A database error occurred. " + se.getMessage());
@@ -106,7 +106,7 @@ public class TicketCollectionJDBCDAO implements TicketCollectionDAO_Interface {
 			while(rs.next()) {
 	            TicketCollectionVO ticketCollectionVO = new TicketCollectionVO();
 	            ticketCollectionVO.setMemId(rs.getInt("MEM_ID"));
-	            ticketCollectionVO.setTicketId(rs.getInt("TICKET_ID"));
+//	            ticketCollectionVO.setTicketId(rs.getInt("TICKET_ID"));
 	            list.add(ticketCollectionVO);
 			} 
 		} catch (SQLException se) {

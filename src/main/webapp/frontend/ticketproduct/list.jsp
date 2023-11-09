@@ -122,7 +122,7 @@
 									<div class="col-md-8">
 										<div class="card-body">
 											<h5 class="card-title">${ticket.ticketName}</h5>
-											<p class="card-title">${ticket.ticketType.typeName}|
+											<p class="card-title">${ticket.ticketType.typeName}&ensp;|&ensp;
 												${ticket.city.cityName}</p>
 											<p class="card-title">
 												<c:choose>

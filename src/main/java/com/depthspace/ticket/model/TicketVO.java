@@ -34,7 +34,7 @@ public class TicketVO implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer ticketId;
 	
-	//fetch為存取 X EAGER
+	//fetch為存取
 	@ManyToOne(fetch = FetchType.LAZY) //多方Many搭配Join，name為自己要映射的表格欄位名、ref為對方要被關聯的表格欄位名
 	@JoinColumn(name="TICKET_TYPE_ID",referencedColumnName = "TICKET_TYPE_ID")
 	private TicketTypesVO ticketType; //新增被關聯的類別自取名

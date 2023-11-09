@@ -1,9 +1,9 @@
+<%@page import="com.depthspace.admin.model.model.AdminVO"%>
+<%@page import="com.depthspace.admin.model.service.AdminServiceImpl"%>
+<%@page import="com.depthspace.admin.model.service.AdminService"%>
 <%@ page import="com.depthspace.restaurant.service.RestServiecImpl"%>
 <%@ page import="com.depthspace.restaurant.service.RestService"%>
 <%@ page import="com.depthspace.restaurant.model.restaurant.RestVO"%>
-<%@ page import="com.depthspace.admin.model.model.AdminDAO"%>
-<%@ page import="com.depthspace.admin.model.model.AdminDAOImpl"%>
-<%@ page import="com.depthspace.admin.model.model.AdminVO"%>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.HashSet" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -15,17 +15,17 @@
 	List<RestVO> restList = restService.getAllRest();
 	request.setAttribute("RestList", restList);
 	
-	AdminDAO dao = new AdminDAOImpl();
-	List<AdminVO> adminList = dao.getAll();
+	AdminService adminService = new AdminServiceImpl();
+	List<AdminVO> adminList = adminService.getAllAdmins();
 	request.setAttribute("adminList", adminList);
 	
 %>
 
 <html>
 <head>
-	<jsp:include page="./indexpage/head.jsp" />
-	<jsp:include page="./indexpage/header.jsp" />
-	<jsp:include page="./indexpage/headpic.jsp" />
+	<jsp:include page="/indexpage/head.jsp" />
+	<jsp:include page="/indexpage/header.jsp" />
+	<jsp:include page="/indexpage/headpic.jsp" />
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/main.css">
 	<title>餐廳查詢</title>
@@ -121,7 +121,7 @@
 		</ul>
 	</c:if>
 		
-	<jsp:include page="./indexpage/footer.jsp" />
+	<jsp:include page="/indexpage/footer.jsp" />
 	<br>
 	<a href="${pageContext.request.contextPath}/static/into.jsp">回首頁</a>	
 	<script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>

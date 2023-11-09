@@ -1,16 +1,15 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"
-	pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
-<jsp:include page="../indexpage/head.jsp" />
-<jsp:include page="../indexpage/header.jsp" />
-<jsp:include page="../indexpage/headpic.jsp" />
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
-	crossorigin="anonymous">
+	<jsp:include page="/indexpage/head.jsp" />
+	<jsp:include page="/indexpage/header.jsp" />
+	<jsp:include page="/indexpage/headpic.jsp" />
+	<!-- bootstrapCDN -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+	
+	
+	
 	<style>
 	</style>
 </head>
@@ -30,7 +29,10 @@
 			<jsp:include page="info/info.jsp" />
 		</div>
 		<div id="col_book" class="row p-1 d-none border border-3 border-danger mb-3 rounded-3">
-			<div>訂位</div>
+			<label for="date">選擇日期：<input type="date" id="date" name="date"></label>
+			
+			
+			
 		</div>
 		
 	</div>
@@ -39,8 +41,10 @@
 	
 
 
-	<jsp:include page="../indexpage/footer.jsp" />
+	<jsp:include page="/indexpage/footer.jsp" />
 	<script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+	
 	<script>
 		$(function() {
 			$("#btn_info").click(function(){
@@ -59,6 +63,15 @@
 					$("#col_info").toggleClass("d-block d-none");
 				}
 			})
+			
+			
+
+	
+			$("#date").on('input', function(){
+				console.log($(this).val());
+			});
+	
+			
 		})
 	</script>
 </body>
