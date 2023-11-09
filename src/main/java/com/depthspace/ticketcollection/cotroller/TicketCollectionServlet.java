@@ -195,13 +195,12 @@ public class TicketCollectionServlet extends HttpServlet {
 
 		    JSONObject responseJson = new JSONObject();
 		    try {
-		        // 僅在此進行刪除操作
 		        ticketCollectionService.deleteByCom(memId, ticketId);
 		        responseJson.put("success", true);
-		        responseJson.put("message", "收藏票券已成功移除。");
+		        responseJson.put("message", "收藏已成功移除。");
 		    } catch (Exception e) {
 		        responseJson.put("success", false);
-		        responseJson.put("message", "移除收藏票券時發生錯誤: " + e.getMessage());
+		        responseJson.put("message", "移除收藏錯誤: " + e.getMessage());
 		    }
 
 		    // 發送回前端的 JSON 響應

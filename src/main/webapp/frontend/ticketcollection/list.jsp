@@ -67,8 +67,7 @@
 
 										<div class="card-body">
 											<h5 class="card-title">${ticketCollection.ticketVO.ticketName}</h5>
-											<p class="card-title">${icketCollection.ticketVO.ticketType.typeName}|
-												${ticketCollection.ticketVO.city.cityName}</p>
+											<p class="card-title">${ticketCollection.ticketVO.ticketType.typeName}&ensp;|&ensp;${ticketCollection.ticketVO.city.cityName}</p>
 											<p class="card-title">
 												<c:choose>
 													<c:when
@@ -154,39 +153,44 @@
 //         $('#searchForm').submit();
 //     });
 
-	//愛心取消收藏
+//愛心取消收藏
 $(document).ready(function() {
     $('.favorite-icon').click(function(e) {
-        e.preventDefault(); // 防止點擊事件的預設行為
-        var iconElement = $(this); // 獲取當前點擊的愛心元素
-        var ticketId = iconElement.data('ticketid'); // 從元素中取得票券ID
-        console.log(this);
-        console.log(ticketId);
-        $.ajax({
-            url: '<%=request.getContextPath()%>/ticketcollection/del',
-					type : 'GET',
-					data : {
-						ticketId : ticketId
-					},
-					dataType : 'json', // 預期從伺服器返回的數據類型
-					success : function(response) {
-						// 判斷後端回應，如果取消收藏成功
-						if (response.success) {
-							// 從頁面中移除這張票券的整個卡片
-							iconElement.closest('.card').remove();
-							console.log('取消收藏，票券移除成功!');
-						} else {
-							console.log('取消收藏失敗: ', response.message);
-						}
-					},
-					error : function(xhr, status, error) {
-						// 處理錯誤情況
-						console.log('Ajax請求錯誤: ' + error.message);
-					}
-				});
-			});
-		});
-	</script>
+        e.preventDefault();
+        var iconElement = $(this); 
+        var ticketId = iconElement.data('ticketid'); 
+
+        iconElement.addClass('break-heart-animation');
+        iconElement.on('animationend', function() {
+
+            $.ajax({
+                url: '<%=request.getContextPath()%>/ticketcollection/del',
+                type: 'GET',
+                data: { ticketId: ticketId },
+                dataType: 'json', 
+                success: function(response) {
+                     if (response.success) {
+                        console.log('取消收藏，票券移除成功!');
+                    } else {
+                        console.log('取消收藏失敗: ', response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // 處理錯誤情況
+                    console.log('Ajax請求錯誤: ' + error.message);
+                },
+                complete: function() {
+                    // 動畫結束後移除卡片
+                    iconElement.closest('.card').remove();
+                }
+            });
+            // 移除動畫
+            iconElement.removeClass('break-heart-animation');
+        });
+    });
+});
+
+</script>
 
 </body>
 
