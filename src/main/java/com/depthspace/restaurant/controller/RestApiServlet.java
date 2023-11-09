@@ -2,7 +2,6 @@ package com.depthspace.restaurant.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +17,6 @@ import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO;
 import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO.CompositeDetail;
-import com.depthspace.restaurant.model.restbookingdate.dao.RestBookingDateHibernateDAOImpl;
 import com.depthspace.restaurant.model.restcollection.RestCollectionVO;
 import com.depthspace.restaurant.service.MemBookingService;
 import com.depthspace.restaurant.service.MemBookingServiceImpl;
@@ -195,6 +193,7 @@ public class RestApiServlet extends HttpServlet {
 			List<RestBookingDateVO> list = restBookingDateService.getAll();
 			PrintWriter out = resp.getWriter();
 			out.print(gson.toJson(list));
+			
 		}
 			
 	}
@@ -363,6 +362,7 @@ public class RestApiServlet extends HttpServlet {
 				break;
 		}
 	}
+	
 	
 	
 	

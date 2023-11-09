@@ -82,6 +82,7 @@
 				var openTime = place.opening_hours.weekday_text;
 				if (openTime != null){
 					var ul = $("<ul id='openTime'></ul>");
+					ul.append("<li>營業時間</li>");
 					openTime.forEach(function(daytime, index){
 						ul.append("<li>"+daytime+"</li>");
 					})
