@@ -67,20 +67,6 @@ public class ColumnArticlesDAOImpl implements ColumnArticlesDAO {
 	public long getTotal() {
 		return getSession().createQuery("select count(*) from ColumnArticlesVO", Long.class).uniqueResult();
 
-//		Session session = getSession();
-//		Transaction tx = null; // org.hibernate.Transaction
-//		try {
-//			tx = session.beginTransaction();
-//			long count = session.createQuery("select count(*) from ColumnArticlesVO", Long.class).uniqueResult();
-//			tx.commit();
-//			return count;
-//		} catch (Exception e) {
-//			if (tx != null) {
-//				tx.rollback();
-//			}
-//			throw e;
-//		}
-
 	}
 
 	@Override

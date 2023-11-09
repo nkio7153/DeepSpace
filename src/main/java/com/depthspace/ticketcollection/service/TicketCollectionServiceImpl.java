@@ -2,6 +2,7 @@ package com.depthspace.ticketcollection.service;
 
 import java.util.List;
 
+import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.ticketcollection.dao.TicketCollectionDAO;
 import com.depthspace.ticketcollection.dao.TicketCollectionDAOImpl;
 import com.depthspace.ticketcollection.model.TicketCollectionVO;
@@ -27,9 +28,8 @@ public class TicketCollectionServiceImpl implements TicketCollectionService{
 	}
 	//刪除一筆(根據主鍵)
 	@Override
-	public int deleteByCom(Integer memId, Integer ticketId) {
-		TicketCollectionVO.CompositeDetail id = new TicketCollectionVO.CompositeDetail(memId, ticketId);
-        return dao.delete(id);
+	public boolean deleteByCom(Integer memId, Integer ticketId) {
+		return dao.delete(memId,ticketId);
 	}
 	//刪除(根據會員)
 	@Override
@@ -46,8 +46,15 @@ public class TicketCollectionServiceImpl implements TicketCollectionService{
 	public List<TicketCollectionVO> getAll() {
 		return dao.getAll();
 	}
+	//取得會員收藏數量
 	@Override
 	public long getTotalTickets(Integer memId) {
 		return dao.getTotal(memId);
 	}
+	//取得一筆(組合主鍵)
+	@Override
+	public TicketCollectionVO getOne(Integer memId, Integer ticketId) {
+		return dao.findByMemberAndTicket(memId, ticketId);
+	}
+	
 }

@@ -1,6 +1,7 @@
 package com.depthspace.ticketcollection.cotroller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,6 +25,9 @@ import com.depthspace.ticketcollection.service.TicketCollectionService;
 import com.depthspace.ticketcollection.service.TicketCollectionServiceImpl;
 import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 import com.google.gson.Gson;
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 @WebServlet("/ticketcollection/*")
 public class TicketCollectionServlet extends HttpServlet {
@@ -48,19 +52,19 @@ public class TicketCollectionServlet extends HttpServlet {
 			pathInfo = "";
 		}
 		switch (pathInfo) {
-		case "/": 
+		case "/":
 			res.sendRedirect(req.getContextPath() + "/frontend/ticketcollection/info.jsp");
 			break;
 		case "/login": // 登入
 			login(req, res);
 			break;
-		case "/list": // 收藏列表
+		case "/list": // 列表
 			doList(req, res);
 			break;
-		case "/add": // 新增
-			doAdd(req, res);
+		case "/toggleFavorite": // 切換收藏狀態
+			toggleFavorite(req, res);
 			break;
-		case "/find": // 移除
+		case "/find": // 篩選
 			doFind(req, res);
 			break;
 		case "/del": // 移除
@@ -89,141 +93,151 @@ public class TicketCollectionServlet extends HttpServlet {
 		// 從 session 中取得會員 ID，假設會員已經登入並存於 session
 //	    Integer memId = (Integer) req.getSession().getAttribute("memId"); 
 		Integer memId = 2; // ****測試寫死****
-		
-		List<TicketVO> ticketList = ticketService.getAllTickets(); 
-		req.setAttribute("resultSet", ticketList); // 票券內容
-		
+
+		// 取得會員收藏
+		List<TicketCollectionVO> ticketList = ticketCollectionService.getOne(memId);
+		req.setAttribute("resultSet", ticketList);
+		// 存放於TicketVO
+		List<TicketVO> tickets = new ArrayList<>();
+
 		// 存放星星數跟評價數、訂單數
 		Map<Integer, Double> averageStarsMap = new HashMap<>();
 		Map<Integer, Integer> totalRatingCountMap = new HashMap<>();
 		Map<Integer, Integer> ticketOrderCountMap = new HashMap<>();
 
-		//計算星星跟評價平均數
-		for (TicketVO ticket : ticketList) {
-		    Integer ticketId = ticket.getTicketId();
-		    Integer totalStars = ticketService.getTotalStars(ticketId);
-		    Integer totalRatingCount = ticketService.getTotalRatingCount(ticketId);
-		    
-		    double averageStars = totalRatingCount > 0 ? (double) totalStars / totalRatingCount : 0;
-		    String formattedAverageStars = String.format("%.1f", averageStars);
+		// 計算星星跟評價平均數
+		for (TicketCollectionVO collection : ticketList) {
+			TicketVO ticket = collection.getTicketVO(); // 要先放入ticketVO，下面才能根據此內容執行
+			tickets.add(ticket); // 加到列表
 
-		    averageStarsMap.put(ticketId, Double.parseDouble(formattedAverageStars));
-		    totalRatingCountMap.put(ticketId, totalRatingCount);
-	
-		    //查詢訂單數
-		    List<TicketOrderDetailVO> ticketOrderDetails = ticketService.findTicketOrderDetailsByTicketId(ticketId);
-	        int orderCount = ticketOrderDetails.size();  // 訂單數為票券訂單明細列表的大小
-	        ticketOrderCountMap.put(ticketId, orderCount);  // 將票券ID和對應的訂單數存放到map中
-	 
+			Integer ticketId = ticket.getTicketId();
+			Integer totalStars = ticketService.getTotalStars(ticketId);
+			Integer totalRatingCount = ticketService.getTotalRatingCount(ticketId);
+
+			double averageStars = totalRatingCount > 0 ? (double) totalStars / totalRatingCount : 0;
+			String formattedAverageStars = String.format("%.1f", averageStars);
+
+			averageStarsMap.put(ticketId, Double.parseDouble(formattedAverageStars));
+			totalRatingCountMap.put(ticketId, totalRatingCount);
+
+			// 查詢訂單數
+			List<TicketOrderDetailVO> ticketOrderDetails = ticketService.findTicketOrderDetailsByTicketId(ticketId);
+			int orderCount = ticketOrderDetails.size(); // 訂單數為票券訂單明細列表的大小
+			ticketOrderCountMap.put(ticketId, orderCount); // 將票券ID和對應的訂單數存放到map中
+
 		}
 
-		
+		req.setAttribute("ticket", tickets);
 		req.setAttribute("averageStarsMap", averageStarsMap);
 		req.setAttribute("totalRatingCountMap", totalRatingCountMap);
 		req.setAttribute("ticketOrderCountMap", ticketOrderCountMap);
-	
-//		List<TicketCollectionVO> ticketCollectionListAll = ticketCollectionService.getAll();
-//		req.setAttribute("ticketCollectionListAll", ticketCollectionListAll);
 
+		// 會員收藏票券數
 		long totalTickets = ticketCollectionService.getTotalTickets(memId);
-		req.setAttribute("totalTickets", totalTickets); // 會員收藏票券數
-		
+		req.setAttribute("totalTickets", totalTickets);
+
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/ticketcollection/list.jsp");
 		dispatcher.forward(req, res);
 	}
 
-	/*************** 新增 *****************/
-	private void doAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		// 從 session 中取得會員 ID，假設會員已經登入並存於 session
-//	    Integer memId = (Integer) req.getSession().getAttribute("memId"); 
+	/*************** 加入 *****************/
+	private void toggleFavorite(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		// Integer memId = (Integer) req.getSession().getAttribute("memId");
 		Integer memId = 2; // ****測試寫死****
-		Integer ticketId;
 
-		try {
-//			memId = Integer.valueOf(req.getParameter("memId"));
-			ticketId = Integer.valueOf(req.getParameter("ticketId"));
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-			return;
-		}
-		// 判斷是否處於會員登入狀況
+		// 從前端請求中取得票券 ID
+		String ticketIdStr = req.getParameter("ticketId");
+		Integer ticketId = Integer.parseInt(ticketIdStr);
+
 		if (memId != null) {
 
-			TicketCollectionVO ticketCollection = new TicketCollectionVO(memId, ticketId);
-			ticketCollectionService.add(ticketCollection);
+			TicketCollectionVO ticketCollection = ticketCollectionService.getOne(memId, ticketId);
+			boolean isFavorite;
 
-			List<TicketCollectionVO> list = ticketCollectionService.getOne(memId);
-			req.setAttribute("list", list);
-			req.setAttribute("memId", memId);
-			req.getRequestDispatcher("/frontend/ticketcollection/list.jsp").forward(req, res);
+			if (ticketCollection != null) {
+				// 存在於收藏中，則移除
+				ticketCollectionService.deleteByCom(memId, ticketId);
+				isFavorite = false;
+			} else {
+				// 不在收藏中，則加入
+				ticketCollection = new TicketCollectionVO();
+				ticketCollection.setTicketId(ticketId);
+				ticketCollection.setMemId(memId);
+
+				ticketCollectionService.add(ticketCollection);
+				isFavorite = true;
+			}
+
+			// 返回更新後的收藏狀態
+			res.setContentType("application/json");
+			res.setCharacterEncoding("UTF-8");
+			PrintWriter out = res.getWriter();
+			out.print("{ \"isFavorite\": " + isFavorite + " }");
+			out.flush();
 		} else {
-			// 未登入，重定向到登入頁面
-			res.sendRedirect(req.getContextPath() + "/frontend/ticketcollection/login.jsp");
+			// memId 未提供，返回錯誤狀態碼(應返回登入頁面)
+			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	}
 
 	/*************** 刪除一個 *****************/
-	protected void doDeleteBy(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		Integer memId;
-		Integer ticketId;
-		memId = Integer.valueOf(req.getParameter("memId"));
-		ticketId = Integer.parseInt(req.getParameter("ticketId"));
-		ticketCollectionService.deleteByCom(memId, ticketId);
-		setJsonResponse(res, "刪除成功");
-	}
-	
-	/*************** 全清空 *****************/
 	protected void doDel(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		Integer memId;
-		memId = Integer.valueOf(req.getParameter("memId"));
-		ticketCollectionService.deleteBymemId(memId);
-		 setJsonResponse(res, "清空成功");
+		// Integer memId = (Integer) req.getSession().getAttribute("memId");
+		Integer memId = 2; // ****測試寫死****
+
+		String ticketIdStr = req.getParameter("ticketId");
+		Integer ticketId = Integer.parseInt(ticketIdStr);
+
+		res.setContentType("application/json");
+		res.setCharacterEncoding("UTF-8");
+		PrintWriter out = res.getWriter();
+
+		JSONObject responseJson = new JSONObject();
+		try {
+			ticketCollectionService.deleteByCom(memId, ticketId);
+			responseJson.put("success", true);
+			responseJson.put("message", "收藏已成功移除。");
+		} catch (Exception e) {
+			responseJson.put("success", false);
+			responseJson.put("message", "移除收藏錯誤: " + e.getMessage());
+		}
+
+		// 發送回前端的 JSON 響應
+		out.print(responseJson.toString());
+		out.flush();
+		out.close();
 	}
-	
+
 	/************ 搜尋 ************/
 	private void doFind(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		Integer ticketId = null;
-		Integer cityId = null;
-		Map<String, String[]> map = req.getParameterMap();
-
-		// 查詢票券名稱
-		try {
-			ticketId = Integer.valueOf(req.getParameter("ticketId"));
-		} catch (NumberFormatException e) {
-			ticketId = null;
-		}
-		// 查詢票券區域
-		try {
-			cityId = Integer.valueOf(req.getParameter("areaId"));
-		} catch (NumberFormatException e) {
-			cityId = null;
-		}
-		// 儲存list
-		List<TicketVO> list = new ArrayList<>();
-
-
-		// 票券ID不為空就加入列表
-		if (ticketId != null) {
-			List<TicketVO> ticketIdList = ticketService.getTicketById2(ticketId);
-			list.addAll(ticketIdList);
-		}
-		// 票券區域不為空就加入列表
-		if (cityId != null) {
-			List<TicketVO> areaList = ticketService.getAllTicketAreaId(cityId);
-			list.addAll(areaList);
-		}
-		System.out.println(list);
-		req.setAttribute("list", list);
-		req.getRequestDispatcher("/backend/ticket/find.jsp").forward(req, res);
-	}
-	
-
-	private void setJsonResponse(HttpServletResponse res, Object obj) throws IOException {
-        Gson gson = new Gson();
-        String jsonData = gson.toJson(obj);
-        res.setContentType("application/json");
-        res.setCharacterEncoding("UTF-8");
-        res.getWriter().write(jsonData);
-		
+//		res.setContentType("application/json");
+//		res.setCharacterEncoding("UTF-8");
+//		PrintWriter out = res.getWriter();
+//		JSONObject responseJson = new JSONObject();
+//		
+//		// Integer memId = (Integer) req.getSession().getAttribute("memId");
+//		Integer memId = 2; // ****測試寫死****
+//		
+//	    List<TicketCollectionVO> ticket = ticketCollectionService.getOne(memId);
+//
+//	    if (ticket == null || ticket.isEmpty()) {
+//	        responseJson.put("error", "沒有找到票券資訊");
+//	    } else {
+//	        // 把查詢結果轉換為JSON陣列
+//	        JSONArray ticketsJsonArray = new JSONArray();
+//	        for (TicketCollectionVO tickets : ticket) {
+//	            JSONObject ticketJson = new JSONObject();
+//	            ticketJson.put("ticketId", ticket.getTicketId()); // 假設TicketVO有getTicketId方法
+//	            ticketJson.put("ticketName", ticket.getTicketName()); // 假設TicketVO有getTicketName方法
+//	            // ...其他票券資訊
+//	            ticketsJsonArray.put(ticketJson);
+//	        }
+//	        responseJson.put("tickets", ticketsJsonArray);
+//	    }
+//
+//	    // 將結果打印到前端
+//	    out.print(responseJson.toString());
+//	    out.flush();
+//	    out.close();
 	}
 }
