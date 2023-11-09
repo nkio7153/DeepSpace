@@ -12,6 +12,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.TypeReference;
 import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.restaurant.service.MemBookingService;
 import com.depthspace.restaurant.service.MemBookingServiceImpl;
@@ -20,7 +25,7 @@ import com.depthspace.restaurant.service.RestServiecImpl;
 import com.depthspace.utils.JedisUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import redis.clients.jedis.Jedis;
@@ -78,13 +83,15 @@ public class RestController extends HttpServlet {
 		HashSet<String> restType = new HashSet<String>();
 		for (RestVO vo : restList) {
 			restType.add(vo.getRestType());
+//			toRedis(vo);
 		}
 		req.setAttribute("restType", restType);
-		String json = gson.toJson(restList);
-		toRedis(json);
 		
-		String getType = req.getParameter("restType");
-		String byType = toRedisBy(getType);
+		toRedis(gson.toJson(restList));
+//		String json = gson.toJson(restList);
+//		toRedis(json);
+//		String getType = req.getParameter("restType");
+//		String byType = toRedisBy(getType);
 //		System.out.println(byType);
 		
 		return "/frontend/rest/restlist.jsp";
@@ -96,32 +103,24 @@ public class RestController extends HttpServlet {
 		
 	}
 	
-	private void toRedis(String restList) {
+	private void toRedis(String vo) {
 	    Jedis jedis = JedisUtil.getJedisPool().getResource();
 	    jedis.select(15);
 	    
 	    if (!jedis.exists("rests")) {
-	      jedis.set("rests", restList);
-	      String rList = jedis.get("rests");
-	      System.out.println("get");
-	      System.out.println(rList);
+	      jedis.set("rests", vo);
 	    }
-//	    System.out.println("redis work");
-//	    String json = jedis.get("rests");
-//	    System.out.println(json);
-	      
 	    
-//	    RestVO[] voList = gson.fromJson(json, RestVO[].class);
-//	    for (RestVO v : voList) {
-//	      System.out.println(v);
-//	      System.out.println(v.getRestName());
-//	    }
-//	    Type ListType = new TypeToken<List<RestVO>>(){}.getType();
-//	        List<RestVO> restVOList = gson.fromJson(json, ListType);
-	//
-//	    for (RestVO vo : restVOList) {
-//	      System.out.println(vo.getRestName());
-//	    }
+	    String rests = jedis.get("rests");
+	    List<RestVO> restvo = JSON.parseArray(rests, RestVO.class);
+	    List<RestVO> restvo1 = JSON.parseObject(rests, new TypeReference<List<RestVO>>(){}); 
+	    for (RestVO vo1 : restvo) {
+	    	System.out.println(vo1.getRestType());
+	    }
+	    for (RestVO vo2 : restvo1) {
+	    	System.out.println(vo2.getRestName());
+	    }
+	    
 	    jedis.close();
 	}
 	
@@ -130,13 +129,6 @@ public class RestController extends HttpServlet {
 	    jedis.select(15);
 	    
 	    String rests = jedis.get("rests");
-	    List<RestVO> rs = new ArrayList<>();
-	    
-	    List<RestVO> restVOs = gson.fromJson(rests, new TypeToken<List<RestVO>>() {}.getType());
-
-        for (RestVO restVO : restVOs) {
-            System.out.println(restVO);
-        }
 	    
 	    jedis.close();
 	    return rests;

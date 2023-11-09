@@ -17,13 +17,41 @@
 <html>
 <head>
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOKKfj_MwehUJhm-t7jPbO1ydNODLgLOM&libraries=places&callback=initMap"></script>
+	<style>
+		.carousel-inner {
+		  height: 500px;
+		}
+		.carousel-inner .item img {
+		  width: 100%;
+/* 		  height: 100%; */
+		}
+	</style>
 </head>
 <body class="border border-light">
 
 	<h1 id="r_name">${ rest.restName }</h1>
 	
 	
-	<div id="map" style="height: 300px; width: 300px;"></div>
+	<!-- https://bootstrap5.hexschool.com/docs/5.0/components/carousel/ -->
+	<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+	  <div class="carousel-inner">
+	    <div class="carousel-item active">
+	      <img src="/DepthSpace/static/images/rest/r_${ rest.restId }.jpg" class="d-block">
+	    </div>
+	  </div>
+	  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+	    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+	    <span class="visually-hidden">Previous</span>
+	  </button>
+	  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+	    <span class="visually-hidden">Next</span>
+	  </button>
+	</div>
+	
+	<div id="map" style="height: 300px; width: 100%;" class="mt-3"></div>
+	
+	
 	
 	<script>
 		// https://developers.google.com/maps/documentation/javascript/places?hl=zh-tw#find_place_from_query
@@ -93,8 +121,13 @@
 				var photos = place.photos;
 				if (photos != null){
 					photos.forEach(function(photo, index) {
-						let photoUrl = photo.getUrl({maxWidth: 100, maxHeight: 100});
-						$("ul#openTime").append("<img src="+photoUrl+">");
+// 						let photoUrl = photo.getUrl({maxWidth: 100, maxHeight: 100});
+						let photoUrl = photo.getUrl();
+						let img = 
+							"<div class='carousel-item'>"+
+						      "<img src="+photoUrl+" class='d-block'>"+
+						    "</div>"
+						$(".carousel-inner").append(img);
 					});
 				}
 			  

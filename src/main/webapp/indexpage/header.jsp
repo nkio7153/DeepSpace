@@ -27,7 +27,7 @@
                             <a class="" href="${pageContext.request.contextPath}/forumArticles/list.jsp">論壇文章</a>
                         </li>
                         <li class="nav-item">
-                            <a class="" href="#">餐廳</a>
+                            <a class="" href="${pageContext.request.contextPath}/Rest/getRests">餐廳</a>
                         </li>
                         <li class="nav-item">
                             <a class="booking" href="#">登入/註冊</a>
