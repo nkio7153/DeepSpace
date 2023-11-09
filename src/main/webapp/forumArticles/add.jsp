@@ -9,30 +9,8 @@
  <jsp:include page="../indexpage/head.jsp" />
 <meta charset="UTF-8">
 <title>新增論壇文章</title>
+<script src="https://cdn.tiny.cloud/1/3u5wm513cfl9shskemk13n936fx56zfolvirppkzq4b61na9/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4" crossorigin="anonymous"></script>
-<script>
-function handleFileSelect(evt) {
-    var fileInput = evt.target;
-    if (fileInput.files && fileInput.files[0]) {
-        var file = fileInput.files[0];
-
-        if (file.type !== "image/jpeg") {
-            alert("只能選擇 JPG 檔案");
-            return;
-        }
-
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var preview = document.getElementById("preview");
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-    } else {
-        alert("未選擇檔案或不支持的檔案類型");
-    }
-}
-</script>
 <style>
         body {
             font-family: Arial, sans-serif;
@@ -80,6 +58,22 @@ function handleFileSelect(evt) {
     </style>
 </head>
 <body>
+<script>
+	  tinymce.init({
+	    selector: '#artiText',
+	  });
+</script>
+<script>
+		function previewImage(event) {
+		    var reader = new FileReader();
+		    reader.onload = function() {
+		        var output = document.getElementById('preview');
+		        output.src = reader.result;
+		        output.style.display = 'block';
+		    };
+		    reader.readAsDataURL(event.target.files[0]);
+		}
+</script>
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp" />
 <div id="Add">
@@ -106,18 +100,15 @@ function handleFileSelect(evt) {
                 <td><textarea name="artiText" id="artiText" rows="10" cols="50"></textarea></td>
             </tr>
             <tr>
-                <th>讚數</th>
-                <td><input type="text" name="artiLk" id="artiLk"></td>
-            </tr>
-           
+                <td><input type="hidden" name="artiLk" id="artiLk" value="0"></td>
+            </tr>          
             <tr>
-                <th>文章圖片</th>
-                <td>
-                   <input type="file" id="fileSelect" accept="image/jpeg" onchange="handleFileSelect(event)">
-                   <img id="preview" src="#" alt="預覽圖片" style="width: 300px; height: auto; display: none;">
-                   <input type="hidden" name="artiImg" id="artiImg">
-				</td>
-           </tr>
+        		<th>文章圖片</th>
+			    <td>
+			        <input type="file" name="artiImgStr" id="fileSelect" accept="image/jpeg" onchange="previewImage(event)">
+			        <img id="preview" src="#" alt="預覽圖片" style="width: 300px; height: auto; display: none;">
+			    </td>
+    		</tr>
             </table>
         <input type="hidden" name="artiTime" id="artiTime" value="<%= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) %>">
         <input type="submit" id="btnAddSave" value="儲存">

@@ -33,7 +33,7 @@
 
 			<!-- 左側篩選條件 -->
 			<div class="col-md-3">
-				<form id="searchForm">
+				<form id="searchForm" >
 					<!-- 搜尋框 -->
 					<div class="input-group mb-3">
 						<input type="text" class="form-control" placeholder="票券名稱"
@@ -77,9 +77,9 @@
 				</form>
 			</div>
 			<!-- 右側內容 -->
-			<div class="col-md-9" id="ticketright">
+			<div class="col-md-9">
 				<div class="d-flex justify-content-between align-items-center mb-3">
-					<div >
+
 					<c:choose>
 						<c:when test="${not empty searchCount}">
 							<h3 class="mb-0">搜尋結果 ${searchCount} 項票券</h3>
@@ -88,17 +88,16 @@
 							<h3 class="mb-0">共有 ${totalTickets} 項票券體驗</h3>
 						</c:otherwise>
 					</c:choose>
-					</div>
+
 					<form action="<%=request.getContextPath()%>/ticketproduct/list"
 						method="get">
 						<input type="hidden" name="sortField" value="${param.sortField}">
 						<input type="hidden" name="sortOrder" value="${param.sortOrder}">
 						<input type="hidden" name="sortBuy" value="${param.sortBuy}">
 						<div class="form-group mb-0">
-							<label for="sortDropdown" class="mr-2"></label> <select
+							<label for="sortDropdown" class="mr-2">排序方式：</label> <select
 								class="form-control d-inline-block" id="sortDropdown"
 								name="sort" onchange="this.form.submit()">
-								<option value="default">排序方式</option>
 								<option value="popularity">按熱門程度排序</option>
 								<option value="ticketName">按票券名稱排序</option>
 								<!-- 其他排序選項 -->
@@ -107,7 +106,7 @@
 					</form>
 				</div>
 				<!-- 票券列表 -->
-				<div class="ticket-lists" id="ticketright">
+				<div class="ticket-list">
 					<c:forEach items="${resultSet}" var="ticket">
 						<a
 							href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=${ticket.ticketId}"
@@ -122,7 +121,7 @@
 									<div class="col-md-8">
 										<div class="card-body">
 											<h5 class="card-title">${ticket.ticketName}</h5>
-											<p class="card-title">${ticket.ticketType.typeName}&ensp;|&ensp;
+											<p class="card-title">${ticket.ticketType.typeName}|
 												${ticket.city.cityName}</p>
 											<p class="card-title">
 												<c:choose>
@@ -222,42 +221,62 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<script>
- 
-      //左邊搜尋條件
+    <script>
+    
+	//左邊搜尋條件
         $(document).ready(function() {
-            // 處理表單提交事件
-            $('#searchForm').on('submit', function(e) {
-                e.preventDefault(); // 防止表單的默認提交行為
-                // 從表單收集數據
-                var formData = $(this).serialize();
-                // 發送 Ajax 請求
-                $.ajax({
-                    type: "GET", 
-                    url: "<%=request.getContextPath()%>/ticketproduct/search", 
-					data : formData, // 表單數據
-					success : function(result) {
-						//console.log(result);
-						// 更新票券列表部分 
-						$('#ticketright').html(result);
-					}
-				});
-			});
+            // 根據checkbox勾選狀態動態調整
+            $('input[type=checkbox]').change(function() {
+                // 修改表單提交為AJAX
+                $('#searchForm').on('submit', function(e) {
+                    e.preventDefault(); // 防止表單的預設提交行為
+                    
+                    // 收集表單資料
+                    var formData = $(this).serialize();
+                    
+                    // 發送AJAX請求
+                    $.ajax({
+                        url: '<%=request.getContextPath()%>/ticketproduct/search', // 提交到搜索的URL
+                        type: 'GET',
+                        data: formData,
+                        success: function(data) {
+                            // 成功後更新頁面的某部分
+                            // 假設服務器回傳了新的票券列表HTML，更新.ticket-list容器
+                            $('.ticket-list').html(data);
+                        },
+                        error: function(xhr, status, error) {
+                            // 處理錯誤
+                            console.error("AJAX error: " + status + ', ' + error);
+                        }
+                    });
+                });
+            });
+        });
+	//右邊排序
+            // 排序下拉選單的變化
+            $('#sortDropdown').on('change', function() {
+                var sortValue = $(this).val();
+                var sortField = 'ticketName'; // 預設排序依據為票券名稱
+                var sortOrder = 'asc'; // 預設排序方式為升序
 
-			// 篩選條件的變更也觸發表單提交
-			$('input[type=checkbox]').change(function() {
-				$('#searchForm').submit();
-			});
+                // 根據選項修改排序參數
+                if (sortValue === 'popularity') {
+                    sortField = 'sales';
+                    sortOrder = 'desc'; // 熱門銷售降序
+                } else if (sortValue === 'ticketName') {
+                    sortField = 'ticketName';
+                    sortOrder = 'asc';
+                }
 
-			// 更改排序也觸發表單提交
-			$('#sortDropdown').on('change', function() {
-				$('#searchForm').submit();
-			});
-		});
+                // 更新隱藏輸入欄位的值
+                $('input[name="sortField"]').val(sortField);
+                $('input[name="sortOrder"]').val(sortOrder);
 
-      
-	</script>
-
+                // 提交表單
+                $('#searchForm').submit();
+            });
+        });
+    </script>
 	<jsp:include page="/indexpage/footer.jsp" />
 
 </body>

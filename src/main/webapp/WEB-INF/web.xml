@@ -58,13 +58,13 @@
 	</servlet-mapping>
 	
 	<servlet>
-		<servlet-name>FaqTypesServlet</servlet-name>
-		<servlet-class>com.depthspace.faqtypes.model.controller.FaqTypesServlet</servlet-class>
+		<servlet-name>AdminServlet</servlet-name>
+		<servlet-class>com.depthspace.admin.model.controller.AdminServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>FaqTypesServlet</servlet-name>
-		<url-pattern>/faqtypes/faq.do1</url-pattern>
+		<servlet-name>AdminServlet</servlet-name>
+		<url-pattern>/admin/admin.do</url-pattern>
 	</servlet-mapping>
-	
+
 </web-app>

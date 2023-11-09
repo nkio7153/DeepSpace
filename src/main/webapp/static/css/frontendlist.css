@@ -46,3 +46,29 @@ a.no-underline, a.no-underline:hover {
 .fa-star, .fa-star-half-alt {
 	border: none;
 }
+/* 愛心樣式 */
+.favorite-icon-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 32px;
+    cursor: pointer;
+}
+/* 愛心破碎的動畫效果 */
+@keyframes breakHeart {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0);
+    }
+}
+
+/* 觸發 */
+.break-heart-animation {
+    animation: breakHeart 0.5s ease forwards;
+}

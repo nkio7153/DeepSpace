@@ -1,6 +1,8 @@
 package com.depthspace.forum.model.forumarticles.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -9,9 +11,11 @@ import java.util.Base64;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson2.JSON;
@@ -19,6 +23,7 @@ import com.depthspace.forum.model.forumarticles.ForumArticlesVO;
 import com.depthspace.forum.model.forumarticles.service.ForumArticlesService;
 import com.depthspace.forum.model.forumarticles.service.ForumArticlesServiceImpl;
 
+@MultipartConfig
 public class ForumArticlesServlet extends HttpServlet {
 	private ForumArticlesService forumArticlesService;
 
@@ -74,24 +79,35 @@ public class ForumArticlesServlet extends HttpServlet {
 
 	private void addForumArticles(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
+		byte[] artiImg = null;
 		try {
-			req.setCharacterEncoding("UTF-8");
-			resp.setCharacterEncoding("UTF-8");
 			Integer memId = parseIntegerParameter(req.getParameter("memId"));
 			Integer msgId = parseIntegerParameter(req.getParameter("msgId"));
 			Integer artiTypeId = parseIntegerParameter(req.getParameter("artiTypeId"));
 			String artiTitle = req.getParameter("artiTitle");
 			String artiTimeStr = req.getParameter("artiTime");
 			Timestamp artiTime = parseTimestamp(artiTimeStr);
-			String artiText =req.getParameter("artiText");
-			System.out.println("artiText"+artiText);
-			Integer artiLk = parseIntegerParameter(req.getParameter("artiLk"));
-			String artiImgStr = req.getParameter("artiImg");
-			byte[] artiImg = artiImgStr != null ? Base64.getDecoder().decode(artiImgStr) : null;
+			String artiText = req.getParameter("artiText");
+			Integer artiLk = parseIntegerParameter(req.getParameter("artiLk"));		
+			Part artiImgStr = req.getPart("artiImgStr");
+            if (artiImgStr != null && artiImgStr.getSize() > 0) {
+                InputStream inputStream = artiImgStr.getInputStream();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                int read;
+                byte[] data = new byte[1024];
+                while ((read = inputStream.read(data, 0, data.length)) != -1) {
+                    baos.write(data, 0, read);
+                }
+                baos.flush();
+                artiImg = baos.toByteArray();
+                inputStream.close();
+                baos.close();
+            }
+			
 			ForumArticlesVO forum = new ForumArticlesVO(null, memId, msgId, artiTypeId, artiTitle, artiTime, artiText,
 					artiLk, artiImg);
 			forumArticlesService.insert(forum);
-			req.getRequestDispatcher("/forumArticles/list.jsp").forward(req, resp);
+			resp.sendRedirect(req.getContextPath() + "/forumArticles/list.jsp");
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input: " + e.getMessage());

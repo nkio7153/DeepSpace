@@ -5,20 +5,13 @@ import java.util.Map;
 
 public interface AdminDAO {
 
-	int insert(AdminVO entity);
+	void insert(AdminVO adminVO);
 
-	int update(AdminVO entity);
+	int update(AdminVO adminVO);
 	
-	int delete(AdminVO id);
+	int delete(Integer id);
 	 
-	AdminVO getById(Integer id);
-	
 	List<AdminVO> getAll();
 	
-	List<AdminVO> getByCompositeQuery(Map<String, String> map);
-	
-	List<AdminVO> getAll(int currentPage);
-	
-	long getTotal();
+	AdminVO findByAdminId(Integer adminId);
 }
-
