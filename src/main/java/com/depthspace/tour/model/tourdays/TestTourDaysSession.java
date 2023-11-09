@@ -1,8 +1,9 @@
-package com.depthspace.tour.model;
+package com.depthspace.tour.model.tourdays;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.depthspace.tour.model.TourDaysVO;
 import com.depthspace.utils.HibernateUtil;
 
 public class TestTourDaysSession {

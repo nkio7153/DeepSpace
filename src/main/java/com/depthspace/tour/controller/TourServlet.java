@@ -17,9 +17,11 @@ import com.depthspace.attractions.model.CityVO;
 import com.depthspace.attractions.service.AreaService;
 import com.depthspace.attractions.service.AttractionsService;
 import com.depthspace.attractions.service.CityService;
+import com.depthspace.tour.model.TourDaysVO;
 import com.depthspace.tour.model.tour.TourVO;
 import com.depthspace.tour.model.tour.TourView;
 import com.depthspace.tour.model.tourtype.TourTypeVO;
+import com.depthspace.tour.service.TourDaysService;
 import com.depthspace.tour.service.TourService;
 import com.depthspace.tour.service.TourTypeService;
 import com.google.gson.Gson;
@@ -32,6 +34,7 @@ public class TourServlet extends HttpServlet {
 	private CityService cs;
 	private AreaService as;
 	private AttractionsService attrs;
+	private TourDaysService tds;
 
 	public void init() throws ServletException {
 		ts = new TourService();
@@ -39,6 +42,7 @@ public class TourServlet extends HttpServlet {
 		cs = new CityService();
 		as = new AreaService();
 		attrs = new AttractionsService();
+		tds = new TourDaysService();
 	}
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -72,8 +76,48 @@ public class TourServlet extends HttpServlet {
 		case "/getAttractions":
 			doGetAttractions(req, resp);
 			break;
+		case "/saveSecond":
+			doSaveSecond(req, resp);
+			break;
 		}
 
+	}
+
+private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	//取得天數讓資料庫可以新增	
+	Integer tourdaysId = null;
+	Integer tourId;
+	Integer allDays;
+	String[] allAttr;
+	String[] allTime;
+	
+	//轉型
+	try {
+		allDays = Integer.valueOf(req.getParameter("allDays"));
+		tourId = Integer.valueOf(req.getParameter("tourId"));
+		//	System.out.println("allDays= "+ allDays + "tourId= "+ tourId);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return;
+		}
+	//用總天數的數量去新增天數
+	for(int i=1 ; i <= allDays ; i++) {
+		TourDaysVO tourDaysVO = new TourDaysVO(tourdaysId , allDays , tourId);
+		tds.insert(tourDaysVO);
+		allAttr = req.getParameterValues("attractions[" + i + "]");
+		allTime = req.getParameterValues("attractionTime[" + i + "]");
+
+		for(String one : allAttr) {
+			
+			System.out.println("時間=" + allTime.length);
+			//one為Id			
+			System.out.println("第" + i + "景點編號=" + one);
+		}
+//		System.out.println("tourId=" + tourId + "第" + i + "天，成功");
+//		System.out.println( "第" + i + "景點為" + "，all=" + one);
+	}
+	
+//	 resp.sendRedirect(req.getContextPath() + "/tr/domemTourList");
 	}
 
 //	ajax傳遞找尋景點選項
@@ -81,12 +125,10 @@ public class TourServlet extends HttpServlet {
 		// 依據cityName找尋對應的景點的集合
 		String cityName = req.getParameter("cityName");
 //		System.out.println("cityName="+cityName);
-
 		List<AttractionsVO> list = attrs.findOtherAttractions(cityName);
 //		System.out.println("list="+list);
-
+		//轉型成Josn送回jsp
 		setJsonResponse(resp, list);
-
 	}
 
 	private void doaddTour(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -126,11 +168,11 @@ public class TourServlet extends HttpServlet {
 		TourVO tourVO = new TourVO(tourId, memId, tourName, tourTypeId, allDays, tourDescription, startDate, endDate);
 //		新增一筆行程資料
 		TourVO tvo = null;
-//		tvo = ts.insert(tourVO);
+		tvo = ts.insert(tourVO);
 //		System.out.println("新增的那些東西"+ tourVO);
-
+		
 		// 額外設定天數顯示
-		System.out.println("總天數=" + tourVO.getAllDays());
+//		System.out.println("總天數=" + tourVO.getAllDays());
 //		跑回圈把所有天數放進一個集合裡
 		List<Integer> dayList = new ArrayList<>();
 		int allday = tourVO.getAllDays();
@@ -173,6 +215,9 @@ public class TourServlet extends HttpServlet {
 		req.setAttribute("attrvo", attrvo);
 		// 設定對應的行程類型
 		req.setAttribute("ttvo", ttvo);
+		//設定最後一筆形成Id
+		req.setAttribute("tvo", tvo);
+		
 		req.getRequestDispatcher("/tour/newTour2.jsp").forward(req, resp);
 
 	}
