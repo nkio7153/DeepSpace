@@ -5,12 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
-public class Admin {
+public class User {
     private Integer userId;
-    private String adminAcc;
+    private String email;
 
     @JsonIgnore
-    private String adminPwd;
+    private String password;
 
     private Date createdDate;
     private Date lastModifiedDate;
@@ -24,19 +24,19 @@ public class Admin {
     }
 
     public String getEmail() {
-        return adminAcc;
+        return email;
     }
 
     public void setEmail(String email) {
-        this.adminAcc = email;
+        this.email = email;
     }
 
     public String getPassword() {
-        return adminPwd;
+        return password;
     }
 
     public void setPassword(String password) {
-        this.adminPwd = password;
+        this.password = password;
     }
 
     public Date getCreatedDate() {

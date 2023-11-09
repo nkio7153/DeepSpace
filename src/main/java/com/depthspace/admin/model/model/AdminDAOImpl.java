@@ -2,81 +2,64 @@ package com.depthspace.admin.model.model;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import com.depthspace.utils.HibernateUtil;
+import static com.depthspace.utils.Constants1.PAGE_MAX_RESULT;
 
 import java.util.List;
-import java.util.Map;
+import com.depthspace.admin.model.model.AdminDAOImpl;
 
 
 public class AdminDAOImpl implements AdminDAO {
 
-	private SessionFactory sessionFactory;
+	private SessionFactory factory;
 
-    public  AdminDAOImpl() {
-        this.sessionFactory = HibernateUtil.getSessionFactory();
+    public AdminDAOImpl(SessionFactory factory) {
+        this.factory = factory;
+    }
+
+    public Session getSession() {
+        return factory.getCurrentSession();
     }
 
     @Override
-    public int insert(AdminVO entity) {
-        Session session = sessionFactory.getCurrentSession();
-        session.save(entity);
-        return 1;
+    public void insert(AdminVO adminVO) {
+		getSession().save(adminVO);
     }
 
     @Override
-    public int update(AdminVO entity) {
-        Session session = sessionFactory.getCurrentSession();
-        session.update(entity);
-        return 1;
+    public int update(AdminVO adminVO) {
+    	try {
+			getSession().update(adminVO);
+			return 1;
+		} catch (Exception e) {
+			return -1;
+		}
     }
 
     @Override
-    public int delete(AdminVO id) {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction transaction = session.beginTransaction();
-            session.delete(id);
-            transaction.commit();
-        }
-        return 1;
+    public int delete(Integer adminId) {
+    	AdminVO adminVO = getSession().get(AdminVO.class, adminId);
+		if (adminVO != null) {
+			getSession().delete(adminVO);
+			// 回傳給 service，1代表刪除成功
+			return 1;
+		} else {
+			// 回傳給 service，-1代表刪除失敗
+			return -1;
+		}
     }
     
-
-
     @Override
-    public AdminVO getById(Integer id) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(AdminVO.class, id);
-    }
-
+	public AdminVO findByAdminId(Integer adminId) {
+		Query<AdminVO> query = getSession().createQuery("FROM AdminVO where adminId=:adminId",AdminVO.class);
+		query.setParameter("adminId", adminId);
+		return query.getSingleResult();
+	}
+    
     @Override
-    public List<AdminVO> getAll() {
-        Session session = sessionFactory.getCurrentSession();
-        Query<AdminVO> query = session.createQuery("from AdminVO", AdminVO.class);
-        return query.list();
-    }
-
-    @Override
-    public List<AdminVO> getByCompositeQuery(Map<String, String> map) {
-        // 實現複合查詢的邏輯
-        return null;
-    }
-
-    @Override
-    public List<AdminVO> getAll(int currentPage) {
-        Session session = sessionFactory.getCurrentSession();
-        Query<AdminVO> query = session.createQuery("from AdminVO", AdminVO.class);
-        query.setFirstResult((currentPage - 1) * 10);
-        query.setMaxResults(10);
-        return query.list();
-    }
-
-    @Override
-    public long getTotal() {
-        Session session = sessionFactory.getCurrentSession();
-        Query<Long> query = session.createQuery("select count(*) from AdminVO", Long.class);
-        return query.uniqueResult();
-    }
+	public List<AdminVO> getAll() {
+		return getSession().createQuery("FROM AdminVO", AdminVO.class).list();
+	}
+    
 }

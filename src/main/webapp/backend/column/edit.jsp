@@ -88,12 +88,6 @@
 						</div>
 					</div>
 
-					<!-- 發文管理者 -->
-					<div class="form-group col-md-6">
-						<label for="adminId">發文者</label> <input type="text"
-							class="form-control" id="adminId" name="adminId"
-							value="${columnArticles.admin}">
-					</div>
 					<button type="submit" class="btn btn-primary" name="action">送出</button>
 				</form>
 			</div>

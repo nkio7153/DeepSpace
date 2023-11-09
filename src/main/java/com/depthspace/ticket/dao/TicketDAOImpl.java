@@ -13,6 +13,7 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import com.depthspace.ticket.model.*;
 import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
@@ -79,7 +80,7 @@ public class TicketDAOImpl implements TicketDAO {
 
 	// 取得所有票券資料(分頁)
 	@Override
-	public List<TicketVO> getAll(int currentPage) {
+	public List<TicketVO> getAll2(int currentPage) {
 		int first = (currentPage - 1) * Constants.PAGE_MAX_RESULT; // 計算當前頁面第一條索引
 		return getSession().createQuery("from TicketVO", TicketVO.class) // 查詢ticketVO實體 創建新查詢對象createQuery
 				.setFirstResult(first).setMaxResults(Constants.PAGE_MAX_RESULT) // 每頁紀錄數量
@@ -174,7 +175,6 @@ public class TicketDAOImpl implements TicketDAO {
 	    return query.getResultList();
 	}
 	
-//    private EntityManager entityManager;
 
     public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId) {
         EntityManager localEntityManager = null;
@@ -190,6 +190,26 @@ public class TicketDAOImpl implements TicketDAO {
             }
         }
     }
+    
+
+    //取得所有票券類型		
+	@Override
+	public List<TicketTypesVO> getAllTicketTypeIds(Integer ticketTypeId) {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<TicketTypesVO> criteriaQuery = criteriaBuilder.createQuery(TicketTypesVO.class);
+			Root<TicketTypesVO> root = criteriaQuery.from(TicketTypesVO.class);
+
+			criteriaQuery.where(criteriaBuilder.equal(root.get("ticketType").get("ticketTypeId"), ticketTypeId));
+			criteriaQuery.select(root);
+
+			Query<TicketTypesVO> query = session.createQuery(criteriaQuery);
+
+			return query.getResultList();
+		} catch (Exception e) {
+			throw new RuntimeException("Error", e);
+		}
+	}
 
 //	//取得有評價該票券的單數
 //	@Override

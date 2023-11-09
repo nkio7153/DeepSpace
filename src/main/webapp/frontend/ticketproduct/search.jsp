@@ -9,9 +9,6 @@
 <html>
 <head>
 <title>選擇票券體驗</title>
-
-<jsp:include page="/indexpage/head.jsp" />
-
 <!-- CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -23,63 +20,13 @@
 
 </head>
 <body>
-
-	<jsp:include page="/indexpage/header.jsp" />
-	<jsp:include page="/indexpage/headpic.jsp" />
-
 	<div class="container mt-5">
 
 		<div class="row">
 
-			<!-- 左側篩選條件 -->
-			<div class="col-md-3">
-				<form id="searchForm">
-					<!-- 搜尋框 -->
-					<div class="input-group mb-3">
-						<input type="text" class="form-control" placeholder="票券名稱"
-							id="ticketName" name="ticketName" value="${ticket.ticketName}"
-							aria-label="Search">
-						<div class="input-group-append">
-							<button class="btn btn-primary" type="submit">
-								<i class="fa fa-search"></i>
-							</button>
-						</div>
-					</div>
-
-
-					<!-- 目的地 -->
-					<h4>目的地</h4>
-					<div class="form-group">
-						<c:forEach var="areaItem" items="${uniqueTicketArea}"
-							varStatus="status">
-							<div class="custom-control custom-checkbox">
-								<input type="checkbox" class="custom-control-input"
-									id="cityId${status.index}" name="areaId"
-									value="${areaItem.cityId}"> <label
-									class="custom-control-label" for="cityId${status.index}">${areaItem.cityName}</label>
-							</div>
-						</c:forEach>
-					</div>
-
-					<!-- 票券類型 -->
-					<h4>票券類型</h4>
-					<div class="form-group">
-						<c:forEach var="typeItem" items="${uniqueTicketTypes}"
-							varStatus="status">
-							<div class="custom-control custom-checkbox">
-								<input type="checkbox" class="custom-control-input"
-									id="ticketTypeId${status.index}" name="ticketTypeId"
-									value="${typeItem.ticketTypeId}"> <label
-									class="custom-control-label" for="ticketTypeId${status.index}">${typeItem.typeName}</label>
-							</div>
-						</c:forEach>
-					</div>
-				</form>
-			</div>
 			<!-- 右側內容 -->
-			<div class="col-md-9" id="ticketright">
 				<div class="d-flex justify-content-between align-items-center mb-3">
-					<div >
+
 					<c:choose>
 						<c:when test="${not empty searchCount}">
 							<h3 class="mb-0">搜尋結果 ${searchCount} 項票券</h3>
@@ -88,26 +35,25 @@
 							<h3 class="mb-0">共有 ${totalTickets} 項票券體驗</h3>
 						</c:otherwise>
 					</c:choose>
-					</div>
-					<form action="<%=request.getContextPath()%>/ticketproduct/list"
-						method="get">
-						<input type="hidden" name="sortField" value="${param.sortField}">
-						<input type="hidden" name="sortOrder" value="${param.sortOrder}">
-						<input type="hidden" name="sortBuy" value="${param.sortBuy}">
-						<div class="form-group mb-0">
-							<label for="sortDropdown" class="mr-2"></label> <select
-								class="form-control d-inline-block" id="sortDropdown"
-								name="sort" onchange="this.form.submit()">
-								<option value="default">排序方式</option>
-								<option value="popularity">按熱門程度排序</option>
-								<option value="ticketName">按票券名稱排序</option>
-								<!-- 其他排序選項 -->
-							</select>
-						</div>
-					</form>
+
+<%-- 					<form action="<%=request.getContextPath()%>/ticketproduct/list" --%>
+<!-- 						method="get"> -->
+<%-- 						<input type="hidden" name="sortField" value="${param.sortField}"> --%>
+<%-- 						<input type="hidden" name="sortOrder" value="${param.sortOrder}"> --%>
+<%-- 						<input type="hidden" name="sortBuy" value="${param.sortBuy}"> --%>
+<!-- 						<div class="form-group mb-0"> -->
+<!-- 							<label for="sortDropdown" class="mr-2">排序方式：</label> <select -->
+<!-- 								class="form-control d-inline-block" id="sortDropdown" -->
+<!-- 								name="sort" onchange="this.form.submit()"> -->
+<!-- 								<option value="popularity">按熱門程度排序</option> -->
+<!-- 								<option value="ticketName">按票券名稱排序</option> -->
+<!-- 								其他排序選項 -->
+<!-- 							</select> -->
+<!-- 						</div> -->
+<!-- 					</form> -->
 				</div>
 				<!-- 票券列表 -->
-				<div class="ticket-lists" id="ticketright">
+				<div class="ticket-list">
 					<c:forEach items="${resultSet}" var="ticket">
 						<a
 							href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=${ticket.ticketId}"
@@ -122,7 +68,7 @@
 									<div class="col-md-8">
 										<div class="card-body">
 											<h5 class="card-title">${ticket.ticketName}</h5>
-											<p class="card-title">${ticket.ticketType.typeName}&ensp;|&ensp;
+											<p class="card-title">${ticket.ticketType.typeName}|
 												${ticket.city.cityName}</p>
 											<p class="card-title">
 												<c:choose>
@@ -167,8 +113,6 @@
 				</div>
 			</div>
 		</div>
-
-	</div>
 	<%-- 分頁 若是全列表則執行以下分頁--%>
 	<c:if test="${empty searchCount}">
 		<div>
@@ -217,48 +161,9 @@
 		</div>
 	</c:if>
 
-	<!-- jQuery & Bootstrap JS -->
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<script>
- 
-      //左邊搜尋條件
-        $(document).ready(function() {
-            // 處理表單提交事件
-            $('#searchForm').on('submit', function(e) {
-                e.preventDefault(); // 防止表單的默認提交行為
-                // 從表單收集數據
-                var formData = $(this).serialize();
-                // 發送 Ajax 請求
-                $.ajax({
-                    type: "GET", 
-                    url: "<%=request.getContextPath()%>/ticketproduct/search", 
-					data : formData, // 表單數據
-					success : function(result) {
-						//console.log(result);
-						// 更新票券列表部分 
-						$('#ticketright').html(result);
-					}
-				});
-			});
 
-			// 篩選條件的變更也觸發表單提交
-			$('input[type=checkbox]').change(function() {
-				$('#searchForm').submit();
-			});
-
-			// 更改排序也觸發表單提交
-			$('#sortDropdown').on('change', function() {
-				$('#searchForm').submit();
-			});
-		});
-
-      
-	</script>
-
-	<jsp:include page="/indexpage/footer.jsp" />
 
 </body>
 </html>

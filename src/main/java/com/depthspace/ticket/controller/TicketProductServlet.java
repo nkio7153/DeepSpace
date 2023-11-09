@@ -56,17 +56,8 @@ public class TicketProductServlet extends HttpServlet {
 			break;
 
 		case "/list": // 票券列表
-
-			String searchTerm = req.getParameter("searchTerm");
-			if (searchTerm == null || searchTerm.trim().isEmpty()) {
-				// 如果為空沒有觸發搜尋，則列出全部
 				doList(req, res);
 				return;
-			} else {
-				// 否則執行搜尋
-				doSearch(req, res);
-				return;
-			}
 
 		case "/item": // 票券單一頁面
 			doProduct(req, res);
@@ -137,37 +128,37 @@ public class TicketProductServlet extends HttpServlet {
 		req.setAttribute("totalRatingCountMap", totalRatingCountMap);
 		req.setAttribute("ticketOrderCountMap", ticketOrderCountMap);
 		
-	    // 排序：票券名稱、銷售量
-	    String sortField = req.getParameter("sortField");
-	    String sortOrder = req.getParameter("sortOrder");
-	    String sortBuy = req.getParameter("sortBuy");
-	    if (sortField != null && sortOrder != null) {
-	        Comparator<TicketVO> comparator;
-	        switch (sortField) {
-	            case "ticketName": // 票券名稱排序
-	                comparator = Comparator.comparing(TicketVO::getTicketName);
-	                break;
-	            default: //預設
-	                comparator = Comparator.comparing(TicketVO::getTicketName); 
-	                break;
-	        }
-	        if ("desc".equalsIgnoreCase(sortOrder)) {
-	            comparator = comparator.reversed(); // 降序
-	        }
-	        Collections.sort(ticketList, comparator); // 進行排序
-	    }
-	    
-	    if ("sales".equals(sortBuy)) {
-	        ticketList.sort((t1, t2) -> {
-	            Integer sales1 = ticketOrderCountMap.getOrDefault(t1.getTicketId(), 0);
-	            Integer sales2 = ticketOrderCountMap.getOrDefault(t2.getTicketId(), 0);
-	            return sales2.compareTo(sales1); // 降序排序
-	        });
-	    }
-	    
-		req.setAttribute("sortField", sortField);
-		req.setAttribute("sortBuy", sortBuy);
-		req.setAttribute("sortOrder", sortOrder);
+//	    // 排序：票券名稱、銷售量
+//	    String sortField = req.getParameter("sortField");
+//	    String sortOrder = req.getParameter("sortOrder");
+//	    String sortBuy = req.getParameter("sortBuy");
+//	    if (sortField != null && sortOrder != null) {
+//	        Comparator<TicketVO> comparator;
+//	        switch (sortField) {
+//	            case "ticketName": // 票券名稱排序
+//	                comparator = Comparator.comparing(TicketVO::getTicketName);
+//	                break;
+//	            default: //預設
+//	                comparator = Comparator.comparing(TicketVO::getTicketName); 
+//	                break;
+//	        }
+//	        if ("desc".equalsIgnoreCase(sortOrder)) {
+//	            comparator = comparator.reversed(); // 降序
+//	        }
+//	        Collections.sort(ticketList, comparator); // 進行排序
+//	    }
+//	    
+//	    if ("sales".equals(sortBuy)) {
+//	        ticketList.sort((t1, t2) -> {
+//	            Integer sales1 = ticketOrderCountMap.getOrDefault(t1.getTicketId(), 0);
+//	            Integer sales2 = ticketOrderCountMap.getOrDefault(t2.getTicketId(), 0);
+//	            return sales2.compareTo(sales1); // 降序排序
+//	        });
+//	    }
+//	    
+//		req.setAttribute("sortField", sortField);
+//		req.setAttribute("sortBuy", sortBuy);
+//		req.setAttribute("sortOrder", sortOrder);
 	}
 
 
@@ -219,10 +210,12 @@ public class TicketProductServlet extends HttpServlet {
 	    
 	    reviewsList(req, res);
 		searchList(req, res);
-	    req.getRequestDispatcher("/frontend/ticketproduct/list.jsp").forward(req, res);
+
+	    req.getRequestDispatcher("/frontend/ticketproduct/search.jsp").forward(req, res);
 	}
 
-
+	
+	
 	/************ 單一票券頁面 ************/
 	private void doProduct(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String ticketIdStr = req.getParameter("ticketId");
