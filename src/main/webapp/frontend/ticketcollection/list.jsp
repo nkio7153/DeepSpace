@@ -29,26 +29,25 @@
 					<h3 class="mb-0">您的票券收藏</h3>
 					<form action="<%=request.getContextPath()%>/ticketcollection/list"
 						method="get">
-						<!-- 查詢票券區域  注意name是要查詢的值(servlet的查詢,areaId)-->
-						<div class="col-md-9">
+						<!-- 篩選票券區域  注意name是要查詢的值(servlet的查詢,areaId)-->
+						<div class="col-md-16">
 							<div
 								class="d-flex justify-content-between align-items-center mb-3">
 								<form method="get"
 									action="<%=request.getContextPath()%>/ticketcollection/find">
 									<div class="form-group mb-0">
-										<label for="sortDropdown" class="mr-2">目的地搜尋</label> <select
+										<label for="sortDropdown" class="mr-2"></label> <select  id="cityId" name="areaId" 
 											class="form-control d-inline-block" id="sortDropdown"
 											name="sort" onchange="this.form.submit()">
-											<option value="popularity">按熱門程度排序</option>
-											<option value="ticketName">按票券名稱排序</option>
-											<!-- 其他排序選項 -->
+										<c:forEach var="areaItem" items="${uniqueTicketArea}">
+											<option value="${ticketCollection.ticketVO.city.cityName}">${ticketCollection.ticketVO.city.cityName}</option>
+										</c:forEach>
 										</select>
 									</div>
 								</form>
 							</div>
 						</div>
 					</form>
-
 				</div>
 				<!-- 票券列表 -->
 				<div class="ticket-list">
