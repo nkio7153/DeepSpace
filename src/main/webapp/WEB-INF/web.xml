@@ -57,5 +57,14 @@
 		<url-pattern>/faq/faq.do</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>AdminServlet</servlet-name>
+		<servlet-class>com.depthspace.admin.model.controller.AdminServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>AdminServlet</servlet-name>
+		<url-pattern>/admin/admin.do</url-pattern>
+	</servlet-mapping>
 
 </web-app>

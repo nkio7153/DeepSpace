@@ -1,373 +1,182 @@
-//package com.depthspace.admin.model.controller;
-//
-//
-//import javax.servlet.RequestDispatcher;
-//import javax.servlet.ServletException;
-//import javax.servlet.annotation.MultipartConfig;
-//import javax.servlet.annotation.WebServlet;
-//import javax.servlet.http.HttpServlet;
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-//import javax.servlet.http.HttpSession;
-//import javax.servlet.http.Part;
-//
-//import com.depthspace.admin.model.service.AdminService;
-//import com.depthspace.admin.model.model.AdminVO;
-//import com.depthspace.admin.model.service.*;
-//
-//import java.io.IOException;
-//import java.io.InputStream;
-//import java.sql.Date;
-//import java.util.*;
-//
-//@WebServlet("/admin/admin.do")
-//@MultipartConfig
-//public class AdminServlet extends HttpServlet {
-//    public void doGet(HttpServletRequest req, HttpServletResponse res)
-//            throws ServletException, IOException {
-//        doPost(req, res);
-//    }
-//
-//    public void doPost(HttpServletRequest req, HttpServletResponse res)
-//            throws ServletException, IOException {
-//
-//        req.setCharacterEncoding("UTF-8");
-//        String action = req.getParameter("action");
-//
-//        if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
-//        	System.out.println("成功getOne_For_Display");
-//            Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
-//            req.setAttribute("errorMsgs", errorMsgs);
-//
-//            /***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
-//            String str = req.getParameter("adminNo");
-//            if (str == null || (str.trim()).length() == 0) {
-//                errorMsgs.put("adminNo", "請輸入員工編號");
-//            }
-//            // Send the use back to the form, if there were errors
-//            if (!errorMsgs.isEmpty()) {
-//                RequestDispatcher failureView = req
-//                        .getRequestDispatcher("/admin/adminSystem.jsp"); // admin/selectPage.jsp
-//                failureView.forward(req, res);
-//                return;//程式中斷
-//            }
-//
-//            Integer adminNo = null;
-//            try {
-//                adminNo = Integer.valueOf(str);
-//            } catch (Exception e) {
-//                errorMsgs.put("adminNo", "員工編號格式不正確");
-//            }
-//            // Send the use back to the form, if there were errors
-//            if (!errorMsgs.isEmpty()) {
-//                RequestDispatcher failureView = req
-//                        .getRequestDispatcher("/admin/adminSystem.jsp"); // admin/selectPage.jsp
-//                failureView.forward(req, res);
-//                return;//程式中斷
-//            }
-//
-//            /***************************2.開始查詢資料*****************************************/
-//            AdminService adminSvc = new AdminService();
-//            AdminVO adminVO = adminSvc.getOneAdmin(adminNo);
-//            if (adminVO == null) {
-//                errorMsgs.put("adminNo", "查無資料");
-//            }
-//            // Send the use back to the form, if there were errors
-//            if (!errorMsgs.isEmpty()) {
-//                RequestDispatcher failureView = req
-//                        .getRequestDispatcher("/admin/adminSystem.jsp"); // admin/selectPage.jsp
-//                failureView.forward(req, res);
-//                return;//程式中斷
-//            }
-//
-//            /***************************3.查詢完成,準備轉交(Send the Success view)*************/
-//            req.setAttribute("AdminVO", adminVO); // 資料庫取出的AdminVO物件,存入req
-//            String url = "/admin/listOneAdminNew.jsp";
-//            RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneAdmin.jsp
-//            successView.forward(req, res);
-//        }
-//
-//
-//        if ("getOne_For_Update".equals(action)) { // 來自listAllAdmin.jsp的請求
-//        	System.out.println("成功getOne_For_Update");
-//            Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
-//            req.setAttribute("errorMsgs", errorMsgs);
-//
-//            /***************************1.接收請求參數****************************************/
-//            Integer adminNo = Integer.valueOf(req.getParameter("adminNo"));
-//
-//            /***************************2.開始查詢資料****************************************/
-//            AdminService adminSvc = new AdminService();
-//            AdminVO adminVO = adminSvc.getOneAdmin(adminNo);
-//
-//            /***************************3.查詢完成,準備轉交(Send the Success view)************/
-//            String param = "?adminNo=" + adminVO.getAdminNo() +
-//                    "&adminAccount=" + adminVO.getAdminAccount() +
-//                    "&adminPassword=" + adminVO.getAdminPassword() +
-//                    "&adminName=" + adminVO.getAdminName() +
-//                    "&createDate=" + adminVO.getCreateDate() +
-//                    "&adminStat=" + adminVO.getAdminStat() +
-//                    "&adminEmail=" + adminVO.getAdminEmail() +
-//                    "&adminPhone=" + adminVO.getAdminPhone();
-//
-//            String url = "/admin/updateAdminNew.jsp" + param;
-//            RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 updateAdmin.jsp
-//            successView.forward(req, res);
-//        }
-//
-//
-//        if ("update".equals(action)) { // 來自update_emp_input.jsp的請求
-//        	System.out.println("成功進update");
-//            Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
-//            req.setAttribute("errorMsgs", errorMsgs);
-//
-//            /***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
-//            String adminName = req.getParameter("adminName");
-//            String adminNameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
-//            if (adminName == null || adminName.trim().length() == 0) {
-//                errorMsgs.put("adminName", "姓名請勿空白");
-//            } else if (!adminName.trim().matches(adminNameReg)) { //以下練習正則(規)表示式(regular-expression)
-//                errorMsgs.put("adminName", "不得特殊符號且長度2~10");
-//            }
-//            
-//            Integer adminNo = Integer.valueOf(req.getParameter("adminNo").trim());
-//
-////            Integer adminNo = null;
-////            try {
-////                adminNo = Integer.valueOf(req.getParameter("adminNo").trim());
-////            } catch (NumberFormatException e) {
-////                errorMsgs.put("adminNo", "請填數字");
-////            }
-//
-//            String adminAccount = req.getParameter("adminAccount").trim();
-//            String adminAccountReg = "[a-zA-Z0-9_]+";
-//            String adminAccoutReg2 = "^[(a-zA-Z0-9_)]{6,12}$";
-//            if (adminAccount == null || adminAccount.trim().length() == 0) {
-//                errorMsgs.put("adminAccount", "帳號請勿空白");
-//            } else if (!adminAccount.trim().matches(adminAccountReg)) {
-//                errorMsgs.put("adminAccount", "只能是英文、數字和_");
-//            } else if (!adminAccount.trim().matches(adminAccoutReg2)) {
-//                errorMsgs.put("adminAccount", "長度需在6到12之間");
-//            }
-//
-//            String adminPassword = req.getParameter("adminPassword").trim();
-//            String adminPasswordReg = "^[a-zA-Z0-9!@]+$";
-//            String adminPasswordReg2 = "^[a-zA-Z0-9!@]{8,16}$";
-//
-//            if (adminPassword == null || adminPassword.length() == 0) {
-//                errorMsgs.put("adminPassword", "密碼請勿空白");
-//            } else if (!adminPassword.matches(adminPasswordReg)) {
-//                errorMsgs.put("adminPassword", "只能是英文、數字、@、!");
-//            } else if (!adminPassword.matches(adminPasswordReg2)) {
-//                errorMsgs.put("adminPassword", "長度需在8到16之間");
-//            }
-//
-//
-//            Date createDate = null;
-//            try {
-//                createDate = java.sql.Date.valueOf(req.getParameter("createDate").trim());
-//            } catch (IllegalArgumentException e) {
-//                errorMsgs.put("createDate", "請輸入日期");
-//            }
-//            
-//            Integer adminStat = Integer.valueOf(req.getParameter("adminStat").trim());
-//
-////            Integer adminStat = null;
-////            try {
-////                adminStat = Integer.valueOf(req.getParameter("adminStat").trim());
-////            } catch (NumberFormatException e) {
-////                errorMsgs.put("adminStat", "請填數字");
-////            }
-//
-//            String adminEmail = req.getParameter("adminEmail").trim();
-//            if (adminEmail == null || adminEmail.trim().length() == 0) {
-//                errorMsgs.put("adminEmail", "信箱請勿空白");
-//            }
-//
-//            String adminPhone = req.getParameter("adminPhone").trim();
-//            if (adminPhone == null || adminPhone.trim().length() == 0) {
-//                errorMsgs.put("adminPhone", "電話請勿空白");
-//            }
-//            
-//            Part image = null;
-//            try {
-//                Collection<Part> parts = req.getParts();
-//                for (Part part : parts) {
-//                    if ("image".equals(part.getName())) image = part;
-//                }
-//            } catch (IllegalArgumentException e){
-//                e.printStackTrace();
-//            }
-//            
-//            AdminService adminSvc = new AdminService();
-//            byte[] adminPic = null;
-//            int length = image.getInputStream().available() ;
-//            if(length != 0){
-//                try (InputStream inputStream = image.getInputStream()){
-//                    adminPic = inputStream.readAllBytes();
-//                    inputStream.close();
-//                } catch (IOException e){
-//                    e.printStackTrace();
-//                }
-//            }else {
-//            	adminPic=adminSvc.getOneAdmin(adminNo).getAdminPic();
-//            }
-//
-//            // Send the use back to the form, if there were errors
-//            if (!errorMsgs.isEmpty()) {
-//                RequestDispatcher failureView = req
-//                        .getRequestDispatcher("/admin/updateAdminNew.jsp");
-//                failureView.forward(req, res);
-//                return; //程式中斷
-//            }
-//
-//            /***************************2.開始修改資料*****************************************/
-//           
-//            AdminVO adminVO = adminSvc.updateAdmin(adminNo,adminAccount,adminPassword,adminName,createDate,adminStat, adminEmail,adminPhone,adminPic);
-//
-//            /***************************3.修改完成,準備轉交(Send the Success view)*************/
-//            req.setAttribute("AdminVO", adminVO); // 資料庫update成功後,正確的的AdminVO物件,存入req
-//            String url = "/admin/listOneAdminNew.jsp";
-//            RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneAdmin.jsp
-//            successView.forward(req, res);
-//        }
-//
-//        if ("insert".equals(action)) { // 來自addAdmin.jsp的請求
-//        	System.out.println("成功進insert");
-//            Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
-//            req.setAttribute("errorMsgs", errorMsgs);
-//
-//            /***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-//            String adminName = req.getParameter("adminName");
-//            String adminNameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
-//            if (adminName == null || adminName.trim().length() == 0) {
-//                errorMsgs.put("adminName", "姓名請勿空白");
-//            } else if (!adminName.trim().matches(adminNameReg)) { //以下練習正則(規)表示式(regular-expression)
-//                errorMsgs.put("adminName", "不得特殊符號且長度2~10");
-//            }
-//
-//            String adminAccount = req.getParameter("adminAccount").trim();
-//            String adminAccountReg = "[a-zA-Z0-9_]+";
-//            String adminAccoutReg2 = "^[(a-zA-Z0-9_)]{6,12}$";
-//            if (adminAccount == null || adminAccount.trim().length() == 0) {
-//                errorMsgs.put("adminAccount", "帳號請勿空白");
-//            } else if (!adminAccount.trim().matches(adminAccountReg)) {
-//                errorMsgs.put("adminAccount", "只能是英文、數字和_");
-//            } else if (!adminAccount.trim().matches(adminAccoutReg2)) {
-//                errorMsgs.put("adminAccount", "長度需在6到12之間");
-//            }
-//
-//            String adminPassword = req.getParameter("adminPassword").trim();
-//            String adminPasswordReg = "^[a-zA-Z0-9!@]+$";
-//            String adminPasswordReg2 = "^[a-zA-Z0-9!@]{8,16}$";
-//
-//            if (adminPassword == null || adminPassword.length() == 0) {
-//                errorMsgs.put("adminPassword", "密碼請勿空白");
-//            } else if (!adminPassword.matches(adminPasswordReg)) {
-//                errorMsgs.put("adminPassword", "只能是英文、數字、@、!");
-//            } else if (!adminPassword.matches(adminPasswordReg2)) {
-//                errorMsgs.put("adminPassword", "長度需在8到16之間");
-//            }
-//
-//
-//            Date createDate = null;
-//            try {
-//                createDate = java.sql.Date.valueOf(req.getParameter("createDate").trim());
-//            } catch (IllegalArgumentException e) {
-//                errorMsgs.put("createDate", "請輸入日期");
-//            }
-//
-//            Integer adminStat = null;
-//            try {
-//                adminStat = Integer.valueOf(req.getParameter("adminStat").trim());
-//            } catch (NumberFormatException e) {
-//                errorMsgs.put("adminStat", "請填數字");
-//            }
-//
-//            String adminEmail = req.getParameter("adminEmail").trim();
-//            String adminEmailReg = "^[a-zA-Z0-9._%+-]+@.+\\.[a-zA-Z]{2,}$";
-//            if (adminEmail == null || adminEmail.trim().length() == 0) {
-//                errorMsgs.put("adminEmail", "信箱請勿空白");
-//            } else if (!adminEmail.trim().matches(adminEmailReg)) {
-//                errorMsgs.put("adminEmail", "信箱格式錯誤");
-//            }
-//
-//
-//            String adminPhone = req.getParameter("adminPhone").trim();
-//            String adminPhoneReg = "^09[0-9]{8}$";
-//            if (adminPhone == null || adminPhone.trim().length() == 0) {
-//                errorMsgs.put("adminPhone", "手機請勿空白");
-//            } else if (!adminPhone.trim().matches(adminPhoneReg)) {
-//                errorMsgs.put("adminPhone", "手機格式09開頭共10碼");
-//            }
-//
-//
-//            Part image = null;
-//            try {
-//                Collection<Part> parts = req.getParts();
-//                for (Part part : parts) {
-//                    if ("image".equals(part.getName())) image = part;
-//                }
-//            } catch (IllegalArgumentException e){
-//                e.printStackTrace();
-//            }
-//            
-//            
-//            byte[] adminPic = null;
-//            if(image != null){
-//                try (InputStream inputStream = image.getInputStream()){
-//                    adminPic = inputStream.readAllBytes();
-//                    inputStream.close();
-//                } catch (IOException e){
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            // Send the use back to the form, if there were errors
-//            if (!errorMsgs.isEmpty()) {
-//                RequestDispatcher failureView = req
-//                        .getRequestDispatcher("/admin/addadminNew.jsp");
-//                failureView.forward(req, res);
-//                return;
-//            }
-//
-//            /***************************2.開始新增資料***************************************/
-//            AdminService adminSvc = new AdminService();
-//            adminSvc.addAdmin(adminAccount, adminPassword, adminName, createDate, adminStat, adminEmail, adminPhone,adminPic);
-//
-//            /***************************3.新增完成,準備轉交(Send the Success view)***********/
-//            String url = "/admin/adminSystem.jsp";
-//            RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllAdmin.jsp
-//            successView.forward(req, res);
-//        }
-//
-//
-//        if ("delete".equals(action)) { // 來自listAllAdmin.jsp
-//        	System.out.println("成功進delete");
-//            Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
-//            req.setAttribute("errorMsgs", errorMsgs);
-//
-//            /***************************1.接收請求參數***************************************/
-//            Integer adminNo = Integer.valueOf(req.getParameter("adminNo"));
-//
-//            /***************************2.開始刪除資料***************************************/
-//            AdminService adminSvc = new AdminService();
-//            adminSvc.deleteAdmin(adminNo);
-//
-//            /***************************3.刪除完成,準備轉交(Send the Success view)***********/
-//            String url = "/admin/adminSystem.jsp";
-//            RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
-//            successView.forward(req, res);
-//        }
-//        
-//        if ("backendlogout".equals(action)) {
-//            HttpSession session = req.getSession(false);
-//            if (session != null) {
-//                session.invalidate(); // 登出，终止会话
-//                System.out.println("成功登出");
-//            }
-//            res.sendRedirect("./adminLogin.jsp");
-//        }
-//
-//    }
-//}
+package com.depthspace.admin.model.controller;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import com.alibaba.fastjson2.JSONObject;
+import com.depthspace.admin.model.model.AdminVO;
+import com.depthspace.admin.model.service.AdminService;
+import com.depthspace.admin.model.service.AdminServiceImpl;
+
+@WebServlet("/admin.do")
+@MultipartConfig
+public class AdminServlet extends HttpServlet {
+	// 一個 servlet 實體對應一個 service 實體
+	private AdminService adminService;
+
+	@Override
+	public void init() throws ServletException {
+		adminService = new AdminServiceImpl();
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+		req.setCharacterEncoding("UTF-8");
+		String action = req.getParameter("action");
+		//前端的action對應到哪個 執行哪個
+		switch (action) {
+		case "add":
+			processAdd(req, res);
+			break;
+		case "update":
+			processUpdate(req, res);
+			break;
+		case "del":
+			processDelete(req, res);
+			break;
+		case "query":
+			processQuery(req, res);
+			break;
+		default:
+			 res.sendError(HttpServletResponse.SC_BAD_REQUEST, "未知的操作");
+		        break;
+		}
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		doPost(req, res);
+	}
+	
+	private void processQuery(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	    // 初始化adminId為null
+	    Integer adminId = null;
+	    try {
+	        String adminIdStr = req.getParameter("ADMIN_ID");
+	        // 先檢查字符串是否為空或null
+	        if (adminIdStr != null && !adminIdStr.trim().isEmpty()) {
+	            // 如果不是，則嘗試解析
+	            adminId = Integer.parseInt(adminIdStr);
+	        }
+	        if (adminId != null) {
+	            // 如果adminId有效，繼續後續邏輯
+	            AdminVO admin = adminService.findAdminByAdminId(adminId);
+	            res.setCharacterEncoding("UTF-8");
+	            String str = JSONObject.toJSONString(admin);
+	            PrintWriter out = res.getWriter();
+	            out.write(str);
+	        } else {
+	            // 如果adminId無效，處理錯誤
+	            // 這裡可以返回錯誤信息給前端
+	        }
+	    } catch (NumberFormatException e) {
+	        // 如果捕獲到NumberFormatException，處理錯誤
+	    	res.sendError(HttpServletResponse.SC_BAD_REQUEST, "請求格式錯誤");
+	        // 同樣可以返回錯誤信息給前端
+	    }
+	}
+
+
+	
+	private void processDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	    try {
+	        // 將String轉換為Integer
+	        Integer adminId = Integer.parseInt(req.getParameter("ADMIN_ID"));
+	        adminService.deleteAdmin(adminId);
+	    } catch (NumberFormatException e) {
+	        // 處理錯誤情況
+	    	 res.sendError(HttpServletResponse.SC_BAD_REQUEST, "請求格式錯誤");
+	        // 這裡可以添加錯誤處理邏輯，例如向用戶顯示錯誤信息
+	    }
+	}
+	
+	private void processUpdate(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	    AdminVO admin = new AdminVO();
+
+	    String adminIdStr = req.getParameter("ADMIN_ID");
+	    if (adminIdStr == null || adminIdStr.trim().isEmpty()) {
+	        // 管理員ID為空或者格式不正確，返回錯誤響應
+	        res.sendError(HttpServletResponse.SC_BAD_REQUEST, "ADMIN_ID不能為空");
+	        return;
+	    }
+
+	    Integer adminId;
+	    try {
+	        adminId = Integer.parseInt(adminIdStr);
+	    } catch (NumberFormatException e) {
+	        // 管理員ID不是有效的整數，返回錯誤響應
+	        res.sendError(HttpServletResponse.SC_BAD_REQUEST, "ADMIN_ID格式不正確");
+	        return;
+	    }
+	    admin.setAdminId(adminId); // 現在可以安全地設置ADMIN_ID
+
+	    // 從請求中獲取其他屬性並設置到AdminVO對象中
+	    admin.setAdminName(req.getParameter("ADMIN_NAME"));
+	    admin.setAdminAcc(req.getParameter("ADMIN_ACC"));
+	    admin.setAdminPwd(req.getParameter("ADMIN_PWD"));
+
+	    // 同樣的處理對於ADMIN_STATUS
+	    Integer adminStatus;
+	    try {
+	        adminStatus = Integer.parseInt(req.getParameter("ADMIN_STATUS"));
+	    } catch (NumberFormatException e) {
+	        // ADMIN_STATUS不是數字，返回錯誤響應並中止處理
+	        res.sendError(HttpServletResponse.SC_BAD_REQUEST, "ADMIN_STATUS格式不正確");
+	        return;
+	    }
+	    admin.setAdminStatus(adminStatus);
+
+	    // 呼叫service層的更新方法，進行數據持久化操作
+	    try {
+	        adminService.updateAdmin(admin); // 假設這個方法會將admin對象的變化保存到數據庫
+	        // 更新成功後重定向到管理員列表頁面
+	        res.sendRedirect(req.getContextPath() + "/admin/admin1.jsp");
+	    } catch (Exception e) {
+	        // 處理更新過程中出現的任何異常
+	        e.printStackTrace();
+	        // 返回內部服務器錯誤響應
+	        res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "更新過程中發生錯誤");
+	    }
+	}
+
+
+
+	private void processAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+		AdminVO admin = new AdminVO();
+
+	    // 設置其他字串型別的屬性
+	    admin.setAdminName(req.getParameter("ADMIN_NAME"));
+	    admin.setAdminAcc(req.getParameter("ADMIN_ACC"));
+	    admin.setAdminPwd(req.getParameter("ADMIN_PWD"));
+
+	    try {
+	        // 將String轉換為Integer，並設置AdminStatus
+	        Integer adminStatus = Integer.parseInt(req.getParameter("ADMIN_STATUS"));
+	        admin.setAdminStatus(adminStatus);
+	    } catch (NumberFormatException e) {
+	        // 如果ADMIN_STATUS不是數字，處理錯誤
+	        e.printStackTrace();
+	        // 在這裡添加錯誤處理邏輯，比如設置adminStatus為null或預設值
+	    }
+
+	    adminService.addAdmin(admin); // 假設這個方法會將 admin 對象保存到數據庫
+	    res.sendRedirect(req.getContextPath() + "/admin/admin1.jsp");
+	}
+
+}
