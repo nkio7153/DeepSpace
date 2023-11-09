@@ -2,16 +2,12 @@ package com.depthspace.admin.model.model;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import static com.depthspace.utils.Constants1.PAGE_MAX_RESULT;
 
-import com.depthspace.utils.HibernateUtil;
-import com.depthspace.utils.Constants;
-
 import java.util.List;
-import java.util.Map;
+import com.depthspace.admin.model.model.AdminDAOImpl;
 
 
 public class AdminDAOImpl implements AdminDAO {
@@ -27,8 +23,8 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public int insert(AdminVO adminVO) {
-    	return (Integer) getSession().save(adminVO);
+    public void insert(AdminVO adminVO) {
+		getSession().save(adminVO);
     }
 
     @Override
@@ -42,8 +38,8 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public int delete(Integer id) {
-    	AdminVO adminVO = getSession().get(AdminVO.class, id);
+    public int delete(Integer adminId) {
+    	AdminVO adminVO = getSession().get(AdminVO.class, adminId);
 		if (adminVO != null) {
 			getSession().delete(adminVO);
 			// 回傳給 service，1代表刪除成功
@@ -54,32 +50,16 @@ public class AdminDAOImpl implements AdminDAO {
 		}
     }
     
-
-
     @Override
-    public AdminVO getById(Integer id) {
-    	return getSession().get(AdminVO.class, id);
-    }
-
-    @Override
-    public List<AdminVO> getAll() {
-    	return getSession().createQuery("from Emp", AdminVO.class).list();
-    }
-
+	public AdminVO findByAdminId(Integer adminId) {
+		Query<AdminVO> query = getSession().createQuery("FROM AdminVO where adminId=:adminId",AdminVO.class);
+		query.setParameter("adminId", adminId);
+		return query.getSingleResult();
+	}
     
-
     @Override
-    public List<AdminVO> getAll(int currentPage) {
-    	int first = (currentPage - 1) * PAGE_MAX_RESULT;
-		return getSession().createQuery("from AdminVO", AdminVO.class)
-				.setFirstResult(first)
-				.setMaxResults(PAGE_MAX_RESULT)
-				.list();
-    }
-
-    @Override
-    public long getTotal() {
-    	return getSession().createQuery("select count(*) from AdminVO", Long.class).uniqueResult();
-    }
+	public List<AdminVO> getAll() {
+		return getSession().createQuery("FROM AdminVO", AdminVO.class).list();
+	}
     
 }
