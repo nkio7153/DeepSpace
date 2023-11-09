@@ -25,7 +25,8 @@
 
 			<div class="col-md-9">
 				<div class="d-flex justify-content-between align-items-center mb-3">
-					<h3 class="mb-0">共收藏 ${totalTickets} 項票券</h3>
+					<%-- 					<h3 class="mb-0">共收藏 ${totalTickets} 項票券</h3> --%>
+					<h3 class="mb-0">您的票券收藏</h3>
 					<form action="<%=request.getContextPath()%>/ticketcollection/list"
 						method="get">
 						<!-- 查詢票券區域  注意name是要查詢的值(servlet的查詢,areaId)-->
@@ -52,24 +53,26 @@
 				<!-- 票券列表 -->
 				<div class="ticket-list">
 					<c:forEach items="${resultSet}" var="ticketCollection">
-						<a
-							href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=${ticketCollection.ticketVO.ticketId}"
-							class="no-underline"> <!-- 整張卡片點擊 -->
-							<div class="card mb-3 clickable-card">
-								<div class="row no-gutters">
-									<div class="col-md-4">
-										<img
-											src="<%=request.getContextPath()%>/ticketmainimage?ticketId=${ticketCollection.ticketVO.ticketId}"
-											alt="Main Ticket Image" class="ticket-img">
-									</div>
-									<div class="col-md-8">
+						<div class="card mb-3 clickable-card">
+							<div class="row no-gutters">
+								<div class="col-md-4">
+									<img
+										src="<%=request.getContextPath()%>/ticketmainimage?ticketId=${ticketCollection.ticketVO.ticketId}"
+										alt="Main Ticket Image" class="ticket-img">
+								</div>
+								<div class="col-md-8">
+									<a
+										href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=${ticketCollection.ticketVO.ticketId}"
+										class="no-underline"> <!-- 整張卡片點擊 -->
+
 										<div class="card-body">
 											<h5 class="card-title">${ticketCollection.ticketVO.ticketName}</h5>
 											<p class="card-title">${icketCollection.ticketVO.ticketType.typeName}|
 												${ticketCollection.ticketVO.city.cityName}</p>
 											<p class="card-title">
 												<c:choose>
-													<c:when test="${fn:length(ticketCollection.ticketVO.description) > 30}">
+													<c:when
+														test="${fn:length(ticketCollection.ticketVO.description) > 30}">
 								${fn:substring(ticketCollection.ticketVO.description,0,30)}...
 								</c:when>
 													<c:otherwise>
@@ -79,8 +82,9 @@
 											</p>
 											<p class="card-text">
 												<small class="text-muted">
-													${averageStarsMap[ticketCollection.ticketVO.ticketId]} <!-- 實星 --> <c:forEach
-														begin="1" end="${averageStarsMap[ticketCollection.ticketVO.ticketId]}"
+													${averageStarsMap[ticketCollection.ticketVO.ticketId]} <!-- 實星 -->
+													<c:forEach begin="1"
+														end="${averageStarsMap[ticketCollection.ticketVO.ticketId]}"
 														var="i">
 														<i class="fas fa-star gold-star"></i>
 													</c:forEach> <!-- 半星 --> <c:if
@@ -96,16 +100,24 @@
 													</c:if> <!-- 空星 --> <c:forEach begin="${emptyStarsStart}" end="5"
 														var="j">
 														<i class="far fa-star gold-star"></i>
-													</c:forEach> (${totalRatingCountMap[ticketCollection.ticketVO.ticketId]})
+													</c:forEach>
+													(${totalRatingCountMap[ticketCollection.ticketVO.ticketId]})
 													銷售量${ticketOrderCountMap[ticketCollection.ticketVO.ticketId]}
 												</small>
 											</p>
-											<p class="card-text">NT$ ${ticketCollection.ticketVO.ticketId}</p>
+											<p class="card-text">NT$
+												${ticketCollection.ticketVO.ticketId}</p>
 										</div>
-									</div>
+									</a>
 								</div>
 							</div>
-						</a>
+							<!-- 愛心 -->
+							<div class="favorite-icon-container">
+								<i class="fas fa-heart favorite-icon"
+									data-ticketId="${ticketCollection.ticketVO.ticketId}"></i>
+							</div>
+						</div>
+
 					</c:forEach>
 				</div>
 			</div>
@@ -118,30 +130,64 @@
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script>
 
-	//右邊排序
-            // 排序下拉選單的變化
-            $('#sortDropdown').on('change', function() {
-                var sortValue = $(this).val();
-                var sortField = 'ticketName'; // 預設排序依據為票券名稱
-                var sortOrder = 'asc'; // 預設排序方式為升序
+// 	//右邊排序
+//     // 排序下拉選單的變化
+//     $('#sortDropdown').on('change', function() {
+//         var sortValue = $(this).val();
+//         var sortField = 'ticketName'; // 預設排序依據為票券名稱
+//         var sortOrder = 'asc'; // 預設排序方式為升序
 
-                // 根據選項修改排序參數
-                if (sortValue === 'popularity') {
-                    sortField = 'sales';
-                    sortOrder = 'desc'; // 熱門銷售降序
-                } else if (sortValue === 'ticketName') {
-                    sortField = 'ticketName';
-                    sortOrder = 'asc';
-                }
+//         // 根據選項修改排序參數
+//         if (sortValue === 'popularity') {
+//             sortField = 'sales';
+//             sortOrder = 'desc'; // 熱門銷售降序
+//         } else if (sortValue === 'ticketName') {
+//             sortField = 'ticketName';
+//             sortOrder = 'asc';
+//         }
 
-                // 更新隱藏輸入欄位的值
-                $('input[name="sortField"]').val(sortField);
-                $('input[name="sortOrder"]').val(sortOrder);
+//         // 更新隱藏輸入欄位的值
+//         $('input[name="sortField"]').val(sortField);
+//         $('input[name="sortOrder"]').val(sortOrder);
 
-                // 提交表單
-                $('#searchForm').submit();
-            });
-        });
-    </script>
+//         // 提交表單
+//         $('#searchForm').submit();
+//     });
+
+	//愛心取消收藏
+$(document).ready(function() {
+    $('.favorite-icon').click(function(e) {
+        e.preventDefault(); // 防止點擊事件的預設行為
+        var iconElement = $(this); // 獲取當前點擊的愛心元素
+        var ticketId = iconElement.data('ticketid'); // 從元素中取得票券ID
+        console.log(this);
+        console.log(ticketId);
+        $.ajax({
+            url: '<%=request.getContextPath()%>/ticketcollection/del',
+					type : 'GET',
+					data : {
+						ticketId : ticketId
+					},
+					dataType : 'json', // 預期從伺服器返回的數據類型
+					success : function(response) {
+						// 判斷後端回應，如果取消收藏成功
+						if (response.success) {
+							// 從頁面中移除這張票券的整個卡片
+							iconElement.closest('.card').remove();
+							console.log('取消收藏，票券移除成功!');
+						} else {
+							console.log('取消收藏失敗: ', response.message);
+						}
+					},
+					error : function(xhr, status, error) {
+						// 處理錯誤情況
+						console.log('Ajax請求錯誤: ' + error.message);
+					}
+				});
+			});
+		});
+	</script>
+
 </body>
+
 </html>

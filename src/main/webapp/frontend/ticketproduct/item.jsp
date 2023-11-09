@@ -28,6 +28,7 @@
 /* 點擊愛心的顏色 */
 .favorite-active {
     color: #e74c3c; }
+    
 
 /* 評價的星星樣式(實) */
 .gold-star {
@@ -97,7 +98,8 @@
 			<div class="col-12 d-flex justify-content-between align-items-center">
 				<h3>${ticket.ticketName}</h3>
 				<i class="far fa-heart favorite-icon" id="favoriteIcon"
-					style="cursor: pointer;"></i>
+					style="cursor: pointer;" 
+									data-ticketId="${ticket.ticketId}"></i>
 			</div>
 				<div class="col-12 d-flex justify-content-between align-items-center">
 				<h6>${ticket.ticketType.typeName}&emsp;|&emsp;${ticket.city.cityName}</h6>
@@ -231,13 +233,12 @@ $(document).ready(function() {
         });
     });
 });
-
+//愛心收藏
 $(document).ready(function() {
     $(".favorite-icon").click(function() {
         var memId;
         var ticketId;
-        var ticketId = ${ticket.ticketId};
-//         var ticketId = $(this).data('ticketId');
+		var ticketId = $(this).data('ticketid');
         var requestData = { "ticketId": ticketId, "memId": memId};
         var iconElement = $(this);
 
@@ -258,48 +259,6 @@ $(document).ready(function() {
         });
     });
 });
-
-//  document.addEventListener('DOMContentLoaded', function() {
-//     var favoriteIcon = document.getElementById("favoriteIcon");
-
-//     favoriteIcon.addEventListener('click', function() {
-//         var memId = 2; // 測試用途
-//         var ticketId = this.dataset.ticketId;
-//         var requestData = { "ticketId": ticketId };
-
-//         fetch("${pageContext.request.contextPath}/ticketcollection/toggleFavorite", {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 // 如果你有使用CSRF保護，記得也要加上CSRF token
-//                 // 'X-CSRF-Token': csrfToken
-//             },
-//             body: JSON.stringify(requestData)
-//         })
-//         .then(function(response) {
-//             if (!response.ok) {
-//                 throw new Error('Network response was not ok ' + response.status);
-//             }
-//             return response.json();
-//         })
-//         .then(function(responseData) {
-//             if (responseData.isFavorite) {
-//                 favoriteIcon.classList.remove("far");
-//                 favoriteIcon.classList.add("fas");
-//             } else {
-//                 favoriteIcon.classList.remove("fas");
-//                 favoriteIcon.classList.add("far");
-//             }
-//         })
-//         .catch(function(error) {
-//             if (error.message.includes('401')) {
-//                 alert("請先登入！");
-//             } else {
-//                 alert("發生錯誤：" + error.message);
-//             }
-//         });
-//     });
-// });
   
  // 購物車加入
     $(".btn").on("click", function() {

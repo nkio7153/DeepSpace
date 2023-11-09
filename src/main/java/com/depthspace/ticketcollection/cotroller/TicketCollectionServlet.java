@@ -25,6 +25,7 @@ import com.depthspace.ticketcollection.service.TicketCollectionService;
 import com.depthspace.ticketcollection.service.TicketCollectionServiceImpl;
 import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 import com.google.gson.Gson;
+import org.json.JSONObject; 
 
 @WebServlet("/ticketcollection/*")
 public class TicketCollectionServlet extends HttpServlet {
@@ -64,12 +65,12 @@ public class TicketCollectionServlet extends HttpServlet {
         case "/toggleFavorite": // 切換收藏狀態
             toggleFavorite(req, res);
             break;
-		case "/find": // 篩選
-			doFind(req, res);
-			break;
-//		case "/del": // 移除
-//			doDel(req, res);
+//		case "/find": // 篩選
+//			doFind(req, res);
 //			break;
+		case "/del": // 移除
+			doDel(req, res);
+			break;
 		default:
 			System.out.println("Path not handled:" + pathInfo);
 		}
@@ -181,60 +182,80 @@ public class TicketCollectionServlet extends HttpServlet {
 		}
 
 	/*************** 刪除一個 *****************/
-	protected void doDeleteBy(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		Integer memId;
-		Integer ticketId;
-		memId = Integer.valueOf(req.getParameter("memId"));
-		ticketId = Integer.parseInt(req.getParameter("ticketId"));
-		ticketCollectionService.deleteByCom(memId, ticketId);
-		setJsonResponse(res, "刪除成功");
-	}
+		protected void doDel(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		    // Integer memId = (Integer) req.getSession().getAttribute("memId");
+		    Integer memId = 2; // ****測試寫死****
+		    
+		    String ticketIdStr = req.getParameter("ticketId");
+		    Integer ticketId = Integer.parseInt(ticketIdStr);
+
+		    res.setContentType("application/json");
+		    res.setCharacterEncoding("UTF-8");
+		    PrintWriter out = res.getWriter();
+
+		    JSONObject responseJson = new JSONObject();
+		    try {
+		        // 僅在此進行刪除操作
+		        ticketCollectionService.deleteByCom(memId, ticketId);
+		        responseJson.put("success", true);
+		        responseJson.put("message", "收藏票券已成功移除。");
+		    } catch (Exception e) {
+		        responseJson.put("success", false);
+		        responseJson.put("message", "移除收藏票券時發生錯誤: " + e.getMessage());
+		    }
+
+		    // 發送回前端的 JSON 響應
+		    out.print(responseJson.toString());
+		    out.flush();
+		    out.close();
+		}
+
 	
 	
-	/************ 搜尋 ************/
-	private void doFind(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		Integer ticketId = null;
-		Integer cityId = null;
-		Map<String, String[]> map = req.getParameterMap();
-
-		// 查詢票券名稱
-		try {
-			ticketId = Integer.valueOf(req.getParameter("ticketId"));
-		} catch (NumberFormatException e) {
-			ticketId = null;
-		}
-		// 查詢票券區域
-		try {
-			cityId = Integer.valueOf(req.getParameter("areaId"));
-		} catch (NumberFormatException e) {
-			cityId = null;
-		}
-		// 儲存list
-		List<TicketVO> list = new ArrayList<>();
-
-
-		// 票券ID不為空就加入列表
-		if (ticketId != null) {
-			List<TicketVO> ticketIdList = ticketService.getTicketById2(ticketId);
-			list.addAll(ticketIdList);
-		}
-		// 票券區域不為空就加入列表
-		if (cityId != null) {
-			List<TicketVO> areaList = ticketService.getAllTicketAreaId(cityId);
-			list.addAll(areaList);
-		}
-		System.out.println(list);
-		req.setAttribute("list", list);
-		req.getRequestDispatcher("/backend/ticket/find.jsp").forward(req, res);
-	}
-	
-
-	private void setJsonResponse(HttpServletResponse res, Object obj) throws IOException {
-        Gson gson = new Gson();
-        String jsonData = gson.toJson(obj);
-        res.setContentType("application/json");
-        res.setCharacterEncoding("UTF-8");
-        res.getWriter().write(jsonData);
-		
-	}
+//	/************ 搜尋 ************/
+//	private void doFind(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+//		Integer ticketId = null;
+//		Integer cityId = null;
+//		Map<String, String[]> map = req.getParameterMap();
+//
+//		// 查詢票券名稱
+//		try {
+//			ticketId = Integer.valueOf(req.getParameter("ticketId"));
+//		} catch (NumberFormatException e) {
+//			ticketId = null;
+//		}
+//		// 查詢票券區域
+//		try {
+//			cityId = Integer.valueOf(req.getParameter("areaId"));
+//		} catch (NumberFormatException e) {
+//			cityId = null;
+//		}
+//		// 儲存list
+//		List<TicketVO> list = new ArrayList<>();
+//
+//
+//		// 票券ID不為空就加入列表
+//		if (ticketId != null) {
+//			List<TicketVO> ticketIdList = ticketService.getTicketById2(ticketId);
+//			list.addAll(ticketIdList);
+//		}
+//		// 票券區域不為空就加入列表
+//		if (cityId != null) {
+//			List<TicketVO> areaList = ticketService.getAllTicketAreaId(cityId);
+//			list.addAll(areaList);
+//		}
+//		System.out.println(list);
+//		req.setAttribute("list", list);
+//		req.getRequestDispatcher("/backend/ticket/find.jsp").forward(req, res);
+//	}
+//	
+//
+//	private void setJsonResponse(HttpServletResponse res, Object obj) throws IOException {
+//        Gson gson = new Gson();
+//        String jsonData = gson.toJson(obj);
+//        res.setContentType("application/json");
+//        res.setCharacterEncoding("UTF-8");
+//        res.getWriter().write(jsonData);
+//		
+//	}
 }
