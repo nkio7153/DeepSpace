@@ -109,7 +109,6 @@
     }
 
     $(document).ready(function () {
-        console.log("乾")
         //判斷星星是否為空
         //如果不為空，按照星星數序加上-on，div.star_block.html()
         //如果為空，預設為黑星星，div.star_block.html()
@@ -118,7 +117,6 @@
             var starNum = parseInt(starText, 10);
             html="";
             if (starNum) {
-                //我想依照startText取得的數字給span標籤，由上往下addClass("-on")
                 for (var i = 1; i <= 5; i++) {
                     // 为每个星星创建一个span标签
                     html += '<span class="star' + (i <= starNum ? ' -on' : '') + '" data-star="' + i + '"><i class="fas fa-star"></i></span>';

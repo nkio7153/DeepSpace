@@ -9,9 +9,25 @@
     <title>票券訂單明細</title>
     <jsp:include page="../indexpage/head.jsp" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+
     <style>
         .hidden{
             display:none;
+        }
+        /* ===== 重要性的星號 ===== */
+        div.star_block {
+            display: inline-block;
+        }
+
+        div.star_block > span.star {
+            cursor: pointer;
+            display: inline-block;
+            margin-right: 3px;
+        }
+
+        div.star_block > span.star.-on {
+            color: yellow;
         }
     </style>
 </head>
@@ -34,7 +50,6 @@
             <th class="text-center">商品小計</th>
             <th class="text-center">商品評價</th>
             <th class="text-center">星星數</th>
-            <th class="text-center">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -49,9 +64,10 @@
                 <td class="text-center">${od[5]}</td>
                 <td class="text-center">${od[6]}</td>
                 <td class="text-center" name="ticketReviews">${od[7]}</td>
-                <td class="text-center" name="stars">${od[8]}</td>
                 <td class="text-center">
-<%--                    <a href="#" class="btn btn-primary">商品連結</a>--%>
+                    <div class="star_block">
+                        ${od[8]}
+                    </div>
                 </td>
             </tr>
         </c:forEach>
@@ -70,6 +86,30 @@
     function index() {
         document.location.href = "${pageContext.request.contextPath}/to/index";
     }
+    $(document).ready(function () {
+        //判斷星星是否為空
+        //如果不為空，按照星星數序加上-on，div.star_block.html()
+        //如果為空，預設為黑星星，div.star_block.html()
+        $(".star_block").each(function () {
+            var starText = $(this).text();
+            var starNum = parseInt(starText, 10);
+            html = "";
+            if (starNum) {
+                for (var i = 1; i <= 5; i++) {
+                    // 为每个星星创建一个span标签
+                    html += '<span class="star' + (i <= starNum ? ' -on' : '') + '" data-star="' + i + '"><i class="fas fa-star"></i></span>';
+                }
+            } else {
+                html += `
+                      <span class="star" data-star="1"><i class="fas fa-star"></i></span>
+                      <span class="star" data-star="2"><i class="fas fa-star"></i></span>
+                      <span class="star" data-star="3"><i class="fas fa-star"></i></span>
+                      <span class="star" data-star="4"><i class="fas fa-star"></i></span>
+                      <span class="star" data-star="5"><i class="fas fa-star"></i></span>`;
+            }
+            $(this).html(html);
+        })
+    });
 </script>
 <jsp:include page="../indexpage/footer.jsp" />
 </body>

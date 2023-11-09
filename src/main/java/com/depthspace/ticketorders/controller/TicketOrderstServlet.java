@@ -51,6 +51,9 @@ public class TicketOrderstServlet extends HttpServlet {
             case "/memOrderList":
                 doMemList(req, resp);
                 break;
+            case "/search":
+                search(req, resp);
+                break;
             default:
                 // 在這裡處理所有其他情況
                 break;
@@ -66,6 +69,9 @@ public class TicketOrderstServlet extends HttpServlet {
                 break;
             case "/save":
                 doSave(req, resp);
+                break;
+            case "/search":
+                search(req, resp);
                 break;
             default:
                 // 在這裡處理所有其他情況
@@ -85,7 +91,22 @@ public class TicketOrderstServlet extends HttpServlet {
             System.out.println(toPageQty);
             req.getSession().setAttribute("toPageQty",toPageQty);
         }
+        List<TicketOrdersVO> all = toSv.getAll();
+        //取得所有會員編號、去除重複編號
+        HashSet<String> uniqueMemIds = new HashSet<>();
+        uniqueMemIds.add("請選擇");
+        for (TicketOrdersVO vo : all) {
+            uniqueMemIds.add(String.valueOf(vo.getMemId()));
+        }
+        //所有狀態
+        List<String> uqStatus = new ArrayList<>();
+        uqStatus.add("請選擇");
+        uqStatus.add("已完成");
+        uqStatus.add("已取消");
+        uqStatus.add("已退貨");
 
+        req.setAttribute("uqStatus", uqStatus);
+        req.setAttribute("uniqueMemIds", uniqueMemIds);
         req.setAttribute("list", list);
         req.setAttribute("currentPage",currentPage);
 //        req.setAttribute("items",itemsJson);
@@ -197,67 +218,75 @@ public class TicketOrderstServlet extends HttpServlet {
         req.getRequestDispatcher("/ticketOrders/afterPay.jsp").forward(req, resp);
     }
     //複合查詢
-    protected void doQuery(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Map<String, String[]> map = req.getParameterMap();
+    protected void search(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        Map<String, String[]> map=new HashMap<>(req.getParameterMap());
+
+        System.out.println(map);
+        System.out.println("抓到Map資料");
+
         String page = req.getParameter("page");
-//        if (map != null) {
-//            List<TicketOrdersVO> empList = toSv.getToByCompositeQuery(map);
-//            req.setAttribute("empList", empList);
-//        } else {
-//            return "/index.jsp";
-//        }
-//        return "/emp/listCompositeQueryEmps.jsp";
+
+        int pageNow = (page == null) ? 1 : Integer.parseInt(page);
+        //第一次載入頁面
+        if(page==null){
+            String selectedMemId = req.getParameter("selectedMemId");
+            req.getSession().setAttribute("selectedMemId",selectedMemId);
+            String selectedStatus = req.getParameter("selectedStatus");
+            req.getSession().setAttribute("selectedStatus",selectedStatus);
+            String startOrderDate = req.getParameter("startOrderDate");
+            req.getSession().setAttribute("startOrderDate",startOrderDate);
+            String endOrderDate = req.getParameter("endOrderDate");
+            req.getSession().setAttribute("endOrderDate",endOrderDate);
+        }else{
+            //分頁
+            String memId = (String)req.getSession().getAttribute("selectedMemId");
+            if (memId != "請選擇"){
+                map.put("selectedMemId",new String[]{memId});
+            }
+            String status = (String)req.getSession().getAttribute("selectedStatus");
+            if (status != "請選擇"){
+                System.out.println(status);
+                map.put("selectedStatus",new String[]{status});
+            }
+            String startOrderDate = (String)req.getSession().getAttribute("startOrderDate");
+            if (startOrderDate != null){
+                map.put("startOrderDate",new String[]{startOrderDate});
+            }
+            String endOrderDate = (String)req.getSession().getAttribute("endOrderDate");
+            if (endOrderDate != null){
+                map.put("endOrderDate",new String[]{endOrderDate});
+            }
+        }
+        if(map.size() != 0){
+            List<TicketOrdersVO> list = toSv.getToByCompositeQuery(map, pageNow);
+            int toPageQty;
+            if(req.getAttribute("toPageQty") == null) {
+                toPageQty = toSv.getToByCompositeQueryTotal(map);
+                req.setAttribute("toPageQty",toPageQty);
+            }
+            req.setAttribute("currentPage",pageNow);
+            req.setAttribute("list",list);
+        }else{
+            System.out.println("map.size()==0");
+        }
+        List<TicketOrdersVO> all = toSv.getAll();
+        //取得所有會員編號、去除重複編號
+        HashSet<String> uniqueMemIds = new HashSet<>();
+        uniqueMemIds.add("請選擇");
+        for (TicketOrdersVO vo : all) {
+            uniqueMemIds.add(String.valueOf(vo.getMemId()));
+        }
+        //所有狀態
+        List<String> uqStatus = new ArrayList<>();
+        uqStatus.add("請選擇");
+        uqStatus.add("已完成");
+        uqStatus.add("已取消");
+        uqStatus.add("已退貨");
+        req.setAttribute("uniqueMemIds",uniqueMemIds);
+        req.setAttribute("uqStatus",uqStatus);
+        req.getRequestDispatcher("/ticketOrders/queryOrder.jsp").forward(req,resp);
     }
-
-
-//    Map<String, String[]> map = new HashMap<>(req.getParameterMap());
-//
-//    String page = req.getParameter("page");
-//    int pageNow = (page == null) ? 1 : Integer.parseInt(page);
-//
-//    // 第一次進來
-//		if (page == null) {
-//        String itemNameSearch = req.getParameter("itemNameSearch");
-//        req.getSession().setAttribute("itemNameSearch", itemNameSearch);
-//        // 其他參數比照
-//        String itemPriceSearchStart = req.getParameter("itemPriceSearchStart");
-//        req.getSession().setAttribute("itemPriceSearchStart", itemPriceSearchStart);
-//
-//        String itemPriceSearchEnd = req.getParameter("itemPriceSearchEnd");
-//        req.getSession().setAttribute("itemPriceSearchEnd", itemPriceSearchEnd);
-//        // 後續切頁
-//    } else {
-//        String itemNameSearch = (String) req.getSession().getAttribute("itemNameSearch");
-//        if (itemNameSearch != null) {
-//            map.put("itemNameSearch", new String[] { itemNameSearch });
-//        }
-//
-//        String itemPriceSearchStart = (String) req.getSession().getAttribute("itemPriceSearchStart");
-//        if (itemPriceSearchStart != null) {
-//            map.put("itemPriceSearchStart", new String[] { itemPriceSearchStart });
-//        }
-//
-//        String itemPriceSearchEnd = (String) req.getSession().getAttribute("itemPriceSearchEnd");
-//        if (itemPriceSearchEnd != null) {
-//            map.put("itemPriceSearchEnd", new String[] { itemPriceSearchEnd });
-//        }
-//    }
-//
-//		if (map.size() != 0) {
-//
-//        List<Item> itemList = itemService.getItemByCompositeQuery(map, pageNow);
-//        int total = itemService.getResultTotalCondition(map);
-//
-//        if (req.getAttribute("itemPageQty") == null) {
-//            int pageQty = (int) (total % ITEM_PAGE_MAX_RESULT == 0 ? (total / ITEM_PAGE_MAX_RESULT)
-//                    : (total / ITEM_PAGE_MAX_RESULT + 1));
-//            req.setAttribute("itemPageQty", pageQty);
-//        }
-//        req.setAttribute("pageNow", pageNow);
-//        req.setAttribute("itemList", itemList);
-//    } else {
-//        System.out.println("map.sizes()==0");
-
 
 
     //點數計算公式

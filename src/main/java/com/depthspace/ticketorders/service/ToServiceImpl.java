@@ -199,6 +199,8 @@ public class ToServiceImpl implements ToService {
             query.put(key, value);
         }
 
-        return dao.getResultTotal(query);
+        int total = dao.getResultTotal(query);
+        int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
+        return pageQty;
     }
 }
