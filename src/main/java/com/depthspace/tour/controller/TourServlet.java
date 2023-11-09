@@ -83,8 +83,9 @@ public class TourServlet extends HttpServlet {
 
 	}
 
-private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 	//取得天數讓資料庫可以新增	
+	Integer memId;
 	Integer tourdaysId = null;
 	Integer tourId;
 	Integer allDays;
@@ -93,23 +94,26 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 	
 	//轉型
 	try {
+		memId = Integer.valueOf(req.getParameter("memId"));
 		allDays = Integer.valueOf(req.getParameter("allDays"));
 		tourId = Integer.valueOf(req.getParameter("tourId"));
-		//	System.out.println("allDays= "+ allDays + "tourId= "+ tourId);
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			return;
 		}
+	System.out.println("memId=" + memId);
 	//用總天數的數量去新增天數
 	for(int i=1 ; i <= allDays ; i++) {
 		TourDaysVO tourDaysVO = new TourDaysVO(tourdaysId , allDays , tourId);
 		tds.insert(tourDaysVO);
-		allAttr = req.getParameterValues("attractions[" + i + "]");
 		allTime = req.getParameterValues("attractionTime[" + i + "]");
+		allAttr = req.getParameterValues("attractions[" + i + "]");
 
+		for(String one : allTime) {
+			//one為Id			
+			System.out.println("時間=" + one);
+		}
 		for(String one : allAttr) {
-			
-			System.out.println("時間=" + allTime.length);
 			//one為Id			
 			System.out.println("第" + i + "景點編號=" + one);
 		}
@@ -117,10 +121,11 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 //		System.out.println( "第" + i + "景點為" + "，all=" + one);
 	}
 	
-//	 resp.sendRedirect(req.getContextPath() + "/tr/domemTourList");
-	}
+	 req.setAttribute("memId", memId);
+	 req.getRequestDispatcher("/tr/tourList").forward(req, resp);
+}
 
-//	ajax傳遞找尋景點選項
+//	ajax傳遞找尋對應縣市景點選項
 	private void doGetAttractions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		// 依據cityName找尋對應的景點的集合
 		String cityName = req.getParameter("cityName");
@@ -229,6 +234,7 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 
 	// 用會員編號查出該會員所有行程
 	private void doTourList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("doTourList 方法被呼叫了");
 		Integer memId;
 		try {
 			memId = Integer.valueOf(req.getParameter("memId"));
