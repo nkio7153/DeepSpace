@@ -4,10 +4,9 @@
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid" style="padding: 20px 0;">
                 <a class="navbar-brand" href="${pageContext.request.contextPath}/indexpage/index.jsp">
-                    <img src="${pageContext.request.contextPath}/indexpage/images/icon.png" alt="" width="30"
-                         height="24"
+                    <img src="${pageContext.request.contextPath}/indexpage/images/icon.png" alt="" width="200px"
+                         
                          class="d-inline-block align-text-top">
-                    深度漫遊
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -27,10 +26,10 @@
                             <a class="" href="${pageContext.request.contextPath}/forumArticles/list.jsp">論壇文章</a>
                         </li>
                         <li class="nav-item">
-                            <a class="" href="#">餐廳</a>
+                            <a class="" href="${pageContext.request.contextPath}/Rest/getRests">餐廳</a>
                         </li>
                         <li class="nav-item">
-                            <a class="booking" href="#">登入/註冊</a>
+                            <a class="booking" href="${pageContext.request.contextPath}/member/member.jsp">登入/註冊</a>
                         <li class="">
                             <a href="${pageContext.request.contextPath}/tsc/index"><img
                                     src="${pageContext.request.contextPath}/indexpage/images/shoppingcar.svg"

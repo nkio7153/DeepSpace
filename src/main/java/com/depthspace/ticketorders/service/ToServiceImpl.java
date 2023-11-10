@@ -19,9 +19,7 @@ import com.depthspace.utils.JedisUtil;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 import static com.depthspace.ticketorders.model.ticketorders.hibernate.HbToDaoImpl.PAGE_MAX_RESULT;
 
@@ -153,5 +151,56 @@ public class ToServiceImpl implements ToService {
         return pageQty;
     }
     //join票券表格取得訂單明細中的票券名稱
+    @Override
+    public List<TicketOrdersVO> getToByCompositeQuery(Map<String, String[]> map, int page) {
+        Map<String, String> query = new HashMap<>();
+        // Map.Entry即代表一組key-value
+        Set<Map.Entry<String, String[]>> entry = map.entrySet();
 
+        for (Map.Entry<String, String[]> row : entry) {
+            String key = row.getKey();
+            // 因為請求參數裡包含了action，做個去除動作
+            if ("action".equals(key)) {
+                continue;
+            }
+            // 若是value為空即代表沒有查詢條件，做個去除動作
+            String value = row.getValue()[0];
+
+//			System.out.println("keyValue:"+key+":"+value);
+
+            if ( value == null || value.isEmpty()) {
+                continue;
+            }
+            query.put(key, value);
+        }
+
+        return dao.getByCompositeQuery(query, page);
+    }
+    @Override
+    public int getToByCompositeQueryTotal(Map<String, String[]> map) {
+        Map<String, String> query = new HashMap<>();
+        // Map.Entry即代表一組key-value
+        Set<Map.Entry<String, String[]>> entry = map.entrySet();
+
+        for (Map.Entry<String, String[]> row : entry) {
+            String key = row.getKey();
+            // 因為請求參數裡包含了action，做個去除動作
+            if ("action".equals(key)) {
+                continue;
+            }
+            // 若是value為空即代表沒有查詢條件，做個去除動作
+            String value = row.getValue()[0];
+
+//			System.out.println("keyValue:"+key+":"+value);
+
+            if ( value == null || value.isEmpty()) {
+                continue;
+            }
+            query.put(key, value);
+        }
+
+        int total = dao.getResultTotal(query);
+        int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
+        return pageQty;
+    }
 }

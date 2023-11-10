@@ -486,7 +486,7 @@ public class MemberServlet extends HttpServlet {
 		}
 	}
 
-	// ============================================
+	// ========================================================================================
 
 	protected void doSuccess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String memAcc = req.getParameter("memAcc");

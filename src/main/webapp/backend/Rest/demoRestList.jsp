@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 
 <head>
-	<jsp:include page="./indexpage/head.jsp" />
-	<jsp:include page="./indexpage/header.jsp" />
-	<jsp:include page="./indexpage/headpic.jsp" />
+	<jsp:include page="/indexpage/head.jsp" />
+	<jsp:include page="/indexpage/header.jsp" />
+	<jsp:include page="/indexpage/headpic.jsp" />
     <style>
     </style>
 </head>
@@ -17,7 +17,7 @@
 
 
     <!--footer -->
-    <jsp:include page="./indexpage/footer.jsp" />
+    <jsp:include page="/indexpage/footer.jsp" />
     <!-- //footer -->
 
     <script src="${pageContext.request.contextPath}/indexpage/js/popper.min.js"></script>
