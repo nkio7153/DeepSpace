@@ -265,8 +265,8 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 		}
 		
 		//找出日期，總天數，敘述
-		List<TourVO> list = ts.getOneByMemId(tourId, memId);
-		System.out.println("list=" +  list);
+//		List<TourVO> list = ts.getOneByMemId(tourId, memId);
+//		System.out.println("list=" +  list);
 		
 		
 //		System.out.println("memId=" + memId + "," + "tourId=" + tourId);
@@ -307,11 +307,11 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 //		List<TourDetailVO> tourDetail = tdls.getTourDaysId(tourDaysId);
 		
 			
-//		List<TourView> list = ts.getOneTourList(tourId, memId);
+		List<TourView> list = ts.getOneTourList(tourId, memId);
 //		for(TourView a : list){
-//			System.out.println(a);
-//			System.out.println(a.getAttractionsName());
-//					}
+//			System.out.println("a=" + a);
+//			System.out.println("a.getAttractionsName()=" + a.getAttractionsName());
+//					} 
 //		System.out.println(list);
 		req.setAttribute("list", list);
 //		[tourName=台北之旅, allDays=5, tourDescription=探索台北的美丽景點。, tourDays=3, start=2023-10-10 09:00:00.0, end=2023-10-10 12:00:00.0, attractionsName=台北101, address=台北市信義區信義路五段7號]

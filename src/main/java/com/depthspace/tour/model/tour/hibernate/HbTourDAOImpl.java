@@ -90,10 +90,10 @@ public class HbTourDAOImpl implements HbTourDAO_Interface{
 	public List<TourView> getOneTourList(Integer tourId, Integer memId) {
 //		System.out.println("tourId=" + tourId + "memId=" + memId);
 //	    Session session = getSession();
-	    List<TourView> list = getSession().createQuery("from TourView where TOUR_Id= :tourId AND MEM_ID = :memId", TourView.class)
+	    List<TourView> list = getSession().createQuery("from TourView where TOUR_ID= :tourId AND MEM_ID = :memId", TourView.class)
 	            .setParameter("tourId", tourId)
 	            .setParameter("memId", memId)
-	            .list();
+	            .list(); 
 //		List<TourView> list = getSession().createQuery("select distinct tv from TourView tv where tv.tourId = :tourId and tv.memId = :memId", TourView.class)
 //		        .setParameter("tourId", tourId)
 //		        .setParameter("memId", memId)
@@ -110,7 +110,7 @@ public class HbTourDAOImpl implements HbTourDAO_Interface{
 	    
 	    
 	    //1110測試
-	   System.out.println(list);
+//	   System.out.println(list);
 	   return list;
 	}
 
