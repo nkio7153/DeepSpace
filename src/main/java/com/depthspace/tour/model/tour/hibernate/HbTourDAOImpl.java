@@ -6,9 +6,7 @@ import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
-import com.depthspace.promotion.model.promotion.PromotionVO;
 import com.depthspace.tour.model.tour.TourVO;
 import com.depthspace.tour.model.tour.TourView;
 
@@ -81,31 +79,37 @@ public class HbTourDAOImpl implements HbTourDAO_Interface{
 
 	@Override
 	public List<TourView> getOneTourList(Integer tourId, Integer memId) {
-////		System.out.println("tourId=" + tourId + "memId=" + memId);
+//		System.out.println("tourId=" + tourId + "memId=" + memId);
 //	    Session session = getSession();
-//	    Transaction tx = null;
-	    List<TourView> list = null;
-//	    
-//	    try {
-////	        tx = session.beginTransaction();
-//
-//	        list = session.createQuery("SELECT DISTINCT tv from TourView tv where tv.tourId= :tourId AND tv.memId = :memId", TourView.class)
+//	    List<TourView> list = getSession().createQuery("from TourView where TOUR_Id= :tourId AND MEM_ID = :memId", TourView.class)
 //	            .setParameter("tourId", tourId)
 //	            .setParameter("memId", memId)
 //	            .list();
-//	        
-////	        tx.commit();
-//	    } catch (Exception e) {
-//	        if (tx != null) {
-////	            tx.rollback();
-//	        	System.out.println("錯誤");
-//	        }
-//	        e.printStackTrace();
-//	    } finally {
-//	        session.close();
-//	    }
+//		List<TourView> list = getSession().createQuery("select distinct tv from TourView tv where tv.tourId = :tourId and tv.memId = :memId", TourView.class)
+//		        .setParameter("tourId", tourId)
+//		        .setParameter("memId", memId)
+//		        .list();
+//		List<TourView> list = getSession().createQuery("select tv from TourView tv where tv.tourId = :tourId and tv.memId = :memId group by tv.tourId, tv.memId", TourView.class)
+//		        .setParameter("tourId", tourId)
+//		        .setParameter("memId", memId)
+//		        .list();
+		List<TourView> list = getSession().createQuery("select tv from TourView tv where tv.tourId = :tourId and tv.memId = :memId group by tv.tourId, tv.memId", TourView.class)
+		        .setParameter("tourId", tourId)
+		        .setParameter("memId", memId)
+		        .list();
 
-	    return list;
+	    
+	    
+	    //1110測試
+	   System.out.println(list);
+	   return list;
+	    
+	    
+//	    list = session.createQuery("SELECT DISTINCT tv from TourView tv where tv.tourId= :tourId AND tv.memId = :memId", TourView.class)
+//	           .setParameter("tourId", tourId)
+//	           .setParameter("memId", memId)
+//	           .list();
+//	    return list;
 	}
 
 		

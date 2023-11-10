@@ -16,6 +16,7 @@ public class TourJDBCDAO implements TourDAO_Interface {
 	private static final String DELETE_STMT = "DELETE FROM TOUR WHERE TOUR_ID=?";
 	private static final String GET_ONE_STMT = "SELECT TOUR_ID , MEM_ID, TOUR_NAME, TOUR_TYPE_ID, ALL_DAYS, TOUR_DESCRIPTION, TOUR_IMG FROM TOUR WHERE TOUR_ID=?";
 	private static final String GET_ALL_STMT = "SELECT TOUR_ID , MEM_ID, TOUR_NAME, TOUR_TYPE_ID, ALL_DAYS, TOUR_DESCRIPTION, TOUR_IMG FROM TOUR ORDER BY TOUR_ID ";
+	private static final String GET__STMT = "SELECT TOUR_ID , MEM_ID, TOUR_NAME, TOUR_TYPE_ID, ALL_DAYS, TOUR_DESCRIPTION, TOUR_IMG FROM TOUR ORDER BY TOUR_ID ";
 
 	@Override
 	public void insert(TourVO TourVO) {

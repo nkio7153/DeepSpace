@@ -1,6 +1,7 @@
 package com.depthspace.tour.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,7 @@ public class TourServlet extends HttpServlet {
 		case "/tourList":
 			doTourList(req, resp);
 			break;
+			//查詢單一行程內容
 		case "/memTourList":
 			domemTourList(req, resp);
 			break;
@@ -110,7 +112,7 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 		allAttr = req.getParameterValues("attractions[" + i + "]");
 
 		for(String one : allTime) {
-			//one為Id			
+			//one為Id
 			System.out.println("時間=" + one);
 		}
 		for(String one : allAttr) {
@@ -234,7 +236,6 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 
 	// 用會員編號查出該會員所有行程
 	private void doTourList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("doTourList 方法被呼叫了");
 		Integer memId;
 		try {
 			memId = Integer.valueOf(req.getParameter("memId"));
@@ -261,10 +262,13 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 		}
 //		System.out.println("memId=" + memId + "," + "tourId=" + tourId);
 		List<TourView> list = ts.getOneTourList(tourId, memId);
+		for(TourView a : list){
+			System.out.println(a);
+			System.out.println(a.getAttractionsName());
+					}
 //		System.out.println(list);
-
 		req.setAttribute("list", list);
-
+//		[tourName=台北之旅, allDays=5, tourDescription=探索台北的美丽景點。, tourDays=3, start=2023-10-10 09:00:00.0, end=2023-10-10 12:00:00.0, attractionsName=台北101, address=台北市信義區信義路五段7號]
 		req.getRequestDispatcher("/tour/memTourList.jsp").forward(req, resp);
 	}
 
