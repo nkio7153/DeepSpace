@@ -68,8 +68,8 @@ $(document).ready(function() {
         success: function(data) {
             var selectBox = $("#artiTypeId");
             selectBox.empty(); 
-            $.each(data, function(index, value) {
-                selectBox.append($("<option></option>").attr("value", value).text(value));
+            $.each(data, function(index, atvo) {
+                selectBox.append($("<option></option>").attr("value", atvo.artiTypeId).text(atvo.artiTypeText));
             });
         }
     });
