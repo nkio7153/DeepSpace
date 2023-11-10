@@ -12,30 +12,6 @@ import javax.persistence.Table;
 
 public class AdminVO {
 
-	public enum AdminStatus {
-		NO_ACCESS(0), GENERAL_ADMIN(1), RESTAURANT_ADMIN(2), SUPER_ADMIN(99);
-
-		private final int value;
-
-		AdminStatus(int value) {
-			this.value = value;
-		}
-
-		public int getValue() {
-			return this.value;
-		}
-
-		// 添加一個從int到enum的轉換方法
-		public static AdminStatus fromInt(int value) {
-			for (AdminStatus status : AdminStatus.values()) {
-				if (status.getValue() == value) {
-					return status;
-				}
-			}
-			throw new IllegalArgumentException("No constant with value " + value + " found");
-		}
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // AI鍵要加
 	@Column(name = "ADMIN_ID", updatable = false)
@@ -92,13 +68,5 @@ public class AdminVO {
 
 	public void setAdminStatus(Integer adminStatus) {
 		this.adminStatus = adminStatus;
-	}
-
-	public AdminStatus getAdminStatusEnum() {
-		return AdminStatus.fromInt(this.adminStatus);
-	}
-
-	public void setAdminStatusEnum(AdminStatus adminStatus) {
-		this.adminStatus = adminStatus.getValue();
 	}
 }

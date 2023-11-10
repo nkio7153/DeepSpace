@@ -18,7 +18,7 @@ import com.depthspace.restaurant.service.MemBookingServiceImpl;
 import com.depthspace.restaurant.service.RestService;
 import com.depthspace.restaurant.service.RestServiecImpl;
 
-@WebServlet("/Rest/Rest.do")
+@WebServlet("/Rests/Rest.do")
 public class RestServlet extends HttpServlet {
 	
 	private RestService restService;

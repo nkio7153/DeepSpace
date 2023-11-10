@@ -1,17 +1,23 @@
 package com.depthspace.admin.model.service;
 
-import java.util.List;
-
-import com.depthspace.admin.model.model.AdminDAO;
-import com.depthspace.admin.model.model.AdminVO;
-import com.depthspace.utils.HibernateUtil;
-import com.depthspace.admin.model.model.*;
-
 import static com.depthspace.utils.Constants1.PAGE_MAX_RESULT;
 
-public class AdminServiceImpl implements AdminService{
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Base64.Encoder;
 
-private AdminDAO dao;
+import com.depthspace.admin.model.model.AdminDAO;
+import com.depthspace.admin.model.model.AdminDAOImpl;
+import com.depthspace.admin.model.model.AdminVO;
+
+import com.depthspace.utils.HibernateUtil;
+// 搭配 JSP / Thymeleaf 後端渲染畫面，將交易動作至於 view filter
+public class AdminServiceImpl implements AdminService {
+	// 一個 service 實體對應一個 dao 實體
+	private AdminDAO dao;
 	
 	public AdminServiceImpl() {
 		dao = new AdminDAOImpl(HibernateUtil.getSessionFactory());
@@ -19,38 +25,34 @@ private AdminDAO dao;
 	
 	@Override
 	public AdminVO addAdmin(AdminVO adminVO) {
-		// TODO Auto-generated method stub
-		return null;
+		dao.insert(adminVO);
+		return adminVO;
 	}
 
 	@Override
 	public AdminVO updateAdmin(AdminVO adminVO) {
-		// TODO Auto-generated method stub
+		int i = dao.update(adminVO);
+		if (i == 1) {
+			return adminVO;
+		}
 		return null;
 	}
 
 	@Override
 	public void deleteAdmin(Integer adminId) {
-		// TODO Auto-generated method stub
-		
+		dao.delete(adminId);
 	}
 
 	@Override
-	public AdminVO getAdminByAdminId(Integer adminId) {
-		// TODO Auto-generated method stub
-		return null;
+	public AdminVO findAdminByAdminId(Integer adminId) {
+		AdminVO adminVO = dao.findByAdminId(adminId);
+		return adminVO;
 	}
 
 	@Override
-	public List<AdminVO> getAllAdmin(int currentPage) {
-		return dao.getAll(currentPage);
+	public List<AdminVO> getAllAdmins() {
+	    return dao.getAll();
 	}
 
-	@Override
-	public int getPageTotal() {
-		long total = dao.getTotal();
-		
-		int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
-		return pageQty;
-	}
+
 }

@@ -2,6 +2,7 @@ package com.depthspace.ticket.dao;
 
 import java.util.*;
 
+import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 
@@ -20,9 +21,11 @@ public interface TicketDAO {
 		
 		List<TicketVO> getAll();
 		
-		List<TicketVO> getAll(int currentPage); //取得所有票券物件(分頁查詢)
+		List<TicketVO> getAll2(int currentPage); //取得所有票券物件(分頁查詢)
 		
 		List<TicketVO> getAllTicketsWithCity(); //取得縣市名
+		
+		List<TicketTypesVO> getAllTicketTypeIds(Integer ticketTypeId); //取得所有票券類型		
 		
 		long getTotal(); //取得總票券數
 		

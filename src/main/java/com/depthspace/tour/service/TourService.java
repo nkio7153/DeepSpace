@@ -21,17 +21,21 @@ public class TourService implements TourService_Interface{
 	}
 	@Override
 	public TourVO insert(TourVO entity) {
-		TourVO tourvo = null;
+//		System.out.println(entity.getMemId()); //1
 		//先新增一筆會員行程資料
 		dao.insert(entity);
-//		再找出會員資料的最後一筆(就會是剛才新增的行程)
-		tourvo= dao.getLastTourId(entity.getMemId());
+		TourVO tourvo = null;
+//		再找出會員資料的最後一筆(就會是剛才新增的行程)，把值帶到下一個頁面
+		tourvo= dao.getLastTourId(entity.getTourId());
+		System.out.println("tourvo= " + tourvo.getTourId());
 		//new 一個list集合把所有天數及會員編號放進去
 		List<TourDaysVO> tourDaysVO = new ArrayList<>();
 		TourDaysVO tdvo = new TourDaysVO();
 		tdvo.setTourId(tourvo.getTourId());
-		tdvo.setTourDays(null);
-		return null;
+		tdvo.setTourDays(tourvo.getAllDays());
+		tourDaysVO.add(tdvo);
+		System.out.println("tdvo= " + tdvo);
+		return tourvo;
 	}
 
 	@Override

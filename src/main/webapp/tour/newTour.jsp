@@ -161,8 +161,8 @@
 		<br>
 		
 <!-- 		下拉式選單:行程類型 -->
-		<label style="margin-left: 10px;">選擇旅遊行程類型:</label>
-  		<select name="tourType" id="tourType" style="margin-left: 10px;">
+		<label style="margin-left: 5px; margin-top: 20px;">選擇旅遊行程類型:</label>
+  		<select name="tourType" id="tourType" style="margin-left: 10px; border-radius: 50px;">
 	  		<c:forEach var="tourType" items="${list}">
 	            <option value="${tourType.tourTypeId}">${tourType.tourTypName}</option>
 	        </c:forEach>

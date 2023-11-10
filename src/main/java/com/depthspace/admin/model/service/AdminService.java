@@ -1,6 +1,7 @@
 package com.depthspace.admin.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.depthspace.admin.model.model.AdminVO;
 
@@ -12,9 +13,7 @@ public interface AdminService {
 	
 	void deleteAdmin(Integer adminId);
 	
-	AdminVO getAdminByAdminId(Integer adminId);
+	AdminVO findAdminByAdminId(Integer adminId);
 	
-	List<AdminVO> getAllAdmin(int currentPage);
-	
-	int getPageTotal();
+	List<AdminVO> getAllAdmins();
 }

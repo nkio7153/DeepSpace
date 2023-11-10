@@ -5,7 +5,7 @@ import com.depthspace.user.dto.UserRegisterRequest;
 import com.depthspace.user.model.User;
 
 public interface UserService {
-	
+
     User getUserById(Integer userId);
 
     Integer register(UserRegisterRequest userRegisterRequest);

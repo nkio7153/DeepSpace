@@ -21,4 +21,5 @@ public interface HbProDao {
 
     long getTotal();
     PromotionVO getLatestOrder();
+
 }

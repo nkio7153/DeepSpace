@@ -11,6 +11,7 @@ public interface RestService {
 	void deleteRest(Integer restId);
 	RestVO getRestByRestId(Integer restId);
 	List<RestVO> getAllRest();
+	List<RestVO> showRest();
 	
 
 }
