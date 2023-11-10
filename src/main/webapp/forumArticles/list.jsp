@@ -2,7 +2,6 @@
 <%@ page import="com.depthspace.forum.model.forumarticles.ForumArticlesVO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.HashSet" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -38,6 +37,7 @@ $(document).ready(function() {
                     '</div>' +
                     '<ul class="list-group list-group-flush">' +                       
                         '<li class="list-group-item hidden-status">訊息ID: ' + item.msgId + '</li>' +
+                        '<li class="list-group-item hidden-status">文章類型: ' + item.artiTypeId + '</li>' +
                     '</ul>' +
                     '<div class="card-footer">' +
                         '<small class="text-muted">發布時間: ' + formattedDate + '</small>' +
@@ -46,7 +46,33 @@ $(document).ready(function() {
                 $('#articlesRow').append(card);
             });
         }
-    })  
+    })
+    
+    $.ajax({
+        type: "post",
+        url: '<%=request.getContextPath()%>/forumArticles.do?action=getmemlist',
+        dataType: "json",
+        success: function(data) {
+            var selectBox = $("#memId");
+            selectBox.empty(); 
+            $.each(data, function(index, value) {
+                selectBox.append($("<option></option>").attr("value", value).text(value));
+            });
+        }
+    });
+    
+    $.ajax({
+        type: "post",
+        url: '<%=request.getContextPath()%>/forumArticles.do?action=getArtiTypeList',
+        dataType: "json",
+        success: function(data) {
+            var selectBox = $("#artiTypeId");
+            selectBox.empty(); 
+            $.each(data, function(index, value) {
+                selectBox.append($("<option></option>").attr("value", value).text(value));
+            });
+        }
+    });
 });
 
     function formatDate(date) {
@@ -98,7 +124,20 @@ $(document).ready(function() {
 <div id="list" class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>文章清單</h1>
-        <button type="button" class="btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles/add.jsp'">新增文章</button>
+            <!-- 查詢表單 -->
+    <form method="post" action="<%=request.getContextPath()%>/forumArticles.do?action=domemlist">
+        <label for="memId">選擇會員編號：</label>
+        <select id="memId" name="memId">
+        </select>
+        <input type="submit" value="查詢">
+    </form>
+    <form method="post" action="<%=request.getContextPath()%>/forumArticles.do?action=doArtiTypeList">
+        <label for="artiTypeId">選擇文章類型：</label>
+        <select id="artiTypeId" name="artiTypeId">
+        </select>
+        <input type="submit" value="查詢">
+    </form>
+        <button type="button" class="btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=addArticle'">新增文章</button>
     </div>
     <div id="articlesRow" class="row">
         <!-- 卡片內容將會通過 jQuery 動態加載到這裡 -->

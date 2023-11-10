@@ -59,20 +59,45 @@
 </head>
 <body>
 <script>
+
+// tinymce.init({
+// 	selector: '#artiText',
+//     plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+//     toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+//     tinycomments_mode: 'embedded',
+//     tinycomments_author: 'Author name',
+//     mergetags_list: [
+//       { value: 'First.Name', title: 'First Name' },
+//       { value: 'Email', title: 'Email' },
+//     ],
+//     ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+//   });
+
 	  tinymce.init({
 	    selector: '#artiText',
 	  });
 </script>
 <script>
-		function previewImage(event) {
-		    var reader = new FileReader();
-		    reader.onload = function() {
-		        var output = document.getElementById('preview');
-		        output.src = reader.result;
-		        output.style.display = 'block';
-		    };
-		    reader.readAsDataURL(event.target.files[0]);
-		}
+function previewImage(event) {
+    // 獲取上傳的檔案
+    var file = event.target.files[0];
+
+    // 檢查檔案類型是否為 JPEG
+    if(file.type === "image/jpeg") {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('preview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    } else {
+        // 如果不是 JPEG，顯示提示並重置 file input
+        alert("只能選擇 JPEG 格式的圖片檔案。");
+        document.getElementById('fileSelect').value = "";
+        document.getElementById('preview').style.display = 'none';
+    }
+}
 </script>
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp" />
@@ -89,8 +114,14 @@
             </tr>
             <tr>
                 <th>文章類型ID</th>
-                <td><input type="text" name="artiTypeId" id="artiTypeId"></td>
-            </tr>
+                <td> 
+                <select id="artiTypeId" name="artiTypeId">
+                    <c:forEach var="at" items="${atvo}">
+                        <option value="${at.artiTypeId}">${at.artiTypeText}</option>
+                    </c:forEach>
+                </select>
+                </td>
+            </tr>           
             <tr>
                 <th>文章標題</th>
                 <td><input type="text" name="artiTitle" id="artiTitle"></td>
@@ -113,7 +144,7 @@
         <input type="hidden" name="artiTime" id="artiTime" value="<%= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) %>">
         <input type="submit" id="btnAddSave" value="儲存">
         <input type="button" id="btnCancel" value="取消" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles/list.jsp'">
-        </form>
+      </form>
 </div>
 <jsp:include page="../indexpage/footer.jsp" />
 </body>

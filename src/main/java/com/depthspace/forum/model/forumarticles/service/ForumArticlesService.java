@@ -12,4 +12,10 @@ public interface ForumArticlesService {
 	 int delete(Integer articleId);
 	 
 	 List<ForumArticlesVO> getAll();
+	 
+	 List<ForumArticlesVO> getByMemId(Integer memId);
+	 
+	 ForumArticlesVO getByArticleId(Integer articleId);
+	 
+	 List<ForumArticlesVO> getByArtiTypeId(Integer artiTypeId);
 }

@@ -65,7 +65,7 @@ public class HbProDaoImpl implements HbProDao {
     public long getTotal() {
         return getSession().createQuery("select count(*) from PromotionVO", Long.class).uniqueResult();
     }
-    //用會員編號取得最新一筆訂單物件(為了拿訂單流水號)
+    //用會員編號取得最新一筆促銷物件(為了拿促銷流水號)
     @Override
     public PromotionVO getLatestOrder() {
         try {
@@ -77,4 +77,7 @@ public class HbProDaoImpl implements HbProDao {
             return null;
         }
     }
+
+
+
 }
