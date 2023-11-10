@@ -23,9 +23,6 @@ public class TicketImagesVO implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	private Integer serialId; 
 	
-//	@Column(name="TICKET_ID")
-//	private Integer ticketId; 
-	
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="TICKET_ID", nullable = false)
 	private TicketVO ticket;
@@ -36,9 +33,6 @@ public class TicketImagesVO implements Serializable {
 	
 	@Column(name = "IS_MAIN_IMAGE") //1為主圖，0為多張圖
 	private byte isMainImage;
-
-	
-
 
 	public TicketImagesVO() {
 		super();
@@ -53,10 +47,6 @@ public class TicketImagesVO implements Serializable {
 		this.image = image;
 		this.isMainImage = isMainImage;
 	}
-
-	
-
-
 
 	@Override
 	public String toString() {

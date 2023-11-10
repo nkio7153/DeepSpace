@@ -66,7 +66,7 @@ h1 {
 	<div class="container mt-5">
 		<h1>新增票券</h1>
 		<form action="<%=request.getContextPath()%>/ticketmg/add"
-			method="post" enctype="multipart/form-data">
+    		method="post" enctype="multipart/form-data" onsubmit="return showSwal();">
 			<div class="row">
 
 				<!-- 類型 -->
@@ -177,11 +177,9 @@ h1 {
 
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+	<script	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script>
 
@@ -219,6 +217,17 @@ h1 {
                 reader.readAsDataURL(file);
             }
         }
+    }
+    
+    // 送出的提示動畫
+    function showSwal() {
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: '已送出',
+            showConfirmButton: false,
+            timer: 1500
+        });
     }
 </script>
 </body>
