@@ -74,7 +74,7 @@
     	
     	<label for="dropdown">天數查詢：</label>
 		<select id="dropdown" name="selectedOption">
-		    <c:forEach var="day" items="${list}">
+		    <c:forEach var="day" items="${tourdaysvo}">
 		        <option value="${day.tourDays}">第${day.tourDays}天</option>
 		    </c:forEach>
 		</select>
@@ -83,14 +83,16 @@
             <th>出發時間</th>
 <!--             <th>結束時間</th> -->
             <th>景點</th>
-            <th>地址</th>
+<!--             <th>地址</th> -->
         </tr>
-        <c:forEach var="dayDetail" items="${list}">
+        
+<!--[TourDetailVO [tourDaysId=6, attractionsId=58, start=2023-10-11 10:30:00.0, end=2023-10-11 13:00:00.0, attractionsName=台北景點3]] -->
+        <c:forEach var="dayDetail" items="${result}">
             <tr>
                 <td>${dayDetail.start}</td>
 <%--                 <td>${dayDetail.}</td> --%>
                 <td>${dayDetail.attractionsName}</td>
-                <td>${dayDetail.address}</td>
+<%--                 <td>${dayDetail.address}</td> --%>
             </tr>
         </c:forEach>
     </table>

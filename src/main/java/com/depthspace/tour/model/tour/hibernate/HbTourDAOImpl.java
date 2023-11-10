@@ -78,13 +78,22 @@ public class HbTourDAOImpl implements HbTourDAO_Interface{
 	    }
 
 	@Override
+	public List<TourVO> getOneByMemId(Integer tourId,Integer memId) {
+		return getSession()
+                .createQuery("from TourVO where TOUR_Id= :tourId AND MEM_ID = :memId",TourVO.class)
+                .setParameter("tourId", tourId)
+                .setParameter("memId", memId)
+                .list();
+	}
+	
+	@Override
 	public List<TourView> getOneTourList(Integer tourId, Integer memId) {
 //		System.out.println("tourId=" + tourId + "memId=" + memId);
 //	    Session session = getSession();
-//	    List<TourView> list = getSession().createQuery("from TourView where TOUR_Id= :tourId AND MEM_ID = :memId", TourView.class)
-//	            .setParameter("tourId", tourId)
-//	            .setParameter("memId", memId)
-//	            .list();
+	    List<TourView> list = getSession().createQuery("from TourView where TOUR_Id= :tourId AND MEM_ID = :memId", TourView.class)
+	            .setParameter("tourId", tourId)
+	            .setParameter("memId", memId)
+	            .list();
 //		List<TourView> list = getSession().createQuery("select distinct tv from TourView tv where tv.tourId = :tourId and tv.memId = :memId", TourView.class)
 //		        .setParameter("tourId", tourId)
 //		        .setParameter("memId", memId)
@@ -93,23 +102,16 @@ public class HbTourDAOImpl implements HbTourDAO_Interface{
 //		        .setParameter("tourId", tourId)
 //		        .setParameter("memId", memId)
 //		        .list();
-		List<TourView> list = getSession().createQuery("select tv from TourView tv where tv.tourId = :tourId and tv.memId = :memId group by tv.tourId, tv.memId", TourView.class)
-		        .setParameter("tourId", tourId)
-		        .setParameter("memId", memId)
-		        .list();
+//		List<TourView> list = getSession().createQuery("select tv from TourView3 tv where tv.tourId = :tourId and tv.memId = :memId group by tv.tourId, tv.memId", TourView.class)
+//		        .setParameter("tourId", tourId)
+//		        .setParameter("memId", memId)
+//		        .list();
 
 	    
 	    
 	    //1110測試
 	   System.out.println(list);
 	   return list;
-	    
-	    
-//	    list = session.createQuery("SELECT DISTINCT tv from TourView tv where tv.tourId= :tourId AND tv.memId = :memId", TourView.class)
-//	           .setParameter("tourId", tourId)
-//	           .setParameter("memId", memId)
-//	           .list();
-//	    return list;
 	}
 
 		
