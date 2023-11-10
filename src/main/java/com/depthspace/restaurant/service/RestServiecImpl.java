@@ -41,5 +41,10 @@ public class RestServiecImpl implements RestService {
 	public List<RestVO> getAllRest() {
 		return dao.getAll();
 	}
+
+	@Override
+	public List<RestVO> showRest() {
+		return dao.showRest();
+	}
 	
 }

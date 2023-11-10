@@ -68,10 +68,10 @@ public class HbTourDAOImpl implements HbTourDAO_Interface{
 	
 	//查詢最後一筆行程
 	@Override
-	public TourVO getLastTourId(Integer memId) {
+	public TourVO getLastTourId(Integer tourId) {
 		 try {
 	            return getSession()
-	            		.createQuery("from TourVO order by memId desc", TourVO.class)
+	            		.createQuery("from TourVO order by tourId desc", TourVO.class)
 	                    .setMaxResults(1)
 	                    .getSingleResult();
 	        } catch (NoResultException e) {
