@@ -1,6 +1,7 @@
 package com.depthspace.promotion.model.promotiondetails.hibernate;
 
 import com.depthspace.promotion.model.promotion.PromotionTicketView;
+import com.depthspace.promotion.model.promotion.PromotionVO;
 import com.depthspace.promotion.model.promotiondetails.PromotionDetailsVO;
 import com.depthspace.promotion.model.promotiondetails.hibernate.HbProDeDao;
 import org.hibernate.Session;
@@ -94,6 +95,13 @@ public class HbProDeDaoImpl implements HbProDeDao {
         return getSession().createQuery("delete from PromotionDetailsVO where promotionId= :proId")
                 .setParameter("proId",proId)
                 .executeUpdate();
+    }
+    public List<Integer> getOnSale(){
+        return getSession().createQuery("SELECT pd.ticketId\n" +
+                "FROM PromotionVO p " +
+                "INNER JOIN PromotionDetailsVO pd ON p.promotionId = pd.promotionId " +
+                "WHERE :currentDate BETWEEN p.startDate AND p.endDate", Integer.class)
+                .list();
     }
 
 }

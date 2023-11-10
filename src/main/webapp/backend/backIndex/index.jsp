@@ -29,13 +29,13 @@
             min-height: 60vh;
         }
 
-        .bg-wood {
-            background-color: #c19a6b;
-        }
+        /*.bg-wood {*/
+        /*    background-color: #c19a6b;*/
+        /*}*/
 
-        .bg-wood2 {
-            background-color: #D2B48C;
-        }
+        /*.bg-wood2 {*/
+        /*    background-color: #D2B48C;*/
+        /*}*/
 
         .parent-div {
             display: flex;
@@ -49,10 +49,10 @@
             /* 推動這個元素到最右側 */
         }
 
-        .bg-gray {
-            background-color: rgb(211, 211, 211);
-            /* 淺灰色 */
-        }
+        /*.bg-gray {*/
+        /*    background-color: rgb(211, 211, 211);*/
+        /*    !* 淺灰色 *!*/
+        /*}*/
 
         .text-choco {
             color: #4E342E;
@@ -63,6 +63,14 @@
             color: #f2f0ee;
             text-decoration: underline;
         }
+        .text-dark{
+            color: #4E342E;
+            text-decoration: none;
+        }
+        .text-dark.fw-bold:hover {
+            text-decoration: underline;
+        }
+
 
         body {
 
@@ -95,14 +103,21 @@
 
         nav.navbar {
             background-color: rgba(211, 211, 211, 0);
-            /* 這裡的0.5代表半透明 */
+        }
+        .mh{
+            height: 60px;
+        }
+        .transparent{
+            background-color: rgba(255, 255, 255, 0.7);
         }
     </style>
 </head>
 <body>
 <%--include header.jsp--%>
-<nav class="navbar navbar-expand-lg navbar-light parent-div p-0">
-    <a class="navbar-brand fs-2 mx-2 fw-bold" href="#">Depthspace後台</a>
+<nav class="navbar navbar-expand-lg navbar-light parent-div pb-0">
+    <a class="navbar-brand fs-2 mx-2 my-0 fw-bold p-0" href="${pageContext.request.contextPath}/indexpage/index.jsp">
+        <img class="mh my-0" src="${pageContext.request.contextPath}/backend/backIndex/image/logo.jpg">
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -110,17 +125,18 @@
     <div class="collapse navbar-collapse child-div" id="navbarNav">
         <ul class="navbar-nav ms-auto fs-5 mx-2">
             <li class="nav-item active">
-                <a class="nav-link fs-4" href="#">登出<span class="sr-only">()</span></a>
+                <a class="nav-link fs-4 btn btn-outline-primary" href="#">登出<span class="sr-only">()</span></a>
             </li>
         </ul>
     </div>
 </nav>
-<div class="container-fluid">
+<div class="container-fluid my-0">
     <div class="row">
         <%--    側邊欄--%>
-        <div class="col-lg-2 g-3">
+        <div class="col-lg-2 g-3 my-0">
             <div class="border-right rounded color-2-4" id="sidebar-wrapper">
-                <div class="fs-4 fw-bold offset-1 my-2">後台管理系統</div>
+<%--                <div class="fs-4 fw-bold offset-1 my-2">後台管理系統</div>--%>
+                <a href="${pageContext.request.contextPath}/backend/backIndex/index.jsp" class="fs-4 text-dark fw-bold offset-1 my-2">後台管理系統</a>
                 <div class="list-group list-group-flush">
                     <!-- 員工管理 -->
                     <li class="nav-item mb-2">
@@ -254,7 +270,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-10 g-3">
+            <div class="col-lg-10 g-2 my-0">
             <%--      放入自己body裡的代碼--%>
 
 

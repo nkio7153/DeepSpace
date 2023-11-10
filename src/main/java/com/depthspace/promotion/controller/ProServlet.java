@@ -23,10 +23,10 @@ import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+
+
 
 @WebServlet("/pro/*")
 @MultipartConfig
@@ -163,11 +163,30 @@ public class ProServlet extends HttpServlet {
         String description;
         Timestamp startDate = null;
         Timestamp endDate = null;
+        List<Integer> ticketIds=null;
         List<String> errorMsgs = new LinkedList<String>();
+
+        //取得所有票券id
+        String[] ticketIdsStr = req.getParameterValues("ticketId");
+        for (String ticketId:ticketIdsStr){
+            Integer tid = Integer.parseInt(ticketId);
+            ticketIds.add(tid);
+        }
+        //取得正在促銷中的票券id
+        List<Integer> onSale = proSv.getOnSale();
+
+        //使用java流來查找重複的值
+        List<Integer> duplicates=onSale.stream()
+                .filter(ticketIds::contains)
+                .collect(Collectors.toList());
+        //如果duplicate不為空，則表示有重複的值
+        if(!duplicates.isEmpty()){
+            errorMsgs.add("你選的票券正在促銷中");//錯誤驗證
+        }
 
         promoName = req.getParameter("promoName");
         if (promoName == null || promoName.trim().length() == 0) {
-            errorMsgs.add("票券名稱請勿空白");//錯誤驗證
+            errorMsgs.add("促銷名稱請勿空白");//錯誤驗證
         }
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");

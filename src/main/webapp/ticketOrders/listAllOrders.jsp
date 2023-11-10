@@ -6,22 +6,18 @@
     <title>票券訂單</title>
     <%--  include head.jsp--%>
     <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
-<style>
-    .transparent{
-        background-color: rgba(255, 255, 255, 0.7);
-    }
-</style>
+
 </head>
 <body>
 <%--include header.jsp--%>
 <jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
-<div class="container-fluid">
+<div class="container-fluid my-0">
     <div class="row">
         <%--    側邊欄--%>
-        <div class="col-lg-2 g-3">
+        <div class="col-lg-2 g-3 my-0">
             <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
         </div>
-        <div class="col-lg-10 g-3 transparent rounded">
+        <div class="col-lg-10 g-2 transparent rounded my-0">
             <%--      放入自己body裡的代碼--%>
             <div class="container mt-4 g-3">
 <%--                <button type="button" class="btn btn-secondary" onclick="history.back()">返回</button>--%>
@@ -103,56 +99,55 @@
                     <a href="${pageContext.request.contextPath}/to/listAll?page=${toPageQty}">至最後一頁</a>&nbsp;
                 </c:if>
             </div>
-            <script type="text/javascript">
-                function orderList(){
-                    document.location.href= "${pageContext.request.contextPath}/tod/list?orderId=${order.orderId}";
-                }
-                function index(){
-                    document.location.href= "${pageContext.request.contextPath}/to/index";
-                }
-                $(document).ready(function(){
-                    $('[name="paymentMethod"]').each(function(){
-                        switch ($(this).text()) {
-                            case '1':
-                                $(this).text("信用卡");
-                                break;
-                            case '2':
-                                $(this).text("轉帳");
-                                break;
-                            case '3':
-                                $(this).text("街口支付");
-                                break;
-                        }
-                    })
-                    $('[name="status"]').each(function(){
-                        switch ($(this).text()) {
-                            case '0':
-                                $(this).text("已完成");
-                                break;
-                            case '1':
-                                $(this).text("已取消");
-                                break;
-                            case '2':
-                                $(this).text("已退貨");
-                                break;
-                        }
-                    })
-                })
-                $("#search").on("click",function(event){
-                    event.preventDefault();
-                    var startOrderDate=new Date($("#startOrderDate").val());
-                    var endOrderDate=new Date($("#endOrderDate").val());
-                    if(endOrderDate < startOrderDate){
-                        window.alert("結束日期有誤");
-                    }else{
-                        $("#searchSubmit").submit();
-                    }
-                })
-            </script>
-
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    function orderList(){
+        document.location.href= "${pageContext.request.contextPath}/tod/list?orderId=${order.orderId}";
+    }
+    function index(){
+        document.location.href= "${pageContext.request.contextPath}/to/index";
+    }
+    $(document).ready(function(){
+        $('[name="paymentMethod"]').each(function(){
+            switch ($(this).text()) {
+                case '1':
+                    $(this).text("信用卡");
+                    break;
+                case '2':
+                    $(this).text("轉帳");
+                    break;
+                case '3':
+                    $(this).text("街口支付");
+                    break;
+            }
+        })
+        $('[name="status"]').each(function(){
+            switch ($(this).text()) {
+                case '0':
+                    $(this).text("已完成");
+                    break;
+                case '1':
+                    $(this).text("已取消");
+                    break;
+                case '2':
+                    $(this).text("已退貨");
+                    break;
+            }
+        })
+    })
+    $("#search").on("click",function(event){
+        event.preventDefault();
+        var startOrderDate=new Date($("#startOrderDate").val());
+        var endOrderDate=new Date($("#endOrderDate").val());
+        if(endOrderDate < startOrderDate){
+            window.alert("結束日期有誤");
+        }else{
+            $("#searchSubmit").submit();
+        }
+    })
+</script>
 
 </body>
 </html>

@@ -11,7 +11,6 @@
 <style>
     #sidebar-wrapper .nav-item {
         list-style-type: none;
-        /* 移除項目符號 */
     }
 
     #wrapper {
@@ -24,13 +23,13 @@
         min-height: 60vh;
     }
 
-    .bg-wood {
-        background-color: #c19a6b;
-    }
+    /*.bg-wood {*/
+    /*    background-color: #c19a6b;*/
+    /*}*/
 
-    .bg-wood2 {
-        background-color: #D2B48C;
-    }
+    /*.bg-wood2 {*/
+    /*    background-color: #D2B48C;*/
+    /*}*/
 
     .parent-div {
         display: flex;
@@ -44,10 +43,10 @@
         /* 推動這個元素到最右側 */
     }
 
-    .bg-gray {
-        background-color: rgb(211, 211, 211);
-        /* 淺灰色 */
-    }
+    /*.bg-gray {*/
+    /*    background-color: rgb(211, 211, 211);*/
+    /*    !* 淺灰色 *!*/
+    /*}*/
 
     .text-choco {
         color: #4E342E;
@@ -56,6 +55,13 @@
 
     .text-choco.collapse-item:hover {
         color: #f2f0ee;
+        text-decoration: underline;
+    }
+    .text-dark{
+        color: #4E342E;
+        text-decoration: none;
+    }
+    .text-dark.fw-bold:hover {
         text-decoration: underline;
     }
 
@@ -90,6 +96,19 @@
 
     nav.navbar {
         background-color: rgba(211, 211, 211, 0);
-        /* 這裡的0.5代表半透明 */
     }
+    /*調整導航欄高度*/
+    .mh{
+        height: 60px;
+    }
+    /*朦朧區*/
+    .transparent{
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+    /*固定側邊欄*/
+    .sidebar-sticky{
+        position:sticky;
+        top:68px;
+    }
+
 </style>

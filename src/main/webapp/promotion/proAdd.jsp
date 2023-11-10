@@ -1,18 +1,9 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: Tibame_T14
-  Date: 2023/10/25
-  Time: 上午 08:41
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
-    <meta charset="UTF-8">
     <title>Title</title>
-    <jsp:include page="../indexpage/head.jsp"/>
     <style>
         .circle {
             width: 21px;
@@ -37,6 +28,14 @@
             background-color: lightcoral;
             margin-top:-30px;
             margin-left:330px;
+            position:relative;
+        }
+        .circle2::after{
+            position:absolute;
+            top:-6px;
+            bottom:-6px;
+            right:-6px;
+            left:-6px;
         }
         .dash{
             color: white;
@@ -56,92 +55,106 @@
             margin-bottom: -10px;
         }
     </style>
+    <%--  include head.jsp--%>
+    <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
 </head>
 <body>
-<jsp:include page="../indexpage/header.jsp"/>
-<jsp:include page="../indexpage/headpic.jsp"/>
-<div class="container mt-5">
-    <h1 class="text-center">促銷資訊</h1>
-    <%-- 錯誤表列 --%>
-    <c:if test="${not empty errorMsgs}">
-        <font style="color:red">請修正以下錯誤:</font>
-        <ul>
-            <c:forEach var="message" items="${errorMsgs}">
-                <li style="color:red">${message}</li>
-            </c:forEach>
-        </ul>
-    </c:if>
-        <hr>
-        <form action="${pageContext.request.contextPath}/pro/save" method="post" class="row" id="form" enctype="multipart/form-data" accept-charset="UTF-8">
-<%--            第一排--%>
-            <div class="col-md-2"></div>
-            <div class="col-md-4">
-                <label for="promoName" class="form-label">促銷名稱:</label>
-                <input type="text" class="form-control" name="promoName" id="promoName"><br>
-            </div>
+<%--include header.jsp--%>
+<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+<div class="container-fluid my-0">
+    <div class="row">
+        <%--    側邊欄--%>
+        <div class="col-lg-2 g-3 my-0">
+            <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
+        </div>
 
-            <div class="col-md-4">
-                <label for="startDate" class="form-label">開始日期:</label>
-                <input type="datetime-local" class="form-control" name="startDate" id="startDate"><br>
-            </div>
-            <div class="col-md-2"></div>
-<%--        第二排--%>
-            <div class="col-md-2"></div>
-            <div class="col-md-4">
-                <label for="description" class="form-label">描述:</label>
-                <textarea class="form-control dis_bd" name="description" id="description" rows="5"></textarea>
-            </div>
-
-            <div class="col-md-4">
-                <label for="endDate" class="form-label">結束日期:</label>
-                <input type="datetime-local" class="form-control" name="endDate" id="endDate"><br>
-                <label for="picture" class="form-label">圖片</label>
-                <div class="preview">
-                    <img id="preview_img" src="" name="pciture1" alt="請上傳促銷圖片" class="preview_jpg">
-                </div>
-                <input type="file" class="form-control" id="picture" name="picture"><br>
-                <%--                <input type="hidden" name="base64Image" value="${base64Image}">--%>
-            </div>
-            <div class="col-md-2"></div>
-<%--            第四排--%>
-                <div class="col-md-2 mt-2 mb-10"></div>
-                <div class="col-md-2 mt-2 mb-10">
-                    <label for="discount" class="form-label">折扣:</label>
-                    <select id="discount" name="discount" >
-                        <c:forEach var="discount" items="${discountList}">
-                            <option value="${discount}">${discount}</option>
-                        </c:forEach>
-                    </select>
-                    <label class="form-label">折</label>
-                </div>
-                <div class="col-md-4 mt-2 mb-10">
-                    <label for="ticketId" class="form-label">選擇促銷票券:</label>
-                        <select id="ticketId" name="ticketId" >
-                            <c:forEach var="ticket" items="${list}">
-                                <option value="${ticket.ticketId}">${ticket.ticketName}</option>
+        <div class="col-lg-10 g-2 transparent rounded my-0">
+            <%--      放入自己body裡的代碼--%>
+                <div class="container mt-5">
+                    <h1 class="text-center">促銷資訊</h1>
+                    <%-- 錯誤表列 --%>
+                    <c:if test="${not empty errorMsgs}">
+                        <font style="color:red">請修正以下錯誤:</font>
+                        <ul>
+                            <c:forEach var="message" items="${errorMsgs}">
+                                <li style="color:red">${message}</li>
                             </c:forEach>
-                        </select>
+                        </ul>
+                    </c:if>
+                    <hr>
+                    <form action="${pageContext.request.contextPath}/pro/save" method="post" class="row" id="form" enctype="multipart/form-data" accept-charset="UTF-8">
+                        <%--            第一排--%>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4">
+                            <label for="promoName" class="form-label">促銷名稱:</label>
+                            <input type="text" class="form-control" name="promoName" id="promoName"><br>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="startDate" class="form-label">開始日期:</label>
+                            <input type="datetime-local" class="form-control" name="startDate" id="startDate"><br>
+                        </div>
+                        <div class="col-md-2"></div>
+                        <%--        第二排--%>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4">
+                            <label for="description" class="form-label">描述:</label>
+                            <textarea class="form-control dis_bd" name="description" id="description" rows="5"></textarea>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="endDate" class="form-label">結束日期:</label>
+                            <input type="datetime-local" class="form-control" name="endDate" id="endDate"><br>
+                            <label for="picture" class="form-label">圖片</label>
+                            <div class="preview">
+                                <img id="preview_img" src="" name="pciture1" alt="請上傳促銷圖片" class="preview_jpg">
+                            </div>
+                            <input type="file" class="form-control" id="picture" name="picture"><br>
+                            <%--                <input type="hidden" name="base64Image" value="${base64Image}">--%>
+                        </div>
+                        <div class="col-md-2"></div>
+                        <%--            第四排--%>
+                        <div class="col-md-2 mt-2 mb-10"></div>
+                        <div class="col-md-2 mt-2 mb-10">
+                            <label for="discount" class="form-label">折扣:</label>
+                            <select id="discount" name="discount" >
+                                <c:forEach var="discount" items="${discountList}">
+                                    <option value="${discount}">${discount}</option>
+                                </c:forEach>
+                            </select>
+                            <label class="form-label">折</label>
+                        </div>
+                        <div class="col-md-4 mt-2 mb-10">
+                            <label for="ticketId" class="form-label">選擇促銷票券:</label>
+                            <select id="ticketId" name="ticketId" >
+                                <c:forEach var="ticket" items="${list}">
+                                    <option value="${ticket.ticketId}">${ticket.ticketName}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mt-2 mb-10"></div>
+                        <%--            第四排--%>
+                        <div class="container offset-5" id="afterSelector">
+                            <div class="col-md-5 mt-2"></div>
+                            <div class="col-md-4 d-flex align-items-center"> <!-- 使用 d-flex 和 align-items-center 使內容垂直居中 -->
+                                <label for="ticketId" class="form-label mt-3">添加促銷票券</label>
+                                <div class="circle d-flex align-items-center justify-content-center ml-2 mt-2" id="circle">
+                                    <span class="plus">+</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-2"></div>
+                        </div>
+
+
+                        <div class="col-md-12 mt-2 d-flex justify-content-center">
+                            <%--                <button type="submit" class="btn btn-primary">新增</button>--%>
+                            <button type="button" id="addCheck" class="btn btn-primary">新增</button>
+                        </div>
+
+                    </form>
                 </div>
-                <div class="col-md-4 mt-2 mb-10"></div>
-    <%--            第四排--%>
-            <div class="container offset-5" id="afterSelector">
-                <div class="col-md-5 mt-2"></div>
-                <div class="col-md-4 d-flex align-items-center"> <!-- 使用 d-flex 和 align-items-center 使內容垂直居中 -->
-                    <label for="ticketId" class="form-label mt-3">添加促銷票券</label>
-                    <div class="circle d-flex align-items-center justify-content-center ml-2 mt-2" id="circle">
-                        <span class="plus">+</span>
-                    </div>
-                </div>
-                <div class="col-md-3 mt-2"></div>
-            </div>
-
-
-            <div class="col-md-12 mt-2 d-flex justify-content-center">
-<%--                <button type="submit" class="btn btn-primary">新增</button>--%>
-                <button type="button" id="addCheck" class="btn btn-primary">新增</button>
-            </div>
-
-        </form>
+        </div>
+    </div>
 </div>
 <script>
     $("#addCheck").on("click", function (){
@@ -173,12 +186,12 @@
                 return response.json();
             })
             .then(function (data) {
-                    var alertMessage = data.join('\n');
-                    if(alertMessage !== "新增成功") {
-                        window.alert(alertMessage);
-                    }else{
-                        $("#form").submit();
-                    }
+                var alertMessage = data.join('\n');
+                if(alertMessage !== "新增成功") {
+                    window.alert(alertMessage);
+                }else{
+                    $("#form").submit();
+                }
             });
     });
 
@@ -269,6 +282,6 @@
         }
     });
 </script>
-<jsp:include page="../indexpage/footer.jsp"/>
+
 </body>
 </html>

@@ -1,8 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- 側邊導航欄 -->
-<div class="border-right rounded color-2-4" id="sidebar-wrapper">
-    <div class="fs-4 fw-bold offset-1 my-2">後台管理系統</div>
+<div class="border-right rounded color-2-4 sidebar-sticky" id="sidebar-wrapper">
+<%--    <div class="fs-4 fw-bold offset-1 my-2">後台管理系統</div>--%>
+    <a href="${pageContext.request.contextPath}/backend/backIndex/index.jsp" class="fs-4 text-dark fw-bold offset-1 my-2">後台管理系統</a>
     <div class="list-group list-group-flush">
         <!-- 員工管理 -->
         <li class="nav-item mb-2">

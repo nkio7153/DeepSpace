@@ -10,13 +10,14 @@
 <body>
 <%--include header.jsp--%>
 <jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
-<div class="container-fluid">
+<div class="container-fluid my-0">
   <div class="row">
 <%--    側邊欄--%>
-    <div class="col-lg-2 g-3">
+    <div class="col-lg-2 g-3 my-0">
     <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
     </div>
-    <div class="col-lg-10 g-3">
+
+    <div class="col-lg-10 g-2 transparent rounded my-0">
 <%--      放入自己body裡的代碼--%>
       <span>代碼測試</span>
 

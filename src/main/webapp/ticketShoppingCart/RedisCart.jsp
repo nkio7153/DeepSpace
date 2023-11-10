@@ -44,7 +44,7 @@
         <c:forEach items="${list}" var="cart" varStatus="cartStatus">
             <tr>
                 <td align="center" class="vertical">${cartStatus.count}</td>
-                <td style="width: 300px">123
+                <td style="width: 300px">
                     <img src="${pageContext.request.contextPath}/tsc/image?serialId=${cart.serialId}" class="jpg"/>
                 </td>
                 <td align="center" class="hidden tid" name="ticketId">${cart.ticketId}</td>
