@@ -1,13 +1,6 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Tibame_T14
-  Date: 2023/10/24
-  Time: 下午 06:55
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
   <style>
@@ -33,59 +26,71 @@
     .num-width{
       width:50px;
     }
+
   </style>
   <title>促銷管理</title>
-  <jsp:include page="../indexpage/head.jsp" />
-  <!-- 添加 Bootstrap CSS 链接 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <%--  include head.jsp--%>
+  <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
 </head>
 <body>
-<jsp:include page="../indexpage/header.jsp" />
-<jsp:include page="../indexpage/headpic.jsp"/>
-<div class="container mt-5">
-  <h1 class="text-center">促銷管理</h1>
-  <hr>
+<%--include header.jsp--%>
+<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+<div class="container-fluid my-0">
   <div class="row">
-    <div class="col-md-12">
-  <table class="table table-bordered table-hover" width="70%">
-    <thead>
-    <tr>
-      <th scope="col"class="num-width">序號</th>
-      <th scope="col" class="hidden">促銷編號</th>
-      <th scope="col" class="data-width">促銷名稱</th>
-      <th scope="col" class="data-width">開始日期</th>
-      <th scope="col" class="data-width">結束日期</th>
-      <th scope="col">描述</th>
-      <th scope="col" class="img-bd">圖片</th>
-      <th scope="col" class="img-bd">操作</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${list}" var="pro" varStatus="proStatus">
-      <tr>
-        <td>${proStatus.count}</td>
-        <td name="proId"class="data-width hidden">${pro.promotionId}</td>
-        <td name="proName">${pro.promoName}</td>
-        <td name="startDate">${pro.startDate}</td>
-        <td name="endDate">${pro.endDate}</td>
-        <td class="dis-width" name="disc">${pro.description}</td>
-        <td>
-<%--            ${pro.picture}--%>
-          <img src="${pageContext.request.contextPath}/pro/image?promotionId=${pro.promotionId}" class="jpg" name="pic"/>
-        </td>
-        <td>
-          <a href="#" class="badge btn-secondary rounded fs-5" onclick="showProDetail()">促銷明細</a>
-          <a href="#" class="badge btn-warning rounded fs-5" onclick="deleteUpdate()">下架</a>
-        </td>
-      </tr>
-    </c:forEach>
-    </tbody>
-  </table>
+    <%--    側邊欄--%>
+    <div class="col-lg-2 g-3 my-0">
+      <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
     </div>
-  </div>
-  <hr>
-  <div class="text-end">
-  <a class="btn btn-primary badge badge-info rounded" href="${pageContext.request.contextPath}/pro/getAllTid">新增促銷活動</a>
+
+    <div class="col-lg-10 g-2 transparent rounded my-0">
+      <%--      放入自己body裡的代碼--%>
+        <div class="container mt-4 g-3 pb-2">
+          <h3 class="text-center">促銷管理</h3>
+          <hr>
+          <div class="row">
+            <div class="col-md-12">
+              <table class="table table-bordered table-hover" width="70%">
+                <thead>
+                <tr>
+                  <th scope="col"class="num-width">序號</th>
+                  <th scope="col" class="hidden">促銷編號</th>
+                  <th scope="col" class="data-width">促銷名稱</th>
+                  <th scope="col" class="data-width">開始日期</th>
+                  <th scope="col" class="data-width">結束日期</th>
+                  <th scope="col">描述</th>
+                  <th scope="col" class="img-bd">圖片</th>
+                  <th scope="col" class="img-bd">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${list}" var="pro" varStatus="proStatus">
+                  <tr>
+                    <td>${proStatus.count}</td>
+                    <td name="proId"class="data-width hidden">${pro.promotionId}</td>
+                    <td name="proName">${pro.promoName}</td>
+                    <td name="startDate">${pro.startDate}</td>
+                    <td name="endDate">${pro.endDate}</td>
+                    <td class="dis-width" name="disc">${pro.description}</td>
+                    <td>
+                        <%--            ${pro.picture}--%>
+                      <img src="${pageContext.request.contextPath}/pro/image?promotionId=${pro.promotionId}" class="jpg" name="pic"/>
+                    </td>
+                    <td>
+                      <a href="#" class="badge btn-outline-info rounded fs-5 text-dark" onclick="showProDetail()">促銷明細</a>
+                      <a href="#" class="badge btn-outline-light rounded fs-5 text-dark" onclick="deleteUpdate()">下架</a>
+                    </td>
+                  </tr>
+                </c:forEach>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <hr>
+          <div class="text-end">
+            <a class="btn btn-primary badge badge-info rounded fs-5" href="${pageContext.request.contextPath}/pro/getAllTid">新增促銷活動</a>
+          </div>
+        </div>
+    </div>
   </div>
 </div>
 <script>
@@ -130,10 +135,10 @@
   function deleteUpdate() {
     var ok = window.confirm("確定要下架嗎");
     if (ok) {
-    let tr = $(event.target).closest("tr");
-    let proId = tr.find('td[name="proId"]').text();
-    tr.remove();
-    deleteByProId(proId);
+      let tr = $(event.target).closest("tr");
+      let proId = tr.find('td[name="proId"]').text();
+      tr.remove();
+      deleteByProId(proId);
     }
   }
 
@@ -154,36 +159,36 @@
               console.log(error);
             })
   }
-    var proId;
-    function showProDetail() {
+  var proId;
+  function showProDetail() {
     //數據
-      let tr =$(event.target).closest('tr');
-      proId=tr.find('td[name="proId"]').text();
-      getProDetail(proId);
+    let tr =$(event.target).closest('tr');
+    proId=tr.find('td[name="proId"]').text();
+    getProDetail(proId);
 
 
-      $('#proName').text(tr.find('td[name="proName"]').text());
-      $('#disc').text(tr.find('td[name="disc"]').text());
-      $('#startDate').text("開始日期:"+formatDate(new Date(tr.find('td[name="startDate"]').text())));
-      $('#endDate').text("結束日期:"+formatDate(new Date(tr.find('td[name="endDate"]').text())));
-      // $('#pic').html(tr.find('img').prop('outerHTML'));
-      $('#pic').html(tr.find('img')[0].outerHTML);
-      $('#pic').find('img').css({
-        width:"800px",
-        height:"400px"
-      });
-      let html=`<li class="list-group-item" id="ticketName">An item</li>`;
+    $('#proName').text(tr.find('td[name="proName"]').text());
+    $('#disc').text(tr.find('td[name="disc"]').text());
+    $('#startDate').text("開始日期:"+formatDate(new Date(tr.find('td[name="startDate"]').text())));
+    $('#endDate').text("結束日期:"+formatDate(new Date(tr.find('td[name="endDate"]').text())));
+    // $('#pic').html(tr.find('img').prop('outerHTML'));
+    $('#pic').html(tr.find('img')[0].outerHTML);
+    $('#pic').find('img').css({
+      width:"718px",
+      height:"400px"
+    });
+    let html=`<li class="list-group-item" id="ticketName">An item</li>`;
     // 使用Bootstrap的JavaScript函數來顯示模態對話框
-      $('#orderDetailModal').modal('show');
+    $('#orderDetailModal').modal('show');
 
   }
   function promotionEdit(){
-      window.location.href="${pageContext.request.contextPath}/pro/doEdit?proId="+proId;
+    window.location.href="${pageContext.request.contextPath}/pro/doEdit?proId="+proId;
   }
 </script>
 <!-- 添加 Bootstrap JavaScript 链接（必须在body结束前） -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
-<jsp:include page="../indexpage/footer.jsp" />
+
 </body>
 <!-- 模態對話框 -->
 <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
@@ -195,10 +200,10 @@
       </div>
       <div class="modal-body">
         <!-- 這裡可以放置訂單明細的內容 -->
-<%--        卡片--%>
+        <%--        卡片--%>
         <div class="card" style="width: 45rem;" >
           <div id="pic">
-          <img src="https://picsum.photos/1000/500?random=11" class="card-img-top" alt="..." >
+            <img class="card-img-top" alt="..." >
           </div>
           <div class="card-body">
             <h5 class="card-title" id="proName">促銷名稱:</h5>
@@ -217,7 +222,7 @@
             </ul>
           </div>
           <div class="card-body">
-<%--            <a href="'${pageContext.request.contextPath}/pro/edit?proId='+proId" class="card-link">編輯</a>--%>
+            <%--            <a href="'${pageContext.request.contextPath}/pro/edit?proId='+proId" class="card-link">編輯</a>--%>
             <button class="btn btn-link card-link" onclick="promotionEdit()" >編輯</button>
           </div>
         </div>
@@ -229,5 +234,4 @@
     </div>
   </div>
 </div>
-
 </html>

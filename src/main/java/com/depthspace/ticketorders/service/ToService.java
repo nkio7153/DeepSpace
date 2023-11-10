@@ -4,6 +4,7 @@ import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 import com.depthspace.ticketshoppingcart.model.CartInfo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ToService {
     //生成一筆訂單
@@ -25,5 +26,6 @@ public interface ToService {
 
     public int getMemPageTotal(Integer memId);
     //join票券表格取得訂單明細中的票券名稱
-
+    List<TicketOrdersVO> getToByCompositeQuery(Map<String, String[]> map, int page);
+    int getToByCompositeQueryTotal(Map<String, String[]> map);
 }

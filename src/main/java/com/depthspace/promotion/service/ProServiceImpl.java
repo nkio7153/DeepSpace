@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProServiceImpl {
+public class ProServiceImpl implements ProService{
     private HbProDao dao;
     private HbProDeDao proDeDao;
     public ProServiceImpl(){
@@ -89,4 +89,10 @@ public class ProServiceImpl {
                 }
             }
         }
+    //取得當前正在促銷活動票券
+    @Override
+    public List<Integer> getOnSale() {
+        return proDeDao.getOnSale();
+    }
+
 }
