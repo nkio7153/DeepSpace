@@ -168,20 +168,26 @@ public class ProServlet extends HttpServlet {
 
         //取得所有票券id
         String[] ticketIdsStr = req.getParameterValues("ticketId");
-        for (String ticketId:ticketIdsStr){
-            Integer tid = Integer.parseInt(ticketId);
-            ticketIds.add(tid);
-        }
-        //取得正在促銷中的票券id
-        List<Integer> onSale = proSv.getOnSale();
+        if(ticketIdsStr != null) {
+            for (String ticketId : ticketIdsStr) {
+                try {
+                    Integer tid = Integer.parseInt(ticketId);
+                    ticketIds.add(tid);
+                }catch(NumberFormatException e){
+                    e.printStackTrace();
+                }
+            }
+            //取得正在促銷中的票券id
+            List<Integer> onSale = proSv.getOnSale();
 
-        //使用java流來查找重複的值
-        List<Integer> duplicates=onSale.stream()
-                .filter(ticketIds::contains)
-                .collect(Collectors.toList());
-        //如果duplicate不為空，則表示有重複的值
-        if(!duplicates.isEmpty()){
-            errorMsgs.add("你選的票券正在促銷中");//錯誤驗證
+            //使用java流來查找重複的值
+            List<Integer> duplicates = onSale.stream()
+                    .filter(ticketIds::contains)
+                    .collect(Collectors.toList());
+            //如果duplicate不為空，則表示有重複的值
+            if (!duplicates.isEmpty()) {
+                errorMsgs.add("你選的票券正在促銷中");//錯誤驗證
+            }
         }
 
         promoName = req.getParameter("promoName");

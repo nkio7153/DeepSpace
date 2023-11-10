@@ -26,8 +26,8 @@
             height: 21px;
             border-radius: 50%;
             background-color: lightcoral;
-            margin-top:-30px;
-            margin-left:330px;
+            margin-top:-32px;
+            margin-left:360px;
             position:relative;
         }
         .circle2::after{
@@ -124,7 +124,7 @@
                             </select>
                             <label class="form-label">折</label>
                         </div>
-                        <div class="col-md-4 mt-2 mb-10">
+                        <div class="col-md-5 mt-2 mb-10">
                             <label for="ticketId" class="form-label">選擇促銷票券:</label>
                             <select id="ticketId" name="ticketId" >
                                 <c:forEach var="ticket" items="${list}">
@@ -132,7 +132,7 @@
                                 </c:forEach>
                             </select>
                         </div>
-                        <div class="col-md-4 mt-2 mb-10"></div>
+                        <div class="col-md-3 mt-2 mb-10"></div>
                         <%--            第四排--%>
                         <div class="container offset-5" id="afterSelector">
                             <div class="col-md-5 mt-2"></div>
@@ -201,7 +201,7 @@
         <div class="container">
             <div class="row">
             <div class="col-md-4 mt-2" name="se"></div>
-            <div class="col-md-4 mt-2" id="selector" name="se">
+            <div class="col-md-5 mt-2" id="selector" name="se">
                 <label for="ticketId" class="form-label">選擇促銷票券:</label>
                 <select id="ticketId" name="ticketId">
                     <c:forEach var="ticket" items="${list}">
@@ -212,7 +212,7 @@
                     <span class="dash">-</span>
                 </div>
             </div>
-            <div class="col-md-4 mt-2" name="se"></div>
+            <div class="col-md-3 mt-2" name="se"></div>
             </div>
         </div>`;
     $(document).ready(function(){
