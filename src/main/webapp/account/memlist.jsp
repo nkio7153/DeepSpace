@@ -40,7 +40,7 @@ $(document).ready(function() {
             memId: memId
         };
         $.ajax({
-            type: "POST",
+            type: 'post',
             url: '<%=request.getContextPath()%>/account/account.do?action=updateMemList',
             data: jsonObj,
             success: function(response) {

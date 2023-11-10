@@ -3,13 +3,14 @@
 <%@ page import="java.util.Base64" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<% request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
 <html>
 <head>
- <jsp:include page="../indexpage/head.jsp" />
-<meta charset="UTF-8">
-<title>新增論壇文章</title>
-<script src="https://cdn.tiny.cloud/1/3u5wm513cfl9shskemk13n936fx56zfolvirppkzq4b61na9/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <jsp:include page="../indexpage/head.jsp" />
+    <meta charset="UTF-8">
+    <title>編輯論壇文章</title>
+    <script src="https://cdn.tiny.cloud/1/3u5wm513cfl9shskemk13n936fx56zfolvirppkzq4b61na9/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4" crossorigin="anonymous"></script>
 <style>
         body {
@@ -58,7 +59,7 @@
     </style>
 </head>
 <body>
-<script>
+    <script>
 
 // tinymce.init({
 // 	selector: '#artiText',
@@ -99,53 +100,42 @@ function previewImage(event) {
     }
 }
 </script>
-<jsp:include page="../indexpage/header.jsp" />
-<jsp:include page="../indexpage/headpic.jsp" />
-<div id="Add">
-    <form id="addForm" method="Post" action="${pageContext.request.contextPath}/forumArticles.do?action=add" enctype="multipart/form-data">
-        <table>
-            <tr>
-                <th>會員ID</th>
-                <td><input type="text" name="memId" id="memId"></td>
-            </tr>
-            <tr>
-                <th>訊息ID</th>
-                <td><input type="text" name="msgId" id="msgId"></td>
-            </tr>
-            <tr>
-                <th>文章類型ID</th>
-                <td> 
-                <select id="artiTypeId" name="artiTypeId">
-                    <c:forEach var="at" items="${atvo}">
-                        <option value="${at.artiTypeId}">${at.artiTypeText}</option>
-                    </c:forEach>
-                </select>
-                </td>
-            </tr>           
-            <tr>
-                <th>文章標題</th>
-                <td><input type="text" name="artiTitle" id="artiTitle"></td>
-            </tr>
-            <tr>
-                <th>文章內容</th>
-                <td><textarea name="artiText" id="artiText" rows="10" cols="50"></textarea></td>
-            </tr>
-            <tr>
-                <td><input type="hidden" name="artiLk" id="artiLk" value="0"></td>
-            </tr>          
-            <tr>
-        		<th>文章圖片</th>
-			    <td>
-			        <input type="file" name="artiImgStr" id="fileSelect" accept="image/jpeg" onchange="previewImage(event)">
-			        <img id="preview" src="#" alt="預覽圖片" style="width: 300px; height: auto; display: none;">
-			    </td>
-    		</tr>
+    <jsp:include page="../indexpage/header.jsp" />
+    <jsp:include page="../indexpage/headpic.jsp" />
+
+    <div id="Edit">
+        <form id="editForm" method="Post" action="${pageContext.request.contextPath}/forumArticles.do?action=update" enctype="multipart/form-data">
+            <table>
+                <tr>
+                    <th>文章類型ID</th>
+                    <td><input type="text" name="artiTypeId" id="artiTypeId" value="${param.artiTypeId}"></td>
+                </tr>
+                <tr>
+                    <th>文章標題</th>
+                    <td><input type="text" name="artiTitle" id="artiTitle" value="${param.artiTitle}"></td>
+                </tr>
+                <tr>
+                    <th>文章內容</th>
+                    <td><textarea name="artiText" id="artiText" rows="10" cols="50">${param.artiText}</textarea></td>
+                </tr>
+                <tr>
+                    <th>文章圖片</th>
+                    <td>
+                        <input type="file" name="artiImgStr" id="fileSelect" accept="image/jpeg" onchange="previewImage(event)">
+                        <img id="preview" src="data:image/jpeg;base64,${param.base64Str}" alt="預覽圖片" style="width: 300px; height: auto; ${not empty param.base64Str ? 'display: block;' : 'display: none;'}">
+                    </td>
+                </tr>
             </table>
-        <input type="hidden" name="artiTime" id="artiTime" value="<%= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()) %>">
-        <input type="submit" id="btnAddSave" value="儲存">
-        <input type="button" id="btnCancel" value="取消" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles/list.jsp'">
-      </form>
-</div>
-<jsp:include page="../indexpage/footer.jsp" />
+            <input type="hidden" name="msgId" id="msgId" value="${param.msgId}">
+            <input type="hidden" name="memId" id="memId" value="${param.memId}">
+            <input type="hidden" name="artiTime" id="artiTime" value="${param.formattedDate}">
+            <input type="hidden" name="articleId" id="articleId" value="${param.articleId}">
+            <input type="hidden" name="artiLk" id="artiLk" value="${param.artiLk}">
+            <input type="submit" id="btnSave" value="儲存">
+            <input type="button" id="btnCancel" value="取消" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles/list.jsp'">
+        </form>
+    </div>
+
+    <jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

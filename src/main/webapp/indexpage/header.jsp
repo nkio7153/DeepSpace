@@ -4,10 +4,9 @@
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid" style="padding: 20px 0;">
                 <a class="navbar-brand" href="${pageContext.request.contextPath}/indexpage/index.jsp">
-                    <img src="${pageContext.request.contextPath}/indexpage/images/icon.png" alt="" width="30"
-                         height="24"
+                    <img src="${pageContext.request.contextPath}/indexpage/images/icon.png" alt="" width="200px"
+                         
                          class="d-inline-block align-text-top">
-                    深度漫遊
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
