@@ -121,6 +121,11 @@ public class TicketServiceImpl implements TicketService {
 	public long getTotalTickets() {
 		return dao.getTotal();
 	}
+	
+	@Override // 取得總票券數(上架)
+	public long getStatusTotalTickets() {
+		return dao.getStatusTotal();
+	}
 
 	// 取得所有類型(TypeVO)
 	public List<TicketTypesVO> getAllTicketTypes() {

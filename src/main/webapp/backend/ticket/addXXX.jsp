@@ -13,6 +13,11 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	rel="stylesheet">
 <title>新增票券</title>
+
+<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+
+
+
 <style>
 body, label {
 	font-size: 0.875rem;
@@ -56,26 +61,8 @@ h1 {
 	font-size: 14px;
 }
 </style>
-<%--  include --%>
-	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
-  
 </head>
-
 <body>
-
-	<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
-	<div class="container-fluid my-0">
-	<div class="row">
-	  
-	<div class="col-lg-2 g-3 my-0">
-	<jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
-	</div>
-	
-	<div class="col-lg-10 g-2 transparent rounded my-0">
-	
-<%-- include end--%>
-
-
 	<div class="container mt-5">
 		<h1>新增票券</h1>
 		<form action="<%=request.getContextPath()%>/ticketmg/add"
@@ -193,7 +180,6 @@ h1 {
 	<script	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-	<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
 
 <script>
 
@@ -244,10 +230,5 @@ h1 {
         });
     }
 </script>
-<%--  include --%>	
-		</div>
-	</div>		
-</div>
-<%--  include end --%>
 </body>
 </html>

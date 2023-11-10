@@ -100,28 +100,15 @@ public class TicketDAOImpl implements TicketDAO {
 		}
 	}
 
+	// 取得所有票券數量(上架)
+	@Override
+	public long getStatusTotal() {
+		return getSession().createQuery("select count(*) from TicketVO where status=1 ", Long.class).uniqueResult();
+	}
 	// 取得所有票券數量
 	@Override
 	public long getTotal() {
-//		return getSession().createQuery("select count(*) from TicketVO", Long.class).uniqueResult();
-	    Session session = null;
-	    Transaction tx = null;
-	    try {
-	        session = factory.openSession(); 
-	        tx = session.beginTransaction();
-
-	       
-	        long count = (Long) session.createQuery("select count(*) from TicketVO").uniqueResult();
-
-	        tx.commit(); 
-	        return count;
-	    } catch (RuntimeException e) {
-	        if (tx != null) tx.rollback();  
-	        throw e;  
-	    } finally {
-	        if (session != null) session.close();  
-	    }
-	
+		return getSession().createQuery("select count(*) from TicketVO", Long.class).uniqueResult();
 	}
 
 	// 萬用查詢

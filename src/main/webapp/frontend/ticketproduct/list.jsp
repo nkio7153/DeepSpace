@@ -19,7 +19,29 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 <link rel="stylesheet"
 	href="<c:url value='/static/css/frontendlist.css'/>">
+<style>
+.loading-spinner {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-left: -25px;
+    margin-top: -25px;
+    z-index: 1000;
+}
 
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+</style>
 
 </head>
 <body>
@@ -27,6 +49,7 @@
 	<jsp:include page="/indexpage/header.jsp" />
 	<jsp:include page="/indexpage/headpic.jsp" />
 
+	<div id="loadingSpinner" class="loading-spinner" style="display: none;"></div>
 	<div class="container mt-5">
 
 		<div class="row">
@@ -229,6 +252,7 @@
             // 處理表單提交事件
             $('#searchForm').on('submit', function(e) {
                 e.preventDefault(); // 防止表單的默認提交行為
+                $('#loadingAnimation').show();
                 // 從表單收集數據
                 var formData = $(this).serialize();
                 // 發送 Ajax 請求
@@ -240,7 +264,11 @@
 						//console.log(result);
 						// 更新票券列表部分 
 						$('#ticketright').html(result);
-					}
+					},
+		            complete: function() {
+		                // 隐藏加载动画
+		                $('#loadingSpinner').hide();
+		            }
 				});
 			});
 

@@ -170,8 +170,13 @@ public class TicketProductServlet extends HttpServlet {
 
 		// 取得所有票券內容(VO)
 		List<TicketVO> ticketList = ticketService.getAllTickets2(currentPage);
+		
+		//下架篩選
+		List<TicketVO> filteredList = ticketList.stream()
+                 .filter(ticketVO -> ticketVO.getStatus() != 0) 
+                 .collect(Collectors.toList());
 
-		req.setAttribute("resultSet", ticketList); // 票券內容
+		req.setAttribute("resultSet", filteredList); // 票券內容
 		req.setAttribute("currentPage", currentPage); // 分頁
 
 		if (req.getSession().getAttribute("ticketPageQty") == null) {
@@ -179,8 +184,8 @@ public class TicketProductServlet extends HttpServlet {
 			req.getSession().setAttribute("ticketPageQty", ticketPageQty);
 		}
 
-		long totalTickets = ticketService.getTotalTickets();
-		req.setAttribute("totalTickets", totalTickets); // 總票券數量
+		long totalTickets = ticketService.getStatusTotalTickets();
+		req.setAttribute("totalTickets", totalTickets); // 總票券數量(上架)
 		
 	    reviewsList(req, res);
 		searchList(req, res);
@@ -198,15 +203,19 @@ public class TicketProductServlet extends HttpServlet {
 	    // 調用萬用查詢方法
 	    List<TicketVO> resultList = ticketService.getTicketsByCompositeQuery(parameterMap);
 	    Set<TicketVO> resultSet = new HashSet<>(resultList);
+		//下架篩選
+		List<TicketVO> filteredList = resultSet.stream()
+                 .filter(ticketVO -> ticketVO.getStatus() != 0) 
+                 .collect(Collectors.toList());
 	    
 		req.setAttribute("paramValues", parameterMap);
 		
 	    // 查詢結果的票券數量
-	    int searchCount = resultSet.size();
+	    int searchCount = filteredList.size();
 	    req.setAttribute("searchCount", searchCount);
 
 	    // 查詢結果存入
-	    req.setAttribute("resultSet", resultSet);
+	    req.setAttribute("resultSet", filteredList);
 	    
 	    reviewsList(req, res);
 		searchList(req, res);

@@ -28,8 +28,10 @@ public interface TicketService {
     List<TicketVO> getAllTickets2(int currentPage);  
     //取得所有票券總頁面數量
     int getPageTotal();
-    //取得總票券數
+    //取得總票券數 
     long getTotalTickets(); 
+    //取得總票券數 (上架)
+    long getStatusTotalTickets(); 
     //取得票券主圖
     List<TicketVO> getAllTicketsWithMainImages(); 
     //萬用查詢

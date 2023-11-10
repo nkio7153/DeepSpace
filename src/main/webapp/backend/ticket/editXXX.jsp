@@ -8,29 +8,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-	<link
-		href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-		rel="stylesheet">
-	<title>修改票券</title>
-	
-<%--  include --%>
-	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
-  
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	rel="stylesheet">
+<title>修改票券</title>
+
+<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+
+
 </head>
-
 <body>
-
-	<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
-	<div class="container-fluid my-0">
-	<div class="row">
-	  
-	<div class="col-lg-2 g-3 my-0">
-	<jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
-	</div>
-	
-	<div class="col-lg-10 g-2 transparent rounded my-0">
-	
-<%-- include end--%>
 	<div class="container mt-5">
 		<div class="container mt-5">
 			<div class="container mt-5">
@@ -78,13 +65,13 @@
 
 						<div class="row">
 							<!-- 圖片上傳 -->
-						<div class="form-group col-md-12">
-						    <label>圖片列表</label>
-						    <div id="image-list" class="d-flex flex-wrap">
-						        <!-- 已上傳的圖片會透過JavaScript動態加載到這裡 -->
-						    </div>
-						    <button type="button" id="addImage" class="btn btn-primary mt-2"  name="ticketImages[]">新增圖片</button>
-						</div>
+<div class="form-group col-md-12">
+    <label>圖片列表</label>
+    <div id="image-list" class="d-flex flex-wrap">
+        <!-- 已上傳的圖片會透過JavaScript動態加載到這裡 -->
+    </div>
+    <button type="button" id="addImage" class="btn btn-primary mt-2"  name="ticketImages[]">新增圖片</button>
+</div>
             
 						<!-- 使用天數 -->
 						<div class="form-group col-md-12">
@@ -143,7 +130,7 @@
 						<div class="form-group col-md-6">
 							<label>上下架</label><br> <input type="radio" id="on"
 								name="status" value="1" ${ticket.status == 1 ? 'checked' : ''}>
-							<label for="on">上架</label> <input type="radio" id="off"
+							<label for="on"">上架</label> <input type="radio" id="off"
 								name="status" value="0" ${ticket.status == 0 ? 'checked' : ''}>
 							<label for="off">未上架</label>
 						</div>
@@ -154,16 +141,12 @@
 			</div>
 		</div>
 	</div>
-<%--  include --%>	
-		</div>
-	</div>		
-</div>
-<%--  include end --%>
+
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+
 	<script>
     $(document).ready(function() {
         const ticketId = ${ticket.ticketId}; 

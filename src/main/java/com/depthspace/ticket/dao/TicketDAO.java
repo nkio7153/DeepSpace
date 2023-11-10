@@ -29,6 +29,8 @@ public interface TicketDAO {
 		
 		long getTotal(); //取得總票券數
 		
+		long getStatusTotal(); //取得總票券數(上架)
+		
 		List<TicketVO> getByCompositeQuery(Map<String, List<String>> map); //複合查詢取得票券
 
 		public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId);
