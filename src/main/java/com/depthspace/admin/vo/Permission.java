@@ -1,28 +1,34 @@
-//package project_pet_backEnd.manager.vo;
-//
-//import lombok.AllArgsConstructor;
-//import lombok.Data;
-//import lombok.NoArgsConstructor;
-//
-//import javax.persistence.*;
-//import java.io.Serializable;
-//
-//@Data
-//@Entity
-//@Table(name = "Permission")
-//@IdClass(PermissionId.class)
-//@AllArgsConstructor
-//@NoArgsConstructor
-//public class Permission {
-//    @Id
-//    @Column(name = "ADMIN_ID")
-//    private Integer adminId;
-//    @Id
-//    @Column(name = "function_Id")
-//    private Integer functionId;
-//}
-//
-//class PermissionId implements Serializable {
-//    private Integer managerId;
-//    private Integer functionId;
-//}
+package com.depthspace.admin.vo;
+
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "PERMISSION")
+@IdClass(PermissionId.class)
+
+public class Permission {
+    @Id
+    @Column(name = "ADMIN_ID")
+    private Integer adminId;
+    @Id
+    @Column(name = "FUNC_Id")
+    private Integer funcId;
+	public Integer getAdminId() {
+		return adminId;
+	}
+	public void setAdminId(Integer adminId) {
+		this.adminId = adminId;
+	}
+	public Integer getFuncId() {
+		return funcId;
+	}
+	public void setFuncId(Integer funcId) {
+		this.funcId = funcId;
+	}
+}
+
+class PermissionId implements Serializable {
+    private Integer adminId;
+    private Integer funcId;
+}
