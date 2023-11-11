@@ -294,3 +294,8 @@ ul.social_section_1info li:last-child {
 .social_section_1info img {
     height: 100px; /* 調整圖片高度 */
 }
+
+/* 使用!important来覆盖默认样式（不推荐，除非没有其他办法） */
+.nav-link {
+    display: initial !important;
+}
