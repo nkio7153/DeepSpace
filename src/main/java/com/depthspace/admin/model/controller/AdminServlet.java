@@ -104,6 +104,7 @@ public class AdminServlet extends HttpServlet {
 	    String adminIdStr = req.getParameter("adminId");
 	    
 	    try {
+	    	
 	        Integer adminId = Integer.parseInt(adminIdStr);
 	        adminService.deleteAdmin(adminId);
 	        // 在執行成功的情況下，進行重定向或其他操作
