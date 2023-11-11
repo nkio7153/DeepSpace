@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
- <jsp:include page="head.jsp" />
+<jsp:include page="head.jsp" />
 </head>
 <body>
 <jsp:include page="header.jsp" />
