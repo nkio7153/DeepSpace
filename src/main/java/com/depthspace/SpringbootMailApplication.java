@@ -1,13 +1,15 @@
-package com.depthspace;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
-public class SpringbootMailApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(SpringbootMailApplication.class, args);
-    }
-
-}
+//package com.depthspace;
+//
+//import org.springframework.boot.SpringApplication;
+//import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.scheduling.annotation.EnableScheduling;
+//
+//@SpringBootApplication
+//@EnableScheduling
+//public class SpringbootMailApplication {
+//
+//    public static void main(String[] args) {
+//        SpringApplication.run(SpringbootMailApplication.class, args);
+//    }
+//
+//}

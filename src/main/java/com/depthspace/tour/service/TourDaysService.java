@@ -43,6 +43,11 @@ public class TourDaysService implements HbTourDaysDAO_Interface{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	//找會員某行程的對應天數值(行程幾天就會是幾天的TourDaysId)-ok
+	@Override
+	public List<TourDaysVO> getOneTour(Integer tourId) {
+		return dao.getOneTour(tourId);
+	}
 	
 	
 	

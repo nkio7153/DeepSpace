@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 
 import com.depthspace.member.model.MemVO;
 import com.depthspace.member.model.jdbc.MemDAO_Interface;
+import com.depthspace.tour.model.tourtype.TourTypeVO;
 
 public class HibernateMemDAOImpl implements HibernateMemDAO_Interface {
 	private SessionFactory factory;
@@ -63,6 +64,19 @@ public class HibernateMemDAOImpl implements HibernateMemDAO_Interface {
 	@Override
 	public List<MemVO> getAll(int currentPage) {
 		return null;
+	}
+	
+	@Override
+	public MemVO findByMemAcc(String memAcc) {
+		return getSession().get(MemVO.class, memAcc);
+	}
+	@Override
+	public MemVO getById(String memAcc) {
+		return getSession().get(MemVO.class, memAcc);
+	}
+	@Override
+	public MemVO findOneMem(String memAcc) {
+		return getSession().get(MemVO.class, memAcc);
 	}
 
 }
