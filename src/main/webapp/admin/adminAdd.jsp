@@ -119,7 +119,7 @@
 		
 		<button type="submit">送出</button>
 		<!-- 		點擊取消後跳轉回去首頁 -->
-		<input  type="button" onclick="window.location.href='<%=request.getContextPath()%>/admin/admin.jsp'" value="取消">
+		<input  type="button" onclick="window.location.href='<%=request.getContextPath()%>/admin/admin1.jsp'" value="取消">
 	</form>
 </body>
 </html>

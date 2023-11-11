@@ -23,7 +23,7 @@ import com.depthspace.user.service.UserService;
 import javax.validation.Valid;
 
 @Validated
-@CrossOrigin(origins = "http://localhost:8080") // 假設你的前端跑在 localhost:8080
+@CrossOrigin(origins = "http://localhost:63342") // 假設你的前端跑在 localhost:63342
 @RestController
 public class UserController {
 
