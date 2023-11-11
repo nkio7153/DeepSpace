@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -52,8 +53,15 @@ public class MtoServlet extends HttpServlet {
     }
     //查出會員擁有的所有票券
     private void doMemList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer memId=Integer.parseInt(req.getParameter("memId"));
+        Integer memId=null;
+        if (req.getParameter("memId")!=null){
+            memId=Integer.parseInt(req.getParameter("memId"));
+        }
 
+        HttpSession session = req.getSession();
+        if(session.getAttribute("memId")!=null) {
+            memId = Integer.valueOf((String)session.getAttribute("memId"));
+        }
         //用會員id取得當前頁面的list
         String page=req.getParameter("page");
         int currentPage=(page==null) ? 1 : Integer.parseInt(page);

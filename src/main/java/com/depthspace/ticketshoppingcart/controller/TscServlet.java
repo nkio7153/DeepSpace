@@ -19,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.*;
 
@@ -50,6 +51,9 @@ public class TscServlet extends HttpServlet {
                 break;
             case "/save":
                 doSave(req, resp);
+                break;
+            case "/memCartList":
+                doMemList(req, resp);
                 break;
             default:
                 // 在這裡處理所有其他情況
@@ -108,12 +112,14 @@ public class TscServlet extends HttpServlet {
         //如果cookie中不含有購物車資料執行以下
         resp.setContentType("text/html;charset=UTF-8");
         req.setCharacterEncoding("UTF-8");
-        Integer memId;
-        try {
-            memId = Integer.valueOf(req.getParameter("memId"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
+        Integer memId=null;
+        if (req.getParameter("memId")!=null){
+            memId=Integer.parseInt(req.getParameter("memId"));
+        }
+
+        HttpSession session = req.getSession(false);
+        if(session.getAttribute("memId")!=null) {
+            memId = (Integer)session.getAttribute("memId");
         }
         System.out.println(memId);
         //從redis中取出會員編號對應的購物車 票券編號及數量
