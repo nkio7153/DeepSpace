@@ -268,12 +268,13 @@ public class RestApiServlet extends HttpServlet {
 					MemBookingVO vo = new MemBookingVO();
 					vo.setRestId(Integer.parseInt(req.getParameter("restId")));
 					vo.setMemId(Integer.parseInt(req.getParameter("memId")));
-					vo.setCheckStatus(Integer.parseInt(req.getParameter("checkStatus")));
+//					vo.setCheckStatus(Integer.parseInt(req.getParameter("checkStatus")));
+					vo.setCheckStatus(0);
 					vo.setBookingTime(Integer.parseInt(req.getParameter("bookingTime")));
 					vo.setBookingNumber(Integer.parseInt(req.getParameter("bookingNumber")));
 					vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
 					memBookingService.add(vo);
-					out.print("SUCCESS");
+					out.print(gson.toJson("SUCCESS"));
 				} catch (Exception e) {
 					out.print("ERROR");
 					e.printStackTrace();

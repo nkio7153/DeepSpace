@@ -1,4 +1,4 @@
-<%@page import="java.awt.PrintGraphics"%>
+<%@	page import="java.awt.PrintGraphics"%>
 <%@ page import="com.depthspace.restaurant.model.restaurant.RestVO"%>
 <%@ page import="com.depthspace.restaurant.service.RestService"%>
 <%@ page import="com.depthspace.restaurant.service.RestServiecImpl"%>
