@@ -1,8 +1,10 @@
 package com.depthspace.admin.model.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -23,6 +25,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.depthspace.admin.model.model.AdminVO;
 import com.depthspace.admin.model.service.AdminService;
 import com.depthspace.admin.model.service.AdminServiceImpl;
+import com.depthspace.forum.model.forumarticles.ForumArticlesVO;
 
 @WebServlet("/admin.do")
 @MultipartConfig
@@ -34,22 +37,23 @@ public class AdminServlet extends HttpServlet {
 	public void init() throws ServletException {
 		adminService = new AdminServiceImpl();
 	}
-
+	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
+		String forwardPath = "";
 		//前端的action對應到哪個 執行哪個
 		switch (action) {
 		case "add":
 			processAdd(req, res);
-			break;
+			return;
 		case "update":
-			processUpdate(req, res);
+			forwardPath = processUpdate(req, res);
 			break;
 		case "del":
 			processDelete(req, res);
-			break;
+			return;
 		case "query":
 			processQuery(req, res);
 			break;
@@ -57,6 +61,8 @@ public class AdminServlet extends HttpServlet {
 			 res.sendError(HttpServletResponse.SC_BAD_REQUEST, "未知的操作");
 		        break;
 		}
+		
+		req.getRequestDispatcher(forwardPath).forward(req, res);
 	}
 
 	@Override
@@ -95,88 +101,72 @@ public class AdminServlet extends HttpServlet {
 
 	
 	private void processDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	    String adminIdStr = req.getParameter("adminId");
+	    
 	    try {
-	        // 將String轉換為Integer
-	        Integer adminId = Integer.parseInt(req.getParameter("ADMIN_ID"));
+	    	
+	        Integer adminId = Integer.parseInt(adminIdStr);
 	        adminService.deleteAdmin(adminId);
+	        // 在執行成功的情況下，進行重定向或其他操作
+	        String url = req.getContextPath()+"/admin/admin1.jsp";
+			res.sendRedirect(url);// 這只是一個示例，你可以根據實際需求進行處理
 	    } catch (NumberFormatException e) {
-	        // 處理錯誤情況
-	    	 res.sendError(HttpServletResponse.SC_BAD_REQUEST, "請求格式錯誤");
-	        // 這裡可以添加錯誤處理邏輯，例如向用戶顯示錯誤信息
+	        // 處理參數不是有效整數的情況
+	        // 可以將錯誤信息放入request中，然後轉發到錯誤頁面
+	        req.setAttribute("errorMessage", "ADMIN_ID必須是有效的整數");
+	        req.getRequestDispatcher("error.jsp").forward(req, res); // 這只是一個示例，你可以根據實際需求進行處理
 	    }
 	}
+
 	
-	private void processUpdate(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	private String processUpdate(HttpServletRequest req, HttpServletResponse res){
 	    AdminVO admin = new AdminVO();
 
-	    String adminIdStr = req.getParameter("ADMIN_ID");
-	    if (adminIdStr == null || adminIdStr.trim().isEmpty()) {
-	        // 管理員ID為空或者格式不正確，返回錯誤響應
-	        res.sendError(HttpServletResponse.SC_BAD_REQUEST, "ADMIN_ID不能為空");
-	        return;
-	    }
-
-	    Integer adminId;
-	    try {
-	        adminId = Integer.parseInt(adminIdStr);
-	    } catch (NumberFormatException e) {
-	        // 管理員ID不是有效的整數，返回錯誤響應
-	        res.sendError(HttpServletResponse.SC_BAD_REQUEST, "ADMIN_ID格式不正確");
-	        return;
-	    }
-	    admin.setAdminId(adminId); // 現在可以安全地設置ADMIN_ID
-
+	    int adminId = Integer.parseInt(req.getParameter("adminId"));
 	    // 從請求中獲取其他屬性並設置到AdminVO對象中
-	    admin.setAdminName(req.getParameter("ADMIN_NAME"));
-	    admin.setAdminAcc(req.getParameter("ADMIN_ACC"));
-	    admin.setAdminPwd(req.getParameter("ADMIN_PWD"));
+	    String adminName = req.getParameter("adminName");
+	    String adminAcc = req.getParameter("adminAcc");
+	    String adminPwd = req.getParameter("adminPwd");
+	    int adminStatus = Integer.parseInt(req.getParameter("adminStatus"));
+	    
+	    int result = adminService.updateAdmin(adminId, adminName, adminAcc, adminPwd, adminStatus);	
 
-	    // 同樣的處理對於ADMIN_STATUS
-	    Integer adminStatus;
-	    try {
-	        adminStatus = Integer.parseInt(req.getParameter("ADMIN_STATUS"));
-	    } catch (NumberFormatException e) {
-	        // ADMIN_STATUS不是數字，返回錯誤響應並中止處理
-	        res.sendError(HttpServletResponse.SC_BAD_REQUEST, "ADMIN_STATUS格式不正確");
-	        return;
-	    }
-	    admin.setAdminStatus(adminStatus);
-
-	    // 呼叫service層的更新方法，進行數據持久化操作
-	    try {
-	        adminService.updateAdmin(admin); // 假設這個方法會將admin對象的變化保存到數據庫
-	        // 更新成功後重定向到管理員列表頁面
-	        res.sendRedirect(req.getContextPath() + "/admin/admin1.jsp");
-	    } catch (Exception e) {
-	        // 處理更新過程中出現的任何異常
-	        e.printStackTrace();
-	        // 返回內部服務器錯誤響應
-	        res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "更新過程中發生錯誤");
-	    }
+	    if (result > 0) {
+			System.out.println("更新成功");
+		} else {
+			System.out.println("更新失敗");
+		}
+		
+		res.setContentType("application/json;charset=UTF-8");
+		return "/admin/admin1.jsp";
+	    
 	}
 
 
 
-	private void processAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
-		AdminVO admin = new AdminVO();
-
-	    // 設置其他字串型別的屬性
-	    admin.setAdminName(req.getParameter("ADMIN_NAME"));
-	    admin.setAdminAcc(req.getParameter("ADMIN_ACC"));
-	    admin.setAdminPwd(req.getParameter("ADMIN_PWD"));
-
-	    try {
-	        // 將String轉換為Integer，並設置AdminStatus
-	        Integer adminStatus = Integer.parseInt(req.getParameter("ADMIN_STATUS"));
-	        admin.setAdminStatus(adminStatus);
-	    } catch (NumberFormatException e) {
-	        // 如果ADMIN_STATUS不是數字，處理錯誤
-	        e.printStackTrace();
-	        // 在這裡添加錯誤處理邏輯，比如設置adminStatus為null或預設值
+	private void processAdd(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
+		AdminVO adminVO = new AdminVO();
+		//把資料給前端
+		 String adminIdStr = req.getParameter("ADMIN_ID");
+		    if (adminIdStr != null && !adminIdStr.isEmpty()) {
+		        Integer adminId = Integer.parseInt(adminIdStr);
+		        adminVO.setAdminId(adminId);
+		    }
+		adminVO.setAdminName (req.getParameter("ADMIN_NAME"));
+		adminVO.setAdminAcc (req.getParameter("ADMIN_ACC"));
+		adminVO.setAdminPwd (req.getParameter("ADMIN_PWD"));
+		
+		// 將ADMIN_STATUS轉換為Integer
+	    String adminStatusStr = req.getParameter("ADMIN_STATUS");
+	    if (adminStatusStr != null && !adminStatusStr.isEmpty()) {
+	        Integer adminStatus = Integer.parseInt(adminStatusStr);
+	        adminVO.setAdminStatus(adminStatus);
 	    }
-
-	    adminService.addAdmin(admin); // 假設這個方法會將 admin 對象保存到數據庫
-	    res.sendRedirect(req.getContextPath() + "/admin/admin1.jsp");
+		
+	    adminService.addAdmin(adminVO);
+	    
+		//導到指定的URL 頁面上 把請求回應都帶過去
+		String url = req.getContextPath()+"/admin/admin1.jsp";
+		res.sendRedirect(url);
 	}
-
 }

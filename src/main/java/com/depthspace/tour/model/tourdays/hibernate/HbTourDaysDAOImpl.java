@@ -49,6 +49,14 @@ public class HbTourDaysDAOImpl implements HbTourDaysDAO_Interface{
 	public List<TourDaysVO> getAll() {
 		// TODO Auto-generated method stub
 		return null;
-	}
+		}
+		
+	@Override
+	public List<TourDaysVO> getOneTour(Integer tourId) {
+		return getSession()
+                .createQuery("from TourDaysVO where tourId= :tourId",TourDaysVO.class)
+                .setParameter("tourId", tourId)
+                .list();
 	
+	}
 }
