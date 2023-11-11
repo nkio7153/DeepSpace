@@ -16,10 +16,15 @@ public interface HibernateMemDAO_Interface {
 
 	MemVO getById(Integer memId);
 	
+	MemVO findByMemAcc(String memAcc);
+	
 	List<MemVO> getAll();
 	
 	//疑問:是複合主鍵才要?
 //	List<MemVO> getByCompositeQuery();
 
 	List<MemVO> getAll(int currentPage);
+
+	MemVO getById(String memAcc);
+	MemVO findOneMem(String memAcc);
 }

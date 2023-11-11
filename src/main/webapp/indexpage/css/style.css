@@ -200,7 +200,7 @@ a.btn {
 }
 
 .banner-inner_overlay_pic {
-    filter: brightness(0.6);
+    filter: brightness(0.9);
     max-height: 300px;
     width: auto;
     /* 保持原始宽高比 */
@@ -210,4 +210,27 @@ a.btn {
     /* 如果需要居中图像 */
     overflow: hidden;
     /* 超过最大高度时隐藏内容 */
+}
+
+/* 調整下拉選單的基本樣式 */
+.navbar-nav .dropdown-menu {
+    border: none; /* 移除邊框 */
+}
+
+/* 調整下拉選單項目的樣式 */
+.navbar-nav .dropdown-menu .dropdown-item {
+    color:#000000; /* 設置文字顏色 */
+    padding: 8px 15px; /* 設置內部間距 */
+}
+
+/* 下拉選單的動畫效果 */
+.dropdown-menu {
+    display: none; /* 初始不顯示 */
+    opacity: 0;
+    transition: opacity 0.5s ease; /* 平滑過渡效果 */
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block; /* 懸停時顯示 */
+    opacity: 1;
 }

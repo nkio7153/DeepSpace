@@ -14,4 +14,6 @@ public interface HbTourDaysDAO_Interface {
 	public TourDaysVO findByPrimaryKey(Integer tourDaysId);
 
 	public List<TourDaysVO> getAll();
+	
+	public List<TourDaysVO> getOneTour(Integer tourId);
 }

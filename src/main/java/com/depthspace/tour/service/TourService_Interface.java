@@ -13,5 +13,6 @@ public interface TourService_Interface {
 	List<TourVO> getAll();
 	//取得該會員行程資料
 	List<TourVO> getByMemId(Integer MemId);
-	List<TourView> getOneTourList(Integer TourId , Integer MemId);
+	List<TourView> getOneTourList(Integer tourId,Integer memId);
+	List<TourVO> getOneByMemId(Integer tourId,Integer memId);
 }
