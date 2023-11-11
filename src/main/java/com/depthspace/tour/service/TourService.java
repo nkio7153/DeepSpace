@@ -63,8 +63,8 @@ public class TourService implements TourService_Interface{
 	
 	@Transactional
 	public List<TourView> getOneTourList(Integer tourId,Integer memId) {
-			List<TourView> list = dao.getOneTourList(tourId,memId);
-			return list;
+			
+			return dao.getOneTourList(tourId,memId);
 	}
 
 	

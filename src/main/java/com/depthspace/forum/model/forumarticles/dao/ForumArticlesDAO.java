@@ -12,4 +12,10 @@ public interface ForumArticlesDAO {
 	 int delete(Integer id);
 	 
 	 List<ForumArticlesVO> getAll();
+	 
+	 List<ForumArticlesVO> getByMemId(Integer memId);
+	 
+	 ForumArticlesVO getByArticleId(Integer articleId);
+	 
+	 List<ForumArticlesVO> getByArtiTypeId(Integer artiTypeId);
 }
