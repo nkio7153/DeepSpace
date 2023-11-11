@@ -32,8 +32,8 @@ public class MemberServlet extends HttpServlet {
 	protected int allowUser(String memAcc, String password) {
 		MemVO memvo = null;
 		HbMemService ms= new HbMemService();
-		
-		if(ms.findByMemAcc(memAcc)==null) {
+		System.out.println("memAcc=" + memAcc);
+		if(ms.findByMemAcc(memAcc) == null) {
 			System.out.println("沒有此帳號");
 			return 1;
 		}
@@ -518,33 +518,41 @@ public class MemberServlet extends HttpServlet {
 	protected void doSuccess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String memAcc = req.getParameter("memAcc");
 		String password = req.getParameter("password");
-		
+		MemberService ms = new MemberService();
+		HbMemService hms = new HbMemService();
 		MemVO memVo = null;
 		
 		HttpSession session=req.getSession();
-		session.setAttribute("login",memAcc);
-		System.out.println("存session成功");
+//		session.setAttribute("login",memAcc);
+//		session.setAttribute("",memAcc);
+		System.out.println("存session成功" + session.toString());
+//		if(allowUser(memAcc,password)==1) {
+//			System.out.println("沒有此帳號");
+//			String URL=req.getContextPath()+"/frontend/member/Login.jsp?error=false&requestURI="+loginLocation;
+//			res.sendRedirect(URL);
+//			return;
+//		}
+//		System.out.println("memAcc=" + memAcc  + "password=" + password);
 		
 		
-		
-		MemberService ms = new MemberService();
-		MemVO mem = ms.addMemberInfo(memAcc);
+		MemVO mem = ms.getMemberInfo(memAcc);
 		String base64Image;
 		if(mem.getMemAcc().equals(memAcc) && mem.getMemPwd().equals(password)) {
 			// 創建一個 MemVO 物件並設定它的屬性
 			MemVO authenticatedMem = new MemVO();
-			authenticatedMem.setMemId(mem.getMemId());
-			authenticatedMem.setMemAcc(mem.getMemAcc());
-			authenticatedMem.setMemPwd(mem.getMemPwd());
-			authenticatedMem.setMemName(mem.getMemName());
-			authenticatedMem.setMemIdentity(mem.getMemIdentity());
-			authenticatedMem.setMemBth(mem.getMemBth());
-			authenticatedMem.setMemSex(mem.getMemSex());
-			authenticatedMem.setMemEmail(mem.getMemEmail());
-			authenticatedMem.setMemTel(mem.getMemTel());
-			authenticatedMem.setMemAdd(mem.getMemAdd());
-			authenticatedMem.setAccStatus(mem.getAccStatus());
-			authenticatedMem.setMemPoint(mem.getMemPoint());
+			
+//			authenticatedMem.setMemId(mem.getMemId());
+//			authenticatedMem.setMemAcc(mem.getMemAcc());
+//			authenticatedMem.setMemPwd(mem.getMemPwd());
+//			authenticatedMem.setMemName(mem.getMemName());
+//			authenticatedMem.setMemIdentity(mem.getMemIdentity());
+//			authenticatedMem.setMemBth(mem.getMemBth());
+//			authenticatedMem.setMemSex(mem.getMemSex());
+//			authenticatedMem.setMemEmail(mem.getMemEmail());
+//			authenticatedMem.setMemTel(mem.getMemTel());
+//			authenticatedMem.setMemAdd(mem.getMemAdd());
+//			authenticatedMem.setAccStatus(mem.getAccStatus());
+//			authenticatedMem.setMemPoint(mem.getMemPoint());
 			byte[] imageBytes = mem.getMemImage();
 				if(imageBytes != null) {
 					base64Image = Base64.getEncoder().encodeToString(imageBytes);
@@ -588,14 +596,19 @@ public class MemberServlet extends HttpServlet {
 				}
 				    
 				    
-			req.setAttribute("authenticatedMem", authenticatedMem);
+			session.setAttribute("authenticatedMem", mem);//會員物件
+			session.setAttribute("memId", mem.getMemId());//會員編號
+			
+			Integer memno = (Integer) session.getAttribute("memId");// 測試用(取得存在session會員編號)
+		    System.out.println("測試取得放入session的會員編號" + memno);// 測試用
+			
 			req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
+//			resp.sendRedirect(req.getContextPath()+"/indexpage/index.jsp");
 		} else {
-			System.out.println("帳號密碼錯誤");
+//			System.out.println("帳號密碼錯誤");
 			String errorMsgs = "帳號或密碼錯誤";
 			req.setAttribute("errorMsgs", errorMsgs);
-			RequestDispatcher failureView = req
-					.getRequestDispatcher("/member/member.jsp");
+			RequestDispatcher failureView = req.getRequestDispatcher("/member/member.jsp");
 			failureView.forward(req, resp);
 			return;//程式中斷
 		}

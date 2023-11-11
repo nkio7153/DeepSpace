@@ -38,7 +38,7 @@ public class LoginFilter implements Filter{
 		if (memId == null) {//如果memno是null，表示使用者未登入
 			session.setAttribute("location", req.getRequestURI());//將當前請求的URI存入Session中，以便稍後重定向後能夠知道用戶原來要訪問的頁面。
 			System.out.println("非登入會員時，所在的location="+req.getRequestURI());
-			res.sendRedirect(req.getContextPath() + "/front-end/member/member.jsp");
+			res.sendRedirect(req.getContextPath() + "/member/member.jsp");
 			return;//return表示不再執行過濾器鏈，即結束過濾器的執行。
 		} else {
 			chain.doFilter(request, response);
