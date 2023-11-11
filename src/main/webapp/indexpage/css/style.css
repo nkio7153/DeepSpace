@@ -221,7 +221,7 @@ a.btn {
 
 .banner-inner_overlay_pic {
     filter: brightness(0.9);
-    max-height: 300px;
+    max-height: 200px;
     width: auto;
     /* 保持原始宽高比 */
     display: block;
@@ -266,13 +266,15 @@ a.btn {
     color: #ddd;
 }
 
-a:hover {
+/* 這樣會限制樣式只影響導航列(navbar)內的所有<a>標籤 */
+.navbar a:hover {
     color: #ddd;
     text-shadow: 2px 2px 2px rgba(0,0,0,0.5);
 }
 
-a.btn:hover{
-	color:#FFFFFF;
+/* 這樣會限制樣式只影響導航列(navbar)內的按鈕類<a>標籤 */
+.carousel-caption a.btn:hover {
+    color: #FFFFFF;
     text-shadow: 3px 3px 3px rgba(0,0,0,0.5);
 }
 
