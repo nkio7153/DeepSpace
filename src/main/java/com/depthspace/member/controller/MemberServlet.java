@@ -29,9 +29,10 @@ import com.depthspace.member.service.MemberService;
 public class MemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	protected int allowUser(String memAcc, String password) {
+	public int allowUser(String memAcc, String password) {
 		MemVO memvo = null;
 		HbMemService ms= new HbMemService();
+		MemberService mems= new MemberService();
 		System.out.println("memAcc=" + memAcc);
 		if(ms.findByMemAcc(memAcc) == null) {
 			System.out.println("沒有此帳號");
@@ -39,7 +40,7 @@ public class MemberServlet extends HttpServlet {
 		}
 		
 		else {
-			memvo=ms.findByMemAcc(memAcc);
+			memvo=mems.getMemberInfo(memAcc);
 	    		System.out.println("2");
 	    	}  
 	    	
@@ -64,8 +65,8 @@ public class MemberServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 		String pathInfo = req.getPathInfo();
-		if ("/success".equals(pathInfo)) {
-			doSuccess(req, resp);
+		if ("/login".equals(pathInfo)) {
+			doLogin(req, resp);
 		} else if ("/edit".equals(pathInfo)) {
 			doEdit(req, resp);
 //		} else if ("/addMember".equals(pathInfo)) {
@@ -515,27 +516,28 @@ public class MemberServlet extends HttpServlet {
 
 	// ========================================================================================
 
-	protected void doSuccess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doLogin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String memAcc = req.getParameter("memAcc");
 		String password = req.getParameter("password");
 		MemberService ms = new MemberService();
 		HbMemService hms = new HbMemService();
 		MemVO memVo = null;
 		
-		HttpSession session=req.getSession();
-//		session.setAttribute("login",memAcc);
-//		session.setAttribute("",memAcc);
-		System.out.println("存session成功" + session.toString());
-//		if(allowUser(memAcc,password)==1) {
-//			System.out.println("沒有此帳號");
-//			String URL=req.getContextPath()+"/frontend/member/Login.jsp?error=false&requestURI="+loginLocation;
-//			res.sendRedirect(URL);
-//			return;
-//		}
-//		System.out.println("memAcc=" + memAcc  + "password=" + password);
+		String loginLocation =req.getParameter("loginLocation");
+		System.out.println("loginLocation="+loginLocation);
+//		System.out.println("存session成功"+ "memAcc= " + memAcc );
 		
+		
+		if(allowUser(memAcc,password)==1) {
+			System.out.println("沒有此帳號");
+			String URL=req.getContextPath()+"/member/login.jsp?error=false&requestURI="+loginLocation;
+			resp.sendRedirect(URL);
+			return;
+		} else {
+		HttpSession session=req.getSession();
 		
 		MemVO mem = ms.getMemberInfo(memAcc);
+		System.out.println("mem=" + mem);
 		String base64Image;
 		if(mem.getMemAcc().equals(memAcc) && mem.getMemPwd().equals(password)) {
 			// 創建一個 MemVO 物件並設定它的屬性
@@ -604,16 +606,19 @@ public class MemberServlet extends HttpServlet {
 			
 			req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
 //			resp.sendRedirect(req.getContextPath()+"/indexpage/index.jsp");
+			
 		} else {
 //			System.out.println("帳號密碼錯誤");
-			String errorMsgs = "帳號或密碼錯誤";
-			req.setAttribute("errorMsgs", errorMsgs);
-			RequestDispatcher failureView = req.getRequestDispatcher("/member/member.jsp");
-			failureView.forward(req, resp);
+//			String errorMsgs = "帳號或密碼錯誤";
+//			req.setAttribute("errorMsgs", errorMsgs);
+//			RequestDispatcher failureView = req.getRequestDispatcher("/member/login.jsp");
+//			failureView.forward(req, resp);
+			String URL=req.getContextPath()+"/member/login.jsp?error=false&requestURI="+loginLocation;
+			resp.sendRedirect(URL);
 			return;//程式中斷
 		}
 	
-	
+		}
 	}
 
 
