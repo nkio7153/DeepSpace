@@ -120,9 +120,9 @@ public class TicketOrderstServlet extends HttpServlet {
             memId=Integer.parseInt(req.getParameter("memId"));
         }
 
-        HttpSession session = req.getSession();
+        HttpSession session = req.getSession(false);
         if(session.getAttribute("memId")!=null) {
-            memId = Integer.valueOf((String)session.getAttribute("memId"));
+            memId = (Integer)session.getAttribute("memId");
         }
 
 

@@ -1,5 +1,6 @@
 package com.depthspace.ticketshoppingcart.controller;
 
+import com.depthspace.member.model.MemVO;
 import com.depthspace.ticket.model.TicketImagesVO;
 import com.depthspace.ticket.oscardao.HbTiDao;
 import com.depthspace.ticket.service.TicketService;
@@ -347,9 +348,21 @@ public class TscServlet extends HttpServlet {
     protected void checkout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Integer memId = null;
         Integer coupen=null;
+        String firstName="";
+        String lastName="";
         try {
             memId = Integer.valueOf(req.getParameter("memId"));
             String coupenStr = req.getParameter("coupen");
+            HttpSession session = req.getSession();
+            MemVO vo = (MemVO)session.getAttribute("authenticatedMem");
+            String fullName = vo.getMemName();
+            if(fullName != null && !fullName.isEmpty()){
+                firstName=fullName.substring(0,1);
+                if(fullName.length()>1){
+                    lastName=fullName.substring(1);
+                }
+            }
+
             if(coupenStr == null ||coupenStr.isEmpty()){
                 coupen=0;
             }else{
@@ -376,6 +389,8 @@ public class TscServlet extends HttpServlet {
         List<CartInfo> list = tscSv.getByTicketIds(ticketIds, items);
 
         //遍歷會員購物車資料
+        req.setAttribute("firstName",firstName);
+        req.setAttribute("lastName",lastName);
 
         req.setAttribute("list", list);
         req.setAttribute("memId", memId);

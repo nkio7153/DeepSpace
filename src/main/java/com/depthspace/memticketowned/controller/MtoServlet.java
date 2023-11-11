@@ -58,9 +58,9 @@ public class MtoServlet extends HttpServlet {
             memId=Integer.parseInt(req.getParameter("memId"));
         }
 
-        HttpSession session = req.getSession();
+        HttpSession session = req.getSession(false);
         if(session.getAttribute("memId")!=null) {
-            memId = Integer.valueOf((String)session.getAttribute("memId"));
+            memId = (Integer)session.getAttribute("memId");
         }
         //用會員id取得當前頁面的list
         String page=req.getParameter("page");
