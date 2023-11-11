@@ -53,8 +53,21 @@
 				<p>${columnArticles.artiContent}</p>
 			</div>
 		</div>
-	</div>
 
+        <div class="row">
+            <c:forEach items="${columnArticles.artiContent}" var="article" begin="0" end="4">
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="<%=request.getContextPath()%>/pathToArticleImage?artiId=${columnArticles.artiId}" class="card-img-top" alt="Article Image">
+                        <div class="card-body">
+                            <h5 class="card-title">${columnArticles.artiTitle}</h5>
+                            <p class="card-text">${columnArticles.artiContent}</p>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
+    	</div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script
