@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface AdminDAO {
 
-	void insert(AdminVO adminVO);
+	int insert(AdminVO adminVO);
 
 	int update(AdminVO adminVO);
 	
@@ -14,4 +14,6 @@ public interface AdminDAO {
 	List<AdminVO> getAll();
 	
 	AdminVO findByAdminId(Integer adminId);
+	
+//	AdminVO findByAdminAcc(String adminAcc);
 }

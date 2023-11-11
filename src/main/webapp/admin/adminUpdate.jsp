@@ -42,42 +42,43 @@
 		<tr>
 			<th>管理員編號</th>
 			<td>
-				<input type="hidden" name="ADMIN_ID" id="ADMIN_ID" value="" >
+				<input type="text" name="adminId" id="adminId" >
 
 			</td>
 		</tr>
 		<tr>
 			<th>管理員名字</th>
 			<td>
-				<input type="text" name="ADMIN_NAME" id="ADMIN_NAME" required >
+				<input type="text" name="adminName" id="ADMIN_NAME" required >
 			</td>
 		</tr>
 		<tr>
 			<th>管理員帳號</th>
 			<td>
-				<input type="text" name="ADMIN_ACC" id="ADMIN_ACC" required >
+				<input type="text" name="adminAcc" id="ADMIN_ACC" required >
 			</td>
 		</tr>
 		<tr>
 			<th>管理員密碼</th>
 			<td>
-				<input type="password" name="ADMIN_PWD" id="ADMIN_PWD" required >
+				<input type="password" name="adminPwd" id="ADMIN_PWD" required >
 			</td>
 		</tr>
 		<tr>
 			<th>管理員帳號狀態</th>
 			<td>
-				<input type="radio" name="ADMIN_STATUS" value="0">離職
-				<input type="radio" name="ADMIN_STATUS" value="1" checked>在職
-				<input type="radio" name="ADMIN_STATUS" value="2">停職
+				<input type="radio" name="adminStatus" value="0">離職
+				<input type="radio" name="adminStatus" value="1" checked>在職
+				<input type="radio" name="adminStatus" value="2">停職
 			</td>
 		</tr>
 		</table>
-
 		
-		<button type="submit">送出</button>
+		
+		<input  type="submit" onclick="window.location.href='<%=request.getContextPath()%>/admin/admin1.jsp'" value="送出">
+		</form>
                     <!-- 		取消後跳轉回去首頁 -->
-		<input  type="button" onclick="window.location.href='<%=request.getContextPath()%>admin/admin.jsp'" value="取消">
-	</form>
+		<input  type="button" onclick="window.location.href='<%=request.getContextPath()%>/admin/admin1.jsp'" value="取消">
+	
 </body>
 </html>
