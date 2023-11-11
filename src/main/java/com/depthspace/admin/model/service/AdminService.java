@@ -9,11 +9,13 @@ public interface AdminService {
 	
 	AdminVO addAdmin(AdminVO adminVO);
 	
-	AdminVO updateAdmin(AdminVO adminVO);
+	int updateAdmin(Integer adminId, String adminName, String adminAcc, String adminPwd, Integer adminStatus);
 	
 	void deleteAdmin(Integer adminId);
 	
 	AdminVO findAdminByAdminId(Integer adminId);
 	
 	List<AdminVO> getAllAdmins();
+	
+//	AdminVO findByAdminAcc(String adminAcc);
 }

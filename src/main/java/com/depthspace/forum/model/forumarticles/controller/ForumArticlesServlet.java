@@ -26,6 +26,7 @@ import com.depthspace.forum.model.articlestype.service.ArticlesTypeServiceImpl;
 import com.depthspace.forum.model.forumarticles.ForumArticlesVO;
 import com.depthspace.forum.model.forumarticles.service.ForumArticlesService;
 import com.depthspace.forum.model.forumarticles.service.ForumArticlesServiceImpl;
+import com.google.gson.Gson;
 
 @MultipartConfig
 public class ForumArticlesServlet extends HttpServlet {
@@ -91,18 +92,21 @@ public class ForumArticlesServlet extends HttpServlet {
 		req.setAttribute("list", list);
 		req.setAttribute("artiTypeId", artiTypeId);
 		System.out.println(list);
-		req.getRequestDispatcher("/forumArticles/articlesTypeList.jsp").forward(req, resp);	
+		req.getRequestDispatcher("/forumArticles/articlesTypeList.jsp").forward(req, resp);
 	}
 
 	private void getArtiTypeList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		List<ForumArticlesVO> forum = forumArticlesService.getAll();
-		HashSet<Integer> artiTypeId = new HashSet<>();
-		for (ForumArticlesVO vo : forum) {
-			artiTypeId.add(vo.getArtiTypeId());
-		}
-		JSONArray arr = JSONArray.parseArray(JSON.toJSONString(artiTypeId));
-		resp.setContentType("application/json; charset=UTF-8");
-		resp.getWriter().write(arr.toString());		
+		List<ArticlesTypeVO> atvo = articlesTypeService.getAll();
+
+		// 將 List 轉換為 JSON 字串
+		String json = new Gson().toJson(atvo);
+
+		// 設置響應內容類型為 JSON
+		resp.setContentType("application/json");
+		resp.setCharacterEncoding("UTF-8");
+
+		// 發送 JSON 響應
+		resp.getWriter().write(json);
 	}
 
 	private void addArticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -175,7 +179,7 @@ public class ForumArticlesServlet extends HttpServlet {
 			} else {
 				ForumArticlesVO forumArticle = forumArticlesService.getByArticleId(articleId);
 				if (forumArticle != null) {
-				    artiImg = forumArticle.getArtiImg(); 
+					artiImg = forumArticle.getArtiImg();
 				}
 			}
 			ForumArticlesVO forum = new ForumArticlesVO(articleId, memId, msgId, artiTypeId, artiTitle, artiTime,

@@ -23,8 +23,8 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public void insert(AdminVO adminVO) {
-		getSession().save(adminVO);
+    public int insert(AdminVO adminVO) {
+    	return (Integer) getSession().save(adminVO);
     }
 
     @Override
@@ -52,14 +52,23 @@ public class AdminDAOImpl implements AdminDAO {
     
     @Override
 	public AdminVO findByAdminId(Integer adminId) {
-		Query<AdminVO> query = getSession().createQuery("FROM AdminVO where adminId=:adminId",AdminVO.class);
-		query.setParameter("adminId", adminId);
-		return query.getSingleResult();
+    	return getSession().get(AdminVO.class, adminId);
 	}
     
     @Override
 	public List<AdminVO> getAll() {
 		return getSession().createQuery("FROM AdminVO", AdminVO.class).list();
 	}
+    
+ // 在 AdminDAO 類中
+//    public AdminVO findByAdminAcc(String adminAcc) {
+//        try (Session session = sessionFactory.openSession()) {
+//            return session.createQuery("from AdminVO where adminAcc = :adminAcc", AdminVO.class)
+//                          .setParameter("adminAcc", adminAcc)
+//                          .uniqueResult();
+//        }
+//    }
+
+
     
 }
