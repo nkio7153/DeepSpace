@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="./images/pic3.jpg" class="picfak w-100">
+                <img src="./images/pic.jpg" class="picfak w-100">
                 <div class="carousel-caption d-none d-md-block">
                     <div class="container">
                         <div class="banner-info">
