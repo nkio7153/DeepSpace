@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
@@ -114,7 +115,15 @@ public class TicketOrderstServlet extends HttpServlet {
     }
     //查出會員訂單
     protected void doMemList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer memId = Integer.parseInt(req.getParameter("memId"));
+        Integer memId=null;
+        if (req.getParameter("memId")!=null){
+            memId=Integer.parseInt(req.getParameter("memId"));
+        }
+
+        HttpSession session = req.getSession(false);
+        if(session.getAttribute("memId")!=null) {
+            memId = (Integer)session.getAttribute("memId");
+        }
 
 
 

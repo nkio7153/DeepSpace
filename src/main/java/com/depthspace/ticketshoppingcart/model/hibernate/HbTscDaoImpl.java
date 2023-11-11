@@ -5,6 +5,7 @@ import com.depthspace.ticketshoppingcart.model.TicketShoppingCartVO;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -95,5 +96,24 @@ public class HbTscDaoImpl implements HbTscDao {
         return getSession().createQuery("FROM CartInfo WHERE ticketId IN (:ticketIds)", CartInfo.class)
         .setParameterList("ticketIds", ticketIds)
         .list();
+//        LocalDate currentDate = LocalDate.now();
+//        return getSession().createQuery(
+//                        "FROM CartInfo ci " +
+//                                "WHERE ci.ticketId IN (:ticketIds) " +
+//                                "AND NOT EXISTS (" +
+//                                "SELECT 1 " +
+//                                "FROM PromotionVO p " +
+//                                "WHERE ci.ticketId = p.TICKET_ID " +
+//                                "AND :currentDate BETWEEN p.START_DATE AND p.END_DATE" +
+//                                ") " +
+//                                "AND NOT EXISTS (" +
+//                                "SELECT 1 " +
+//                                "FROM PromotionDetails pd " +
+//                                "WHERE ci.ticketId = pd.TICKET_ID " +
+//                                "AND ci.promotionId = pd.PROMOTION_ID" +
+//                                ")", CartInfo.class)
+//                .setParameterList("ticketIds", ticketIds)
+//                .setParameter("currentDate", currentDate)
+//                .list();
     }
 }

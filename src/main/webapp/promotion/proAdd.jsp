@@ -162,12 +162,16 @@
         let description=$("#description").val();
         let startDate=$("#startDate").val();
         let endDate=$("#endDate").val();
+        let ticketIds = $("[name='ticketId']").map(function() {
+            return $(this).val();
+        }).get();
         //----------- 打包資料 (start)
         let data = {
             promoName:promoName,
             description:description,
             startDate:startDate,
-            endDate:endDate
+            endDate:endDate,
+            ticketId:ticketIds
         };
 
 // 將資料打包進 URLSearchParams()
@@ -203,7 +207,7 @@
             <div class="col-md-4 mt-2" name="se"></div>
             <div class="col-md-5 mt-2" id="selector" name="se">
                 <label for="ticketId" class="form-label">選擇促銷票券:</label>
-                <select id="ticketId" name="ticketId">
+                <select name="ticketId">
                     <c:forEach var="ticket" items="${list}">
                         <option value="${ticket.ticketId}">${ticket.ticketName}</option>
                     </c:forEach>
