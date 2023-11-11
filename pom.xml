@@ -5,13 +5,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
-<!--	<parent>-->
-<!--    <groupId>org.springframework.boot</groupId>-->
-<!--    <artifactId>spring-boot-starter-parent</artifactId>-->
-<!--    <version>2.7.0</version>  使用最新穩定版本 -->
-<!--    <relativePath/>  lookup parent from repository -->
-<!--</parent>-->
-
+	<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.7.0</version>
+    <relativePath/> 
+</parent>
 	<groupId>com.depthspace</groupId>
 	<artifactId>DepthSpace</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -124,20 +123,20 @@
 <!--		</dependency>-->
 
 
-<!--  <dependency>-->
-<!--        <groupId>org.springframework.boot</groupId>-->
-<!--        <artifactId>spring-boot-starter-web</artifactId>-->
-<!--        		<exclusions>-->
-<!--				<exclusion>-->
-<!--					<groupId>ch.qos.logback</groupId>-->
-<!--					<artifactId>logback-classic</artifactId>-->
-<!--				</exclusion>-->
-<!--				<exclusion>-->
-<!--					<groupId>ch.qos.logback</groupId>-->
-<!--					<artifactId>logback-core</artifactId>-->
-<!--				</exclusion>-->
-<!--			</exclusions>-->
-<!--    </dependency>-->
+  <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        		<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-core</artifactId>
+				</exclusion>
+			</exclusions>
+    </dependency>
 <!--    <dependency>-->
 <!--			<groupId>org.springframework.boot</groupId>-->
 <!--			<artifactId>spring-boot-starter-aop</artifactId>-->
@@ -146,14 +145,16 @@
 <!--			<groupId>com.fasterxml.jackson.datatype</groupId>-->
 <!--			<artifactId>jackson-datatype-jsr310</artifactId>-->
 <!--		</dependency>-->
-<!--  		<dependency>-->
-<!--        	<groupId>org.springframework.boot</groupId>-->
-<!--        	<artifactId>spring-boot-starter-validation</artifactId>-->
-<!--    	</dependency>-->
-<!--		<dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-jdbc</artifactId>-->
-<!--        </dependency>-->
+  		<dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-starter-validation</artifactId>
+    	</dependency>
+    	
+    	
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
 <!--        <dependency>-->
 <!--			<groupId>org.springframework.boot</groupId>-->
 <!--			<artifactId>spring-boot-starter-security</artifactId>-->
@@ -279,18 +280,12 @@
 					<version>3.0.0</version>
 				</plugin>
 				
-<!--				<plugin>-->
-<!--				<groupId>org.springframework.boot</groupId>-->
-<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--				<configuration>-->
-<!--					<excludes>-->
-<!--						<exclude>-->
-<!--							<groupId>org.projectlombok</groupId>-->
-<!--							<artifactId>lombok</artifactId>-->
-<!--						</exclude>-->
-<!--					</excludes>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
+			<plugin>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-maven-plugin</artifactId>
+    <!-- 如果沒有其他需要配置的項目，這裡可以省略 <configuration> 標籤 -->
+</plugin>
+
 				
 				  
 			</plugins>
