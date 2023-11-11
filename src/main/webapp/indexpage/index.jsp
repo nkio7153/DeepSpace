@@ -19,7 +19,7 @@
         </style>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="./images/pic1.jpg" class="picfak w-100">
+                <img src="./images/pic4.jpg" class="picfak w-100">
                 <div class="carousel-caption">
                     <div class="container">
                         <div class="banner-info">

@@ -3,4 +3,4 @@
     <div class="banner-inner_overlay">
         <img src="${pageContext.request.contextPath}/indexpage/images/test.jpg" class="banner-inner_overlay_pic w-100" style="object-fit: cover; width: 100%; height: 100%;">
     </div>
-</section>
+	</section>

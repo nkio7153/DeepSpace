@@ -196,7 +196,7 @@ a.btn {
 }
 
 .picfak {
-    filter: brightness(0.6);
+    filter: brightness(0.8);
 }
 
 .banner-inner_overlay_pic {
@@ -233,4 +233,20 @@ a.btn {
 .dropdown:hover .dropdown-menu {
     display: block; /* 懸停時顯示 */
     opacity: 1;
+}
+
+.nav-link {
+    /* 移除Bootstrap樣式 */
+    display: initial; /* 移除display屬性 */
+    padding: initial; /* 移除padding屬性 */
+    color: #ddd; /* 移除color屬性 */
+}
+
+.nav-link:hover {
+    color: #ddd;
+}
+
+a:hover {
+    color: #ddd;
+    text-shadow: 2px 2px 2px rgba(0,0,0,0.5);
 }
