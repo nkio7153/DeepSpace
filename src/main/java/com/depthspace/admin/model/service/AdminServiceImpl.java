@@ -7,12 +7,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.hibernate.Session;
+
 import java.util.Base64.Encoder;
 
 import com.depthspace.admin.model.model.AdminDAO;
 import com.depthspace.admin.model.model.AdminDAOImpl;
 import com.depthspace.admin.model.model.AdminVO;
-
+import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 import com.depthspace.utils.HibernateUtil;
 // 搭配 JSP / Thymeleaf 後端渲染畫面，將交易動作至於 view filter
 public class AdminServiceImpl implements AdminService {
@@ -30,12 +33,15 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public AdminVO updateAdmin(AdminVO adminVO) {
-		int i = dao.update(adminVO);
-		if (i == 1) {
-			return adminVO;
-		}
-		return null;
+	public int updateAdmin(Integer adminId, String adminName, String adminAcc, String adminPwd, Integer adminStatus) {
+		AdminVO adminVO = new AdminVO();
+		adminVO.setAdminId(adminId);
+		adminVO.setAdminName(adminName);
+		adminVO.setAdminAcc(adminAcc);
+		adminVO.setAdminPwd(adminPwd);
+		adminVO.setAdminStatus(adminStatus);
+		
+		return dao.update(adminVO);
 	}
 
 	@Override
@@ -53,6 +59,15 @@ public class AdminServiceImpl implements AdminService {
 	public List<AdminVO> getAllAdmins() {
 	    return dao.getAll();
 	}
+
+	// 在 AdminServiceImpl 類中
+//	@Override
+//	public AdminVO findByAdminAcc(String adminAcc) {
+//	    return adminDAO.findByAdminAcc(adminAcc);
+//	}
+
+
+
 
 
 }
