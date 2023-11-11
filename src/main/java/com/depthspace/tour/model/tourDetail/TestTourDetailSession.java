@@ -1,8 +1,10 @@
-package com.depthspace.tour.model;
+package com.depthspace.tour.model.tourDetail;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.depthspace.tour.model.TourDetailVO;
+import com.depthspace.tour.model.TourDetailVO.CompositeDetail;
 import com.depthspace.utils.HibernateUtil;
 
 public class TestTourDetailSession {

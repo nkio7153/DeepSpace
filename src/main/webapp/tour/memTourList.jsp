@@ -51,12 +51,12 @@
     <h2>基本資訊</h2>
     <table style="width: 80%; margin: 0 auto;">
         <tr>
-            <td colspan="2">*日期*</td>
+            <td colspan="2">${list[0].startDate}</td>
 
         </tr>
         <tr style="text-align: center;">
             <td>總天數：</td>
-            <td>${tour.allDays} 天</td>
+            <td>${tour[0].allDays} 天</td>
         </tr>
         
     </table>
@@ -83,14 +83,15 @@
             <th>出發時間</th>
 <!--             <th>結束時間</th> -->
             <th>景點</th>
-            <th>地址</th>
+<!--             <th>地址</th> -->
         </tr>
+        
         <c:forEach var="dayDetail" items="${list}">
             <tr>
                 <td>${dayDetail.start}</td>
 <%--                 <td>${dayDetail.}</td> --%>
                 <td>${dayDetail.attractionsName}</td>
-                <td>${dayDetail.address}</td>
+<%--                 <td>${dayDetail.address}</td> --%>
             </tr>
         </c:forEach>
     </table>
