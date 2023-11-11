@@ -19,7 +19,7 @@
         </style>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="./images/pic4.jpg" class="picfak w-100">
+                <img src="./images/picicon.jpg" class="picfak w-100">
                 <div class="carousel-caption">
                     <div class="container">
                         <div class="banner-info">
@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="./images/pic2.jpg" class="picfak w-100">
+                <img src="./images/picicon1.jpg" class="picfak w-100">
                 <div class="carousel-caption d-none d-md-block">
                     <div class="container">
                         <div class="banner-info">
@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="./images/pic.jpg" class="picfak w-100">
+                <img src="./images/picicon3.jpg" class="picfak w-100">
                 <div class="carousel-caption d-none d-md-block">
                     <div class="container">
                         <div class="banner-info">
@@ -94,7 +94,7 @@
                         <strong>讓旅行更輕鬆，讓生活更美好</strong>
                     </h3>
                     <p class="mt-4">
-                        為了滿足不同的旅行者，我們提供了多種選擇。如果您正在尋找更加個性化的行程規劃，可以嘗試我們的AI行程規劃功能。只需輸入您的旅行日期、預算和目的地，我們的AI算法便會為您制定一個獨特而完美的行程。
+                        在現今生活水平提升的時代，人們渴望深度的旅行體驗。在台灣，個人自由行已逐漸超越傳統團體旅遊。因此，我們推出一個彈性旅遊規劃平台，不僅可以追隨旅遊達人，還能自訂行程，讓每次旅行都是一段獨特的回憶。
                     </p>
                     <p class="mt-3">
                         如果您需要更加輕鬆的選擇，可以考慮購買我們的套裝行程。我們的套裝行程已經為您精心設計，可以讓您輕鬆享受美好的旅行體驗，而無需擔心任何瑣碎的細節。另外，我們也提供各種各樣的票券，包括景點、活動、表演等等。只需透過我們的網站，便可以輕鬆購買您感興趣的票券，讓您的旅行更加豐富多彩。
