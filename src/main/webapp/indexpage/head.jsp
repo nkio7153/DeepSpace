@@ -6,8 +6,8 @@
 <!-- bookstrap css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/indexpage/css/style.css">
 <!-- 載入icon -->
-<link rel="shortcut icon" href="${pageContext.request.contextPath}/indexpage/images/icon.png" />
-<link rel="bookmark" href="${pageContext.request.contextPath}/indexpage/images/icon.png" />
+<link rel="shortcut icon" href="${pageContext.request.contextPath}/indexpage/images/iconhtml.png" />
+<%-- <link rel="bookmark" href="${pageContext.request.contextPath}/indexpage/images/iconhtml.png" /> --%>
 <script src="${pageContext.request.contextPath}/indexpage/js/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/indexpage/js/bootstrap.min.js"></script>
 <!--載入 jQuery-->
