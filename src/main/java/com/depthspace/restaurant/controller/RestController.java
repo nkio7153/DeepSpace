@@ -11,23 +11,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.tagext.TryCatchFinally;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.TypeReference;
 import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.restaurant.service.MemBookingService;
 import com.depthspace.restaurant.service.MemBookingServiceImpl;
 import com.depthspace.restaurant.service.RestService;
 import com.depthspace.restaurant.service.RestServiecImpl;
 import com.depthspace.utils.JedisUtil;
+import com.depthspace.utils.MailService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 
 import redis.clients.jedis.Jedis;
 
@@ -130,8 +124,8 @@ public class RestController extends HttpServlet {
 		String rests = jedis.get("rests");
 
 		List<RestVO> restvo = JSON.parseArray(rests, RestVO.class);
-		List<RestVO> list = new ArrayList<>();
 //		List<RestVO> restvo = JSON.parseObject(rests, new TypeReference<List<RestVO>>() {});
+		List<RestVO> list = new ArrayList<>();
 		if (restType != null && restName != null) {
 			for (RestVO vo : restvo) {
 				if (vo.getRestType().equals(restType) && vo.getRestName().contains(restName)) {
@@ -154,6 +148,8 @@ public class RestController extends HttpServlet {
 		jedis.close();
 		return list;
 	}
+	
+	
 
 
 }

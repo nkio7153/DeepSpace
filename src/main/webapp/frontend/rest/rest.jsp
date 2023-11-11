@@ -47,6 +47,7 @@
 			<form id="bookingform" action="/DepthSpace/RestApi/doMemBooking?action=add" method="post" class="p-5">
 				  <input type="hidden" name="restId" value="${rest.restId}">
 				  <input type="hidden" name="memId" value="<%= memId %>">
+				  <input type="hidden" name="restName" value="${rest.restName}">
 				  <div class="row mb-3">
 				    <label for="bookingDate" class="col-sm-2 col-form-label">選擇日期：</label>
 				    <div class="col">
@@ -123,11 +124,29 @@
 			          data: $('#bookingform').serialize(),
 			          url: $(this).attr('action'),
 			          success: function(data) {
-			        	  console.log(date);
 			              alert('新增成功');
+			          },
+			          error: function(xhr, status, error) {
+			              alert('系統異常');
 			          }
-			   });
+				});
+			    
+			    $.ajax({
+			          type: 'post',
+			          data: $('#bookingform').serialize(),
+			          url: "/DepthSpace/RestApi/toMail",
+			          success: function(data) {
+			              console.log('新增成功');
+			          },
+			          error: function(xhr, status, error) {
+			        	  console.log('系統異常');
+			          }
+				});
+			    
 			});
+			
+			
+			
 			
 		})
 	</script>

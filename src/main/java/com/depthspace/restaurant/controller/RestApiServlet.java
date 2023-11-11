@@ -26,6 +26,7 @@ import com.depthspace.restaurant.service.RestService;
 import com.depthspace.restaurant.service.RestServiecImpl;
 import com.depthspace.restaurant.service.RestcollectionService;
 import com.depthspace.restaurant.service.RestcollectionServiceImpl;
+import com.depthspace.utils.MailService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -89,6 +90,9 @@ public class RestApiServlet extends HttpServlet {
 				break;
 			case "/doRestBookingDate":
 				doRestBookingDate(req, resp);
+				break;
+			case "/toMail":
+				toMail(req, resp);
 				break;
 		}
 		
@@ -364,7 +368,25 @@ public class RestApiServlet extends HttpServlet {
 		}
 	}
 	
-	
+	private void toMail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		String restName = req.getParameter("restName");
+		String restId = req.getParameter("restId");
+		String memId = req.getParameter("memId");
+		String bookingTime = req.getParameter("bookingTime");
+		String bookingNumber = req.getParameter("bookingNumber");
+		String bookingDate = req.getParameter("bookingDate");
+		
+		
+		
+		
+		String to = "tibamemasa@gmail.com";
+		String subject = "訂位通知";
+		String messageText = "訂位通知\n餐廳名稱： "+restName+"\n會員名稱； "+memId+"\n預約日期： "+bookingDate+"\n";
+		
+		MailService mailService = new MailService();
+		mailService.sendMail(to, subject, messageText);
+	}
 	
 	
 	
