@@ -17,15 +17,42 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.depthspace.member.model.MemVO;
+import com.depthspace.member.service.HbMemService;
 import com.depthspace.member.service.MemberService;
 
 @WebServlet({ "/mem/*" })
 @MultipartConfig
 public class MemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	protected int allowUser(String memAcc, String password) {
+		MemVO memvo = null;
+		HbMemService ms= new HbMemService();
+		
+		if(ms.findByMemAcc(memAcc)==null) {
+			System.out.println("沒有此帳號");
+			return 1;
+		}
+		
+		else {
+			memvo=ms.findByMemAcc(memAcc);
+	    		System.out.println("2");
+	    	}  
+	    	
+	    if (memvo.getMemAcc().equals(memAcc) && memvo.getMemPwd().equals(password)) {
+	       	System.out.println("成功登入");
+	       	return 3;
+	          
+	    }else {
+	      	System.out.println("密碼錯誤");
+	       	return 4; 
+	    	  }
+	    }
+		
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -491,6 +518,14 @@ public class MemberServlet extends HttpServlet {
 	protected void doSuccess(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String memAcc = req.getParameter("memAcc");
 		String password = req.getParameter("password");
+		
+		MemVO memVo = null;
+		
+		HttpSession session=req.getSession();
+		session.setAttribute("login",memAcc);
+		System.out.println("存session成功");
+		
+		
 		
 		MemberService ms = new MemberService();
 		MemVO mem = ms.addMemberInfo(memAcc);
