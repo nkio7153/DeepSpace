@@ -72,7 +72,7 @@ public class ForumArticlesServiceImpl implements ForumArticlesService {
 
 	@Override
 	public List<ForumArticlesVO> getByArtiTypeId(Integer artiTypeId) {
-		List<ForumArticlesVO> list = dao.getByMemId(artiTypeId);
+		List<ForumArticlesVO> list = dao.getByArtiTypeId(artiTypeId);
 		for (ForumArticlesVO vo : list) {
 			if (vo.getArtiImg() != null) {
 				// 獲取 Base64 編碼器
