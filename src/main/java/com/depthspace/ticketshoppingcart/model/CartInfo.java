@@ -4,6 +4,7 @@ import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -16,6 +17,17 @@ public class CartInfo {
     private Integer serialId;
     @Column(name="TICKET_NAME")
     private String ticketName;
+    //修改
+
+//    @Column(name="PROMOTION_ID")
+//    private Integer promotionId;
+//
+//    @Column(name="START_DATE")
+//    private Timestamp startDate;
+//
+//    @Column(name="END_DATE")
+//    private Timestamp endDate;
+    //修改
     @Column(name="DESCRIPTION")
     private String description;
     @Column(name="PRICE")

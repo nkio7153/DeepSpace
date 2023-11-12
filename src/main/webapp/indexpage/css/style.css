@@ -196,12 +196,32 @@ a.btn {
 }
 
 .picfak {
-    filter: brightness(0.6);
+    filter: brightness(0.7);
+    opacity: 0.8;
+    width: 100%;   /* 讓圖片寬度隨著容器的大小改變 */
+    max-width: 1600px; /* 最大寬度為1200px */
+    height: 700px;  /* 高度自動調整以保持圖片比例 */
+}
+
+/* 小於768px寬的裝置 */
+@media (max-width: 768px) {
+    .picfak {
+        max-width: 100%; /* 在小裝置上，圖片最大寬度為容器的100% */
+        height: auto; /* 高度自動調整 */
+    }
+}
+
+/* 更小的裝置，如手機 */
+@media (max-width: 480px) {
+    .picfak {
+        max-width: 100%; /* 在更小的裝置上，圖片最大寬度為容器的100% */
+        height: auto; /* 高度自動調整 */
+    }
 }
 
 .banner-inner_overlay_pic {
-    filter: brightness(0.6);
-    max-height: 300px;
+    filter: brightness(0.9);
+    max-height: 200px;
     width: auto;
     /* 保持原始宽高比 */
     display: block;
@@ -210,4 +230,74 @@ a.btn {
     /* 如果需要居中图像 */
     overflow: hidden;
     /* 超过最大高度时隐藏内容 */
+}
+
+/* 調整下拉選單的基本樣式 */
+.navbar-nav .dropdown-menu {
+    border: none; /* 移除邊框 */
+}
+
+/* 調整下拉選單項目的樣式 */
+.navbar-nav .dropdown-menu .dropdown-item {
+    color:#000000; /* 設置文字顏色 */
+    padding: 8px 15px; /* 設置內部間距 */
+}
+
+/* 下拉選單的動畫效果 */
+.dropdown-menu {
+    display: none; /* 初始不顯示 */
+    opacity: 0;
+    transition: opacity 0.5s ease; /* 平滑過渡效果 */
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block; /* 懸停時顯示 */
+    opacity: 1;
+}
+
+.nav-link {
+    /* 移除Bootstrap樣式 */
+    display: initial; /* 移除display屬性 */
+    padding: initial; /* 移除padding屬性 */
+    color: #ddd; /* 移除color屬性 */
+}
+
+.nav-link:hover {
+    color: #ddd;
+}
+
+/* 這樣會限制樣式只影響導航列(navbar)內的所有<a>標籤 */
+.navbar a:hover {
+    color: #ddd;
+    text-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+}
+
+/* 這樣會限制樣式只影響導航列(navbar)內的按鈕類<a>標籤 */
+.carousel-caption a.btn:hover {
+    color: #FFFFFF;
+    text-shadow: 3px 3px 3px rgba(0,0,0,0.5);
+}
+
+ul.social_section_1info {
+    display: flex;
+    justify-content: flex-start;
+    list-style-type: none;
+    padding: 0;
+}
+
+ul.social_section_1info li {
+    margin-right: 30px; /* 設定圖標間隔為 10px */
+}
+
+ul.social_section_1info li:last-child {
+    margin-right: 0; /* 最後一個圖標不需要間隔 */
+}
+
+.social_section_1info img {
+    height: 100px; /* 調整圖片高度 */
+}
+
+/* 使用!important来覆盖默认样式（不推荐，除非没有其他办法） */
+.nav-link {
+    display: initial !important;
 }

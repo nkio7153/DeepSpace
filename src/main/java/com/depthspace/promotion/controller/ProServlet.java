@@ -163,31 +163,36 @@ public class ProServlet extends HttpServlet {
         String description;
         Timestamp startDate = null;
         Timestamp endDate = null;
-        List<Integer> ticketIds=null;
+        List<Integer> ticketIds=new ArrayList<>();
         List<String> errorMsgs = new LinkedList<String>();
 
         //取得所有票券id
         String[] ticketIdsStr = req.getParameterValues("ticketId");
         if(ticketIdsStr != null) {
             for (String ticketId : ticketIdsStr) {
-                try {
-                    Integer tid = Integer.parseInt(ticketId);
-                    ticketIds.add(tid);
-                }catch(NumberFormatException e){
-                    e.printStackTrace();
+                //把json格式的字串中的","清掉
+                String[] parts = ticketId.split(",");
+                for (String part : parts) {
+                    try {
+                        Integer tid = Integer.parseInt(part);
+                        ticketIds.add(tid);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-            //取得正在促銷中的票券id
-            List<Integer> onSale = proSv.getOnSale();
+            //取得欲添加票券與正在促銷中重複的票券id
+            List<Integer> duplicates = proSv.getOnSale(ticketIds);
 
-            //使用java流來查找重複的值
-            List<Integer> duplicates = onSale.stream()
-                    .filter(ticketIds::contains)
-                    .collect(Collectors.toList());
-            //如果duplicate不為空，則表示有重複的值
             if (!duplicates.isEmpty()) {
-                errorMsgs.add("你選的票券正在促銷中");//錯誤驗證
+                errorMsgs.add("你選的票券名稱正在促銷中");//錯誤驗證
             }
+            //驗證新增的票券名稱是否有重複
+            HashSet<Integer> set = new HashSet<>(ticketIds);
+            if (ticketIds.size() != set.size()){
+                errorMsgs.add("你選的票券名稱有重複");//錯誤驗證
+            }
+
         }
 
         promoName = req.getParameter("promoName");

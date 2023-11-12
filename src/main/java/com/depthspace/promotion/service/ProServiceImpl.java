@@ -12,13 +12,22 @@ import com.depthspace.utils.HibernateUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class ProServiceImpl implements ProService{
     private HbProDao dao;
     private HbProDeDao proDeDao;
+
+    private ScheduledExecutorService scheduler;
+    private ScheduledFuture<?> scheduledTask;
     public ProServiceImpl(){
         dao=new HbProDaoImpl(HibernateUtil.getSessionFactory());
         proDeDao=new HbProDeDaoImpl(HibernateUtil.getSessionFactory());
+        //初始化排程器，只須執行一次
+        scheduler= Executors.newScheduledThreadPool(1);
     }
     //新增促銷活動並取得最新一筆促銷編號，並遍歷生成對應的多筆促銷明細
     public void addPromotion(PromotionVO entity, String[] ticketIds, BigDecimal discount){
@@ -39,6 +48,17 @@ public class ProServiceImpl implements ProService{
             }
             //新增促銷對應的多筆促銷明細
             proDeDao.insertBatch(proDeList);
+
+            // 設定排程任務來刪除促銷
+            long delay = entity.getEndDate().getTime() - System.currentTimeMillis();
+            if (delay > 0) {
+                scheduledTask = scheduler.schedule(() -> {
+                    // 在這裡執行刪除促銷的代碼
+                    // 調用 delete 方法刪除促銷資料
+                    dao.delete(entity.getPromotionId());
+                    proDeDao.deleteByProId(entity.getPromotionId());
+                }, delay, TimeUnit.MILLISECONDS);
+            }
         }
     }
     public PromotionVO update(PromotionVO entity){
@@ -91,8 +111,18 @@ public class ProServiceImpl implements ProService{
         }
     //取得當前正在促銷活動票券
     @Override
-    public List<Integer> getOnSale() {
-        return proDeDao.getOnSale();
+    public List<Integer> getOnSale(List<Integer> ticketIds) {
+        return proDeDao.getOnSale(ticketIds);
+    }
+
+
+    @Override
+    public void stopScheduler() {
+        // 停止排程器
+        if (scheduledTask != null && !scheduledTask.isDone()) {
+            scheduledTask.cancel(false);
+        }
+        scheduler.shutdown();
     }
 
 }

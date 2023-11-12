@@ -23,14 +23,6 @@
         min-height: 60vh;
     }
 
-    /*.bg-wood {*/
-    /*    background-color: #c19a6b;*/
-    /*}*/
-
-    /*.bg-wood2 {*/
-    /*    background-color: #D2B48C;*/
-    /*}*/
-
     .parent-div {
         display: flex;
         /* 使用Flexbox布局 */
@@ -43,10 +35,6 @@
         /* 推動這個元素到最右側 */
     }
 
-    /*.bg-gray {*/
-    /*    background-color: rgb(211, 211, 211);*/
-    /*    !* 淺灰色 *!*/
-    /*}*/
 
     .text-choco {
         color: #4E342E;
@@ -73,8 +61,6 @@
         /* 移除填充 */
         height: 100%;
         /* 設定高度為100% */
-
-        <%--background-image: url("${pageContext.request.contextPath}/backend/backIndex/image/table2.jpg");--%>
         background-image: url("${pageContext.request.contextPath}/backend/backIndex/image/mountain.jpg");
 
         background-size: cover;

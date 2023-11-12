@@ -30,7 +30,7 @@ public interface HbProDeDao {
     long getTotal();
 
     int deleteByProId(Integer proId);
-    List<Integer> getOnSale();
+    List<Integer> getOnSale(List<Integer> ticketIds);
 
 
 }
