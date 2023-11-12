@@ -65,9 +65,6 @@ public class TicketCollectionServlet extends HttpServlet {
 		case "/toggleFavorite": // 切換收藏狀態
 			toggleFavorite(req, res);
 			break;
-		case "/find": // 篩選
-			doFind(req, res);
-			break;
 		case "/del": // 移除
 			doDel(req, res);
 			break;
@@ -195,11 +192,12 @@ public class TicketCollectionServlet extends HttpServlet {
 
 	/*************** 刪除一個 *****************/
 	protected void doDel(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		HttpSession session = req.getSession(); 
-		Integer memId =null;
-		if (session.getAttribute("memId") != null) {
-		memId =Integer.valueOf((String)session.getAttribute("memId"));
-		}
+		HttpSession session = req.getSession(false);
+	    Integer memId = (Integer) session.getAttribute("memId");
+	    
+	    memId = (Integer)session.getAttribute("memId");
+		System.out.println(memId);
+		
 		System.out.println(memId);
 //		Integer memId = 2; // ****測試寫死****
 
@@ -226,36 +224,4 @@ public class TicketCollectionServlet extends HttpServlet {
 		out.close();
 	}
 
-	/************ 搜尋 ************/
-	private void doFind(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-//		res.setContentType("application/json");
-//		res.setCharacterEncoding("UTF-8");
-//		PrintWriter out = res.getWriter();
-//		JSONObject responseJson = new JSONObject();
-//		
-//		// Integer memId = (Integer) req.getSession().getAttribute("memId");
-//		Integer memId = 2; // ****測試寫死****
-//		
-//	    List<TicketCollectionVO> ticket = ticketCollectionService.getOne(memId);
-//
-//	    if (ticket == null || ticket.isEmpty()) {
-//	        responseJson.put("error", "沒有找到票券資訊");
-//	    } else {
-//	        // 把查詢結果轉換為JSON陣列
-//	        JSONArray ticketsJsonArray = new JSONArray();
-//	        for (TicketCollectionVO tickets : ticket) {
-//	            JSONObject ticketJson = new JSONObject();
-//	            ticketJson.put("ticketId", ticket.getTicketId()); // 假設TicketVO有getTicketId方法
-//	            ticketJson.put("ticketName", ticket.getTicketName()); // 假設TicketVO有getTicketName方法
-//	            // ...其他票券資訊
-//	            ticketsJsonArray.put(ticketJson);
-//	        }
-//	        responseJson.put("tickets", ticketsJsonArray);
-//	    }
-//
-//	    // 將結果打印到前端
-//	    out.print(responseJson.toString());
-//	    out.flush();
-//	    out.close();
-	}
 }
