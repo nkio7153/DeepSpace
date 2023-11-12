@@ -263,7 +263,10 @@ $(document).ready(function() {
  // 購物車加入
     $(".btn").on("click", function() {
         let button = $(this);
-        let url = "${pageContext.request.contextPath}/tsc/save?ticketId=" + ${ticket.ticketId} + "&memId=1";
+		let quantity=$("#ticketQuantity").val();
+		$("#ticketQuantity").val(1);
+		console.log(quantity);
+        let url = "${pageContext.request.contextPath}/tsc/save?ticketId=" + ${ticket.ticketId} + "&quantity="+quantity;
         fetch(url)
             .then(function(response) {
                 return response.text();

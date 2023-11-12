@@ -90,7 +90,7 @@
                         <div class="col-md-4">
                             <label for="promoName" class="form-label">促銷名稱:</label>
                             <input type="text" class="form-control" name="promoName" id="promoName" value="${pro.promoName}"><br>
-                            <input type="text" class="hidden" name="promotionId" value="${pro.promotionId}">
+                            <input type="text" class="hidden" name="promotionId" id="promotionId" value="${pro.promotionId}">
                         </div>
 
                         <div class="col-md-4">
@@ -174,6 +174,7 @@
 <script>
 
     $("#editCheck").on("click", function (){
+        let proId=$("#promotionId").val();
         let promoName=$("#promoName").val();
         let description=$("#description").val();
         let startDate=$("#startDate").val();
@@ -183,6 +184,7 @@
         }).get();
         //----------- 打包資料 (start)
         let data = {
+            proId:proId,
             promoName:promoName,
             description:description,
             startDate:startDate,

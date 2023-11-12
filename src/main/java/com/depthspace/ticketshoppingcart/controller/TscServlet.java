@@ -236,17 +236,27 @@ public class TscServlet extends HttpServlet {
 
     //接收添加購物車的ajax請求，並返回添加成功
     protected void doSave(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer memId = 2;
+        Integer memId=null;
+
         Integer ticketId;
-        Integer quantity = 1;
+        Integer quantity=null;
         try {
 //            memId = Integer.valueOf(req.getParameter("memId"));
             ticketId = Integer.valueOf(req.getParameter("ticketId"));
+            if(req.getParameter("quantity")!=null){
+                quantity=Integer.valueOf(req.getParameter("quantity"));
+            }else{
+                quantity=1;
+            }
 
         } catch (NumberFormatException e) {
             // 處理轉型錯誤
             e.printStackTrace();
             return;
+        }
+        HttpSession session = req.getSession(false);
+        if(session.getAttribute("memId")!=null) {
+            memId = (Integer)session.getAttribute("memId");
         }
 
         RedisCart redisCart = new RedisCart();
@@ -354,6 +364,8 @@ public class TscServlet extends HttpServlet {
             memId = Integer.valueOf(req.getParameter("memId"));
             String coupenStr = req.getParameter("coupen");
             HttpSession session = req.getSession();
+
+            //取得會員資料、姓、名
             MemVO vo = (MemVO)session.getAttribute("authenticatedMem");
             String fullName = vo.getMemName();
             if(fullName != null && !fullName.isEmpty()){
