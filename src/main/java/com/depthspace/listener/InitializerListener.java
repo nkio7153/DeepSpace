@@ -3,6 +3,8 @@ package com.depthspace.listener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import com.depthspace.promotion.service.ProService;
+import com.depthspace.promotion.service.ProServiceImpl;
 import com.depthspace.utils.HibernateUtil;
 
 public class InitializerListener implements ServletContextListener {
@@ -17,6 +19,8 @@ public class InitializerListener implements ServletContextListener {
 	public void contextDestroyed(ServletContextEvent sce) {
 		System.out.println("context ended");
 		HibernateUtil.shutdown();
+		ProServiceImpl proService = new ProServiceImpl();
+		proService.stopScheduler();
 	}
 
 }

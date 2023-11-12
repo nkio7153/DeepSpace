@@ -1,5 +1,6 @@
 package com.depthspace.ticketshoppingcart.controller;
 
+import com.depthspace.member.model.MemVO;
 import com.depthspace.ticket.model.TicketImagesVO;
 import com.depthspace.ticket.oscardao.HbTiDao;
 import com.depthspace.ticket.service.TicketService;
@@ -19,6 +20,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.*;
 
@@ -50,6 +52,9 @@ public class TscServlet extends HttpServlet {
                 break;
             case "/save":
                 doSave(req, resp);
+                break;
+            case "/memCartList":
+                doMemList(req, resp);
                 break;
             default:
                 // 在這裡處理所有其他情況
@@ -108,12 +113,14 @@ public class TscServlet extends HttpServlet {
         //如果cookie中不含有購物車資料執行以下
         resp.setContentType("text/html;charset=UTF-8");
         req.setCharacterEncoding("UTF-8");
-        Integer memId;
-        try {
-            memId = Integer.valueOf(req.getParameter("memId"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
+        Integer memId=null;
+        if (req.getParameter("memId")!=null){
+            memId=Integer.parseInt(req.getParameter("memId"));
+        }
+
+        HttpSession session = req.getSession(false);
+        if(session.getAttribute("memId")!=null) {
+            memId = (Integer)session.getAttribute("memId");
         }
         System.out.println(memId);
         //從redis中取出會員編號對應的購物車 票券編號及數量
@@ -341,9 +348,21 @@ public class TscServlet extends HttpServlet {
     protected void checkout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Integer memId = null;
         Integer coupen=null;
+        String firstName="";
+        String lastName="";
         try {
             memId = Integer.valueOf(req.getParameter("memId"));
             String coupenStr = req.getParameter("coupen");
+            HttpSession session = req.getSession();
+            MemVO vo = (MemVO)session.getAttribute("authenticatedMem");
+            String fullName = vo.getMemName();
+            if(fullName != null && !fullName.isEmpty()){
+                firstName=fullName.substring(0,1);
+                if(fullName.length()>1){
+                    lastName=fullName.substring(1);
+                }
+            }
+
             if(coupenStr == null ||coupenStr.isEmpty()){
                 coupen=0;
             }else{
@@ -370,6 +389,8 @@ public class TscServlet extends HttpServlet {
         List<CartInfo> list = tscSv.getByTicketIds(ticketIds, items);
 
         //遍歷會員購物車資料
+        req.setAttribute("firstName",firstName);
+        req.setAttribute("lastName",lastName);
 
         req.setAttribute("list", list);
         req.setAttribute("memId", memId);
