@@ -106,8 +106,6 @@
 		<input type="submit" value="儲存會員資料">
 		<input type="hidden" name="action" value="modify">
 	
-	
-<!--         <input type="button" value="儲存會員資料" onclick="save()" /> -->
         <input type="button" value="取消" onclick="history.back()">
        
     </p>

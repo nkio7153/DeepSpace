@@ -7,6 +7,7 @@ import com.depthspace.promotion.model.promotiondetails.hibernate.HbProDeDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.sql.Date;
 import java.util.List;
 
 public class HbProDeDaoImpl implements HbProDeDao {
@@ -96,12 +97,17 @@ public class HbProDeDaoImpl implements HbProDeDao {
                 .setParameter("proId",proId)
                 .executeUpdate();
     }
-    public List<Integer> getOnSale(){
+    public List<Integer> getOnSale(List<Integer> ticketIds){
         return getSession().createQuery("SELECT pd.ticketId\n" +
                 "FROM PromotionVO p " +
                 "INNER JOIN PromotionDetailsVO pd ON p.promotionId = pd.promotionId " +
-                "WHERE :currentDate BETWEEN p.startDate AND p.endDate", Integer.class)
+                "WHERE :currentDate BETWEEN p.startDate AND p.endDate " +
+                "AND pd.ticketId in (:ticketIds)", Integer.class)
+                .setParameter("currentDate",new Date(System.currentTimeMillis()))
+                .setParameter("ticketIds",ticketIds)
                 .list();
+
+
     }
 
 }

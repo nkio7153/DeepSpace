@@ -48,18 +48,18 @@ $(document).ready(function() {
         }
     })
     
-    $.ajax({
-        type: "post",
-        url: '<%=request.getContextPath()%>/forumArticles.do?action=getmemlist',
-        dataType: "json",
-        success: function(data) {
-            var selectBox = $("#memId");
-            selectBox.empty(); 
-            $.each(data, function(index, value) {
-                selectBox.append($("<option></option>").attr("value", value).text(value));
-            });
-        }
-    });
+//     $.ajax({
+//         type: "post",
+<%--         url: '<%=request.getContextPath()%>/forumArticles.do?action=getmemlist', --%>
+//         dataType: "json",
+//         success: function(data) {
+//             var selectBox = $("#memId");
+//             selectBox.empty(); 
+//             $.each(data, function(index, value) {
+//                 selectBox.append($("<option></option>").attr("value", value).text(value));
+//             });
+//         }
+//     });
     
     $.ajax({
         type: "post",
@@ -125,12 +125,13 @@ $(document).ready(function() {
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>文章清單</h1>
             <!-- 查詢表單 -->
-    <form method="post" action="<%=request.getContextPath()%>/forumArticles.do?action=domemlist">
-        <label for="memId">選擇會員編號：</label>
-        <select id="memId" name="memId">
-        </select>
-        <input type="submit" value="查詢">
-    </form>
+<%--     <form method="post" action="<%=request.getContextPath()%>/forumArticles.do?action=domemlist"> --%>
+<!--         <label for="memId">選擇會員編號：</label> -->
+<!--         <select id="memId" name="memId"> -->
+<!--         </select> -->
+<!--         <input type="submit" value="查詢"> -->
+<!--     </form> -->
+	<button type="button" class="btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=getmemlist'">我的文章</button>
     <form method="post" action="<%=request.getContextPath()%>/forumArticles.do?action=doArtiTypeList">
         <label for="artiTypeId">選擇文章類型：</label>
         <select id="artiTypeId" name="artiTypeId">

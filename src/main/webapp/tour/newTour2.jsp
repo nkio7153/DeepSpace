@@ -252,6 +252,7 @@ $(document).ready(function () {
                     <div>
                         <br>
                         <span class="oneDay"> 第 ${day} 天 </span>
+                        <input type="hidden" name="oneDay[${day}]" value="${day}">
                         <br><br>
                         	 <!-- 		下拉式選單:選擇縣市 -->
                         	 <div class="city-container">

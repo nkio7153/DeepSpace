@@ -16,6 +16,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.alibaba.fastjson.JSONArray;
@@ -64,9 +65,6 @@ public class ForumArticlesServlet extends HttpServlet {
 		case "getmemlist":
 			getMemListForumArticles(req, resp);
 			break;
-		case "domemlist":
-			doMemListForumArticles(req, resp);
-			break;
 		case "addArticle":
 			addArticle(req, resp);
 			break;
@@ -78,7 +76,7 @@ public class ForumArticlesServlet extends HttpServlet {
 			break;
 		}
 	}
-
+	//選擇符合類型文章
 	private void doArtiTypeList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("application/json; charset=UTF-8");
 		Integer artiTypeId;
@@ -94,7 +92,7 @@ public class ForumArticlesServlet extends HttpServlet {
 		System.out.println(list);
 		req.getRequestDispatcher("/forumArticles/articlesTypeList.jsp").forward(req, resp);
 	}
-
+	//取得類型列表
 	private void getArtiTypeList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		List<ArticlesTypeVO> atvo = articlesTypeService.getAll();
 
@@ -108,41 +106,26 @@ public class ForumArticlesServlet extends HttpServlet {
 		// 發送 JSON 響應
 		resp.getWriter().write(json);
 	}
-
+	//取得所有類型有哪些
 	private void addArticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<ArticlesTypeVO> atvo = articlesTypeService.getAll();
 		req.setAttribute("atvo", atvo);
 		req.getRequestDispatcher("/forumArticles/add.jsp").forward(req, resp);
 	}
-
-	private void doMemListForumArticles(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		resp.setContentType("application/json; charset=UTF-8");
-		Integer memId;
-		try {
-			memId = Integer.valueOf(req.getParameter("memId"));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
-		List<ForumArticlesVO> list = forumArticlesService.getByMemId(memId);
+	//取得該會員的文章列表
+	private void getMemListForumArticles(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+		Integer memId=null;
+        HttpSession session = req.getSession(false);
+        if(session.getAttribute("memId")!=null) {
+            memId = (Integer)session.getAttribute("memId");
+        }
+        List<ForumArticlesVO> list = forumArticlesService.getByMemId(memId);
 		req.setAttribute("list", list);
 		req.setAttribute("memId", memId);
 		System.out.println(list);
 		req.getRequestDispatcher("/forumArticles/memList.jsp").forward(req, resp);
 	}
-
-	private void getMemListForumArticles(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		List<ForumArticlesVO> forum = forumArticlesService.getAll();
-		HashSet<Integer> memId = new HashSet<>();
-		for (ForumArticlesVO vo : forum) {
-			memId.add(vo.getMemId());
-		}
-		JSONArray arr = JSONArray.parseArray(JSON.toJSONString(memId));
-		resp.setContentType("application/json; charset=UTF-8");
-		resp.getWriter().write(arr.toString());
-	}
-
+	//取得所有文章列表
 	private void listForumArticles(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		List<ForumArticlesVO> forum = forumArticlesService.getAll();
@@ -152,14 +135,15 @@ public class ForumArticlesServlet extends HttpServlet {
 		System.out.println(arr.toString());
 		out.print(arr.toString());
 	}
-
+	//刪除文章
 	private void deleteForumArticles(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		Integer articleId = Integer.parseInt(req.getParameter("articleId"));
 		forumArticlesService.delete(articleId);
 	}
-
+	//修改文章
 	private void updateForumArticles(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
+		System.out.println("執行Update方法");
 		byte[] artiImg = null;
 		try {
 			Integer articleId = parseIntegerParameter(req.getParameter("articleId"));
@@ -170,6 +154,7 @@ public class ForumArticlesServlet extends HttpServlet {
 			String artiTimeStr = req.getParameter("artiTime");
 			Timestamp artiTime = parseTimestamp(artiTimeStr);
 			String artiText = req.getParameter("artiText");
+			System.out.println(artiText);
 			Integer artiLk = parseIntegerParameter(req.getParameter("artiLk"));
 			Part artiImgStr2 = req.getPart("artiImgStr");
 			if (artiImgStr2 != null && artiImgStr2.getSize() > 0) {
@@ -185,18 +170,22 @@ public class ForumArticlesServlet extends HttpServlet {
 			ForumArticlesVO forum = new ForumArticlesVO(articleId, memId, msgId, artiTypeId, artiTitle, artiTime,
 					artiText, artiLk, artiImg);
 			forumArticlesService.update(forum);
-			resp.sendRedirect(req.getContextPath() + "/forumArticles/list.jsp");
+			getMemListForumArticles(req, resp);
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input: " + e.getMessage());
 		}
 	}
-
+	//新增文章
 	private void addForumArticles(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
 		byte[] artiImg = null;
 		try {
-			Integer memId = parseIntegerParameter(req.getParameter("memId"));
+			Integer memId=null;
+	        HttpSession session = req.getSession(false);
+	        if(session.getAttribute("memId")!=null) {
+	            memId = (Integer)session.getAttribute("memId");
+	        }
 			Integer msgId = parseIntegerParameter(req.getParameter("msgId"));
 			Integer artiTypeId = parseIntegerParameter(req.getParameter("artiTypeId"));
 			String artiTitle = req.getParameter("artiTitle");

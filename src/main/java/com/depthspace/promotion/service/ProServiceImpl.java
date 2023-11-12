@@ -12,13 +12,22 @@ import com.depthspace.utils.HibernateUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class ProServiceImpl implements ProService{
     private HbProDao dao;
     private HbProDeDao proDeDao;
+
+    private ScheduledExecutorService scheduler;
+    private ScheduledFuture<?> scheduledTask;
     public ProServiceImpl(){
         dao=new HbProDaoImpl(HibernateUtil.getSessionFactory());
         proDeDao=new HbProDeDaoImpl(HibernateUtil.getSessionFactory());
+        //初始化排程器，只須執行一次
+        scheduler= Executors.newScheduledThreadPool(1);
     }
     //新增促銷活動並取得最新一筆促銷編號，並遍歷生成對應的多筆促銷明細
     public void addPromotion(PromotionVO entity, String[] ticketIds, BigDecimal discount){
@@ -52,6 +61,7 @@ public class ProServiceImpl implements ProService{
         proDeDao.deleteByProId(promotionId);
         return null;
     }
+    //取得還沒結束的所有促銷(包含未來促銷)
     public List<PromotionVO> getAll(){
         List<PromotionVO> list = dao.getAll();
         return list;
@@ -91,8 +101,10 @@ public class ProServiceImpl implements ProService{
         }
     //取得當前正在促銷活動票券
     @Override
-    public List<Integer> getOnSale() {
-        return proDeDao.getOnSale();
+    public List<Integer> getOnSale(List<Integer> ticketIds) {
+        return proDeDao.getOnSale(ticketIds);
     }
+
+
 
 }

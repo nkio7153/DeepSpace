@@ -4,10 +4,11 @@ import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name="CartView")
+@Table(name="CartInfo")
 public class CartInfo {
     @Id
     @Column(name="TICKET_ID")
@@ -16,6 +17,17 @@ public class CartInfo {
     private Integer serialId;
     @Column(name="TICKET_NAME")
     private String ticketName;
+    //修改
+
+    @Column(name="PROMOTION_ID")
+    private Integer promotionId;
+
+    @Column(name="START_DATE")
+    private Timestamp startDate;
+
+    @Column(name="END_DATE")
+    private Timestamp endDate;
+    //修改
     @Column(name="DESCRIPTION")
     private String description;
     @Column(name="PRICE")
@@ -30,10 +42,13 @@ public class CartInfo {
     public CartInfo() {
     }
 
-    public CartInfo(Integer ticketId, Integer serialId, String ticketName, String description, Integer price, BigDecimal discount, Integer quantity, Integer stock) {
+    public CartInfo(Integer ticketId, Integer serialId, String ticketName,Integer promotionId, Timestamp startDate, Timestamp endDate, String description, Integer price, BigDecimal discount, Integer quantity, Integer stock) {
         this.ticketId = ticketId;
         this.serialId = serialId;
         this.ticketName = ticketName;
+        this.promotionId = promotionId;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.description = description;
         this.price = price;
         this.discount = discount;
@@ -63,6 +78,30 @@ public class CartInfo {
 
     public void setTicketName(String ticketName) {
         this.ticketName = ticketName;
+    }
+
+    public Integer getPromotionId() {
+        return promotionId;
+    }
+
+    public void setPromotionId(Integer promotionId) {
+        this.promotionId = promotionId;
+    }
+
+    public Timestamp getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Timestamp startDate) {
+        this.startDate = startDate;
+    }
+
+    public Timestamp getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Timestamp endDate) {
+        this.endDate = endDate;
     }
 
     public String getDescription() {
@@ -110,12 +149,12 @@ public class CartInfo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CartInfo cartInfo = (CartInfo) o;
-        return Objects.equals(ticketId, cartInfo.ticketId) && Objects.equals(serialId, cartInfo.serialId) && Objects.equals(ticketName, cartInfo.ticketName) && Objects.equals(description, cartInfo.description) && Objects.equals(price, cartInfo.price) && Objects.equals(discount, cartInfo.discount)&& Objects.equals(quantity, cartInfo.quantity) && Objects.equals(stock, cartInfo.stock);
+        return Objects.equals(ticketId, cartInfo.ticketId) && Objects.equals(serialId, cartInfo.serialId) && Objects.equals(ticketName, cartInfo.ticketName) && Objects.equals(promotionId, cartInfo.promotionId) && Objects.equals(startDate, cartInfo.startDate) && Objects.equals(endDate, cartInfo.endDate) && Objects.equals(description, cartInfo.description) && Objects.equals(price, cartInfo.price) && Objects.equals(discount, cartInfo.discount) && Objects.equals(quantity, cartInfo.quantity) && Objects.equals(stock, cartInfo.stock);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ticketId, serialId, ticketName, description, price, discount, quantity, stock);
+        return Objects.hash(ticketId, serialId, ticketName, promotionId, startDate, endDate, description, price, discount, quantity, stock);
     }
 
     @Override
@@ -124,6 +163,9 @@ public class CartInfo {
                 "ticketId=" + ticketId +
                 ", serialId=" + serialId +
                 ", ticketName='" + ticketName + '\'' +
+                ", promotionId=" + promotionId +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", discount=" + discount +

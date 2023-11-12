@@ -20,6 +20,6 @@ public interface ProService {
 
     //更新促銷活動  用原本的促銷編號刪除對應的所有促銷明細 用新的物件更新促銷，並遍歷生成對應的多筆促銷明細
     void updatePromotion(PromotionVO entity, String[] ticketIds, BigDecimal discount);
-    List<Integer> getOnSale();
+    List<Integer> getOnSale(List<Integer> ticketIds);
 
 }

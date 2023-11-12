@@ -19,7 +19,7 @@
         </style>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="./images/picicon.jpg" class="picfak w-100">
+                <img src="${pageContext.request.contextPath}/indexpage/images/picicon.jpg" class="picfak w-100">
                 <div class="carousel-caption">
                     <div class="container">
                         <div class="banner-info">
@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="./images/picicon1.jpg" class="picfak w-100">
+                <img src="${pageContext.request.contextPath}/indexpage/images/picicon1.jpg" class="picfak w-100">
                 <div class="carousel-caption d-none d-md-block">
                     <div class="container">
                         <div class="banner-info">
@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="./images/picicon3.jpg" class="picfak w-100">
+                <img src="${pageContext.request.contextPath}/indexpage/images/picicon3.jpg" class="picfak w-100">
                 <div class="carousel-caption d-none d-md-block">
                     <div class="container">
                         <div class="banner-info">
@@ -101,14 +101,14 @@
                     </p>
                 </div>
                 <div class="col-lg-6 about-right text-lg-right mt-lg-0 mt-5">
-                    <img src="./images/124.png" alt="" class="img-fluid abt-image" />
+                    <img src="${pageContext.request.contextPath}/indexpage/images/124.png" alt="" class="img-fluid abt-image" />
                 </div>
             </div>
             <div class="row mt-5 text-center">
                 <div class="col-lg-3 col-6">
                     <div class="counter">
                         <span class="fa">
-                            <img src="./images/people.svg" class="img-fluid abt-image">
+                            <img src="${pageContext.request.contextPath}/indexpage/images/people.svg" class="img-fluid abt-image">
                         </span>
                         <div class="timer time1 count-title count-number">0</div>
                         <p class="count-text text-uppercase">會員人數</p>
@@ -117,7 +117,7 @@
                 <div class="col-lg-3 col-6">
                     <div class="counter">
                         <span class="fa">
-                            <img src="./images/restaurant.svg" class="img-fluid abt-image">
+                            <img src="${pageContext.request.contextPath}/indexpage/images/restaurant.svg" class="img-fluid abt-image">
                         </span>
                         <div class="timer time2 count-title count-number">0</div>
                         <p class="count-text text-uppercase">餐廳</p>
@@ -126,7 +126,7 @@
                 <div class="col-lg-3 col-6 mt-lg-0 mt-5">
                     <div class="counter">
                         <span class="fa">
-                            <img src="./images/ticket.svg" class="img-fluid abt-image">
+                            <img src="${pageContext.request.contextPath}/indexpage/images/ticket.svg" class="img-fluid abt-image">
                         </span>
                         <div class="timer time3 count-title count-number">0</div>
                         <p class="count-text text-uppercase">票券</p>
@@ -135,7 +135,7 @@
                 <div class="col-lg-3 col-6 mt-lg-0 mt-5">
                     <div class="counter">
                         <span class="fa">
-                            <img src="./images/article.svg" class="img-fluid abt-image">
+                            <img src="${pageContext.request.contextPath}/indexpage/images/article.svg" class="img-fluid abt-image">
                         </span>
                         <div class="timer time4 count-title count-number">0</div>
                         <p class="count-text text-uppercase">旅遊文章</p>
@@ -154,7 +154,7 @@
                 <div class="col-lg-4 col-sm-6">
                     <div class="grid-info">
                         <div class="icon">
-                            <img src="./images/icon2.png" class="mark">
+                            <img src="${pageContext.request.contextPath}/indexpage/images/icon2.png" class="mark">
                         </div>
                         <h4>選擇目的地</h4>
                         <p class="mt-3">打造專屬旅程的第一步</p>
@@ -163,7 +163,7 @@
                 <div class="col-lg-4 col-sm-6 mt-sm-0 mt-5">
                     <div class="grid-info">
                         <div class="icon">
-                            <img src="./images/icon3.png" class="mark">
+                            <img src="${pageContext.request.contextPath}/indexpage/images/icon3.png" class="mark">
                         </div>
                         <h4>選擇旅遊天數</h4>
                         <p class="mt-3">打造專屬旅程的第二步</p>
@@ -172,7 +172,7 @@
                 <div class="col-lg-4 col-sm-6 mt-lg-0 mt-5">
                     <div class="grid-info">
                         <div class="icon">
-                            <img src="./images/icon4.png" class="mark">
+                            <img src="${pageContext.request.contextPath}/indexpage/images/icon4.png" class="mark">
                         </div>
                         <h4>享受旅程</h4>
                         <p class="mt-3">好好享受我們為您安排的美好旅程</p>

@@ -45,7 +45,20 @@ th {
 }
 
 #btn:hover {
-	background-color: #006688;
+	background-color: #008CBA;
+}
+#btn_back {
+	margin-left: 50px;
+	font-size: 20px;
+	color: #fff;
+	background-color: #008CBA;
+	border: none;
+	padding: 10px;
+	cursor: pointer;
+	border-radius: 10px;
+}
+#btn_back:hover {
+	background-color: lightblue;
 }
 
 h1 {
@@ -70,6 +83,10 @@ form {
 	<jsp:include page="../indexpage/headpic.jsp" />
 
 	<h1 style="font-size: 24px; color: #333; text-align: center;">查看我的行程列表</h1>
+	
+	
+	<input type="button" value="返回" onclick="history.back()" id="btn_back">
+	
 	<!-- <form method="" action=""> -->
 	<table>
 		<tr>
