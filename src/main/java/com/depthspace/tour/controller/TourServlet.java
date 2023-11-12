@@ -270,35 +270,36 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 		
 		
 //		System.out.println("memId=" + memId + "," + "tourId=" + tourId);
+		
 		//用memId及tourId去找所有行程(ok有找到對應的值)
 		//依照行程編號去找行程天數編號(一個行程會有很多個行程天數編號)
-		List<TourDaysVO> tourdaysvo = tds.getOneTour(tourId);
-//		System.out.println("雙手合十   " +  tourdaysvo);
+//		List<TourDaysVO> tourdaysvo = tds.getOneTour(tourId);
+//		System.out.println(tourdaysvo);
 //		[TourDaysVO [tourDaysId=1, tourDays=3, tourId=1], 
 //		TourDaysVO [tourDaysId=5, tourDays=1, tourId=1], 
 //		TourDaysVO [tourDaysId=6, tourDays=2, tourId=1], 
 //		TourDaysVO [tourDaysId=7, tourDays=4, tourId=1], 
 //		TourDaysVO [tourDaysId=8, tourDays=5, tourId=1]]
 //		將tourDaysId變例出來
-		List<Integer> allTourDaysIds = new ArrayList<>();
-		for (TourDaysVO tourDays : tourdaysvo) {
+//		List<Integer> allTourDaysIds = new ArrayList<>();
+//		for (TourDaysVO tourDays : tourdaysvo) {
 		    // 獲取並添加 tourDaysId 的值到 tourDaysIds 列表中
-			allTourDaysIds.add(tourDays.getTourDaysId());
-		}
+//			allTourDaysIds.add(tourDays.getTourDaysId());
+//		}
 		//成功找出所有的id
-		System.out.println("allTourDaysIds = " + allTourDaysIds);
+//		System.out.println("allTourDaysIds = " + allTourDaysIds);
 		//用Id的陣列去取行程裡的明細
 		//在變例一次裡面的值
-		List<TourDetailVO> result = null;
-		for (Integer tourDaysId : allTourDaysIds) {
+//		List<TourDetailVO> result = null;
+//		for (Integer tourDaysId : allTourDaysIds) {
 		    // 調用 getTourDaysId 方法並處理結果
 		    // 這裡假設 getTourDaysId 方法返回 String，你應該根據實際情況修改
-		    result = tdls.getTourDaysId(tourDaysId);
-		    System.out.println("result = " + result);
-		}
+//		    result = tdls.getTourDaysId(tourDaysId);
+//		    System.out.println("result = " + result);
+//		}
 		
-		req.setAttribute("tourdaysvo", tourdaysvo);
-		req.setAttribute("result", result);
+//		req.setAttribute("tourdaysvo", tourdaysvo);
+//		req.setAttribute("result", result);
 //		for (int i = 0 ; i < allTourDaysIds.size() ; i ++) {
 //			List<TourDetailVO> tourDetail = tdls.getTourDaysId(allTourDaysId[i]);
 //		}
@@ -308,11 +309,11 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 		
 			
 		List<TourView> list = ts.getOneTourList(tourId, memId);
-//		for(TourView a : list){
-//			System.out.println("a=" + a);
+		for(TourView a : list){
+			System.out.println("a=" + a);
 //			System.out.println("a.getAttractionsName()=" + a.getAttractionsName());
-//					} 
-//		System.out.println(list);
+					} 
+		System.out.println(list);
 		req.setAttribute("list", list);
 //		[tourName=台北之旅, allDays=5, tourDescription=探索台北的美丽景點。, tourDays=3, start=2023-10-10 09:00:00.0, end=2023-10-10 12:00:00.0, attractionsName=台北101, address=台北市信義區信義路五段7號]
 		req.getRequestDispatcher("/tour/memTourList.jsp").forward(req, resp);

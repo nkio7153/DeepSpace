@@ -14,18 +14,6 @@
 <body>
  <jsp:include page="../indexpage/header.jsp" />
  <jsp:include page="../indexpage/headpic.jsp" />
-<%-- 錯誤表列 --%>
-<!-- <div style="text-align: center;"> -->
-<%-- <c:if test="${not empty errorMsgs}"> --%>
-<!-- 	<font  style="color:red" align="center">查無資料：帳號或密碼錯誤</font> -->
-<!-- 	<ul style="list-style: none;"> -->
-<%-- 		<c:forEach var="message" items="${errorMsgs}"> --%>
-<%-- 			<li style="color:red">${message}</li> --%>
-<%-- 		</c:forEach> --%>
-<!-- 	</ul> -->
-<%-- </c:if> --%>
-<!-- </div> -->
-
 
 	<form align="center" action="${pageContext.request.contextPath}/mem/login" method="post">
 		<div class="main-box login">
@@ -58,7 +46,9 @@
 	 
 	 if(error=='false'){
 		 console.log("error="+error);
-		 alert("帳號或密碼錯誤");
+		 alert("帳號錯誤或無此帳號");
+	 } else if (error=='true') {
+		 alert("密碼錯誤，請從新輸入")
 	 }
 		 </script>
 		 

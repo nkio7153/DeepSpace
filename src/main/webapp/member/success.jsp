@@ -128,14 +128,15 @@
 	<form align="center" action="${pageContext.request.contextPath}/mem/edit?memId=${authenticatedMem.memId}" method="post" >
 		<input type="submit" value="修改會員資料">
 		<input type="hidden" name="action"	value="update">
-	<input type="button" value="登出" align="center" onclick="index()">
 	</form>
+	
+	<form align="center" action="${pageContext.request.contextPath}/mem/logout" method="post" >
+		<input type="submit" value="登出">
+	</form>
+
 	</div>
     </div>
 	<script type="text/javascript">
-	    function index() {
-	        document.location.href = "${pageContext.request.contextPath}/member/member.jsp";
-	    }
 	    function revise() {
 	        document.location.href = "${pageContext.request.contextPath}/member/revise.jsp";
 	    }
