@@ -53,7 +53,7 @@
                         </c:if>
                         <c:if test="${sessionScope.memId != null}">
                         <li class="nav-item">
-                            <a class="booking" href="${pageContext.request.contextPath}/indexpage/index.jsp" name="check">登出</a>
+                            <a class="booking" href="${pageContext.request.contextPath}/mem/logout" name="check">登出</a>
                         </li>
                         </c:if>
                         <li class="">
