@@ -14,5 +14,5 @@ public interface MemDAO_Interface {
 	 public List<MemVO> getAll();
 	 public MemVO findByMemId(Integer memId);
 	 public List<MemVO> getEmail(String memEmail);
-	 public MemVO findAcc(String memAcc);
+	 public MemVO getMemberInfo(String memAcc);
 }

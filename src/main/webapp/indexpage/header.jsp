@@ -1,6 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <header>
+	<script>
+
+        function checkSession(e){
+            let check=$("[name='check']").text();
+            if(check=="登入/註冊"){
+                e.preventDefault();
+                window.alert("請先登入")
+            }
+        }
+    </script>
 
     <div class="container" style="padding-right: 0;">
         <nav class="navbar navbar-expand-lg">
@@ -25,9 +35,9 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownTicket">
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ticketproduct/list">票券瀏覽</a></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/to/memOrderList" onclick="checkSession()">訂單管理</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/to/memOrderList" onclick="checkSession(event)">訂單管理</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/pro/getCard">促銷活動</a></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList"  onclick="checkSession()">我的票券</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList"  onclick="checkSession(event)">我的票券</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -38,19 +48,19 @@
                         </li>
                        	<c:if test="${sessionScope.memId == null}">
                         <li class="nav-item">
-                            <a class="booking" href="${pageContext.request.contextPath}/member/member.jsp">登入/註冊</a>
+                            <a class="booking" href="${pageContext.request.contextPath}/member/login.jsp" name="check">登入/註冊</a>
                         </li>
                         </c:if>
                         <c:if test="${sessionScope.memId != null}">
                         <li class="nav-item">
-                            <a class="booking" href="${pageContext.request.contextPath}/indexpage/index.jsp">登出</a>
+                            <a class="booking" href="${pageContext.request.contextPath}/mem/logout" name="check">登出</a>
                         </li>
                         </c:if>
                         <li class="">
                             <a href="${pageContext.request.contextPath}/tsc/memCartList"><img
-                                    src="${pageContext.request.contextPath}/indexpage/images/shoppingcar.svg"
-                                    alt=""
-                                    style="width: 2em"/></a>
+                               src="${pageContext.request.contextPath}/indexpage/images/shoppingcar.svg"
+                               alt=""
+                               style="width: 2em"/></a>
                         </li>
                     </ul>
                 </div>

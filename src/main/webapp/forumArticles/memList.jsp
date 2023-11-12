@@ -67,7 +67,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
 	        <div class="btn-group" role="group"> <!-- 添加這個 div 來包裹按鈕 -->
 	            <button type="button" class="btn btn-primary me-2" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles/list.jsp'">瀏覽所有文章</button>
-	            <button type="button" class="btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles/add.jsp'">新增文章</button>
+	            <button type="button" class="btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=addArticle'">新增文章</button>
 	        </div>
     	</div>
         <div id="articlesRow" class="row">

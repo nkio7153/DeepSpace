@@ -29,7 +29,7 @@ public class MemberService {
 	}
 	// 取得會員資訊
 	public MemVO getMemberInfo(String memAcc) {
-		return dao.findAcc(memAcc);
+		return dao.getMemberInfo(memAcc);
 	}
 	//拿到所有會員資料
 	public List<MemVO> getAll(){

@@ -2,24 +2,24 @@ package com.depthspace.member.model.hibernate;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import com.depthspace.member.model.MemVO;
-import com.depthspace.member.model.jdbc.MemDAO_Interface;
-import com.depthspace.tour.model.tourtype.TourTypeVO;
-
 public class HibernateMemDAOImpl implements HibernateMemDAO_Interface {
-	private SessionFactory factory;
-
-	public HibernateMemDAOImpl(SessionFactory factory) {
-		this.factory = factory;
-	}
-
-	private Session getSession() {
-		return factory.getCurrentSession();
-	}
-
+	//宣告一個factory變數
+    private SessionFactory factory;
+    //構造器為該物件的factory變數賦值
+    public HibernateMemDAOImpl(SessionFactory factory) {
+        this.factory = factory;
+    }
+    //取得當前session
+    private Session getSession() {
+        return factory.getCurrentSession();
+    }
 	public HibernateMemDAOImpl() {
 		super();
 	}
@@ -65,10 +65,20 @@ public class HibernateMemDAOImpl implements HibernateMemDAO_Interface {
 	public List<MemVO> getAll(int currentPage) {
 		return null;
 	}
-	
+	//uniqueResult如果沒有就會回傳null
 	@Override
 	public MemVO findByMemAcc(String memAcc) {
-		return getSession().get(MemVO.class, memAcc);
+//		 String queryString = "from MemVO where memAcc = :memAcc";
+		 try {
+			 return (MemVO) getSession()
+				.createQuery("from MemVO mem where mem.memAcc = :memAcc", MemVO.class)
+			 	.setParameter("memAcc", memAcc)
+			 	.getSingleResult();
+		 } catch (NoResultException e) {
+	            return null;
+	        }
+		            
+		            
 	}
 	@Override
 	public MemVO getById(String memAcc) {

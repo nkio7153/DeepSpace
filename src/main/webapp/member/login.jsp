@@ -14,20 +14,8 @@
 <body>
  <jsp:include page="../indexpage/header.jsp" />
  <jsp:include page="../indexpage/headpic.jsp" />
-<%-- 錯誤表列 --%>
-<div style="text-align: center;">
-<c:if test="${not empty errorMsgs}">
-	<font  style="color:red" align="center">查無資料：帳號或密碼錯誤</font>
-	<ul style="list-style: none;">
-		<c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
-</div>
 
-
-	<form align="center" action="${pageContext.request.contextPath}/mem/success" method="post">
+	<form align="center" action="${pageContext.request.contextPath}/mem/login" method="post">
 		<div class="main-box login">
 			<h3>登入</h3>
 			<label for="memAcc">帳號</label>
@@ -42,7 +30,7 @@
 		<div class="check">
 			<label><input type="checkbox">記住我</label> <a href="#"	id="forgetPwd">忘記密碼</a>
 		</div>
-
+	<input type="hidden" name="loginLocation" value="${param.requestURI}">
 		<input type="submit" value="登入">
 	
 	<div class="register">
@@ -52,6 +40,18 @@
 		</p>
 	</div>
 	</form>
+	
+	<script>
+	var error='${param.error}';
+	 
+	 if(error=='false'){
+		 console.log("error="+error);
+		 alert("帳號錯誤或無此帳號");
+	 } else if (error=='true') {
+		 alert("密碼錯誤，請從新輸入")
+	 }
+		 </script>
+		 
 	<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>
