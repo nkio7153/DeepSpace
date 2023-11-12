@@ -84,6 +84,7 @@ public class MemberServlet extends HttpServlet {
 	
 	private void doLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		HttpSession session=req.getSession();
+		//移除session
 		session.removeAttribute("authenticatedMem");
 		session.removeAttribute("memId");
 		
@@ -95,7 +96,7 @@ public class MemberServlet extends HttpServlet {
 
 
 	// ============================================================================================================================================
-
+	//
 	private void doSave(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<String> errorMsgs = new LinkedList<String>();
 		req.setAttribute("errorMsgs", errorMsgs);
@@ -273,14 +274,14 @@ public class MemberServlet extends HttpServlet {
 			req.setAttribute("status", "此帳號停權");
 		}
 		
-		req.getRequestDispatcher("/member/newMember.jsp").forward(req, resp);
+		req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
 	}
 	
 	// ============================================================================================================================================
 	
 	
 	// ============================================================================================================================================
-
+	//儲存修改後的資料
 	private void doModify(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<String> errorMsgs = new LinkedList<String>();
 		req.setAttribute("errorMsgs", errorMsgs);
@@ -616,7 +617,7 @@ public class MemberServlet extends HttpServlet {
 			session.setAttribute("memId", mem.getMemId());//會員編號
 			
 			Integer memno = (Integer) session.getAttribute("memId");// 測試用(取得存在session會員編號)
-		    System.out.println("測試取得放入session的會員編號" + memno);// 測試用
+//		    System.out.println("測試取得放入session的會員編號" + memno);// 測試用
 			
 			req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
 //			resp.sendRedirect(req.getContextPath()+"/indexpage/index.jsp");

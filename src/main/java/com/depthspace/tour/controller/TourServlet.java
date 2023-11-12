@@ -89,13 +89,15 @@ public class TourServlet extends HttpServlet {
 	}
 
 private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-	//取得天數讓資料庫可以新增	
+	//取得天數讓資料庫可以新增
 	Integer memId;
 	Integer tourdaysId = null;
 	Integer tourId;
 	Integer allDays;
 	String[] allAttr;
 	String[] allTime;
+//	取的幾天的陣列
+	String[] oneDay;
 	
 	//轉型
 	try {
@@ -111,19 +113,23 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 	for(int i=1 ; i <= allDays ; i++) {
 		TourDaysVO tourDaysVO = new TourDaysVO(tourdaysId , allDays , tourId);
 		tds.insert(tourDaysVO);
+		//取得自行輸入的時間及景點
 		allTime = req.getParameterValues("attractionTime[" + i + "]");
 		allAttr = req.getParameterValues("attractions[" + i + "]");
+		oneDay = req.getParameterValues("oneDay[" + i + "]");
 
+		for(String one : oneDay) {
+			//one為Id
+			System.out.println("天數對應=" + one);
+		}
 		for(String one : allTime) {
 			//one為Id
-//			System.out.println("時間=" + one);
+			System.out.println("時間=" + one);
 		}
 		for(String one : allAttr) {
 			//one為Id			
-//			System.out.println("第" + i + "景點編號=" + one);
+			System.out.println("第" + i + "景點編號=" + one);
 		}
-//		System.out.println("tourId=" + tourId + "第" + i + "天，成功");
-//		System.out.println( "第" + i + "景點為" + "，all=" + one);
 	}
 	
 	 req.setAttribute("memId", memId);
@@ -256,6 +262,7 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 	private void domemTourList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Integer memId;
 		Integer tourId;
+		
 		try {
 			memId = Integer.valueOf(req.getParameter("memId"));
 			tourId = Integer.valueOf(req.getParameter("tourId"));
@@ -269,7 +276,7 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 //		System.out.println("list=" +  list);
 		
 		
-//		System.out.println("memId=" + memId + "," + "tourId=" + tourId);
+		System.out.println("memId=" + memId + "," + "tourId=" + tourId);
 		
 		//用memId及tourId去找所有行程(ok有找到對應的值)
 		//依照行程編號去找行程天數編號(一個行程會有很多個行程天數編號)
@@ -307,7 +314,7 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 		//再用找出來的所有行程天數編號去找對應的行程明細
 //		List<TourDetailVO> tourDetail = tdls.getTourDaysId(tourDaysId);
 		
-			
+		//用TourView把所有要放在會員形成列表的資料都拿出來
 		List<TourView> list = ts.getOneTourList(tourId, memId);
 //		for(TourView a : list){
 //			System.out.println("a=" + a);
@@ -315,7 +322,6 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 //					}
 //		System.out.println(list);
 		req.setAttribute("list", list);
-//		[tourName=台北之旅, allDays=5, tourDescription=探索台北的美丽景點。, tourDays=3, start=2023-10-10 09:00:00.0, end=2023-10-10 12:00:00.0, attractionsName=台北101, address=台北市信義區信義路五段7號]
 		req.getRequestDispatcher("/tour/memTourList.jsp").forward(req, resp);
 	}
 

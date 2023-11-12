@@ -32,6 +32,18 @@
 	    cursor: pointer;
 	    border-radius: 10px;
 	}
+	.update {
+		
+	    width: 150px;
+	    font-size: 20px;
+	    color: #fff;
+	    background-color: #008CBA;
+	    border: none;
+	    padding: 10px;
+	    cursor: pointer;
+	    border-radius: 10px;
+	    margin: 10px;
+	}
 </style>
 </head>
 <body>
@@ -54,14 +66,16 @@
 <%-- 	     	<input type="hidden" name="memId" value="${authenticatedMem.memId}" readonly"> --%>
 <!--             <input type="submit" value="新增行程" style="height: 50px; width: 150px; font-size: 18px; color: #fff; background-color: #008CBA; border: none; padding: 10px; cursor: pointer; border-radius: 10px;"> -->
 <!--         </form> -->
-		<a href="${pageContext.request.contextPath}/tr/addTour?memId=${authenticatedMem.memId}" class="btn_style">新增行程</a>
+		<form action="${pageContext.request.contextPath}/tr/addTour?memId=${authenticatedMem.memId}" method="post">
+		    <input type="submit" value="新增行程"  class="btn_style" >
+        </form>
 	
 	</div>
 	
 	<div style="flex: 70%;">
 		
 		
-		<h1 align="center">會員資訊</h1>
+		<h1 align="center">我的會員資訊</h1>
 		<table border="1px" align="center" width="90%">
 		
 			<th style="display: none;">會員編號</th><td  style="display: none;">${authenticatedMem.memId} </td>
@@ -126,21 +140,17 @@
 		</tr>
 	</table>
 	<form align="center" action="${pageContext.request.contextPath}/mem/edit?memId=${authenticatedMem.memId}" method="post" >
-		<input type="submit" value="修改會員資料">
+		<input type="submit" class="update" value="修改會員資料">
 		<input type="hidden" name="action"	value="update">
 	</form>
 	
-	<form align="center" action="${pageContext.request.contextPath}/mem/logout" method="post" >
-		<input type="submit" value="登出">
-	</form>
+<%-- 	<form align="center" action="${pageContext.request.contextPath}/mem/logout" method="post" > --%>
+<!-- 		<input type="submit" value="登出"> -->
+<!-- 	</form> -->
 
 	</div>
     </div>
-	<script type="text/javascript">
-	    function revise() {
-	        document.location.href = "${pageContext.request.contextPath}/member/revise.jsp";
-	    }
-	</script>
+	
 <jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>
