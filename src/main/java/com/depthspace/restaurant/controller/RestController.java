@@ -1,5 +1,7 @@
 package com.depthspace.restaurant.controller;
 
+import static com.depthspace.utils.Config.GOOGLE_MAP_APIKEY;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,15 +13,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.alibaba.fastjson2.JSON;
 import com.depthspace.restaurant.model.restaurant.RestVO;
+import com.depthspace.restaurant.model.restcollection.RestCollectionVO;
 import com.depthspace.restaurant.service.MemBookingService;
 import com.depthspace.restaurant.service.MemBookingServiceImpl;
 import com.depthspace.restaurant.service.RestService;
 import com.depthspace.restaurant.service.RestServiecImpl;
+import com.depthspace.restaurant.service.RestcollectionService;
+import com.depthspace.restaurant.service.RestcollectionServiceImpl;
 import com.depthspace.utils.JedisUtil;
-import com.depthspace.utils.MailService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -98,13 +103,36 @@ public class RestController extends HttpServlet {
 			typeList.add(vo.getRestType());
 		}
 		req.setAttribute("restType", typeList);
+		// 從session取會員ID顯示已收藏的餐廳
+		HttpSession session = req.getSession();
+		
+		Integer memId = (Integer) session.getAttribute("memId");
+		if (memId != null) {
+			System.out.println("登入="+memId);
+			RestcollectionService rcs = new RestcollectionServiceImpl();
+			List<RestCollectionVO> rcList = rcs.findByMemId(memId);
+			req.setAttribute("rcList", rcList);
+		}
 		
 		
 		return "/frontend/rest/restlist.jsp";
 	}
 
 	private String toRestinfo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setAttribute("restId", req.getParameter("restId"));
+		String restId = req.getParameter("restId");
+		RestService restService = new RestServiecImpl();
+		RestVO restList = restService.getRestByRestId(Integer.valueOf(restId));
+		req.setAttribute("rest", restList);
+		
+		
+		// booking
+		HttpSession session = req.getSession();
+		Integer memId = (Integer) session.getAttribute("memId");
+		if (memId != null) {
+			req.setAttribute("memId", memId);
+		}
+		// 從後端帶入APIKEY
+		req.setAttribute("GOOGLE_MAP_APIKEY", GOOGLE_MAP_APIKEY);
 		return "/frontend/rest/rest.jsp";
 
 	}

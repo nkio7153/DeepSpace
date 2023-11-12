@@ -8,18 +8,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 
-<%
-	Integer memId = 1;
-	if (memId != null) {
-		RestcollectionService rcs = new RestcollectionServiceImpl();
-		List<RestCollectionVO> rcList = rcs.findByMemId(memId);
-		request.setAttribute("rcList", rcList);
-	}
-	
-	String restList = request.getParameter("restList");
-%>
-
-
 <head>
 <jsp:include page="/indexpage/head.jsp" />
 <jsp:include page="/indexpage/header.jsp" />
@@ -125,19 +113,27 @@
 			
 			$(".collection-icon").click(function() {
 				let restId = $(this).closest("div.card-body").find(".restId").text();
-				if ($(this).attr("class") === "collection-icon") {
-					$(this).attr("src", "${pageContext.request.contextPath}/static/images/rest/fullheart.png");
-					doCollection("add", restId);
-				} else if ($(this).attr("class") === "collection-icon -on") {
-					$(this).attr("src", "${pageContext.request.contextPath}/static/images/rest/heart.png");
-					doCollection("delete", restId);
-				}
-				$(this).toggleClass("-on");
+				let memId = "${memId}"; // 若沒登入會是空字串避免沒抓到值報錯  
+				console.log(typeof memId);
+				// 收藏功能登入判斷 字串轉成整數
+				if (typeof parseInt(memId, 10) === 'number' && memId.length !== 0){
+					if ($(this).attr("class") === "collection-icon") {
+						$(this).attr("src", "${pageContext.request.contextPath}/static/images/rest/fullheart.png");
+						doCollection("add", memId, restId);
+					} else if ($(this).attr("class") === "collection-icon -on") {
+						$(this).attr("src", "${pageContext.request.contextPath}/static/images/rest/heart.png");
+						doCollection("delete", memId, restId);
+					}
+					$(this).toggleClass("-on");
+				} else {
+					console.log(memId);
+					alert("請先登入");
+				};
+				
 			});
 			
 			
-			function doCollection(action, restId) {
-				let memId = <%= memId %>;
+			function doCollection(action, memId, restId) {
 				let origin = window.location.origin; // http://hostname:port
 				let url = origin+"/DepthSpace/RestApi/doRestCollection?action="+action+"&memId="+memId+"&restId="+restId;
 				console.log(url);

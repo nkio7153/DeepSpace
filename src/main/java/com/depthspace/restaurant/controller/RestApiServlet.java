@@ -7,12 +7,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.depthspace.member.model.MemVO;
 import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO;
@@ -370,22 +376,57 @@ public class RestApiServlet extends HttpServlet {
 	
 	private void toMail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+		HttpSession session = req.getSession();
+		MemVO mem = (MemVO) session.getAttribute("authenticatedMem");
+//		Integer memId = (Integer) session.getAttribute("memId");
+		Integer memId = mem.getMemId();
 		String restName = req.getParameter("restName");
-		String restId = req.getParameter("restId");
-		String memId = req.getParameter("memId");
 		String bookingTime = req.getParameter("bookingTime");
 		String bookingNumber = req.getParameter("bookingNumber");
 		String bookingDate = req.getParameter("bookingDate");
 		
-		
-		
-		
-		String to = "tibamemasa@gmail.com";
+		switch (bookingTime) {
+			case ("0"):
+				bookingTime = "早上";
+				break;
+			case ("1"):
+				bookingTime = "中午";
+				break;
+			case ("2"):
+				bookingTime = "晚上";
+				break;
+		};
+		// Mail發送 to收件者 subject主旨 需要顯示QRCode圖片使用HTML格式發送
+		String to = mem.getMemEmail();
 		String subject = "訂位通知";
-		String messageText = "訂位通知\n餐廳名稱： "+restName+"\n會員名稱； "+memId+"\n預約日期： "+bookingDate+"\n";
-		
+		// 使用MimeMultipart 將HTML放入MimeBodyPart中
+		Multipart multipart = new MimeMultipart();
+		MimeBodyPart bodyPart = new MimeBodyPart();
+		// 將要發送的內容用HTML的格式
+		StringBuffer msg = new StringBuffer();
+		msg.append("<p>訂位成功通知");
+		msg.append("<p>餐廳名稱： "+restName+"<br>");
+		msg.append("<p>會員名稱； "+memId+"<br>");
+		msg.append("<p>預約日期： "+bookingDate+"<br>");
+		msg.append("<p>預約時段： "+bookingTime+"<br>");
+		msg.append("<p>預約人數： "+bookingNumber+"人<br>");
+		// QRCode https://developers.google.com/chart/infographics/docs/qr_codes?hl=zh-tw
+		// url http "://" localhost ":" 8080 /DepthSpace
+        String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath();
+        String uri = "/Rest/getRests";
+        System.out.println(url + uri);
+		msg.append("<img src=https://chart.googleapis.com/chart?cht=qr&chl=" + url + uri + "&chs=150x150 />");
+		// 將HTML內容加進body再加進Multipart
+		try {
+			bodyPart.setContent(msg.toString(), "text/html; charset=UTF-8");
+			multipart.addBodyPart(bodyPart);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}		
+		// 使用大吳老師的範例發發送郵件
 		MailService mailService = new MailService();
-		mailService.sendMail(to, subject, messageText);
+//		mailService.sendMail(to, subject, messageText);
+		mailService.sendMail(to, subject, multipart);
 	}
 	
 	

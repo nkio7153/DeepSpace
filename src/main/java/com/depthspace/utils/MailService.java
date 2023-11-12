@@ -1,11 +1,15 @@
 package com.depthspace.utils;
 
 
+import static com.depthspace.utils.Config.MYGMAIL;
+import static com.depthspace.utils.Config.MYGMAIL_PASSWORD;
+
 import java.util.Properties;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -15,8 +19,9 @@ import javax.mail.internet.MimeMessage;
 public class MailService {
 
 	// 設定傳送郵件:至收信人的Email信箱,Email主旨,Email內容
-	public void sendMail(String to, String subject, String messageText) {
-
+//	public void sendMail(String to, String subject, String messageText) {
+	public void sendMail(String to, String subject, Multipart messageText) {
+		
 		try {
 			// 設定使用SSL連線至 Gmail smtp Server
 			Properties props = new Properties();
@@ -38,8 +43,8 @@ public class MailService {
 	        //     ●5-1) 下拉式選單【選取應用程式】--> 選取【郵件】
 	        //     ●5-2) 下拉式選單【選取裝置】--> 選取【Windows 電腦】
 	        //     ●5-3) 最後按【產生】密碼
-			final String myGmail = "ixlogic.wu@gmail.com";
-			final String myGmail_password = "ddjomltcnypgcstn";
+			final String myGmail = MYGMAIL;
+			final String myGmail_password = MYGMAIL_PASSWORD;
 			Session session = Session.getInstance(props, new Authenticator() {
 				protected PasswordAuthentication getPasswordAuthentication() {
 					return new PasswordAuthentication(myGmail, myGmail_password);
@@ -53,7 +58,9 @@ public class MailService {
 			// 設定信中的主旨
 			message.setSubject(subject);
 			// 設定信中的內容
-			message.setText(messageText);
+//			message.setText(messageText);
+			// 使用Multipart需要使用setContent
+			message.setContent(messageText);
 
 			Transport.send(message);
 			System.out.println("傳送成功!");

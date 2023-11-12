@@ -7,36 +7,31 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<%
-	String restId = request.getParameter("restId");
-	RestService restService = new RestServiecImpl();
-	RestVO restList = restService.getRestByRestId(Integer.valueOf(restId));
-	request.setAttribute("rest", restList);
-%>
 <!DOCTYPE html>
 <html>
 <head>
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOKKfj_MwehUJhm-t7jPbO1ydNODLgLOM&libraries=places&callback=initMap"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAP_APIKEY}&libraries=places&callback=initMap"></script>
 	<style>
-		.carousel-inner {
-		  height: 500px;
-		}
-		.carousel-inner .item img {
-		  width: 100%;
-/* 		  height: 100%; */
-		}
+/* 		.carousel-inner { */
+/* 		  height: 500px; */
+/* 		} */
+		.img-fluid {
+		    max-width: 100%;
+		    height: auto;
+	    }
 	</style>
 </head>
 <body class="border border-light">
 
 	<h1 id="r_name">${ rest.restName }</h1>
 	
+	<div id="map" style="height: 300px;" class="w-100 mb-3"></div>
 	
 	<!-- https://bootstrap5.hexschool.com/docs/5.0/components/carousel/ -->
 	<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
 	  <div class="carousel-inner">
 	    <div class="carousel-item active">
-	      <img src="/DepthSpace/static/images/rest/r_${ rest.restId }.jpg" class="d-block">
+	      <img src="${pageContext.request.contextPath}/static/images/rest/r_${ rest.restId }.jpg" class="d-block img-fluid">
 	    </div>
 	  </div>
 	  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
@@ -49,7 +44,6 @@
 	  </button>
 	</div>
 	
-	<div id="map" style="height: 300px; width: 100%;" class="mt-3"></div>
 	
 	
 	
@@ -125,7 +119,7 @@
 						let photoUrl = photo.getUrl();
 						let img = 
 							"<div class='carousel-item'>"+
-						      "<img src="+photoUrl+" class='d-block'>"+
+						      "<img src="+photoUrl+" class='d-block img-fluid'>"+
 						    "</div>"
 						$(".carousel-inner").append(img);
 					});

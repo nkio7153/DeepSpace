@@ -11,15 +11,7 @@
 	<jsp:include page="/indexpage/headpic.jsp" />
 	<!-- bootstrapCDN -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-	
-	<%
-		Integer memId = 1;
-		String restId = request.getParameter("restId");
-		RestService restService = new RestServiecImpl();
-		RestVO restList = restService.getRestByRestId(Integer.valueOf(restId));
-		request.setAttribute("rest", restList);
-	%>
-	
+
 	<style>
 	    body {
 	        font-size: 25px;
@@ -43,10 +35,10 @@
 		</div>
 		<div id="col_book" class="row p-1 d-none border border-3 border-danger mb-3 rounded-3">
 			
-			
+			<h1>${rest.restName}</h1>
 			<form id="bookingform" action="/DepthSpace/RestApi/doMemBooking?action=add" method="post" class="p-5">
 				  <input type="hidden" name="restId" value="${rest.restId}">
-				  <input type="hidden" name="memId" value="<%= memId %>">
+				  <input type="hidden" name="memId" value="${memId}">
 				  <input type="hidden" name="restName" value="${rest.restName}">
 				  <div class="row mb-3">
 				    <label for="bookingDate" class="col-sm-2 col-form-label">選擇日期：</label>
@@ -60,15 +52,15 @@
 				    <div class="col">
 						<div class="form-check form-check-inline p-3">
 						  <input class="form-check-input" type="radio" name="bookingTime" id="inlineRadio1" value="0" checked>
-						  <label class="form-check-label" for="bookingTime">早</label>
+						  <label class="form-check-label" for="bookingTime">早上</label>
 						</div>
 						<div class="form-check form-check-inline">
 						  <input class="form-check-input" type="radio" name="bookingTime" id="inlineRadio2" value="1">
-						  <label class="form-check-label" for="bookingTime">中</label>
+						  <label class="form-check-label" for="bookingTime">中午</label>
 						</div>
 						<div class="form-check form-check-inline">
 						  <input class="form-check-input" type="radio" name="bookingTime" id="inlineRadio3" value="2" disabled>
-						  <label class="form-check-label" for="bookingTime">晚</label>
+						  <label class="form-check-label" for="bookingTime">晚上</label>
 						</div>
 				    </div>
 				  </fieldset>
@@ -82,7 +74,6 @@
 				   
 				  <button type="submit" class="btn btn-primary">確認</button>
 		</form>
-			
 			
 			
 		</div>
@@ -106,7 +97,7 @@
 					$("#col_info").toggleClass("d-none d-block");
 					$("#col_book").toggleClass("d-block d-none");
 				}
-			})
+			});
 			$("#btn_book").click(function(){
 				if ($(this).hasClass("btn-light")){
 					$(this).toggleClass("btn-light btn-dark");
@@ -114,35 +105,42 @@
 					$("#col_book").toggleClass("d-none d-block");
 					$("#col_info").toggleClass("d-block d-none");
 				}
-			})
-	
+			});
+			
+			let memId = "${memId}";
 			$('#bookingform').submit(function(event) {
 			    event.preventDefault();
-
-			    $.ajax({
-			          type: 'post',
-			          data: $('#bookingform').serialize(),
-			          url: $(this).attr('action'),
-			          success: function(data) {
-			              alert('新增成功');
-			          },
-			          error: function(xhr, status, error) {
-			              alert('系統異常');
-			          }
-				});
-			    
-			    $.ajax({
-			          type: 'post',
-			          data: $('#bookingform').serialize(),
-			          url: "/DepthSpace/RestApi/toMail",
-			          success: function(data) {
-			              console.log('新增成功');
-			          },
-			          error: function(xhr, status, error) {
-			        	  console.log('系統異常');
-			          }
-				});
-			    
+			    if (typeof parseInt(memId, 10) === 'number' && memId.length !== 0){
+			    	$.ajax({
+				          type: 'post',
+				          data: $('#bookingform').serialize(),
+				          url: $(this).attr('action'),
+				          success: function(data) {
+				              alert('新增成功');
+				          },
+				          error: function(xhr, status, error) {
+				              alert('系統異常');
+				          }
+					});
+				    
+				    $.ajax({
+				          type: 'post',
+				          data: $('#bookingform').serialize(),
+				          url: "/DepthSpace/RestApi/toMail",
+// 				          success: function(data) {
+// 				              console.log('發送成功');
+// 				          },
+// 				          error: function(xhr, status, error) {
+// 				        	  console.log('發送失敗');
+// 				        	  console.log(xhr);
+// 				        	  console.log(status);
+// 				        	  console.log(error);
+// 				          }
+					});
+			    } else {
+			    	console.log(memId);
+					alert("請先登入");
+			    }
 			});
 			
 			
