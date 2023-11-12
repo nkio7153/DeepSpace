@@ -58,8 +58,11 @@
 	<jsp:include page="/indexpage/header.jsp" />
 	<jsp:include page="/indexpage/headpic.jsp" />
 
+<%-- 	<c:if test="${empty memId}"> --%>
+<%-- 	   <c:set var="memId" value="${null}" />  --%>
+<%-- 	</c:if> --%>
 
-	<div class="container mt-5">
+<!-- 	<div class="container mt-5"> -->
 
 		<!-- 路徑地圖 -->
 		<div class="row mb-4">
@@ -97,9 +100,13 @@
 		<div class="row mb-4">
 			<div class="col-12 d-flex justify-content-between align-items-center">
 				<h3>${ticket.ticketName}</h3>
-				<i class="far fa-heart favorite-icon" id="favoriteIcon"
-					style="cursor: pointer;" 
-									data-ticketId="${ticket.ticketId}"></i>
+<!-- 				<i class="far fa-heart favorite-icon" id="favoriteIcon" -->
+<!-- 					style="cursor: pointer;"  -->
+<%-- 									data-ticketId="${ticket.ticketId}"></i> --%>
+									
+	<i class="fa-heart favorite-icon ${isFavorite ? 'fas' : 'far'}" 
+   id="favoriteIcon" style="cursor: pointer;" data-ticketId="${ticket.ticketId}"></i>
+									
 			</div>
 				<div class="col-12 d-flex justify-content-between align-items-center">
 				<h6>${ticket.ticketType.typeName}&emsp;|&emsp;${ticket.city.cityName}</h6>
@@ -236,12 +243,18 @@ $(document).ready(function() {
 //愛心收藏
 $(document).ready(function() {
     $(".favorite-icon").click(function() {
-        var memId;
+//         var memId;
         var ticketId;
+//         var memId = ${memId};
 		var ticketId = $(this).data('ticketid');
-        var requestData = { "ticketId": ticketId, "memId": memId};
+        var requestData = { "ticketId": ticketId};
         var iconElement = $(this);
-
+        // 檢查 memId 是否為 null
+        var memId = ${memId != null ? memId : 'null'};
+        if(memId == null) {
+            alert("請先登入！");
+            return; // 終止函數執行
+        }
         console.log("Request Data:", requestData);
         
         $.get("${pageContext.request.contextPath}/ticketcollection/toggleFavorite", requestData, function(response) {
@@ -251,7 +264,7 @@ $(document).ready(function() {
                 iconElement.removeClass("fas").addClass("far");
             }
         }).fail(function(xhr, status, error) {
-            if(xhr.status == 401) { 
+            if(memId == null) { 
                 alert("請先登入！");
             } else {
                 alert("發生錯誤： " + error);
@@ -260,26 +273,29 @@ $(document).ready(function() {
     });
 });
   
- // 購物車加入
-    $(".btn").on("click", function() {
-        let button = $(this);
-        let url = "${pageContext.request.contextPath}/tsc/save?ticketId=" + ${ticket.ticketId} + "&memId=1";
-        fetch(url)
-            .then(function(response) {
-                return response.text();
-            })
-            .then(function(data) {
-                console.log(data);
-                button.addClass('flash-effect');
-                // 1 秒後移除閃爍效果
-                setTimeout(() => {
-                    button.removeClass('flash-effect');
-                }, 1000);
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
-    });
+//購物車加入
+$(".btn").on("click", function() {
+    let button = $(this);
+let quantity=$("#ticketQuantity").val();
+$("#ticketQuantity").val(1);
+console.log(quantity);
+    let url = "${pageContext.request.contextPath}/tsc/save?ticketId=" + ${ticket.ticketId} + "&quantity="+quantity;
+    fetch(url)
+        .then(function(response) {
+            return response.text();
+        })
+        .then(function(data) {
+            console.log(data);
+            button.addClass('flash-effect');
+            // 1 秒後移除閃爍效果
+            setTimeout(() => {
+                button.removeClass('flash-effect');
+            }, 1000);
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+});
  
 //地圖
 $(document).ready(function() {

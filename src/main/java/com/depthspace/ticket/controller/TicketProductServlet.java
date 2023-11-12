@@ -12,6 +12,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import com.google.gson.Gson;
 
 import com.depthspace.account.model.account.AccountVO;
@@ -23,6 +25,9 @@ import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.ticket.service.TicketImagesService;
 import com.depthspace.ticket.service.TicketService;
 import com.depthspace.ticket.service.TicketServiceImpl;
+import com.depthspace.ticketcollection.model.TicketCollectionVO;
+import com.depthspace.ticketcollection.service.TicketCollectionService;
+import com.depthspace.ticketcollection.service.TicketCollectionServiceImpl;
 import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 
@@ -31,10 +36,12 @@ public class TicketProductServlet extends HttpServlet {
 
 	private TicketService ticketService;
 	private TicketImagesService ticketImagesService;
+	private TicketCollectionService ticketCollectionService;
 
 	@Override
 	public void init() throws ServletException {
 		ticketService = new TicketServiceImpl();
+		ticketCollectionService = new TicketCollectionServiceImpl();
 	}
 
 	@Override
@@ -227,8 +234,12 @@ public class TicketProductServlet extends HttpServlet {
 	
 	/************ 單一票券頁面 ************/
 	private void doProduct(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		HttpSession session = req.getSession(false);
+	    Integer memId = (Integer) session.getAttribute("memId");
+	    
 		String ticketIdStr = req.getParameter("ticketId");
 		Integer ticketId;
+		
 		try {
 			ticketId = Integer.valueOf(ticketIdStr);
 		} catch (NumberFormatException e) {
@@ -264,13 +275,17 @@ public class TicketProductServlet extends HttpServlet {
 	                                         .collect(Collectors.toList());
 
 
-	    
+	    //判斷收藏與否
+	    TicketCollectionVO ticketCollection = ticketCollectionService.getOne(memId, ticketId);
+	    boolean isFavorite = ticketCollection != null;
+		
 	    req.setAttribute("ticket", ticket);
 	    req.setAttribute("averageStars", averageStars);
 	    req.setAttribute("formattedAverageStars", formattedAverageStars);
 	    req.setAttribute("totalRatingCount", totalRatingCount);
 	    req.setAttribute("reviews", reviews);
 	    req.setAttribute("reviewContents", reviewContents);
+		req.setAttribute("isFavorite", isFavorite);
 	    
 		req.getRequestDispatcher("/frontend/ticketproduct/item.jsp").forward(req, res);
 	}

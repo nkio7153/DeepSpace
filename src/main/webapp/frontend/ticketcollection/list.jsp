@@ -9,6 +9,8 @@
 <meta charset="UTF-8">
 <title>收藏票券列表</title>
 
+<jsp:include page="/indexpage/head.jsp" />
+
 <!-- CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -19,6 +21,12 @@
 
 </head>
 <body>
+
+
+	<jsp:include page="/indexpage/header.jsp" />
+	<jsp:include page="/indexpage/headpic.jsp" />
+	
+	
 	<div class="container mt-5">
 
 		<div class="row">
@@ -29,22 +37,10 @@
 					<h3 class="mb-0">您的票券收藏</h3>
 					<form action="<%=request.getContextPath()%>/ticketcollection/list"
 						method="get">
-						<!-- 篩選票券區域  注意name是要查詢的值(servlet的查詢,areaId)-->
 						<div class="col-md-16">
 							<div
 								class="d-flex justify-content-between align-items-center mb-3">
-								<form method="get"
-									action="<%=request.getContextPath()%>/ticketcollection/find">
-									<div class="form-group mb-0">
-										<label for="sortDropdown" class="mr-2"></label> <select  id="cityId" name="areaId" 
-											class="form-control d-inline-block" id="sortDropdown"
-											name="sort" onchange="this.form.submit()">
-										<c:forEach var="areaItem" items="${uniqueTicketArea}">
-											<option value="${ticketCollection.ticketVO.city.cityName}">${ticketCollection.ticketVO.city.cityName}</option>
-										</c:forEach>
-										</select>
-									</div>
-								</form>
+
 							</div>
 						</div>
 					</form>
@@ -104,7 +100,7 @@
 												</small>
 											</p>
 											<p class="card-text">NT$
-												${ticketCollection.ticketVO.ticketId}</p>
+												${ticketCollection.ticketVO.price}</p>
 										</div>
 									</a>
 								</div>
@@ -191,6 +187,7 @@ $(document).ready(function() {
 
 </script>
 
+	<jsp:include page="/indexpage/footer.jsp" />
 </body>
 
 </html>
