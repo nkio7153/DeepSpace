@@ -85,8 +85,18 @@ public class MemberServlet extends HttpServlet {
 	private void doLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		HttpSession session=req.getSession();
 		//移除session
-		session.removeAttribute("authenticatedMem");
-		session.removeAttribute("memId");
+		if(session.getAttribute("authenticatedMem") != null) {
+			session.removeAttribute("authenticatedMem");
+		}
+		if(session.getAttribute("memId") != null) {
+			session.removeAttribute("memId");
+		}		
+		if(session.getAttribute("mtoPageQty")!=null){
+		    session.removeAttribute("mtoPageQty");
+		}
+		if(session.getAttribute("toMemPageQty")!=null){
+		    session.removeAttribute("toMemPageQty");
+		}
 		
 //		Integer memno = (Integer) session.getAttribute("memId");// 測試用(取得存在session會員編號)
 //	    System.out.println("測試取得放入session的會員編號" + memno);

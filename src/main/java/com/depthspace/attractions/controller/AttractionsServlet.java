@@ -10,16 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.depthspace.attractions.model.AttractionsVO;
+import com.depthspace.attractions.model.CityVO;
 import com.depthspace.attractions.service.AttractionsService;
+import com.depthspace.attractions.service.CityService;
 
-@WebServlet({ "/attractions/*" })
+@WebServlet({ "/attr/*" })
 public class AttractionsServlet  extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private AttractionsService as;
+	private AttractionsService attrs;
+	private CityService cs;
 	
 	public void init() throws ServletException {
-		as = new AttractionsService();
+		attrs = new AttractionsService();
+		cs = new CityService();
 	}
 	
 	@Override
@@ -37,17 +41,34 @@ public class AttractionsServlet  extends HttpServlet {
 //			doTList(req, resp);
 //			break;
 		case "/list":
-			doTList(req, resp);
+			doList(req, resp);
+			break;
+		case "/oneList":
+			dooneList(req, resp);
 			break;
 			
 		}
 
 	}
-	private void doTList(HttpServletRequest req, HttpServletResponse resp) {
-		List<AttractionsVO> list = as.getAll();
-		System.out.println("景點list=" + list) ;
-//		req.setAttribute("list", list);
+	private void dooneList(HttpServletRequest req, HttpServletResponse resp) {
+		System.out.println("跳轉成功");
 		
+	}
+
+	private void doList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<AttractionsVO> list = attrs.getAll();
+//		System.out.println("景點list=" + list) ;
+		
+		List<CityVO> city = cs.getAll();
+//		System.out.println("景點city=" + city) ;
+//		for(AttractionsVO a : list) {
+//			System.out.println(a.getAttractionsName());
+//		}
+		
+		req.setAttribute("list", list);
+		req.setAttribute("city", city);
+		
+		req.getRequestDispatcher("/attractions/list.jsp").forward(req, resp);
 	}
 	
 }

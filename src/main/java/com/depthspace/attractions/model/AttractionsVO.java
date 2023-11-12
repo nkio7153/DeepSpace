@@ -51,6 +51,27 @@ public class AttractionsVO implements Serializable{
 		this.description = description;
 		this.attractionsStatus = attractionsStatus;
 	}
+	
+	
+	
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public Double getLon() {
+		return lon;
+	}
+	public void setLon(Double lon) {
+		this.lon = lon;
+	}
+	public Double getLat() {
+		return lat;
+	}
+	public void setLat(Double lat) {
+		this.lat = lat;
+	}
 	public Integer getAttractionsId() {
 		return attractionsId;
 	}
