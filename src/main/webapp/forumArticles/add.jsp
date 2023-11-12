@@ -105,8 +105,7 @@ function previewImage(event) {
     <form id="addForm" method="Post" action="${pageContext.request.contextPath}/forumArticles.do?action=add" enctype="multipart/form-data">
         <table>
             <tr>
-                <th>會員ID</th>
-                <td><input type="text" name="memId" id="memId"></td>
+                <td><input type="hidden" name="memId" id="memId"></td>
             </tr>
             <tr>
                 <th>訊息ID</th>
