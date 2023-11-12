@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <header>
+
     <div class="container" style="padding-right: 0;">
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid" style="padding: 20px 0;">
@@ -24,9 +25,9 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownTicket">
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ticketproduct/list">票券瀏覽</a></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/to/memOrderList">訂單管理</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/to/memOrderList" onclick="checkSession()">訂單管理</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/pro/getCard">促銷活動</a></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList">我的票券</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList"  onclick="checkSession()">我的票券</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
