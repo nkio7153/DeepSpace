@@ -132,7 +132,7 @@ function previewImage(event) {
             <input type="hidden" name="articleId" id="articleId" value="${param.articleId}">
             <input type="hidden" name="artiLk" id="artiLk" value="${param.artiLk}">
             <input type="submit" id="btnSave" value="儲存">
-            <input type="button" id="btnCancel" value="取消" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles/list.jsp'">
+            <input type="button" id="btnCancel" value="取消" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=getmemlist'">
         </form>
     </div>
 
