@@ -1,6 +1,5 @@
 package com.depthspace.promotion.model.promotion;
 
-import com.depthspace.promotion.model.promotion.PromotionTicketViewId;
 import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;

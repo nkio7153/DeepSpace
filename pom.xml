@@ -8,10 +8,9 @@
 <!--	<parent>-->
 <!--    <groupId>org.springframework.boot</groupId>-->
 <!--    <artifactId>spring-boot-starter-parent</artifactId>-->
-<!--    <version>2.7.0</version>  使用最新穩定版本 -->
-<!--    <relativePath/>  lookup parent from repository -->
+<!--    <version>2.7.0</version>-->
+<!--    <relativePath/> -->
 <!--</parent>-->
-
 	<groupId>com.depthspace</groupId>
 	<artifactId>DepthSpace</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -138,6 +137,19 @@
 <!--				</exclusion>-->
 <!--			</exclusions>-->
 <!--    </dependency>-->
+<!--  		<dependency>-->
+<!--        	<groupId>org.springframework.boot</groupId>-->
+<!--        	<artifactId>spring-boot-starter-validation</artifactId>-->
+<!--    	</dependency>-->
+    	
+    	
+<!--		<dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-jdbc</artifactId>-->
+<!--        </dependency>-->
+        
+        
+        
 <!--    <dependency>-->
 <!--			<groupId>org.springframework.boot</groupId>-->
 <!--			<artifactId>spring-boot-starter-aop</artifactId>-->
@@ -146,14 +158,6 @@
 <!--			<groupId>com.fasterxml.jackson.datatype</groupId>-->
 <!--			<artifactId>jackson-datatype-jsr310</artifactId>-->
 <!--		</dependency>-->
-<!--  		<dependency>-->
-<!--        	<groupId>org.springframework.boot</groupId>-->
-<!--        	<artifactId>spring-boot-starter-validation</artifactId>-->
-<!--    	</dependency>-->
-<!--		<dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-jdbc</artifactId>-->
-<!--        </dependency>-->
 <!--        <dependency>-->
 <!--			<groupId>org.springframework.boot</groupId>-->
 <!--			<artifactId>spring-boot-starter-security</artifactId>-->
@@ -229,6 +233,12 @@
 <!--			<artifactId>knife4j-spring-boot-starter</artifactId>-->
 <!--			<version>3.0.2</version>-->
 <!--		</dependency>-->
+		
+		
+
+		
+		
+		
 
 	</dependencies>
 
@@ -279,18 +289,12 @@
 					<version>3.0.0</version>
 				</plugin>
 				
-<!--				<plugin>-->
-<!--				<groupId>org.springframework.boot</groupId>-->
-<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--				<configuration>-->
-<!--					<excludes>-->
-<!--						<exclude>-->
-<!--							<groupId>org.projectlombok</groupId>-->
-<!--							<artifactId>lombok</artifactId>-->
-<!--						</exclude>-->
-<!--					</excludes>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
+<!--			<plugin>-->
+<!--    <groupId>org.springframework.boot</groupId>-->
+<!--    <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--     如果沒有其他需要配置的項目，這裡可以省略 <configuration> 標籤 -->
+<!--</plugin>-->
+
 				
 				  
 			</plugins>

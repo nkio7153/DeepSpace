@@ -50,12 +50,12 @@
                     <div class="col-sm">
                         <span>名字</span>
                         <br>
-                        <input class="form-control">
+                        <input class="form-control" value="${lastName}">
                     </div>
                     <div class="col-sm">
                         <span>姓</span>
                         <br>
-                        <input class="form-control">
+                        <input class="form-control" value="${firstName}">
                     </div>
                 </div>
                 <div class="row">
@@ -73,7 +73,7 @@
                             <select id="phoneCodeSelect" class="form-select w-25" placeholder="+886">
                                 <!-- 國碼選單 -->
                             </select>
-                            <input type="text" class="form-control w-75" placeholder="請輸入連絡電話" id="phoneNumber">
+                            <input type="text" class="form-control w-75" placeholder="請輸入連絡電話" id="phoneNumber" value="${authenticatedMem.memTel}">
                         </div>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                     <div class="col-sm">
                         <span>Email/電子郵件</span>
                         <br>
-                        <input class="form-control w-50">
+                        <input class="form-control w-50" value="${authenticatedMem.memEmail}">
                     </div>
                 </div>
 
@@ -168,6 +168,7 @@
     $(document).ready(function () {
         // 電話區號列表
         var phoneCodes = [
+            "+886",  // 台灣
             "+86",   // 中國
             "+1",    // 美國
             "+81",   // 日本
@@ -177,7 +178,6 @@
             "+44",   // 英國
             "+33",   // 法國
             "+61",   // 澳大利亞
-            "+886",  // 台灣
             "+65",   // 新加坡
             "+852",  // 香港
             "+91",   // 印度
@@ -209,6 +209,7 @@
 
         var countrySelect = $("#countrySelect");
         var country = [
+            "台灣",
             "中國",
             "美國",
             "日本",
@@ -218,7 +219,6 @@
             "英國",
             "法國",
             "澳大利亞",
-            "台灣",
             "新加坡",
             "香港",
             "印度",
