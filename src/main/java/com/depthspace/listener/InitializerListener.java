@@ -19,8 +19,6 @@ public class InitializerListener implements ServletContextListener {
 	public void contextDestroyed(ServletContextEvent sce) {
 		System.out.println("context ended");
 		HibernateUtil.shutdown();
-		ProServiceImpl proService = new ProServiceImpl();
-		proService.stopScheduler();
 	}
 
 }

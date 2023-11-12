@@ -28,8 +28,6 @@
         }
 
         .ticket {
-            /*width: 300px;*/
-            /*height: 200px;*/
             background-color: #fff;
             position: relative;
             overflow: hidden;
@@ -61,6 +59,11 @@
          .card-text{
              line-height:25px;
          }
+        /*@media (min-width: 768px) {*/
+        /*    .container, .container-lg, .container-md, .container-sm {*/
+        /*        min-width: 1080px !important;*/
+        /*    }*/
+        /*}*/
 
     </style>
 
@@ -77,13 +80,12 @@
     <c:if test="${mtoPageQty > 0}">
         <b><font color=red>第${currentPage}/${mtoPageQty}頁</font></b>
     </c:if>
-        <!-- ... 其他代码 ... -->
         <div class="row">
             <c:forEach items="${list}" var="mto" varStatus="mtoStatus">
-                <div class="col-md-12 mb-4 card-ticket ticket"> <!-- 每个卡片占据6列 -->
+                <div class="col-md-12 mb-4 card-ticket ticket">
                     <div class="card shadow h-100 rounded">
                         <div class="row g-0">
-                            <div class="col-md-5 position-relative"> <!-- 调整图片区域的宽度 -->
+                            <div class="col-md-5 position-relative">
                                 <img src="${pageContext.request.contextPath}/tsc/image?serialId=${mto.serialId}" class="card-img-top rounded-start" alt="..."> <!-- 图片覆盖整个卡片顶部宽度 -->
                                 <div class="position-absolute bottom-0 start-0 m-3 mx-2 px-2">
                                     <button type="button" class="btn btn-primary btn-sm fs-4">票券詳情</button>
@@ -92,7 +94,7 @@
                                     <span class="badge bg-success rounded-pill p-2 fs-4">$${mto.discountPrice}</span>
                                 </div>
                             </div>
-                            <div class="col-md-7 d-flex flex-column justify-content-between"><!-- 调整文本区域的宽度 -->
+                            <div class="col-md-7 d-flex flex-column justify-content-between">
                                 <div class="card-body">
                                     <div class="watermark">深度漫遊-電子票券</div>
                                     <span class="voucher-sent">憑證已發送</span>
@@ -136,7 +138,7 @@
                     </a></li>
                 </c:if>
 
-                <!-- 動態顯示頁碼，根據總頁數ticketPageQty生成 -->
+                <!-- 動態顯示頁碼，根據總頁數PageQty生成 -->
                 <c:forEach var="i" begin="1" end="${mtoPageQty}" step="1">
                     <li class="page-item ${i == currentPage ? 'active' : ''}"><a
                             class="page-link"
@@ -164,20 +166,7 @@
 
 
 
-        <!-- ... 分頁链接 ... -->
 
-<%--    <c:if test="${currentPage > 1}">--%>
-<%--        <a href="${pageContext.request.contextPath}/mto/memList?page=1&memId=${memId}">至第一頁</a>&nbsp;--%>
-<%--    </c:if>--%>
-<%--    <c:if test="${currentPage - 1 != 0}">--%>
-<%--        <a href="${pageContext.request.contextPath}/mto/memList?page=${currentPage - 1}&memId=${memId}">上一頁</a>&nbsp;--%>
-<%--    </c:if>--%>
-<%--    <c:if test="${currentPage + 1 <= mtoPageQty}">--%>
-<%--        <a href="${pageContext.request.contextPath}/mto/memList?page=${currentPage + 1}&memId=${memId}">下一頁</a>&nbsp;--%>
-<%--    </c:if>--%>
-<%--    <c:if test="${currentPage != mtoPageQty}">--%>
-<%--        <a href="${pageContext.request.contextPath}/mto/memList?page=${mtoPageQty}&memId=${memId}">至最後一頁</a>&nbsp;--%>
-<%--    </c:if>--%>
 </div>
 <script>
     $(document).ready(function(){

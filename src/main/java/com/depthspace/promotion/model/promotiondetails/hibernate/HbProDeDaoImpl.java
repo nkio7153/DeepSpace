@@ -107,15 +107,7 @@ public class HbProDeDaoImpl implements HbProDeDao {
                 .setParameter("ticketIds",ticketIds)
                 .list();
 
-//        return getSession()
-//                .createQuery("SELECT pd.ticketId " +
-//                        "FROM PromotionVO p " +
-//                        "INNER JOIN PromotionDetailsVO pd ON p.promotionId = pd.promotionId " +
-//                        "WHERE :currentDate BETWEEN p.startDate AND p.endDate " +
-//                        "AND pd.ticketId IN (:ticketIds)", Integer.class)
-//                .setParameter("currentDate", new Date()) // 設置當前日期
-//                .setParameterList("ticketIds", ticketIds)  // 設置 ticketIds 參數
-//                .list();
+
     }
 
 }
