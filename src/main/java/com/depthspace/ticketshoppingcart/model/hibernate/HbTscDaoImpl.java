@@ -6,8 +6,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
+import java.time.ZoneId;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class HbTscDaoImpl implements HbTscDao {
     //宣告一個factory變數
@@ -93,27 +96,34 @@ public class HbTscDaoImpl implements HbTscDao {
     //根據ticketId集合取得對應的購物車清單
     @Override
     public List<CartInfo> getByTicketIds(Set<Integer> ticketIds) {
-        return getSession().createQuery("FROM CartInfo WHERE ticketId IN (:ticketIds)", CartInfo.class)
-        .setParameterList("ticketIds", ticketIds)
-        .list();
-//        LocalDate currentDate = LocalDate.now();
-//        return getSession().createQuery(
-//                        "FROM CartInfo ci " +
-//                                "WHERE ci.ticketId IN (:ticketIds) " +
-//                                "AND NOT EXISTS (" +
-//                                "SELECT 1 " +
-//                                "FROM PromotionVO p " +
-//                                "WHERE ci.ticketId = p.TICKET_ID " +
-//                                "AND :currentDate BETWEEN p.START_DATE AND p.END_DATE" +
-//                                ") " +
-//                                "AND NOT EXISTS (" +
-//                                "SELECT 1 " +
-//                                "FROM PromotionDetails pd " +
-//                                "WHERE ci.ticketId = pd.TICKET_ID " +
-//                                "AND ci.promotionId = pd.PROMOTION_ID" +
-//                                ")", CartInfo.class)
-//                .setParameterList("ticketIds", ticketIds)
-//                .setParameter("currentDate", currentDate)
-//                .list();
+        LocalDate currentDate = LocalDate.now();
+        Date date = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        // 首先獲取所有匹配的票券，無論其促銷狀態如何
+        List<CartInfo> allCartInfos = getSession().createQuery("FROM CartInfo WHERE ticketId IN (:ticketIds)", CartInfo.class)
+                .setParameterList("ticketIds", ticketIds)
+                .list();
+
+        Map<Integer, CartInfo> selectedCartInfos = new HashMap<>();
+        for (CartInfo cartInfo : allCartInfos) {
+            Integer ticketId = cartInfo.getTicketId();
+            // 檢查是否已經有對應這個 ticketId 的 CartInfo
+            if (!selectedCartInfos.containsKey(ticketId)) {
+                // 如果沒有，直接添加
+                selectedCartInfos.put(ticketId, cartInfo);
+            } else {
+                // 如果已有，檢查現有的是否有有效的促銷，如果沒有，則檢查當前 CartInfo 是否有有效的促銷
+                CartInfo existingCartInfo = selectedCartInfos.get(ticketId);
+                if (!isValidPromotion(existingCartInfo, date) && isValidPromotion(cartInfo, date)) {
+                    selectedCartInfos.put(ticketId, cartInfo);
+                }
+            }
+        }
+
+        return new ArrayList<>(selectedCartInfos.values());
+    }
+    private boolean isValidPromotion(CartInfo cartInfo, Date currentDate) {
+            // 檢查促銷是否有效
+        return cartInfo.getStartDate() != null && cartInfo.getEndDate() != null &&
+                !currentDate.before(cartInfo.getStartDate()) && !currentDate.after(cartInfo.getEndDate());
     }
 }

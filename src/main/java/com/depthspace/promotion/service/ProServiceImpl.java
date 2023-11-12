@@ -48,17 +48,6 @@ public class ProServiceImpl implements ProService{
             }
             //新增促銷對應的多筆促銷明細
             proDeDao.insertBatch(proDeList);
-
-            // 設定排程任務來刪除促銷
-            long delay = entity.getEndDate().getTime() - System.currentTimeMillis();
-            if (delay > 0) {
-                scheduledTask = scheduler.schedule(() -> {
-                    // 在這裡執行刪除促銷的代碼
-                    // 調用 delete 方法刪除促銷資料
-                    dao.delete(entity.getPromotionId());
-                    proDeDao.deleteByProId(entity.getPromotionId());
-                }, delay, TimeUnit.MILLISECONDS);
-            }
         }
     }
     public PromotionVO update(PromotionVO entity){
@@ -72,6 +61,7 @@ public class ProServiceImpl implements ProService{
         proDeDao.deleteByProId(promotionId);
         return null;
     }
+    //取得還沒結束的所有促銷(包含未來促銷)
     public List<PromotionVO> getAll(){
         List<PromotionVO> list = dao.getAll();
         return list;
@@ -116,13 +106,5 @@ public class ProServiceImpl implements ProService{
     }
 
 
-    @Override
-    public void stopScheduler() {
-        // 停止排程器
-        if (scheduledTask != null && !scheduledTask.isDone()) {
-            scheduledTask.cancel(false);
-        }
-        scheduler.shutdown();
-    }
 
 }

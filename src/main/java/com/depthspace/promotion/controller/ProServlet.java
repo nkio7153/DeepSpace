@@ -159,14 +159,14 @@ public class ProServlet extends HttpServlet {
 
     //新增及修改時錯誤驗證
     private void doCheck(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Integer promotionId=null;
         String promoName;
         String description;
         Timestamp startDate = null;
         Timestamp endDate = null;
         List<Integer> ticketIds=new ArrayList<>();
         List<String> errorMsgs = new LinkedList<String>();
-
-        //取得所有票券id
+        //取得所有欲更新票券id
         String[] ticketIdsStr = req.getParameterValues("ticketId");
         if(ticketIdsStr != null) {
             for (String ticketId : ticketIdsStr) {
@@ -184,12 +184,39 @@ public class ProServlet extends HttpServlet {
             //取得欲添加票券與正在促銷中重複的票券id
             List<Integer> duplicates = proSv.getOnSale(ticketIds);
 
-            if (!duplicates.isEmpty()) {
-                errorMsgs.add("你選的票券名稱正在促銷中");//錯誤驗證
-            }
             //驗證新增的票券名稱是否有重複
             HashSet<Integer> set = new HashSet<>(ticketIds);
-            if (ticketIds.size() != set.size()){
+
+
+            //取得修改前的票券編號集合
+            List<PromotionTicketView> ptvs;
+            //如果促銷編號存在，說明是編輯檢查，
+            if(req.getParameter("proId")!=null) {
+
+                promotionId=Integer.parseInt(req.getParameter("proId"));
+                //取得編輯前所有的票券編號
+                ptvs = proSv.getAllByProId(promotionId);
+                ArrayList<Integer> originTicketIds = new ArrayList<>();
+                for (PromotionTicketView pro:ptvs){
+                    originTicketIds.add(pro.getTicketId());
+                }
+                //將欲修改的編號該、編輯前的票券編號的重複編號過濾掉，避免與資料庫正在促銷的票券重複
+
+                // 找出新增的票券 ID（在 ticketIds 中但不在 originTicketIds 中）
+                List<Integer> newTicketIds = ticketIds.stream()
+                        .filter(id -> !originTicketIds.contains(id))
+                        .collect(Collectors.toList());
+                //跟資料庫比對新增的票券編號是否正在促銷中
+                List<Integer> onSale = proSv.getOnSale(newTicketIds);
+                if (!onSale.isEmpty()) {
+                    errorMsgs.add("你選的票券名稱正在促銷中");//錯誤驗證
+                }
+
+            } else if (!duplicates.isEmpty() && req.getParameter("proId")==null) {
+                errorMsgs.add("你選的票券名稱正在促銷中");//錯誤驗證
+            }
+
+            if(ticketIds.size() != set.size()){
                 errorMsgs.add("你選的票券名稱有重複");//錯誤驗證
             }
 

@@ -98,50 +98,50 @@
 <%--                <c:if test="${currentPage != toPageQty}">--%>
 <%--                    <a href="${pageContext.request.contextPath}/to/listAll?page=${toPageQty}">至最後一頁</a>&nbsp;--%>
 <%--                </c:if>--%>
-    <!-- 分頁 -->
-    <div>
-        <nav>
-            <ul class="pagination justify-content-center">
-                <!-- "至第一頁" 只在非第一頁時顯示 -->
-                <c:if test="${currentPage > 1}">
-                    <li class="page-item"><a class="page-link"
-                                             href="${pageContext.request.contextPath}/to/listAll?page=1">第一頁</a>
-                    </li>
-                </c:if>
+                <!-- 分頁 -->
+                <div>
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <!-- "至第一頁" 只在非第一頁時顯示 -->
+                            <c:if test="${currentPage > 1}">
+                                <li class="page-item"><a class="page-link"
+                                                         href="${pageContext.request.contextPath}/to/listAll?page=1">第一頁</a>
+                                </li>
+                            </c:if>
 
-                <!-- "上一頁" 如果當前頁是第一頁則隱藏 -->
-                <c:if test="${currentPage - 1 != 0}">
-                    <li class="page-item"><a class="page-link"
-                                             href="${pageContext.request.contextPath}/to/listAll?page=${currentPage - 1}"
-                                             aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-                    </a></li>
-                </c:if>
+                            <!-- "上一頁" 如果當前頁是第一頁則隱藏 -->
+                            <c:if test="${currentPage - 1 != 0}">
+                                <li class="page-item"><a class="page-link"
+                                                         href="${pageContext.request.contextPath}/to/listAll?page=${currentPage - 1}"
+                                                         aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+                                </a></li>
+                            </c:if>
 
-                <!-- 動態顯示頁碼，根據總頁數ticketPageQty生成 -->
-                <c:forEach var="i" begin="1" end="${toPageQty}" step="1">
-                    <li class="page-item ${i == currentPage ? 'active' : ''}"><a
-                            class="page-link"
-                            href="${pageContext.request.contextPath}/to/listAll?page=${i}">${i}</a>
-                    </li>
-                </c:forEach>
+                            <!-- 動態顯示頁碼，根據總頁數ticketPageQty生成 -->
+                            <c:forEach var="i" begin="1" end="${toPageQty}" step="1">
+                                <li class="page-item ${i == currentPage ? 'active' : ''}"><a
+                                        class="page-link"
+                                        href="${pageContext.request.contextPath}/to/listAll?page=${i}">${i}</a>
+                                </li>
+                            </c:forEach>
 
-                <!-- "下一頁" 如果當前頁是最後一頁則隱藏 -->
-                <c:if test="${currentPage + 1 <= toPageQty}">
-                    <li class="page-item"><a class="page-link"
-                                             href="${pageContext.request.contextPath}/to/listAll?page=${currentPage + 1}"
-                                             aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-                    </a></li>
-                </c:if>
+                            <!-- "下一頁" 如果當前頁是最後一頁則隱藏 -->
+                            <c:if test="${currentPage + 1 <= toPageQty}">
+                                <li class="page-item"><a class="page-link"
+                                                         href="${pageContext.request.contextPath}/to/listAll?page=${currentPage + 1}"
+                                                         aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+                                </a></li>
+                            </c:if>
 
-                <!-- "至最後一頁" 只在非最後一頁時顯示 -->
-                <c:if test="${currentPage != toPageQty}">
-                    <li class="page-item"><a class="page-link"
-                                             href="${pageContext.request.contextPath}/to/listAll?page=${toPageQty}">尾頁</a>
-                    </li>
-                </c:if>
-            </ul>
-        </nav>
-    </div>
+                            <!-- "至最後一頁" 只在非最後一頁時顯示 -->
+                            <c:if test="${currentPage != toPageQty}">
+                                <li class="page-item"><a class="page-link"
+                                                         href="${pageContext.request.contextPath}/to/listAll?page=${toPageQty}">尾頁</a>
+                                </li>
+                            </c:if>
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </div>
