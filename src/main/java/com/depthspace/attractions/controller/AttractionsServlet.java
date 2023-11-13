@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.depthspace.attractions.model.AttractionsImagesVO;
 import com.depthspace.attractions.model.AttractionsVO;
 import com.depthspace.attractions.model.CityVO;
+import com.depthspace.attractions.service.AttractionsImageService;
 import com.depthspace.attractions.service.AttractionsService;
 import com.depthspace.attractions.service.CityService;
 
@@ -20,10 +22,12 @@ public class AttractionsServlet  extends HttpServlet {
 	
 	private AttractionsService attrs;
 	private CityService cs;
+	private AttractionsImageService ais;
 	
 	public void init() throws ServletException {
 		attrs = new AttractionsService();
 		cs = new CityService();
+		ais = new AttractionsImageService();
 	}
 	
 	@Override
@@ -40,33 +44,71 @@ public class AttractionsServlet  extends HttpServlet {
 //		case "/":
 //			doTList(req, resp);
 //			break;
-		case "/list":
+		case "/list"://所有景點
 			doList(req, resp);
 			break;
-		case "/oneList":
+		case "/oneList"://單一頁面
 			dooneList(req, resp);
+			break;
+		case "/search"://前端送出搜尋請求
+			doSearch(req, resp);
 			break;
 			
 		}
 
 	}
-	private void dooneList(HttpServletRequest req, HttpServletResponse resp) {
-		System.out.println("跳轉成功");
+	//前端關鍵字及選取框搜尋
+	private void doSearch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {	    
+		Integer areaId;//縣市編號
+		String attractionsName = req.getParameter("attractionsName");//使用者搜尋的景點名稱
+		
+//		System.out.println("areaId=" + areaId + "，attractionsName=" + attractionsName);
+	    try {
+	    	areaId = Integer.valueOf(req.getParameter("areaId"));
+	    } catch (NumberFormatException e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		
 		
 	}
 
+	private void dooneList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		System.out.println("跳轉成功");
+		Integer attractionsId;//使用者搜尋的景點名稱
+				
+	    try {
+	    	attractionsId = Integer.valueOf(req.getParameter("attractionsId"));
+	    } catch (NumberFormatException e) {
+			e.printStackTrace();
+			return;
+		}
+//		System.out.println("attractionsId=" + attractionsId);
+//		id去找景點資訊
+		AttractionsVO avo = attrs.getAttractionsById(attractionsId);
+//		System.out.println("單一景點： " + avo);
+		//找景點圖片
+		List<AttractionsImagesVO> imageList = ais.getAttractionsImagesById(attractionsId);
+//		System.out.println("imageList=" + imageList);
+		
+		
+		
+		
+		req.setAttribute("attractions" , avo);
+		req.setAttribute("image" , imageList);
+		req.getRequestDispatcher("/attractions/item.jsp").forward(req, resp);
+	}
+
 	private void doList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<AttractionsVO> list = attrs.getAll();
-//		System.out.println("景點list=" + list) ;
-		
+		List<AttractionsVO> list = attrs.getAll();		
 		List<CityVO> city = cs.getAll();
-//		System.out.println("景點city=" + city) ;
-//		for(AttractionsVO a : list) {
-//			System.out.println(a.getAttractionsName());
-//		}
+
+		req.setAttribute("list", list);//取得所有景點
+		req.setAttribute("city", city);//取得台灣所有縣市
 		
-		req.setAttribute("list", list);
-		req.setAttribute("city", city);
+		
+		
 		
 		req.getRequestDispatcher("/attractions/list.jsp").forward(req, resp);
 	}

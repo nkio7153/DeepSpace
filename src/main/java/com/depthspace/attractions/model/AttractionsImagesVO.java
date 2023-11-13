@@ -28,6 +28,7 @@ public class AttractionsImagesVO implements Serializable{
 		this.attractionsId = attractionsId;
 		this.attractionsImg = attractionsImg;
 	}
+	
 	public Integer getAttractionsImagesId() {
 		return attractionsImagesId;
 	}
