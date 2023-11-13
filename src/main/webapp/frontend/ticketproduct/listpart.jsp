@@ -1,32 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-
-
-<!DOCTYPE html>
-<html>
-<head>
-<title>選擇票券體驗</title>
-<!-- CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-<link rel="stylesheet"
-	href="<c:url value='/static/css/frontendlist.css'/>">
-
-
-</head>
-<body>
-	<div class="container mt-5">
-
-		<div class="row">
-
 			<!-- 右側內容 -->
 				<div class="d-flex justify-content-between align-items-center mb-3">
-
+					<div >
 					<c:choose>
 						<c:when test="${not empty searchCount}">
 							<h3 class="mb-0">搜尋結果 ${searchCount} 項票券</h3>
@@ -35,9 +13,18 @@
 							<h3 class="mb-0">共有 ${totalTickets} 項票券體驗</h3>
 						</c:otherwise>
 					</c:choose>
+					</div>
+				<!-- 排序 -->				    
+				<label for="sortOption">排序方式：</label>
+				<div class="form-group">
+				    <select class="form-control" id="sortOption" onchange="updateTicketList(1)">
+				 <option value="ticketId_asc" ${param.sortField == 'ticketId' && param.sortOrder == 'asc' ? 'selected' : ''}>依上市日(新→舊)</option>
+				<option value="ticketId_desc" ${param.sortField == 'ticketId' && param.sortOrder == 'desc' ? 'selected' : ''}>依上市日(舊→新)</option>
+				    </select>
+				</div>
 				</div>
 				<!-- 票券列表 -->
-				<div class="ticket-list">
+				<div class="ticket-lists" id="ticketright">
 					<c:forEach items="${resultSet}" var="ticket">
 						<a
 							href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=${ticket.ticketId}"
@@ -52,7 +39,7 @@
 									<div class="col-md-8">
 										<div class="card-body">
 											<h5 class="card-title">${ticket.ticketName}</h5>
-											<p class="card-title">${ticket.ticketType.typeName}|
+											<p class="card-title">${ticket.ticketType.typeName}&ensp;|&ensp;
 												${ticket.city.cityName}</p>
 											<p class="card-title">
 												<c:choose>
@@ -62,7 +49,7 @@
 													<c:otherwise>
 								${ticket.description}
 								</c:otherwise>
-												</c:choose>
+										</c:choose>
 											</p>
 											<p class="card-text">
 												<small class="text-muted">
@@ -84,7 +71,6 @@
 														var="j">
 														<i class="far fa-star gold-star"></i>
 													</c:forEach> (${totalRatingCountMap[ticket.ticketId]})
-													銷售量${ticketOrderCountMap[ticket.ticketId]}
 												</small>
 											</p>
 											<p class="card-text">NT$ ${ticket.price}</p>
@@ -93,61 +79,13 @@
 								</div>
 							</div>
 						</a>
-					</c:forEach>
-				</div>
+				</c:forEach>
 			</div>
-		</div>
-	<%-- 分頁 若是全列表則執行以下分頁--%>
-	<c:if test="${empty searchCount}">
-		<div>
-			<nav>
-
-				<ul class="pagination justify-content-center">
-					<!-- "至第一頁" 只在非第一頁時顯示 -->
-					<c:if test="${currentPage > 1}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/ticketproduct/list?page=1">第一頁</a>
-						</li>
-					</c:if>
-
-					<!-- "上一頁" 如果當前頁是第一頁則隱藏 -->
-					<c:if test="${currentPage - 1 != 0}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/ticketproduct/list?page=${currentPage - 1}"
-							aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-						</a></li>
-					</c:if>
-
-					<!-- 動態顯示頁碼，根據總頁數ticketPageQty生成 -->
-					<c:forEach var="i" begin="1" end="${ticketPageQty}" step="1">
-						<li class="page-item ${i == currentPage ? 'active' : ''}"><a
-							class="page-link"
-							href="${pageContext.request.contextPath}/ticketproduct/list?page=${i}">${i}</a>
-						</li>
-					</c:forEach>
-
-					<!-- "下一頁" 如果當前頁是最後一頁則隱藏 -->
-					<c:if test="${currentPage + 1 <= ticketPageQty}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/ticketproduct/list?page=${currentPage + 1}"
-							aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-						</a></li>
-					</c:if>
-
-					<!-- "至最後一頁" 只在非最後一頁時顯示 -->
-					<c:if test="${currentPage != ticketPageQty}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/ticketproduct/list?page=${ticketPageQty}">尾頁</a>
-						</li>
-					</c:if>
-				</ul>
-			</nav>
-		</div>
-	</c:if>
-
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
-</body>
-</html>
+<!-- 分頁 -->
+<!-- <ul class="pagination justify-content-center"> -->
+<%--     <c:forEach var="i" begin="1" end="${ticketPageQty}" step="1"> --%>
+<%--         <li class="page-item ${i == currentPage ? 'active' : ''}"> --%>
+<%--             <a class="page-link" href="#" onclick="updateTicketList(${i});">${i}</a> --%>
+<!--         </li> -->
+<%--     </c:forEach> --%>
+<!-- </ul> -->

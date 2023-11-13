@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!DOCTYPE html>
 <html>
@@ -13,7 +14,7 @@
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	rel="stylesheet">
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
 
 </head>
 
@@ -53,13 +54,42 @@
 				<p>${columnArticles.artiContent}</p>
 			</div>
 		</div>
-	</div>
-
+		<div>
+		</div>
+		<h5>你可能還喜歡</h5>
+        <div class="row">
+            <c:forEach  items="${recommendedArticles}" var="article" begin="0" end="4">
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="<%=request.getContextPath()%>/columnmainimage?artiId=${article.artiId}" class="card-img-top" alt="Article Image">
+                        <div class="article">
+                            <h6 class="card-title"><c:choose>
+								<c:when test="${fn:length(article.artiTitle) > 10}">
+								${fn:substring(article.artiTitle,0,10)}...
+								</c:when>
+								<c:otherwise>
+								${article.artiTitle}
+								</c:otherwise>
+							 </c:choose></h5>
+                            <p class="card-text"><c:choose>
+								<c:when test="${fn:length(article.artiContent) > 30}">
+								${fn:substring(article.artiContent,0,30)}...
+								</c:when>
+								<c:otherwise>
+								${article.artiContent}
+								</c:otherwise>
+							 </c:choose></p>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
+    	</div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+	<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
 	<jsp:include page="/indexpage/footer.jsp" />
 

@@ -18,6 +18,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 
@@ -81,8 +82,6 @@ public class TicketServiceImpl implements TicketService {
 	        }
 	        criteriaMap.put(key, Arrays.asList(values));
 	    }
-	    
-	    // 將上述查到的條件交由dao的方法查詢
 	    return dao.getByCompositeQuery(criteriaMap);
 	}
 
@@ -120,6 +119,11 @@ public class TicketServiceImpl implements TicketService {
 	@Override // 取得總票券數
 	public long getTotalTickets() {
 		return dao.getTotal();
+	}
+	
+	@Override // 取得總票券數(上架)
+	public long getStatusTotalTickets() {
+		return dao.getStatusTotal();
 	}
 
 	// 取得所有類型(TypeVO)
@@ -214,5 +218,30 @@ public class TicketServiceImpl implements TicketService {
     public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId) {
         return hbTodDao.findByTicketId(ticketId);
     }
+
+    public List<TicketVO> getAllTicketsSorted(String sortField, String sortOrder) {
+        return dao.findAllWithOrder(sortField, sortOrder);
+    }
+    
+    public List<TicketVO> findAllWithOrder(int currentPage, String sortField, String sortOrder) {
+    	 return dao.findAllWithOrder(currentPage, sortField, sortOrder);
+    }
+
+    public List<TicketVO> findTickets(int currentPage, String sortField, String sortOrder, Map<String, List<String>> filterMap) {
+   	 return dao.findTickets(currentPage, sortField, sortOrder, filterMap);
+   }
+//	@Override
+//	public List<TicketVO> getAllTickets2(int currentPage, String sortId, String sortOrder) {
+//		return dao.getAll2(currentPage, sortId, sortOrder);
+//    }
+//	
+//
+//
+//
+//	@Override
+//	public List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> queryMap, String sortId, String sortOrder) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 }

@@ -21,6 +21,10 @@ import com.depthspace.column.model.ColumnArticlesVO;
 import com.depthspace.column.model.ColumnTypesVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.utils.HibernateUtil;
+import com.depthspace.utils.JedisUtil;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 public class ColumnArticlesServiceImpl implements ColumnArticlesService {
 
