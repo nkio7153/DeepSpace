@@ -123,6 +123,40 @@ public class TicketDAOImpl implements TicketDAO {
         }
 
     }
+    
+    public List<TicketVO> findTickets(int currentPage, String sortField, String sortOrder, String searchQuery) {
+    
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<TicketVO> criteriaQuery = builder.createQuery(TicketVO.class);
+        Root<TicketVO> root = criteriaQuery.from(TicketVO.class);
+
+        // 構建搜尋條件
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            Predicate searchPredicate = builder.like(root.get("ticketName"), "%" + searchQuery + "%");
+            criteriaQuery.where(searchPredicate);
+        }
+
+        // 構建排序條件
+        if ("desc".equalsIgnoreCase(sortOrder)) {
+            criteriaQuery.orderBy(builder.desc(root.get(sortField)));
+        } else {
+            criteriaQuery.orderBy(builder.asc(root.get(sortField)));
+        }
+        
+
+        // 實現分頁
+        int firstResult = (currentPage - 1) * Constants.PAGE_SIZE;
+        Query<TicketVO> query = getSession().createQuery(criteriaQuery)
+                                       .setFirstResult(firstResult)
+                                       .setMaxResults(Constants.PAGE_SIZE);
+
+        return query.getResultList();
+    }
+
+//    private getSession() {
+//        // 返回當前的 Hibernate Session
+//    }
+
 //	// 取得所有票券資料(分頁) 排序
 //	@Override
 //	public List<TicketVO> getAll2(int currentPage, String sortId, String sortOrder) {

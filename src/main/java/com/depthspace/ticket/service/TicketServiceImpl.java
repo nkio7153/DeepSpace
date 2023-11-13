@@ -227,6 +227,9 @@ public class TicketServiceImpl implements TicketService {
     	 return dao.findAllWithOrder(currentPage, sortField, sortOrder);
     }
 
+    public List<TicketVO> findTickets(int currentPage, String sortField, String sortOrder, String searchQuery) {
+   	 return dao.findTickets(currentPage, sortField, sortOrder, searchQuery);
+   }
 //	@Override
 //	public List<TicketVO> getAllTickets2(int currentPage, String sortId, String sortOrder) {
 //		return dao.getAll2(currentPage, sortId, sortOrder);

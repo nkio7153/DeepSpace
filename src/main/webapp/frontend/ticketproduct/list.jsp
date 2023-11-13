@@ -56,7 +56,7 @@
 
 			<!-- 左側篩選條件 -->
 			<div class="col-md-3">
-				<form id="searchForm">
+				<form id="searchForm" onsubmit="event.preventDefault(); updateTicketList(1);">
 					<!-- 搜尋框 -->
 					<div class="input-group mb-3">
 						<input type="text" class="form-control" placeholder="票券名稱"
@@ -115,7 +115,7 @@
 <!-- 排序选择部分 -->
 <div class="form-group">
     <label for="sortOption">排序方式：</label>
-    <select class="form-control" id="sortOption" onchange="submitForm()">
+    <select class="form-control" id="sortOption" onchange="updateTicketList(1)">
  <option value="ticketId_asc" ${param.sortField == 'ticketId' && param.sortOrder == 'asc' ? 'selected' : ''}>按 Ticket ID 升序</option>
 <option value="ticketId_desc" ${param.sortField == 'ticketId' && param.sortOrder == 'desc' ? 'selected' : ''}>按 Ticket ID 降序</option>
        <!-- 其他排序选项 -->
@@ -171,7 +171,6 @@
 														var="j">
 														<i class="far fa-star gold-star"></i>
 													</c:forEach> (${totalRatingCountMap[ticket.ticketId]})
-													銷售量${ticketOrderCountMap[ticket.ticketId]}
 												</small>
 											</p>
 											<p class="card-text">NT$ ${ticket.price}</p>
@@ -187,52 +186,14 @@
 
 	</div>
 	<%-- 分頁 若是全列表則執行以下分頁--%>
-	<c:if test="${empty searchCount}">
-		<div>
-			<nav>
-
-				<ul class="pagination justify-content-center">
-					<!-- "至第一頁" 只在非第一頁時顯示 -->
-					<c:if test="${currentPage > 1}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/ticketproduct/list?page=1">第一頁</a>
-						</li>
-					</c:if>
-
-					<!-- "上一頁" 如果當前頁是第一頁則隱藏 -->
-					<c:if test="${currentPage - 1 != 0}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/ticketproduct/list?page=${currentPage - 1}"
-							aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-						</a></li>
-					</c:if>
-
-					<!-- 動態顯示頁碼，根據總頁數ticketPageQty生成 -->
-					<c:forEach var="i" begin="1" end="${ticketPageQty}" step="1">
-						<li class="page-item ${i == currentPage ? 'active' : ''}"><a
-							class="page-link"
-							href="${pageContext.request.contextPath}/ticketproduct/list?page=${i}">${i}</a>
-						</li>
-					</c:forEach>
-
-					<!-- "下一頁" 如果當前頁是最後一頁則隱藏 -->
-					<c:if test="${currentPage + 1 <= ticketPageQty}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/ticketproduct/list?page=${currentPage + 1}"
-							aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-						</a></li>
-					</c:if>
-
-					<!-- "至最後一頁" 只在非最後一頁時顯示 -->
-					<c:if test="${currentPage != ticketPageQty}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/ticketproduct/list?page=${ticketPageQty}">尾頁</a>
-						</li>
-					</c:if>
-				</ul>
-			</nav>
-		</div>
-	</c:if>
+	
+	<ul class="pagination justify-content-center">
+    <c:forEach var="i" begin="1" end="${ticketPageQty}" step="1">
+        <li class="page-item ${i == currentPage ? 'active' : ''}">
+            <a class="page-link" href="#" onclick="updateTicketList(${i});">${i}</a>
+        </li>
+    </c:forEach>
+</ul>
 
 	<!-- jQuery & Bootstrap JS -->
 	<script
@@ -241,63 +202,28 @@
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script>
  
-      //左邊搜尋條件
-        $(document).ready(function() {
-            // 處理表單提交事件
-            $('#searchForm').on('submit', function(e) {
-                e.preventDefault(); // 防止表單的默認提交行為
-                $('#loadingAnimation').show();
-                // 從表單收集數據
-                var formData = $(this).serialize();
-                $('#loadingSpinner').show();
-                // 發送 Ajax 請求
-                $.ajax({
-                    type: "GET", 
-                    url: "<%=request.getContextPath()%>/ticketproduct/search",
-					data : formData, 
-		            beforeSend: function() {
-		                $('#loadingSpinner').show();
-		            },
-					success : function(result) {
-						// 更新票券列表部分 
-						$('#ticketright').html(result);
-					},
-		            complete: function() {
-		                $('#loadingSpinner').hide();
-		            }
-				});
-			});
 
-			// 篩選條件的變更也觸發表單提交
-			$('input[type=checkbox]').change(function() {
-				$('#searchForm').submit();
-			});
+function updateTicketList(currentPage) {
+    var searchQuery = $('#ticketName').val(); // 獲取搜尋查詢
+    var sortOption = $('#sortOption').val().split('_');
+    var sortField = sortOption[0];
+    var sortOrder = sortOption[1];
 
-
-		});
-
-     // 排序
-        function submitForm() {
-            var selectedOption = $('#sortOption').val();
-            var parts = selectedOption.split('_');
-            var sortField = parts[0];
-            var sortOrder = parts[1];
-            // 查詢
-            var queryString = 'sortField=' + sortField + '&sortOrder=' + sortOrder;
-            $('#loadingSpinner').show();
-            $.ajax({
-                type: "GET", 
-                url: "<%=request.getContextPath()%>/ticketproduct/sort",
-                data: queryString,
-                success: function(result) {
-                    // 更新票券列表部分
-                    $('#ticketright').html(result);
-                },
-                complete: function() {
-                    $('#loadingSpinner').hide();
-                }
-            });
+    $.ajax({
+        url: '<c:url value="/ticketproduct/list"/>', // 確保 URL 正確
+        type: 'GET',
+        data: {
+            page: currentPage,
+            sortField: sortField,
+            sortOrder: sortOrder,
+            searchQuery: searchQuery,
+            ajax: 'true'
+        },
+        success: function(response) {
+            $('#ticketright').html(response); // 確保這是正確的容器 ID
         }
+    });
+}
 
 
       
