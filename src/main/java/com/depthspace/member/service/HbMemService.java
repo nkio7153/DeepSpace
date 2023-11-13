@@ -42,4 +42,8 @@ public class HbMemService {
 	public List<MemVO> getAll() {
 		return dao.getAll();
 	}
+	public MemVO getOneMem(Integer memId) {
+		return dao.getOneMem(memId);
+	}
+	
 }

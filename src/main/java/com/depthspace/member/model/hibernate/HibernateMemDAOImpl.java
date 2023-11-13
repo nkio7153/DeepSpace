@@ -88,5 +88,10 @@ public class HibernateMemDAOImpl implements HibernateMemDAO_Interface {
 	public MemVO findOneMem(String memAcc) {
 		return getSession().get(MemVO.class, memAcc);
 	}
+	
+	@Override
+	public MemVO getOneMem(Integer memId) {
+		return getSession().get(MemVO.class, memId);
+	}
 
 }

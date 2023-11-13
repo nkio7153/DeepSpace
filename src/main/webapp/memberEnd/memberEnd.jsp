@@ -23,25 +23,30 @@
   		<%--      放入自己body裡的代碼--%>
 
 	    <div class="container">
-	        <h1 class="mt-5">會員權限管理</h1>
+	        <h3 class="text-center mt-2">會員列表</h3>
+	        <hr class="my-0">
 	
-	        <!-- 依帳號查詢會員 -->
-	        <h2 class="mt-4">查詢會員</h2>
-	        <form class="form-inline" action="your_search_action.jsp" method="post">
-	            <div class="form-group mb-2">
-	                <label for="memId">會員編號：</label>
-	            </div>
-	            <div class="form-group mx-sm-3 mb-2">
-	                <input type="text" class="form-control" id="memId" name="memId" placeholder="請輸入帳號">
-	            </div>
-	            <button type="submit" class="btn btn-primary mb-2">查詢</button>
-	        </form>
+<!-- 	       <h4 class="mt-4">查詢會員</h4> -->
+				<form class="form-inline" action="your_search_action.jsp" method="post">
+				    <div class="row mt-4">
+				        <div class="col-md-12">
+				            <span for="memId" class="form-label mt-2">搜尋會員姓名：</span>
+				       
+<!-- 				            <div class="input-group"> -->
+				                <input type="text" id="memId" name="memId" placeholder="請輸入姓名">
+<!-- 				            </div> -->
+<!-- 				        </div> -->
+<!-- 				        <div class="col-md-8"> -->
+				            <button type="submit" class="btn btn-primary mx-1 mb-2">查詢</button>
+				        </div>
+				    </div>
+				</form>
 	
 	        <!-- 會員列表 -->
-	        <h2 class="mt-4">會員列表</h2>
-	        <table class="table table-bordered">
+<!-- 	        <h2 class="mt-4">會員列表</h2> -->
+	        <table class="table table-bordered table-hover table-striped">
 	            <thead>
-	                <tr>
+	                <tr class="text-center">
 	                    <th>會員編號</th>
 	                    <th>帳號</th>
 	                    <th>會員姓名</th>
@@ -57,23 +62,22 @@
 	                </tr>
 	            </thead>
 	            <tbody>
-	                <!-- 在這裡使用JSP語法生成會員列表 -->
+				<!-- 迴圈取出所有會員資料-->
 	                <c:forEach items="${list}" var="list">
-		                <tr>
+		                <tr align="center">
 		                    <td>${list.memId}</td>
-		                    <td>user1</td>
-		                    <td>王小明</td>
-		                    <td>A123456789</td>
-		                    <td>1990-01-01</td>
-		                    <td>男</td>
-		                    <td>user1@example.com</td>
-		                    <td>0912345678</td>
-		                    <td>台北市</td>
-		                    <td>正常</td>
-		                    <td>100</td>
+		                    <td>${list.memAcc}</td>
+		                    <td>${list.memName}</td>
+		                    <td>${list.memIdentity}</td>
+		                    <td>${list.memBth}</td>
+		                    <td>${list.memSex}</td>
+		                    <td>${list.memEmail}</td>
+		                    <td>${list.memTel}</td>
+		                    <td>${list.memAdd}</td>
+		                    <td>${list.accStatus}</td>
+		                    <td>${list.memPoint}</td>
 		                    <td>
-		                        <!-- 編輯按鈕 -->
-		                        <button class="btn btn-primary">編輯</button>
+		                    	<a href="${pageContext.request.contextPath}/backmem/edit?memId=${list.memId}" class="btn btn-secondary">編輯</a>
 		                    </td>
 		                </tr>
 	                </c:forEach>

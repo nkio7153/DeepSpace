@@ -9,7 +9,7 @@
 <jsp:include page="../indexpage/head.jsp" />
 <title>修改會員資料 revise.jsp</title>
 <style>
-  img {
+  img.image {
       border-radius: 60px;
 	  width: 120px;
 	  height: 120px;
@@ -37,7 +37,7 @@
 			<tr>
 				<th>會員大頭貼</th>
 					<td>
-	                	<img src="data:image/jpeg;base64,${base64Image}" alt="ProfileImage" />
+	                	<img src="data:image/jpeg;base64,${base64Image}" class="image" alt="ProfileImage" />
 	                	<label>更新大頭貼</label>
 	                    <input type="file" id="memImage" name="memImage" onchange="loadFile(event)" />
 	                    <!-- 將 base64Image 存儲在一個隱藏的表單字段中 -->

@@ -27,4 +27,6 @@ public interface HibernateMemDAO_Interface {
 
 	MemVO getById(String memAcc);
 	MemVO findOneMem(String memAcc);
+
+	MemVO getOneMem(Integer memId);
 }
