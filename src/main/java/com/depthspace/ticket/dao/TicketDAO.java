@@ -47,6 +47,6 @@ public interface TicketDAO {
 //		List<Integer> getStarsByTicketId(Integer ticketId); //取得該票券的總星星評價數
 //		
 //		List<String> getReviewsByTicketId(Integer ticketId); //取得該票券評價內容
-	    List<TicketVO> findTickets(int currentPage, String sortField, String sortOrder, String searchQuery);
+	    List<TicketVO> findTickets(int currentPage, String sortField, String sortOrder, Map<String, List<String>> filterMap);
 
 }

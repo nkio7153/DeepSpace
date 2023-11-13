@@ -56,7 +56,7 @@ public interface TicketService {
 
     List<TicketVO> getAllTicketsSorted(String sortField, String sortOrder);
     List<TicketVO> findAllWithOrder(int currentPage, String sortField, String sortOrder);
-    List<TicketVO> findTickets(int currentPage, String sortField, String sortOrder, String searchQuery);
+    List<TicketVO> findTickets(int currentPage, String sortField, String sortOrder,Map<String, List<String>> filterMap);
     
 }
 

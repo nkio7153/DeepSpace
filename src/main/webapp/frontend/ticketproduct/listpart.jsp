@@ -2,28 +2,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<!-- 排序选择部分 -->
-<div class="form-group">
-    <label for="sortOption">排序方式：</label>
-    <select class="form-control" id="sortOption" onchange="updateTicketList(1)">
-        <option value="ticketId_asc" ${param.sortField == 'ticketId' && param.sortOrder == 'asc' ? 'selected' : ''}>按 Ticket ID 升序</option>
-        <option value="ticketId_desc" ${param.sortField == 'ticketId' && param.sortOrder == 'desc' ? 'selected' : ''}>按 Ticket ID 降序</option>
-        <!-- 其他排序选项 -->
-    </select>
-</div>
-
-<!-- 搜尋結果計數 -->
-<div>
-    <c:choose>
-        <c:when test="${not empty searchCount}">
-            <h3 class="mb-0">搜尋結果 ${searchCount} 項票券</h3>
-        </c:when>
-        <c:otherwise>
-            <h3 class="mb-0">共有 ${totalTickets} 項票券體驗</h3>
-        </c:otherwise>
-    </c:choose>
-</div>
-
+			<!-- 右側內容 -->
+				<div class="d-flex justify-content-between align-items-center mb-3">
+					<div >
+					<c:choose>
+						<c:when test="${not empty searchCount}">
+							<h3 class="mb-0">搜尋結果 ${searchCount} 項票券</h3>
+						</c:when>
+						<c:otherwise>
+							<h3 class="mb-0">共有 ${totalTickets} 項票券體驗</h3>
+						</c:otherwise>
+					</c:choose>
+					</div>
+				<!-- 排序 -->				    
+				<label for="sortOption">排序方式：</label>
+				<div class="form-group">
+				    <select class="form-control" id="sortOption" onchange="updateTicketList(1)">
+				 <option value="ticketId_asc" ${param.sortField == 'ticketId' && param.sortOrder == 'asc' ? 'selected' : ''}>依上市日(新→舊)</option>
+				<option value="ticketId_desc" ${param.sortField == 'ticketId' && param.sortOrder == 'desc' ? 'selected' : ''}>依上市日(舊→新)</option>
+				    </select>
+				</div>
+				</div>
 				<!-- 票券列表 -->
 				<div class="ticket-lists" id="ticketright">
 					<c:forEach items="${resultSet}" var="ticket">
@@ -50,7 +49,7 @@
 													<c:otherwise>
 								${ticket.description}
 								</c:otherwise>
-												</c:choose>
+										</c:choose>
 											</p>
 											<p class="card-text">
 												<small class="text-muted">
@@ -80,9 +79,8 @@
 								</div>
 							</div>
 						</a>
-					</c:forEach>
-</div>
-
+				</c:forEach>
+			</div>
 <!-- 分頁 -->
 <!-- <ul class="pagination justify-content-center"> -->
 <%--     <c:forEach var="i" begin="1" end="${ticketPageQty}" step="1"> --%>

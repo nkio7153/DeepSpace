@@ -70,9 +70,6 @@ public class TicketProductServlet extends HttpServlet {
 		case "/search": // 票券查找
 			doSearch(req, res);
 			break;
-		case "/sort": // 票券列表
-			doSort(req, res);
-		break;
 		default:
 			System.out.println("Path not handled: " + pathInfo);
 		}
@@ -111,7 +108,7 @@ public class TicketProductServlet extends HttpServlet {
 		// 存放星星數跟評價數、訂單數
 		Map<Integer, Double> averageStarsMap = new HashMap<>();
 		Map<Integer, Integer> totalRatingCountMap = new HashMap<>();
-		Map<Integer, Integer> ticketOrderCountMap = new HashMap<>();
+//		Map<Integer, Integer> ticketOrderCountMap = new HashMap<>();
 
 		//計算星星跟評價平均數
 		for (TicketVO ticket : ticketList) {
@@ -126,170 +123,57 @@ public class TicketProductServlet extends HttpServlet {
 		    totalRatingCountMap.put(ticketId, totalRatingCount);
 	
 		    //查詢訂單數
-		    List<TicketOrderDetailVO> ticketOrderDetails = ticketService.findTicketOrderDetailsByTicketId(ticketId);
-	        int orderCount = ticketOrderDetails.size();  // 訂單數為票券訂單明細列表的大小
-	        ticketOrderCountMap.put(ticketId, orderCount);  // 將票券ID和對應的訂單數存放到map中
+//		    List<TicketOrderDetailVO> ticketOrderDetails = ticketService.findTicketOrderDetailsByTicketId(ticketId);
+//	        int orderCount = ticketOrderDetails.size();  // 訂單數為票券訂單明細列表的大小
+//	        ticketOrderCountMap.put(ticketId, orderCount);  // 將票券ID和對應的訂單數存放到map中
 	 
 		}
-
 		
 		req.setAttribute("averageStarsMap", averageStarsMap);
 		req.setAttribute("totalRatingCountMap", totalRatingCountMap);
-		req.setAttribute("ticketOrderCountMap", ticketOrderCountMap);
+//		req.setAttribute("ticketOrderCountMap", ticketOrderCountMap);
 		
 	}
 
 	private void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-	    // 解析分頁、排序和搜尋參數
+	   
 	    String page = req.getParameter("page");
 	    int currentPage = (page != null) ? Integer.parseInt(page) : 1;
 	    String sortField = req.getParameter("sortField");
 	    String sortOrder = req.getParameter("sortOrder");
-	    String searchQuery = req.getParameter("searchQuery"); // 假設您有一個搜尋欄位
 
-	    		if (sortField == null || sortField.isEmpty()) {
-		    sortField = "ticketId"; // 默认排序字段
-		}
-		if (sortOrder == null || sortOrder.isEmpty()) {
-		    sortOrder = "asc"; // 默认排序顺序
-		}
-		
-		if (req.getSession().getAttribute("ticketPageQty") == null) {
-			int ticketPageQty = ticketService.getPageTotal();
-			req.getSession().setAttribute("ticketPageQty", ticketPageQty);
-		}
+	    // 預設排序
+	    if (sortField == null || sortField.isEmpty()) {
+	        sortField = "ticketId"; 
+	    }
+	    if (sortOrder == null || sortOrder.isEmpty()) {
+	        sortOrder = "asc";
+	    }
+	    
+	    Map<String, List<String>> filterMap = new HashMap<>();
+	    Enumeration<String> paramNames = req.getParameterNames();
+	    while (paramNames.hasMoreElements()) {
+	        String paramName = paramNames.nextElement();
+	        String[] paramValues = req.getParameterValues(paramName);
+	        filterMap.put(paramName, Arrays.asList(paramValues));
+	    }
 
-		long totalTickets = ticketService.getStatusTotalTickets();
-		req.setAttribute("totalTickets", totalTickets);
-		
-		
-	    // 調用服務層方法，傳入這些參數
-	    List<TicketVO> tickets = ticketService.findTickets(currentPage, sortField, sortOrder, searchQuery);
-
-	    // 將結果設置到請求屬性中
+	    // 調用 findTickets 方法
+	    List<TicketVO> tickets = ticketService.findTickets(currentPage, sortField, sortOrder, filterMap);
+	    reviewsList(req, res);
+	    searchList(req, res);
 	    req.setAttribute("resultSet", tickets);
 
-	    // 轉發到 JSP 頁面
-//	    searchList(req, res);
-//	    reviewsList(req, res);
 	    RequestDispatcher dispatcher;
 	    if ("true".equals(req.getParameter("ajax"))) {
-	        // 使用部分 JSP 頁面
 	        dispatcher = req.getRequestDispatcher("/frontend/ticketproduct/listpart.jsp");
 	    } else {
-	        // 使用完整 JSP 頁面
 	        dispatcher = req.getRequestDispatcher("/frontend/ticketproduct/list.jsp");
 	    }
 	    dispatcher.forward(req, res);
-//	    RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/ticketproduct/list.jsp");
-//	    dispatcher.forward(req, res);
 	}
 
-//	/************ 列表 ************/
-//	private void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-//
-//		
-//		
-//		String page = req.getParameter("page");
-//		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
-////////////////////////
-//		String sortField = req.getParameter("sortField");
-//		String sortOrder = req.getParameter("sortOrder");
-//
-//		// 设置默认排序字段和顺序
-//		if (sortField == null || sortField.isEmpty()) {
-//		    sortField = "ticketId"; // 默认排序字段
-//		}
-//		if (sortOrder == null || sortOrder.isEmpty()) {
-//		    sortOrder = "asc"; // 默认排序顺序
-//		}
-//
-//		List<TicketVO> sortedTickets = ticketService.findAllWithOrder(currentPage, sortField, sortOrder);
-//		req.setAttribute("tickets", sortedTickets);
-//		
-//		List<TicketVO> filteredList = sortedTickets.stream()
-//      .filter(ticketVO -> ticketVO.getStatus() != 0) 
-//      .collect(Collectors.toList());
-//
-//req.setAttribute("resultSet", filteredList); // 票券內容
-//////////////////////////		
-//
-//		// 取得所有票券內容(VO)
-////		List<TicketVO> ticketList = ticketService.getAllTickets2(currentPage);
-//
-//		//篩選下架
-////		List<TicketVO> filteredList = ticketList.stream()
-////                 .filter(ticketVO -> ticketVO.getStatus() != 0) 
-////                 .collect(Collectors.toList());
-//		
-////		req.setAttribute("resultSet", filteredList); // 票券內容
-////		req.setAttribute("currentPage", currentPage); // 分頁
-//
-//		if (req.getSession().getAttribute("ticketPageQty") == null) {
-//			int ticketPageQty = ticketService.getPageTotal();
-//			req.getSession().setAttribute("ticketPageQty", ticketPageQty);
-//		}
-//
-//		long totalTickets = ticketService.getStatusTotalTickets();
-//		req.setAttribute("totalTickets", totalTickets); // 總票券數量(上架)
-//		
-//	    reviewsList(req, res);
-//		searchList(req, res);
-//		RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/ticketproduct/list.jsp");
-//		dispatcher.forward(req, res);
-//	}
-	
-	/************ 排序 ************/
-	private void doSort(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
-		String page = req.getParameter("page");
-		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
-//////////////////////
-		String sortField = req.getParameter("sortField");
-		String sortOrder = req.getParameter("sortOrder");
-
-		// 设置默认排序字段和顺序
-		if (sortField == null || sortField.isEmpty()) {
-		    sortField = "ticketId"; // 默认排序字段
-		}
-		if (sortOrder == null || sortOrder.isEmpty()) {
-		    sortOrder = "asc"; // 默认排序顺序
-		}
-
-		List<TicketVO> sortedTickets = ticketService.findAllWithOrder(currentPage, sortField, sortOrder);
-		req.setAttribute("tickets", sortedTickets);
-		
-		List<TicketVO> filteredList = sortedTickets.stream()
-      .filter(ticketVO -> ticketVO.getStatus() != 0) 
-      .collect(Collectors.toList());
-
-req.setAttribute("resultSet", filteredList); // 票券內容
-////////////////////////		
-
-		// 取得所有票券內容(VO)
-//		List<TicketVO> ticketList = ticketService.getAllTickets2(currentPage);
-
-		//篩選下架
-//		List<TicketVO> filteredList = ticketList.stream()
-//                 .filter(ticketVO -> ticketVO.getStatus() != 0) 
-//                 .collect(Collectors.toList());
-		
-//		req.setAttribute("resultSet", filteredList); // 票券內容
-//		req.setAttribute("currentPage", currentPage); // 分頁
-
-		if (req.getSession().getAttribute("ticketPageQty") == null) {
-			int ticketPageQty = ticketService.getPageTotal();
-			req.getSession().setAttribute("ticketPageQty", ticketPageQty);
-		}
-
-		long totalTickets = ticketService.getStatusTotalTickets();
-		req.setAttribute("totalTickets", totalTickets); // 總票券數量(上架)
-		
-	    reviewsList(req, res);
-		searchList(req, res);
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/ticketproduct/listpart.jsp");
-		dispatcher.forward(req, res);
-	}	
 	
 	/************ 搜尋 ************/	
 	private void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -313,12 +197,12 @@ req.setAttribute("resultSet", filteredList); // 票券內容
 	    req.setAttribute("searchCount", searchCount);
 
 	    // 查詢結果存入
-	    req.setAttribute("resultSet", filteredList);
+	    req.setAttribute("searchSet", filteredList);
 	    
-	    reviewsList(req, res);
-		searchList(req, res);
+//	    reviewsList(req, res);
+//		searchList(req, res);
 
-	    req.getRequestDispatcher("/frontend/ticketproduct/search.jsp").forward(req, res);
+//	    req.getRequestDispatcher("/frontend/ticketproduct/search.jsp").forward(req, res);
 	}
 
 	

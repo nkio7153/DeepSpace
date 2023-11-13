@@ -23,7 +23,6 @@ import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 import com.depthspace.utils.Constants;
 import com.depthspace.utils.HibernateUtil;
 
-
 public class TicketDAOImpl implements TicketDAO {
 
 	private SessionFactory factory;
@@ -47,10 +46,10 @@ public class TicketDAOImpl implements TicketDAO {
 	public TicketVO update(TicketVO ticketVO) {
 		try {
 			getSession().update(ticketVO);
-			return ticketVO; 
+			return ticketVO;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null; 
+			return null;
 		}
 	}
 
@@ -89,100 +88,86 @@ public class TicketDAOImpl implements TicketDAO {
 				.setFirstResult(first).setMaxResults(Constants.PAGE_MAX_RESULT) // 每頁紀錄數量
 				.list(); // 查出的資料存於此列表
 	}
-	
-    @Override
-    public List<TicketVO> findAllWithOrder(int currentPage, String sortField, String sortOrder) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<TicketVO> criteriaQuery = builder.createQuery(TicketVO.class);
-        Root<TicketVO> root = criteriaQuery.from(TicketVO.class);
 
-        // 验证排序字段
-        if (sortField == null || sortField.trim().isEmpty()) {
-            sortField = "ticketId"; // 默认排序字段
-        }
+	@Override
+	public List<TicketVO> findAllWithOrder(int currentPage, String sortField, String sortOrder) {
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<TicketVO> criteriaQuery = builder.createQuery(TicketVO.class);
+		Root<TicketVO> root = criteriaQuery.from(TicketVO.class);
 
-        // 应用排序
-        if ("desc".equalsIgnoreCase(sortOrder)) {
-            criteriaQuery.orderBy(builder.desc(root.get(sortField)));
-        } else {
-            criteriaQuery.orderBy(builder.asc(root.get(sortField)));
-        }
+		if (sortField == null || sortField.trim().isEmpty()) {
+			sortField = "ticketId";
+		}
 
-        // 应用分页
-        int firstResult = (currentPage - 1) * Constants.PAGE_MAX_RESULT; // 当前页面的第一条记录
+		if ("desc".equalsIgnoreCase(sortOrder)) {
+			criteriaQuery.orderBy(builder.desc(root.get(sortField)));
+		} else {
+			criteriaQuery.orderBy(builder.asc(root.get(sortField)));
+		}
 
-        try {
-            return getSession().createQuery(criteriaQuery)
-                        .setFirstResult(firstResult)
-                        .setMaxResults(Constants.PAGE_MAX_RESULT)
-                        .getResultList();
-        } catch (Exception e) {
-            // 处理异常，例如打印日志
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+		int firstResult = (currentPage - 1) * Constants.PAGE_MAX_RESULT;
 
-    }
-    
-    public List<TicketVO> findTickets(int currentPage, String sortField, String sortOrder, String searchQuery) {
-    
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<TicketVO> criteriaQuery = builder.createQuery(TicketVO.class);
-        Root<TicketVO> root = criteriaQuery.from(TicketVO.class);
+		try {
+			return getSession().createQuery(criteriaQuery).setFirstResult(firstResult)
+					.setMaxResults(Constants.PAGE_MAX_RESULT).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
 
-        // 構建搜尋條件
-        if (searchQuery != null && !searchQuery.isEmpty()) {
-            Predicate searchPredicate = builder.like(root.get("ticketName"), "%" + searchQuery + "%");
-            criteriaQuery.where(searchPredicate);
-        }
+	}
 
-        // 構建排序條件
-        if ("desc".equalsIgnoreCase(sortOrder)) {
-            criteriaQuery.orderBy(builder.desc(root.get(sortField)));
-        } else {
-            criteriaQuery.orderBy(builder.asc(root.get(sortField)));
-        }
-        
+	public List<TicketVO> findTickets(int currentPage, String sortField, String sortOrder,Map<String, List<String>> filterMap) {
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<TicketVO> criteriaQuery = builder.createQuery(TicketVO.class);
+		Root<TicketVO> root = criteriaQuery.from(TicketVO.class);
+		List<Predicate> predicates = new ArrayList<>();
 
-        // 實現分頁
-        int firstResult = (currentPage - 1) * Constants.PAGE_SIZE;
-        Query<TicketVO> query = getSession().createQuery(criteriaQuery)
-                                       .setFirstResult(firstResult)
-                                       .setMaxResults(Constants.PAGE_SIZE);
+		// 篩選
+		for (Map.Entry<String, List<String>> entry : filterMap.entrySet()) {
+			String key = entry.getKey();
+			List<String> values = entry.getValue();
 
-        return query.getResultList();
-    }
+			switch (key) {
+			case "ticketName":
+				predicates.add(builder.like(root.get("ticketName"), "%" + values.get(0) + "%"));
+				break;
+			case "ticketTypeId":
+				CriteriaBuilder.In<Integer> inTicketTypeId = builder.in(root.get("ticketType").get("ticketTypeId"));
+				for (String value : values) {
+					inTicketTypeId.value(Integer.parseInt(value));
+				}
+				predicates.add(inTicketTypeId);
+				break;
+			case "ticketId":
+				predicates.add(builder.equal(root.get("ticketId"), Integer.parseInt(values.get(0))));
+				break;
+			case "areaId":
+				CriteriaBuilder.In<Integer> inAreaId = builder.in(root.get("city").get("cityId"));
+				for (String value : values) {
+					inAreaId.value(Integer.parseInt(value));
+				}
+				predicates.add(inAreaId);
+			}
+		}
 
-//    private getSession() {
-//        // 返回當前的 Hibernate Session
-//    }
+		criteriaQuery.where(builder.and(predicates.toArray(new Predicate[0])));
 
-//	// 取得所有票券資料(分頁) 排序
-//	@Override
-//	public List<TicketVO> getAll2(int currentPage, String sortId, String sortOrder) {
-//		int first = (currentPage - 1) * Constants.PAGE_MAX_RESULT; // 計算當前頁面第一條索引
-//		String queryString = "from TicketVO";
-//		
-//		if(sortId != null && !sortId.isEmpty() && sortOrder != null && !sortOrder.isEmpty()) {
-//			if(sortId.equals("ticketId")) {
-//				queryString += " order by cast(" + sortId + "as int)" + sortOrder;
-//			} else {
-//				queryString += " order by" + sortId + " " + sortOrder;
-//			}
-			
-//			queryString += " order by " + sortId;
-//			
-//			if(sortOrder.equalsIgnoreCase("desc")) {
-//				queryString += "desc";
-//			} else {
-//				queryString += "asc";
-//			}
-//		}
-		
-//		return getSession().createQuery(queryString, TicketVO.class) 
-//				.setFirstResult(first).setMaxResults(Constants.PAGE_MAX_RESULT)
-//				.list(); 
-//	}
+		// 排序
+		if ("desc".equalsIgnoreCase(sortOrder)) {
+			criteriaQuery.orderBy(builder.desc(root.get(sortField)));
+		} else {
+			criteriaQuery.orderBy(builder.asc(root.get(sortField)));
+		}
+
+		// 分頁
+		int firstResult = (currentPage - 1) * Constants.PAGE_SIZE;
+		TypedQuery<TicketVO> query = getSession().createQuery(criteriaQuery).setFirstResult(firstResult)
+				.setMaxResults(Constants.PAGE_SIZE);
+
+		return query.getResultList();
+
+	}
 
 	// 取得所有票券
 	@Override
@@ -202,6 +187,7 @@ public class TicketDAOImpl implements TicketDAO {
 	public long getStatusTotal() {
 		return getSession().createQuery("select count(*) from TicketVO where status=1 ", Long.class).uniqueResult();
 	}
+
 	// 取得所有票券數量
 	@Override
 	public long getTotal() {
@@ -211,72 +197,69 @@ public class TicketDAOImpl implements TicketDAO {
 	// 萬用查詢
 	@Override
 	public List<TicketVO> getByCompositeQuery(Map<String, List<String>> map) {
-	    
-	    if (map.size() == 0) {
-	        return getAll();
-	    }
 
-	    CriteriaBuilder builder = getSession().getCriteriaBuilder();
-	    CriteriaQuery<TicketVO> criteria = builder.createQuery(TicketVO.class);
-	    Root<TicketVO> root = criteria.from(TicketVO.class);
+		if (map.size() == 0) {
+			return getAll();
+		}
 
-	    List<Predicate> predicates = new ArrayList<>();
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<TicketVO> criteria = builder.createQuery(TicketVO.class);
+		Root<TicketVO> root = criteria.from(TicketVO.class);
 
-	    for (Map.Entry<String, List<String>> entry : map.entrySet()) {
-	        String key = entry.getKey();
-	        List<String> values = entry.getValue();
+		List<Predicate> predicates = new ArrayList<>();
 
-	        switch (key) {
-	            case "ticketName":
-	                predicates.add(builder.like(root.get("ticketName"), "%" + values.get(0) + "%"));
-	                break;
-	            case "ticketTypeId":
-	                // 使用 builder.in 
-	                CriteriaBuilder.In<Integer> inTicketTypeId = builder.in(root.get("ticketType").get("ticketTypeId"));
-	                for (String value : values) {
-	                    inTicketTypeId.value(Integer.parseInt(value));
-	                }
-	                predicates.add(inTicketTypeId);
-	                break;
-	            case "ticketId":
-	                predicates.add(builder.equal(root.get("ticketId"), Integer.parseInt(values.get(0))));
-	                break;
-	            case "areaId":
-	                // 使用 builder.in 
-	                CriteriaBuilder.In<Integer> inAreaId = builder.in(root.get("city").get("cityId"));
-	                for (String value : values) {
-	                    inAreaId.value(Integer.parseInt(value));
-	                }
-	                predicates.add(inAreaId);
-	                break;
-	        }
-	    }
+		for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+			String key = entry.getKey();
+			List<String> values = entry.getValue();
 
-	    criteria.where(builder.and(predicates.toArray(new Predicate[0])));
-	    criteria.orderBy(builder.asc(root.get("ticketId")));
-	    TypedQuery<TicketVO> query = getSession().createQuery(criteria);
+			switch (key) {
+			case "ticketName":
+				predicates.add(builder.like(root.get("ticketName"), "%" + values.get(0) + "%"));
+				break;
+			case "ticketTypeId":
+				// 使用 builder.in
+				CriteriaBuilder.In<Integer> inTicketTypeId = builder.in(root.get("ticketType").get("ticketTypeId"));
+				for (String value : values) {
+					inTicketTypeId.value(Integer.parseInt(value));
+				}
+				predicates.add(inTicketTypeId);
+				break;
+			case "ticketId":
+				predicates.add(builder.equal(root.get("ticketId"), Integer.parseInt(values.get(0))));
+				break;
+			case "areaId":
+				// 使用 builder.in
+				CriteriaBuilder.In<Integer> inAreaId = builder.in(root.get("city").get("cityId"));
+				for (String value : values) {
+					inAreaId.value(Integer.parseInt(value));
+				}
+				predicates.add(inAreaId);
+				break;
+			}
+		}
 
-	    return query.getResultList();
+		criteria.where(builder.and(predicates.toArray(new Predicate[0])));
+		criteria.orderBy(builder.asc(root.get("ticketId")));
+		TypedQuery<TicketVO> query = getSession().createQuery(criteria);
+
+		return query.getResultList();
 	}
-	
 
-    public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId) {
-        EntityManager localEntityManager = null;
-        try {
-            localEntityManager = factory.createEntityManager(); // Manually obtaining EntityManager
-            String jpql = "SELECT detail FROM TicketOrderDetailVO detail WHERE detail.ticketId = :ticketId";
-            return localEntityManager.createQuery(jpql, TicketOrderDetailVO.class)
-                    .setParameter("ticketId", ticketId)
-                    .getResultList();
-        } finally {
-            if (localEntityManager != null && localEntityManager.isOpen()) {
-                localEntityManager.close(); // Ensure the EntityManager is closed after the operation
-            }
-        }
-    }
-    
+	public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId) {
+		EntityManager localEntityManager = null;
+		try {
+			localEntityManager = factory.createEntityManager(); // Manually obtaining EntityManager
+			String jpql = "SELECT detail FROM TicketOrderDetailVO detail WHERE detail.ticketId = :ticketId";
+			return localEntityManager.createQuery(jpql, TicketOrderDetailVO.class).setParameter("ticketId", ticketId)
+					.getResultList();
+		} finally {
+			if (localEntityManager != null && localEntityManager.isOpen()) {
+				localEntityManager.close(); // Ensure the EntityManager is closed after the operation
+			}
+		}
+	}
 
-    //取得所有票券類型		
+	// 取得所有票券類型
 	@Override
 	public List<TicketTypesVO> getAllTicketTypeIds(Integer ticketTypeId) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -294,22 +277,22 @@ public class TicketDAOImpl implements TicketDAO {
 			throw new RuntimeException("Error", e);
 		}
 	}
-	
-    public List<TicketVO> findAllWithOrder(String sortField, String sortOrder) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<TicketVO> query = builder.createQuery(TicketVO.class);
-        Root<TicketVO> root = query.from(TicketVO.class);
 
-        if ("ticketId".equals(sortField)) {
-            if ("desc".equalsIgnoreCase(sortOrder)) {
-                query.orderBy(builder.desc(root.get("ticketId")));
-            } else {
-                query.orderBy(builder.asc(root.get("ticketId")));
-            }
-        }
+	public List<TicketVO> findAllWithOrder(String sortField, String sortOrder) {
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		CriteriaQuery<TicketVO> query = builder.createQuery(TicketVO.class);
+		Root<TicketVO> root = query.from(TicketVO.class);
 
-        return getSession().createQuery(query).getResultList();
-    }
+		if ("ticketId".equals(sortField)) {
+			if ("desc".equalsIgnoreCase(sortOrder)) {
+				query.orderBy(builder.desc(root.get("ticketId")));
+			} else {
+				query.orderBy(builder.asc(root.get("ticketId")));
+			}
+		}
+
+		return getSession().createQuery(query).getResultList();
+	}
 }
 
 //	//取得有評價該票券的單數
@@ -332,4 +315,3 @@ public class TicketDAOImpl implements TicketDAO {
 //		// TODO Auto-generated method stub
 //		return null;
 //	}
-
