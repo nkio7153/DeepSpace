@@ -57,22 +57,12 @@
 		<url-pattern>/faq/faq.do</url-pattern>
 	</servlet-mapping>
 	
-	<servlet>
-		<servlet-name>AdminServlet</servlet-name>
-		<servlet-class>com.depthspace.admin.model.controller.AdminServlet</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>AdminServlet</servlet-name>
-		<url-pattern>/admin/admin.do</url-pattern>
-	</servlet-mapping>
-	
 	<filter>
-		<filter-name>LoginFilter1</filter-name>
-		<filter-class>com.depthspace.admin.model.filter.LoginFilter1</filter-class>
+		<filter-name>LoginFilter</filter-name>
+		<filter-class>com.depthspace.admin.filter.LoginFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>LoginFilter1</filter-name>
+		<filter-name>LoginFilter</filter-name>
 		<url-pattern>/admin/*</url-pattern>
 		<url-pattern>/backstage/index.jsp</url-pattern>
 		<dispatcher>REQUEST</dispatcher>

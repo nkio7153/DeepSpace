@@ -15,17 +15,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
+import com.depthspace.admin.model.AdminVO;
 import com.depthspace.column.model.ColumnArticlesVO;
-import com.depthspace.column.model.ColumnTypesVO;
 import com.depthspace.column.model.ColumnImagesVO;
-import com.depthspace.admin.model.model.AdminVO;
+import com.depthspace.column.model.ColumnTypesVO;
 import com.depthspace.column.service.ColumnArticlesService;
 import com.depthspace.column.service.ColumnArticlesServiceImpl;
 import com.depthspace.column.service.ColumnImagesService;
 import com.depthspace.column.service.ColumnImagesServiceImpl;
-import com.depthspace.utils.HibernateUtil;
 
 @WebServlet("/columnmg/*")
 @MultipartConfig

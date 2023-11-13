@@ -1,6 +1,6 @@
-<%@page import="com.depthspace.admin.model.model.AdminVO"%>
-<%@page import="com.depthspace.admin.model.service.AdminServiceImpl"%>
-<%@page import="com.depthspace.admin.model.service.AdminService"%>
+<%@page import="com.depthspace.admin.model.model1.AdminVO"%>
+<%@page import="com.depthspace.admin.model.service.HbAdminService"%>
+<%@page import="com.depthspace.admin.model.service.HbAdminService"%>
 <%@ page import="com.depthspace.restaurant.service.RestServiecImpl"%>
 <%@ page import="com.depthspace.restaurant.service.RestService"%>
 <%@ page import="com.depthspace.restaurant.model.restaurant.RestVO"%>
@@ -10,15 +10,14 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 
-<% 
-	RestService restService = new RestServiecImpl();
+<%
+RestService restService = new RestServiecImpl();
 	List<RestVO> restList = restService.getAllRest();
 	request.setAttribute("RestList", restList);
 	
-	AdminService adminService = new AdminServiceImpl();
+	HbAdminService adminService = new HbAdminService();
 	List<AdminVO> adminList = adminService.getAllAdmins();
 	request.setAttribute("adminList", adminList);
-	
 %>
 
 <html>

@@ -1,8 +1,6 @@
 package com.depthspace.column.controller;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,23 +14,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import com.depthspace.column.model.ColumnArticlesVO;
 import com.depthspace.column.model.ColumnTypesVO;
-import com.depthspace.column.model.ColumnImagesVO;
-import com.depthspace.admin.model.model.AdminVO;
-import com.depthspace.attractions.model.CityVO;
 import com.depthspace.column.service.ColumnArticlesService;
 import com.depthspace.column.service.ColumnArticlesServiceImpl;
 import com.depthspace.column.service.ColumnImagesService;
 import com.depthspace.column.service.ColumnImagesServiceImpl;
-import com.depthspace.ticket.model.TicketTypesVO;
-import com.depthspace.ticket.model.TicketVO;
-import com.depthspace.utils.HibernateUtil;
 
 @WebServlet("/columnarticles/*")
 @MultipartConfig
