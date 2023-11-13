@@ -247,7 +247,7 @@ public class MemJDBCDAO implements MemDAO_Interface {
 	}
 
 	@Override
-	public MemVO findAcc(String memAcc) {
+	public MemVO getMemberInfo(String memAcc) {
 		MemVO memvo = new MemVO();
 		Connection conn = null;
 		PreparedStatement ps = null;

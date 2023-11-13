@@ -37,6 +37,8 @@ public interface TicketDAO {
 		
 		List<TicketVO> findAllWithOrder(String sortField, String sortOrder);
 		
+	    List<TicketVO> findAllWithOrder(int currentPage, String sortField, String sortOrder);
+
 //		List<TicketVO> getAll2(int currentPage, String sortId, String sortOrder);
 //		//評價相關
 //		

@@ -296,7 +296,7 @@ console.log(quantity);
             console.log(error);
         });
 });
- 
+
 //地圖
 $(document).ready(function() {
     // 初始化

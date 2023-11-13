@@ -84,12 +84,45 @@ public class TicketDAOImpl implements TicketDAO {
 	// 取得所有票券資料(分頁)
 	@Override
 	public List<TicketVO> getAll2(int currentPage) {
-		int first = (currentPage - 1) * Constants.PAGE_MAX_RESULT; // 計算當前頁面第一條索引
+		int first = (currentPage - 1) * Constants.PAGE_MAX_RESULT; // 計算當前頁面第一條
 		return getSession().createQuery("from TicketVO", TicketVO.class) // 查詢ticketVO實體 創建新查詢對象createQuery
 				.setFirstResult(first).setMaxResults(Constants.PAGE_MAX_RESULT) // 每頁紀錄數量
 				.list(); // 查出的資料存於此列表
 	}
 	
+    @Override
+    public List<TicketVO> findAllWithOrder(int currentPage, String sortField, String sortOrder) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<TicketVO> criteriaQuery = builder.createQuery(TicketVO.class);
+        Root<TicketVO> root = criteriaQuery.from(TicketVO.class);
+
+        // 验证排序字段
+        if (sortField == null || sortField.trim().isEmpty()) {
+            sortField = "ticketId"; // 默认排序字段
+        }
+
+        // 应用排序
+        if ("desc".equalsIgnoreCase(sortOrder)) {
+            criteriaQuery.orderBy(builder.desc(root.get(sortField)));
+        } else {
+            criteriaQuery.orderBy(builder.asc(root.get(sortField)));
+        }
+
+        // 应用分页
+        int firstResult = (currentPage - 1) * Constants.PAGE_MAX_RESULT; // 当前页面的第一条记录
+
+        try {
+            return getSession().createQuery(criteriaQuery)
+                        .setFirstResult(firstResult)
+                        .setMaxResults(Constants.PAGE_MAX_RESULT)
+                        .getResultList();
+        } catch (Exception e) {
+            // 处理异常，例如打印日志
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+
+    }
 //	// 取得所有票券資料(分頁) 排序
 //	@Override
 //	public List<TicketVO> getAll2(int currentPage, String sortId, String sortOrder) {

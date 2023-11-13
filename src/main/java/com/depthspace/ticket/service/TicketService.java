@@ -55,6 +55,8 @@ public interface TicketService {
 //    List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> queryMap, String sortId, String sortOrder);
 
     List<TicketVO> getAllTicketsSorted(String sortField, String sortOrder);
-
+    List<TicketVO> findAllWithOrder(int currentPage, String sortField, String sortOrder);
+    
+    
 }
 

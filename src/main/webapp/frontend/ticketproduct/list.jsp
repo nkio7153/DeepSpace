@@ -112,14 +112,13 @@
 						</c:otherwise>
 					</c:choose>
 					</div>
+<!-- 排序选择部分 -->
 <div class="form-group">
     <label for="sortOption">排序方式：</label>
     <select class="form-control" id="sortOption" onchange="submitForm()">
-        <option value="ticketId_asc" ${param.sortField == 'ticketId' && param.sortOrder == 'asc' ? 'selected' : ''}>按 Ticket ID 升序</option>
-        <option value="ticketId_desc" ${param.sortField == 'ticketId' && param.sortOrder == 'desc' ? 'selected' : ''}>按 Ticket ID 降序</option>
-<%--         <option value="stars_asc" ${param.sortField == 'stars' && param.sortOrder == 'asc' ? 'selected' : ''}>按星级升序</option> --%>
-<%--         <option value="stars_desc" ${param.sortField == 'stars' && param.sortOrder == 'desc' ? 'selected' : ''}>按星级降序</option> --%>
-<!--         其他排序选项 -->
+ <option value="ticketId_asc" ${param.sortField == 'ticketId' && param.sortOrder == 'asc' ? 'selected' : ''}>按 Ticket ID 升序</option>
+<option value="ticketId_desc" ${param.sortField == 'ticketId' && param.sortOrder == 'desc' ? 'selected' : ''}>按 Ticket ID 降序</option>
+       <!-- 其他排序选项 -->
     </select>
 </div>
 
@@ -254,7 +253,7 @@
                 // 發送 Ajax 請求
                 $.ajax({
                     type: "GET", 
-                    url: "<%=request.getContextPath()%>/ticketproduct/search", 
+                    url: "<%=request.getContextPath()%>/ticketproduct/search",
 					data : formData, 
 		            beforeSend: function() {
 		                $('#loadingSpinner').show();
@@ -277,22 +276,19 @@
 
 		});
 
+     // 排序
         function submitForm() {
             var selectedOption = $('#sortOption').val();
             var parts = selectedOption.split('_');
             var sortField = parts[0];
             var sortOrder = parts[1];
-            var formDataSort = $(this).serialize();
-            // 构造查询字符串
-//             var queryString = 'sortField=' + sortField + '&sortOrder=' + sortOrder;
-            var queryString = sortField + sortOrder;
+            // 查詢
+            var queryString = 'sortField=' + sortField + '&sortOrder=' + sortOrder;
             $('#loadingSpinner').show();
-
-            // 发送 Ajax 请求
             $.ajax({
                 type: "GET", 
-                url: "<%=request.getContextPath()%>/ticketproduct/search?" + queryString, 
-				data : formDataSort, 
+                url: "<%=request.getContextPath()%>/ticketproduct/sort",
+                data: queryString,
                 success: function(result) {
                     // 更新票券列表部分
                     $('#ticketright').html(result);
@@ -300,13 +296,9 @@
                 complete: function() {
                     $('#loadingSpinner').hide();
                 }
-            });	
-            
-            // 更改排序也觸發表單提交
-// 			$('#sortOption').on('change', function() {
-// 				$('#sortForm').submit();
-// 			});
+            });
         }
+
 
       
 	</script>

@@ -222,6 +222,10 @@ public class TicketServiceImpl implements TicketService {
     public List<TicketVO> getAllTicketsSorted(String sortField, String sortOrder) {
         return dao.findAllWithOrder(sortField, sortOrder);
     }
+    
+    public List<TicketVO> findAllWithOrder(int currentPage, String sortField, String sortOrder) {
+    	 return dao.findAllWithOrder(currentPage, sortField, sortOrder);
+    }
 
 //	@Override
 //	public List<TicketVO> getAllTickets2(int currentPage, String sortId, String sortOrder) {
