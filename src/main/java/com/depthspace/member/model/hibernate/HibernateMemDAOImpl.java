@@ -25,8 +25,8 @@ public class HibernateMemDAOImpl implements HibernateMemDAO_Interface {
 	}
 
 	@Override
-	public int insert(MemVO entity) {
-		return (Integer) getSession().save(entity);
+	public MemVO insert(MemVO entity) {
+		return (MemVO) getSession().save(entity);
 	}
 
 	@Override
@@ -87,6 +87,11 @@ public class HibernateMemDAOImpl implements HibernateMemDAO_Interface {
 	@Override
 	public MemVO findOneMem(String memAcc) {
 		return getSession().get(MemVO.class, memAcc);
+	}
+	
+	@Override
+	public MemVO getOneMem(Integer memId) {
+		return getSession().get(MemVO.class, memId);
 	}
 
 }

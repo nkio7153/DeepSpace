@@ -47,7 +47,7 @@ public class AttractionsDAOImpl implements AttractionsDAO_Interface{
 	}
 
 	@Override
-	public AttractionsVO findByPrimaryKey(Integer attractionsId) {
+	public AttractionsVO getAttractionsById(Integer attractionsId) {
 		return getSession().get(AttractionsVO.class, attractionsId);
 	}
 
