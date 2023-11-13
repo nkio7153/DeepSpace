@@ -112,23 +112,18 @@
 						</c:otherwise>
 					</c:choose>
 					</div>
-					<form action="<%=request.getContextPath()%>/ticketproduct/list"
-						method="get">
-						<input type="hidden" name="sortField" value="${param.sortField}">
-						<input type="hidden" name="sortOrder" value="${param.sortOrder}">
-						<input type="hidden" name="sortBuy" value="${param.sortBuy}">
-						<div class="form-group mb-0">
-							<label for="sortDropdown" class="mr-2"></label> <select
-								class="form-control d-inline-block" id="sortDropdown"
-								name="sort" onchange="this.form.submit()">
-								<option value="default">排序方式</option>
-								<option value="popularity">按熱門程度排序</option>
-								<option value="ticketName">按票券名稱排序</option>
-								<!-- 其他排序選項 -->
-							</select>
-						</div>
-					</form>
-				</div>
+<div class="form-group">
+    <label for="sortOption">排序方式：</label>
+    <select class="form-control" id="sortOption" onchange="submitForm()">
+        <option value="ticketId_asc" ${param.sortField == 'ticketId' && param.sortOrder == 'asc' ? 'selected' : ''}>按 Ticket ID 升序</option>
+        <option value="ticketId_desc" ${param.sortField == 'ticketId' && param.sortOrder == 'desc' ? 'selected' : ''}>按 Ticket ID 降序</option>
+<%--         <option value="stars_asc" ${param.sortField == 'stars' && param.sortOrder == 'asc' ? 'selected' : ''}>按星级升序</option> --%>
+<%--         <option value="stars_desc" ${param.sortField == 'stars' && param.sortOrder == 'desc' ? 'selected' : ''}>按星级降序</option> --%>
+<!--         其他排序选项 -->
+    </select>
+</div>
+
+</div>
 				<!-- 票券列表 -->
 				<div class="ticket-lists" id="ticketright">
 					<c:forEach items="${resultSet}" var="ticket">
@@ -255,18 +250,20 @@
                 $('#loadingAnimation').show();
                 // 從表單收集數據
                 var formData = $(this).serialize();
+                $('#loadingSpinner').show();
                 // 發送 Ajax 請求
                 $.ajax({
                     type: "GET", 
                     url: "<%=request.getContextPath()%>/ticketproduct/search", 
-					data : formData, // 表單數據
+					data : formData, 
+		            beforeSend: function() {
+		                $('#loadingSpinner').show();
+		            },
 					success : function(result) {
-						//console.log(result);
 						// 更新票券列表部分 
 						$('#ticketright').html(result);
 					},
 		            complete: function() {
-		                // 隐藏加载动画
 		                $('#loadingSpinner').hide();
 		            }
 				});
@@ -277,11 +274,39 @@
 				$('#searchForm').submit();
 			});
 
-			// 更改排序也觸發表單提交
-			$('#sortDropdown').on('change', function() {
-				$('#searchForm').submit();
-			});
+
 		});
+
+        function submitForm() {
+            var selectedOption = $('#sortOption').val();
+            var parts = selectedOption.split('_');
+            var sortField = parts[0];
+            var sortOrder = parts[1];
+            var formDataSort = $(this).serialize();
+            // 构造查询字符串
+//             var queryString = 'sortField=' + sortField + '&sortOrder=' + sortOrder;
+            var queryString = sortField + sortOrder;
+            $('#loadingSpinner').show();
+
+            // 发送 Ajax 请求
+            $.ajax({
+                type: "GET", 
+                url: "<%=request.getContextPath()%>/ticketproduct/search?" + queryString, 
+				data : formDataSort, 
+                success: function(result) {
+                    // 更新票券列表部分
+                    $('#ticketright').html(result);
+                },
+                complete: function() {
+                    $('#loadingSpinner').hide();
+                }
+            });	
+            
+            // 更改排序也觸發表單提交
+// 			$('#sortOption').on('change', function() {
+// 				$('#sortForm').submit();
+// 			});
+        }
 
       
 	</script>

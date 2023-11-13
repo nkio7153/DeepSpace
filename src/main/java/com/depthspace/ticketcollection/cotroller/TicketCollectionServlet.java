@@ -91,16 +91,7 @@ public class TicketCollectionServlet extends HttpServlet {
 		HttpSession session = req.getSession(false);
 	    Integer memId = (Integer) session.getAttribute("memId");
 	    
-//	    if (memId == null) {
-//	        res.sendRedirect("login.jsp");  //登入頁面***假資料
-//	        return;
-//	    }
-//	    memId = (Integer)session.getAttribute("memId");
-		System.out.println(memId);
-		
-		
-//		Integer memId = 2; // ****測試寫死****
-		// 取得會員收藏
+	    // 取得會員收藏
 		List<TicketCollectionVO> ticketList = ticketCollectionService.getOne(memId);
 		req.setAttribute("resultSet", ticketList);
 		// 存放於TicketVO
@@ -150,11 +141,7 @@ public class TicketCollectionServlet extends HttpServlet {
 	private void toggleFavorite(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		HttpSession session = req.getSession(false);
 	    Integer memId = (Integer) session.getAttribute("memId");
-	    
-//	    if (memId == null) {
-//	        res.sendRedirect("login.jsp");  //登入頁面***假資料
-//	        return;
-//	    }
+
 	    memId = (Integer)session.getAttribute("memId");
 		System.out.println(memId);
 		
@@ -184,10 +171,6 @@ public class TicketCollectionServlet extends HttpServlet {
 			PrintWriter out = res.getWriter();
 			out.print("{ \"isFavorite\": " + isFavorite + " }");
 			out.flush();
-//		} else {
-//			// memId 未提供，返回錯誤狀態碼(應返回登入頁面)
-//			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
-//		}
 	}
 
 	/*************** 刪除一個 *****************/
@@ -198,9 +181,6 @@ public class TicketCollectionServlet extends HttpServlet {
 	    memId = (Integer)session.getAttribute("memId");
 		System.out.println(memId);
 		
-		System.out.println(memId);
-//		Integer memId = 2; // ****測試寫死****
-
 		String ticketIdStr = req.getParameter("ticketId");
 		Integer ticketId = Integer.parseInt(ticketIdStr);
 

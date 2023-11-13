@@ -32,10 +32,10 @@ import com.depthspace.column.service.ColumnArticlesService;
 import com.depthspace.column.service.ColumnArticlesServiceImpl;
 import com.depthspace.column.service.ColumnImagesService;
 import com.depthspace.column.service.ColumnImagesServiceImpl;
-import com.depthspace.column.service.ColumnRedisService;
 import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.utils.HibernateUtil;
+import com.depthspace.utils.JedisUtil;
 
 @WebServlet("/columnarticles/*")
 @MultipartConfig
@@ -43,7 +43,6 @@ public class ColumnArtServlet extends HttpServlet {
 	
 	private ColumnArticlesService columnArticlesService;
 	private ColumnImagesService columnImagesService;
-	private ColumnRedisService columnRedisService;
 
 	public void init() throws ServletException {
 		columnArticlesService = new ColumnArticlesServiceImpl();
@@ -123,13 +122,31 @@ public class ColumnArtServlet extends HttpServlet {
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			return;
-		}
+		}		
 		
+	    // 隨機推薦文
+		List<ColumnArticlesVO> allArticles = columnArticlesService.getAllArti();
+		JedisPool pool = JedisUtil.getJedisPool();
+		try (Jedis jedis = pool.getResource()) { 
+			jedis.select(3);
+            for (ColumnArticlesVO article : allArticles) {
+                jedis.sadd("columnSet", article.getArtiId().toString());  //加到columnSet集合
+            }
+		    List<String> randomArticleIds = jedis.srandmember("columnSet", 5); //任取五篇
+			List<ColumnArticlesVO> recommendedArticles = new ArrayList<>();
+			for (String id : randomArticleIds) {
+		        ColumnArticlesVO article = columnArticlesService.getArtiByArtiId(Integer.parseInt(id));
+		        recommendedArticles.add(article);
+		}
+		    req.setAttribute("recommendedArticles", recommendedArticles);
+	
+		} catch (Exception e) {
+	        System.out.println("Redis未成功連接，取消推薦文章載入");
+	   	} 		
 		ColumnArticlesVO columnArticles = columnArticlesService.getArtiByArtiId(artiId);
-//		ColumnArticlesVO random = columnRedisService.randomToRedis(columnArticlesVO);
 		req.setAttribute("columnArticles", columnArticles);
 		req.getRequestDispatcher("/frontend/columnarticles/item.jsp").forward(req, res);
-	} 
+	}
 	
 	/************ 左側搜尋欄 **********/
 	protected void searchList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {

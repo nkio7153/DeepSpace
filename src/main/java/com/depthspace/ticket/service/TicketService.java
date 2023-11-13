@@ -48,9 +48,13 @@ public interface TicketService {
     //查詢票券的評價單數
     Integer getTotalRatingCount(Integer ticketId);
     //查詢票券的評價內容
-//    List<String> getReviews(Integer ticketId);
-    //查詢票券的評價內容
     List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId);
+
+    //排序
+//    List<TicketVO> getAllTickets2(int currentPage, String sortId, String sortOrder);
+//    List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> queryMap, String sortId, String sortOrder);
+
+    List<TicketVO> getAllTicketsSorted(String sortField, String sortOrder);
 
 }
 

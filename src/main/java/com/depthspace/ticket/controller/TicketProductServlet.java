@@ -61,19 +61,15 @@ public class TicketProductServlet extends HttpServlet {
 		case "/": // 票券進入連結
 			res.sendRedirect(req.getContextPath() + "/frontend/ticketproduct/info.jsp");
 			break;
-
 		case "/list": // 票券列表
 				doList(req, res);
-				return;
-
+			break;
 		case "/item": // 票券單一頁面
 			doProduct(req, res);
 			break;
-
 		case "/search": // 票券查找
 			doSearch(req, res);
 			break;
-
 		default:
 			System.out.println("Path not handled: " + pathInfo);
 		}
@@ -83,17 +79,20 @@ public class TicketProductServlet extends HttpServlet {
 	public void searchList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		List<TicketVO> ticketListAll = ticketService.getAllTickets();
-		req.setAttribute("ticketListAll", ticketListAll);
+		List<TicketVO> filteredList = ticketListAll.stream()
+                .filter(ticketVO -> ticketVO.getStatus() != 0) 
+                .collect(Collectors.toList());
+		req.setAttribute("ticketListAll", filteredList);
 
 		// 處理票券類型不重複
 		Set<TicketTypesVO> uniqueTicketTypes = new HashSet<>();
-		for (TicketVO ticket : ticketListAll) {
+		for (TicketVO ticket : filteredList) {
 			uniqueTicketTypes.add(ticket.getTicketType());
 		}
 		req.setAttribute("uniqueTicketTypes", new ArrayList<>(uniqueTicketTypes));
 		// 處理票券區域不重複
 		Set<CityVO> uniqueTicketArea = new HashSet<>();
-		for (TicketVO ticket : ticketListAll) {
+		for (TicketVO ticket : filteredList) {
 			uniqueTicketArea.add(ticket.getCity());
 		}
 		req.setAttribute("uniqueTicketArea", new ArrayList<>(uniqueTicketArea));
@@ -135,37 +134,6 @@ public class TicketProductServlet extends HttpServlet {
 		req.setAttribute("totalRatingCountMap", totalRatingCountMap);
 		req.setAttribute("ticketOrderCountMap", ticketOrderCountMap);
 		
-//	    // 排序：票券名稱、銷售量
-//	    String sortField = req.getParameter("sortField");
-//	    String sortOrder = req.getParameter("sortOrder");
-//	    String sortBuy = req.getParameter("sortBuy");
-//	    if (sortField != null && sortOrder != null) {
-//	        Comparator<TicketVO> comparator;
-//	        switch (sortField) {
-//	            case "ticketName": // 票券名稱排序
-//	                comparator = Comparator.comparing(TicketVO::getTicketName);
-//	                break;
-//	            default: //預設
-//	                comparator = Comparator.comparing(TicketVO::getTicketName); 
-//	                break;
-//	        }
-//	        if ("desc".equalsIgnoreCase(sortOrder)) {
-//	            comparator = comparator.reversed(); // 降序
-//	        }
-//	        Collections.sort(ticketList, comparator); // 進行排序
-//	    }
-//	    
-//	    if ("sales".equals(sortBuy)) {
-//	        ticketList.sort((t1, t2) -> {
-//	            Integer sales1 = ticketOrderCountMap.getOrDefault(t1.getTicketId(), 0);
-//	            Integer sales2 = ticketOrderCountMap.getOrDefault(t2.getTicketId(), 0);
-//	            return sales2.compareTo(sales1); // 降序排序
-//	        });
-//	    }
-//	    
-//		req.setAttribute("sortField", sortField);
-//		req.setAttribute("sortBuy", sortBuy);
-//		req.setAttribute("sortOrder", sortOrder);
 	}
 
 
@@ -175,14 +143,29 @@ public class TicketProductServlet extends HttpServlet {
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 
+		//排序
+        String sortField = req.getParameter("sortField");
+        String sortOrder = req.getParameter("sortOrder");
+
+        if (sortField == null || sortField.trim().isEmpty()) {
+            sortField = "ticketId"; // 默认排序字段
+        }
+
+        if (sortOrder == null || sortOrder.trim().isEmpty()) {
+            sortOrder = "asc"; // 默认排序顺序
+        }
+
+        List<TicketVO> tickets = ticketService.getAllTicketsSorted(sortField, sortOrder);
+        req.setAttribute("tickets", tickets);
+        
 		// 取得所有票券內容(VO)
 		List<TicketVO> ticketList = ticketService.getAllTickets2(currentPage);
-		
-		//下架篩選
+
+		//篩選下架
 		List<TicketVO> filteredList = ticketList.stream()
                  .filter(ticketVO -> ticketVO.getStatus() != 0) 
                  .collect(Collectors.toList());
-
+		
 		req.setAttribute("resultSet", filteredList); // 票券內容
 		req.setAttribute("currentPage", currentPage); // 分頁
 

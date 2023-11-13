@@ -47,6 +47,15 @@
     0%, 100% { opacity: 1; }
     50% { opacity: 0.5; }
 }
+
+.table-list {
+     width: 80%;
+     margin: auto; 
+ } 
+ 
+.table-list .breadcrumb{
+	 background-color: transparent;
+}
 </style>
 
 
@@ -57,13 +66,8 @@
 
 	<jsp:include page="/indexpage/header.jsp" />
 	<jsp:include page="/indexpage/headpic.jsp" />
-
-<%-- 	<c:if test="${empty memId}"> --%>
-<%-- 	   <c:set var="memId" value="${null}" />  --%>
-<%-- 	</c:if> --%>
-
-<!-- 	<div class="container mt-5"> -->
-
+	
+<div class="table-list">
 		<!-- 路徑地圖 -->
 		<div class="row mb-4">
 			<div class="col-12">
@@ -100,13 +104,8 @@
 		<div class="row mb-4">
 			<div class="col-12 d-flex justify-content-between align-items-center">
 				<h3>${ticket.ticketName}</h3>
-<!-- 				<i class="far fa-heart favorite-icon" id="favoriteIcon" -->
-<!-- 					style="cursor: pointer;"  -->
-<%-- 									data-ticketId="${ticket.ticketId}"></i> --%>
-									
 	<i class="fa-heart favorite-icon ${isFavorite ? 'fas' : 'far'}" 
-   id="favoriteIcon" style="cursor: pointer;" data-ticketId="${ticket.ticketId}"></i>
-									
+   id="favoriteIcon" style="cursor: pointer;" data-ticketId="${ticket.ticketId}"></i>									
 			</div>
 				<div class="col-12 d-flex justify-content-between align-items-center">
 				<h6>${ticket.ticketType.typeName}&emsp;|&emsp;${ticket.city.cityName}</h6>
@@ -210,14 +209,15 @@
 				</c:forEach>
 			</div>
 		</div>
-
 	</div>
+</div>
 
-<!-- Leaflet的JS -->
+
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <script>
 
 $(document).ready(function() {

@@ -33,7 +33,11 @@ public interface TicketDAO {
 		
 		List<TicketVO> getByCompositeQuery(Map<String, List<String>> map); //複合查詢取得票券
 
-		public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId);
+		List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId);
+		
+		List<TicketVO> findAllWithOrder(String sortField, String sortOrder);
+		
+//		List<TicketVO> getAll2(int currentPage, String sortId, String sortOrder);
 //		//評價相關
 //		
 //		int countOrderRatingsByTicketId(Integer ticketId); //取得有評價該票券的單數

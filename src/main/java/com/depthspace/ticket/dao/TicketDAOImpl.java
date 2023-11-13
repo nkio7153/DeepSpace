@@ -1,12 +1,15 @@
 package com.depthspace.ticket.dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -86,6 +89,33 @@ public class TicketDAOImpl implements TicketDAO {
 				.setFirstResult(first).setMaxResults(Constants.PAGE_MAX_RESULT) // 每頁紀錄數量
 				.list(); // 查出的資料存於此列表
 	}
+	
+//	// 取得所有票券資料(分頁) 排序
+//	@Override
+//	public List<TicketVO> getAll2(int currentPage, String sortId, String sortOrder) {
+//		int first = (currentPage - 1) * Constants.PAGE_MAX_RESULT; // 計算當前頁面第一條索引
+//		String queryString = "from TicketVO";
+//		
+//		if(sortId != null && !sortId.isEmpty() && sortOrder != null && !sortOrder.isEmpty()) {
+//			if(sortId.equals("ticketId")) {
+//				queryString += " order by cast(" + sortId + "as int)" + sortOrder;
+//			} else {
+//				queryString += " order by" + sortId + " " + sortOrder;
+//			}
+			
+//			queryString += " order by " + sortId;
+//			
+//			if(sortOrder.equalsIgnoreCase("desc")) {
+//				queryString += "desc";
+//			} else {
+//				queryString += "asc";
+//			}
+//		}
+		
+//		return getSession().createQuery(queryString, TicketVO.class) 
+//				.setFirstResult(first).setMaxResults(Constants.PAGE_MAX_RESULT)
+//				.list(); 
+//	}
 
 	// 取得所有票券
 	@Override
@@ -197,6 +227,23 @@ public class TicketDAOImpl implements TicketDAO {
 			throw new RuntimeException("Error", e);
 		}
 	}
+	
+    public List<TicketVO> findAllWithOrder(String sortField, String sortOrder) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<TicketVO> query = builder.createQuery(TicketVO.class);
+        Root<TicketVO> root = query.from(TicketVO.class);
+
+        if ("ticketId".equals(sortField)) {
+            if ("desc".equalsIgnoreCase(sortOrder)) {
+                query.orderBy(builder.desc(root.get("ticketId")));
+            } else {
+                query.orderBy(builder.asc(root.get("ticketId")));
+            }
+        }
+
+        return getSession().createQuery(query).getResultList();
+    }
+}
 
 //	//取得有評價該票券的單數
 //	@Override
@@ -219,4 +266,3 @@ public class TicketDAOImpl implements TicketDAO {
 //		return null;
 //	}
 
-}
