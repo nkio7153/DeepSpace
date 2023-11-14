@@ -15,15 +15,15 @@
 </head>
 <body>
     <h1>註冊會員</h1>
-    <form action="${pageContext.request.contextPath}/admin/save" method="post" enctype="multipart/form-data">
+    <form action="${pageContext.request.contextPath}/ad/save" method="post" enctype="multipart/form-data">
         <label for="adminAcc">帳號:</label>
-        <input type="text" id="adminAcc" name="adminAcc" value="${admin.adminAcc}" required><br><br>
+        <input type="text" id="adminAcc" name="adminAcc" value="" required><br><br>
         
         <label for="adminPwd">密碼:</label>
-        <input type="password" id="adminPwd" name="adminPwd" value="${admin.adminPwd}" required><br><br>
+        <input type="password" id="adminPwd" name="adminPwd" value="" required><br><br>
         
         <label for="adminName">管理員姓名:</label>
-        <input type="text" id="adminName" name="adminName" value="${admin.adminName}" required><br><br>
+        <input type="text" id="adminName" name="adminName" value="" required><br><br>
         
         <label for="adminStatus" >狀態:</label>
         <select id="adminStatus" name="adminStatus"  >

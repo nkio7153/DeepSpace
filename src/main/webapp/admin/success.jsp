@@ -39,22 +39,9 @@
  <jsp:include page="../indexpage/headpic.jsp" />
 <%-- 	<form action="${pageContext.request.contextPath}/mem/success" method="post"> --%>
 	<h1 align="center">歡迎登入成功！</h1>
-<p align="center">您已成功登入，歡迎回來，${authenticatedMem.memName}！</p>
+<p align="center">您已成功登入，歡迎回來，${admin.adminName}！</p>
 <hr>
 
-	<!-- 新增行程規劃查詢按鈕 -->
-	<div style="display: flex; align-items: stretch;">
-    <!-- 切30%的寬度給行稱規劃查詢(找所有自己的旅遊規劃) -->
-    <div style="flex: 30%; margin-left: 10px;">
-	     <form action="${pageContext.request.contextPath}/tr/tourList" method="post">
-	     	<input type="hidden" name="memId" value="${authenticatedAdmin.adminId}" readonly">
-            <input type="submit" value="我的行程查詢"  class="btn_style" >
-        </form>
-<%--         <form action="${pageContext.request.contextPath}/tour/newTour.jsp?memId=${authenticatedMem.memId}" method="post"> --%>
-<%-- 	     	<input type="hidden" name="memId" value="${authenticatedMem.memId}" readonly"> --%>
-<!--             <input type="submit" value="新增行程" style="height: 50px; width: 150px; font-size: 18px; color: #fff; background-color: #008CBA; border: none; padding: 10px; cursor: pointer; border-radius: 10px;"> -->
-<!--         </form> -->
-		<a href="${pageContext.request.contextPath}/tr/addTour?adminId=${authenticatedAdmin.adminId}" class="btn_style">新增行程</a>
 	
 	</div>
 	
@@ -64,27 +51,27 @@
 		<h1 align="center">管理員資訊</h1>
 		<table border="1px" align="center" width="90%">
 		
-			<th style="display: none;">管理員編號</th><td  style="display: none;">${authenticatedAdmin.adminId} </td>
+			<th style="display: none;">管理員編號</th><td  style="display: none;">${admin.adminId} </td>
 		
 		<tr>
-			<th>帳號</th><td>${authenticatedAdmin.adminAcc}</td>
+			<th>帳號</th><td>${admin.adminAcc}</td>
 		</tr>
 		<tr>
-			<th>密碼</th><td>${authenticatedAdmin.adminPwd}</td>
+			<th>密碼</th><td>${admin.adminPwd}</td>
 		</tr>
 		<tr>
-			<th>管理員姓名</th><td>${authenticatedAdmin.adminName}</td>
+			<th>管理員姓名</th><td>${admin.adminName}</td>
 		</tr>
 		<tr>
-			<th>狀態</th><td>${adminStatus}</td>
+			<th>狀態</th><td>${admin.adminStatus}</td>
 		</tr>
 	</table>
-	<form align="center" action="${pageContext.request.contextPath}/admin/edit?adminId=${authenticatedAdmin.adminId}" method="post" >
+	<form align="center" action="${pageContext.request.contextPath}/ad/edit?adminId=${admin.adminId}" method="post" >
 		<input type="submit" value="修改管理員資料">
 		<input type="hidden" name="action"	value="update">
 	</form>
 	
-	<form align="center" action="${pageContext.request.contextPath}/admin/logout" method="post" >
+	<form align="center" action="${pageContext.request.contextPath}/ad/logout" method="post" >
 		<input type="submit" value="登出">
 	</form>
 

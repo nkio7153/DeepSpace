@@ -1,6 +1,6 @@
-<%@page import="com.depthspace.admin.model.model1.AdminVO"%>
-<%@page import="com.depthspace.admin.model.service.HbAdminService"%>
-<%@page import="com.depthspace.admin.model.service.HbAdminService"%>
+<%@page import="com.depthspace.admin.model.AdminVO"%>
+<%@page import="com.depthspace.admin.service.AdminService"%>
+<%@page import="com.depthspace.admin.service.HbAdminService"%>
 <%@ page import="com.depthspace.restaurant.service.RestServiecImpl"%>
 <%@ page import="com.depthspace.restaurant.service.RestService"%>
 <%@ page import="com.depthspace.restaurant.model.restaurant.RestVO"%>

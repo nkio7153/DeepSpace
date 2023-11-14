@@ -1,5 +1,5 @@
 <%@ page import="com.depthspace.admin.service.AdminService"%>
-<%@ page import="com.depthspace.admin.model.AdminVO"%>O"%>
+<%@ page import="com.depthspace.admin.model.AdminVO"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.Base64" %>
@@ -28,7 +28,7 @@
  <jsp:include page="../indexpage/header.jsp" />
  <jsp:include page="../indexpage/headpic.jsp" />
 	<h1 align="center">修改管理員資料</h1>
-	<form align="center" action="${pageContext.request.contextPath}/admin/modify" method="post" enctype="multipart/form-data">
+	<form align="center" action="${pageContext.request.contextPath}/ad/modify" method="post" enctype="multipart/form-data">
 		<table border="1" align="center" width="50%">
 			
 				<th style="display: none;">管理員編號</th>
@@ -87,7 +87,7 @@
 						.stringify(modifiedData));
 
 				// 重導向到 success.jsp
-				document.location.href = "${pageContext.request.contextPath}/admin/success";
+				document.location.href = "${pageContext.request.contextPath}/ad/success";
 			}
 	</script>
 	<jsp:include page="../indexpage/footer.jsp" />

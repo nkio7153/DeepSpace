@@ -2,17 +2,12 @@ package com.depthspace.admin.model.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 
 import com.depthspace.admin.model.AdminVO;
-
-import static com.depthspace.utils.Constants1.PAGE_MAX_RESULT;
 
 import java.util.List;
 
 import javax.persistence.NoResultException;
-
-
 
 public class HibernateAdminDAOImpl implements HibernateAdminDAO_Interface {
 
@@ -95,6 +90,10 @@ public class HibernateAdminDAOImpl implements HibernateAdminDAO_Interface {
 	public AdminVO findOneAdmin(String adminAcc) {
 		return getSession().get(AdminVO.class, adminAcc);
 	}
+
+//	public static void main(String[] args) {
+//		findByAdminAcc
+//	}
 
 }
 

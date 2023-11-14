@@ -24,7 +24,7 @@ import com.depthspace.admin.service.HbAdminService;
 import com.depthspace.admin.model.AdminVO;
 import com.depthspace.admin.service.AdminService;
 
-@WebServlet({ "/admin/*" })
+@WebServlet({ "/ad/*" })
 @MultipartConfig
 public class AdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -120,6 +120,7 @@ public class AdminServlet extends HttpServlet {
 			}
 
 			String adminStatus = req.getParameter("adminStatus");
+			System.out.println("adminStatus=" + adminStatus);
 			st5 = Byte.parseByte(adminStatus);
 			
 			//=======================================================================
@@ -290,7 +291,7 @@ public class AdminServlet extends HttpServlet {
 		AdminVO adminvo = null;
 		
 		String loginLocation =req.getParameter("loginLocation");
-		System.out.println("loginLocation="+loginLocation);	
+		System.out.println("loginLocation="+password);	
 		
 		if(allowUser(adminAcc,password)==1) {
 			System.out.println("沒有此帳號");
@@ -298,11 +299,11 @@ public class AdminServlet extends HttpServlet {
 			resp.sendRedirect(URL);
 			return;
 		} else {
-		HttpSession session=req.getSession();
+		HttpSession session=req.getSession(false);
 		
-		AdminVO admin = ms.getAdminInfo(adminAcc);
+		AdminVO admin = hms.findByAdminAcc(adminAcc);
 		System.out.println("admin=" + admin);
-		String base64Image;
+//		String base64Image;
 		if(admin.getAdminAcc().equals(adminAcc) && admin.getAdminPwd().equals(password)) {
 				//設定狀態顯示
 				byte adminStatus = admin.getAdminStatus();
@@ -311,10 +312,11 @@ public class AdminServlet extends HttpServlet {
 				} else {
 					req.setAttribute("status" , "此帳號停權");
 				}
+				System.out.println("servlet="+admin.getAdminId());
 				    
 				    
-			session.setAttribute("authenticatedMem", admin);//會員物件
-			session.setAttribute("memId", admin.getAdminId());//會員編號
+			session.setAttribute("admin", admin);//會員物件
+			session.setAttribute("adminId", admin.getAdminId());//會員編號
 			
 			Integer adminno = (Integer) session.getAttribute("adminId");// 測試用(取得存在session會員編號)
 		    System.out.println("測試取得放入session的會員編號" + adminno);// 測試用

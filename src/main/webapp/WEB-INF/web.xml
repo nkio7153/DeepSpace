@@ -57,19 +57,29 @@
 		<url-pattern>/faq/faq.do</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>FaqTypesServlet</servlet-name>
+		<servlet-class>com.depthspace.faqtypes.model.controller.FaqTypesServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>FaqTypesServlet</servlet-name>
+		<url-pattern>/faqtypes/faqTypes.do</url-pattern>
+	</servlet-mapping>
+	
 	<filter>
 		<filter-name>LoginFilter</filter-name>
 		<filter-class>com.depthspace.admin.filter.LoginFilter</filter-class>
 	</filter>
-	<filter-mapping>
-		<filter-name>LoginFilter</filter-name>
-		<url-pattern>/admin/*</url-pattern>
-		<url-pattern>/backstage/index.jsp</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-		<dispatcher>ASYNC</dispatcher>
-	</filter-mapping>
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>LoginFilter</filter-name> -->
+<!-- 		<url-pattern>/admin/*</url-pattern> -->
+<!-- 		<url-pattern>/backstage/index.jsp</url-pattern> -->
+<!-- 		<dispatcher>REQUEST</dispatcher> -->
+<!-- 		<dispatcher>FORWARD</dispatcher> -->
+<!-- 		<dispatcher>INCLUDE</dispatcher> -->
+<!-- 		<dispatcher>ERROR</dispatcher> -->
+<!-- 		<dispatcher>ASYNC</dispatcher> -->
+<!-- 	</filter-mapping> -->
 
 </web-app>

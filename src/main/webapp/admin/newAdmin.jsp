@@ -24,7 +24,7 @@
 	<p align="center">您已成功登入，歡迎回來，${authenticatedAdmin.adminName}！</p>
 	<hr>
 	<h1 align="center">管理員資訊</h1>
-	<form align="center" action="${pageContext.request.contextPath}/admin/edit?adminId=${authenticatedAdmin.adminId}" method="post" >
+	<form align="center" action="${pageContext.request.contextPath}/ad/edit?adminId=${authenticatedAdmin.adminId}" method="post" >
 	<table border="1px" align="center" width="50%">
 		<tr>
 		<th style="display: none;">管理員編號</th>
@@ -50,10 +50,10 @@
 	<input type="button" value="登出" align="center" onclick="index()">
 	<script type="text/javascript">
 	    function index() {
-	        document.location.href = "${pageContext.request.contextPath}/admin/admin.jsp";
+	        document.location.href = "${pageContext.request.contextPath}/ad/login.jsp";
 	    }
 	    function revise() {
-	        document.location.href = "${pageContext.request.contextPath}/admin/revise.jsp";
+	        document.location.href = "${pageContext.request.contextPath}/ad/revise.jsp";
 	    }
 	</script>
 

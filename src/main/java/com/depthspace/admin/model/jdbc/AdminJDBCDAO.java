@@ -14,11 +14,11 @@ import com.depthspace.member.model.MemVO;
 import com.depthspace.utils.DBUtil;
 
 public class AdminJDBCDAO implements AdminDAO_Interface {
-	private static final String INSERT_STMT = "INSERT INTO ADMIN(ADMIN_ACC, ADMIN_PWD, ADMIN_NAME, ACC_STATUS) VALUES(?,?,?,?)";
+	private static final String INSERT_STMT = "INSERT INTO ADMIN(ADMIN_ACC, ADMIN_PWD, ADMIN_NAME, ADMIN_STATUS) VALUES(?,?,?,?)";
 	private static final String UPDATE_STMT = "UPDATE ADMIN SET ADMIN_ACC=?, ADMIN_PWD=?, ADMIN_NAME=?, ADMIN_STATUS=? WHERE ADMIN_ID=?";
 	private static final String DELETE_STMT = "DELETE FROM ADMIN WHERE ADMIN_ID=?";
-	private static final String GET_ONE_STMT = "SELECT ADMIN_ID,ADMIN_ACC, ADMIN_PWD, ADMIN_NAME, ADMIN_STATUS FROM MEM WHERE ADMIN_ID=?";
-	private static final String GET_ONE_ADMIN = "SELECT ADMIN_ID,ADMIN_ACC, ADMIN_PWD, ADMIN_STATUS FROM ADMIN WHERE ADMIN_ACC=?";
+	private static final String GET_ONE_STMT = "SELECT ADMIN_ID,ADMIN_ACC, ADMIN_PWD, ADMIN_NAME, ADMIN_STATUS FROM ADMIN WHERE ADMIN_ID=?";
+	private static final String GET_ONE_ADMIN = "SELECT ADMIN_ID,ADMIN_ACC, ADMIN_PWD, ADMIN_NAME, ADMIN_STATUS FROM ADMIN WHERE ADMIN_ACC=?";
 	private static final String GET_ALL_STMT = "SELECT * FROM ADMIN";
 	
 	@Override

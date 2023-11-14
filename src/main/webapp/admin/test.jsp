@@ -6,41 +6,19 @@
     <title>Title</title>
 <%--  include head.jsp--%>
   <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
-  <style>
-  	.mc-5{
-  		margin-top:-65px;
-  	}
-
-.input-box {
-  border-radius: 30px; /* 設定輸入框的圓角 */
-}
-
-body, html {
-  margin: 0;
-  padding: 0;
-  overflow-y: hidden; /* 阻止垂直滾動 */
-}
-
-.container-fluid {
-  max-height: 100vh; /* 設定最大高度為視窗的高度 */
-  overflow-y: hidden; /* 阻止垂直滾動 */
-}
-
-
-  </style>
 </head>
 <body>
 <%--include header.jsp--%>
 <jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
-<div class="container-fluid h-100">
-  <div class="row justify-content-center align-items-center h-100">
+<div class="container-fluid my-0">
+  <div class="row">
 <%--    側邊欄--%>
-<!-- 	<div class="col-lg-4 g-3 my-0"> -->
+	<div class="col-lg-4 g-3 my-0">
     	
-<!--     </div> -->
-    <div class="col-lg-4 transparent mb-5 mc-5 input-box">
+    </div>
+    <div class="col-lg-4 g-2 transparent rounded my-0">
 <%--      放入自己body裡的代碼--%>
-      <form align="center" action="${pageContext.request.contextPath}/backend/backIndex/index.jsp" method="post">
+      <form align="center" action="${pageContext.request.contextPath}/ad/login" method="post">
 		<div class="main-box login">
 			<h3>登入</h3>
 			<label for="adminAcc">帳號</label>
@@ -61,7 +39,7 @@ body, html {
 	<div class="register">
 		<p>
 			如果沒有帳號?
-			<a href="${pageContext.request.contextPath}/admin/addAdmin.jsp" class="register-link" value="update" method="post" >點擊註冊</a>
+			<a href="${pageContext.request.contextPath}/ad/addAdmin.jsp" class="register-link" value="update" method="post" >點擊註冊</a>
 		</p>
 	</div>
 	</form>
@@ -69,9 +47,9 @@ body, html {
 	
 
     </div>
-<!--     <div class="col-lg-4 g-3 my-0"> -->
+    <div class="col-lg-4 g-3 my-0">
     	
-<!--     </div> -->
+    </div>
   </div>
 </div>
 <script>
