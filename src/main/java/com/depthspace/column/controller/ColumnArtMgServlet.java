@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import org.hibernate.Session;
+import org.json.JSONObject;
 
 import com.depthspace.admin.model.AdminVO;
 import com.depthspace.column.model.ColumnArticlesVO;
@@ -34,8 +35,6 @@ public class ColumnArtMgServlet extends HttpServlet {
 	Session session;
 
 	public void init() throws ServletException {
-//		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-//		session = sessionFactory.openSession();
 		columnArticlesService = new ColumnArticlesServiceImpl();
 		columnImagesService = new ColumnImagesServiceImpl();
 	}
@@ -64,13 +63,9 @@ public class ColumnArtMgServlet extends HttpServlet {
 		case "/edit": // 專欄修改
 			doEdit(req, res);
 			break;
-//		case "/find": // 專欄查找
-//			doSearch(req, res);
-//			break;
-//		case "/del": // 票券刪除
-//			doDel(req, res);
-//			break;
-
+		case "/view": 
+			view(req, res);
+			break;
 		default:
 			System.out.println("Path not handled: " + pathInfo);
 		}
@@ -88,11 +83,10 @@ public class ColumnArtMgServlet extends HttpServlet {
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 
 		List<ColumnArticlesVO> columnList = columnArticlesService.getAllArti2(currentPage);
-
-		if (req.getSession().getAttribute("PageQty") == null) {
-			int pageQty = columnArticlesService.getPageTotal();
-			req.getSession().setAttribute("PageQty", pageQty);
-		}
+		
+		int pageQty = columnArticlesService.getPageTotal();
+		req.getSession().setAttribute("PageQty", pageQty);
+		
 		req.setAttribute("columnList", columnList);
 		req.setAttribute("currentPage", currentPage);
 
@@ -100,6 +94,33 @@ public class ColumnArtMgServlet extends HttpServlet {
 		dispatcher.forward(req, res);
 	}
 
+	/************ 專欄查看 ************/
+    protected void view(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		Integer artiId = Integer.valueOf(req.getParameter("artiId"));
+		ColumnArticlesVO columnArticles = columnArticlesService.getArtiByArtiId(artiId);
+		
+        JSONObject jsonColumn = new JSONObject();
+        if (columnArticles != null) {
+        	jsonColumn.put("artiId", columnArticles.getArtiId());
+        	jsonColumn.put("artiTitle", columnArticles.getArtiTitle());
+        	jsonColumn.put("artiContent", columnArticles.getArtiContent());
+        	jsonColumn.put("articleDate", columnArticles.getArticleDate());
+        	jsonColumn.put("artiStatus", columnArticles.getArtiStatus()); 
+            
+            if (columnArticles.getColType() != null) {
+            	jsonColumn.put("colType", columnArticles.getColType().getColTypeName());
+            }
+            if (columnArticles.getAdmin() != null) {
+            	jsonColumn.put("admin", columnArticles.getAdmin().getAdminName());
+            }
+        }
+
+        res.setContentType("application/json");
+        res.setCharacterEncoding("UTF-8");
+
+        res.getWriter().write(jsonColumn.toString());
+    }
+    
 	/************ 專欄新增 ************/
 	private void doAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		if (!req.getMethod().equalsIgnoreCase("POST")) {
@@ -143,10 +164,11 @@ public class ColumnArtMgServlet extends HttpServlet {
 				columnImagesService.save(colImg);
 			}
 		}
+		int pageQty = columnArticlesService.getPageTotal();
+		req.getSession().setAttribute("PageQty", pageQty);
+		
 		res.sendRedirect(req.getContextPath() + "/columnmg/list");
 	}
-
-
 
 	/************ 專欄修改 ************/
 	private void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -176,23 +198,6 @@ public class ColumnArtMgServlet extends HttpServlet {
 			colType.setColTypeId(colTypeId);
 			columnArticles.setColType(colType);
 			
-//			Integer adminId = Integer.valueOf(req.getParameter("adminId"));
-//			AdminVO admin = new AdminVO();
-//			admin.setAdminId(adminId);
-//			columnArticles.setAdmin(admin);
-			
-
-			
-//			Part filePart = req.getPart("colImg");
-//			if (filePart != null && filePart.getSize() > 0) {
-//				ColumnImagesVO colImg = new ColumnImagesVO();
-//				colImg.setColumnArticles(columnArticles);
-//				colImg.setIsMainImage((byte) 1);
-//				InputStream inputStream = filePart.getInputStream();
-//				byte[] imageBytes = readInputStream(inputStream);
-//				colImg.setColImg(imageBytes);
-//				columnImagesService.save(colImg);			
-//			}
 			Part filePart = req.getPart("colImg");
 			if (filePart != null && filePart.getSize() > 0) {
 			    InputStream inputStream = filePart.getInputStream();

@@ -56,7 +56,6 @@ public class TicketServlet extends HttpServlet {
 		session = sessionFactory.openSession();
 		ticketService = new TicketServiceImpl();
 		ticketImagesService = new TicketImagesServiceImpl();
-//	    TicketImagesDAO ticketImagesDAO = new TicketImagesDAOImpl(sessionFactory);
 	}
 
 	@Override
@@ -88,7 +87,7 @@ public class TicketServlet extends HttpServlet {
 		case "/find": // 票券查找
 			doSearch(req, res);
 			break;
-		case "/view": // 票券
+		case "/view": 
 			view(req, res);
 			break;
 
@@ -108,11 +107,6 @@ public class TicketServlet extends HttpServlet {
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 
 		List<TicketVO> ticketList = ticketService.getAllTickets2(currentPage);
-
-		if (req.getSession().getAttribute("ticketPageQty") == null) {
-			int ticketPageQty = ticketService.getPageTotal();
-			req.getSession().setAttribute("ticketPageQty", ticketPageQty);
-		}
 		
 	    int ticketPageQty = ticketService.getPageTotal();
 	    req.getSession().setAttribute("ticketPageQty", ticketPageQty);
@@ -207,7 +201,6 @@ public class TicketServlet extends HttpServlet {
 	    int ticketPageQty = ticketService.getPageTotal();
 	    req.getSession().setAttribute("ticketPageQty", ticketPageQty);
 	    
-		// 導向以下頁面
 		res.sendRedirect(req.getContextPath() + "/ticketmg/list");
 	}
 	
@@ -221,14 +214,12 @@ public class TicketServlet extends HttpServlet {
             jsonTicket.put("ticketId", ticket.getTicketId());
             jsonTicket.put("ticketName", ticket.getTicketName());
             jsonTicket.put("price", ticket.getPrice());
-//            jsonTicket.put("ticketType", ticket.getTicketType());
             jsonTicket.put("description", ticket.getDescription());
             jsonTicket.put("stock", ticket.getStock());
             jsonTicket.put("address", ticket.getAddress());
             jsonTicket.put("latitude", ticket.getLatitude());
             jsonTicket.put("longitude", ticket.getLongitude());
             jsonTicket.put("validDays", ticket.getValidDays());
-//            jsonTicket.put("images", ticket.getImages());
             jsonTicket.put("status", ticket.getStatus());           
             
             if (ticket.getTicketType() != null) {

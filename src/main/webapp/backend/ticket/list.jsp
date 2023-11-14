@@ -112,10 +112,9 @@
 		<table class="table table-bordered table-hover" id="table-hover">
 			<thead>
 				<tr>
-					<th>項次</th>
+					<th>編號</th>
 					<th>區域</th>
 					<th>類型</th>
-					<th>編號</th>
 					<th>圖片</th>
 					<th>名稱</th>
 					<th>價格</th>
@@ -130,11 +129,9 @@
 				<!-- 票券所有資料 -->
 				<c:forEach var="ticket" items="${ticketList}" varStatus="status">
 					<tr >
-						<!-- 用當前頁數和每頁的數量計算項目序號 -->
-						<td>${itemsPerPage * (currentPage - 1) + status.index + 1}</td>
+						<td>${ticket.ticketId}</td>
 						<td>${ticket.city.cityName}</td>
 						<td>${ticket.ticketType.typeName}</td>
-						<td>${ticket.ticketId}</td>
 						<td><img
 							src="<%=request.getContextPath()%>/ticketmainimage?ticketId=${ticket.ticketId}"
 							alt="Main Ticket Image"></td>
@@ -338,7 +335,7 @@
                         carouselInner.append(carouselItem);
                     });
                 });
-                $('#editTicketButton').attr('href', '<%=request.getContextPath()%>/ticketmg/edit?ticketId=' + ticketId); // 設置編輯按鈕的鏈接
+                $('#editTicketButton').attr('href', '<%=request.getContextPath()%>/ticketmg/edit?ticketId=' + ticketId); 
             },
             
             error: function(error) {
