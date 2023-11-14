@@ -91,7 +91,7 @@ public class ColumnArtMgServlet extends HttpServlet {
 		List<ColumnArticlesVO> columnList = columnArticlesService.getAllArti2(currentPage);
 		
 		int pageQty = columnArticlesService.getPageTotal();
-		req.getSession().setAttribute("PageQty", pageQty);
+		req.getSession().setAttribute("pageQty", pageQty);
 		
 		req.setAttribute("columnList", columnList);
 		req.setAttribute("currentPage", currentPage);
@@ -145,6 +145,7 @@ public class ColumnArtMgServlet extends HttpServlet {
 
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/column/add.jsp");
 			dispatcher.forward(req, res);
+			return;
 		} else {
 			// 完成表單填寫，按下送出觸發POST，就將下列的資料送出
 			ColumnArticlesVO columnArticles = new ColumnArticlesVO();

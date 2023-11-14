@@ -20,12 +20,6 @@ public class ColumnImagesDAOImpl implements ColumnImagesDAO {
 		return factory.getCurrentSession();
 	}
 	
-	@Override
-	public int add(ColumnImagesVO columnImagesVO) {
-		return (Integer) getSession().save(columnImagesVO);
-	}
-
-
     @Override
     public ColumnImagesVO findByArticleId(Integer artiId) {
         // 假設只有一張主圖片
@@ -49,8 +43,21 @@ public class ColumnImagesDAOImpl implements ColumnImagesDAO {
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
-            // 處理異常
+           System.out.println("圖片更新錯誤");
         }
     }
+
+	@Override
+	public void add(ColumnImagesVO colImg) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.save(colImg);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+           System.out.println("圖片上傳失敗");
+        }
+	}
 
 }
