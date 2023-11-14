@@ -373,28 +373,35 @@ public class RestApiServlet extends HttpServlet {
 				break;
 			case("minus"):
 				try {
+					int status = 0;
 					RestBookingDateVO vo = new RestBookingDateVO();
-					vo.setRestId(Integer.valueOf(req.getParameter("restId")));
-					vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
+					CompositeDetail key = new CompositeDetail();
+					key.setRestId(Integer.valueOf(req.getParameter("restId")));
+					key.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
+					vo.setCompositeKey(key);
+					
 					String bookingTime = req.getParameter("bookingTime");
-					Integer nu = Integer.valueOf(req.getParameter("bookingNumber"));
+					Integer Number = Integer.valueOf(req.getParameter("Num"));
+					System.out.println("bookingTime " + bookingTime);
 					switch (bookingTime) {
 						case ("0"): {
-							vo.setMorningNum(Integer.valueOf(bookingTime));
+							vo.setMorningNum(Integer.valueOf(Number));
+							status = restBookingDateService.updateMorningNum(vo);
 							break;
 						}
 						case ("1"): {
-							vo.setNoonNum(Integer.valueOf(bookingTime));
+							vo.setNoonNum(Integer.valueOf(Number));
 							break;
 						}
 						case ("2"): {
-							vo.setEveningNum(Integer.valueOf(bookingTime));
+							vo.setEveningNum(Integer.valueOf(Number));
 							break;
 						}
 					}
-					System.out.println(vo.toString());
-//					restBookingDateService.update(vo);
-					out.print("SUCCESS");
+//					System.out.println(vo.toString());
+					if (status == 0) {
+						out.print("SUCCESS");
+					}
 				} catch (Exception e) {
 					out.print("ERROR");
 					e.printStackTrace();

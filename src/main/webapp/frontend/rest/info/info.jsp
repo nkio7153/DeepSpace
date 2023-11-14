@@ -64,7 +64,7 @@
 		    
 		    service.findPlaceFromQuery(request, function(results, status) {
 		      if (status === google.maps.places.PlacesServiceStatus.OK) {
-		        console.log(results[0]);
+// 		        console.log(results[0]);
 		        
 	         	// 用經緯度定位地圖位置
 			    var mapOptions = {

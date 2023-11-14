@@ -1,12 +1,9 @@
 package com.depthspace.restaurant.model.restbookingdate;
 
-import java.sql.Date;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
-import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO.CompositeDetail;
 
 public class RestBookingDateDAOImpl implements RestBookingDateDAO {
 private SessionFactory factory;
@@ -54,6 +51,43 @@ private SessionFactory factory;
 	public List<RestBookingDateVO> getAll() {
 		return getSession().createQuery("from RestBookingDateVO", RestBookingDateVO.class).list();
 	}
+
+	@Override
+	public int updateMorningNum(RestBookingDateVO restBookingDateVO) {
+		try {
+			RestBookingDateVO vo = getSession().get(RestBookingDateVO.class, restBookingDateVO.getCompositeKey());
+			vo.setMorningNum(restBookingDateVO.getMorningNum());
+			getSession().update(vo);
+			return 1;
+		} catch (Exception e) {
+			return -1;
+		}
+	}
+
+	@Override
+	public int updateNoonNum(RestBookingDateVO restBookingDateVO) {
+		try {
+			RestBookingDateVO vo = getSession().get(RestBookingDateVO.class, restBookingDateVO.getCompositeKey());
+			
+			getSession().update(restBookingDateVO);
+			return 1;
+		} catch (Exception e) {
+			return -1;
+		}
+	}
+
+	@Override
+	public int updateEveningNum(RestBookingDateVO restBookingDateVO) {
+		try {
+			RestBookingDateVO vo = getSession().get(RestBookingDateVO.class, restBookingDateVO.getCompositeKey());
+			
+			getSession().update(restBookingDateVO);
+			return 1;
+		} catch (Exception e) {
+			return -1;
+		}
+	}
+	
 	
 	
 }

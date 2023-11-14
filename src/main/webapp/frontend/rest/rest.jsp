@@ -82,6 +82,11 @@
 	
 	<script>
 		$(function() {
+			let memId = "${memId}";
+			let morningNum;
+        	let noonNum;
+        	let eveningNum;
+			
 			$("#btn_info").click(function(){
 				if ($(this).hasClass("btn-light")){
 					$(this).toggleClass("btn-light btn-dark");
@@ -98,7 +103,8 @@
 					$("#col_info").toggleClass("d-block d-none");
 				}
 			});
-			// 選擇日期
+			
+			// 選擇日期添加可預約時段
 			$("#bookingDate").change(function(){
 				let params = "restId="+${rest.restId}+"&bookingDate="+$(this).val();
 				// 清空時段
@@ -127,7 +133,96 @@
 				    
 			});
 			
-			let memId = "${memId}";
+			// 確認訂位時段是否還有人數可以訂位 若可以則返回剩餘訂位人數
+			function bookingTimeNumcheck(bookingTime, morningNum, noonNum, eveningNum, bookingNumber) {
+			    let status = true;
+			    let Num = 0;
+			
+			    switch (parseInt(bookingTime)) {
+			        case 0:
+			            if (typeof morningNum === "undefined" || morningNum < bookingNumber) {
+			                status = false;
+			            } else {
+			                Num = morningNum - bookingNumber;
+			            }
+			            break;
+			        case 1:
+			            if (typeof noonNum === "undefined" || noonNum < bookingNumber) {
+			                status = false;
+			            } else {
+			                Num = noonNum - bookingNumber;
+			            }
+			            break;
+			        case 2:
+			            if (typeof eveningNum === "undefined" || eveningNum < bookingNumber) {
+			                status = false;
+			            } else {
+			                Num = eveningNum - bookingNumber;
+			            }
+			            break;
+			    }
+			    return { status: status, Num: Num };
+			}
+
+			
+			// 訂位執行
+			function bookingStart(Num) {
+			    // 判斷是否已會員登入
+			    if (typeof parseInt(memId, 10) === 'number' && memId.length !== 0){
+			    	
+		            // 扣除訂位時段的人數
+					$.ajax({
+						type: 'post',
+						data: $('#bookingform').serialize(),
+						url: '/DepthSpace/RestApi/doRestBookingDate?action=minus&Num='+Num,
+						success: function(data){
+							console.log(data);
+						},
+						error: function(data){
+							console.log(data);
+							return false;
+						}
+					})				              
+					
+			    	
+			    	
+			    	// 新增訂位資訊
+			    	$.ajax({
+				          type: 'post',
+				          data: $('#bookingform').serialize(),
+				          url: $(this).attr('action'),
+				          success: function(data) {
+				              alert('訂位成功');
+				              
+				              
+							  // 訂位成功發送郵件通知
+				              $.ajax({
+						          type: 'post',
+						          data: $('#bookingform').serialize(),
+						          url: "/DepthSpace/RestApi/toMail",
+						          success: function(data) {
+						              console.log(data);
+						          },
+						          error: function(xhr, status, error) {
+						        	  console.log(data);
+						          }
+							 });
+				          },
+				          error: function(xhr, status, error) {
+				              alert('訂位失敗');
+				          }
+					});
+			    } else {
+			    	// 未登入，提示請先登入並跳轉至登入頁面
+					alert("請先登入");
+					window.location.href = "/DepthSpace/member/login.jsp";
+			    }
+			}
+			
+			
+			
+			
+			// 訂位確認執行
 			$('#bookingform').submit(function(event) {
 			    event.preventDefault();
 			    // 若沒選擇時段則停止表單發送
@@ -139,89 +234,47 @@
 			    let restId = $('#bookingform input[name="restId"]').val();
 				let bookingDate = $('#bookingform input[name="bookingDate"]').val();
 				let bookingTime = $('#bookingTime').val();
+				let bookingNumber = $('#bookingform input[name="bookingNumber"]').val();
 				let params = "restId=" + restId + "&bookingDate=" + bookingDate;
 				$.ajax({
 				    type: 'get',
 				    url: "/DepthSpace/RestApi/getRestBookingDate?" + params,
 				    success: function (data) {
+// 				    	console.log(data);
+				    	// 取各時段可預約人數
 				        $.each(data, function (index, entry) {
-				        	// 取訂位時段 對比同時段訂位數已為0則提示無法訂位
-				        	let morningNum = index===morningNum?
-				            switch (parseInt(bookingTime)) {
-				                case 0:
-				                    if (index === "morningNum" && !entry) {
-				                        alert("此時段已無法訂位");
-				                        return false;
-				                    }
-				                    break;
-				                case 1:
-				                    if (index === "noonNum" && !entry) {
-				                        alert("此時段已無法訂位");
-				                        return false;
-				                    }
-				                    break;
-				                case 2:
-				                    if (index === "eveningNum" && !entry) {
-				                        alert("此時段已無法訂位");
-				                        return false;
-				                    }
-				                    break;
-				            }
+				        	if (index === "morningNum" && entry){
+				        		morningNum = entry;
+			                }
+			                if (index === "noonNum" && entry){
+			                	noonNum = entry;
+			                }
+			                if (index === "eveningNum" && entry){
+			                	eveningNum = entry;
+			                }
 				        });
-				    },
+// 				    	console.log("morningNum "+morningNum);
+// 				    	console.log("noonNum "+noonNum);
+// 				    	console.log("eveningNum "+eveningNum);
+// 				    	console.log("bookingNumber "+bookingNumber);
+				    	
+				        // 訂位時段 對比同時段訂位數已為0則提示無法訂位
+				        let booking  = bookingTimeNumcheck(bookingTime, morningNum, noonNum, eveningNum, bookingNumber);
+// 				        console.log(booking.status);
+// 				        console.log(booking.Num);
+				        if (booking.status) {
+				        	// 執行訂位
+				        	bookingStart(booking.Num);
+				        } else {
+				        	alert("此時段已無法訂位");
+				        }
+				   	},
 				    error: function (xhr, status, error) {
 				        console.log('查詢失敗');
 				    }
 				});
-
-			    // 新增訂位
-			    // 判斷是否已會員登入
-			    if (typeof parseInt(memId, 10) === 'number' && memId.length !== 0){
-			    	$.ajax({
-				          type: 'post',
-				          data: $('#bookingform').serialize(),
-				          url: $(this).attr('action'),
-				          success: function(data) {
-				              alert('訂位成功');
-				              // call 扣掉訂位時段的人數
-							  $.ajax({
-								  type: 'post',
-								  data: $('#bookingform').serialize(),
-								  url: '/DepthSpace/RestApi/doRestBookingDate?action=minus',
-								  success: function(data){
-									  console.log(data);
-								  },
-								  error: function(data){
-									  console.log(data);
-								  }
-							  })				              
-							  return false;
-				              
-				              
-				              // Mail發送
-				              $.ajax({
-						          type: 'post',
-						          data: $('#bookingform').serialize(),
-						          url: "/DepthSpace/RestApi/toMail",
-						          success: function(data) {
-						              console.log(data);
-						          },
-						          error: function(xhr, status, error) {
-						        	  console.log(data);
-						          }
-							});
-				          },
-				          error: function(xhr, status, error) {
-				              alert('訂位失敗');
-				          }
-					});
-			    } else {
-			    	console.log(memId);
-					alert("請先登入");
-					// 跳轉至登入頁面
-					window.location.href = "/DepthSpace/member/login.jsp";
-			    }
 			});
+			    
 			
 			
 			
