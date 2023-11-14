@@ -6,7 +6,7 @@
          
     <welcome-file-list>
 <!--		<welcome-file>account/index.jsp</welcome-file>-->
-        <welcome-file>tsc/index</welcome-file>
+        <welcome-file>indexpage/index.jsp</welcome-file>
 <!--		<welcome-file>indexpage/test2.jsp</welcome-file>-->
         <welcome-file>account/list.jsp</welcome-file>
         <welcome-file>index.html</welcome-file>
@@ -58,28 +58,28 @@
 	</servlet-mapping>
 	
 	<servlet>
-		<servlet-name>AdminServlet</servlet-name>
-		<servlet-class>com.depthspace.admin.model.controller.AdminServlet</servlet-class>
+		<servlet-name>FaqTypesServlet</servlet-name>
+		<servlet-class>com.depthspace.faqtypes.model.controller.FaqTypesServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>AdminServlet</servlet-name>
-		<url-pattern>/admin/admin.do</url-pattern>
+		<servlet-name>FaqTypesServlet</servlet-name>
+		<url-pattern>/faqtypes/faqTypes.do</url-pattern>
 	</servlet-mapping>
 	
 	<filter>
-		<filter-name>LoginFilter1</filter-name>
-		<filter-class>com.depthspace.admin.model.filter.LoginFilter1</filter-class>
+		<filter-name>LoginFilter</filter-name>
+		<filter-class>com.depthspace.admin.filter.LoginFilter</filter-class>
 	</filter>
-	<filter-mapping>
-		<filter-name>LoginFilter1</filter-name>
-		<url-pattern>/admin/*</url-pattern>
-		<url-pattern>/backstage/index.jsp</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-		<dispatcher>ASYNC</dispatcher>
-	</filter-mapping>
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>LoginFilter</filter-name> -->
+<!-- 		<url-pattern>/admin/*</url-pattern> -->
+<!-- 		<url-pattern>/backstage/index.jsp</url-pattern> -->
+<!-- 		<dispatcher>REQUEST</dispatcher> -->
+<!-- 		<dispatcher>FORWARD</dispatcher> -->
+<!-- 		<dispatcher>INCLUDE</dispatcher> -->
+<!-- 		<dispatcher>ERROR</dispatcher> -->
+<!-- 		<dispatcher>ASYNC</dispatcher> -->
+<!-- 	</filter-mapping> -->
 
 </web-app>

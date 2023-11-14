@@ -29,9 +29,17 @@ public interface TicketDAO {
 		
 		long getTotal(); //取得總票券數
 		
+		long getStatusTotal(); //取得總票券數(上架)
+		
 		List<TicketVO> getByCompositeQuery(Map<String, List<String>> map); //複合查詢取得票券
 
-		public List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId);
+		List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId);
+		
+		List<TicketVO> findAllWithOrder(String sortField, String sortOrder);
+		
+	    List<TicketVO> findAllWithOrder(int currentPage, String sortField, String sortOrder);
+
+//		List<TicketVO> getAll2(int currentPage, String sortId, String sortOrder);
 //		//評價相關
 //		
 //		int countOrderRatingsByTicketId(Integer ticketId); //取得有評價該票券的單數
@@ -39,6 +47,6 @@ public interface TicketDAO {
 //		List<Integer> getStarsByTicketId(Integer ticketId); //取得該票券的總星星評價數
 //		
 //		List<String> getReviewsByTicketId(Integer ticketId); //取得該票券評價內容
-		
+	    List<TicketVO> findTickets(int currentPage, String sortField, String sortOrder, Map<String, List<String>> filterMap);
 
 }

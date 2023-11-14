@@ -3,68 +3,36 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-
-<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Bootstrap CSS -->
-<link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	rel="stylesheet">
+
+<link rel="stylesheet"	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">	
+<link rel="stylesheet"	href="<c:url value='/static/css/backendlist.css'/>">
 
 <title>票券列表</title>
 
-<style>
-
-/* 自定義樣式：縮小字體大小和行距 */
-body {
-	font-size: 0.9rem;
-	line-height: 1.5;
-}
-
-img {
-	max-width: 100px;
-	max-height: 100px;
-	display: block;
-	margin: 0 auto;
-}
-
-th {
-	white-space: nowrap; /* 表頭文字不換行 */
-	vertical-align: middle;
-	text-align: center;
-}
-
-td {
-	/* 移除 td 的 white-space 屬性，允許內容自然斷行 */
-	vertical-align: middle;
-	text-align: center;
-}
-
-/* 避免橫向滾動設置表格最大寬度 */
-.table {
-	width: 100%; /* 使表格寬度為100%，確保它在容器內自適應 */
-	max-width: 100%; /* 這確保表格不會超出父容器 */
-	overflow-x: auto; /* 若内容超出可滾動 */
-}
-</style>
-
-<!-- 引入Bootstrap JS 和 Popper.js -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
+<%--  include --%>
+	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
+  
 </head>
+
 <body>
 
-	<div class="container mt-5">
-
+	<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+	<div class="container-fluid my-0">
+	<div class="row">
+	  
+	<div class="col-lg-2 g-3 my-0">
+	<jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
+	</div>
+	
+	<div class="col-lg-10 g-2 transparent rounded my-0">
+	
+<%-- include end--%>
+<div class="table-list">
+   	<div class="container mt-5">
 		<!-- 三個查詢表單並排顯示 -->
 		<div class="row">
 
@@ -159,7 +127,7 @@ td {
 			<tbody>
 				<!-- 票券所有資料 -->
 				<c:forEach var="ticket" items="${ticketList}" varStatus="status">
-					<tr>
+					<tr >
 						<!-- 用當前頁數和每頁的數量計算項目序號 -->
 						<td>${itemsPerPage * (currentPage - 1) + status.index + 1}</td>
 						<td>${ticket.city.cityName}</td>
@@ -186,10 +154,12 @@ td {
 							</c:choose></td>
 						<td><a
 							href="${pageContext.request.contextPath}/ticketmg/edit?ticketId=${ticket.ticketId}"
-							class="btn btn-primary btn-sm">修改</a> <a
-							href="${pageContext.request.contextPath}/ticketmg/del?ticketId=${ticket.ticketId}"
-							class="btn btn-danger btn-sm"
-							onclick="return confirm('確定刪除？不要亂刪喔！');">删除</a></td>
+							class="btn btn-primary btn-sm">修改</a> 
+<!-- 							<a -->
+<%-- 							href="${pageContext.request.contextPath}/ticketmg/del?ticketId=${ticket.ticketId}" --%>
+<!-- 							class="btn btn-danger btn-sm" -->
+<!-- 							onclick="return confirm('確定刪除？不要亂刪喔！');">删除</a> -->
+							</td>
 					</tr>
 				</c:forEach>
 		</table>
@@ -244,5 +214,17 @@ td {
 			<a class="page-link"
 				href="${pageContext.request.contextPath}/ticketmg/list">回首頁</a>
 		</div>
+		</div>
+	</div>
+
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<%--  include --%>	
+		</div>
+	</div>		
+</div>
+<%--  include end --%>
 </body>
 </html>

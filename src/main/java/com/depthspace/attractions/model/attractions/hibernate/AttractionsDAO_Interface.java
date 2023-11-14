@@ -11,8 +11,8 @@ public interface AttractionsDAO_Interface {
 	public int update(AttractionsVO AttractionsVO);
 
 	public void delete(Integer attractionsId);
-
-	public AttractionsVO findByPrimaryKey(Integer attractionsId);
+	//依據景點id找尋對應景點
+	public AttractionsVO getAttractionsById(Integer attractionsId);
 
 	public List<AttractionsVO> getAll();
 

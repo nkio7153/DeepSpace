@@ -1,5 +1,7 @@
 package com.depthspace.member.service;
 
+import java.util.List;
+
 import com.depthspace.member.model.MemVO;
 import com.depthspace.member.model.hibernate.HibernateMemDAOImpl;
 import com.depthspace.member.model.hibernate.HibernateMemDAO_Interface;
@@ -12,13 +14,45 @@ public class HbMemService {
 		dao = new HibernateMemDAOImpl(HibernateUtil.getSessionFactory());
 	}
 	
+	public MemVO insert(MemVO memVO) {
+		return dao.insert(memVO);
+	}
+
+	public void update(MemVO memVO) {
+		dao.update(memVO);
+	}
+	
+	public void updateStatus(Integer memId , byte status) {
+		dao.updateStatus(memId,status);
+		
+	}
+
+	public void delete(Integer memId) {
+		dao.delete(memId);
+	}
+	
 	public MemVO findByMemAcc(String memAcc) {
 		return dao.findByMemAcc(memAcc);
 	}
+	
 	public MemVO getById(String memAcc) {
 		return dao.getById(memAcc);
 	}
+	
 	public MemVO findOneMem(String memAcc) {
 		return dao.findOneMem(memAcc);
 	}
+	
+	public List<MemVO> getAll() {
+		return dao.getAll();
+	}
+	
+	public MemVO getOneMem(Integer memId) {
+		return dao.getOneMem(memId);
+	}
+	
+	public List<MemVO> searchMembers(String memName) {
+		return dao.searchMembers(memName);
+	}
+	
 }

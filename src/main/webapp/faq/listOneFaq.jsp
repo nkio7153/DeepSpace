@@ -3,16 +3,15 @@
 <%@ page import="com.depthspace.faq.model.service.*"%>
 <%@ page import="com.depthspace.faq.model.controller.*"%>
 <%@ page import="com.depthspace.faq.model.model.*"%>
-<%-- 此頁暫練習採用 Script 的寫法取值 --%>
 
 <%
 	FaqVO faqVO = (FaqVO) request.getAttribute("faqVO"); //EmpServlet.java(Concroller), 存入req的empVO物件
 %>
-
 <html>
 <head>
-<title>Faq資料 - listOneFaq.jsp</title>
-
+    <title>常見問題 - listOneFaq</title>
+<%--  include head.jsp--%>
+  <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
 <style>
   table#table-1 {
 	background-color: #CCCCFF;
@@ -45,12 +44,20 @@
     text-align: center;
   }
 </style>
-
 </head>
-<body bgcolor='white'>
+<body>
+<%--include header.jsp--%>
+<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+<div class="container-fluid my-0">
+  <div class="row">
+<%--    側邊欄--%>
+    <div class="col-lg-2 g-3 my-0">
+    <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
+    </div>
 
-<h4>此頁暫練習採用 Script 的寫法取值:</h4>
-<table id="table-1">
+    <div class="col-lg-10 g-2 transparent rounded my-0">
+<%--      放入自己body裡的代碼--%>
+      <table id="table-1">
 	<tr><td>
 		 <h3>員工資料 - listOneFaq.jsp</h3>
 		 <h4><a href="select_page.jsp"><img src="images/back1.gif" width="100" height="32" border="0">回首頁</a></h4>
@@ -71,6 +78,10 @@
 		<td>${faqVO.faqAns}</td>
 	</tr>
 </table>
+
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

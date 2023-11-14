@@ -40,7 +40,6 @@
             <th class="w150"></th>
         </tr>
 
-
         <c:forEach items="${list}" var="cart" varStatus="cartStatus">
             <tr>
                 <td align="center" class="vertical">${cartStatus.count}</td>
@@ -66,9 +65,15 @@
                 </td>
             </tr>
         </c:forEach>
+
         <hr>
     </table>
-    <a href="${pageContext.request.contextPath}/ticketShoppingCart/addCart.jsp?memId=${memId}"
+    <c:if test="${list.isEmpty()}">
+        <div align="center">
+            <h1>未添加票券</h1>
+        </div>
+    </c:if>
+    <a href="${pageContext.request.contextPath}/ticketproduct/list"
        class="btn btn-primary p-1 rounded m-lg-1"> 瀏覽其他票券</a>
     <hr>
 

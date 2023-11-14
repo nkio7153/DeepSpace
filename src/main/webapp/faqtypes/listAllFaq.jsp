@@ -5,20 +5,17 @@
 <%@ page import="com.depthspace.faqtypes.model.service.*"%>
 <%@ page import="com.depthspace.faqtypes.model.controller.*"%>
 <%@ page import="com.depthspace.faqtypes.model.model.*"%>
-<%-- 此頁練習採用 EL 的寫法取值 --%>
 
 <%
 FaqTypesService faqSvc = new FaqTypesService();
 List<FaqTypesVO> list = faqSvc.getAll();
 pageContext.setAttribute("list", list);
 %>
-
-
 <html>
 <head>
-<title>FAQTypes</title>
-<jsp:include page="../indexpage/head.jsp" />
-
+    <title>FAQTypes</title>
+<%--  include head.jsp--%>
+  <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
 <style>
  #table-1 {
       display: flex;
@@ -96,15 +93,20 @@ a:hover {
     text-decoration: underline;
 }
 </style>
-
-
 </head>
-<body bgcolor='white'>
-<jsp:include page="../indexpage/header.jsp" />
-<jsp:include page="../indexpage/headpic.jsp" />
+<body>
+<%--include header.jsp--%>
+<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+<div class="container-fluid my-0">
+  <div class="row">
+<%--    側邊欄--%>
+    <div class="col-lg-2 g-3 my-0">
+    <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
+    </div>
 
-
-	<table id="table-1">
+    <div class="col-lg-10 g-2 transparent rounded my-0">
+<%--      放入自己body裡的代碼--%>
+      <table id="table-1">
 		<tr>
 			<td>
 				<h3>FAQTypes - 首頁</h3>
@@ -133,7 +135,7 @@ a:hover {
 
 				<td>
 					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/faqtypes/faq.do1"
+						ACTION="<%=request.getContextPath()%>/faqtypes/faqTypes.do"
 						style="margin-bottom: 0px;">
 						<input type="submit" value="修改"> 
 						<input type="hidden" name="faqNo" value="${faqTypesVO.faqNo}"> 
@@ -142,7 +144,7 @@ a:hover {
 				</td>
 				<td>
 					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/faqtypes/faq.do1"
+						ACTION="<%=request.getContextPath()%>/faqtypes/faqTypes.do"
 						style="margin-bottom: 0px;">
 						<input type="submit" value="刪除"> <input type="hidden"
 							name="faqNo" value="${faqTypesVO.faqNo}"> <input
@@ -154,6 +156,9 @@ a:hover {
 	</table>
 	<%@ include file="page2.file"%>
 
-<jsp:include page="../indexpage/footer.jsp" />
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
