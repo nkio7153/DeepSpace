@@ -29,14 +29,6 @@
             min-height: 60vh;
         }
 
-        /*.bg-wood {*/
-        /*    background-color: #c19a6b;*/
-        /*}*/
-
-        /*.bg-wood2 {*/
-        /*    background-color: #D2B48C;*/
-        /*}*/
-
         .parent-div {
             display: flex;
             /* 使用Flexbox布局 */
@@ -130,7 +122,7 @@
         </ul>
     </div>
 </nav>
-<div class="container-fluid my-0">
+<div class="container-fluid mt-1">
     <div class="row">
         <%--    側邊欄--%>
         <div class="col-lg-2 g-3 my-0">
@@ -148,9 +140,9 @@
                         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
                              data-bs-parent="#sidebar-wrapper">
                             <div class="color-4-1 py-2 collapse-inner rounded">
-                                <a class="text-choco collapse-item fs-5 offset-3" href="#">查詢資料</a>
-                                <br>
-                                <a class="text-choco collapse-item fs-5 offset-3" href="#">新增資料</a>
+                                <a class="text-choco collapse-item fs-5 offset-3" href="${pageContext.request.contextPath}/backmem/list">查詢資料</a>
+<%--                                <br>--%>
+<%--                                <a class="text-choco collapse-item fs-5 offset-3" href="#">新增資料</a>--%>
                             </div>
                         </div>
                     </li>
