@@ -8,12 +8,13 @@
 <% //見com.emp.controller.EmpServlet.java第163行存入req的faqVO物件 (此為從資料庫取出的faqVO, 也可以是輸入格式有錯誤時的faqVO物件)
 FaqTypesVO faqTypesVO = (FaqTypesVO) request.getAttribute("faqTypesVO");
 %>
-
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>FaqTypes資料修改 - update_faq_input.jsp</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<title>FaqTypes資料修改 - update_faq_input.jsp</title>
 
+<%--  include head.jsp--%>
+  <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
 <style>
   table#table-1 {
 	background-color: #CCCCFF;
@@ -45,11 +46,20 @@ FaqTypesVO faqTypesVO = (FaqTypesVO) request.getAttribute("faqTypesVO");
     padding: 1px;
   }
 </style>
-
 </head>
-<body bgcolor='white'>
+<body>
+<%--include header.jsp--%>
+<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+<div class="container-fluid my-0">
+  <div class="row">
+<%--    側邊欄--%>
+    <div class="col-lg-2 g-3 my-0">
+    <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
+    </div>
 
-<table id="table-1">
+    <div class="col-lg-10 g-2 transparent rounded my-0">
+<%--      放入自己body裡的代碼--%>
+      <table id="table-1">
 	<tr><td>
 		 <h3>FaqTypes資料修改 - update_faq_input.jsp</h3>
 		 <h4><a href="select_page.jsp"><img src="images/back1.gif" width="100" height="32" border="0">回首頁</a></h4>
@@ -68,7 +78,7 @@ FaqTypesVO faqTypesVO = (FaqTypesVO) request.getAttribute("faqTypesVO");
 	</ul>
 </c:if>
 
-<FORM METHOD="post" ACTION="faq.do1" name="form1">
+<FORM METHOD="post" ACTION="faqTypes.do" name="form1">
 
 <table>
 	<tr>
@@ -99,4 +109,9 @@ FaqTypesVO faqTypesVO = (FaqTypesVO) request.getAttribute("faqTypesVO");
   }
 </style>
 
+    </div>
+  </div>
+</div>
+
+</body>
 </html>
