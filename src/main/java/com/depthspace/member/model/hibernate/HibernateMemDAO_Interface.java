@@ -2,6 +2,7 @@ package com.depthspace.member.model.hibernate;
 
 import java.util.List;
 
+import com.depthspace.attractions.model.AttractionsVO;
 import com.depthspace.member.model.MemVO;
 
 public interface HibernateMemDAO_Interface {
@@ -29,4 +30,8 @@ public interface HibernateMemDAO_Interface {
 	MemVO findOneMem(String memAcc);
 
 	MemVO getOneMem(Integer memId);
+	
+	int updateStatus(Integer memId , byte status);
+
+	List<MemVO> searchMembers(String memName);
 }
