@@ -38,11 +38,11 @@
 <div class="container-fluid my-0">
   <div class="row">
     <%--    側邊欄--%>
-    <div class="col-lg-2 g-3 my-0">
+    <div class="col-lg-2 g-3 mt-1">
       <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
     </div>
 
-    <div class="col-lg-10 g-2 transparent rounded my-0">
+    <div class="col-lg-10 g-2 transparent rounded mt-1">
       <%--      放入自己body裡的代碼--%>
         <div class="container mt-4 g-3 pb-2">
           <h3 class="text-center">促銷管理</h3>
@@ -186,8 +186,7 @@
     window.location.href="${pageContext.request.contextPath}/pro/doEdit?proId="+proId;
   }
 </script>
-<!-- 添加 Bootstrap JavaScript 链接（必须在body结束前） -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+
 
 </body>
 <!-- 模態對話框 -->
@@ -222,7 +221,6 @@
             </ul>
           </div>
           <div class="card-body">
-            <%--            <a href="'${pageContext.request.contextPath}/pro/edit?proId='+proId" class="card-link">編輯</a>--%>
             <button class="btn btn-link card-link" onclick="promotionEdit()" >編輯</button>
           </div>
         </div>

@@ -10,15 +10,35 @@
   <jsp:include page="../indexpage/head.jsp" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .button2 {
+      padding: 6px 12px;
+      margin: 5px;
+      cursor: pointer;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    .button2:hover{
+      color:black;
+    }
+    .bg1{
+      background-color: #007bff;
+    }
+    .bg2{
+      background-color: #ff6b6b;
+    }
+  </style>
 </head>
 <body>
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp"/>
-
+<h3 class="text-primary bg-light p-3 border border-primary text-center shadow">會員訂單列表</h3>
 <div class="container mt-4">
-  <button type="button" class="btn btn-secondary mb-3" onclick="index()">返回</button>
-  <h3>歡迎會員${memId}</h3>
-  <h1 class="text-center my-4">會員訂單列表</h1>
+<%--  <button type="button" class="btn btn-secondary mb-3" onclick="index()">返回</button>--%>
+<%--  <h3>歡迎會員${memId}</h3>--%>
+<%--  <h3 class="text-primary bg-light p-3 border border-primary text-center shadow">會員訂單列表</h3>--%>
 
 
 
@@ -41,15 +61,15 @@
       <tr>
         <td class="text-center">${orderStatus.count}</td>
         <td class="text-center">${order.orderId}</td>
-        <td class="text-center">${order.orderDate}</td>
+        <td class="text-center" name="orderDate">${order.orderDate}</td>
         <td class="text-center">${order.totalAmount}</td>
         <td class="text-center">${order.amountPaid - order.totalAmount}</td>
         <td class="text-center">${order.amountPaid}</td>
         <td class="text-center">${order.pointsFeedback}</td>
         <td class="text-center" name="paymentMethod">${order.paymentMethod}</td>
         <td class="text-center">
-          <a href="${pageContext.request.contextPath}/tod/frontList?orderId=${order.orderId}&totalAmount=${order.totalAmount}&amountPaid=${order.amountPaid}" class="btn btn-primary">訂單明細</a>
-          <button class="btn btn-danger">取消訂單</button>
+          <a href="${pageContext.request.contextPath}/tod/frontList?orderId=${order.orderId}&totalAmount=${order.totalAmount}&amountPaid=${order.amountPaid}" class="bg1 button2">訂單明細</a>
+          <a href="#" class="button2 bg2" >取消訂單</a>
         </td>
       </tr>
     </c:forEach>
@@ -110,6 +130,24 @@
 </div>
 
 <script type="text/javascript">
+  $(".bg2").on("click",function(){
+
+    let orderDateStr=$(this).closest("tr").find("[name='orderDate']").text();//2023-10-24 16:23:26.0
+    let orderDate=new Date(orderDateStr.replace(' ','T'));
+    console.log("orderDateStr"+orderDateStr);
+    console.log(orderDate);
+    let expiryDate=new Date(orderDate);
+   expiryDate.setDate(expiryDate.getDate() + 7);
+    console.log("expiryDate="+expiryDate);
+    let currentDate = new Date();//當前時間
+    console.log("currentDate="+currentDate);
+    if(currentDate > expiryDate){
+      window.alert("退款期限已超過7天");
+    }else {
+      $(this).text("審核中");
+      $(this).off("click");
+    }
+  })
   function index(){
     document.location.href= "${pageContext.request.contextPath}/to/index";
   }

@@ -6,12 +6,17 @@
 
 <html>
 <head>
-    <title>所有購物車資料 memAllCart.jsp</title>
+    <title>購物車</title>
     <jsp:include page="../indexpage/head.jsp"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/ticketShoppingCart/css/memAllCart.css">
+<style>
+    .bg-check{
+        background-color: #ece1be;
+    }
+</style>
 </head>
-<body class="bg-light">
+<body>
 <jsp:include page="../indexpage/header.jsp"/>
 <jsp:include page="../indexpage/headpic.jsp"/>
 <h3>歡迎會員${memId}</h3>
@@ -41,7 +46,7 @@
         </tr>
 
         <c:forEach items="${list}" var="cart" varStatus="cartStatus">
-            <tr>
+            <tr id="tr">
                 <td align="center" class="vertical">${cartStatus.count}</td>
                 <td style="width: 300px">
                     <img src="${pageContext.request.contextPath}/tsc/image?serialId=${cart.serialId}" class="jpg"/>
@@ -73,30 +78,47 @@
             <h1>未添加票券</h1>
         </div>
     </c:if>
-    <a href="${pageContext.request.contextPath}/ticketproduct/list"
-       class="btn btn-primary p-1 rounded m-lg-1"> 瀏覽其他票券</a>
+    <div style="display:flex; justify-content: space-between" >
+        <a href="${pageContext.request.contextPath}/ticketproduct/list"
+           class="btn btn-primary p-2 rounded m-lg-2"> 瀏覽其他票券</a>
+        <a href="javascript:void(0)" class="btn btn-danger p-2 m-lg-2 rounded" onclick="delAll(${memId})">清空購物車</a>
+    </div>
     <hr>
 
-    <a href="javascript:void(0)" class="center btn btn-danger p-4 rounded" onclick="delAll(${memId})">清空購物車</a>
     <br>
-
-
-    <div class="fs-3 bg-light p-4 rounded">
-        <span>小計:</span><span class="sub2"></span>
-        <br>
-        <div>
-            <span>點數:</span><input placeholder="請輸入" class="coupen" name="coupen" style="width: 100px"></input>
-            <br>
-            <span style="font-size: 15px">剩餘點數:</span><span style="font-size: 15px" name="exist-coupen">200</span>
+    <div style="display:flex;" class="my-0 rounded bg-check">
+        <div class="fs-5 p-4 rounded" style="margin-left: auto;">
+            <div style="margin-left: -100px;">
+                <div class="pb-1">
+                    <span class="offset-4">小計:</span><span class="sub2 offset-1"></span>
+                </div>
+                <div class="pb-1">
+                    <span class="offset-4">點數:</span><input class="coupen rounded offset-1" name="coupen" style="width: 60px; height:30px"></input>
+                </div>
+                <div class="pb-1 offset-7">
+                    <span style="font-size: 12px">可使用點數:</span><span style="font-size: 12px" name="exist-coupen">${authenticatedMem.memPoint}</span>
+                </div>
+                <div>
+                    <span class="offset-3">總金額:</span><span class="total offset-1"></span>
+                </div>
+            </div>
+            <%--    <span placehoder="請輸入欲使用點數" class="coupen">0</span>--%>
+            <div style="margin-left:auto;">
+<%--                <span>總金額:</span><span class="total text-black-50"></span>--%>
+                <%--  <input type="button" class="btn btn-primary btn-lg offset-1" onclick="location.href='${pageContext.request.contextPath}/tsc/checkout?memId=${memId}'" value="前往結帳">--%>
+                <input type="submit" id="submit" class="btn btn-primary btn-lg" value="前往結帳">
+            </div>
         </div>
-        <%--    <span placehoder="請輸入欲使用點數" class="coupen">0</span>--%>
     </div>
 
-    <div class="last fs-2 bg-light p-4 rounded">
-        <span>總金額:</span><span class="total text-black-50"></span>
-        <%--  <input type="button" class="btn btn-primary btn-lg offset-1" onclick="location.href='${pageContext.request.contextPath}/tsc/checkout?memId=${memId}'" value="前往結帳">--%>
-        <input type="submit" class="btn btn-primary btn-lg" value="前往結帳">
-    </div>
+
+
+<%--    <div class="last fs-2 bg-light p-4 rounded">--%>
+<%--        <span>總金額:</span><span class="total text-black-50"></span>--%>
+<%--        &lt;%&ndash;  <input type="button" class="btn btn-primary btn-lg offset-1" onclick="location.href='${pageContext.request.contextPath}/tsc/checkout?memId=${memId}'" value="前往結帳">&ndash;%&gt;--%>
+<%--        <input type="submit" class="btn btn-primary btn-lg" value="前往結帳">--%>
+<%--    </div>--%>
+
 
 </form>
 
@@ -105,6 +127,18 @@
 <%--</div>--%>
 <script type="text/javascript">
 
+    //結帳檢查
+    $("#submit").on("click", function(e) {
+        if(parseInt($(".total").text())==0){
+            e.preventDefault();
+            alert("未添加票券，無法結帳");
+        }
+        var inputValue = $('input[name="coupen"]').val(); // 假設 'inputName' 是您要檢查的輸入欄位的名稱
+        if (parseInt(inputValue) > parseInt($("[name='exist-coupen']").text())) {
+            e.preventDefault();
+            alert("剩餘點數不足");
+        }
+    });
 
     //回到上一頁
     function index(memId) {
@@ -116,9 +150,18 @@
     function delAll(memId) {
         var ok = window.confirm("確定要刪除嗎");
         if (ok) {
-            document.location.href = "${pageContext.request.contextPath}/tsc/deleteAll?memId=" + memId
+            $("#tr").remove();
+            let url="${pageContext.request.contextPath}/tsc/deleteAll?memId=" + memId;
+            fetch(url).then(function(response){
+                return response.text();
+            })
+                .then(function(data){
+                    console.log("刪除成功")
+                })
+                .catch(function(error){
+                    console.log(error);
+                })
         }
-
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -286,7 +329,7 @@
             }
         })
         //輸入點數後更新
-        $(".coupen").on("blur",function(){
+        $(".coupen").on("blur",function(e){
             if($(this).val() > parseInt($("[name='exist-coupen']").text())){
                 alert("剩餘點數不足");
             }else{

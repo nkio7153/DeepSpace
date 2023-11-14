@@ -8,7 +8,7 @@
 <head>
     <title>票券訂單明細</title>
     <jsp:include page="../indexpage/head.jsp"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+<%--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">--%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
     <style>
         .hidden {
@@ -38,11 +38,11 @@
 <body>
 <jsp:include page="../indexpage/header.jsp"/>
 <jsp:include page="../indexpage/headpic.jsp"/>
-
+<h3 class="text-primary bg-light p-3 border border-primary text-center shadow">訂單明細列表</h3>
 <div class="container mt-4">
     <button type="button" class="btn btn-secondary mb-3" onclick="history.back()">返回</button>
-    <h1 class="text-center my-4">訂單明細列表</h1>
-    <table class="table table-bordered">
+<%--    <h1 class="text-center my-4">訂單明細列表</h1>--%>
+    <table class="table table-bordered table-hover table-striped">
         <thead>
         <tr>
             <th class="text-center">序號</th>

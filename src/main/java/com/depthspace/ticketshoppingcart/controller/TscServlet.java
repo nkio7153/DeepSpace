@@ -224,8 +224,6 @@ public class TscServlet extends HttpServlet {
         TscServiceImpl tscSv = new TscServiceImpl();
         if (memId != null) {
             carSv.deleteAllCart(memId);
-            //資料庫版
-//            tscSv.deleteTicketShoppingCart(memId);
             setJsonResponse(resp, "購物車清空成功");
         }
 //        List<TicketShoppingCartVO> list = tscSv.getAllbyMemId(memId);
