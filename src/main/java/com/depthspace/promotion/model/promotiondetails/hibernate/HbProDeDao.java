@@ -5,6 +5,7 @@ package com.depthspace.promotion.model.promotiondetails.hibernate;
 
 
 import com.depthspace.promotion.model.promotion.PromotionTicketView;
+import com.depthspace.promotion.model.promotion.PromotionVO;
 import com.depthspace.promotion.model.promotiondetails.PromotionDetailsVO;
 
 import java.util.List;
@@ -28,7 +29,8 @@ public interface HbProDeDao {
 
     long getTotal();
 
-    public int deleteByProId(Integer proId);
+    int deleteByProId(Integer proId);
+    List<Integer> getOnSale(List<Integer> ticketIds);
 
 
 }

@@ -25,7 +25,6 @@ public class AttractionsService {
 	}
 	//預設為台北市，尋找台北市各個景點
 	public List<AttractionsVO> findOneAttractions() {
-		
 		List<AttractionsVO> list = dao.findOneAttractions();
 		return list;
 		
@@ -35,7 +34,10 @@ public class AttractionsService {
 		
 		List<AttractionsVO> list = dao.findOtherAttractions(cityName);
 		return list;
-		
+	}
+	//依據景點id取的該景點物件
+	public AttractionsVO getAttractionsById(Integer attractionsId) {
+		return dao.getAttractionsById(attractionsId);
 	}
 	
 }

@@ -27,9 +27,9 @@ public class MemberService {
 		dao.update(memvo);
 		return memvo;
 	}
-	// 取得會員資訊(?)
-	public MemVO addMemberInfo(String memAcc) {
-		return dao.findAcc(memAcc);
+	// 取得會員資訊
+	public MemVO getMemberInfo(String memAcc) {
+		return dao.getMemberInfo(memAcc);
 	}
 	//拿到所有會員資料
 	public List<MemVO> getAll(){

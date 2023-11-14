@@ -123,11 +123,14 @@ public class TourVO implements Serializable{
 		this.endDate = endDate;
 	}
 
-
-
 	@Override
 	public String toString() {
 		return "TourVO [tourId=" + tourId + ", memId=" + memId + ", tourName=" + tourName + ", tourTypeId=" + tourTypeId
-				+ ", allDays=" + allDays + ", tourDescription=" + tourDescription + "]";
+				+ ", allDays=" + allDays + ", tourDescription=" + tourDescription + ", startDate=" + startDate
+				+ ", endDate=" + endDate + "]";
 	}
+
+
+
+	
 }

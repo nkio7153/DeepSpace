@@ -45,18 +45,18 @@
 <body>
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp" />
-    <h1>行程名稱~</h1>
+    <h1>${list[0].tourName}</h1>
     
     <div class="info-container">
     <h2>基本資訊</h2>
     <table style="width: 80%; margin: 0 auto;">
         <tr>
-            <td colspan="2">*日期*</td>
+            <td colspan="2">${list[0].startDate}</td>
 
         </tr>
         <tr style="text-align: center;">
             <td>總天數：</td>
-            <td>${tour.allDays} 天</td>
+            <td>${tour[0].allDays} 天</td>
         </tr>
         
     </table>
@@ -65,7 +65,7 @@
     <table>
     <div class="description-container">
     <h2>行程敘述</h2>
-    <p>${tour.tourDescription}</p>
+    <p>${list[0].tourDescription}</p>
     </div>
     </table>
     
@@ -74,23 +74,24 @@
     	
     	<label for="dropdown">天數查詢：</label>
 		<select id="dropdown" name="selectedOption">
-		    <c:forEach var="option" items="${yourOptionList}">
-		        <option value="${option.value}">第${option.label}天</option>
+		    <c:forEach var="day" items="${list}">
+		        <option value="${day.tourDays}">第${day.tourDays}天</option>
 		    </c:forEach>
 		</select>
     	
         <tr>
             <th>出發時間</th>
-            <th>結束時間</th>
-            <th>地點</th>
-            <th>地址</th>
+<!--             <th>結束時間</th> -->
+            <th>景點</th>
+<!--             <th>地址</th> -->
         </tr>
-        <c:forEach var="dayDetail" items="${tour.daysDetails}">
+        
+        <c:forEach var="dayDetail" items="${list}">
             <tr>
-                <td>${dayDetail.tourDays}</td>
-                <td>${dayDetail.attractions.attractionsName}</td>
                 <td>${dayDetail.start}</td>
-                <td>${dayDetail.end}</td>
+<%--                 <td>${dayDetail.}</td> --%>
+                <td>${dayDetail.attractionsName}</td>
+<%--                 <td>${dayDetail.address}</td> --%>
             </tr>
         </c:forEach>
     </table>

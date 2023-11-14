@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.hibernate.Session;
 
@@ -64,9 +65,6 @@ public class TicketCollectionServlet extends HttpServlet {
 		case "/toggleFavorite": // 切換收藏狀態
 			toggleFavorite(req, res);
 			break;
-		case "/find": // 篩選
-			doFind(req, res);
-			break;
 		case "/del": // 移除
 			doDel(req, res);
 			break;
@@ -90,11 +88,10 @@ public class TicketCollectionServlet extends HttpServlet {
 	/*************** 收藏列表 *****************/
 	private void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
-		// 從 session 中取得會員 ID，假設會員已經登入並存於 session
-//	    Integer memId = (Integer) req.getSession().getAttribute("memId"); 
-		Integer memId = 2; // ****測試寫死****
-
-		// 取得會員收藏
+		HttpSession session = req.getSession(false);
+	    Integer memId = (Integer) session.getAttribute("memId");
+	    
+	    // 取得會員收藏
 		List<TicketCollectionVO> ticketList = ticketCollectionService.getOne(memId);
 		req.setAttribute("resultSet", ticketList);
 		// 存放於TicketVO
@@ -142,14 +139,14 @@ public class TicketCollectionServlet extends HttpServlet {
 
 	/*************** 加入 *****************/
 	private void toggleFavorite(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		// Integer memId = (Integer) req.getSession().getAttribute("memId");
-		Integer memId = 2; // ****測試寫死****
+		HttpSession session = req.getSession(false);
+	    Integer memId = (Integer) session.getAttribute("memId");
 
-		// 從前端請求中取得票券 ID
+	    memId = (Integer)session.getAttribute("memId");
+		System.out.println(memId);
+		
 		String ticketIdStr = req.getParameter("ticketId");
 		Integer ticketId = Integer.parseInt(ticketIdStr);
-
-		if (memId != null) {
 
 			TicketCollectionVO ticketCollection = ticketCollectionService.getOne(memId, ticketId);
 			boolean isFavorite;
@@ -174,17 +171,16 @@ public class TicketCollectionServlet extends HttpServlet {
 			PrintWriter out = res.getWriter();
 			out.print("{ \"isFavorite\": " + isFavorite + " }");
 			out.flush();
-		} else {
-			// memId 未提供，返回錯誤狀態碼(應返回登入頁面)
-			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
-		}
 	}
 
 	/*************** 刪除一個 *****************/
 	protected void doDel(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		// Integer memId = (Integer) req.getSession().getAttribute("memId");
-		Integer memId = 2; // ****測試寫死****
-
+		HttpSession session = req.getSession(false);
+	    Integer memId = (Integer) session.getAttribute("memId");
+	    
+	    memId = (Integer)session.getAttribute("memId");
+		System.out.println(memId);
+		
 		String ticketIdStr = req.getParameter("ticketId");
 		Integer ticketId = Integer.parseInt(ticketIdStr);
 
@@ -208,36 +204,4 @@ public class TicketCollectionServlet extends HttpServlet {
 		out.close();
 	}
 
-	/************ 搜尋 ************/
-	private void doFind(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-//		res.setContentType("application/json");
-//		res.setCharacterEncoding("UTF-8");
-//		PrintWriter out = res.getWriter();
-//		JSONObject responseJson = new JSONObject();
-//		
-//		// Integer memId = (Integer) req.getSession().getAttribute("memId");
-//		Integer memId = 2; // ****測試寫死****
-//		
-//	    List<TicketCollectionVO> ticket = ticketCollectionService.getOne(memId);
-//
-//	    if (ticket == null || ticket.isEmpty()) {
-//	        responseJson.put("error", "沒有找到票券資訊");
-//	    } else {
-//	        // 把查詢結果轉換為JSON陣列
-//	        JSONArray ticketsJsonArray = new JSONArray();
-//	        for (TicketCollectionVO tickets : ticket) {
-//	            JSONObject ticketJson = new JSONObject();
-//	            ticketJson.put("ticketId", ticket.getTicketId()); // 假設TicketVO有getTicketId方法
-//	            ticketJson.put("ticketName", ticket.getTicketName()); // 假設TicketVO有getTicketName方法
-//	            // ...其他票券資訊
-//	            ticketsJsonArray.put(ticketJson);
-//	        }
-//	        responseJson.put("tickets", ticketsJsonArray);
-//	    }
-//
-//	    // 將結果打印到前端
-//	    out.print(responseJson.toString());
-//	    out.flush();
-//	    out.close();
-	}
 }

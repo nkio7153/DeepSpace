@@ -60,4 +60,23 @@ public class ForumArticlesDAOImpl implements ForumArticlesDAO {
 		List<ForumArticlesVO> dataList= getSession().createQuery("FROM ForumArticlesVO", ForumArticlesVO.class).getResultList();
 		return  dataList ;
 	}
+
+	@Override
+	public List<ForumArticlesVO> getByMemId(Integer memId) {
+		return  getSession().createQuery("FROM ForumArticlesVO WHERE memId= :memId", ForumArticlesVO.class)
+				.setParameter("memId", memId)
+                .list();
+	}
+
+	@Override
+	public ForumArticlesVO getByArticleId(Integer articleId) {
+		return getSession().get(ForumArticlesVO.class, articleId);
+	}
+
+	@Override
+	public List<ForumArticlesVO> getByArtiTypeId(Integer artiTypeId) {
+		return  getSession().createQuery("FROM ForumArticlesVO WHERE artiTypeId= :artiTypeId", ForumArticlesVO.class)
+				.setParameter("artiTypeId", artiTypeId)
+                .list();
+	}
 }

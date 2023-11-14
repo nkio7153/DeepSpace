@@ -4,6 +4,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import javax.persistence.NoResultException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 public class HbProDaoImpl implements HbProDao {
@@ -50,11 +53,17 @@ public class HbProDaoImpl implements HbProDao {
     public PromotionVO getById(Integer id) {
         return getSession().get(PromotionVO.class, id);
     }
-    //取得所有資料
+    //取得還沒結束的所有促銷(包含未來促銷)
     @Override
     public List<PromotionVO> getAll() {
-        return getSession().createQuery("from PromotionVO", PromotionVO.class).list();
+        LocalDate date = LocalDate.now();
+        Date currentDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return getSession().createQuery(
+                "from PromotionVO WHERE :currentDate <= endDate  ", PromotionVO.class)
+                .setParameter("currentDate",currentDate)
+                .list();
     }
+
     //取得當前頁面資料
     @Override
     public List<PromotionVO> getAll(int currentPage) {
@@ -65,7 +74,7 @@ public class HbProDaoImpl implements HbProDao {
     public long getTotal() {
         return getSession().createQuery("select count(*) from PromotionVO", Long.class).uniqueResult();
     }
-    //用會員編號取得最新一筆訂單物件(為了拿訂單流水號)
+    //用會員編號取得最新一筆促銷物件(為了拿促銷流水號)
     @Override
     public PromotionVO getLatestOrder() {
         try {
@@ -77,4 +86,7 @@ public class HbProDaoImpl implements HbProDao {
             return null;
         }
     }
+
+
+
 }

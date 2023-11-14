@@ -3,8 +3,7 @@ package com.depthspace.column.service;
 import java.util.List;
 import java.util.Map;
 
-import com.depthspace.admin.model.model.AdminVO;
-import com.depthspace.column.dao.ColumnArticlesDAO;
+import com.depthspace.admin.model.AdminVO;
 import com.depthspace.column.model.ColumnArticlesVO;
 import com.depthspace.column.model.ColumnTypesVO;
 

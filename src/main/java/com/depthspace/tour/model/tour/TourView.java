@@ -1,6 +1,7 @@
 package com.depthspace.tour.model.tour;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -14,13 +15,13 @@ import com.depthspace.promotion.model.promotion.PromotionTicketView.CompositeDet
 
 @Entity
 @Immutable
-@Subselect("SELECT TOUR_ID, MEM_ID, TOUR_NAME, ALL_DAYS, TOUR_DESCRIPTION, TOUR_DAYS, START, END, ATTRACTIONS_NAME, ADDRESS FROM TourView")
-@Table(name ="TourView")
+//@Subselect("SELECT TOUR_ID, MEM_ID, TOUR_NAME, ALL_DAYS, TOUR_DESCRIPTION, TOUR_DAYS, START, END, ATTRACTIONS_NAME, ADDRESS FROM TourView")
+@Table(name ="TourView3")
 @IdClass(TourView.CompositeDetail.class)
 public class TourView {
 	@Id
 	@Column(name = "TOUR_ID")
-	private String tourId;
+	private Integer tourId;
 	
 	@Id
 	@Column(name="MEM_ID")
@@ -33,17 +34,28 @@ public class TourView {
 	private Integer allDays;
 	
 	@Column(name="TOUR_DESCRIPTION")
-	private String tourDescription;
+	private String tourDescription;	
+	
+	@Column(name="START_DATE")
+	private Date startDate;
+	
+	@Column(name="END_DATE")
+	private Date endDate;
+	
+	@Id
+	@Column(name="TOUR_DAYS_ID")
+	private Integer tourDaysId;
 	
 	@Column(name="TOUR_DAYS")
 	private Integer tourDays;
 	
+	@Id
+	@Column(name="ATTRACTIONS_ID")
+	private Integer attractionsId;
+	
 	@Column(name = "START")
 	private Timestamp start;
 
-	@Column(name = "END")
-	private Timestamp end;
-	
 	@Column(name="ATTRACTIONS_NAME")
 	private String attractionsName;
 	
@@ -52,136 +64,299 @@ public class TourView {
 	
 	public TourView(){}
 
-	public TourView(String tourName, Integer allDays, String tourDescription, Integer tourDays, Timestamp start,
-			Timestamp end, String attractionsName, String address) {
+	
+	
+	public TourView(Integer tourId, Integer memId, String tourName, Integer allDays, String tourDescription,
+			Date startDate, Date endDate, Integer tourDaysId, Integer tourDays, Integer attractionsId, Timestamp start,
+			String attractionsName, String address) {
 		super();
+		this.tourId = tourId;
+		this.memId = memId;
 		this.tourName = tourName;
 		this.allDays = allDays;
 		this.tourDescription = tourDescription;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.tourDaysId = tourDaysId;
 		this.tourDays = tourDays;
+		this.attractionsId = attractionsId;
 		this.start = start;
-		this.end = end;
 		this.attractionsName = attractionsName;
 		this.address = address;
 	}
+
+
+
+	
+
+//	public CompositeDetail getCompositeKey() {
+//		return new CompositeDetail(tourId,memId);
+//	}
+//	
+//	public void setCompositeKey(CompositeDetail key) {
+//		this.tourId = key.getTourId();
+//		this.memId = key.getMemId();
+//	}
+	
+	public Integer getTourId() {
+		return tourId;
+	}
+
+
+
+	public void setTourId(Integer tourId) {
+		this.tourId = tourId;
+	}
+
+
+
+	public Integer getMemId() {
+		return memId;
+	}
+
+
+
+	public void setMemId(Integer memId) {
+		this.memId = memId;
+	}
+
+
 
 	public String getTourName() {
 		return tourName;
 	}
 
+
+
 	public void setTourName(String tourName) {
 		this.tourName = tourName;
 	}
+
+
 
 	public Integer getAllDays() {
 		return allDays;
 	}
 
+
+
 	public void setAllDays(Integer allDays) {
 		this.allDays = allDays;
 	}
+
+
 
 	public String getTourDescription() {
 		return tourDescription;
 	}
 
+
+
 	public void setTourDescription(String tourDescription) {
 		this.tourDescription = tourDescription;
 	}
+
+
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+
+
+	public Integer getTourDaysId() {
+		return tourDaysId;
+	}
+
+
+
+	public void setTourDaysId(Integer tourDaysId) {
+		this.tourDaysId = tourDaysId;
+	}
+
+
 
 	public Integer getTourDays() {
 		return tourDays;
 	}
 
+
+
 	public void setTourDays(Integer tourDays) {
 		this.tourDays = tourDays;
 	}
+
+
+
+	public Integer getAttractionsId() {
+		return attractionsId;
+	}
+
+
+
+	public void setAttractionsId(Integer attractionsId) {
+		this.attractionsId = attractionsId;
+	}
+
+
 
 	public Timestamp getStart() {
 		return start;
 	}
 
+
+
 	public void setStart(Timestamp start) {
 		this.start = start;
 	}
 
-	public Timestamp getEnd() {
-		return end;
-	}
 
-	public void setEnd(Timestamp end) {
-		this.end = end;
-	}
 
 	public String getAttractionsName() {
 		return attractionsName;
 	}
 
+
+
 	public void setAttractionsName(String attractionsName) {
 		this.attractionsName = attractionsName;
 	}
+
+
 
 	public String getAddress() {
 		return address;
 	}
 
+
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
 
+
+
 	@Override
 	public String toString() {
-		return "TourView [tourName=" + tourName + ", allDays=" + allDays + ", tourDescription=" + tourDescription
-				+ ", tourDays=" + tourDays + ", start=" + start + ", end=" + end + ", attractionsName="
-				+ attractionsName + ", address=" + address + "]";
+		return "TourView [tourId=" + tourId + ", memId=" + memId + ", tourName=" + tourName + ", allDays=" + allDays
+				+ ", tourDescription=" + tourDescription + ", startDate=" + startDate + ", endDate=" + endDate
+				+ ", tourDaysId=" + tourDaysId + ", tourDays=" + tourDays + ", attractionsId=" + attractionsId
+				+ ", start=" + start + ", attractionsName=" + attractionsName + ", address=" + address + "]";
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(address, allDays, attractionsId, attractionsName, endDate, memId, start, startDate,
+				tourDays, tourDaysId, tourDescription, tourId, tourName);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        TourView that = (TourView) obj;
-        
-		return Objects.equals(tourName, that.tourName) && Objects.equals(allDays, that.allDays) &&
-		           Objects.equals(tourDescription, that.tourDescription) &&
-		           Objects.equals(tourDays, that.tourDays) &&
-		           Objects.equals(start, that.start) &&
-		           Objects.equals(end, that.end) &&
-		           Objects.equals(attractionsName, that.attractionsName) &&
-		           Objects.equals(address, that.address);
-	};
-	
-	
-	@Override
-	public int hashCode() {
-	    return Objects.hash(tourName, allDays, tourDescription, tourDays, start, end, attractionsName, address);
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TourView other = (TourView) obj;
+		return Objects.equals(address, other.address) && Objects.equals(allDays, other.allDays)
+				&& Objects.equals(attractionsId, other.attractionsId)
+				&& Objects.equals(attractionsName, other.attractionsName) && Objects.equals(endDate, other.endDate)
+				&& Objects.equals(memId, other.memId) && Objects.equals(start, other.start)
+				&& Objects.equals(startDate, other.startDate) && Objects.equals(tourDays, other.tourDays)
+				&& Objects.equals(tourDaysId, other.tourDaysId)
+				&& Objects.equals(tourDescription, other.tourDescription) && Objects.equals(tourId, other.tourId)
+				&& Objects.equals(tourName, other.tourName);
 	}
-	
+
 	public static class CompositeDetail implements Serializable {
-		private String tourId;
+		private static final long serialVersionUID = 1L;
+		private Integer tourId;
 		private Integer memId;
+		private Integer tourDaysId;
+		private Integer attractionsId;
 		
 		public CompositeDetail() {
 	        }
 
-		public CompositeDetail(String tourId, Integer memId) {
+		public CompositeDetail(Integer tourId, Integer memId , Integer tourDaysId , Integer attractionsId) {
 			super();
 			this.tourId = tourId;
 			this.memId = memId;
+			this.tourDaysId = tourDaysId;
+			this.attractionsId = attractionsId;
+		}
+		
+		
+
+		public Integer getTourId() {
+			return tourId;
+		}
+
+		public void setTourId(Integer tourId) {
+			this.tourId = tourId;
+		}
+
+		public Integer getMemId() {
+			return memId;
+		}
+
+		public void setMemId(Integer memId) {
+			this.memId = memId;
+		}
+
+		public Integer getTourDaysId() {
+			return tourDaysId;
+		}
+
+		public void setTourDaysId(Integer tourDaysId) {
+			this.tourDaysId = tourDaysId;
+		}
+
+		public Integer getAttractionsId() {
+			return attractionsId;
+		}
+
+		public void setAttractionsId(Integer attractionsId) {
+			this.attractionsId = attractionsId;
 		}
 
 		@Override
 		public int hashCode() {
-			 return Objects.hash(tourId,memId);
+			return Objects.hash(attractionsId, memId, tourDaysId, tourId);
 		}
 
 		@Override
 		public boolean equals(Object obj) {
-			if (this == obj) return true;
-            if (obj == null || getClass() != obj.getClass()) return false;
-            CompositeDetail that = (CompositeDetail) obj;
-            return Objects.equals(this.tourId,that.tourId) && Objects.equals(this.memId , that.memId);
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			CompositeDetail other = (CompositeDetail) obj;
+			return Objects.equals(attractionsId, other.attractionsId) && Objects.equals(memId, other.memId)
+					&& Objects.equals(tourDaysId, other.tourDaysId) && Objects.equals(tourId, other.tourId);
 		}
+
 		
 		
 		

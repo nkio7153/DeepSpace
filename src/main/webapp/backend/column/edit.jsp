@@ -9,21 +9,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Bootstrap CSS -->
-<link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	rel="stylesheet">
 
 <title>修改專欄文章</title>
 
-<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
-
-
-
-
+<%--  include --%>
+	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
+  
 </head>
 
 <body>
+
+	<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+	<div class="container-fluid my-0">
+	<div class="row">
+	  
+	<div class="col-lg-2 g-3 my-0">
+	<jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
+	</div>
+	
+	<div class="col-lg-10 g-2 transparent rounded my-0">
+	
+<%-- include end--%>
+<div class="table-list">
 	<div class="container mt-5">
 		<div class="container mt-5">
 			<div class="container mt-5">
@@ -92,13 +101,17 @@
 				</form>
 			</div>
 
+		</div>
+<%--  include --%>	
+		</div>
+	</div>		
+</div>
+<%--  include end --%>
 
-
-			<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-			<script
-				src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-			<script
-				src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
 
 	<script>
 	function previewImage(event) {

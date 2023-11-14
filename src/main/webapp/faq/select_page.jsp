@@ -3,8 +3,9 @@
 
 <html>
 <head>
-<title>Faq: Home</title>
-
+    <title>常見問題 首頁</title>
+<%--  include head.jsp--%>
+  <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
 <style>
   table#table-1 {
 	width: 450px;
@@ -25,11 +26,20 @@
     display: inline;
   }
 </style>
-
 </head>
-<body bgcolor='white'>
+<body>
+<%--include header.jsp--%>
+<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+<div class="container-fluid my-0">
+  <div class="row">
+<%--    側邊欄--%>
+    <div class="col-lg-2 g-3 my-0">
+    <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
+    </div>
 
-<table id="table-1">
+    <div class="col-lg-10 g-2 transparent rounded my-0">
+<%--      放入自己body裡的代碼--%>
+      <table id="table-1">
    <tr><td><h3>IBM Faq: Home</h3><h4>( MVC )</h4></td></tr>
 </table>
 
@@ -95,6 +105,10 @@
 <ul>
   <li><a href='addFaq.jsp'>新增</a> a new Faq.</li>
 </ul>
+
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
