@@ -371,6 +371,36 @@ public class RestApiServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 				break;
+			case("minus"):
+				try {
+					RestBookingDateVO vo = new RestBookingDateVO();
+					vo.setRestId(Integer.valueOf(req.getParameter("restId")));
+					vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
+					String bookingTime = req.getParameter("bookingTime");
+					Integer nu = Integer.valueOf(req.getParameter("bookingNumber"));
+					switch (bookingTime) {
+						case ("0"): {
+							vo.setMorningNum(Integer.valueOf(bookingTime));
+							break;
+						}
+						case ("1"): {
+							vo.setNoonNum(Integer.valueOf(bookingTime));
+							break;
+						}
+						case ("2"): {
+							vo.setEveningNum(Integer.valueOf(bookingTime));
+							break;
+						}
+					}
+					System.out.println(vo.toString());
+//					restBookingDateService.update(vo);
+					out.print("SUCCESS");
+				} catch (Exception e) {
+					out.print("ERROR");
+					e.printStackTrace();
+				}
+				break;
+				
 		}
 	}
 	

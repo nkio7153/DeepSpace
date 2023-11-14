@@ -56,7 +56,7 @@
 					</select>
 				    </div>
 				  </div>
-				   
+				  
 				   <div class="row mb-3">
 				    <label for="bookingNumber" class="col-sm-2 col-form-label">人數</label>
 				    <div class="col-sm-3">
@@ -101,14 +101,12 @@
 			// 選擇日期
 			$("#bookingDate").change(function(){
 				let params = "restId="+${rest.restId}+"&bookingDate="+$(this).val();
-				console.log(params);
 				// 清空時段
 				$("#bookingTime").empty().append("<option>請選擇</option>");
 				$.ajax({
 			          type: 'get',
 			          url: "/DepthSpace/RestApi/getRestBookingDate?"+params,
 			          success: function(data) {
-			        	  console.log(data);
 			        	  $.each(data, function(index, entry) {
 			        		  if (index === "restOpen" && !entry){
 			        			  alert("本日公休，請重新選擇日期");
@@ -129,7 +127,6 @@
 				    
 			});
 			
-			
 			let memId = "${memId}";
 			$('#bookingform').submit(function(event) {
 			    event.preventDefault();
@@ -138,7 +135,47 @@
 			    	alert("請選擇時段");
 			    	return false;			    	
 			    }
+			    // 判斷訂位當下是否有剩餘可以訂位 若無則跳出提示並中斷
+			    let restId = $('#bookingform input[name="restId"]').val();
+				let bookingDate = $('#bookingform input[name="bookingDate"]').val();
+				let bookingTime = $('#bookingTime').val();
+				let params = "restId=" + restId + "&bookingDate=" + bookingDate;
+				$.ajax({
+				    type: 'get',
+				    url: "/DepthSpace/RestApi/getRestBookingDate?" + params,
+				    success: function (data) {
+				        $.each(data, function (index, entry) {
+				        	// 取訂位時段 對比同時段訂位數已為0則提示無法訂位
+				        	let morningNum = index===morningNum?
+				            switch (parseInt(bookingTime)) {
+				                case 0:
+				                    if (index === "morningNum" && !entry) {
+				                        alert("此時段已無法訂位");
+				                        return false;
+				                    }
+				                    break;
+				                case 1:
+				                    if (index === "noonNum" && !entry) {
+				                        alert("此時段已無法訂位");
+				                        return false;
+				                    }
+				                    break;
+				                case 2:
+				                    if (index === "eveningNum" && !entry) {
+				                        alert("此時段已無法訂位");
+				                        return false;
+				                    }
+				                    break;
+				            }
+				        });
+				    },
+				    error: function (xhr, status, error) {
+				        console.log('查詢失敗');
+				    }
+				});
+
 			    // 新增訂位
+			    // 判斷是否已會員登入
 			    if (typeof parseInt(memId, 10) === 'number' && memId.length !== 0){
 			    	$.ajax({
 				          type: 'post',
@@ -146,6 +183,20 @@
 				          url: $(this).attr('action'),
 				          success: function(data) {
 				              alert('訂位成功');
+				              // call 扣掉訂位時段的人數
+							  $.ajax({
+								  type: 'post',
+								  data: $('#bookingform').serialize(),
+								  url: '/DepthSpace/RestApi/doRestBookingDate?action=minus',
+								  success: function(data){
+									  console.log(data);
+								  },
+								  error: function(data){
+									  console.log(data);
+								  }
+							  })				              
+							  return false;
+				              
 				              
 				              // Mail發送
 				              $.ajax({
