@@ -40,30 +40,22 @@
 				  <input type="hidden" name="restId" value="${rest.restId}">
 				  <input type="hidden" name="memId" value="${memId}">
 				  <input type="hidden" name="restName" value="${rest.restName}">
+				  <input type="hidden" name="restAddress" value="${rest.restAddress}">
 				  <div class="row mb-3">
 				    <label for="bookingDate" class="col-sm-2 col-form-label">選擇日期：</label>
 				    <div class="col">
-				      <input type="date" id="date" name="bookingDate" required>
+				      <input type="date" id="bookingDate" name="bookingDate" required>
 				    </div>
 				  </div>
-				  
-				  <fieldset class="row mb-3">
-				    <legend class="col-form-label col-sm-2 mt-2">時段</legend>
-				    <div class="col">
-						<div class="form-check form-check-inline p-3">
-						  <input class="form-check-input" type="radio" name="bookingTime" id="inlineRadio1" value="0" checked>
-						  <label class="form-check-label" for="bookingTime">早上</label>
-						</div>
-						<div class="form-check form-check-inline">
-						  <input class="form-check-input" type="radio" name="bookingTime" id="inlineRadio2" value="1">
-						  <label class="form-check-label" for="bookingTime">中午</label>
-						</div>
-						<div class="form-check form-check-inline">
-						  <input class="form-check-input" type="radio" name="bookingTime" id="inlineRadio3" value="2" disabled>
-						  <label class="form-check-label" for="bookingTime">晚上</label>
-						</div>
+
+				  <div class="row mb-3">
+				    <label for="bookingTime" class="col-sm-2 col-form-label">時段</label>
+				    <div class="col-sm-3">
+				      <select id="bookingTime" name="bookingTime">
+						<option>請選擇</option>
+					</select>
 				    </div>
-				  </fieldset>
+				  </div>
 				   
 				   <div class="row mb-3">
 				    <label for="bookingNumber" class="col-sm-2 col-form-label">人數</label>
@@ -106,40 +98,77 @@
 					$("#col_info").toggleClass("d-block d-none");
 				}
 			});
+			// 選擇日期
+			$("#bookingDate").change(function(){
+				let params = "restId="+${rest.restId}+"&bookingDate="+$(this).val();
+				console.log(params);
+				// 清空時段
+				$("#bookingTime").empty().append("<option>請選擇</option>");
+				$.ajax({
+			          type: 'get',
+			          url: "/DepthSpace/RestApi/getRestBookingDate?"+params,
+			          success: function(data) {
+			        	  console.log(data);
+			        	  $.each(data, function(index, entry) {
+			        		  if (index === "restOpen" && !entry){
+			        			  alert("本日公休，請重新選擇日期");
+			        			  $("#bookingDate").val("");
+			        		  }
+			                  if (index === "morningNum" && entry){
+			                	  $("#bookingTime").append("<option value='0'>早上</option>");
+			                  }
+			                  if (index === "noonNum" && entry){
+			                	  $("#bookingTime").append("<option value='1'>中午</option>");
+			                  }
+			                  if (index === "eveningNum" && entry){
+			                	  $("#bookingTime").append("<option value='2'>晚上</option>");
+			                  }
+			              });
+			         }
+				});
+				    
+			});
+			
 			
 			let memId = "${memId}";
 			$('#bookingform').submit(function(event) {
 			    event.preventDefault();
+			    // 若沒選擇時段則停止表單發送
+			    if ($("#bookingTime").val() === "請選擇"){
+			    	alert("請選擇時段");
+			    	return false;			    	
+			    }
+			    // 新增訂位
 			    if (typeof parseInt(memId, 10) === 'number' && memId.length !== 0){
 			    	$.ajax({
 				          type: 'post',
 				          data: $('#bookingform').serialize(),
 				          url: $(this).attr('action'),
 				          success: function(data) {
-				              alert('新增成功');
+				              alert('訂位成功');
+				              
+				              // Mail發送
+				              $.ajax({
+						          type: 'post',
+						          data: $('#bookingform').serialize(),
+						          url: "/DepthSpace/RestApi/toMail",
+						          success: function(data) {
+						              console.log(data);
+						          },
+						          error: function(xhr, status, error) {
+						        	  console.log(data);
+						          }
+							});
 				          },
 				          error: function(xhr, status, error) {
-				              alert('系統異常');
+				              alert('訂位失敗');
 				          }
-					});
-				    
-				    $.ajax({
-				          type: 'post',
-				          data: $('#bookingform').serialize(),
-				          url: "/DepthSpace/RestApi/toMail",
-// 				          success: function(data) {
-// 				              console.log('發送成功');
-// 				          },
-// 				          error: function(xhr, status, error) {
-// 				        	  console.log('發送失敗');
-// 				        	  console.log(xhr);
-// 				        	  console.log(status);
-// 				        	  console.log(error);
-// 				          }
 					});
 			    } else {
 			    	console.log(memId);
 					alert("請先登入");
+					// 跳轉至登入頁面
+					window.location.href = "/DepthSpace/member/login.jsp";
 			    }
 			});
 			

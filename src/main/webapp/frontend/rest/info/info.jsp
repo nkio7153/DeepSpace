@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAP_APIKEY}&libraries=places&callback=initMap"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOKKfj_MwehUJhm-t7jPbO1ydNODLgLOM&libraries=places&callback=initMap"></script>
 	<style>
 /* 		.carousel-inner { */
 /* 		  height: 500px; */

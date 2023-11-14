@@ -375,12 +375,14 @@ public class RestApiServlet extends HttpServlet {
 	}
 	
 	private void toMail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+		PrintWriter out = resp.getWriter();
 		HttpSession session = req.getSession();
 		MemVO mem = (MemVO) session.getAttribute("authenticatedMem");
 //		Integer memId = (Integer) session.getAttribute("memId");
 		Integer memId = mem.getMemId();
+		String memName = mem.getMemName();
 		String restName = req.getParameter("restName");
+		String restAddress = req.getParameter("restAddress");
 		String bookingTime = req.getParameter("bookingTime");
 		String bookingNumber = req.getParameter("bookingNumber");
 		String bookingDate = req.getParameter("bookingDate");
@@ -405,10 +407,11 @@ public class RestApiServlet extends HttpServlet {
 		// 將要發送的內容用HTML的格式
 		StringBuffer msg = new StringBuffer();
 		msg.append("<p>訂位成功通知");
-		msg.append("<p>餐廳名稱： "+restName+"<br>");
-		msg.append("<p>會員名稱； "+memId+"<br>");
-		msg.append("<p>預約日期： "+bookingDate+"<br>");
-		msg.append("<p>預約時段： "+bookingTime+"<br>");
+		msg.append("<p>餐廳名稱： "+restName);
+		msg.append("<p>餐廳地址： "+restAddress);
+		msg.append("<p>會員名稱； "+memName);
+		msg.append("<p>預約日期： "+bookingDate);
+		msg.append("<p>預約時段： "+bookingTime);
 		msg.append("<p>預約人數： "+bookingNumber+"人<br>");
 		// QRCode https://developers.google.com/chart/infographics/docs/qr_codes?hl=zh-tw
 		// url http "://" localhost ":" 8080 /DepthSpace
@@ -422,11 +425,17 @@ public class RestApiServlet extends HttpServlet {
 			multipart.addBodyPart(bodyPart);
 		} catch (MessagingException e) {
 			e.printStackTrace();
-		}		
+		}
+		
 		// 使用大吳老師的範例發發送郵件
 		MailService mailService = new MailService();
-//		mailService.sendMail(to, subject, messageText);
-		mailService.sendMail(to, subject, multipart);
+		try {
+//			mailService.sendMail(to, subject, messageText);
+			mailService.sendMail(to, subject, multipart);
+			out.print(gson.toJson("發送成功"));
+		} catch (Exception e) {
+			out.print(gson.toJson("發送失敗"));
+		}
 	}
 	
 	

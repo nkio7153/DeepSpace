@@ -114,7 +114,6 @@
 			$(".collection-icon").click(function() {
 				let restId = $(this).closest("div.card-body").find(".restId").text();
 				let memId = "${memId}"; // 若沒登入會是空字串避免沒抓到值報錯  
-				console.log(typeof memId);
 				// 收藏功能登入判斷 字串轉成整數
 				if (typeof parseInt(memId, 10) === 'number' && memId.length !== 0){
 					if ($(this).attr("class") === "collection-icon") {
@@ -135,7 +134,8 @@
 			
 			function doCollection(action, memId, restId) {
 				let origin = window.location.origin; // http://hostname:port
-				let url = origin+"/DepthSpace/RestApi/doRestCollection?action="+action+"&memId="+memId+"&restId="+restId;
+// 				let url = origin+"/DepthSpace/RestApi/doRestCollection?action="+action+"&memId="+memId+"&restId="+restId;
+				let url = "/DepthSpace/RestApi/doRestCollection?action="+action+"&memId="+memId+"&restId="+restId;
 				console.log(url);
 				fetch(url, {
 					method: "POST",

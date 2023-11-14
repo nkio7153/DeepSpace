@@ -1,7 +1,5 @@
 package com.depthspace.restaurant.controller;
 
-import static com.depthspace.utils.Config.GOOGLE_MAP_APIKEY;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -131,8 +129,6 @@ public class RestController extends HttpServlet {
 		if (memId != null) {
 			req.setAttribute("memId", memId);
 		}
-		// 從後端帶入APIKEY
-		req.setAttribute("GOOGLE_MAP_APIKEY", GOOGLE_MAP_APIKEY);
 		return "/frontend/rest/rest.jsp";
 
 	}
