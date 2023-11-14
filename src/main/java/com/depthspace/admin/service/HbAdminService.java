@@ -23,6 +23,11 @@ public class HbAdminService {
 		dao.update(adminVO);
 	}
 
+	public void updateStatus(Integer adminId , byte status) {
+		dao.updateStatus(adminId,status);
+		
+	}
+	
 	public void delete(Integer adminId) {
 		dao.delete(adminId);
 	}
@@ -41,5 +46,9 @@ public class HbAdminService {
 	}
 	public AdminVO getOneAdmin(Integer adminId) {
 		return dao.getOneAdmin(adminId);
+	}
+	
+	public List<AdminVO> searchAdmins(String adminName) {
+		return dao.searchAdmins(adminName);
 	}
 }

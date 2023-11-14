@@ -26,4 +26,8 @@ public interface HibernateAdminDAO_Interface {
 	AdminVO findOneAdmin(String adminAcc);
 	
 	AdminVO getOneAdmin(Integer adminId);
+	
+	int updateStatus(Integer adminId , byte status);
+
+	List<AdminVO> searchAdmins(String adminName);
 }

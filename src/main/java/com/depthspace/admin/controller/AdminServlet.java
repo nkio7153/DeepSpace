@@ -65,30 +65,45 @@ public class AdminServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 		String pathInfo = req.getPathInfo();
-		if ("/login".equals(pathInfo)) {
-			doLogin(req, resp);
-		} else if ("/logout".equals(pathInfo)) {
-			doLogout(req, resp);
-		} else if ("/edit".equals(pathInfo)) {
-			doEdit(req, resp);
-//		} else if ("/addMember".equals(pathInfo)) {
-//			doAddMember(req, resp);
-		} else if ("/modify".equals(pathInfo)) {
-			doModify(req, resp);
-		} else if ("/save".equals(pathInfo)) {
-			doSave(req, resp);
-		} else {
-			System.out.println("error");
+		switch (pathInfo) {
+			case "/login"://登入
+				doLogin(req, resp);
+				break;
+			case "/logout"://登出
+				doLogout(req, resp);
+				break;
+			case "/edit"://修改會員資料
+				doEdit(req, resp);
+				break;
+			case "/modify"://儲存修改後的資料
+				doModify(req, resp);
+				break;
+			case "/save"://新增會員
+				doSave(req, resp);
+				break;
 		}
+		
+		
 	}
 	
 	private void doLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		HttpSession session=req.getSession();
-		session.removeAttribute("authenticatedAdmin");
-		session.removeAttribute("adminId");
-		
-		resp.sendRedirect(req.getContextPath()+"/indexpage/index.jsp?state=logout");
-		
+		//移除session
+				if(session.getAttribute("authenticatedAdmin") != null) {
+					session.removeAttribute("authenticatedAdmin");
+				}
+				if(session.getAttribute("adminId") != null) {
+					session.removeAttribute("adminId");
+				}		
+				if(session.getAttribute("mtoPageQty")!=null){
+				    session.removeAttribute("mtoPageQty");
+				}
+				if(session.getAttribute("toAdminPageQty")!=null){
+				    session.removeAttribute("toAdminPageQty");
+				}
+
+				resp.sendRedirect(req.getContextPath()+"/indexpage/index.jsp?state=logout");
+				
 	}
 
 
@@ -159,7 +174,7 @@ public class AdminServlet extends HttpServlet {
 			req.setAttribute("status", "此帳號停權");
 		}
 		
-		req.getRequestDispatcher("/admin/newAdmin.jsp").forward(req, resp);
+		req.getRequestDispatcher("/admin/success.jsp").forward(req, resp);
 	}
 	
 	// ============================================================================================================================================
@@ -291,7 +306,7 @@ public class AdminServlet extends HttpServlet {
 		AdminVO adminvo = null;
 		
 		String loginLocation =req.getParameter("loginLocation");
-		System.out.println("loginLocation="+password);	
+		System.out.println("loginLocation="+loginLocation);	
 		
 		if(allowUser(adminAcc,password)==1) {
 			System.out.println("沒有此帳號");
@@ -299,9 +314,9 @@ public class AdminServlet extends HttpServlet {
 			resp.sendRedirect(URL);
 			return;
 		} else {
-		HttpSession session=req.getSession(false);
+		HttpSession session=req.getSession();
 		
-		AdminVO admin = hms.findByAdminAcc(adminAcc);
+		AdminVO admin = ms.getAdminInfo(adminAcc);
 		System.out.println("admin=" + admin);
 //		String base64Image;
 		if(admin.getAdminAcc().equals(adminAcc) && admin.getAdminPwd().equals(password)) {
@@ -315,11 +330,11 @@ public class AdminServlet extends HttpServlet {
 				System.out.println("servlet="+admin.getAdminId());
 				    
 				    
-			session.setAttribute("admin", admin);//會員物件
+			session.setAttribute("authenticatedAdmin", admin);//會員物件
 			session.setAttribute("adminId", admin.getAdminId());//會員編號
 			
 			Integer adminno = (Integer) session.getAttribute("adminId");// 測試用(取得存在session會員編號)
-		    System.out.println("測試取得放入session的會員編號" + adminno);// 測試用
+//		    System.out.println("測試取得放入session的會員編號" + adminno);// 測試用
 			
 			req.getRequestDispatcher("/admin/success.jsp").forward(req, resp);
 		} else {
