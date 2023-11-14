@@ -56,6 +56,9 @@
 .table-list .breadcrumb{
 	 background-color: transparent;
 }
+.display-4{
+	font-size: 2.5rem;
+}
 </style>
 
 
@@ -80,62 +83,65 @@
 				</nav>
 			</div>
 		</div>
-		<!-- 商品大圖輪播 -->
-		<div class="row mb-4">
-			<div class="col-12">
-				<div id="carouselExampleIndicators" class="carousel slide"
-					data-ride="carousel">
-					<div class="carousel-inner">
-						<!-- jQuery -->
-					</div>
-					<a class="carousel-control-prev" href="#carouselExampleIndicators"
-						role="button" data-slide="prev"> <span
-						class="carousel-control-prev-icon" aria-hidden="true"></span> <span
-						class="sr-only">Previous</span>
-					</a> <a class="carousel-control-next" href="#carouselExampleIndicators"
-						role="button" data-slide="next"> <span
-						class="carousel-control-next-icon" aria-hidden="true"></span> <span
-						class="sr-only">Next</span>
-					</a>
-				</div>
-			</div>
-		</div>
-		<!-- 商品基本資訊 -->
-		<div class="row mb-4">
-			<div class="col-12 d-flex justify-content-between align-items-center">
-				<h3>${ticket.ticketName}</h3>
-	<i class="fa-heart favorite-icon ${isFavorite ? 'fas' : 'far'}" 
-   id="favoriteIcon" style="cursor: pointer;" data-ticketId="${ticket.ticketId}"></i>									
-			</div>
-				<div class="col-12 d-flex justify-content-between align-items-center">
-				<h6>${ticket.ticketType.typeName}&emsp;|&emsp;${ticket.city.cityName}</h6>
-			</div>
-		</div>
+<div class="row mb-4">
+    <!-- 商品大圖輪播 -->
+    <div class="col-md-7">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <!-- jQuery -->
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a> 
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 商品基本資訊 -->
+    <div class="col-md-5">
+        <div class="row">
+            <div class="col-10 d-flex justify-content-between align-items-center">
+                <h3>${ticket.ticketName}</h3>
+                <i class="fa-heart favorite-icon ${isFavorite ? 'fas' : 'far'}" 
+                   id="favoriteIcon" style="cursor: pointer;" data-ticketId="${ticket.ticketId}"></i>
+            </div>
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <h6>${ticket.ticketType.typeName}&emsp;|&emsp;${ticket.city.cityName}</h6>
+            </div>
+        </div>
 		<div class="col-12 mt-3">
 			<div class="d-flex justify-content-between align-items-center">
 				<div class="rating">
-					<p class="mb-0">${formattedAverageStars}
-						<!-- 實星 -->
-						<c:forEach begin="1" end="${averageStars}" var="i">
-							<i class="fas fa-star gold-star"></i>
-						</c:forEach>
-						<!-- 半星 -->
-						<c:if test="${averageStars % 1 != 0}">
-							<i class="fas fa-star-half-alt gold-star"></i>
-							<!-- 有半星就+ -->
-							<c:set var="emptyStarsStart"
-								value="${Math.floor(averageStars) + 2}" />
-						</c:if>
-						<!-- 沒有半星就往下一個數 -->
-						<c:if test="${averageStars % 1 == 0}">
-							<c:set var="emptyStarsStart" value="${averageStars + 1}" />
-						</c:if>
-						<!-- 空星 -->
-						<c:forEach begin="${emptyStarsStart}" end="5" var="j">
-							<i class="far fa-star gold-star"></i>
-						</c:forEach>
-						(${totalRatingCount})
-					</p>
+																<c:choose>
+											    <c:when test="${totalRatingCountMap[ticket.ticketId] == 0 || totalRatingCountMap[ticket.ticketId] == null}">
+											        <p>暫無評價</p>
+											    </c:when>
+											    <c:otherwise>
+											        <p class="card-text">
+											            <small class="text-muted">
+											                ${averageStarsMap[ticket.ticketId]}
+											                <c:forEach begin="1" end="${averageStarsMap[ticket.ticketId]}" var="i">
+											                    <i class="fas fa-star gold-star"></i>
+											                </c:forEach>
+											                <c:if test="${averageStarsMap[ticket.ticketId] % 1 != 0}">
+											                    <i class="fas fa-star-half-alt gold-star"></i>
+											                    <c:set var="emptyStarsStart" value="${Math.floor(averageStarsMap[ticket.ticketId]) + 2}" />
+											                </c:if>
+											                <c:if test="${averageStarsMap[ticket.ticketId] % 1 == 0}">
+											                    <c:set var="emptyStarsStart" value="${averageStarsMap[ticket.ticketId] + 1}" />
+											                </c:if>
+											                <c:forEach begin="${emptyStarsStart}" end="5" var="j">
+											                    <i class="far fa-star gold-star"></i>
+											                </c:forEach>
+											                (${totalRatingCountMap[ticket.ticketId]})
+											            </small>
+											        </p>
+											    </c:otherwise>
+											</c:choose>
 					<div class="row mb-4">
 						<div class="col-12">
 							<h2 class="display-4">NT$ ${ticket.price}</h2>
@@ -161,6 +167,7 @@
 				</div>
 			</div>
 		</div>
+		</div>
 		<!-- 商品描述、位置、評價 -->
 		<div class="row mt-5">
 			<div class="col-12">
@@ -173,12 +180,17 @@
 			<div class="col-12">
 				<h4>位置資訊</h4>
 				<p>${ticket.address}</p>
-				<div id="map" style="width: 100%; height: 500px;"></div>
+				<div id="map" style="width: 100%; height: 400px;"></div>
 			</div>
 		</div>
 
 		<div class="row mt-5">
 			<div class="col-12">
+			<c:choose>
+		    <c:when test="${totalRatingCountMap[ticket.ticketId] == 0 || totalRatingCountMap[ticket.ticketId] == null}">
+		        <p></p>
+		    </c:when>
+		    <c:otherwise>
 				<h4>使用者評價</h4>
 				<c:forEach var="reviews" items="${reviews}">
 					<div class="review border-top py-3">
@@ -207,6 +219,8 @@
 						<p>${reviews.ticketReviews}</p>
 					</div>
 				</c:forEach>
+			   </c:otherwise>
+			 </c:choose>
 			</div>
 		</div>
 	</div>
@@ -232,7 +246,7 @@ $(document).ready(function() {
             var img = $("<img>")
                 .attr("src", "<%=request.getContextPath()%>/ticketallimage?action=getImage&imageId="  + id + "&ticketId=" + ticketId)
                 .addClass("d-block w-100 rounded")
-                .css("height", "500px")
+                .css("height", "300px")
                 .css("object-fit", "cover");
 
             carouselItem.append(img);

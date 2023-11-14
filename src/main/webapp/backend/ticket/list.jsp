@@ -165,7 +165,7 @@
 					</tr>
 				</c:forEach>
 		</table>
-				<!-- 查看票券 -->		
+	<!-- 查看票券 -->		
 		<div class="modal fade" id="viewTicketModal" tabindex="-1" role="dialog" aria-labelledby="viewTicketModalLabel" aria-hidden="true">
 		    <div class="modal-dialog modal-lg" role="document">
 		        <div class="modal-content">
@@ -178,7 +178,7 @@
 		            <div class="modal-body">
 		                <div class="row">
                           <!-- 輪播圖 -->
-		                    <div id="carouselExampleIndicators" class="carousel slide" >
+		                    <div id="carouselExampleIndicators" class="carousel slide">
 		                        <div class="carousel-inner" id="ticketImagesCarousel"></div>
 		                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
 		                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -274,16 +274,16 @@
 					</c:if>
 				</ul>
 			</nav>
-		</div>
-
-		<!-- 回首頁 -->
-		<div class="page-item">
-			<a class="page-link"
+			
+			<div class="page-item"><a class="page-link"
 				href="${pageContext.request.contextPath}/ticketmg/list">回首頁</a>
+			</div>
 		</div>
-		</div>
+	 </div>
 	</div>
-
+  </div>
+ </div>
+</div>
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -324,9 +324,9 @@
                 $('#modalAddress').text(ticket.address);
                 $('#modalLongitude').text(ticket.longitude);
                 $('#modalLatitude').text(ticket.latitude);
-                $('#modalStatus').text(ticket.status == 1 ? '此商品上架中' : '此商品未上架');  
-
-                $('#modalDescription').html(ticket.description); // 使用 .html() 設置描述
+                $('#modalStatus').text(ticket.status == 1 ? '此商品上架中' : '此商品未上架'); 
+                $('#modalDescription').html(ticket.description);
+                
                 var carouselInner = $('#ticketImagesCarousel').empty();
                 $.getJSON("<%=request.getContextPath()%>/ticketallimage?action=getIds&ticketId=" + ticketId, function(imageIds) {
                     imageIds.forEach(function(imageId, index) {

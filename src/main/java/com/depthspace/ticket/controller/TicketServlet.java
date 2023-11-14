@@ -114,6 +114,9 @@ public class TicketServlet extends HttpServlet {
 			req.getSession().setAttribute("ticketPageQty", ticketPageQty);
 		}
 		
+	    int ticketPageQty = ticketService.getPageTotal();
+	    req.getSession().setAttribute("ticketPageQty", ticketPageQty);
+	    
 		req.setAttribute("ticketList", ticketList);
 		req.setAttribute("currentPage", currentPage);
 
@@ -201,6 +204,9 @@ public class TicketServlet extends HttpServlet {
 				}
 			}
 		}
+	    int ticketPageQty = ticketService.getPageTotal();
+	    req.getSession().setAttribute("ticketPageQty", ticketPageQty);
+	    
 		// 導向以下頁面
 		res.sendRedirect(req.getContextPath() + "/ticketmg/list");
 	}
