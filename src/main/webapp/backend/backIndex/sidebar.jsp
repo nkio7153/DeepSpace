@@ -15,7 +15,7 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
                  data-bs-parent="#sidebar-wrapper">
                 <div class="color-4-1 py-2 collapse-inner rounded">
-                    <a class="text-choco collapse-item fs-5 offset-3" href="#">查詢資料</a>
+                    <a class="text-choco collapse-item fs-5 offset-3" href="${pageContext.request.contextPath}/backmem/list">查詢資料</a>
                     <br>
                     <a class="text-choco collapse-item fs-5 offset-3" href="#">新增資料</a>
                 </div>
