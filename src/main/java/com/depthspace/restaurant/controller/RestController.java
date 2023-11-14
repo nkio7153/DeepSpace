@@ -11,28 +11,26 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import javax.servlet.http.HttpSession;
 
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.TypeReference;
 import com.depthspace.restaurant.model.restaurant.RestVO;
+import com.depthspace.restaurant.model.restcollection.RestCollectionVO;
 import com.depthspace.restaurant.service.MemBookingService;
 import com.depthspace.restaurant.service.MemBookingServiceImpl;
 import com.depthspace.restaurant.service.RestService;
 import com.depthspace.restaurant.service.RestServiecImpl;
+import com.depthspace.restaurant.service.RestcollectionService;
+import com.depthspace.restaurant.service.RestcollectionServiceImpl;
 import com.depthspace.utils.JedisUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 
 import redis.clients.jedis.Jedis;
 
 @WebServlet("/Rest/*")
 public class RestController extends HttpServlet {
-	
+
 	private RestService restService;
 	private MemBookingService membookingService;
 	private Gson gson;
@@ -41,10 +39,9 @@ public class RestController extends HttpServlet {
 	public void init() throws ServletException {
 		restService = new RestServiecImpl();
 		membookingService = new MemBookingServiceImpl();
-		gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
-				.setDateFormat("yyyy-MM-dd").create();
+		gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setDateFormat("yyyy-MM-dd").create();
 	}
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);
@@ -56,87 +53,127 @@ public class RestController extends HttpServlet {
 		String pathInfo = req.getPathInfo();
 		String forwardPath = "";
 		switch (pathInfo) {
-			case "/getRests":
-				forwardPath = getRests(req, resp);
-				break;
-			case "/Restinfo":
-				forwardPath = toRestinfo(req, resp);
-				break;
-				
+		case "/getRests":
+			forwardPath = getRests(req, resp);
+			break;
+		case "/Restinfo":
+			forwardPath = toRestinfo(req, resp);
+			break;
+
 		}
-		
+
 		resp.setContentType("text/html; charset=UTF-8");
 		RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
 		dispatcher.forward(req, resp);
 	}
-	
+
 	private String getRests(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		if (req.getParameter("restType") != null) {
-			String restType = req.getParameter("restType");
-			String json = toRedisBy(restType);
-			
-		}
-		
+
 		List<RestVO> restList = restService.showRest();
-		req.setAttribute("restList", restList);
-		HashSet<String> restType = new HashSet<String>();
-		for (RestVO vo : restList) {
-			restType.add(vo.getRestType());
-//			toRedis(vo);
+		String restType = req.getParameter("restType");
+		String restName = req.getParameter("restName");
+		// 條件搜尋 根據類型與名稱 把redis的列表 根據條件塞選在返回到JSP
+		if (restType != null && !restType.equals("請選擇") && restName != null) {
+			List<RestVO> list = getRedis(restType, restName);
+			req.setAttribute("restList", list);
+
+		} else if (restType != null && !restType.equals("請選擇")) {
+			List<RestVO> list = getRedis(restType, null);
+			req.setAttribute("restList", list);
+
+		} else if (restName != null) {
+			List<RestVO> list = getRedis(null, restName);
+			req.setAttribute("restList", list);
+
+		} else {
+			req.setAttribute("restList", restList);
+			// 進入時將列表存入redis
+			try {
+				toRedis(gson.toJson(restList));
+			} catch (Exception e) {
+				System.out.println("redis異常");
+				e.printStackTrace();
+			}
 		}
-		req.setAttribute("restType", restType);
+		// 查出所有類型用HashSet去重
+		HashSet<String> typeList = new HashSet<String>();
+		for (RestVO vo : restList) {
+			typeList.add(vo.getRestType());
+		}
+		req.setAttribute("restType", typeList);
+		// 從session取會員ID顯示已收藏的餐廳
+		HttpSession session = req.getSession();
 		
-		toRedis(gson.toJson(restList));
-//		String json = gson.toJson(restList);
-//		toRedis(json);
-//		String getType = req.getParameter("restType");
-//		String byType = toRedisBy(getType);
-//		System.out.println(byType);
+		Integer memId = (Integer) session.getAttribute("memId");
+		if (memId != null) {
+			System.out.println("登入="+memId);
+			RestcollectionService rcs = new RestcollectionServiceImpl();
+			List<RestCollectionVO> rcList = rcs.findByMemId(memId);
+			req.setAttribute("rcList", rcList);
+		}
+		
 		
 		return "/frontend/rest/restlist.jsp";
 	}
-	
+
 	private String toRestinfo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setAttribute("restId", req.getParameter("restId"));
-		return "/frontend/rest/rest.jsp";
+		String restId = req.getParameter("restId");
+		RestService restService = new RestServiecImpl();
+		RestVO restList = restService.getRestByRestId(Integer.valueOf(restId));
+		req.setAttribute("rest", restList);
 		
+		
+		// booking
+		HttpSession session = req.getSession();
+		Integer memId = (Integer) session.getAttribute("memId");
+		if (memId != null) {
+			req.setAttribute("memId", memId);
+		}
+		return "/frontend/rest/rest.jsp";
+
 	}
-	
+
 	private void toRedis(String vo) {
-	    Jedis jedis = JedisUtil.getJedisPool().getResource();
-	    jedis.select(15);
-	    
-	    if (!jedis.exists("rests")) {
-	      jedis.set("rests", vo);
-	    }
-	    
-	    String rests = jedis.get("rests");
-	    List<RestVO> restvo = JSON.parseArray(rests, RestVO.class);
-	    List<RestVO> restvo1 = JSON.parseObject(rests, new TypeReference<List<RestVO>>(){}); 
-	    for (RestVO vo1 : restvo) {
-	    	System.out.println(vo1.getRestType());
-	    }
-	    for (RestVO vo2 : restvo1) {
-	    	System.out.println(vo2.getRestName());
-	    }
-	    
-	    jedis.close();
-	}
-	
-	private String toRedisBy(String restType) {
 		Jedis jedis = JedisUtil.getJedisPool().getResource();
-	    jedis.select(15);
-	    
-	    String rests = jedis.get("rests");
-	    
-	    jedis.close();
-	    return rests;
-	    
+		jedis.select(15);
+		if (!jedis.exists("rests")) {
+			jedis.set("rests", vo);
+		}
+		jedis.close();
+	}
+
+	private List<RestVO> getRedis(String restType, String restName) {
+		Jedis jedis = JedisUtil.getJedisPool().getResource();
+		jedis.select(15);
+		String rests = jedis.get("rests");
+
+		List<RestVO> restvo = JSON.parseArray(rests, RestVO.class);
+//		List<RestVO> restvo = JSON.parseObject(rests, new TypeReference<List<RestVO>>() {});
+		List<RestVO> list = new ArrayList<>();
+		if (restType != null && restName != null) {
+			for (RestVO vo : restvo) {
+				if (vo.getRestType().equals(restType) && vo.getRestName().contains(restName)) {
+					list.add(vo);
+				}
+			}
+		} else if (restType != null) {
+			for (RestVO vo : restvo) {
+				if (vo.getRestType().equals(restType)) {
+					list.add(vo);
+				}
+			}
+		} else if (restName != null) {
+			for (RestVO vo : restvo) {
+				if (vo.getRestName().contains(restName)) {
+					list.add(vo);
+				}
+			}
+		}
+		jedis.close();
+		return list;
 	}
 	
 	
-	
-	
-	
+
+
 }

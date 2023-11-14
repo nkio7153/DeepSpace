@@ -8,16 +8,29 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	rel="stylesheet">
-<title>修改票券</title>
-
-<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
-
-
+	<link
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+		rel="stylesheet">
+	<title>修改票券</title>
+	
+<%--  include --%>
+	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
+  
 </head>
+
 <body>
+
+	<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+	<div class="container-fluid my-0">
+	<div class="row">
+	  
+	<div class="col-lg-2 g-3 my-0">
+	<jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
+	</div>
+	
+	<div class="col-lg-10 g-2 transparent rounded my-0">
+	
+<%-- include end--%>
 	<div class="container mt-5">
 		<div class="container mt-5">
 			<div class="container mt-5">
@@ -26,7 +39,7 @@
 					method="post" enctype="multipart/form-data">
 					<div class="row">
 						<!-- ID -->
-						<input type="hidden" name="ticketId" value=${ticket.ticketId}>
+						<input type="hidden" name="ticketId" value="${ticket.ticketId}">
 						<!-- 類型 -->
 						<div class="form-group col-md-6">
 							<label for="ticketTypeId">票券類型</label> <select name=ticketTypeId
@@ -65,28 +78,14 @@
 
 						<div class="row">
 							<!-- 圖片上傳 -->
-							<div class="form-group col-md-6">
-								<label for="ticketImage">圖片</label> <input type="file"
-									class="form-control-file" id="ticketImage" name="ticketImage"
-									onchange="previewImage(event)">
-							</div>
-
-
-							<!-- 圖片預覽 -->
-							<div class="form-group col-md-6">
-								<label>圖片預覽</label> <img id="imagePreview"
-									src="<%=request.getContextPath()%>/ticketmainimage?ticketId=${ticket.ticketId}"
-									alt="圖片預覽" style="max-width: 100%; max-height: 300px;" />
-							</div>
+						<div class="form-group col-md-12">
+						    <label>圖片列表</label>
+						    <div id="image-list" class="d-flex flex-wrap">
+						        <!-- 已上傳的圖片會透過JavaScript動態加載到這裡 -->
+						    </div>
+						    <button type="button" id="addImage" class="btn btn-primary mt-2"  name="ticketImages[]">新增圖片</button>
 						</div>
-
-						<!-- 是否為主圖 -->
-						<div class="form-group col-md-6">
-							<label for="isMainImage">是否為主圖</label> <input type="checkbox"
-								id="isMainImage" name="isMainImage" value="1"
-								${ticketImages.isMainImage == 1 ? 'checked' : ''}>
-						</div>
-
+            
 						<!-- 使用天數 -->
 						<div class="form-group col-md-12">
 							<label for="validDays">使用天數</label> <input type="text"
@@ -144,7 +143,7 @@
 						<div class="form-group col-md-6">
 							<label>上下架</label><br> <input type="radio" id="on"
 								name="status" value="1" ${ticket.status == 1 ? 'checked' : ''}>
-							<label for="on"">上架</label> <input type="radio" id="off"
+							<label for="on">上架</label> <input type="radio" id="off"
 								name="status" value="0" ${ticket.status == 0 ? 'checked' : ''}>
 							<label for="off">未上架</label>
 						</div>
@@ -155,11 +154,58 @@
 			</div>
 		</div>
 	</div>
-
+<%--  include --%>	
+		</div>
+	</div>		
+</div>
+<%--  include end --%>
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+	<script>
+    $(document).ready(function() {
+        const ticketId = ${ticket.ticketId}; 
+        $.getJSON("<%=request.getContextPath()%>/ticketallimage?action=getIds&ticketId=" + ticketId, function(serialIds) {
+            var imageListDiv = $("#image-list").empty(); // 清空現有的圖片列表
+            serialIds.forEach(function(id) {
+                var imageCard = $('<div class="card m-2" style="width: 18rem;"></div>');
+                var image = $('<img class="card-img-top" style="max-height: 200px; object-fit: cover;">')
+                    .attr("src", "<%=request.getContextPath()%>/ticketallimage?action=getImage&imageId="  + id + "&ticketId=" + ticketId);
+                var cardBody = $('<div class="card-body"></div>');
+                var fileInput = $('<input type="file" name="image_' + id + '">').change(function(event){
+                    createImagePreview(event, image);
+                });
+                var hiddenInput = $('<input type="hidden" name="imageIds" value="' + id + '">');
+
+                cardBody.append(fileInput).append(hiddenInput);
+                imageCard.append(image).append(cardBody);
+                imageListDiv.append(imageCard); 
+            });
+        });
+	    // 新增圖片的按鈕
+        $("#addImage").click(function() {
+            var newImageCard = $('<div class="card m-2" style="width: 18rem;"></div>');
+            var image = $('<img class="card-img-top" style="display:none; max-height: 200px; object-fit: cover;">');
+            var cardBody = $('<div class="card-body"></div>');
+            var fileInput = $('<input type="file" name="ticketImage_new">').change(function(event){
+                createImagePreview(event, image);
+            });
+
+            cardBody.append(fileInput);
+            newImageCard.append(image).append(cardBody);
+            $("#image-list").append(newImageCard);
+        });
+    });
+	// 圖片上傳瀏覽 
+    function createImagePreview(event, imageElement) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            imageElement.attr('src', e.target.result).show();
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+    </script>	
 </body>
 </html>

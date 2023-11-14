@@ -65,21 +65,25 @@ public class MemberServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 		String pathInfo = req.getPathInfo();
-		if ("/login".equals(pathInfo)) {
-			doLogin(req, resp);
-		} else if ("/logout".equals(pathInfo)) {
-			doLogout(req, resp);
-		} else if ("/edit".equals(pathInfo)) {
-			doEdit(req, resp);
-//		} else if ("/addMember".equals(pathInfo)) {
-//			doAddMember(req, resp);
-		} else if ("/modify".equals(pathInfo)) {
-			doModify(req, resp);
-		} else if ("/save".equals(pathInfo)) {
-			doSave(req, resp);
-		} else {
-			System.out.println("error");
+		switch (pathInfo) {
+			case "/login"://登入
+				doLogin(req, resp);
+				break;
+			case "/logout"://登出
+				doLogout(req, resp);
+				break;
+			case "/edit"://修改會員資料
+				doEdit(req, resp);
+				break;
+			case "/modify"://儲存修改後的資料
+				doModify(req, resp);
+				break;
+			case "/save"://新增會員
+				doSave(req, resp);
+				break;
 		}
+		
+		
 	}
 	
 	private void doLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -106,7 +110,7 @@ public class MemberServlet extends HttpServlet {
 
 
 	// ============================================================================================================================================
-	//
+	//新增會員資料
 	private void doSave(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<String> errorMsgs = new LinkedList<String>();
 		req.setAttribute("errorMsgs", errorMsgs);

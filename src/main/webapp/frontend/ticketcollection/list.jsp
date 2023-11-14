@@ -9,6 +9,8 @@
 <meta charset="UTF-8">
 <title>收藏票券列表</title>
 
+<jsp:include page="/indexpage/head.jsp" />
+
 <!-- CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -19,6 +21,12 @@
 
 </head>
 <body>
+
+
+	<jsp:include page="/indexpage/header.jsp" />
+	<jsp:include page="/indexpage/headpic.jsp" />
+	
+	
 	<div class="container mt-5">
 
 		<div class="row">
@@ -29,22 +37,10 @@
 					<h3 class="mb-0">您的票券收藏</h3>
 					<form action="<%=request.getContextPath()%>/ticketcollection/list"
 						method="get">
-						<!-- 篩選票券區域  注意name是要查詢的值(servlet的查詢,areaId)-->
 						<div class="col-md-16">
 							<div
 								class="d-flex justify-content-between align-items-center mb-3">
-								<form method="get"
-									action="<%=request.getContextPath()%>/ticketcollection/find">
-									<div class="form-group mb-0">
-										<label for="sortDropdown" class="mr-2"></label> <select  id="cityId" name="areaId" 
-											class="form-control d-inline-block" id="sortDropdown"
-											name="sort" onchange="this.form.submit()">
-										<c:forEach var="areaItem" items="${uniqueTicketArea}">
-											<option value="${ticketCollection.ticketVO.city.cityName}">${ticketCollection.ticketVO.city.cityName}</option>
-										</c:forEach>
-										</select>
-									</div>
-								</form>
+
 							</div>
 						</div>
 					</form>
@@ -104,7 +100,7 @@
 												</small>
 											</p>
 											<p class="card-text">NT$
-												${ticketCollection.ticketVO.ticketId}</p>
+												${ticketCollection.ticketVO.price}</p>
 										</div>
 									</a>
 								</div>
@@ -126,31 +122,9 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		
 	<script>
-
-// 	//右邊排序
-//     // 排序下拉選單的變化
-//     $('#sortDropdown').on('change', function() {
-//         var sortValue = $(this).val();
-//         var sortField = 'ticketName'; // 預設排序依據為票券名稱
-//         var sortOrder = 'asc'; // 預設排序方式為升序
-
-//         // 根據選項修改排序參數
-//         if (sortValue === 'popularity') {
-//             sortField = 'sales';
-//             sortOrder = 'desc'; // 熱門銷售降序
-//         } else if (sortValue === 'ticketName') {
-//             sortField = 'ticketName';
-//             sortOrder = 'asc';
-//         }
-
-//         // 更新隱藏輸入欄位的值
-//         $('input[name="sortField"]').val(sortField);
-//         $('input[name="sortOrder"]').val(sortOrder);
-
-//         // 提交表單
-//         $('#searchForm').submit();
-//     });
 
 //愛心取消收藏
 $(document).ready(function() {
@@ -159,38 +133,49 @@ $(document).ready(function() {
         var iconElement = $(this); 
         var ticketId = iconElement.data('ticketid'); 
 
-        iconElement.addClass('break-heart-animation');
-        iconElement.on('animationend', function() {
-
-            $.ajax({
-                url: '<%=request.getContextPath()%>/ticketcollection/del',
-                type: 'GET',
-                data: { ticketId: ticketId },
-                dataType: 'json', 
-                success: function(response) {
-                     if (response.success) {
-                        console.log('取消收藏，票券移除成功!');
-                    } else {
-                        console.log('取消收藏失敗: ', response.message);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // 處理錯誤情況
-                    console.log('Ajax請求錯誤: ' + error.message);
-                },
-                complete: function() {
-                    // 動畫結束後移除卡片
-                    iconElement.closest('.card').remove();
-                }
-            });
-            // 移除動畫
-            iconElement.removeClass('break-heart-animation');
+        Swal.fire({
+            title: "確定移除收藏嗎Q_Q ",
+//             text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "YES"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                iconElement.addClass('break-heart-animation');
+                iconElement.on('animationend', function() {
+                    $.ajax({
+                        url: '<%=request.getContextPath()%>/ticketcollection/del',
+                        type: 'GET',
+                        data: { ticketId: ticketId },
+                        dataType: 'json', 
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire('移除成功', '移除成功Q_Q', 'success');
+                            } else {
+                                Swal.fire('移除失敗', '好像哪裡出錯!!!抱歉"', 'error');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log('Ajax請求錯誤: ' + error.message);
+                            Swal.fire('發生錯誤!', '好像哪裡出錯!!抱歉', 'error');
+                        },
+                        complete: function() {
+                            iconElement.closest('.card').remove();
+                        }
+                    });
+//                     iconElement.removeClass('break-heart-animation');
+                });
+            }
         });
     });
 });
 
+
 </script>
 
+	<jsp:include page="/indexpage/footer.jsp" />
 </body>
 
 </html>

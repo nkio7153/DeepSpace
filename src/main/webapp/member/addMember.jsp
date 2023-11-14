@@ -17,10 +17,10 @@
     <h1>註冊會員</h1>
     <form action="${pageContext.request.contextPath}/mem/save" method="post" enctype="multipart/form-data">
         <label for="memAcc">帳號:</label>
-        <input type="text" id="memAcc" name="memAcc" value="${mem.memAcc}" required><br><br>
+        <input type="text" id="memAcc" name="memAcc" value="" required><br><br>
         
         <label for="memPwd">密碼:</label>
-        <input type="password" id="memPwd" name="memPwd" value="${mem.memPwd}" required><br><br>
+        <input type="password" id="memPwd" name="memPwd" value="" required><br><br>
         
         <label for="memName">會員姓名:</label>
         <input type="text" id="memName" name="memName" value="${mem.memName}" required><br><br>

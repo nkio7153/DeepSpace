@@ -8,8 +8,11 @@ public interface TicketImagesService {
 	
 	void save(TicketImagesVO ticketImage);
 
+	TicketImagesVO getImageById(Integer serialId);
+	
 	TicketImagesVO getTicketImagesById(Integer ticketId);
 
 	void saveAll(List<TicketImagesVO> ticketImages);
 
+	void update(TicketImagesVO ticketImagesVO);
 }

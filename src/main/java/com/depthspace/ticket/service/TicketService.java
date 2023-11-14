@@ -28,8 +28,10 @@ public interface TicketService {
     List<TicketVO> getAllTickets2(int currentPage);  
     //取得所有票券總頁面數量
     int getPageTotal();
-    //取得總票券數
+    //取得總票券數 
     long getTotalTickets(); 
+    //取得總票券數 (上架)
+    long getStatusTotalTickets(); 
     //取得票券主圖
     List<TicketVO> getAllTicketsWithMainImages(); 
     //萬用查詢
@@ -46,9 +48,15 @@ public interface TicketService {
     //查詢票券的評價單數
     Integer getTotalRatingCount(Integer ticketId);
     //查詢票券的評價內容
-//    List<String> getReviews(Integer ticketId);
-    //查詢票券的評價內容
     List<TicketOrderDetailVO> findTicketOrderDetailsByTicketId(Integer ticketId);
 
+    //排序
+//    List<TicketVO> getAllTickets2(int currentPage, String sortId, String sortOrder);
+//    List<TicketVO> getTicketsByCompositeQuery(Map<String, String[]> queryMap, String sortId, String sortOrder);
+
+    List<TicketVO> getAllTicketsSorted(String sortField, String sortOrder);
+    List<TicketVO> findAllWithOrder(int currentPage, String sortField, String sortOrder);
+    List<TicketVO> findTickets(int currentPage, String sortField, String sortOrder,Map<String, List<String>> filterMap);
+    
 }
 

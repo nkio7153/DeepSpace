@@ -23,18 +23,6 @@ public class ColumnImagesDAOImpl implements ColumnImagesDAO {
 	@Override
 	public int add(ColumnImagesVO columnImagesVO) {
 		return (Integer) getSession().save(columnImagesVO);
-//		Transaction tx = null;
-//		try {
-//			tx = getSession().beginTransaction();  // 開始事務
-//			int id = (Integer) getSession().save(columnImagesVO);
-//			tx.commit();  // 提交事務
-//			return id;
-//		} catch (RuntimeException e) {
-//			if (tx != null) {
-//				tx.rollback();  // 如果出現異常，回滾事務
-//			}
-//			throw e;  // 再次拋出異常
-//		}
 	}
 
 

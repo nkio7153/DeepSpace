@@ -8,7 +8,9 @@ public interface TicketImagesDAO {
 	
 //	TicketImagesVO saveImage(byte[] imageBytes);
 	
-    void insert(TicketImagesVO ticketImagesVO);
+    void save(TicketImagesVO ticketImage);
+    
+    void save(List<TicketImagesVO> ticketImages);
     
     void update(TicketImagesVO ticketImagesVO);
     
@@ -21,4 +23,8 @@ public interface TicketImagesDAO {
     List<TicketImagesVO> getAll();
     
     List<TicketImagesVO> findImagesByTicketId(Integer ticketId);
+//    // 更新或新增圖片
+//    void updata(TicketImagesVO ticketImagesVO);
+    
+    TicketImagesVO getImageById(Integer serialId);
 }

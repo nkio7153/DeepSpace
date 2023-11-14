@@ -5,32 +5,22 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+
+import com.depthspace.column.model.ColumnImagesVO;
 import com.depthspace.ticket.model.TicketImagesVO;
+import com.depthspace.utils.HibernateUtil;
 
 public class TicketImagesDAOImpl implements TicketImagesDAO {
+	
 	private SessionFactory factory;
 
 	public TicketImagesDAOImpl(SessionFactory factory) {
 		this.factory = factory;
 	}
-
-//	private Session getSession() {
-//		return factory.getCurrentSession();
-//	}
-
-//	@Override
-//	public TicketImagesVO saveImage(byte[] imageBytes) {
-//		Session session = factory.openSession();
-//		TicketImagesVO ticketImage = new TicketImagesVO();
-//		try {
-//
-//			ticketImage.setImage(imageBytes);
-//			session.save(ticketImage);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return ticketImage;
-//	}
+	
+	private Session getSession() {
+		return factory.getCurrentSession();
+	}
 
 	@Override
 	public List<TicketImagesVO> findImagesByTicketId(Integer ticketId) {
@@ -50,15 +40,24 @@ public class TicketImagesDAOImpl implements TicketImagesDAO {
 	}
 
 	@Override
-	public void insert(TicketImagesVO ticketImagesVO) {
-		// TODO Auto-generated method stub
-
+	public void save(TicketImagesVO ticketImage) {
+		getSession().save(ticketImage);
+	}
+	
+	@Override
+	public void save(List<TicketImagesVO> ticketImages) {
+		getSession().save(ticketImages);
 	}
 
 	@Override
 	public void update(TicketImagesVO ticketImagesVO) {
-		// TODO Auto-generated method stub
-
+		getSession().merge(ticketImagesVO);
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//        if (ticketImagesVO.getSerialId() != null) { // 如果serialId存在，則更新圖片
+//            session.update(ticketImagesVO);
+//        } else { // 否則新增圖片
+//            session.save(ticketImagesVO);
+//        }
 	}
 
 	@Override
@@ -83,6 +82,32 @@ public class TicketImagesDAOImpl implements TicketImagesDAO {
 	public void TicketIsMainImage(byte isMainImage) {
 		// TODO Auto-generated method stub
 
+	}
+	
+//    @Override
+//    public void updata(TicketImagesVO imageVO) {
+//        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//        try {
+//            session.beginTransaction();
+//            session.updata(imageVO);
+//            session.getTransaction().commit();
+//        } catch (Exception e) {
+//            session.getTransaction().rollback();
+//            e.printStackTrace();
+//        }
+//    }
+
+	@Override
+	public TicketImagesVO getImageById(Integer serialId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        	String hql = "FROM TicketImagesVO WHERE serialId = :serialId";
+            Query<TicketImagesVO> query = session.createQuery(hql, TicketImagesVO.class);
+            query.setParameter("serialId", serialId);
+            TicketImagesVO image = query.uniqueResult();
+            return query.uniqueResult();
+        } catch (Exception e) {
+        }
+        return null;
 	}
 
 }
