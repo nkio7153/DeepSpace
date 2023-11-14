@@ -1,7 +1,6 @@
 package com.depthspace.column.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -17,7 +16,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
-import com.depthspace.admin.model.model.AdminVO;
+
+import com.depthspace.admin.model.AdminVO;
 
 /**
  * @author Tibame_T14

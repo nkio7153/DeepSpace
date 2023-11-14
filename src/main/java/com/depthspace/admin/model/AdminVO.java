@@ -1,5 +1,6 @@
-package com.depthspace.admin.model.model;
+package com.depthspace.admin.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -9,76 +10,136 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.google.gson.annotations.Expose;
-import com.depthspace.utils.JsonIgnore;
-
 @Entity
 @Table(name = "ADMIN")
-
-public class AdminVO {
-	@Expose
+public class AdminVO implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // AI鍵要加
-	@Column(name = "ADMIN_ID", updatable = false , nullable = false) 
+	@Column(name = "ADMIN_ID") 
 	private Integer adminId;
-	@Expose
 	@Column(name = "ADMIN_NAME")
 	private String adminName;
-	@Expose
 	@Column(name = "ADMIN_ACC")
 	private String adminAcc;
-	@JsonIgnore
-	@Expose
 	@Column(name = "ADMIN_PWD")
 	private String adminPwd;
-	@Expose
-	@Column(name = "ADMIN_STATUS", columnDefinition = "TINYINT")
-	private Integer adminStatus;
+	@Column(name = "ADMIN_STATUS")
+	private Byte adminStatus;
 	
 	
 	public AdminVO() {
     }
+	
+	
+
+	
+
+	public AdminVO(Integer adminId, String adminName, String adminAcc, String adminPwd, Byte adminStatus) {
+		super();
+		this.adminId = adminId;
+		this.adminName = adminName;
+		this.adminAcc = adminAcc;
+		this.adminPwd = adminPwd;
+		this.adminStatus = adminStatus;
+	}
+	
+	
+
+
+
+
+
+	public AdminVO(String adminName, String adminAcc, String adminPwd, Byte adminStatus) {
+		super();
+		this.adminName = adminName;
+		this.adminAcc = adminAcc;
+		this.adminPwd = adminPwd;
+		this.adminStatus = adminStatus;
+	}
+
+
+
+
 
 	public Integer getAdminId() {
 		return adminId;
 	}
 
+
+
+
+
 	public void setAdminId(Integer adminId) {
 		this.adminId = adminId;
 	}
+
+
+
+
 
 	public String getAdminName() {
 		return adminName;
 	}
 
+
+
+
+
 	public void setAdminName(String adminName) {
 		this.adminName = adminName;
 	}
+
+
+
+
 
 	public String getAdminAcc() {
 		return adminAcc;
 	}
 
+
+
+
+
 	public void setAdminAcc(String adminAcc) {
 		this.adminAcc = adminAcc;
 	}
+
+
+
+
 
 	public String getAdminPwd() {
 		return adminPwd;
 	}
 
+
+
+
+
 	public void setAdminPwd(String adminPwd) {
 		this.adminPwd = adminPwd;
-
 	}
 
-	public Integer getAdminStatus() {
+
+
+
+
+	public Byte getAdminStatus() {
 		return adminStatus;
 	}
 
-	public void setAdminStatus(Integer adminStatus) {
+
+
+
+
+	public void setAdminStatus(Byte adminStatus) {
 		this.adminStatus = adminStatus;
 	}
+
+
+
+
 
 	@Override
 	public String toString() {

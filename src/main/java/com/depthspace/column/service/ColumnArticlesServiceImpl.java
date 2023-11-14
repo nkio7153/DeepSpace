@@ -10,16 +10,14 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import com.depthspace.admin.model.model.AdminVO;
+import com.depthspace.admin.model.AdminVO;
 import com.depthspace.column.dao.ColumnArticlesDAO;
 import com.depthspace.column.dao.ColumnArticlesDAOImpl;
 import com.depthspace.column.model.ColumnArticlesVO;
 import com.depthspace.column.model.ColumnTypesVO;
-import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.utils.HibernateUtil;
 import com.depthspace.utils.JedisUtil;
 
