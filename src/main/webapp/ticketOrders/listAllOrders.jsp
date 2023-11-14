@@ -11,13 +11,13 @@
 <body>
 <%--include header.jsp--%>
 <jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
-<div class="container-fluid my-0">
+<div class="container-fluid">
     <div class="row">
         <%--    側邊欄--%>
-        <div class="col-lg-2 g-3 my-0">
+        <div class="col-lg-2 g-3 mt-1">
             <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
         </div>
-        <div class="col-lg-10 g-2 transparent rounded my-0">
+        <div class="col-lg-10 g-2 transparent rounded mt-1">
             <%--      放入自己body裡的代碼--%>
             <div class="container mt-4 g-3">
 <%--                <button type="button" class="btn btn-secondary" onclick="history.back()">返回</button>--%>

@@ -1,6 +1,7 @@
 package com.depthspace.forum.model.forumarticles.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -9,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import com.depthspace.forum.model.forumarticles.ForumArticlesVO;
+
 public class ForumArticlesDAOImpl implements ForumArticlesDAO {
 	// SessionFactory 為 thread-safe，可宣告為屬性讓請求執行緒們共用
 	private SessionFactory factory;
@@ -57,15 +59,15 @@ public class ForumArticlesDAOImpl implements ForumArticlesDAO {
 
 	@Override
 	public List<ForumArticlesVO> getAll() {
-		List<ForumArticlesVO> dataList= getSession().createQuery("FROM ForumArticlesVO", ForumArticlesVO.class).getResultList();
-		return  dataList ;
+		List<ForumArticlesVO> dataList = getSession().createQuery("FROM ForumArticlesVO", ForumArticlesVO.class)
+				.getResultList();
+		return dataList;
 	}
 
 	@Override
 	public List<ForumArticlesVO> getByMemId(Integer memId) {
-		return  getSession().createQuery("FROM ForumArticlesVO WHERE memId= :memId", ForumArticlesVO.class)
-				.setParameter("memId", memId)
-                .list();
+		return getSession().createQuery("FROM ForumArticlesVO WHERE memId= :memId", ForumArticlesVO.class)
+				.setParameter("memId", memId).list();
 	}
 
 	@Override
@@ -75,8 +77,13 @@ public class ForumArticlesDAOImpl implements ForumArticlesDAO {
 
 	@Override
 	public List<ForumArticlesVO> getByArtiTypeId(Integer artiTypeId) {
-		return  getSession().createQuery("FROM ForumArticlesVO WHERE artiTypeId= :artiTypeId", ForumArticlesVO.class)
-				.setParameter("artiTypeId", artiTypeId)
-                .list();
+		return getSession().createQuery("FROM ForumArticlesVO WHERE artiTypeId= :artiTypeId", ForumArticlesVO.class)
+				.setParameter("artiTypeId", artiTypeId).list();
+	}
+
+	@Override
+	public List<ForumArticlesVO> getByArticleIds(List<Integer> articleIds) {
+		return getSession().createQuery("FROM ForumArticlesVO WHERE articleId IN (:articleIds)", ForumArticlesVO.class)
+				.setParameterList("articleIds", articleIds).list();
 	}
 }

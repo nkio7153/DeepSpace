@@ -102,7 +102,6 @@ public class HbTscDaoImpl implements HbTscDao {
         List<CartInfo> allCartInfos = getSession().createQuery("FROM CartInfo WHERE ticketId IN (:ticketIds)", CartInfo.class)
                 .setParameterList("ticketIds", ticketIds)
                 .list();
-
         Map<Integer, CartInfo> selectedCartInfos = new HashMap<>();
         for (CartInfo cartInfo : allCartInfos) {
             Integer ticketId = cartInfo.getTicketId();

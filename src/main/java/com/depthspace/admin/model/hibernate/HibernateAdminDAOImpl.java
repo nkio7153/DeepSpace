@@ -2,8 +2,10 @@ package com.depthspace.admin.model.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import com.depthspace.admin.model.AdminVO;
+import com.depthspace.member.model.MemVO;
 
 import java.util.List;
 
@@ -26,8 +28,8 @@ public class HibernateAdminDAOImpl implements HibernateAdminDAO_Interface {
 	}
 
     @Override
-    public int insert(AdminVO entity) {
-    	return (Integer) getSession().save(entity);
+    public AdminVO insert(AdminVO entity) {
+    	return (AdminVO) getSession().save(entity);
     }
 
     @Override
@@ -38,6 +40,20 @@ public class HibernateAdminDAOImpl implements HibernateAdminDAO_Interface {
 		} catch (Exception e) {
 			return -1;
 		}
+    }
+    
+    @Override
+	public int updateStatus(Integer adminId, byte status) {
+        try {
+            String hql = "UPDATE AdminVO SET adminStatus = :status WHERE adminId = :id";
+            Query query = getSession().createQuery(hql);
+            query.setParameter("status", status);
+            query.setParameter("id", adminId);
+            query.executeUpdate();
+            return 1;
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
     @Override
@@ -91,9 +107,18 @@ public class HibernateAdminDAOImpl implements HibernateAdminDAO_Interface {
 		return getSession().get(AdminVO.class, adminAcc);
 	}
 
-//	public static void main(String[] args) {
-//		findByAdminAcc
-//	}
+	@Override
+	public AdminVO getOneAdmin(Integer adminId) {
+		return getSession().get(AdminVO.class, adminId);
+	}
+	
+	@Override
+	public List<AdminVO> searchAdmins(String adminName) {
+		Query <AdminVO> query = getSession().createQuery("FROM AdminVO WHERE adminName LIKE :adminName ", AdminVO.class);
+		query.setParameter("adminName", "%" + adminName + "%");
+		List<AdminVO> searchAdminsList = query.list();
+		return searchAdminsList ;
+	}
 
 }
 

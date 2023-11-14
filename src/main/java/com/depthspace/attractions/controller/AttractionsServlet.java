@@ -15,6 +15,8 @@ import com.depthspace.attractions.model.CityVO;
 import com.depthspace.attractions.service.AttractionsImageService;
 import com.depthspace.attractions.service.AttractionsService;
 import com.depthspace.attractions.service.CityService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @WebServlet({ "/attr/*" })
 public class AttractionsServlet  extends HttpServlet {
@@ -59,19 +61,27 @@ public class AttractionsServlet  extends HttpServlet {
 	}
 	//前端關鍵字及選取框搜尋
 	private void doSearch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {	    
-		Integer areaId;//縣市編號
-		String attractionsName = req.getParameter("attractionsName");//使用者搜尋的景點名稱
+		Integer cityId;//縣市編號
+		String attractionsName = req.getParameter("attractionsName").trim();//使用者搜尋的景點名稱
 		
-//		System.out.println("areaId=" + areaId + "，attractionsName=" + attractionsName);
 	    try {
-	    	areaId = Integer.valueOf(req.getParameter("areaId"));
+	    	cityId = Integer.valueOf(req.getParameter("cityId"));
 	    } catch (NumberFormatException e) {
-			e.printStackTrace();
+			e.printStackTrace();	
 			return;
 		}
-		
-		
-		
+	    System.out.println("cityId=" + cityId + "，attractionsName=" + attractionsName);
+	    
+//	    先將cityId對應的cityName的中文找出來
+	    CityVO cityName = cs.findByPrimaryKey(cityId);
+//	    再把對應的城市名前兩個字取出
+	    String Cityname2 = cityName.getCityName();
+	    String firstCityname = Cityname2.substring(0,2);
+//	    System.out.println("firstCityname=" + firstCityname);
+//	    再用模糊比對找出對應的景點
+	    List<AttractionsVO> list = attrs.findOtherAttractions(firstCityname);
+
+	    setJsonResponse(resp , list);
 	}
 
 	private void dooneList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -92,9 +102,6 @@ public class AttractionsServlet  extends HttpServlet {
 		List<AttractionsImagesVO> imageList = ais.getAttractionsImagesById(attractionsId);
 //		System.out.println("imageList=" + imageList);
 		
-		
-		
-		
 		req.setAttribute("attractions" , avo);
 		req.setAttribute("image" , imageList);
 		req.getRequestDispatcher("/attractions/item.jsp").forward(req, resp);
@@ -107,10 +114,18 @@ public class AttractionsServlet  extends HttpServlet {
 		req.setAttribute("list", list);//取得所有景點
 		req.setAttribute("city", city);//取得台灣所有縣市
 		
-		
-		
-		
 		req.getRequestDispatcher("/attractions/list.jsp").forward(req, resp);
 	}
+	// fetch返回json格式
+		private void setJsonResponse(HttpServletResponse resp, Object obj) throws IOException {
+			Gson gson = new GsonBuilder()
+					 .setDateFormat("yyyy-MM-dd") // 設定日期格式
+		             .create();
+			String jsonData = gson.toJson(obj);
+//			System.out.println("jsonData=" + jsonData);
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+			resp.getWriter().write(jsonData);
+		}
 	
 }

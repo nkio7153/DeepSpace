@@ -1,6 +1,8 @@
 package com.depthspace.ticketorders.controller;
 
+import com.depthspace.member.model.MemVO;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
+import com.depthspace.ticketorders.service.MailService;
 import com.depthspace.ticketorders.service.ToServiceImpl;
 import com.depthspace.ticketorders.service.ToService;
 import com.depthspace.ticketshoppingcart.model.CartInfo;
@@ -191,13 +193,16 @@ public class TicketOrderstServlet extends HttpServlet {
         Integer amountPaid;
         Byte status=0;
         Byte paymentMethod;
+        Integer point=null;
+        String method=req.getParameter("paymentMethod");
         try{
             memId= Integer.valueOf(req.getParameter("memId"));
             orderDate=new Timestamp(System.currentTimeMillis());
             totalAmount = Integer.valueOf(req.getParameter("totalAmount"));
             pointsFeedback = pointCal(totalAmount);
             amountPaid=Integer.valueOf(req.getParameter("amountPaid"));
-            paymentMethod=Byte.valueOf(req.getParameter("paymentMethod"));
+            point=Integer.valueOf(req.getParameter("point"));
+            paymentMethod=Byte.valueOf(method);
         }catch (NumberFormatException e){
             e.printStackTrace();
             return;
@@ -212,13 +217,30 @@ public class TicketOrderstServlet extends HttpServlet {
         //用票券編號集合調用hibernate的方法取得資料庫所需要的所有資訊
         List<CartInfo> list = tscSv.getByTicketIds(ticketIds, items);
 
+
         if(memId != null && totalAmount !=null && pointsFeedback !=null && amountPaid  !=null && paymentMethod !=null){
 
             TicketOrdersVO to = new TicketOrdersVO(orderId, memId, orderDate, totalAmount, pointsFeedback, amountPaid, status, paymentMethod);
             //redis會員購物車清空
             cartSv.deleteAllCart(to.getMemId());
+            //取得會員物件
+            HttpSession session = req.getSession(false);
+            MemVO memVo = (MemVO) session.getAttribute("authenticatedMem");
+            System.out.println(memVo.getMemName());
+
             //生成一筆訂單及多對應的多筆訂單明細
-            to2 = toSv.generateTicektOrders(to, list);
+            to2 = toSv.generateTicektOrders(to, list,memVo,point);
+
+            //取得訂單編號
+            Integer orderId1 = to2.getOrderId();
+
+
+            //發送訂單成立的mail
+            String email = req.getParameter("email");
+
+            MailService mailService = new MailService();
+            //調用寄件方法  放入對方email、
+            mailService.sendOrderMail(email, memVo, to2);
         }
 //        List<TicketOrdersVO> list = toSv.getbyMemId(memId);
 //        req.setAttribute("list", list);

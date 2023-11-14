@@ -41,16 +41,51 @@
           <span class="fs-5">總金額：</span>
           <p class="mt-0 ml-auto fs-5">${ticketOrder.amountPaid}</p>
         </div>
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center" id="pmDiv">
           <span class="fs-5">付款方式：</span>
-          <p class="mt-0 ml-auto fs-5">信用卡</p>
+          <p class="mt-0 ml-auto fs-5" id="paymentMethod">${ticketOrder.paymentMethod}</p>
         </div>
 
-        <a href="#" class="btn btn-primary mt-4 rounded">返回首頁</a>
+        <a href="${pageContext.request.contextPath}/indexpage/index.jsp" class="btn btn-primary mt-4 rounded">返回首頁</a>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+    let transferHtml=`<div class="d-flex align-items-center flex-column">
+                        <span class="fs-5">請於1天內轉入以下帳號</span>
+                       <div>
+                        <span class="fs-5">銀行代號:822</span>
+                        <span class="fs-5 mx-2">銀行帳號:02013710138</span>
+                        </div>
+                      </div>`;
+    let linePayHtml=`<div class="d-flex align-items-center">
+                        <span class="fs-5">請掃碼進行付款</span>
+                        <div>
+                        <img src="${pageContext.request.contextPath}/images/linepay.jpg">
+                        </div>
+                      </div>`;
+
+    //取得付款方式
+    let paymentMethod=$("#paymentMethod");
+        switch (paymentMethod.text()) {
+          case '1':
+            paymentMethod.text("信用卡");
+            break;
+          case '2':
+            paymentMethod.text("轉帳");
+            paymentMethod.closest("#pmDiv").after(transferHtml);
+            break;
+          case '3':
+            paymentMethod.text("LINE Pay");
+            paymentMethod.closest("#pmDiv").after(linePayHtml);
+            break;
+        }
+
+  })
+</script>
 <jsp:include page="../indexpage/footer.jsp" />
 <!-- Optional JavaScript -->
 <!-- jQuery, Popper.js, Bootstrap JS -->

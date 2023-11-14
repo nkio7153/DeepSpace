@@ -38,6 +38,11 @@
     .hidden-status {
     	display: none;
 	}
+	
+	.btn:hover, .btn:focus, .btn:active, .btn:visited {
+      outline: none;
+      box-shadow: none !important;
+     }
 </style>
 </head>
 <body>

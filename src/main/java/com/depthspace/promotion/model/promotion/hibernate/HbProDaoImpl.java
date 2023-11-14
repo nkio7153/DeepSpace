@@ -59,7 +59,7 @@ public class HbProDaoImpl implements HbProDao {
         LocalDate date = LocalDate.now();
         Date currentDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
         return getSession().createQuery(
-                "from PromotionVO WHERE :currentDate <= endDate  ", PromotionVO.class)
+                "from PromotionVO WHERE :currentDate <= endDate order by startDate", PromotionVO.class)
                 .setParameter("currentDate",currentDate)
                 .list();
     }
