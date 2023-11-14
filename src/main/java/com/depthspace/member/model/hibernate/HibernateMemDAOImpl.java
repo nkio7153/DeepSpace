@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import com.depthspace.attractions.model.AttractionsVO;
 import com.depthspace.member.model.MemVO;
 public class HibernateMemDAOImpl implements HibernateMemDAO_Interface {
 	//宣告一個factory變數
@@ -38,6 +39,19 @@ public class HibernateMemDAOImpl implements HibernateMemDAO_Interface {
 			return -1;
 		}
 	}
+	@Override
+	public int updateStatus(Integer memId, byte status) {
+        try {
+            String hql = "UPDATE MemVO SET accStatus = :status WHERE memId = :id";
+            Query query = getSession().createQuery(hql);
+            query.setParameter("status", status);
+            query.setParameter("id", memId);
+            query.executeUpdate();
+            return 1;
+        } catch (Exception e) {
+            return -1;
+        }
+    }
 
 	@Override
 	public int delete(Integer memId) {
@@ -92,6 +106,14 @@ public class HibernateMemDAOImpl implements HibernateMemDAO_Interface {
 	@Override
 	public MemVO getOneMem(Integer memId) {
 		return getSession().get(MemVO.class, memId);
+	}
+	
+	@Override
+	public List<MemVO> searchMembers(String memName) {
+		Query <MemVO> query = getSession().createQuery("FROM MemVO WHERE memName LIKE :memName ", MemVO.class);
+		query.setParameter("memName", "%" + memName + "%");
+		List<MemVO> searchMembersList = query.list();
+		return searchMembersList ;
 	}
 
 }

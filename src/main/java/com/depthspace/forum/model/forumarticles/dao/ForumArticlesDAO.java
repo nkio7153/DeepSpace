@@ -1,6 +1,7 @@
 package com.depthspace.forum.model.forumarticles.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import com.depthspace.forum.model.forumarticles.ForumArticlesVO;
 
@@ -18,4 +19,6 @@ public interface ForumArticlesDAO {
 	 ForumArticlesVO getByArticleId(Integer articleId);
 	 
 	 List<ForumArticlesVO> getByArtiTypeId(Integer artiTypeId);
+	 
+	 List<ForumArticlesVO> getByArticleIds(List<Integer> articleIds);
 }

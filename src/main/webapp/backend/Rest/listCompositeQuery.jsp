@@ -10,15 +10,15 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 
-<%
-RestService restService = new RestServiecImpl();
-	List<RestVO> restList = restService.getAllRest();
-	request.setAttribute("RestList", restList);
+<%-- <% --%>
+// RestService restService = new RestServiecImpl();
+// 	List<RestVO> restList = restService.getAllRest();
+// 	request.setAttribute("RestList", restList);
 	
-	HbAdminService adminService = new HbAdminService();
-	List<AdminVO> adminList = adminService.getAllAdmins();
-	request.setAttribute("adminList", adminList);
-%>
+// 	HbAdminService adminService = new HbAdminService();
+// 	List<AdminVO> adminList = adminService.getAllAdmins();
+// 	request.setAttribute("adminList", adminList);
+<%-- %> --%>
 
 <html>
 <head>

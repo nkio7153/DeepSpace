@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.depthspace.admin.model.AdminVO;
+import com.depthspace.member.model.MemVO;
 
 import java.util.List;
 
@@ -26,8 +27,8 @@ public class HibernateAdminDAOImpl implements HibernateAdminDAO_Interface {
 	}
 
     @Override
-    public int insert(AdminVO entity) {
-    	return (Integer) getSession().save(entity);
+    public AdminVO insert(AdminVO entity) {
+    	return (AdminVO) getSession().save(entity);
     }
 
     @Override
@@ -91,9 +92,10 @@ public class HibernateAdminDAOImpl implements HibernateAdminDAO_Interface {
 		return getSession().get(AdminVO.class, adminAcc);
 	}
 
-//	public static void main(String[] args) {
-//		findByAdminAcc
-//	}
+	@Override
+	public AdminVO getOneAdmin(Integer adminId) {
+		return getSession().get(AdminVO.class, adminId);
+	}
 
 }
 

@@ -46,14 +46,32 @@
                         <li class="nav-item">
                             <a class="" href="${pageContext.request.contextPath}/Rest/getRests">餐廳</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTicket" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                景點
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownTicket">
+                                <li><a class="dropdown-item" href="">景點瀏覽</a></li>
+                                <li><a class="dropdown-item" href="">我的行程</a></li>
+                                <li><a class="dropdown-item" href="">智慧行程</a></li>
+                            </ul>
+                        </li>
                        	<c:if test="${sessionScope.memId == null}">
                         <li class="nav-item">
                             <a class="booking" href="${pageContext.request.contextPath}/member/login.jsp" name="check">登入/註冊</a>
                         </li>
                         </c:if>
                         <c:if test="${sessionScope.memId != null}">
-                        <li class="nav-item">
-                            <a class="booking" href="${pageContext.request.contextPath}/mem/logout" name="check">登出</a>
+                        <li class="nav-item dropdown">
+                            		<a class="booking">會員</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownTicket">
+                                <li><a class="dropdown-item">${authenticatedMem.memName}</a></li>
+                                <li><a class="dropdown-item" href="">我的會員資料</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList"  onclick="checkSession(event)">我的票券</a></li>
+                                <li><a class="dropdown-item" href="">通知</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist"  onclick="checkSession(event)">我的文章</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mem/logout" name="check">登出</a></li>
+                            </ul>
                         </li>
                         </c:if>
                         <li class="">
