@@ -50,12 +50,12 @@
                     <div class="col-sm">
                         <span>名字</span>
                         <br>
-                        <input class="form-control" value="${lastName}">
+                        <input class="form-control"  id="lastName" value="${lastName}">
                     </div>
                     <div class="col-sm">
                         <span>姓</span>
                         <br>
-                        <input class="form-control" value="${firstName}">
+                        <input class="form-control" id="firstName" value="${firstName}">
                     </div>
                 </div>
                 <div class="row">
@@ -81,7 +81,7 @@
                     <div class="col-sm">
                         <span>Email/電子郵件</span>
                         <br>
-                        <input class="form-control w-50" value="${authenticatedMem.memEmail}">
+                        <input class="form-control w-50" id="email" name="email" value="${authenticatedMem.memEmail}">
                     </div>
                 </div>
 
@@ -99,15 +99,15 @@
                 <div class="row text-start" id="masterCard">
                     <div class="col">
                         <span>信用卡號碼</span><br>
-                        <input type="text" placeholder="oooo oooo oooo oooo">
+                        <input type="text" id="masterNum" placeholder="oooo oooo oooo oooo">
                     </div>
                     <div class="col">
                         <span>有效期限(月/年)</span><br>
-                        <input type="text" placeholder="MM/YY">
+                        <input type="text" id="expiryDate" placeholder="MM/YY">
                     </div>
                     <div class="col">
                         <span>背面末三碼</span><br>
-                        <input type="text" placeholder="CVC/CVV">
+                        <input type="text" id="lastThird" placeholder="CVC/CVV">
                     </div>
                 </div>
                 <%--        轉帳--%>
@@ -165,6 +165,30 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 <script>
+    $("#masterNum").on('input',function(e){
+        var input = e.target;
+        var value = input.value;
+        var cursorPosition = input.selectionStart;
+
+        // 移除非數字字符
+        var plainNumber = value.replace(/\D+/g, '');
+
+        // 將數字分組，每四位一組，並以空格分隔
+        var formattedNumber = '';
+        for (let i = 0; i < plainNumber.length; i++) {
+            if (i > 0 && i % 4 === 0) {
+                formattedNumber += ' ';
+            }
+            formattedNumber += plainNumber[i];
+        }
+
+        // 更新輸入框的值
+        input.value = formattedNumber;
+
+        // 根據已添加的空格數量調整光標位置
+        var addedSpaces = formattedNumber.substring(0, cursorPosition).split(' ').length - 1;
+        input.selectionEnd = cursorPosition + addedSpaces;
+    })
     $(document).ready(function () {
         // 電話區號列表
         var phoneCodes = [
@@ -293,13 +317,59 @@
 
         //確認付款生成訂單轉發
         $("#confirmPaymentButton").on("click", function () {
-            var ok = window.confirm("是否確定要進行付款");
-            if (ok) {
-                var selectedPaymentMethod = $("input[name='paymentMethod']:checked").val();
-                let memId =${memId};
-                let amountPaid = $(".total").text();
-                let url = `${pageContext.request.contextPath}/to/save?memId=` + memId + `&totalAmount=` + sub2 + `&amountPaid=` + amountPaid + `&paymentMethod=` + selectedPaymentMethod
-                window.location.href = url;
+            let errorMsgs = [];
+            let lastName=$("#lastName").val();
+            let firstName=$("#firstName").val();
+            let phoneNumber=$("#phoneNumber").val();
+            let email=$("#email").val();
+            let paymentMethod=$('input[name="paymentMethod"]:checked').data("method");
+            if(!lastName.trim()){
+                errorMsgs.push("名字欄位不能為空。");
+            }
+            if(!firstName.trim()){
+                errorMsgs.push("姓欄位不能為空。");
+            }
+            // 驗證聯絡電話
+            if (!phoneNumber.trim()) {
+                errorMsgs.push("聯絡電話欄位不能為空。");
+            } else if (!/^\+?[0-9]{6,}$/.test(phoneNumber)) {
+                // 假設電話號碼應至少有 6 位數字，並可能以 '+' 開頭
+                errorMsgs.push("聯絡電話的格式不正確。");
+            }
+            // 驗證電子郵件
+            if (!email.trim()) {
+                errorMsgs.push("電子郵件欄位不能為空。");
+            } else if (!/\S+@\S+\.\S+/.test(email)) {
+                errorMsgs.push("電子郵件的格式不正確。");
+            }
+            if(paymentMethod=="信用卡"){
+                let masterNum=$("#masterNum").val().trim();
+                if(!masterNum || masterNum.toString().length != 16){
+                    errorMsgs.push("信用卡號碼有誤")
+                }
+                let expiryDate=$("#expiryDate").val().trim();
+                if(!expiryDate || expiryDate.toString().length !=4){
+                    errorMsgs.push("有效期限有誤")
+                }
+                let lastThird=$("#lastThird").val().trim();
+                if(!lastThird || lastThird.toString().length != 3){
+                    errorMsgs.push("背面末三碼有誤")
+                }
+            }
+            if(errorMsgs.length > 0){
+                let str = "";
+                str = errorMsgs.join("\n");
+                window.alert(str);
+            }else{
+                var ok = window.confirm("是否確定要進行付款");
+                if (ok) {
+                    let point = parseFloat($('.coupen').text());
+                    var selectedPaymentMethod = $("input[name='paymentMethod']:checked").val();
+                    let memId =${memId};
+                    let amountPaid = $(".total").text();
+                    let url = `${pageContext.request.contextPath}/to/save?memId=` + memId + `&totalAmount=` + sub2 + `&amountPaid=` + amountPaid + `&paymentMethod=` + selectedPaymentMethod + `&email=` + email +`&point=` + point;
+                    window.location.href = url;
+                }
             }
         })
     })

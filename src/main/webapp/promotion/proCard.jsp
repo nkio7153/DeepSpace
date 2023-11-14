@@ -35,7 +35,7 @@
 <body>
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp"/>
-<h3 class="text-primary bg-light p-3 border border-primary rounded text-center shadow">促銷資訊</h3>
+<h3 class="text-primary bg-light p-3 border border-primary text-center shadow">促銷資訊</h3>
 <div class="container">
   <div class="row">
     <c:forEach items="${list}" var="pro">

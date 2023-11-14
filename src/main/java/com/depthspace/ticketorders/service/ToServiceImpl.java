@@ -1,5 +1,8 @@
 package com.depthspace.ticketorders.service;
 
+import com.depthspace.member.model.MemVO;
+import com.depthspace.member.model.hibernate.HibernateMemDAOImpl;
+import com.depthspace.member.model.hibernate.HibernateMemDAO_Interface;
 import com.depthspace.memticketowned.model.MemTicketOwnedVO;
 import com.depthspace.memticketowned.model.hibernate.HbMtoDao;
 import com.depthspace.memticketowned.model.hibernate.HbMtoDaoImpl;
@@ -28,6 +31,7 @@ public class ToServiceImpl implements ToService {
     private HbTodDao todDao;
     private HbTscDao tscDao;
     private HbMtoDao mtoDao;
+    private HibernateMemDAO_Interface memDao;
     //創建票券訂單dao的方法
     public ToServiceImpl(){
 
@@ -35,12 +39,13 @@ public class ToServiceImpl implements ToService {
         todDao= new HbTodDaoImpl(HibernateUtil.getSessionFactory());
         tscDao= new HbTscDaoImpl(HibernateUtil.getSessionFactory());
         mtoDao = new HbMtoDaoImpl(HibernateUtil.getSessionFactory());
+        memDao= new HibernateMemDAOImpl(HibernateUtil.getSessionFactory());
     }
 
 
     //生成一筆訂單、查出最新一筆訂單資料
     @Override
-    public TicketOrdersVO generateTicektOrders(TicketOrdersVO entity, List<CartInfo> ciList) {
+    public TicketOrdersVO generateTicektOrders(TicketOrdersVO entity, List<CartInfo> ciList, MemVO memVO, Integer point) {
         TicketOrdersVO vo = null;
         //進入訂單生成
         if(entity != null){
@@ -97,7 +102,9 @@ public class ToServiceImpl implements ToService {
             todDao.insertBatch(todList);
             //調用會員擁有票券生成多筆票券
             mtoDao.insertBatch(mtoList);
-
+            //會員物件的點數更新(減掉使用點數，加上回饋點數)
+            memVO.setMemPoint(memVO.getMemPoint() - point + vo.getPointsFeedback());
+            memDao.update(memVO);
         }
         return vo;
     }
