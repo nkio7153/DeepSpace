@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.depthspace.admin.model.AdminVO;
+import com.depthspace.member.model.MemVO;
 
 public interface HibernateAdminDAO_Interface {
 
-	int insert(AdminVO entity);
+	AdminVO insert(AdminVO entity);
 
 	int update(AdminVO entity);
 	
@@ -23,4 +24,6 @@ public interface HibernateAdminDAO_Interface {
 
 	AdminVO getById(String adminAcc);
 	AdminVO findOneAdmin(String adminAcc);
+	
+	AdminVO getOneAdmin(Integer adminId);
 }
