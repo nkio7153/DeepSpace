@@ -38,7 +38,7 @@
 <div class="table-list">
 
 	<div class="container mt-5">
-		<h1>新增專欄文章</h1>
+		<h5>新增專欄文章</h5>
 		<form action="<%=request.getContextPath()%>/columnmg/add"
 			method="post" enctype="multipart/form-data">
 			<div class="row">
@@ -57,12 +57,12 @@
 				<!-- 文章標題 -->
 				<div class="form-group col-md-6">
 					<label for="artiTitle">文章標題</label> <input type="text"
-						class="form-control" id="artiTitle" name="artiTitle">
+						class="form-control" id="artiTitle" name="artiTitle" required>
 				</div>
 				<!-- 專欄圖片 獨立一行-->
 				<div class="form-group col-md-6">
 					<label for="columnImage">文章主圖</label> <input type="file"
-						class="form-control-file" id="colImg" name="colImg"
+						class="form-control-file" id="colImg" name="colImg" required
 						onchange="previewImage(event)">
 				</div>
 
@@ -74,7 +74,7 @@
 				<div class="form-group col-md-12">
 					<label for="artiContent">描述</label>
 					<textarea class="form-control" id="artiContent" name="artiContent"
-						rows="4"></textarea>
+						rows="4" required></textarea>
 					<script>
 						CKEDITOR.replace('artiContent');
 					</script>
@@ -89,7 +89,7 @@
 				<!-- 發文管理者 -->
 				<div class="form-group col-md-6">
 					<label for="adminId">發文者</label> <select name="adminId"
-						id="adminId" class="form-control">
+						id="adminId" class="form-control" required>
 						<option value="adminId">發文管理者</option>
 						<c:forEach var="adminItem" items="${admins}">
 							<option value="${adminItem.adminId}">${adminItem.adminName}</option>

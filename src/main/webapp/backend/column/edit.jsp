@@ -36,7 +36,7 @@
 	<div class="container mt-5">
 		<div class="container mt-5">
 			<div class="container mt-5">
-				<h1>修改專欄</h1>
+				<h5>修改專欄</h5>
 				<form action="<%=request.getContextPath()%>/columnmg/edit"
 					method="post" enctype="multipart/form-data">
 					<div class="row">
@@ -58,7 +58,7 @@
 						<!-- 文章標題 -->
 						<div class="form-group col-md-6">
 							<label for="artiTitle">文章標題</label> <input type="text"
-								class="form-control" id="artiTitle" name="artiTitle"
+								class="form-control" id="artiTitle" name="artiTitle" required
 								value="${columnArticles.artiTitle}">
 						</div>
 						<!-- 圖片上傳 -->
@@ -79,7 +79,7 @@
 						<!-- 文章內容 獨立一行-->
 						<div class="form-group col-md-12">
 							<label for="description">描述</label>
-							<textarea class="form-control" id="description"
+							<textarea class="form-control" id="description" required
 								name="artiContent" rows="4">${columnArticles.artiContent}</textarea>
 							<script>
 								CKEDITOR.replace('description');

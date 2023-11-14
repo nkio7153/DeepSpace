@@ -83,7 +83,7 @@
 						    <div id="image-list" class="d-flex flex-wrap">
 						        <!-- 已上傳的圖片會透過JavaScript動態加載到這裡 -->
 						    </div>
-						    <button type="button" id="addImage" class="btn btn-primary mt-2" required name="ticketImages[]">新增圖片</button>
+						    <button type="button" id="addImage" class="btn btn-primary mt-2" required name="ticketImages[]" >新增圖片</button>
 						</div>
             
 						<!-- 使用天數 -->

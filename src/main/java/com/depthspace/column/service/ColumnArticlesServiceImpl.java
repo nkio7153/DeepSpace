@@ -161,4 +161,21 @@ public class ColumnArticlesServiceImpl implements ColumnArticlesService {
 	    return dao.getByCompositeQuery(criteriaMap);
 	}
 
+	@Override
+	public List<ColumnArticlesVO> getAllColumnTypes(Integer colTypeId) {
+		try(Session session = HibernateUtil.getSessionFactory().openSession()){
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<ColumnArticlesVO> criteriaQuery = criteriaBuilder.createQuery(ColumnArticlesVO.class);
+			Root<ColumnArticlesVO> root = criteriaQuery.from(ColumnArticlesVO.class);
+			criteriaQuery.where(criteriaBuilder.equal(root.get("colType").get("colTypeId"), colTypeId));
+			criteriaQuery.select(root);
+			
+			Query<ColumnArticlesVO> query = session.createQuery(criteriaQuery);
+			
+			return query.getResultList();
+		} catch (Exception e) {
+			throw new RuntimeException("Error",e);
+		}
+	}
+
 }

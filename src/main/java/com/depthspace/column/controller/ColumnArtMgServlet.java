@@ -3,7 +3,11 @@ package com.depthspace.column.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -63,6 +67,9 @@ public class ColumnArtMgServlet extends HttpServlet {
 		case "/edit": // 專欄修改
 			doEdit(req, res);
 			break;
+		case "/find": 
+			doSearch(req, res);
+			break;	
 		case "/view": 
 			view(req, res);
 			break;
@@ -74,9 +81,8 @@ public class ColumnArtMgServlet extends HttpServlet {
 
 	/************ 專欄列表 ************/
 	private void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		// 取得所有內容 (處理篩選故要留)
-//		List<ColumnArticlesVO> columnListAll = columnArticlesService.getAllArti();
-//		req.setAttribute("columnListAll", columnListAll);
+		List<ColumnArticlesVO> columnListAll = columnArticlesService.getAllArti();
+		req.setAttribute("columnListAll", columnListAll);
 
 		// 取得所有內容(VO) "分頁"
 		String page = req.getParameter("page");
@@ -89,7 +95,14 @@ public class ColumnArtMgServlet extends HttpServlet {
 		
 		req.setAttribute("columnList", columnList);
 		req.setAttribute("currentPage", currentPage);
-
+		
+		//處理專欄類型不重複
+		Set<ColumnTypesVO> uniqueTypes = new HashSet<>();
+		for (ColumnArticlesVO columnArticles : columnListAll) {
+			uniqueTypes.add(columnArticles.getColType());
+		}
+		req.setAttribute("uniqueTypes", new ArrayList<>(uniqueTypes));
+		
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/column/list.jsp");
 		dispatcher.forward(req, res);
 	}
@@ -224,7 +237,32 @@ public class ColumnArtMgServlet extends HttpServlet {
 		
 	}
 	
-	
+	/************ 搜尋 ************/
+    protected void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    	Integer colTypeId = null;
+    	Map<String, String[]> map =req.getParameterMap();
+    	
+    	try {
+    		colTypeId = Integer.valueOf(req.getParameter("colTypeId"));
+    	} catch (NumberFormatException e) {
+    		colTypeId = null;
+    	}
+    	List<ColumnArticlesVO> list = new ArrayList<>();
+    	
+		if (colTypeId != null) {
+			List<ColumnArticlesVO> colTypeList = columnArticlesService.getAllColumnTypes(colTypeId);
+			list.addAll(colTypeList);
+		}
+		
+		String[] artiTitleQueries = map.get("artiTitle");
+		if (artiTitleQueries != null && artiTitleQueries.length > 0 && !artiTitleQueries[0].isEmpty()) {
+			List<ColumnArticlesVO> artiTitleList = columnArticlesService.getColumnArticlesByCompositeQuery(map);
+			list.addAll(artiTitleList);
+		}
+		System.out.println(list);
+		req.setAttribute("list", list);
+		req.getRequestDispatcher("/backend/column/find.jsp").forward(req, res);
+	}	
 	/************ 圖片讀入DB ************/
 	public byte[] readInputStream(InputStream inputStream) throws IOException {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
