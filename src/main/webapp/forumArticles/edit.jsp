@@ -53,9 +53,6 @@
             border-radius: 4px;
             cursor: pointer;
         }
-        .button:hover {
-            background-color: #0056b3;
-        }
     </style>
 </head>
 <body>

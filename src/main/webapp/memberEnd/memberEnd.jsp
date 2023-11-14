@@ -25,7 +25,7 @@
 
   		<%--      放入自己body裡的代碼--%>
 
-	    <div class="container" style="overflow-x: auto;">
+	    <div class="container" style="overflow-x: auto; overflow-y: auto;">
 	        <h3 class="text-center mt-2">會員列表</h3>
 	        <hr class="my-0">
 	

@@ -2,7 +2,12 @@ package com.depthspace.forum.model.forumarticles.service;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.Set;
+import java.util.ArrayList;
 
+import com.depthspace.forum.model.articlescollect.ArticlesCollectVO;
+import com.depthspace.forum.model.articlescollect.dao.ArticlesCollectDAO;
+import com.depthspace.forum.model.articlescollect.dao.ArticlesCollectDAOImpl;
 import com.depthspace.forum.model.forumarticles.ForumArticlesVO;
 import com.depthspace.forum.model.forumarticles.dao.ForumArticlesDAO;
 import com.depthspace.forum.model.forumarticles.dao.ForumArticlesDAOImpl;
@@ -11,9 +16,11 @@ import com.depthspace.utils.HibernateUtil;
 public class ForumArticlesServiceImpl implements ForumArticlesService {
 
 	private ForumArticlesDAO dao;
+	private ArticlesCollectDAO acdao;
 
 	public ForumArticlesServiceImpl() {
 		dao = new ForumArticlesDAOImpl(HibernateUtil.getSessionFactory());
+		acdao = new ArticlesCollectDAOImpl(HibernateUtil.getSessionFactory());
 	}
 
 	@Override
@@ -48,6 +55,7 @@ public class ForumArticlesServiceImpl implements ForumArticlesService {
 		return list;
 	}
 
+	// 查出這個會員有那些文章
 	@Override
 	public List<ForumArticlesVO> getByMemId(Integer memId) {
 		List<ForumArticlesVO> list = dao.getByMemId(memId);
@@ -73,6 +81,38 @@ public class ForumArticlesServiceImpl implements ForumArticlesService {
 	@Override
 	public List<ForumArticlesVO> getByArtiTypeId(Integer artiTypeId) {
 		List<ForumArticlesVO> list = dao.getByArtiTypeId(artiTypeId);
+		for (ForumArticlesVO vo : list) {
+			if (vo.getArtiImg() != null) {
+				// 獲取 Base64 編碼器
+				Base64.Encoder encoder = Base64.getEncoder();
+				// 將二進制數據編碼為字符串
+				String base64EncodedString = encoder.encodeToString(vo.getArtiImg());
+				// 輸出編碼後的字符串
+				System.out.println("Base64 Encoded String : " + base64EncodedString);
+				vo.setBase64Str(base64EncodedString);
+			}
+		}
+		return list;
+	}
+
+	// 查出這個會員有收藏那些文章
+	@Override
+	public List<ForumArticlesVO> getByArticleIds(Integer memId) {
+		// 根據會員ID取得該會員收藏的文章列表
+		List<ArticlesCollectVO> aclist = acdao.getByMemId(memId);
+
+		// 創建一個文章列表集合,用於存儲收藏文章的ID
+		List<Integer> articleIds = new ArrayList<>();
+
+		// 遍歷aclist中的每個ArticlesCollectVO對象。
+		for (ArticlesCollectVO acvo : aclist) {
+
+			// 將每個ArticlesCollectVO對象的articleId添加到articleIds列表中，以便稍後使用。
+			articleIds.add(acvo.getArticleId());
+		}
+
+		// 一旦獲得了會員收藏的文章ID列表，這一行調用了dao的getByArticleIds方法，並傳遞了articleIds，以獲取相應的論壇文章的信息，將結果存儲在list中。
+		List<ForumArticlesVO> list = dao.getByArticleIds(articleIds);
 		for (ForumArticlesVO vo : list) {
 			if (vo.getArtiImg() != null) {
 				// 獲取 Base64 編碼器
