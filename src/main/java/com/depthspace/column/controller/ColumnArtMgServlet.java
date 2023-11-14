@@ -179,7 +179,7 @@ public class ColumnArtMgServlet extends HttpServlet {
 			}
 		}
 		int pageQty = columnArticlesService.getPageTotal();
-		req.getSession().setAttribute("PageQty", pageQty);
+		req.getSession().setAttribute("pageQty", pageQty);
 		
 		res.sendRedirect(req.getContextPath() + "/columnmg/list");
 	}

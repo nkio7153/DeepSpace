@@ -236,18 +236,18 @@
 function updateTicketList(currentPage) {
     $('#loadingSpinner').show();
     
-    // 收集搜索和篩選條件
+    // 篩選
     var filterConditions = {};
     filterConditions['page'] = currentPage;
     filterConditions['ajax'] = 'true';
 
-    // 搜尋關鍵字
+    // 搜尋
     var searchQuery = $('#ticketName').val(); 
     if (searchQuery) {
         filterConditions['ticketName'] = [searchQuery];
     }
 
-    // 篩選條件
+    // 篩選
     $('input:checkbox[name="areaId"]:checked').each(function() {
         if (!filterConditions['areaId']) {
             filterConditions['areaId'] = [];
@@ -261,7 +261,7 @@ function updateTicketList(currentPage) {
         filterConditions['ticketTypeId'].push($(this).val());
     });
 
-    // 排序選項
+    // 排序
     var sortOption = $('#sortOption').val().split('_');
     filterConditions['sortField'] = sortOption[0];
     filterConditions['sortOrder'] = sortOption[1];
