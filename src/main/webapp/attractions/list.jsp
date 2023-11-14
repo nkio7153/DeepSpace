@@ -107,7 +107,7 @@
                 }
                 let attractionsName = $('#attractionName').val();
                 
-                console.log(cityId + attractionsName)
+//                 console.log(cityId + attractionsName)
              	// 發送 fetch 請求
              	let url = "${pageContext.request.contextPath}/attr/search?cityId=" + cityId + "&attractionsName=" + attractionsName;
              	fetch(url)
@@ -115,40 +115,40 @@
 		                return response.text();
 		            })
 		            .then(function(data){
-		                console.log(data);
+		                console.log(this);
 		            	$('#attricationsRight').empty();
-		            	
-// 		            	data.forEach(function(list) {
-// 		                    let card = `
-// 		                    	<div class="form-group">
-// 		    						<a href="${pageContext.request.contextPath}/attr/oneList?attractionsId=${listItem.attractionsId}"
-// 		    							class="no-underline">
-// 		    							<!-- 整張卡片點擊 -->
-// 		    							<div class="card mb-3 clickable-card">
-// 		    								<div class="row no-gutters">
-// 		    									<div class="col-md-4">
-<%-- 		    										<img src="<%=request.getContextPath()%>/attractionsImage?attractionsId=${list.attractionsId}" --%>
-// 		    											alt="" class="attractions-img">
-// 		    									</div>
-// 		    									<div class="col-md-8">
-// 		    										<div class="card-body">
-// 		    											<h5 class="card-title">${list.attractionsName}</h5>
-// 		    											<p class="card-title">${list.address}&ensp;|&ensp;</p>
-// 		    											<p class="card-title">
-// 		    												<label for="attractionsId_${status.index}">
-// 		    													${list.description} </label>
-// 		    											</p>
-// 		    										</div>
-// 		    									</div>
-// 		    								</div>
-// 		    							</div>
-// 		    						</a>
-// 		    				</div>`;
-		                        
-		                    
-// 		                    // 添加到列表中
-// 		                    $('#attricationsRight').append(card);
-// 		                });
+		            	// 重新加入元素
+		            	 let jsonData = JSON.parse(data);
+		            	// 重新加入元素
+		            	    for (let i = 0; i < jsonData.length; i++) {
+		            	        let newItem = jsonData[i];
+		            	        // 重新加入元素
+		            	        let newElement = `
+		            	            <a href="${pageContext.request.contextPath}/attr/oneList?attractionsId=${newItem.attractionsId}" class="no-underline">
+		            	                <div class="card mb-3 clickable-card">
+		            	                    <div class="row no-gutters">
+		            	                        <div class="col-md-4">
+		            	                            <img src="${request.getContextPath()}/attractionsImage?attractionsId=${newItem.attractionsId}" alt="" class="attractions-img">
+		            	                        </div>
+		            	                        <div class="col-md-8">
+		            	                            <div class="card-body">
+		            	                                <h5 class="card-title">${newItem.attractionsName}</h5>
+		            	                                <p class="card-title">${newItem.address}&ensp;|&ensp;</p>
+		            	                                <p class="card-title">
+		            	                                    <label for="attractionsId_${i}">
+		            	                                        ${newItem.description}
+		            	                                    </label>
+		            	                                </p>
+		            	                            </div>
+		            	                        </div>
+		            	                    </div>
+		            	                </div>
+		            	            </a>
+		            	        `;
+	
+			            	// 將新元素加入到容器中
+			            	$('#attricationsRight .form-group').append(newElement);
+                        }
 		            })
 		            .catch(function(error){
 		                console.log(error);
