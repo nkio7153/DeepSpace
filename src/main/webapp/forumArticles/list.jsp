@@ -28,6 +28,9 @@ $(document).ready(function() {
                     var base64ImageData = item.base64Str;
                     var date = new Date(item.artiTime);
                     var formattedDate = formatDate(date);
+                    var cleanArtiText = item.artiText
+	                .replace(/<span[^>]*>/g, '')
+	                .replace(/<\/span>/g, '');
                     var likesSpan = '<span class="likes float-right"><i class="fas fa-thumbs-up"></i> ' + item.artiLk + '</span>';
                     var card = $('<div class="col-md-4 mb-3">')
                     .append('<div class="card h-100">' +
@@ -35,7 +38,7 @@ $(document).ready(function() {
                         '<img src="data:image/jpeg;base64,' + base64ImageData + '" class="card-img-top fixed-height-img">' +
                         '<div class="card-body card-content">' +
                             '<h5 class="card-title">' + item.artiTitle + '</h5>' +
-                            '<p class="card-text">' + item.artiText + '</p>' +
+                            '<div class="card-text hidden">'  + cleanArtiText + '</div>' +
                         '</div>' +
                         '<ul class="list-group list-group-flush">' +                       
                             '<li class="list-group-item hidden-status">訊息ID: ' + item.msgId + '</li>' +
@@ -61,11 +64,13 @@ $(document).ready(function() {
     	        success: function(response) {
     	            let articlesCollectList = response.articlesCollectList;
     	            let forumArticlesList = response.forumArticlesList;
-
     	            forumArticlesList.forEach(function(item) {
     	                var base64ImageData = item.base64Str;
     	                var date = new Date(item.artiTime);
     	                var formattedDate = formatDate(date);
+    	                var cleanArtiText = item.artiText
+    	                .replace(/<span[^>]*>/g, '')
+    	                .replace(/<\/span>/g, '');
     	                var likesSpan = '<span class="likes float-right"><i class="fas fa-thumbs-up"></i> ' + item.artiLk + '</span>';
     	                var isCollected = articlesCollectList.some(collectArticle => collectArticle.articleId === item.articleId);
     	                var buttonText = isCollected ? '已收藏' : '收藏文章';
@@ -76,7 +81,7 @@ $(document).ready(function() {
     	                        '<img src="data:image/jpeg;base64,' + base64ImageData + '" class="card-img-top fixed-height-img">' +
     	                        '<div class="card-body card-content">' +
     	                            '<h5 class="card-title">' + item.artiTitle + '</h5>' +
-    	                            '<p class="card-text">' + item.artiText + '</p>' +
+    	                            '<div class="card-text hidden">'  + cleanArtiText + '</div>' +
     	                        '</div>' +
     	                        '<ul class="list-group list-group-flush">' +                       
     	                            '<li class="list-group-item hidden-status">訊息ID: ' + item.msgId + '</li>' +
@@ -84,7 +89,7 @@ $(document).ready(function() {
     	                            '<li class="list-group-item hidden-status">文章編號: ' + item.articleId + '</li>' +
     	                        '</ul>' +
     	                        '<div class="card-footer">' +
-    	                            '<small class="text-muted">發布時間: ' + formattedDate + '</small>' +
+    	                            '<small class="text-muted">發布時間: ' + formattedDate + '</small>' +    	                        
     	                            '<button class="' + buttonClass + '" data-articleid="' + item.articleId + '">' + buttonText + '</button>'+                        
     	                        '</div>' +
     	                '</div>');
@@ -147,6 +152,23 @@ $(document).ready(function() {
 	            });
 	        }
 	    });
+	    
+	    $('#articlesRow').on('click', '.card', function() {
+	        var articleImage = $(this).find('img.card-img-top').attr('src');
+	        var articleTitle = $(this).find('h5.card-title').text();
+	        var articleText = $(this).find('div.card-text').html();
+	        var articleDate = $(this).find('.text-muted').text().replace('發布時間: ', '');
+
+	        // 填充模態對話框中的內容
+	        $('#articleImage').attr('src', articleImage);
+	        $('#articleTitle').text(articleTitle);
+	        $('#articleText').html(articleText);
+	        $('#articleDate').text('發布時間: ' + articleDate);
+
+	        // 顯示模態對話框
+	        $('#articleDetailsModal').modal('show');
+	    });
+	    
 });
 
     function formatDate(date) {
@@ -199,6 +221,18 @@ $(document).ready(function() {
       outline: none;
       box-shadow: none !important;
      }
+     
+    div.hidden {
+     display:none;
+     }
+     
+    div.font-sizee p {
+    font-size: 20px;
+	}
+	
+	div.font-sizee {
+    font-size: 20px;
+	}
 </style>
 
 </head>
@@ -228,6 +262,35 @@ $(document).ready(function() {
     <div id="articlesRow" class="row">
         <!-- 卡片內容將會通過 jQuery 動態加載到這裡 -->
     </div>
+</div>
+
+<!-- 模態對話框 -->
+<div class="modal fade" id="articleDetailsModal" tabindex="-1" aria-labelledby="articleDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="articleDetailsModalLabel">文章詳細信息</h5>
+        <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card" style="width: 45rem;">
+          <div id="pic">
+            <img src="" class="card-img-top" alt="文章圖片" id="articleImage">
+          </div>
+          <div class="card-body">
+            <h3 class="card-title" id="articleTitle">文章標題:</h3>
+            <div class="card-text font-sizee" id="articleText">文章內容:</div>
+            <div class="d-flex justify-content-end">
+              <h6 class="card-text" id="articleDate">發布時間:</h6>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <jsp:include page="../indexpage/footer.jsp" />
