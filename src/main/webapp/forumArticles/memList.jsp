@@ -38,6 +38,11 @@
     .hidden-status {
     	display: none;
 	}
+	
+	.btn:hover, .btn:focus, .btn:active, .btn:visited {
+      outline: none;
+      box-shadow: none !important;
+     }
 </style>
 </head>
 <body>
@@ -56,7 +61,7 @@
 		                    $(this).remove();
 		                }
 		            });
-		            window.location.href='<%=request.getContextPath()%>/forumArticles/list.jsp';
+		            window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=getmemlist'
 		        }
 		    });
 		}
