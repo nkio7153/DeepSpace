@@ -1,5 +1,6 @@
 package com.depthspace.ticketorders.service;
 
+import com.depthspace.member.model.MemVO;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 import com.depthspace.ticketshoppingcart.model.CartInfo;
 
@@ -8,7 +9,7 @@ import java.util.Map;
 
 public interface ToService {
     //生成一筆訂單
-    public TicketOrdersVO generateTicektOrders(TicketOrdersVO entity, List<CartInfo> ciList);
+    public TicketOrdersVO generateTicektOrders(TicketOrdersVO entity, List<CartInfo> ciList, MemVO memVO, Integer point);
     //更新一筆訂單
     public TicketOrdersVO updateTicektOrders(TicketOrdersVO entity);
     //刪除一筆訂單

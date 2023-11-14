@@ -34,6 +34,10 @@ public class CityService {
 		List<CityVO> list = dao.getAll();
 		return list;
 	}
+	public CityVO findByPrimaryKey(Integer cityId) {
+		CityVO cityVo = dao.findByPrimaryKey(cityId);
+		return cityVo;
+	}
 	
 	
 }

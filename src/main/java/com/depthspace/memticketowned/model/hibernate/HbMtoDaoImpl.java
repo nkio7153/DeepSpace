@@ -62,7 +62,7 @@ public class HbMtoDaoImpl implements HbMtoDao {
     @Override
     public List<MemTicketDetails> getByMemId(Integer memId, int currentPage) {
         int first = (currentPage - 1) * PAGE_MAX_RESULT;
-        return getSession().createQuery("from MemTicketDetails where memId= :memId order by statusOfUse", MemTicketDetails.class)
+        return getSession().createQuery("from MemTicketDetails where memId= :memId order by statusOfUse, expiryDate", MemTicketDetails.class)
                 .setParameter("memId",memId)
                 .setFirstResult(first)
                 .setMaxResults(PAGE_MAX_RESULT)

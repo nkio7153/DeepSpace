@@ -14,17 +14,18 @@
 <body>
 <%--include header.jsp--%>
 <jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+
 <div class="container-fluid my-0">
     <div class="row">
         <%--    側邊欄--%>
-        <div class="col-lg-2 g-3 my-0">
+        <div class="col-lg-2 g-3 mt-1">
             <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
         </div>
-        <div class="col-lg-10 g-2 transparent rounded my-0">
+        <div class="col-lg-10 g-2 transparent rounded mt-1">
 
   		<%--      放入自己body裡的代碼--%>
 
-	    <div class="container" style="overflow-x: auto;">
+	    <div class="container" style="overflow-x: auto; overflow-y: auto;">
 	        <h3 class="text-center mt-2">會員列表</h3>
 	        <hr class="my-0">
 	

@@ -69,14 +69,15 @@
 
 
     <!-- 引入Bootstrap CSS樣式表 -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <jsp:include page="/indexpage/header.jsp"/>
 <jsp:include page="/indexpage/headpic.jsp"/>
+<h3 class="text-primary bg-light p-3 border border-primary text-center shadow">我的票券</h3>
 <div class="container mt-4">
-    <h1 class="text-center my-4">我的票券</h1>
-    <hr>
+<%--    <h1 class="text-center my-4">我的票券</h1>--%>
+<%--    <hr>--%>
     <c:if test="${mtoPageQty > 0}">
         <b><font color=red>第${currentPage}/${mtoPageQty}頁</font></b>
     </c:if>

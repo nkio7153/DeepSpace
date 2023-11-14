@@ -44,7 +44,7 @@
 						<c:forEach var="areaItem" items="${city}" varStatus="status">
 							<div class="custom-control custom-checkbox">
 								<input type="checkbox" class="custom-control-input"
-									id="cityId_${status.index}" name="areaId"
+									id="cityId_${status.index}" name="cityId"
 									value="${areaItem.cityId}">
 									<label class="custom-control-label" for="cityId_${status.index}">
 										${areaItem.cityName} 
@@ -101,18 +101,54 @@
                 let formData = $(this).serialize();
 //                 console.log(formData)
                 
-                let areaId = $('input[name="areaId"]:checked').val();
+                let cityId = $('input[name="cityId"]:checked').val();
+                if(cityId === undefined){
+                	cityId = 0;
+                }
                 let attractionsName = $('#attractionName').val();
                 
-                console.log(areaId + attractionsName)
+                console.log(cityId + attractionsName)
              	// 發送 fetch 請求
-             	let url = "${pageContext.request.contextPath}/attr/search?areaId=" + areaId + "&attractionsName=" + attractionsName;
+             	let url = "${pageContext.request.contextPath}/attr/search?cityId=" + cityId + "&attractionsName=" + attractionsName;
              	fetch(url)
 		            .then(function(response){
 		                return response.text();
 		            })
 		            .then(function(data){
-// 		                console.log(data);
+		                console.log(data);
+		            	$('#attricationsRight').empty();
+		            	
+// 		            	data.forEach(function(list) {
+// 		                    let card = `
+// 		                    	<div class="form-group">
+// 		    						<a href="${pageContext.request.contextPath}/attr/oneList?attractionsId=${listItem.attractionsId}"
+// 		    							class="no-underline">
+// 		    							<!-- 整張卡片點擊 -->
+// 		    							<div class="card mb-3 clickable-card">
+// 		    								<div class="row no-gutters">
+// 		    									<div class="col-md-4">
+<%-- 		    										<img src="<%=request.getContextPath()%>/attractionsImage?attractionsId=${list.attractionsId}" --%>
+// 		    											alt="" class="attractions-img">
+// 		    									</div>
+// 		    									<div class="col-md-8">
+// 		    										<div class="card-body">
+// 		    											<h5 class="card-title">${list.attractionsName}</h5>
+// 		    											<p class="card-title">${list.address}&ensp;|&ensp;</p>
+// 		    											<p class="card-title">
+// 		    												<label for="attractionsId_${status.index}">
+// 		    													${list.description} </label>
+// 		    											</p>
+// 		    										</div>
+// 		    									</div>
+// 		    								</div>
+// 		    							</div>
+// 		    						</a>
+// 		    				</div>`;
+		                        
+		                    
+// 		                    // 添加到列表中
+// 		                    $('#attricationsRight').append(card);
+// 		                });
 		            })
 		            .catch(function(error){
 		                console.log(error);
@@ -120,72 +156,10 @@
 		        })
                 
             });
+      
+
     </script>
-	<!-- 景點列表 -->
-	<!--                 <div class="attraction-lists"> -->
-	<%--                     <c:forEach items="${list}" var="attractions"> --%>
-	<%--                         <a href="${pageContext.request.contextPath}/attractions/details?attractionsId=${attractions.attractionsId}" class="no-underline"> --%>
-	<!--                             <div class="card mb-3 clickable-card"> -->
-	<!-- 								<div class="row no-gutters"> -->
-	<!-- 									<div class="col-md-4"> -->
-	<!-- 										可以加上景點的圖片 -->
-	<!-- 										<img -->
-	<%-- 											src="<%=request.getContextPath()%>/attractionimage?attractionsId=${attractions.attractionId}" --%>
-	<!-- 											alt="Attraction Image" class="attraction-img"> -->
-	<!-- 									</div> -->
-	<!-- 									<div class="col-md-8"> -->
-	<!-- 										<div class="card-body"> -->
-	<%-- 											<h5 class="card-title">${attractions.attractionName}</h5> --%>
-	<%-- 											<p class="card-title">${attractions.city.cityName}</p> --%>
-	<!-- 											<p class="card-text"> -->
-	<!-- 												這裡可以加上景點的描述 -->
-	<%-- 												${attractions.description} --%>
-	<!-- 											</p> -->
-	<!-- 											其他景點相關的資訊 -->
-	<!-- 										</div> -->
-	<!-- 									</div> -->
-	<!-- 								</div> -->
-	<!-- 							</div> -->
-	<!-- 						</a> -->
-	<%--                     </c:forEach> --%>
-	<!--                 </div> -->
 
-	
-
-	
-
-	<!-- 這裡可以保留或修改分頁部分，視情況而定 -->
-
-
-
-
-	<!-- 				景點列表  -->
-	<!-- 				<div class="attraction-lists" id="attractionright"> -->
-	<%-- 					<c:forEach items="${list}" var="attractions"> --%>
-	<%-- 					    <a href="${pageContext.request.contextPath}/attractions/details?attractionId=${attractions.attractionsId}" class="no-underline"> --%>
-	<!-- 					        <div class="card mb-3 clickable-card"> -->
-	<!-- 					            <div class="row no-gutters"> -->
-	<!-- 					                <div class="col-md-4"> -->
-	<!-- 					                    可以加上景點的圖片 -->
-	<%-- 					                    <img src="<%=request.getContextPath()%>/attractionimage?attractionId=${attractions.attractionId}" alt="Attraction Image" class="attraction-img"> --%>
-	<!-- 					                </div> -->
-	<!-- 					                <div class="col-md-8"> -->
-	<!-- 					                    <div class="card-body"> -->
-	<%-- 					                        <h5 class="card-title">${attractions.attractionName}</h5> --%>
-	<%-- 					                        <p class="card-title">${attractions.city.cityName}</p> --%>
-	<!-- 					                        <p class="card-text"> -->
-	<!-- 					                            這裡可以加上景點的描述 -->
-	<%-- 					                            ${attractions.description} --%>
-	<!-- 					                        </p> -->
-	<!-- 					                        其他景點相關的資訊 -->
-	<!-- 					                    </div> -->
-	<!-- 					                </div> -->
-	<!-- 					            </div> -->
-	<!-- 					        </div> -->
-	<!-- 					    </a> -->
-	<%-- 					</c:forEach> --%>
-
-	<!-- 				</div> -->
 	<!-- jQuery & Bootstrap JS -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
