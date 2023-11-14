@@ -26,13 +26,8 @@ public class AdminVO implements Serializable{
 	@Column(name = "ADMIN_STATUS")
 	private Byte adminStatus;
 	
-	
 	public AdminVO() {
     }
-	
-	
-
-	
 
 	public AdminVO(Integer adminId, String adminName, String adminAcc, String adminPwd, Byte adminStatus) {
 		super();
@@ -43,12 +38,6 @@ public class AdminVO implements Serializable{
 		this.adminStatus = adminStatus;
 	}
 	
-	
-
-
-
-
-
 	public AdminVO(String adminName, String adminAcc, String adminPwd, Byte adminStatus) {
 		super();
 		this.adminName = adminName;
@@ -57,89 +46,45 @@ public class AdminVO implements Serializable{
 		this.adminStatus = adminStatus;
 	}
 
-
-
-
-
 	public Integer getAdminId() {
 		return adminId;
 	}
-
-
-
-
 
 	public void setAdminId(Integer adminId) {
 		this.adminId = adminId;
 	}
 
-
-
-
-
 	public String getAdminName() {
 		return adminName;
 	}
-
-
-
-
 
 	public void setAdminName(String adminName) {
 		this.adminName = adminName;
 	}
 
-
-
-
-
 	public String getAdminAcc() {
 		return adminAcc;
 	}
-
-
-
-
 
 	public void setAdminAcc(String adminAcc) {
 		this.adminAcc = adminAcc;
 	}
 
-
-
-
-
 	public String getAdminPwd() {
 		return adminPwd;
 	}
-
-
-
-
 
 	public void setAdminPwd(String adminPwd) {
 		this.adminPwd = adminPwd;
 	}
 
-
-
-
-
 	public Byte getAdminStatus() {
 		return adminStatus;
 	}
 
-
-
-
-
 	public void setAdminStatus(Byte adminStatus) {
 		this.adminStatus = adminStatus;
 	}
-
-
-
-
 
 	@Override
 	public String toString() {
