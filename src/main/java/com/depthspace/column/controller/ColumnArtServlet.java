@@ -1,13 +1,13 @@
 package com.depthspace.column.controller;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,28 +16,24 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import com.depthspace.column.model.ColumnArticlesVO;
 import com.depthspace.column.model.ColumnTypesVO;
-import com.depthspace.column.model.ColumnImagesVO;
-import com.depthspace.admin.model.model.AdminVO;
-import com.depthspace.attractions.model.CityVO;
 import com.depthspace.column.service.ColumnArticlesService;
 import com.depthspace.column.service.ColumnArticlesServiceImpl;
 import com.depthspace.column.service.ColumnImagesService;
 import com.depthspace.column.service.ColumnImagesServiceImpl;
+
 import com.depthspace.ticket.model.TicketTypesVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.utils.HibernateUtil;
+import com.depthspace.utils.JedisUtil;
+
 
 @WebServlet("/columnarticles/*")
 @MultipartConfig
 public class ColumnArtServlet extends HttpServlet {
-
+	
 	private ColumnArticlesService columnArticlesService;
 	private ColumnImagesService columnImagesService;
 
@@ -88,7 +84,7 @@ public class ColumnArtServlet extends HttpServlet {
 	}
 
 	/************ 專欄列表 ************/
-	private void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	protected void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
@@ -111,7 +107,7 @@ public class ColumnArtServlet extends HttpServlet {
 	}
 
 	/************ 單一專欄頁面 ************/	
-	private void doItem(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	protected void doItem(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String artiIdStr = req.getParameter("artiId");
 		Integer artiId;
 		try {
@@ -119,16 +115,34 @@ public class ColumnArtServlet extends HttpServlet {
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			return;
+		}		
+		
+	    // 隨機推薦文
+		List<ColumnArticlesVO> allArticles = columnArticlesService.getAllArti();
+		JedisPool pool = JedisUtil.getJedisPool();
+		try (Jedis jedis = pool.getResource()) { 
+			jedis.select(3);
+            for (ColumnArticlesVO article : allArticles) {
+                jedis.sadd("columnSet", article.getArtiId().toString());  //加到columnSet集合
+            }
+		    List<String> randomArticleIds = jedis.srandmember("columnSet", 5); //任取五篇
+			List<ColumnArticlesVO> recommendedArticles = new ArrayList<>();
+			for (String id : randomArticleIds) {
+		        ColumnArticlesVO article = columnArticlesService.getArtiByArtiId(Integer.parseInt(id));
+		        recommendedArticles.add(article);
 		}
-
+		    req.setAttribute("recommendedArticles", recommendedArticles);
+	
+		} catch (Exception e) {
+	        System.out.println("Redis未成功連接，取消推薦文章載入");
+	   	} 		
 		ColumnArticlesVO columnArticles = columnArticlesService.getArtiByArtiId(artiId);
-
 		req.setAttribute("columnArticles", columnArticles);
 		req.getRequestDispatcher("/frontend/columnarticles/item.jsp").forward(req, res);
-	} 
+	}
 	
 	/************ 左側搜尋欄 **********/
-	public void searchList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	protected void searchList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		List<ColumnArticlesVO> columnArticlesAll = columnArticlesService.getAllArti();
 		req.setAttribute("columnArticlesAll", columnArticlesAll);
@@ -143,7 +157,7 @@ public class ColumnArtServlet extends HttpServlet {
 	}
 	
 	/************ 搜尋 ************/	
-	private void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	protected void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 	    res.setContentType("application/json");
 	    res.setCharacterEncoding("UTF-8");
 
@@ -166,5 +180,6 @@ public class ColumnArtServlet extends HttpServlet {
 		searchList(req, res);
 	    req.getRequestDispatcher("/frontend/columnarticles/list.jsp").forward(req, res);
 	}
+	
 
 }

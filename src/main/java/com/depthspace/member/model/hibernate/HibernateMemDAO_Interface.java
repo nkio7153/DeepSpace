@@ -6,7 +6,7 @@ import com.depthspace.member.model.MemVO;
 
 public interface HibernateMemDAO_Interface {
 	// 會員註冊
-	int insert(MemVO entity);
+	MemVO insert(MemVO entity);
 
 	// 會員修改
 	int update(MemVO entity);
@@ -27,4 +27,6 @@ public interface HibernateMemDAO_Interface {
 
 	MemVO getById(String memAcc);
 	MemVO findOneMem(String memAcc);
+
+	MemVO getOneMem(Integer memId);
 }

@@ -8,128 +8,70 @@
 	FaqVO faqVO = (FaqVO) request.getAttribute("faqVO");
 %>
 
-<html>
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>Faq資料新增 - addFaq.jsp</title>
-
-<style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
-
-<style>
-  table {
-	width: 450px;
-	background-color: white;
-	margin-top: 1px;
-	margin-bottom: 1px;
-  }
-  table, th, td {
-    border: 0px solid #CCCCFF;
-  }
-  th, td {
-    padding: 1px;
-  }
-</style>
-
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="UTF-8">
+    <title>Faq資料新增 - addFaq.jsp</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<%--  include head.jsp--%>
+  <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
 </head>
 <body bgcolor='white'>
+<%--include header.jsp--%>
+<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+<div class="container-fluid my-0">
+  <div class="row">
+<%--    側邊欄--%>
+    <div class="col-lg-2 g-3 my-0">
+    <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
+    </div>
 
-<table id="table-1">
-	<tr><td>
-		 <h3>Faq資料新增 - addFaq.jsp</h3></td><td>
-		 <h4><a href="select_page.jsp"><img src="images/wu.png" width="100" height="100" border="0">回首頁</a></h4>
-	</td></tr>
-</table>
+    <div class="col-lg-10 g-2 transparent rounded my-0">
+<%--      放入自己body裡的代碼--%>
+      <div class="card">
+                <div class="card-header">
+		 <h3>常見問題資料新增 - addFaq.jsp</h3></td><td>
+		 <h4><a href="select_page.jsp">回常見問題的首頁</a></h4>
+ 				</div>
+      <div class="card-body">
 
 <h3>資料新增:</h3>
 
 <%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
-	<font style="color:red">請修正以下錯誤:</font>
+<div class="alert alert-danger" role="alert">
+	<strong>請修正以下錯誤:</strong>
 	<ul>
 		<c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
+			<li>${message}</li>
 		</c:forEach>
 	</ul>
+	</div>
 </c:if>
 
+<!-- 表單部分 -->
 <FORM METHOD="post" ACTION="faq.do" name="form1">
-<table>
-	
-	
-	
-	
-<!-- 	<tr> -->
-<!-- 		<td>流水號:</td> -->
-<!-- 		<td><input type="TEXT" name="serialId" size="45"/></td> -->
-<!-- 	</tr> -->
-	<tr>
-		<td>FAQ編號:</td>
-		<td><input type="TEXT" name="faqNo"   value="<%= (faqVO==null)? "1" : faqVO.getFaqNo()%>" size="45"/></td>
-	</tr>
-	<tr>
-		<td>FAQ名稱:</td>
-		<td><input type="TEXT" name="faqName"  value="<%= (faqVO==null)? "愛莉" : faqVO.getFaqName()%>" size="45"/></td>
-	</tr>
-	<tr>
-		<td>FAQ答案:</td>
-		<td><input type="TEXT" name="faqAns"   value="<%= (faqVO==null)? "殺殺" : faqVO.getFaqName()%>" size="45"/></td>
-	</tr>
-<!-- 	<tr> -->
-<!-- 		<td>獎金:</td> -->
-<%-- 		<td><input type="TEXT" name="comm"  value="<%= (empVO==null)? "100" : empVO.getComm()%>" size="45"/></td> --%>
-<!-- 	</tr> -->
-
-<%-- 	<jsp:useBean id="deptSvc" scope="page" class="com.dept.model.DeptService" /> --%>
-<!-- 	<tr> -->
-<!-- 		<td>部門:<font color=red><b>*</b></font></td> -->
-<!-- 		<td><select size="1" name="deptno"> -->
-<%-- 			<c:forEach var="deptVO" items="${deptSvc.all}"> --%>
-<%-- 				<option value="${deptVO.deptno}" ${(empVO.deptno==deptVO.deptno)? 'selected':'' } >${deptVO.dname} --%>
-<%-- 			</c:forEach> --%>
-<!-- 		</select></td> -->
-<!-- 	</tr> -->
-
-</table>
-<br>
-<input type="hidden" name="action" value="insert">
-<input type="submit" value="送出新增"></FORM>
-
-</body>
+<div class="form-group">
+                            <label for="faqNo">常見問題編號:</label>
+                            <input type="text" class="form-control" name="faqNo" value="<%= (faqVO==null)? "1" : faqVO.getFaqNo()%>" size="45">
+                        </div>
+                        <div class="form-group">
+                            <label for="faqName">常見問題名稱:</label>
+                            <input type="text" class="form-control" name="faqName" value="<%= (faqVO==null)? "愛莉" : faqVO.getFaqName()%>" size="45">
+                        </div>
+                        <div class="form-group">
+                            <label for="faqAns">常見問題答案:</label>
+                            <input type="text" class="form-control" name="faqAns" value="<%= (faqVO==null)? "殺殺" : faqVO.getFaqName()%>" size="45">
+                        </div>
+                        <input type="hidden" name="action" value="insert">
+                        <button type="submit" class="btn btn-primary">送出新增</button>
 
 
-
-<!-- =========================================以下為 datetimepicker 之相關設定========================================== -->
-<link rel="stylesheet" type="text/css"
- href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
-<script
- src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
-
-<style>
-.xdsoft_datetimepicker .xdsoft_datepicker {
- width: 300px; /* width:  300px; */
-}
-
-.xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
- height: 151px; /* height:  151px; */
-}
-</style>
-
-        
-
+		<!-- Bootstrap JS and Popper.js (for Bootstrap 4) -->
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	</body>
 </html>

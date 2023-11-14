@@ -1,7 +1,8 @@
-package com.depthspace.attractions.model;
+package com.depthspace.attractions.model.attractionsImages;
 
 import java.util.List;
 
+import com.depthspace.attractions.model.AttractionsImagesVO;
 import com.depthspace.member.model.MemVO;
 
 public interface AttractionsImagesDAO_Interface {

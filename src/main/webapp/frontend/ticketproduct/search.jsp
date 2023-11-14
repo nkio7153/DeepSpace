@@ -35,22 +35,6 @@
 							<h3 class="mb-0">共有 ${totalTickets} 項票券體驗</h3>
 						</c:otherwise>
 					</c:choose>
-
-<%-- 					<form action="<%=request.getContextPath()%>/ticketproduct/list" --%>
-<!-- 						method="get"> -->
-<%-- 						<input type="hidden" name="sortField" value="${param.sortField}"> --%>
-<%-- 						<input type="hidden" name="sortOrder" value="${param.sortOrder}"> --%>
-<%-- 						<input type="hidden" name="sortBuy" value="${param.sortBuy}"> --%>
-<!-- 						<div class="form-group mb-0"> -->
-<!-- 							<label for="sortDropdown" class="mr-2">排序方式：</label> <select -->
-<!-- 								class="form-control d-inline-block" id="sortDropdown" -->
-<!-- 								name="sort" onchange="this.form.submit()"> -->
-<!-- 								<option value="popularity">按熱門程度排序</option> -->
-<!-- 								<option value="ticketName">按票券名稱排序</option> -->
-<!-- 								其他排序選項 -->
-<!-- 							</select> -->
-<!-- 						</div> -->
-<!-- 					</form> -->
 				</div>
 				<!-- 票券列表 -->
 				<div class="ticket-list">

@@ -1,10 +1,11 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
-<title>FaqTypes: Home</title>
-
+    <title>FaqTypes: Home</title>
+<%--  include head.jsp--%>
+  <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
 <style>
   table#table-1 {
 	width: 450px;
@@ -25,11 +26,20 @@
     display: inline;
   }
 </style>
-
 </head>
-<body bgcolor='white'>
+<body>
+<%--include header.jsp--%>
+<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+<div class="container-fluid my-0">
+  <div class="row">
+<%--    側邊欄--%>
+    <div class="col-lg-2 g-3 my-0">
+    <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
+    </div>
 
-<table id="table-1">
+    <div class="col-lg-10 g-2 transparent rounded my-0">
+<%--      放入自己body裡的代碼--%>
+      <table id="table-1">
    <tr><td><h3>FaqTypes: Home</h3><h4>( MVC )</h4></td></tr>
 </table>
 
@@ -52,7 +62,7 @@
   
   
   <li>
-    <FORM METHOD="post" ACTION="faq.do1" >
+    <FORM METHOD="post" ACTION="faqTypes.do" >
         <b>輸入常見問題類型編號 :</b>
         <input type="text" name="faqNo">
         <input type="hidden" name="action" value="getOne_For_Display">
@@ -63,7 +73,7 @@
   <jsp:useBean id="faqSvc" scope="page" class="com.depthspace.faqtypes.model.service.FaqTypesService" />
    
   <li>
-     <FORM METHOD="post" ACTION="faq.do1" >
+     <FORM METHOD="post" ACTION="faqTypes.do" >
        <b>選擇常見問題類型編號:</b>
        <select size="1" name="faqNo">
          <c:forEach var="faqTypesVO" items="${faqSvc.all}" > 
@@ -76,7 +86,7 @@
   </li>
   
   <li>
-     <FORM METHOD="post" ACTION="faq.do1" >
+     <FORM METHOD="post" ACTION="faqTypes.do" >
        <b>選擇問題類型:</b>
        <select size="1" name="faqNo">
          <c:forEach var="faqTypesVO" items="${faqSvc.all}" > 
@@ -95,6 +105,11 @@
 <ul>
   <li><a href='addFaq.jsp'>新增</a> a new FaqTypes.</li>
 </ul>
+
+
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
