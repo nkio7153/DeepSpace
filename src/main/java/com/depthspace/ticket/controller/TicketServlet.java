@@ -10,6 +10,9 @@ import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import org.json.JSONObject;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -85,8 +88,8 @@ public class TicketServlet extends HttpServlet {
 		case "/find": // 票券查找
 			doSearch(req, res);
 			break;
-		case "/del": // 票券刪除
-			doDel(req, res);
+		case "/view": // 票券
+			view(req, res);
 			break;
 
 		default:
@@ -110,6 +113,7 @@ public class TicketServlet extends HttpServlet {
 			int ticketPageQty = ticketService.getPageTotal();
 			req.getSession().setAttribute("ticketPageQty", ticketPageQty);
 		}
+		
 		req.setAttribute("ticketList", ticketList);
 		req.setAttribute("currentPage", currentPage);
 
@@ -131,7 +135,7 @@ public class TicketServlet extends HttpServlet {
 	}
 
 	/************ 票券新增 ************/
-	private void doAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	protected void doAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		if (!req.getMethod().equalsIgnoreCase("POST")) {
 			// 判斷如果不是POST，就是到新增頁面
 
@@ -200,9 +204,43 @@ public class TicketServlet extends HttpServlet {
 		// 導向以下頁面
 		res.sendRedirect(req.getContextPath() + "/ticketmg/list");
 	}
+	
+	/************ 票券查看 ************/
+    protected void view(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
+        TicketVO ticket = ticketService.getTicketById(ticketId);
+         
+        JSONObject jsonTicket = new JSONObject();
+        if (ticket != null) {
+            jsonTicket.put("ticketId", ticket.getTicketId());
+            jsonTicket.put("ticketName", ticket.getTicketName());
+            jsonTicket.put("price", ticket.getPrice());
+//            jsonTicket.put("ticketType", ticket.getTicketType());
+            jsonTicket.put("description", ticket.getDescription());
+            jsonTicket.put("stock", ticket.getStock());
+            jsonTicket.put("address", ticket.getAddress());
+            jsonTicket.put("latitude", ticket.getLatitude());
+            jsonTicket.put("longitude", ticket.getLongitude());
+            jsonTicket.put("validDays", ticket.getValidDays());
+//            jsonTicket.put("images", ticket.getImages());
+            jsonTicket.put("status", ticket.getStatus());           
+            
+            if (ticket.getTicketType() != null) {
+                jsonTicket.put("ticketType", ticket.getTicketType().getTypeName());
+            }
+            if (ticket.getCity() != null) {
+                jsonTicket.put("cityName", ticket.getCity().getCityName());
+            }
+        }
 
+        res.setContentType("application/json");
+        res.setCharacterEncoding("UTF-8");
+
+        res.getWriter().write(jsonTicket.toString());
+    }
+    
 	/************ 票券修改 圖片更新尚須修正************/
-	private void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    protected void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 			Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
 			TicketVO ticket = ticketService.getTicketById(ticketId);
 
@@ -251,7 +289,7 @@ public class TicketServlet extends HttpServlet {
 		}
 	}
 
-	private void processTicketImages(HttpServletRequest req, TicketVO ticket) throws IOException, ServletException {
+    protected void processTicketImages(HttpServletRequest req, TicketVO ticket) throws IOException, ServletException {
 	    Collection<Part> imageParts = req.getParts().stream()
 	                                      .filter(part -> part.getName().startsWith("image_"))
 	                                      .collect(Collectors.toList());
@@ -282,7 +320,7 @@ public class TicketServlet extends HttpServlet {
 	    }
 	}
 
-	private Integer extractSerialId(String partName) {
+    protected Integer extractSerialId(String partName) {
 	    try {
 	        if (partName != null && partName.startsWith("image_")) {
 	            return Integer.parseInt(partName.substring("image_".length()));
@@ -292,9 +330,6 @@ public class TicketServlet extends HttpServlet {
 	    }
 	    return null; 
 	}
-
-
-
 
 //	private void updateExistingImage(Part part, TicketVO ticket) throws IOException, ServletException {
 //	    // 從 part 名稱中提取圖片 ID
@@ -357,7 +392,7 @@ public class TicketServlet extends HttpServlet {
 //			ticketImagesService.saveAll(ticketImagesList);
 	
 	/************ 票券搜尋 ************/
-	private void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    protected void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		Integer ticketTypeId = null;
 		Integer ticketId = null;
 		Integer cityId = null;
@@ -410,11 +445,11 @@ public class TicketServlet extends HttpServlet {
 		req.getRequestDispatcher("/backend/ticket/find.jsp").forward(req, res);
 	}
 
-	/************ 票券刪除 ************/
-	private void doDel(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
-		ticketService.deleteTicket(ticketId);
-	}
+//	/************ 票券刪除 ************/
+//    protected void doDel(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+//		Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
+//		ticketService.deleteTicket(ticketId);
+//	}
 
 	/************ 圖片讀入DB ************/
 

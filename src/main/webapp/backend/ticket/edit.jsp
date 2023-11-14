@@ -12,7 +12,7 @@
 		href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 		rel="stylesheet">
 	<title>修改票券</title>
-	
+	<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
 <%--  include --%>
 	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
   
@@ -163,7 +163,6 @@
 	<script	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
 	<script>
     $(document).ready(function() {
         const ticketId = ${ticket.ticketId}; 

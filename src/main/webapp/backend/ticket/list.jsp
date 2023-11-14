@@ -7,9 +7,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet"	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">	
 <link rel="stylesheet"	href="<c:url value='/static/css/backendlist.css'/>">
+<style>
+    .add-button {
+        background-color: #63bfc9; 
+        color: white; 
+        padding: 8px 40px; 
+        border: none; 
+        border-radius: 5px;
+        cursor: pointer; 
+    }
+    .add-button:hover {
+        background-color: #5b969c; 
+    }
+    .table-hover tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+</style>
 
 <title>票券列表</title>
 
@@ -20,94 +36,80 @@
 
 <body>
 
-	<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
-	<div class="container-fluid my-0">
-	<div class="row">
-	  
-	<div class="col-lg-2 g-3 my-0">
-	<jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
-	</div>
-	
-	<div class="col-lg-10 g-2 transparent rounded my-0">
-	
-<%-- include end--%>
-<div class="table-list">
-   	<div class="container mt-5">
-		<!-- 三個查詢表單並排顯示 -->
-		<div class="row">
+    <jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+    <div class="container-fluid my-0">
+        <div class="row">
+            <div class="col-lg-2 g-3 my-0">
+                <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
+            </div>
+            
+            <div class="col-lg-10 g-2 transparent rounded my-0">
+                <div class="table-list">
+                    <div class="container mt-5">
+                        <!-- 三個查詢表單並排顯示 -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <form id="filterForm" method="get" action="<%=request.getContextPath()%>/ticketmg/find">
+                                    <label for="ticketId">票券名稱</label>
+                                    <select id="ticketId" name="ticketId" class="form-control mb-2">
+                                        <option value="">全部</option>
+                                        <c:forEach var="ticket" items="${ticketListAll}">
+                                            <option value="${ticket.ticketId}">${ticket.ticketName}</option>
+                                        </c:forEach>
+                                    </select>
+                                </form>
+                            </div>
 
-			<!-- 查詢票券名稱 注意：forEach的是未分頁的全部資料items=ticketListAll、option的value是實際傳遞值、第二的表單顯示的資料 -->
-			<div class="col-md-4">
-				<form method="get"
-					action="<%=request.getContextPath()%>/ticketmg/find">
-					<label for="ticketId">票券名稱</label> <select id="ticketId"
-						name="ticketId" class="form-control mb-2">
-						<c:forEach var="ticket" items="${ticketListAll}">
-							<option value="${ticket.ticketId}">${ticket.ticketName}</option>
-						</c:forEach>
-					</select> <input type="submit" value="查詢" class="btn btn-primary">
-				</form>
-			</div>
+                            <div class="col-md-4">
+                                <form id="filterForm2" method="get" action="<%=request.getContextPath()%>/ticketmg/find">
+                                    <label for="ticketTypeId">票券類型</label>
+                                    <select id="ticketTypeId" name="ticketTypeId" class="form-control mb-2">
+                                        <option value="">全部</option>
+                                        <c:forEach var="typeItem" items="${uniqueTicketTypes}">
+                                            <option value="${typeItem.ticketTypeId}">${typeItem.typeName}</option>
+                                        </c:forEach>
+                                    </select>
+                                </form>
+                            </div>
 
-			<!-- 查詢票券類型 -->
-			<div class="col-md-4">
-				<form method="get"
-					action="<%=request.getContextPath()%>/ticketmg/find">
-					<label for="ticketTypeId">票券類型</label> <select id="ticketTypeId"
-						name="ticketTypeId" class="form-control mb-2">
-						<c:forEach var="typeItem" items="${uniqueTicketTypes}">
-							<option value="${typeItem.ticketTypeId}">${typeItem.typeName}</option>
-						</c:forEach>
-					</select> <input type="submit" value="查詢" class="btn btn-primary">
-				</form>
-			</div>
+                            <div class="col-md-4">
+                                <form id="filterForm3" method="get" action="<%=request.getContextPath()%>/ticketmg/find">
+                                    <label for="cityId">票券區域</label>
+                                    <select id="cityId" name="areaId" class="form-control mb-2">
+                                        <option value="">全部</option>
+                                        <c:forEach var="areaItem" items="${uniqueTicketArea}">
+                                            <option value="${areaItem.cityId}">${areaItem.cityName}</option>
+                                        </c:forEach>
+                                    </select>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- end of row -->
 
-			<!-- 查詢票券區域  注意name是要查詢的值(servlet的查詢,areaId)-->
-			<div class="col-md-4">
-				<form method="get"
-					action="<%=request.getContextPath()%>/ticketmg/find">
-					<label for="cityId">票券區域</label> <select id="cityId" name="areaId"
-						class="form-control mb-2">
-						<c:forEach var="areaItem" items="${uniqueTicketArea}">
-							<option value="${areaItem.cityId}">${areaItem.cityName}</option>
-						</c:forEach>
-					</select> <input type="submit" value="查詢" class="btn btn-primary">
-				</form>
-			</div>
+                        <div class="row mt-3">
+					    <div class="col-md-8">
+					        <form id="filterForm5" method="get" action="<%=request.getContextPath()%>/ticketmg/find">
+					            <div class="input-group">
+					                <input type="text" id="ticketName" name="ticketName" class="form-control" placeholder="票券名稱關鍵字搜尋" value="${ticket.ticketName}">
+					                <div class="input-group-append">
+					                    <button class="btn btn-outline-secondary" type="submit">
+					                        <i class="fas fa-search"></i>
+					                    </button>
+					                </div>
+					            </div>
+					        </form>
+					    </div>
+					    <div class="col-md-4 d-flex justify-content-end">
+					        <form method="get" action="<%=request.getContextPath()%>/ticketmg/add">
+					            <button class="add-button" type="submit">新增</button>
+					        </form>
+					    </div>
+					</div>
 
-		</div>
-		<!-- end of row -->
-
-
-		<div class="container mt-5">
-			<!-- 票券名稱模糊查詢 -->
-			<div class="row mb-3">
-				<div class="col-md-12 col-sm-12 mb-2">
-					<form method="get"
-						action="<%=request.getContextPath()%>/ticketmg/find">
-						<div class="input-group">
-							<input type="text" id="ticketName" name="ticketName"
-								class="form-control" placeholder="票券名稱"
-								value="${ticket.ticketName}"> <span
-								class="input-group-btn">
-								<button class="btn btn-primary" type="submit">查詢</button>
-							</span>
-						</div>
-					</form>
-					<!-- 新增票券 -->
-					<form method="get"
-						action="<%=request.getContextPath()%>/ticketmg/add">
-						<button class="btn btn-primary" type="submit">新增</button>
-					</form>
-				</div>
-
-			</div>
-		</div>
-
-		<h1>票券列表</h1>
+		<h5>票券列表</h5>
 
 		<!-- 表格 -->
-		<table class="table table-bordered">
+		<table class="table table-bordered table-hover" id="table-hover">
 			<thead>
 				<tr>
 					<th>項次</th>
@@ -152,17 +154,82 @@
 								<c:when test="${ticket.status ==1}">上架</c:when>
 								<c:otherwise>未上架</c:otherwise>
 							</c:choose></td>
-						<td><a
-							href="${pageContext.request.contextPath}/ticketmg/edit?ticketId=${ticket.ticketId}"
-							class="btn btn-primary btn-sm">修改</a> 
-<!-- 							<a -->
-<%-- 							href="${pageContext.request.contextPath}/ticketmg/del?ticketId=${ticket.ticketId}" --%>
-<!-- 							class="btn btn-danger btn-sm" -->
-<!-- 							onclick="return confirm('確定刪除？不要亂刪喔！');">删除</a> -->
-							</td>
+								<td>
+								    <a href="${pageContext.request.contextPath}/ticketmg/edit?ticketId=${ticket.ticketId}" class="btn btn-primary btn-sm" style="background-color: #63bfc9; border-color: #63bfc9;">
+								        <i class="fas fa-edit"></i>
+								    </a><p></p>
+								    <button type="button" class="btn btn-primary btn-sm view-ticket" data-toggle="modal" data-target="#viewTicketModal" data-ticket-id="${ticket.ticketId}" style="background-color: #63bfc9; border-color: #63bfc9;">
+								        <i class="fas fa-eye"></i>
+								    </button>
+								</td>
 					</tr>
 				</c:forEach>
 		</table>
+				<!-- 查看票券 -->		
+		<div class="modal fade" id="viewTicketModal" tabindex="-1" role="dialog" aria-labelledby="viewTicketModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-lg" role="document">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title" id="viewTicketModalLabel">票券詳情</h5>
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                    <span aria-hidden="true">&times;</span>
+		                </button>
+		            </div>
+		            <div class="modal-body">
+		                <div class="row">
+                          <!-- 輪播圖 -->
+		                    <div id="carouselExampleIndicators" class="carousel slide" >
+		                        <div class="carousel-inner" id="ticketImagesCarousel"></div>
+		                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+		                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		                            <span class="sr-only">Previous</span>
+		                        </a>
+		                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+		                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+		                            <span class="sr-only">Next</span>
+		                        </a>
+							</div>
+		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">票券類型</strong>
+		                        <p id="modalTicketType"></p>
+		                    </div>
+		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">票券名稱</strong>
+		                        <p id="modalTicketName"></p>
+		                    </div>
+		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">價格</strong>
+		                        <p id="modalPrice"></p>
+		                    </div>
+		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">數量</strong>
+		                        <p id="modalStock"></p>
+		                    </div>
+		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">使用天數</strong>
+		                        <p id="modalValidDays"></p>
+		                    </div>
+		                    <div class="col-md-12 mb-3"><strong class="d-block mb-2">描述</strong>
+		                        <div id="modalDescription"></div>
+		                    </div>		                    
+		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">區域</strong>
+		                        <p id="modalCity"></p>
+		                    </div>
+		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">地址</strong>
+		                        <p id="modalAddress"></p>
+		                    </div>
+		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">經度</strong>
+		                        <p id="modalLongitude"></p>
+		                    </div>
+		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">緯度</strong>
+		                        <p id="modalLatitude"></p>
+		                    </div>
+		                    <div class="col-md-6 mb-3" id="modalStatus"><strong class="d-block mb-2"></strong>
+		                    </div>
+		                </div>
+		            </div>
+		            <div class="modal-footer">
+		                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+		                <a href="${pageContext.request.contextPath}/ticketmg/edit?ticketId=${ticket.ticketId}" class="btn btn-primary" id="editTicketButton">修改</a>
+		            </div>
+		        </div>
+		    </div>
+		</div>
 
 		<!-- 分頁 -->
 		<div>
@@ -220,7 +287,68 @@
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function() {
+        $('#filterForm, #filterForm2, #filterForm3, #filterForm4, #filterForm5').on('change', 'select', function() {
+            var formId = $(this).closest('form').attr('id');
+        	Swal.fire({
+                title: '正在處理',
+                html: '請稍等，正在更新資料。',
+                timer: 1500,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                willClose: () => {
+                    $('#' + formId).submit();
+                }
+            });
+        });
+    });
+    
+    $('.view-ticket').on('click', function() {
+        var ticketId = $(this).data('ticket-id');
+        $.ajax({
+            url: "<%=request.getContextPath()%>/ticketmg/view",
+            type: "GET",
+            data: {ticketId: ticketId},           
+            success: function(ticket) {
+                $('#modalTicketType').text(ticket.ticketType);
+                $('#modalTicketName').text(ticket.ticketName);
+                $('#modalPrice').text(ticket.price);
+                $('#modalValidDays').text(ticket.validDays);
+                $('#modalStock').text(ticket.stock);
+                $('#modalDescription').text(ticket.description);
+                $('#modalCity').text(ticket.cityName);
+                $('#modalAddress').text(ticket.address);
+                $('#modalLongitude').text(ticket.longitude);
+                $('#modalLatitude').text(ticket.latitude);
+                $('#modalStatus').text(ticket.status == 1 ? '此商品上架中' : '此商品未上架');  
 
+                $('#modalDescription').html(ticket.description); // 使用 .html() 設置描述
+                var carouselInner = $('#ticketImagesCarousel').empty();
+                $.getJSON("<%=request.getContextPath()%>/ticketallimage?action=getIds&ticketId=" + ticketId, function(imageIds) {
+                    imageIds.forEach(function(imageId, index) {
+                        var carouselItem = $('<div>').addClass('carousel-item' + (index === 0 ? ' active' : ''));
+                        var img = $('<img>')
+                            .attr("src", "<%=request.getContextPath()%>/ticketallimage?action=getImage&imageId="  + imageId + "&ticketId=" + ticketId)
+                            .addClass("d-block w-100");
+                        carouselItem.append(img);
+                        carouselInner.append(carouselItem);
+                    });
+                });
+                $('#editTicketButton').attr('href', '<%=request.getContextPath()%>/ticketmg/edit?ticketId=' + ticketId); // 設置編輯按鈕的鏈接
+            },
+            
+            error: function(error) {
+                console.log("Error: ", error);
+            }
+        });
+    });
+
+</script>
+		               
 <%--  include --%>	
 		</div>
 	</div>		

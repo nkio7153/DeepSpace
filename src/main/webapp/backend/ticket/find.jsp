@@ -38,7 +38,7 @@
 
 <div class="table-list">
 
-	<h1>票券搜尋結果</h1>
+	<h5>票券搜尋結果</h5>
 	<div class="container mt-5">
 		<!-- 表格 -->
 		<table class="table table-bordered">

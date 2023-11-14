@@ -56,6 +56,13 @@ h1 {
 	font-size: 14px;
 }
 </style>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+	<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+	
 <%--  include --%>
 	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
   
@@ -77,7 +84,7 @@ h1 {
 
 
 	<div class="container mt-5">
-		<h1>新增票券</h1>
+		<h5>新增票券</h5>
 		<form action="<%=request.getContextPath()%>/ticketmg/add"
     		method="post" enctype="multipart/form-data" onsubmit="return showSwal();">
 			<div class="row">
@@ -136,10 +143,9 @@ h1 {
 					<!-- 描述 -->
 					<div class="form-group col-md-12">
 						<label for="description">描述</label>
-						<textarea class="form-control" id="description" name="description"
-							rows="4"></textarea>
+						<textarea class="form-control" id="description" name="description" rows="4"></textarea>
 						<script>
-							CKEDITOR.replace('description');
+						    CKEDITOR.replace('description');
 						</script>
 					</div>
 
@@ -185,15 +191,9 @@ h1 {
 			</div>
 		</form>
 	</div>
+<div>
 
-
-
-
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-	<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+</div>
 
 <script>
 
