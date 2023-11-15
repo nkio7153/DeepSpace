@@ -4,19 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface AdminFuncListDAO {
-	int insert(AdminFuncListVO entity);
-
-	int update(AdminFuncListVO entity);
+	void insert(AdminFuncListVO entity);
 	
-	int delete(AdminFuncListVO id);
-	 
-	AdminFuncListVO getById(Integer id);
+	void delete(AdminFuncListVO.CompositeDetail id);
 	
-	List<AdminFuncListVO> getAll();
+	List<AdminFuncListVO> getByAdminId(Integer adminId);
 	
-	List<AdminFuncListVO> getByCompositeQuery(Map<String, String> map);
-	
-	List<AdminFuncListVO> getAll(int currentPage);
-	
-	long getTotal();
+	boolean isCollect(Integer adminId, Integer funcId);
 }
