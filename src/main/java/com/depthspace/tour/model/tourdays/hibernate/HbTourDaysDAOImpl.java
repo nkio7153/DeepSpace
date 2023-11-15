@@ -26,8 +26,10 @@ public class HbTourDaysDAOImpl implements HbTourDaysDAO_Interface{
     }
     //新增行程
 	@Override
-	public int insert(TourDaysVO entity) {
-		return (Integer)getSession().save(entity);
+	public TourDaysVO insert(TourDaysVO entity) {
+		TourDaysVO tourDaysVO =  (TourDaysVO) getSession().save(entity);
+	        
+	    return tourDaysVO;
 		
 	}
 	@Override
@@ -59,4 +61,16 @@ public class HbTourDaysDAOImpl implements HbTourDaysDAO_Interface{
                 .list();
 	
 	}
+	@Override
+	public List<TourDaysVO> getLastTourId(Integer tourId) {
+		try {
+            return getSession()
+            		.createQuery("from TourDaysVO order by tourId desc", TourDaysVO.class)
+                    .setMaxResults(1)
+                    .list();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+	
 }

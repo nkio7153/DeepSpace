@@ -22,4 +22,6 @@ public interface AttractionsDAO_Interface {
 
 	List<AttractionsVO> findOtherAttractions(String cityName);
 
+	public List<AttractionsVO> getAttractionsName(String attractionsName);
+
 }

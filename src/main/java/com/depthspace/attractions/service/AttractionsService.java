@@ -39,5 +39,9 @@ public class AttractionsService {
 	public AttractionsVO getAttractionsById(Integer attractionsId) {
 		return dao.getAttractionsById(attractionsId);
 	}
+	//依據景點名稱收巡該景點集合
+	public List<AttractionsVO> getAttractionsName(String attractionsName) {
+		return dao.getAttractionsName(attractionsName);
+	}
 	
 }

@@ -14,7 +14,6 @@ import com.depthspace.utils.HibernateUtil;
 
 public class TourService implements TourService_Interface{
 	private HbTourDAO_Interface dao;
-//	private HbTourDAOImpl dao;
 
 	public TourService() {
 		dao = new HbTourDAOImpl(HibernateUtil.getSessionFactory());
@@ -27,7 +26,7 @@ public class TourService implements TourService_Interface{
 		TourVO tourvo = null;
 //		再找出會員資料的最後一筆(就會是剛才新增的行程)，把值帶到下一個頁面
 		tourvo= dao.getLastTourId(entity.getTourId());
-		System.out.println("tourvo= " + tourvo.getTourId());
+//		System.out.println("tourvo= " + tourvo.getTourId());
 		//new 一個list集合把所有天數及會員編號放進去
 		List<TourDaysVO> tourDaysVO = new ArrayList<>();
 		TourDaysVO tdvo = new TourDaysVO();

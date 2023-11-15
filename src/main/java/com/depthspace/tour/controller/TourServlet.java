@@ -90,12 +90,18 @@ public class TourServlet extends HttpServlet {
 
 private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 	//取得天數讓資料庫可以新增
+//	取得會員
 	Integer memId;
+//	取得天數
 	Integer tourdaysId = null;
+//	取得行程編號，從上個頁面新增後有的
 	Integer tourId;
+//	取得總天數
 	Integer allDays;
-	String[] allAttr;
+//	取得會員輸入的時間
 	String[] allTime;
+//	取得會員輸入景點
+	String[] allAttr;
 //	取的幾天的陣列
 	String[] oneDay;
 	
@@ -109,7 +115,7 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 			return;
 		}
 //	System.out.println("memId=" + memId);
-	//用總天數的數量去新增天數
+	//用總天數的數量去新增天數到資料庫
 	for(int i=1 ; i <= allDays ; i++) {
 		TourDaysVO tourDaysVO = new TourDaysVO(tourdaysId , allDays , tourId);
 		tds.insert(tourDaysVO);
@@ -118,18 +124,34 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 		allAttr = req.getParameterValues("attractions[" + i + "]");
 		oneDay = req.getParameterValues("oneDay[" + i + "]");
 
+		
+//		依照景點編號去找景點名稱
+//		把他包成
+//		天數
+//		景點編號
+//		開始時間
+//		景點名稱
+		
+//		for(int y = 0 ; y < oneDay[y].length() ; y++) {
+//			System.out.println("oneDay[y].length()=" + oneDay[y].length());
+//		}
+
+		//找出天數對應
 		for(String one : oneDay) {
 			//one為Id
 			System.out.println("天數對應=" + one);
-		}
-		for(String one : allTime) {
+			for(String two : allTime) {
 			//one為Id
-			System.out.println("時間=" + one);
+			System.out.println("時間=" + two);
+			}
+			for(String three : allAttr) {
+				//one為Id			
+				System.out.println("第" + i + "景點編號=" + three);
+			}
 		}
-		for(String one : allAttr) {
-			//one為Id			
-			System.out.println("第" + i + "景點編號=" + one);
-		}
+		
+		
+//		insert到detail裡面
 	}
 	
 	 req.setAttribute("memId", memId);
@@ -185,7 +207,7 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 //		新增一筆行程資料
 		TourVO tvo = null;
 		tvo = ts.insert(tourVO);
-//		System.out.println("新增的那些東西"+ tourVO);
+		System.out.println("新增的那些東西"+ tourVO);
 		
 		// 額外設定天數顯示
 //		System.out.println("總天數=" + tourVO.getAllDays());

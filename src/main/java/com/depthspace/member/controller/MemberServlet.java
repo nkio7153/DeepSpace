@@ -195,13 +195,13 @@ public class MemberServlet extends HttpServlet {
 		        buffer.close();
 			} else {
 				String webappPath = getServletContext().getRealPath("/");
-				// 构建相对路径
+				// 构建相對路径
 				String relativeImagePath = "member/images/1.png";
 				String absoluteImagePath = webappPath + relativeImagePath;
 
 				File defaultImageFile = new File(absoluteImagePath);
 				String defaultImagePath =  defaultImageFile.getPath();
-				// 使用ServletContext获取资源流
+				// 使用ServletContext獲取資源流
 //				InputStream defaultImageStream = getServletContext().getResourceAsStream(defaultImagePath);
 				if (defaultImageFile.exists()) {
 					byte[] localImageBytes = Files.readAllBytes(Path.of(defaultImagePath));
