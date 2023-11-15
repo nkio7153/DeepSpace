@@ -47,7 +47,7 @@ $(document).ready(function() {
                         '</ul>' +
                         '<div class="card-footer">' +
                             '<small class="text-muted">發布時間: ' + formattedDate + '</small>' +
-                            '<button class="btn btn-primary collect-button float-end" data-articleid="' + item.articleId + '">收藏文章</button>'+                        
+                            '<button class="btn btn-primary collect-button float-end like-button" data-articleid="' + item.articleId + '"><i class="far fa-heart"></i></button>'+                        
                             '</div>' +
                     '</div>');
                     $('#articlesRow').append(card);
@@ -73,8 +73,8 @@ $(document).ready(function() {
     	                .replace(/<\/span>/g, '');
     	                var likesSpan = '<span class="likes float-right"><i class="fas fa-thumbs-up"></i> ' + item.artiLk + '</span>';
     	                var isCollected = articlesCollectList.some(collectArticle => collectArticle.articleId === item.articleId);
-    	                var buttonText = isCollected ? '已收藏' : '收藏文章';
     	                var buttonClass = isCollected ? 'btn btn-primary collect-button float-end collected' : 'btn btn-primary collect-button float-end';
+    	                var heartIcon = isCollected ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>';    	               
     	                var card = $('<div class="col-md-4 mb-3">')
     	                .append('<div class="card h-100">' +
     	                        '<li class="list-group-item d-flex justify-content-between align-items-center">會員ID: ' + item.memId + likesSpan + '</li>' +
@@ -90,7 +90,7 @@ $(document).ready(function() {
     	                        '</ul>' +
     	                        '<div class="card-footer">' +
     	                            '<small class="text-muted">發布時間: ' + formattedDate + '</small>' +    	                        
-    	                            '<button class="' + buttonClass + '" data-articleid="' + item.articleId + '">' + buttonText + '</button>'+                        
+    	                            '<button class="' + buttonClass + ' like-button" data-articleid="' + item.articleId + '">' + heartIcon + '</button>'+                        
     	                        '</div>' +
     	                '</div>');
     	                $('#articlesRow').append(card);
@@ -116,13 +116,13 @@ $(document).ready(function() {
             data: { articleId: articleId },
             dataType: 'json',
             success: function(response) {
-                if(response.message === '添加收藏') {
-                    button.text('已收藏');
-                    button.addClass('collected'); // 添加已收藏的樣式
-                } else if(response.message === '取消收藏') {
-                    button.text('收藏文章');
-                    button.removeClass('collected'); // 移除已收藏的樣式
-                }
+            	if(response.message === '添加收藏') {
+            	    button.html('<i class="fas fa-heart"></i>'); // 使用實心愛心圖標
+            	    button.addClass('collected');
+            	} else if(response.message === '取消收藏') {
+            	    button.html('<i class="far fa-heart"></i>'); // 使用空心愛心圖標
+            	    button.removeClass('collected');
+            	}
             }
         });
     });
@@ -154,6 +154,12 @@ $(document).ready(function() {
 	    });
 	    
 	    $('#articlesRow').on('click', '.card', function() {
+	    	
+	    	 // 檢查點擊的元素是否為按鈕，如果是，則不進行後續操作
+	        if ($(event.target).hasClass('btn') || $(event.target).hasClass('fa-heart')){
+	            return;
+	        }
+	    	 
 	        var articleImage = $(this).find('img.card-img-top').attr('src');
 	        var articleTitle = $(this).find('h5.card-title').text();
 	        var articleText = $(this).find('div.card-text').html();
@@ -184,6 +190,14 @@ $(document).ready(function() {
     function padZero(value) {
         return value < 10 ? '0' + value : value;
     }
+    
+    function checkSession(e){
+        let check = $("[name='check']").text();
+        if (check == "登入/註冊"){
+            e.preventDefault(); // 阻止點擊事件的預設行為，即防止按鈕的超連結跳轉
+            window.alert("請先登入"); // 顯示警告訊息，提醒使用者登入
+        }
+    }
 </script>
 <style>
     .fixed-height-img {
@@ -211,15 +225,35 @@ $(document).ready(function() {
     .hidden-status {
     	display: none;
 	}
+	
+		
+	.collected i.fas.fa-heart {
+	font-size:24px;
+    color: red; /* 已收藏的愛心顏色 */
+	}
 
-	.collected{
-    background-color: red !important;
-    color: white !important;
+	i.far.fa-heart {
+	font-size:24px;
+    color: black; /* 未收藏的愛心顏色 */
 	}
 	
-	.btn:hover, .btn:focus, .btn:active, .btn:visited {
-      outline: none;
-      box-shadow: none !important;
+	.like-button{
+       color: transparent;
+       background-color: transparent;
+       border-color: transparent;
+     }
+
+	.like-button:hover, .like-button:focus, .like-button:active, .like-button:visited {
+       outline: none;
+       box-shadow: none !important;
+       color: transparent;
+       background-color: transparent;
+       border-color: transparent;
+     }
+	
+ 	.btn:hover, .btn:focus, .btn:active, .btn:visited {
+       outline: none;
+       box-shadow: none !important;
      }
      
     div.hidden {
@@ -255,9 +289,9 @@ $(document).ready(function() {
         </select>
         <input type="submit" value="查詢">
     </form>
-		<button type="button" class="btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=getmemlist'">我的文章</button>
-		<button type="button" class="btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=doArtiCollectList'">我的收藏</button>
-        <button type="button" class="btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=addArticle'">新增文章</button>
+		<button type="button" class="btn btn-primary" onclick="checkSession(event);window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=getmemlist'">我的文章</button>
+		<button type="button" class="btn btn-primary" onclick="checkSession(event);window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=doArtiCollectList'">我的收藏</button>
+        <button type="button" class="btn btn-primary" onclick="checkSession(event);window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=addArticle'">新增文章</button>
     </div>
     <div id="articlesRow" class="row">
         <!-- 卡片內容將會通過 jQuery 動態加載到這裡 -->
@@ -280,6 +314,7 @@ $(document).ready(function() {
           <div class="card-body">
             <h3 class="card-title" id="articleTitle">文章標題:</h3>
             <div class="card-text font-sizee" id="articleText">文章內容:</div>
+            <br>
             <div class="d-flex justify-content-end">
               <h6 class="card-text" id="articleDate">發布時間:</h6>
             </div>
