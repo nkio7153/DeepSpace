@@ -70,6 +70,15 @@
 						</a>
 					</c:forEach>
 				</div>
+				
+	<div id="right">
+	<c:forEach begin="1" end="${pageQtyA}" var="i">
+    <li class="page-item ${i == currentPage ? 'active' : ''}">
+        <a class="page-link" href="${pageContext.request.contextPath}/columnarticles/list?page=${i}">${i}</a>
+    </li>
+</c:forEach>
+    </div>					
+				
 			</div>
 <!-- 	<script -->
 <!-- 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->

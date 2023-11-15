@@ -31,6 +31,7 @@ import com.depthspace.utils.JedisUtil;
 @MultipartConfig
 public class ColumnArtServlet extends HttpServlet {
 	
+	private static final double PAGE_MAX_RESULT = 8;
 	private ColumnArticlesService columnArticlesService;
 	private ColumnImagesService columnImagesService;
 
@@ -93,7 +94,8 @@ public class ColumnArtServlet extends HttpServlet {
 			int pageQty = columnArticlesService.getPageTotal();
 			req.getSession().setAttribute("pageQty", pageQty);
 		}
-			searchList(req, res);	
+
+		searchList(req, res);	
 		req.setAttribute("total", total); //專欄文章總數
 		req.setAttribute("currentPage", currentPage); //分頁數
 		req.setAttribute("resultSet", columnList);  
@@ -101,8 +103,9 @@ public class ColumnArtServlet extends HttpServlet {
 
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/columnarticles/list.jsp");
 		dispatcher.forward(req, res);
-		System.out.println("TTTTT："+ columnList);
 	}
+	
+	
 
 	/************ 單一專欄頁面 ************/	
 	protected void doItem(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -174,11 +177,16 @@ public class ColumnArtServlet extends HttpServlet {
 	    // 查詢結果存入
 	    req.setAttribute("resultSet", resultSet);
 	    
-	    System.out.println("AAAAAAAAAAAAAAA："+resultSet);
-	    System.out.println("AAAAAAAAAAAAAAA："+searchCount);
-//		searchList(req, res);
+	   
+	    int pageQty = (int) Math.ceil((double) searchCount / PAGE_MAX_RESULT); // 計算總頁數
+
+	    req.setAttribute("searchCount", searchCount);
+	    req.setAttribute("pageQtyA", pageQty); 
+
+//		List<ColumnArticlesVO> resultSet = columnArticlesService.getAllArti2(searchCount);
+//		req.setAttribute("currentPage", searchCount); //分頁數
+//	    
 	    req.getRequestDispatcher("/frontend/columnarticles/search.jsp").forward(req, res);
-//	    req.getRequestDispatcher("/frontend/columnarticles/list.jsp").forward(req, res);
 	}
 	
 

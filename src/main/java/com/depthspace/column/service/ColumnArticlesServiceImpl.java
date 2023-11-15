@@ -26,7 +26,7 @@ import redis.clients.jedis.JedisPool;
 
 public class ColumnArticlesServiceImpl implements ColumnArticlesService {
 
-	public static final int PAGE_MAX_RESULT = 10;
+	public static final int PAGE_MAX_RESULT = 8;
 	private ColumnArticlesDAO dao;
 
 	public ColumnArticlesServiceImpl() {

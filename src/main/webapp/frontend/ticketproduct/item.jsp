@@ -116,32 +116,35 @@
 		<div class="col-12 mt-3">
 			<div class="d-flex justify-content-between align-items-center">
 				<div class="rating">
-																<c:choose>
-											    <c:when test="${totalRatingCountMap[ticket.ticketId] == 0 || totalRatingCountMap[ticket.ticketId] == null}">
-											        <p>暫無評價</p>
-											    </c:when>
-											    <c:otherwise>
-											        <p class="card-text">
-											            <small class="text-muted">
-											                ${averageStarsMap[ticket.ticketId]}
-											                <c:forEach begin="1" end="${averageStarsMap[ticket.ticketId]}" var="i">
-											                    <i class="fas fa-star gold-star"></i>
-											                </c:forEach>
-											                <c:if test="${averageStarsMap[ticket.ticketId] % 1 != 0}">
-											                    <i class="fas fa-star-half-alt gold-star"></i>
-											                    <c:set var="emptyStarsStart" value="${Math.floor(averageStarsMap[ticket.ticketId]) + 2}" />
-											                </c:if>
-											                <c:if test="${averageStarsMap[ticket.ticketId] % 1 == 0}">
-											                    <c:set var="emptyStarsStart" value="${averageStarsMap[ticket.ticketId] + 1}" />
-											                </c:if>
-											                <c:forEach begin="${emptyStarsStart}" end="5" var="j">
-											                    <i class="far fa-star gold-star"></i>
-											                </c:forEach>
-											                (${totalRatingCountMap[ticket.ticketId]})
-											            </small>
-											        </p>
-											    </c:otherwise>
-											</c:choose>
+				 <c:choose>
+                    <c:when test="${averageStars == 0 || totalRatingCount == 0 || averageStars == null}">
+                        <p>尚無評價</p>
+                    </c:when>
+                    <c:otherwise>
+					<p class="mb-0">${formattedAverageStars}
+						<!-- 實星 -->
+						<c:forEach begin="1" end="${averageStars}" var="i">
+							<i class="fas fa-star gold-star"></i>
+						</c:forEach>
+						<!-- 半星 -->
+						<c:if test="${averageStars % 1 != 0}">
+							<i class="fas fa-star-half-alt gold-star"></i>
+							<!-- 有半星就+ -->
+							<c:set var="emptyStarsStart"
+								value="${Math.floor(averageStars) + 2}" />
+						</c:if>
+						<!-- 沒有半星就往下一個數 -->
+						<c:if test="${averageStars % 1 == 0}">
+							<c:set var="emptyStarsStart" value="${averageStars + 1}" />
+						</c:if>
+						<!-- 空星 -->
+						<c:forEach begin="${emptyStarsStart}" end="5" var="j">
+							<i class="far fa-star gold-star"></i>
+						</c:forEach>
+						(${totalRatingCount})
+					</p>
+				 </c:otherwise>
+                </c:choose>
 					<div class="row mb-4">
 						<div class="col-12">
 							<h2 class="display-4">NT$ ${ticket.price}</h2>
@@ -186,11 +189,6 @@
 
 		<div class="row mt-5">
 			<div class="col-12">
-			<c:choose>
-		    <c:when test="${totalRatingCountMap[ticket.ticketId] == 0 || totalRatingCountMap[ticket.ticketId] == null}">
-		        <p></p>
-		    </c:when>
-		    <c:otherwise>
 				<h4>使用者評價</h4>
 				<c:forEach var="reviews" items="${reviews}">
 					<div class="review border-top py-3">
@@ -219,8 +217,6 @@
 						<p>${reviews.ticketReviews}</p>
 					</div>
 				</c:forEach>
-			   </c:otherwise>
-			 </c:choose>
 			</div>
 		</div>
 	</div>
@@ -257,9 +253,7 @@ $(document).ready(function() {
 //愛心收藏
 $(document).ready(function() {
     $(".favorite-icon").click(function() {
-//         var memId;
         var ticketId;
-//         var memId = ${memId};
 		var ticketId = $(this).data('ticketid');
         var requestData = { "ticketId": ticketId};
         var iconElement = $(this);

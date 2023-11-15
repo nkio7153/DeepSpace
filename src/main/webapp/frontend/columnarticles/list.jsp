@@ -71,7 +71,7 @@
 					</div>
 				</div>
 				<!-- 專欄文章列表 -->
-				<div class="column" id="right">
+				<div class="column" >
 					<c:forEach items="${resultSet}" var="column">
 						<a
 							href="${pageContext.request.contextPath}/columnarticles/item?artiId=${column.artiId}"
@@ -107,55 +107,65 @@
 						</a>
 					</c:forEach>
 				</div>
+				
+	<div id="right">
+	<c:forEach begin="1" end="${pageQty}" var="i">
+    <li class="page-item ${i == currentPage ? 'active' : ''}">
+        <a class="page-link" href="${pageContext.request.contextPath}/columnarticles/list?page=${i}">${i}</a>
+    </li>
+</c:forEach>
+    </div>					
+				
 			</div>
 		</div>
 
 	</div>
-	</div>
+<!-- 	</div> -->
 	<!-- 分頁 -->
-	<div>
-		<nav>
-			<ul class="pagination justify-content-center">
-				<!-- "至第一頁" 只在非第一頁時顯示 -->
-				<c:if test="${currentPage > 1}">
-					<li class="page-item"><a class="page-link"
-						href="${pageContext.request.contextPath}/columnarticles/list?page=1">第一頁</a>
-					</li>
-				</c:if>
 
-				<!-- "上一頁" 如果當前頁是第一頁則隱藏 -->
-				<c:if test="${currentPage - 1 != 0}">
-					<li class="page-item"><a class="page-link"
-						href="${pageContext.request.contextPath}/columnarticles/list?page=${currentPage - 1}"
-						aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-					</a></li>
-				</c:if>
+<!-- 	<div> -->
+<!-- 		<nav> -->
+<!-- 			<ul class="pagination justify-content-center" id="right"> -->
+<!-- 				"至第一頁" 只在非第一頁時顯示 -->
+<%-- 				<c:if test="${currentPage > 1}"> --%>
+<!-- 					<li class="page-item"><a class="page-link" -->
+<%-- 						href="${pageContext.request.contextPath}/columnarticles/list?page=1">第一頁</a> --%>
+<!-- 					</li> -->
+<%-- 				</c:if> --%>
 
-				<!-- 動態顯示頁碼，根據總頁數ticketPageQty生成 -->
-				<c:forEach var="i" begin="1" end="${pageQty}" step="1">
-					<li class="page-item ${i == currentPage ? 'active' : ''}"><a
-						class="page-link"
-						href="${pageContext.request.contextPath}/columnarticles/list?page=${i}">${i}</a>
-					</li>
-				</c:forEach>
+<!-- 				"上一頁" 如果當前頁是第一頁則隱藏 -->
+<%-- 				<c:if test="${currentPage - 1 != 0}"> --%>
+<!-- 					<li class="page-item"><a class="page-link" -->
+<%-- 						href="${pageContext.request.contextPath}/columnarticles/list?page=${currentPage - 1}" --%>
+<!-- 						aria-label="Previous"> <span aria-hidden="true">&laquo;</span> -->
+<!-- 					</a></li> -->
+<%-- 				</c:if> --%>
 
-				<!-- "下一頁" 如果當前頁是最後一頁則隱藏 -->
-				<c:if test="${currentPage + 1 <= pageQty}">
-					<li class="page-item"><a class="page-link"
-						href="${pageContext.request.contextPath}/columnarticles/list?page=${currentPage + 1}"
-						aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-					</a></li>
-				</c:if>
+<!-- 				動態顯示頁碼，根據總頁數ticketPageQty生成 -->
+<%-- 				<c:forEach var="i" begin="1" end="${pageQty}" step="1"> --%>
+<%-- 					<li class="page-item ${i == currentPage ? 'active' : ''}"><a --%>
+<!-- 						class="page-link" -->
+<%-- 						href="${pageContext.request.contextPath}/columnarticles/list?page=${i}">${i}</a> --%>
+<!-- 					</li> -->
+<%-- 				</c:forEach> --%>
 
-				<!-- "至最後一頁" 只在非最後一頁時顯示 -->
-				<c:if test="${currentPage != pageQty}">
-					<li class="page-item"><a class="page-link"
-						href="${pageContext.request.contextPath}/columnarticles/list?page=${pageQty}">尾頁</a>
-					</li>
-				</c:if>
-			</ul>
-		</nav>
-	</div>
+<!-- 				"下一頁" 如果當前頁是最後一頁則隱藏 -->
+<%-- 				<c:if test="${currentPage + 1 <= pageQty}"> --%>
+<!-- 					<li class="page-item"><a class="page-link" -->
+<%-- 						href="${pageContext.request.contextPath}/columnarticles/list?page=${currentPage + 1}" --%>
+<!-- 						aria-label="Next"> <span aria-hidden="true">&raquo;</span> -->
+<!-- 					</a></li> -->
+<%-- 				</c:if> --%>
+
+<!-- 				"至最後一頁" 只在非最後一頁時顯示 -->
+<%-- 				<c:if test="${currentPage != pageQty}"> --%>
+<!-- 					<li class="page-item"><a class="page-link" -->
+<%-- 						href="${pageContext.request.contextPath}/columnarticles/list?page=${pageQty}">尾頁</a> --%>
+<!-- 					</li> -->
+<%-- 				</c:if> --%>
+<!-- 			</ul> -->
+<!-- 		</nav> -->
+<!-- 	</div> -->
 
 
 
@@ -179,6 +189,7 @@
 				success : function(result) {
 					console.log(result);
 					$('#right').html(result);
+					updatePagination(result.pageQtyA, result.currentPage);
 				},
 	            complete: function() {
 	                $('#loadingSpinner').hide();
@@ -197,7 +208,27 @@
 // 		});
 	});
 
-  
+    function updatePagination(pageQtyA, currentPage) {
+        var paginationHtml = '';
+        for (var i = 1; i <= pageQtyA; i++) {
+            paginationHtml += '<li class="page-item ' + (i === currentPage ? 'active' : '') + '">';
+            paginationHtml += '<a class="page-link" href="#" onclick="loadPage(' + i + '); return false;">' + i + '</a></li>';
+        }
+        $('.pagination').html(paginationHtml);
+    }
+
+    function loadPage(pageNumber) {
+        $.ajax({
+            url: '<%=request.getContextPath()%>/columnarticles/list', 
+            data: { page: pageNumber },
+            success: function(response) {
+                // 更新頁面內容
+                $('#right').html(response);
+            }
+        });
+    }
+
+
 </script>
 
 	<jsp:include page="/indexpage/footer.jsp" />

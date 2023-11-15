@@ -329,11 +329,11 @@ public class TicketServlet extends HttpServlet {
 	}
 
 //	private void updateExistingImage(Part part, TicketVO ticket) throws IOException, ServletException {
-//	    // 從 part 名稱中提取圖片 ID
+//	    // 從 part 名稱取圖片 ID
 //	    String partName = part.getName();
-//	    Integer imageId = Integer.parseInt(partName.substring(6)); // 假設名稱為 "image_123"
+//	    Integer imageId = Integer.parseInt(partName.substring(6)); 
 //
-//	    // 根據 imageId 獲取 TicketImagesVO 實體
+//	    // 根據 imageId 
 //	    TicketImagesVO ticketImage = ticketImagesService.getImageById(imageId);
 //
 //	    if (ticketImage != null) {
@@ -350,7 +350,7 @@ public class TicketServlet extends HttpServlet {
 //	private void uploadNewImage(Part part, TicketVO ticket) throws IOException, ServletException {
 //	    TicketImagesVO newTicketImage = new TicketImagesVO();
 //	    newTicketImage.setTicket(ticket);
-//	    newTicketImage.setIsMainImage((byte) 0); // 根據需求設定是否為主圖
+//	    newTicketImage.setIsMainImage((byte) 0); // 設定是否為主圖
 //
 //	    // 讀取並設置圖片數據
 //	    InputStream inputStream = part.getInputStream();
