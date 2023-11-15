@@ -30,6 +30,12 @@ $(document).ready(function() {
 	    });
 	
     $('#articlesRow').on('click', '.card', function() {
+    	
+    	// 檢查點擊的元素是否為按鈕，如果是，則不進行後續操作
+        if ($(event.target).hasClass('btn')) {
+            return;
+        }
+    	
         var articleImage = $(this).find('img.card-img-top').attr('src');
         var articleTitle = $(this).find('h5.card-title').text();
         var articleText = $(this).find('div.card-text').html();
@@ -147,8 +153,9 @@ $(document).ready(function() {
             <img src="" class="card-img-top" alt="文章圖片" id="articleImage">
           </div>
           <div class="card-body">
-            <h1 class="card-title" id="articleTitle">文章標題:</h1>
+            <h3 class="card-title" id="articleTitle">文章標題:</h3>
             <div class="card-text font-sizee" id="articleText">文章內容:</div>
+            <br>
             <div class="d-flex justify-content-end">
               <h6 class="card-text" id="articleDate">發布時間:</h6>
             </div>
