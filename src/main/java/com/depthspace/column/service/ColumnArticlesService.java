@@ -25,6 +25,7 @@ public interface ColumnArticlesService {
 	List<ColumnArticlesVO> getAllArti2(int currentPage);
 	//取得所有專欄類型的類型VO
 	List<ColumnTypesVO> getAllColumnTypes();
+	List<ColumnArticlesVO> getAllColumnTypes(Integer colTypeId);
 	//取得所有管理者的管理者VO
 	List<AdminVO> getAllAdmins();
 	

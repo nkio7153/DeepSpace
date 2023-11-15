@@ -56,6 +56,9 @@
 .table-list .breadcrumb{
 	 background-color: transparent;
 }
+.display-4{
+	font-size: 2.5rem;
+}
 </style>
 
 
@@ -80,40 +83,44 @@
 				</nav>
 			</div>
 		</div>
-		<!-- 商品大圖輪播 -->
-		<div class="row mb-4">
-			<div class="col-12">
-				<div id="carouselExampleIndicators" class="carousel slide"
-					data-ride="carousel">
-					<div class="carousel-inner">
-						<!-- jQuery -->
-					</div>
-					<a class="carousel-control-prev" href="#carouselExampleIndicators"
-						role="button" data-slide="prev"> <span
-						class="carousel-control-prev-icon" aria-hidden="true"></span> <span
-						class="sr-only">Previous</span>
-					</a> <a class="carousel-control-next" href="#carouselExampleIndicators"
-						role="button" data-slide="next"> <span
-						class="carousel-control-next-icon" aria-hidden="true"></span> <span
-						class="sr-only">Next</span>
-					</a>
-				</div>
-			</div>
-		</div>
-		<!-- 商品基本資訊 -->
-		<div class="row mb-4">
-			<div class="col-12 d-flex justify-content-between align-items-center">
-				<h3>${ticket.ticketName}</h3>
-	<i class="fa-heart favorite-icon ${isFavorite ? 'fas' : 'far'}" 
-   id="favoriteIcon" style="cursor: pointer;" data-ticketId="${ticket.ticketId}"></i>									
-			</div>
-				<div class="col-12 d-flex justify-content-between align-items-center">
-				<h6>${ticket.ticketType.typeName}&emsp;|&emsp;${ticket.city.cityName}</h6>
-			</div>
-		</div>
+<div class="row mb-4">
+    <!-- 商品大圖輪播 -->
+    <div class="col-md-7">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <!-- jQuery -->
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a> 
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 商品基本資訊 -->
+    <div class="col-md-5">
+        <div class="row">
+            <div class="col-10 d-flex justify-content-between align-items-center">
+                <h3>${ticket.ticketName}</h3>
+                <i class="fa-heart favorite-icon ${isFavorite ? 'fas' : 'far'}" 
+                   id="favoriteIcon" style="cursor: pointer;" data-ticketId="${ticket.ticketId}"></i>
+            </div>
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <h6>${ticket.ticketType.typeName}&emsp;|&emsp;${ticket.city.cityName}</h6>
+            </div>
+        </div>
 		<div class="col-12 mt-3">
 			<div class="d-flex justify-content-between align-items-center">
 				<div class="rating">
+				 <c:choose>
+                    <c:when test="${averageStars == 0 || totalRatingCount == 0 || averageStars == null}">
+                        <p>尚無評價</p>
+                    </c:when>
+                    <c:otherwise>
 					<p class="mb-0">${formattedAverageStars}
 						<!-- 實星 -->
 						<c:forEach begin="1" end="${averageStars}" var="i">
@@ -136,6 +143,8 @@
 						</c:forEach>
 						(${totalRatingCount})
 					</p>
+				 </c:otherwise>
+                </c:choose>
 					<div class="row mb-4">
 						<div class="col-12">
 							<h2 class="display-4">NT$ ${ticket.price}</h2>
@@ -161,6 +170,7 @@
 				</div>
 			</div>
 		</div>
+		</div>
 		<!-- 商品描述、位置、評價 -->
 		<div class="row mt-5">
 			<div class="col-12">
@@ -173,7 +183,7 @@
 			<div class="col-12">
 				<h4>位置資訊</h4>
 				<p>${ticket.address}</p>
-				<div id="map" style="width: 100%; height: 500px;"></div>
+				<div id="map" style="width: 100%; height: 400px;"></div>
 			</div>
 		</div>
 
@@ -232,7 +242,7 @@ $(document).ready(function() {
             var img = $("<img>")
                 .attr("src", "<%=request.getContextPath()%>/ticketallimage?action=getImage&imageId="  + id + "&ticketId=" + ticketId)
                 .addClass("d-block w-100 rounded")
-                .css("height", "500px")
+                .css("height", "300px")
                 .css("object-fit", "cover");
 
             carouselItem.append(img);
@@ -243,9 +253,7 @@ $(document).ready(function() {
 //愛心收藏
 $(document).ready(function() {
     $(".favorite-icon").click(function() {
-//         var memId;
         var ticketId;
-//         var memId = ${memId};
 		var ticketId = $(this).data('ticketid');
         var requestData = { "ticketId": ticketId};
         var iconElement = $(this);
