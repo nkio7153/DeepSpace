@@ -24,9 +24,6 @@ import com.depthspace.column.service.ColumnArticlesServiceImpl;
 import com.depthspace.column.service.ColumnImagesService;
 import com.depthspace.column.service.ColumnImagesServiceImpl;
 
-import com.depthspace.ticket.model.TicketTypesVO;
-import com.depthspace.ticket.model.TicketVO;
-import com.depthspace.utils.HibernateUtil;
 import com.depthspace.utils.JedisUtil;
 
 
@@ -34,6 +31,7 @@ import com.depthspace.utils.JedisUtil;
 @MultipartConfig
 public class ColumnArtServlet extends HttpServlet {
 	
+	private static final double PAGE_MAX_RESULT = 8;
 	private ColumnArticlesService columnArticlesService;
 	private ColumnImagesService columnImagesService;
 
@@ -58,18 +56,18 @@ public class ColumnArtServlet extends HttpServlet {
 			res.sendRedirect(req.getContextPath() + "/frontend/columnarticles/info.jsp");
 			break;
 		case "/list": // 專欄總列表
-			String searchTerm = req.getParameter("searchTerm");
-			if (searchTerm == null || searchTerm.trim().isEmpty()) {
-				// 如果為空沒有觸發搜尋，則列出全部
-				doList(req, res);
-				return;
-			} else {
-				// 否則執行搜尋
-				doSearch(req, res);
-				return;
-			}
-//			doList(req, res);
-//			break;
+//			String searchTerm = req.getParameter("searchTerm");
+//			if (searchTerm == null || searchTerm.trim().isEmpty()) {
+//				// 如果為空沒有觸發搜尋，則列出全部
+//				doList(req, res);
+//				return;
+//			} else {
+//				// 否則執行搜尋
+//				doSearch(req, res);
+//				return;
+//			}
+			doList(req, res);
+			break;
 		case "/item": // 專欄單一頁面
 			doItem(req, res);
 			break;
@@ -92,19 +90,22 @@ public class ColumnArtServlet extends HttpServlet {
 		
 		List<ColumnArticlesVO> columnList = columnArticlesService.getAllArti2(currentPage);
 
-		if (req.getSession().getAttribute("PageQty") == null) {
+		if (req.getSession().getAttribute("pageQty") == null) {
 			int pageQty = columnArticlesService.getPageTotal();
-			req.getSession().setAttribute("PageQty", pageQty);
+			req.getSession().setAttribute("pageQty", pageQty);
 		}
-		
+
+		searchList(req, res);	
 		req.setAttribute("total", total); //專欄文章總數
 		req.setAttribute("currentPage", currentPage); //分頁數
-		req.setAttribute("columnList", columnList);  
+		req.setAttribute("resultSet", columnList);  
 
-		searchList(req, res);
+
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/columnarticles/list.jsp");
 		dispatcher.forward(req, res);
 	}
+	
+	
 
 	/************ 單一專欄頁面 ************/	
 	protected void doItem(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -176,9 +177,16 @@ public class ColumnArtServlet extends HttpServlet {
 	    // 查詢結果存入
 	    req.setAttribute("resultSet", resultSet);
 	    
-	    System.out.println(resultSet);
-		searchList(req, res);
-	    req.getRequestDispatcher("/frontend/columnarticles/list.jsp").forward(req, res);
+	   
+	    int pageQty = (int) Math.ceil((double) searchCount / PAGE_MAX_RESULT); // 計算總頁數
+
+	    req.setAttribute("searchCount", searchCount);
+	    req.setAttribute("pageQtyA", pageQty); 
+
+//		List<ColumnArticlesVO> resultSet = columnArticlesService.getAllArti2(searchCount);
+//		req.setAttribute("currentPage", searchCount); //分頁數
+//	    
+	    req.getRequestDispatcher("/frontend/columnarticles/search.jsp").forward(req, res);
 	}
 	
 

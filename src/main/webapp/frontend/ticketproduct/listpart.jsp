@@ -15,7 +15,7 @@
 					</c:choose>
 					</div>
 				<!-- 排序 -->				    
-				<label for="sortOption">排序方式：</label>
+				<label for="sortOption"></label>
 				<div class="form-group">
 				    <select class="form-control" id="sortOption" onchange="updateTicketList(1)">
 				 <option value="ticketId_asc" ${param.sortField == 'ticketId' && param.sortOrder == 'asc' ? 'selected' : ''}>依上市日(新→舊)</option>
@@ -49,38 +49,46 @@
 													<c:otherwise>
 								${ticket.description}
 								</c:otherwise>
-										</c:choose>
+												</c:choose>
 											</p>
 											<p class="card-text">
-												<small class="text-muted">
-													${averageStarsMap[ticket.ticketId]} <!-- 實星 --> <c:forEach
-														begin="1" end="${averageStarsMap[ticket.ticketId]}"
-														var="i">
-														<i class="fas fa-star gold-star"></i>
-													</c:forEach> <!-- 半星 --> <c:if
-														test="${averageStarsMap[ticket.ticketId] % 1 != 0}">
-														<i class="fas fa-star-half-alt gold-star"></i>
-														<!-- 有半星就+ -->
-														<c:set var="emptyStarsStart"
-															value="${Math.floor(averageStarsMap[ticket.ticketId]) + 2}" />
-													</c:if> <!-- 沒有半星就往下一個數 --> <c:if
-														test="${averageStarsMap[ticket.ticketId] % 1 == 0}">
-														<c:set var="emptyStarsStart"
-															value="${averageStarsMap[ticket.ticketId] + 1}" />
-													</c:if> <!-- 空星 --> <c:forEach begin="${emptyStarsStart}" end="5"
-														var="j">
-														<i class="far fa-star gold-star"></i>
-													</c:forEach> (${totalRatingCountMap[ticket.ticketId]})
-												</small>
-											</p>
+											<c:choose>
+											    <c:when test="${totalRatingCountMap[ticket.ticketId] == 0 || totalRatingCountMap[ticket.ticketId] == null}">
+											        <p>暫無評價</p>
+											    </c:when>
+											    <c:otherwise>
+											        <p class="card-text">
+											            <small class="text-muted">
+											                ${averageStarsMap[ticket.ticketId]}
+											                <c:forEach begin="1" end="${averageStarsMap[ticket.ticketId]}" var="i">
+											                    <i class="fas fa-star gold-star"></i>
+											                </c:forEach>
+											                <c:if test="${averageStarsMap[ticket.ticketId] % 1 != 0}">
+											                    <i class="fas fa-star-half-alt gold-star"></i>
+											                    <c:set var="emptyStarsStart" value="${Math.floor(averageStarsMap[ticket.ticketId]) + 2}" />
+											                </c:if>
+											                <c:if test="${averageStarsMap[ticket.ticketId] % 1 == 0}">
+											                    <c:set var="emptyStarsStart" value="${averageStarsMap[ticket.ticketId] + 1}" />
+											                </c:if>
+											                <c:forEach begin="${emptyStarsStart}" end="5" var="j">
+											                    <i class="far fa-star gold-star"></i>
+											                </c:forEach>
+											                (${totalRatingCountMap[ticket.ticketId]})
+											            </small>
+											        </p>
+											    </c:otherwise>
+											</c:choose>
 											<p class="card-text">NT$ ${ticket.price}</p>
 										</div>
 									</div>
 								</div>
 							</div>
 						</a>
-				</c:forEach>
+					</c:forEach>
+				</div>
 			</div>
+		</div>
+	</div>
 <!-- 分頁 -->
 <!-- <ul class="pagination justify-content-center"> -->
 <%--     <c:forEach var="i" begin="1" end="${ticketPageQty}" step="1"> --%>

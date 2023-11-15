@@ -1,7 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java"
+	pageEncoding="UTF-8"%>
 <%@ page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 
 
 <!DOCTYPE html>
@@ -10,25 +12,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet"	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">	
+<link rel="stylesheet"	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet"	href="<c:url value='/static/css/backendlist.css'/>">
+
+<title>票券列表</title>
 <style>
-    .add-button {
-        background-color: #63bfc9; 
-        color: white; 
-        padding: 8px 40px; 
-        border: none; 
-        border-radius: 5px;
-        cursor: pointer; 
-    }
-    .add-button:hover {
-        background-color: #5b969c; 
-    }
-    .table-hover tbody tr:hover {
-        background-color: #f5f5f5;
-    }
+ .table-hover tbody tr:hover {
+     background-color: #f5f5f5;
+ }
 </style>
-<title>專欄列表</title>
 <%--  include --%>
 	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
   
@@ -49,39 +41,13 @@
 <%-- include end--%>
 
 <div class="table-list">
+ <div class="col-lg-10 g-2 transparent rounded my-0">
    <div class="table-list">
-       <div class="container mt-5">
-		<div class="row">
-         <div class="col-md-4">
-            <form id="filterForm" method="get" action="<%=request.getContextPath()%>/columnmg/find">
-                <label for="colTypeId" style="display: none";></label><select id="colTypeId" name="colTypeId" class="form-control mb-2">
-                    <option value="">專欄類型選單</option>
-                    <c:forEach var="typeItem" items="${uniqueTypes}">
-                        <option value="${typeItem.colTypeId}">${typeItem.colTypeName}</option>
-                    </c:forEach>
-                </select>
-            </form>
-          </div>
-          <div class="col-md-4">           
-	        <form id="filterForm2" method="get" action="<%=request.getContextPath()%>/columnmg/find">
-	            <div class="input-group">
-	                <input type="text" id="artiTitle" name="artiTitle" class="form-control" placeholder="文章標題關鍵字搜尋" value="${column.artiTitle}">
-	                <div class="input-group-append">
-	                    <button class="btn btn-outline-secondary" type="submit">
-	                        <i class="fas fa-search"></i>
-	                    </button>
-	                </div>
-	            </div>
-	        </form>
-	       </div> 
-               <div class="col-md-4 d-flex justify-content-end"> 
-	      		<form method="get" action="<%=request.getContextPath()%>/columnmg/add">
-				<button class="add-button" type="submit">新增</button>
-				</form>
-		  </div>
-       </div>
-		<h5>專欄列表</h5>
-
+	<h5>搜尋結果</h5>
+     <div class="container mt-5">
+         <!-- 判斷 list 是否為空 -->
+         <c:choose>
+             <c:when test="${not empty list}">
 		<!-- 表格 -->
 		<table class="table table-bordered">
 			<thead>
@@ -99,8 +65,8 @@
 			</thead>
 			<tbody>
 				<!-- 所有資料 -->
-				<tr>
-					<c:forEach var="column" items="${columnList}" varStatus="status">
+				<c:forEach var="column" items="${list}" varStatus="status">
+				<tr>	
 						<td>${column.artiId}</td>
 						<td>${column.colType.colTypeName}</td>
 						<td><img
@@ -131,10 +97,20 @@
 						</td>				
 				</tr>
 				</c:forEach>
-		</table>
-	 </div>
-	 
-	 <!-- 查看 -->		
+				</table>
+                </c:when>
+                <c:otherwise>
+                    <!-- 查詢結果為空 -->
+                    <div class="text-center">
+<!--                         <img src="path_to_cute_image.jpg" alt="No Results Found" /> -->
+                        <p>沒有找到任何結果</p>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
+    
+ 	 <!-- 查看 -->		
 		<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
 		    <div class="modal-dialog modal-lg" role="document">
 		        <div class="modal-content">
@@ -185,77 +161,23 @@
 		    </div>
 		</div>
 		
-		<!-- 分頁 -->
-		<div>
-			<nav>
-				<ul class="pagination justify-content-center">
-					<!-- "至第一頁" 只在非第一頁時顯示 -->
-					<c:if test="${currentPage > 1}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/columnmg/list?page=1">第一頁</a>
-						</li>
-					</c:if>
-
-					<!-- "上一頁" 如果當前頁是第一頁則隱藏 -->
-					<c:if test="${currentPage - 1 != 0}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/columnmg/list?page=${currentPage - 1}"
-							aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-						</a></li>
-					</c:if>
-
-					<!-- 動態顯示頁碼，根據總頁數ticketPageQty生成 -->
-					<c:forEach var="i" begin="1" end="${ticketPageQty}" step="1">
-						<li class="page-item ${i == currentPage ? 'active' : ''}"><a
-							class="page-link"
-							href="${pageContext.request.contextPath}/columnmg/list?page=${i}">${i}</a>
-						</li>
-					</c:forEach>
-
-					<!-- "下一頁" 如果當前頁是最後一頁則隱藏 -->
-					<c:if test="${currentPage + 1 <= pageQty}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/columnmg/list?page=${currentPage + 1}"
-							aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-						</a></li>
-					</c:if>
-
-					<!-- "至最後一頁" 只在非最後一頁時顯示 -->
-					<c:if test="${currentPage != pageQty}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/columnmg/list?page=${pageQty}">尾頁</a>
-						</li>
-					</c:if>
-				</ul>
-			</nav>
-			<div class="page-item">
-				<a class="page-link"
-					href="${pageContext.request.contextPath}/columnmg/">回首頁</a>
-				</div>
-			</div>
+	<!-- 回首頁 -->
+	<div class="page-item">
+		<a class="page-link"
+			href="${pageContext.request.contextPath}/columnmg/">回總列表</a>
+	</div>
+	</div>
+</div>
+<%--  include --%>	
 		</div>
+	</div>		
+</div>
+<%--  include end --%>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>			
 <script>
-$(document).ready(function() {
-    $('#filterForm, #filterForm2').on('change', 'select', function() {
-        var formId = $(this).closest('form').attr('id');
-    	Swal.fire({
-            title: '正在處理',
-            html: '請稍等，正在更新資料。',
-            timer: 1500,
-            timerProgressBar: true,
-            didOpen: () => {
-                Swal.showLoading();
-            },
-            willClose: () => {
-                $('#' + formId).submit();
-            }
-        });
-    });
-});
     $('.view').on('click', function() {
         var artiId = $(this).data('arti-id');
         $.ajax({
@@ -286,13 +208,6 @@ $(document).ready(function() {
         });
     });
 
-
 </script>
-<%--  include --%>	
-		</div>
-	</div>		
-</div>
-<%--  include end --%>
-
 </body>
 </html>
