@@ -50,14 +50,12 @@ public class RestBookingDateServiceImpl implements RestBookingDateService {
 
 	@Override
 	public int updateNoonNum(RestBookingDateVO restBookingDateVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return dao.updateNoonNum(restBookingDateVO);
 	}
 
 	@Override
 	public int updateEveningNum(RestBookingDateVO restBookingDateVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return dao.updateEveningNum(restBookingDateVO);
 	}
 	
 	

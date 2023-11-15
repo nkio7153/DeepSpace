@@ -56,7 +56,7 @@
 		  	// findPlaceFromQuery()參數 用餐廳名稱當地名取place_id與經緯度在geometry
 		    var request = {
 					query: "${ rest.restName }",
-		     		fields: ['name', 'place_id', 'geometry']
+		     		fields: ['name', 'place_id', 'geometry', 'formatted_address']
 		    	};
 		    
 		    var map = new google.maps.Map(document.getElementById('map'));
@@ -64,7 +64,7 @@
 		    
 		    service.findPlaceFromQuery(request, function(results, status) {
 		      if (status === google.maps.places.PlacesServiceStatus.OK) {
-// 		        console.log(results[0]);
+// 		        console.log(results[0].formatted_address);
 		        
 	         	// 用經緯度定位地圖位置
 			    var mapOptions = {
@@ -84,7 +84,7 @@
 			    placeId = results[0].place_id;
 	           	var req = {
 		    		placeId: placeId,
-		     		fields: ['name', 'rating', 'photo', 'type', 'opening_hours']
+		     		fields: ['name', 'rating', 'photo', 'type', 'opening_hours', 'adr_address']
 				};
 		        
 		        service = new google.maps.places.PlacesService(map);
@@ -100,6 +100,8 @@
 				// 評分
 				$("#r_name").append("<h5 id='rating'>"+place.rating+"</h5>")
 				
+				$('#rating').append("<h5 id='address'>"+place.adr_address+"</h5>")
+				
 				// 營業時間
 				var openTime = place.opening_hours.weekday_text;
 				if (openTime != null){
@@ -108,7 +110,7 @@
 					openTime.forEach(function(daytime, index){
 						ul.append("<li>"+daytime+"</li>");
 					})
-					$('#rating').append(ul);
+					$('#address').append(ul);
 					
 				}
 				// 圖片 photos為陣列

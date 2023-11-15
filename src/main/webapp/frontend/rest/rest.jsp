@@ -49,7 +49,7 @@
 				  </div>
 
 				  <div class="row mb-3">
-				    <label for="bookingTime" class="col-sm-2 col-form-label">時段</label>
+				    <label for="bookingTime" class="col-sm-2 col-form-label">時段：</label>
 				    <div class="col-sm-3">
 				      <select id="bookingTime" name="bookingTime">
 						<option>請選擇</option>
@@ -58,7 +58,7 @@
 				  </div>
 				  
 				   <div class="row mb-3">
-				    <label for="bookingNumber" class="col-sm-2 col-form-label">人數</label>
+				    <label for="bookingNumber" class="col-sm-2 col-form-label">人數：</label>
 				    <div class="col-sm-3">
 				      <input type="number" class="form-control" name="bookingNumber" required>
 				    </div>
@@ -87,6 +87,21 @@
         	let noonNum;
         	let eveningNum;
 			
+        	let currentDate = new Date();
+            // 設定最小日期為當前日期
+            let minDate = currentDate.toISOString().split('T')[0];
+            document.getElementById('bookingDate').setAttribute('min', minDate);
+            // 設定最大日期為一個月後
+            let maxDate = new Date(currentDate);
+            maxDate.setMonth(currentDate.getMonth() + 1);
+            let maxDateString = maxDate.toISOString().split('T')[0];
+            document.getElementById('bookingDate').setAttribute('max', maxDateString);
+            
+            console.log(currentDate);
+            console.log(currentDate.toISOString());
+            console.log(maxDate.setMonth(currentDate.getMonth() + 1));
+        	
+        	
 			$("#btn_info").click(function(){
 				if ($(this).hasClass("btn-light")){
 					$(this).toggleClass("btn-light btn-dark");
@@ -104,6 +119,7 @@
 				}
 			});
 			
+			
 			// 選擇日期添加可預約時段
 			$("#bookingDate").change(function(){
 				let params = "restId="+${rest.restId}+"&bookingDate="+$(this).val();
@@ -117,6 +133,7 @@
 			        		  if (index === "restOpen" && !entry){
 			        			  alert("本日公休，請重新選擇日期");
 			        			  $("#bookingDate").val("");
+			        			  
 			        		  }
 			                  if (index === "morningNum" && entry){
 			                	  $("#bookingTime").append("<option value='0'>早上</option>");
@@ -194,7 +211,6 @@
 				          success: function(data) {
 				              alert('訂位成功');
 				              
-				              
 							  // 訂位成功發送郵件通知
 				              $.ajax({
 						          type: 'post',
@@ -207,9 +223,11 @@
 						        	  console.log(data);
 						          }
 							 });
+				              $("#bookingform")[0].reset();
 				          },
 				          error: function(xhr, status, error) {
 				              alert('訂位失敗');
+				              $("#bookingform")[0].reset();
 				          }
 					});
 			    } else {
@@ -225,16 +243,21 @@
 			// 訂位確認執行
 			$('#bookingform').submit(function(event) {
 			    event.preventDefault();
-			    // 若沒選擇時段則停止表單發送
-			    if ($("#bookingTime").val() === "請選擇"){
-			    	alert("請選擇時段");
-			    	return false;			    	
-			    }
-			    // 判斷訂位當下是否有剩餘可以訂位 若無則跳出提示並中斷
 			    let restId = $('#bookingform input[name="restId"]').val();
 				let bookingDate = $('#bookingform input[name="bookingDate"]').val();
 				let bookingTime = $('#bookingTime').val();
 				let bookingNumber = $('#bookingform input[name="bookingNumber"]').val();
+				
+			    // 若沒選擇時段則停止表單發送
+			    if (bookingDate === "請選擇"){
+			    	alert("請選擇時段");
+			    	return false;			    	
+			    }
+			    if (bookingNumber == 0){
+			    	alert("人數不可為0");
+			    	return false;
+			    }
+			    // 判斷訂位當下是否有剩餘可以訂位 若無則跳出提示並中斷
 				let params = "restId=" + restId + "&bookingDate=" + bookingDate;
 				$.ajax({
 				    type: 'get',
@@ -267,6 +290,7 @@
 				        	bookingStart(booking.Num);
 				        } else {
 				        	alert("此時段已無法訂位");
+				        	$("#bookingform")[0].reset();
 				        }
 				   	},
 				    error: function (xhr, status, error) {

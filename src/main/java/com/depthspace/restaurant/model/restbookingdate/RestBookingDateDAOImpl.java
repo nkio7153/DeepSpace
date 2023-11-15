@@ -68,8 +68,8 @@ private SessionFactory factory;
 	public int updateNoonNum(RestBookingDateVO restBookingDateVO) {
 		try {
 			RestBookingDateVO vo = getSession().get(RestBookingDateVO.class, restBookingDateVO.getCompositeKey());
-			
-			getSession().update(restBookingDateVO);
+			vo.setNoonNum(restBookingDateVO.getNoonNum());
+			getSession().update(vo);
 			return 1;
 		} catch (Exception e) {
 			return -1;
@@ -80,8 +80,8 @@ private SessionFactory factory;
 	public int updateEveningNum(RestBookingDateVO restBookingDateVO) {
 		try {
 			RestBookingDateVO vo = getSession().get(RestBookingDateVO.class, restBookingDateVO.getCompositeKey());
-			
-			getSession().update(restBookingDateVO);
+			vo.setEveningNum(restBookingDateVO.getEveningNum());
+			getSession().update(vo);
 			return 1;
 		} catch (Exception e) {
 			return -1;

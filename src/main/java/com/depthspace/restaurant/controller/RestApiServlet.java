@@ -391,15 +391,17 @@ public class RestApiServlet extends HttpServlet {
 						}
 						case ("1"): {
 							vo.setNoonNum(Integer.valueOf(Number));
+							status = restBookingDateService.updateNoonNum(vo);
 							break;
 						}
 						case ("2"): {
 							vo.setEveningNum(Integer.valueOf(Number));
+							status = restBookingDateService.updateEveningNum(vo);
 							break;
 						}
 					}
 //					System.out.println(vo.toString());
-					if (status == 0) {
+					if (status == 1) {
 						out.print("SUCCESS");
 					}
 				} catch (Exception e) {
