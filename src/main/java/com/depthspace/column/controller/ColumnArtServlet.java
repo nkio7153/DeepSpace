@@ -66,7 +66,7 @@ public class ColumnArtServlet extends HttpServlet {
 //				return;
 //			}
 			doList(req, res);
-			return;
+			break;
 		case "/item": // 專欄單一頁面
 			doItem(req, res);
 			break;
@@ -93,14 +93,15 @@ public class ColumnArtServlet extends HttpServlet {
 			int pageQty = columnArticlesService.getPageTotal();
 			req.getSession().setAttribute("pageQty", pageQty);
 		}
-		
+			searchList(req, res);	
 		req.setAttribute("total", total); //專欄文章總數
 		req.setAttribute("currentPage", currentPage); //分頁數
 		req.setAttribute("resultSet", columnList);  
 
-		searchList(req, res);
+
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/columnarticles/list.jsp");
 		dispatcher.forward(req, res);
+		System.out.println("TTTTT："+ columnList);
 	}
 
 	/************ 單一專欄頁面 ************/	
@@ -173,9 +174,11 @@ public class ColumnArtServlet extends HttpServlet {
 	    // 查詢結果存入
 	    req.setAttribute("resultSet", resultSet);
 	    
-	    System.out.println(resultSet);
+	    System.out.println("AAAAAAAAAAAAAAA："+resultSet);
+	    System.out.println("AAAAAAAAAAAAAAA："+searchCount);
 //		searchList(req, res);
 	    req.getRequestDispatcher("/frontend/columnarticles/search.jsp").forward(req, res);
+//	    req.getRequestDispatcher("/frontend/columnarticles/list.jsp").forward(req, res);
 	}
 	
 

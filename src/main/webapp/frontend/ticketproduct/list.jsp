@@ -202,84 +202,84 @@
 	<script>
  
 
-// 	function updateTicketList(currentPage) {
-// 	    $('#loadingSpinner').show();
-// 	    var searchQuery = $('#ticketName').val(); // 關鍵字查詢
-// 	    var formData = $('#searchForm').serialize();
-// 	    var sortOption = $('#sortOption').val().split('_');
-// 	    var sortField = sortOption[0];
-// 	    var sortOrder = sortOption[1];
-// 	    formData += '&page=' + currentPage + '&ajax=true';
+	function updateTicketList(currentPage) {
+	    $('#loadingSpinner').show();
+	    var searchQuery = $('#ticketName').val(); // 關鍵字查詢
+	    var formData = $('#searchForm').serialize();
+	    var sortOption = $('#sortOption').val().split('_');
+	    var sortField = sortOption[0];
+	    var sortOrder = sortOption[1];
+	    formData += '&page=' + currentPage + '&ajax=true';
 	    
-// 	    $.ajax({
-// 	        url: '<c:url value="/ticketproduct/list"/>', 
-// 	        type: 'GET',
-// 	        data: {
-// 	            page: currentPage,
-// 	            sortField: sortField,
-// 	            sortOrder: sortOrder,
-// 	            searchQuery: searchQuery,
-// 	            formData,
-// 	            ajax: 'true'
-// 	        },
-// 	        success: function(response) {
-// 	            $('#ticketright').html(response); 
-// 	            $('#loadingSpinner').hide();
-// 	        }, 
-// 	        error: function(){
-// 	            $('#loadingSpinner').hide();
-// 	            alert("發生錯誤，請重試！")
-// 	        }
-// 	    });
-// 	}
+	    $.ajax({
+	        url: '<c:url value="/ticketproduct/search"/>', 
+	        type: 'GET',
+	        data: {
+	            page: currentPage,
+	            sortField: sortField,
+	            sortOrder: sortOrder,
+	            searchQuery: searchQuery,
+	            formData,
+	            ajax: 'true'
+	        },
+	        success: function(response) {
+	            $('#ticketright').html(response); 
+	            $('#loadingSpinner').hide();
+	        }, 
+	        error: function(){
+	            $('#loadingSpinner').hide();
+	            alert("發生錯誤，請重試！")
+	        }
+	    });
+	}
 
-function updateTicketList(currentPage) {
-    $('#loadingSpinner').show();
+// function updateTicketList(currentPage) {
+//     $('#loadingSpinner').show();
     
-    // 篩選
-    var filterConditions = {};
-    filterConditions['page'] = currentPage;
-    filterConditions['ajax'] = 'true';
+//     // 篩選
+//     var filterConditions = {};
+//     filterConditions['page'] = currentPage;
+//     filterConditions['ajax'] = 'true';
 
-    // 搜尋
-    var searchQuery = $('#ticketName').val(); 
-    if (searchQuery) {
-        filterConditions['ticketName'] = [searchQuery];
-    }
+//     // 搜尋
+//     var searchQuery = $('#ticketName').val(); 
+//     if (searchQuery) {
+//         filterConditions['ticketName'] = [searchQuery];
+//     }
 
-    // 篩選
-    $('input:checkbox[name="areaId"]:checked').each(function() {
-        if (!filterConditions['areaId']) {
-            filterConditions['areaId'] = [];
-        }
-        filterConditions['areaId'].push($(this).val());
-    });
-    $('input:checkbox[name="ticketTypeId"]:checked').each(function() {
-        if (!filterConditions['ticketTypeId']) {
-            filterConditions['ticketTypeId'] = [];
-        }
-        filterConditions['ticketTypeId'].push($(this).val());
-    });
+//     // 篩選
+//     $('input:checkbox[name="areaId"]:checked').each(function() {
+//         if (!filterConditions['areaId']) {
+//             filterConditions['areaId'] = [];
+//         }
+//         filterConditions['areaId'].push($(this).val());
+//     });
+//     $('input:checkbox[name="ticketTypeId"]:checked').each(function() {
+//         if (!filterConditions['ticketTypeId']) {
+//             filterConditions['ticketTypeId'] = [];
+//         }
+//         filterConditions['ticketTypeId'].push($(this).val());
+//     });
 
-    // 排序
-    var sortOption = $('#sortOption').val().split('_');
-    filterConditions['sortField'] = sortOption[0];
-    filterConditions['sortOrder'] = sortOption[1];
+//     // 排序
+//     var sortOption = $('#sortOption').val().split('_');
+//     filterConditions['sortField'] = sortOption[0];
+//     filterConditions['sortOrder'] = sortOption[1];
 
-    $.ajax({
-        url: '<c:url value="/ticketproduct/list"/>', 
-        type: 'GET',
-        data: filterConditions,
-        success: function(response) {
-            $('#ticketright').html(response); 
-            $('#loadingSpinner').hide();
-        }, 
-        error: function(){
-            $('#loadingSpinner').hide();
-            alert("發生錯誤，請重試！")
-        }
-    });
-}
+//     $.ajax({
+//         url: '<c:url value="/ticketproduct/list"/>', 
+//         type: 'GET',
+//         data: filterConditions,
+//         success: function(response) {
+//             $('#ticketright').html(response); 
+//             $('#loadingSpinner').hide();
+//         }, 
+//         error: function(){
+//             $('#loadingSpinner').hide();
+//             alert("發生錯誤，請重試！")
+//         }
+//     });
+// }
 
       
 	</script>

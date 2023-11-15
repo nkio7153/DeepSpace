@@ -4,24 +4,24 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 
-<!DOCTYPE html>
-<html>
-<head>
-<title>選擇專欄文章</title>
-<!-- CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-<link rel="stylesheet"
-	href="<c:url value='/static/css/frontendlist.css'/>">
+<!-- <!DOCTYPE html> -->
+<!-- <html> -->
+<!-- <head> -->
+<!-- <title>選擇專欄文章</title> -->
+<!-- <!-- CSS --> 
+<!-- <link rel="stylesheet" -->
+<!-- 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+<!-- <link rel="stylesheet" -->
+<!-- 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"> -->
+<!-- <link rel="stylesheet" -->
+<%-- 	href="<c:url value='/static/css/frontendlist.css'/>"> --%>
 
 
-</head>
-<body>
+<!-- </head> -->
+<!-- <body> -->
 
 			<!-- 右側內容 "-->
-			<div class="col-md-9" id="right">
+			<div class="col-md-9" >
 				<div class="d-flex justify-content-between align-items-center mb-3">
 					<h2 class="mb-0">共有 ${searchCount} 篇文章</h2>
 					<div class="form-group mb-0">
@@ -34,7 +34,7 @@
 					</div>
 				</div>
 				<!-- 專欄文章列表 -->
-				<div class="colum" id="right">
+				<div class="colum" >
 					<c:forEach items="${resultSet}" var="column">
 						<a
 							href="${pageContext.request.contextPath}/columnarticles/item?artiId=${column.artiId}"
@@ -71,10 +71,16 @@
 					</c:forEach>
 				</div>
 			</div>
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- 	<script -->
+<!-- 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+<!-- 	<script -->
+<!-- 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+<!--     <script> -->
+    
+
+
+  
+<!-- </script> -->
 			
-</body>
-</html>
+<!-- </body> -->
+<!-- </html> -->
