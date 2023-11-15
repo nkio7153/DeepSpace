@@ -50,10 +50,9 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTicket" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 景點
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownTicket">
+                            <ul class="dropdown-menu" aria-labelledby="trip">
                                 <li><a class="dropdown-item" href="">景點瀏覽</a></li>
-                                <li><a class="dropdown-item" href="">我的行程</a></li>
-                                <li><a class="dropdown-item" href="">智慧行程</a></li>
+                                <li><a class="dropdown-item" href="">我的行程</a></li>                               
                             </ul>
                         </li>
                        	<c:if test="${sessionScope.memId == null}">
@@ -69,7 +68,7 @@
                                 <li><a class="dropdown-item" href="">我的會員資料</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList"  onclick="checkSession(event)">我的票券</a></li>
                                 <li><a class="dropdown-item" href="">通知</a></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist"  onclick="checkSession(event)">我的文章</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mem/logout" name="check">登出</a></li>
                             </ul>
                         </li>
