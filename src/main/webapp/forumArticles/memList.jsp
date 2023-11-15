@@ -55,6 +55,10 @@
 	div.font-sizee {
     font-size: 20px;
 	}
+	
+	div.modal-body {
+    padding: 2.5rem !important;;
+	}
 </style>
 </head>
 <body>
