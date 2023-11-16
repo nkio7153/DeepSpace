@@ -2,6 +2,9 @@ package com.depthspace.tour.controller;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +21,6 @@ import com.depthspace.attractions.service.AreaService;
 import com.depthspace.attractions.service.AttractionsService;
 import com.depthspace.attractions.service.CityService;
 import com.depthspace.tour.model.TourDaysVO;
-import com.depthspace.tour.model.TourDetailVO;
 import com.depthspace.tour.model.tour.TourVO;
 import com.depthspace.tour.model.tour.TourView;
 import com.depthspace.tour.model.tourtype.TourTypeVO;
@@ -90,14 +92,26 @@ public class TourServlet extends HttpServlet {
 
 private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 	//取得天數讓資料庫可以新增
+//	取得會員
 	Integer memId;
+//	取得天數
 	Integer tourdaysId = null;
+//	取得行程編號，從上個頁面新增後有的
 	Integer tourId;
+//	取得總天數
 	Integer allDays;
-	String[] allAttr;
+//	取得會員輸入的時間
 	String[] allTime;
+//	取得會員輸入景點
+	String[] allAttr;
 //	取的幾天的陣列
 	String[] oneDay;
+	//要找對應的時間
+	String two;
+	//要找對應的景點
+	Integer three;
+	//找對應景點名稱
+	AttractionsVO four;
 	
 	//轉型
 	try {
@@ -109,27 +123,81 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 			return;
 		}
 //	System.out.println("memId=" + memId);
-	//用總天數的數量去新增天數
+	//用總天數的數量去新增天數到資料庫
 	for(int i=1 ; i <= allDays ; i++) {
-		TourDaysVO tourDaysVO = new TourDaysVO(tourdaysId , allDays , tourId);
+		TourDaysVO tourDaysVO = new TourDaysVO(tourdaysId , i , tourId);
 		tds.insert(tourDaysVO);
+//		回傳剛才新增的天數編號
+		int dayId = tourDaysVO.getTourDaysId();
+//		System.out.println("新增的天數編號=" + tourDaysVO.getTourDaysId());
+		System.out.println("回傳新增的tourdaysId=" + dayId);
 		//取得自行輸入的時間及景點
 		allTime = req.getParameterValues("attractionTime[" + i + "]");
 		allAttr = req.getParameterValues("attractions[" + i + "]");
 		oneDay = req.getParameterValues("oneDay[" + i + "]");
+		
+		for (int y = 0; y < allAttr.length; y++) {
+		    two = allTime[y];
+		    // one為Id
+//		    System.out.println("第" + (y + 1) + "時間=" + two);
+		    try {
+		    	// 定義時間格式
+	            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
-		for(String one : oneDay) {
-			//one為Id
-			System.out.println("天數對應=" + one);
+	            // 解析時間字串
+	            java.sql.Time parsedDate = null;
+				try {
+					parsedDate = (Time) timeFormat.parse(two);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+
+	            // 將Date轉換為Time
+	            Time time = new Time(parsedDate.getTime());
+	            
+	            System.out.println("time=" + time);
+		    	three = Integer.valueOf(allAttr[y]);
+		    } catch (NumberFormatException e) {
+				e.printStackTrace();
+				return;
+			}
+		    four = attrs.getAttractionsById(three);
+		    // one為Id
+//		    System.out.println("第" + (y + 1) + "景點編號=" + three);
+//		    System.out.println("第" + (y + 1) + "景點名稱=" + four.getAttractionsName());
+//		    tdls.insert(dayId , allAttr[y] , time , null , four.getAttractionsName());
 		}
-		for(String one : allTime) {
-			//one為Id
-			System.out.println("時間=" + one);
-		}
-		for(String one : allAttr) {
-			//one為Id			
-			System.out.println("第" + i + "景點編號=" + one);
-		}
+		
+//		getAttractionsById
+		
+		
+//		依照景點編號去找景點名稱
+//		把他包成
+//		天數
+//		景點編號
+//		開始時間
+//		景點名稱
+		
+//		for(int y = 0 ; y < oneDay[y].length() ; y++) {
+//			System.out.println("oneDay[y].length()=" + oneDay[y].length());
+//		}
+
+		//找出天數對應
+//		for(String one : oneDay) {
+//			//one為Id
+//			System.out.println("天數對應=" + one);
+//			for(String two : allTime) {
+//			//one為Id
+//			System.out.println("時間=" + two);
+//			}
+//			for(String three : allAttr) {
+//				//one為Id			
+//				System.out.println("第" + i + "景點編號=" + three);
+//			}
+//		}
+		
+		
+//		insert到detail裡面
 	}
 	
 	 req.setAttribute("memId", memId);
@@ -185,7 +253,7 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 //		新增一筆行程資料
 		TourVO tvo = null;
 		tvo = ts.insert(tourVO);
-//		System.out.println("新增的那些東西"+ tourVO);
+		System.out.println("新增的那些東西"+ tourVO);
 		
 		// 額外設定天數顯示
 //		System.out.println("總天數=" + tourVO.getAllDays());

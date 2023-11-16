@@ -55,7 +55,7 @@
         
         <!-- -->
         <mapping class="com.depthspace.admin.model.AdminVO"/>
-		<mapping class="com.depthspace.faq.model.model.FaqVO"/>
+		<mapping class="com.depthspace.faq.model.FaqVO"/>
 		<mapping class="com.depthspace.faqtypes.model.model.FaqTypesVO"/>
 		<mapping class="com.depthspace.function.model.FunctionVO"/>
 		<mapping class="com.depthspace.keywordqa.model.KeywordQaVO"/>

@@ -12,7 +12,7 @@
 		href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 		rel="stylesheet">
 	<title>修改票券</title>
-	
+	<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
 <%--  include --%>
 	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
   
@@ -34,16 +34,16 @@
 	<div class="container mt-5">
 		<div class="container mt-5">
 			<div class="container mt-5">
-				<h1>修改票券</h1>
-				<form action="<%=request.getContextPath()%>/ticketmg/edit"
-					method="post" enctype="multipart/form-data">
+				<h5>修改票券</h5>
+				<form action="<%=request.getContextPath()%>/ticketmg/edit" method="post" 
+				enctype="multipart/form-data" onsubmit="return showSwal();">
 					<div class="row">
 						<!-- ID -->
 						<input type="hidden" name="ticketId" value="${ticket.ticketId}">
 						<!-- 類型 -->
 						<div class="form-group col-md-6">
 							<label for="ticketTypeId">票券類型</label> <select name=ticketTypeId
-								id="ticketTypeId" class="form-control">
+								id="ticketTypeId" class="form-control" required>
 								<option value="">請選擇票券類型</option>
 								<c:forEach var="typeItem" items="${ticketTypes}">
 									<!-- 選單原先值 -->
@@ -57,21 +57,21 @@
 						<!-- 票券名稱 -->
 						<div class="form-group col-md-6">
 							<label for="ticketName">票券名稱</label> <input type="text"
-								class="form-control" id="ticketName" name="ticketName"
+								class="form-control" id="ticketName" name="ticketName" required
 								value="${ticket.ticketName}">
 						</div>
 
 						<!-- 價格 -->
 						<div class="form-group col-md-6">
 							<label for="price">價格</label> <input type="number"
-								class="form-control" id="price" name="price"
+								class="form-control" id="price" name="price" required min="0"
 								value="${ticket.price}">
 						</div>
 
 						<!-- 數量 -->
 						<div class="form-group col-md-6">
 							<label for="stock">數量</label> <input type="number"
-								class="form-control" id="stock" name="stock"
+								class="form-control" id="stock" name="stock" required min="0"
 								value="${ticket.stock}">
 						</div>
 
@@ -83,12 +83,12 @@
 						    <div id="image-list" class="d-flex flex-wrap">
 						        <!-- 已上傳的圖片會透過JavaScript動態加載到這裡 -->
 						    </div>
-						    <button type="button" id="addImage" class="btn btn-primary mt-2"  name="ticketImages[]">新增圖片</button>
+						    <button type="button" id="addImage" class="btn btn-primary mt-2" name="ticketImages[]" >新增圖片</button>
 						</div>
             
 						<!-- 使用天數 -->
 						<div class="form-group col-md-12">
-							<label for="validDays">使用天數</label> <input type="text"
+							<label for="validDays">使用天數</label> <input type="text" required min="0"
 								title="請輸入數字，例如: 365" class="form-control" id="validDays"
 								name="validDays" value="${ticket.validDays}">
 						</div>
@@ -107,7 +107,7 @@
 
 						<!-- 區域 -->
 						<div class="form-group col-md-6">
-							<label for="cityId">區域</label> <select name="cityId" id="cityId"
+							<label for="cityId">區域</label> <select name="cityId" id="cityId" required
 								class="form-control">
 								<option value="">請選擇縣市</option>
 								<c:forEach var="cityItem" items="${cities}">
@@ -121,21 +121,21 @@
 						<!-- 地址 -->
 						<div class="form-group col-md-6">
 							<label for="address">地址</label> <input type="text"
-								class="form-control" id="address" name="address"
+								class="form-control" id="address" name="address" required
 								value="${ticket.address}">
 						</div>
 
 						<!-- 經度 -->
 						<div class="form-group col-md-6">
 							<label for="longitude">經度</label> <input type="text"
-								class="form-control" id="longitude" name="longitude"
+								class="form-control" id="longitude" name="longitude" required min="0"
 								value="${ticket.longitude}">
 						</div>
 
 						<!-- 緯度 -->
 						<div class="form-group col-md-6">
 							<label for="latitude">緯度</label> <input type="text"
-								class="form-control" id="latitude" name="latitude"
+								class="form-control" id="latitude" name="latitude" required min="0"
 								value="${ticket.latitude}">
 						</div>
 
@@ -149,7 +149,7 @@
 						</div>
 					</div>
 
-					<button type="submit" class="btn btn-primary" name="action">送出</button>
+					<div><button type="submit" class="btn btn-primary" name="action">送出</button></div>
 				</form>
 			</div>
 		</div>
@@ -159,11 +159,9 @@
 	</div>		
 </div>
 <%--  include end --%>
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
 	<script>
     $(document).ready(function() {
         const ticketId = ${ticket.ticketId}; 
@@ -205,6 +203,17 @@
             imageElement.attr('src', e.target.result).show();
         };
         reader.readAsDataURL(event.target.files[0]);
+    }
+	
+    // 送出的提示動畫
+    function showSwal() {
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: '修改成功',
+            showConfirmButton: false,
+            timer: 1500
+        });
     }
     </script>	
 </body>

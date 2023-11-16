@@ -5,19 +5,9 @@ import java.util.Map;
 
 public interface FunctionDAO {
 
-	int insert(FunctionVO entity);
-
-	int update(FunctionVO entity);
-	
-	int delete(FunctionVO id);
-	 
-	FunctionVO getById(Integer id);
-	
-	List<FunctionVO> getAll();
-	
-	List<FunctionVO> getByCompositeQuery(Map<String, String> map);
-	
-	List<FunctionVO> getAll(int currentPage);
-
-	long getTotal();
+	public void insert(FunctionVO functionVO);
+	public void update(FunctionVO functionVO);
+	public void delete(Integer funcId);
+	public FunctionVO findByPrimaryKey(Integer funcId);
+    public List<FunctionVO> getAll();
 }

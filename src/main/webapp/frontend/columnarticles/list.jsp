@@ -31,8 +31,7 @@
 
 			<!-- 左側篩選條件 -->
 			<div class="col-md-3">
-				<form id="searchForm" method="get"
-					action="<%=request.getContextPath()%>/columnarticles/search">
+				<form id="searchForm">
 					<!-- 搜尋框 -->
 					<div class="input-group mb-3">
 						<input type="text" class="form-control" placeholder="名稱"
@@ -58,8 +57,8 @@
 					</div>
 				</form>
 			</div>
-			<!-- 右側內容 -->
-			<div class="col-md-9">
+			<!-- 右側內容 "-->
+			<div class="col-md-9" id="right">
 				<div class="d-flex justify-content-between align-items-center mb-3">
 					<h2 class="mb-0">共有 ${total} 篇文章</h2>
 					<div class="form-group mb-0">
@@ -72,8 +71,8 @@
 					</div>
 				</div>
 				<!-- 專欄文章列表 -->
-				<div class="colum">
-					<c:forEach items="${columnList}" var="column">
+				<div class="column" >
+					<c:forEach items="${resultSet}" var="column">
 						<a
 							href="${pageContext.request.contextPath}/columnarticles/item?artiId=${column.artiId}"
 							class="no-underline"> <!-- 整張卡片點擊 -->
@@ -82,7 +81,7 @@
 									<div class="col-md-4">
 										<img
 											src="<%=request.getContextPath()%>/columnmainimage?artiId=${column.artiId}"
-											alt="Main Ticket Image" class="ticket-img">
+											alt="Main Image" class="img">
 									</div>
 									<div class="col-md-8">
 										<div class="card-body">
@@ -108,55 +107,65 @@
 						</a>
 					</c:forEach>
 				</div>
+				
+	<div id="right">
+	<c:forEach begin="1" end="${pageQty}" var="i">
+    <li class="page-item ${i == currentPage ? 'active' : ''}">
+        <a class="page-link" href="${pageContext.request.contextPath}/columnarticles/list?page=${i}">${i}</a>
+    </li>
+</c:forEach>
+    </div>					
+				
 			</div>
 		</div>
 
 	</div>
-	</div>
+<!-- 	</div> -->
 	<!-- 分頁 -->
-	<div>
-		<nav>
-			<ul class="pagination justify-content-center">
-				<!-- "至第一頁" 只在非第一頁時顯示 -->
-				<c:if test="${currentPage > 1}">
-					<li class="page-item"><a class="page-link"
-						href="${pageContext.request.contextPath}/columnarticles/list?page=1">第一頁</a>
-					</li>
-				</c:if>
 
-				<!-- "上一頁" 如果當前頁是第一頁則隱藏 -->
-				<c:if test="${currentPage - 1 != 0}">
-					<li class="page-item"><a class="page-link"
-						href="${pageContext.request.contextPath}/columnarticles/list?page=${currentPage - 1}"
-						aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-					</a></li>
-				</c:if>
+<!-- 	<div> -->
+<!-- 		<nav> -->
+<!-- 			<ul class="pagination justify-content-center" id="right"> -->
+<!-- 				"至第一頁" 只在非第一頁時顯示 -->
+<%-- 				<c:if test="${currentPage > 1}"> --%>
+<!-- 					<li class="page-item"><a class="page-link" -->
+<%-- 						href="${pageContext.request.contextPath}/columnarticles/list?page=1">第一頁</a> --%>
+<!-- 					</li> -->
+<%-- 				</c:if> --%>
 
-				<!-- 動態顯示頁碼，根據總頁數ticketPageQty生成 -->
-				<c:forEach var="i" begin="1" end="${ticketPageQty}" step="1">
-					<li class="page-item ${i == currentPage ? 'active' : ''}"><a
-						class="page-link"
-						href="${pageContext.request.contextPath}/columnarticles/list?page=${i}">${i}</a>
-					</li>
-				</c:forEach>
+<!-- 				"上一頁" 如果當前頁是第一頁則隱藏 -->
+<%-- 				<c:if test="${currentPage - 1 != 0}"> --%>
+<!-- 					<li class="page-item"><a class="page-link" -->
+<%-- 						href="${pageContext.request.contextPath}/columnarticles/list?page=${currentPage - 1}" --%>
+<!-- 						aria-label="Previous"> <span aria-hidden="true">&laquo;</span> -->
+<!-- 					</a></li> -->
+<%-- 				</c:if> --%>
 
-				<!-- "下一頁" 如果當前頁是最後一頁則隱藏 -->
-				<c:if test="${currentPage + 1 <= ticketPageQty}">
-					<li class="page-item"><a class="page-link"
-						href="${pageContext.request.contextPath}/columnarticles/list?page=${currentPage + 1}"
-						aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-					</a></li>
-				</c:if>
+<!-- 				動態顯示頁碼，根據總頁數ticketPageQty生成 -->
+<%-- 				<c:forEach var="i" begin="1" end="${pageQty}" step="1"> --%>
+<%-- 					<li class="page-item ${i == currentPage ? 'active' : ''}"><a --%>
+<!-- 						class="page-link" -->
+<%-- 						href="${pageContext.request.contextPath}/columnarticles/list?page=${i}">${i}</a> --%>
+<!-- 					</li> -->
+<%-- 				</c:forEach> --%>
 
-				<!-- "至最後一頁" 只在非最後一頁時顯示 -->
-				<c:if test="${currentPage != ticketPageQty}">
-					<li class="page-item"><a class="page-link"
-						href="${pageContext.request.contextPath}/columnarticles/list?page=${ticketPageQty}">尾頁</a>
-					</li>
-				</c:if>
-			</ul>
-		</nav>
-	</div>
+<!-- 				"下一頁" 如果當前頁是最後一頁則隱藏 -->
+<%-- 				<c:if test="${currentPage + 1 <= pageQty}"> --%>
+<!-- 					<li class="page-item"><a class="page-link" -->
+<%-- 						href="${pageContext.request.contextPath}/columnarticles/list?page=${currentPage + 1}" --%>
+<!-- 						aria-label="Next"> <span aria-hidden="true">&raquo;</span> -->
+<!-- 					</a></li> -->
+<%-- 				</c:if> --%>
+
+<!-- 				"至最後一頁" 只在非最後一頁時顯示 -->
+<%-- 				<c:if test="${currentPage != pageQty}"> --%>
+<!-- 					<li class="page-item"><a class="page-link" -->
+<%-- 						href="${pageContext.request.contextPath}/columnarticles/list?page=${pageQty}">尾頁</a> --%>
+<!-- 					</li> -->
+<%-- 				</c:if> --%>
+<!-- 			</ul> -->
+<!-- 		</nav> -->
+<!-- 	</div> -->
 
 
 
@@ -165,6 +174,62 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+    
+    //左邊搜尋條件
+    $(document).ready(function() {
+        // 處理表單提交事件
+        $('#searchForm').on('submit', function(e) {
+            e.preventDefault(); 
+            $('#loadingAnimation').show();
+            var formData = $(this).serialize();
+            $.ajax({
+                url: "<%=request.getContextPath()%>/columnarticles/search", 
+				data : formData, // 表單數據
+				success : function(result) {
+					console.log(result);
+					$('#right').html(result);
+					updatePagination(result.pageQtyA, result.currentPage);
+				},
+	            complete: function() {
+	                $('#loadingSpinner').hide();
+	            }
+			});
+		});
+
+		// 篩選條件的變更也觸發表單提交
+		$('input[type=checkbox]').change(function() {
+			$('#searchForm').submit();
+		});
+
+// 		// 更改排序也觸發表單提交
+// 		$('#sortDropdown').on('change', function() {
+// 			$('#searchForm').submit();
+// 		});
+	});
+
+    function updatePagination(pageQtyA, currentPage) {
+        var paginationHtml = '';
+        for (var i = 1; i <= pageQtyA; i++) {
+            paginationHtml += '<li class="page-item ' + (i === currentPage ? 'active' : '') + '">';
+            paginationHtml += '<a class="page-link" href="#" onclick="loadPage(' + i + '); return false;">' + i + '</a></li>';
+        }
+        $('.pagination').html(paginationHtml);
+    }
+
+    function loadPage(pageNumber) {
+        $.ajax({
+            url: '<%=request.getContextPath()%>/columnarticles/list', 
+            data: { page: pageNumber },
+            success: function(response) {
+                // 更新頁面內容
+                $('#right').html(response);
+            }
+        });
+    }
+
+
+</script>
 
 	<jsp:include page="/indexpage/footer.jsp" />
 

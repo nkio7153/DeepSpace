@@ -56,6 +56,13 @@ h1 {
 	font-size: 14px;
 }
 </style>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+	<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+	
 <%--  include --%>
 	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
   
@@ -77,7 +84,7 @@ h1 {
 
 
 	<div class="container mt-5">
-		<h1>新增票券</h1>
+		<h5>新增票券</h5>
 		<form action="<%=request.getContextPath()%>/ticketmg/add"
     		method="post" enctype="multipart/form-data" onsubmit="return showSwal();">
 			<div class="row">
@@ -87,7 +94,7 @@ h1 {
 				<!-- forEach的var跟option的是有關連的，取自於其forEach遍歷的資料 -->
 				<div class="form-group col-md-6">
 					<label for="ticketTypeId">票券類型</label> <select name=ticketTypeId
-						id="ticketTypeId" class="form-control">
+						id="ticketTypeId" class="form-control" required>
 						<option value="">請選擇票券類型</option>
 						<c:forEach var="typeItem" items="${ticketTypes}">
 							<option value="${typeItem.ticketTypeId}">${typeItem.typeName}</option>
@@ -98,27 +105,25 @@ h1 {
 				<!-- 票券名稱 -->
 				<div class="form-group col-md-6">
 					<label for="ticketName">票券名稱</label> <input type="text"
-						class="form-control" id="ticketName" name="ticketName">
+						class="form-control" id="ticketName" name="ticketName" required>
 				</div>
 
 				<!-- 價格 -->
 				<div class="form-group col-md-6">
 					<label for="price">價格</label> <input type="number"
-						class="form-control" id="price" name="price">
+						class="form-control" id="price" name="price" required min="0">
 				</div>
 
 				<!-- 數量 -->
 				<div class="form-group col-md-6">
 					<label for="stock">數量</label> <input type="number"
-						class="form-control" id="stock" name="stock">
+						class="form-control" id="stock" name="stock" required min="0">
 				</div>
 
 				<div class="row">
-					<!-- 測試多圖片上傳 -->
-
 					<!-- 票券圖片 -->
 					<div class="form-group col-md-6">
-						<input type="file" class="form-control-file" id="ticketImages" name="ticketImages[]" multiple onchange="previewImages(event)">
+						<input type="file" class="form-control-file" id="ticketImages" name="ticketImages[]" required multiple onchange="previewImages(event)">
 					</div>
 
 					<div class="form-group col-md-6">
@@ -130,23 +135,22 @@ h1 {
 					<div class="form-group col-md-12">
 						<label for="validDays">使用天數</label> <input type="text"
 							title="請輸入數字，例如: 365" class="form-control" id="validDays"
-							name="validDays">
+							name="validDays"  required min="0">
 					</div>
 
 					<!-- 描述 -->
 					<div class="form-group col-md-12">
 						<label for="description">描述</label>
-						<textarea class="form-control" id="description" name="description"
-							rows="4"></textarea>
+						<textarea class="form-control" id="description" name="description" rows="4"></textarea>
 						<script>
-							CKEDITOR.replace('description');
+						    CKEDITOR.replace('description');
 						</script>
 					</div>
 
 					<!-- 區域 -->
 					<div class="form-group col-md-6">
 						<label for="cityId">區域</label> <select name="cityId" id="cityId"
-							class="form-control">
+							class="form-control" required>
 							<option value="">請選擇縣市</option>
 							<c:forEach var="cityItem" items="${cities}">
 								<option value="${cityItem.cityId}">${cityItem.cityName}</option>
@@ -157,19 +161,19 @@ h1 {
 					<!-- 地址 -->
 					<div class="form-group col-md-6">
 						<label for="address">地址</label> <input type="text"
-							class="form-control" id="address" name="address">
+							class="form-control" id="address" name="address" required>
 					</div>
 
 					<!-- 經度 -->
 					<div class="form-group col-md-6">
 						<label for="longitude">經度</label> <input type="text"
-							class="form-control" id="longitude" name="longitude">
+							class="form-control" id="longitude" name="longitude" required min="0">
 					</div>
 
 					<!-- 緯度 -->
 					<div class="form-group col-md-6">
 						<label for="latitude">緯度</label> <input type="text"
-							class="form-control" id="latitude" name="latitude">
+							class="form-control" id="latitude" name="latitude" required min="0">
 					</div>
 
 					<!-- 上下架狀況 -->
@@ -179,21 +183,12 @@ h1 {
 						<input type="radio" id="off" name="status" value="0"> <label
 							for="off">未上架</label>
 					</div>
-				</div>
-
-				<button type="submit" class="btn btn-primary" name="action">送出</button>
+				<div><button type="submit" class="btn btn-primary" name="action">送出</button></div>
 			</div>
+		  </div>
 		</form>
 	</div>
-
-
-
-
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-	<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+<br>
 
 <script>
 

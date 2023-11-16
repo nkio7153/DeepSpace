@@ -42,6 +42,21 @@ public class RestBookingDateServiceImpl implements RestBookingDateService {
 	public List<RestBookingDateVO> getAll() {
 		return dao.getAll();
 	}
+
+	@Override
+	public int updateMorningNum(RestBookingDateVO restBookingDateVO) {
+		return dao.updateMorningNum(restBookingDateVO);
+	}
+
+	@Override
+	public int updateNoonNum(RestBookingDateVO restBookingDateVO) {
+		return dao.updateNoonNum(restBookingDateVO);
+	}
+
+	@Override
+	public int updateEveningNum(RestBookingDateVO restBookingDateVO) {
+		return dao.updateEveningNum(restBookingDateVO);
+	}
 	
 	
 }

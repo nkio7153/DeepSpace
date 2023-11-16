@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import com.depthspace.attractions.model.AttractionsVO;
 import com.depthspace.attractions.model.CityVO;
 import com.depthspace.tour.model.tourtype.TourTypeVO;
 
@@ -37,8 +38,7 @@ public class CityDAOImpl implements CityDAO_Interface{
 
 	@Override
 	public CityVO findByPrimaryKey(Integer cityId) {
-		// TODO Auto-generated method stub
-		return null;
+		return getSession().get(CityVO.class, cityId);
 	}
 
 	@Override

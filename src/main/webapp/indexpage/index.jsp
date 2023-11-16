@@ -24,7 +24,7 @@
                     <div class="container">
                         <div class="banner-info">
                             <h3 class="text-wh">
-                                AI行程規劃功能 <br />讓您輕鬆打造完美旅程
+                                行程規劃功能 <br />讓您輕鬆打造完美旅程
                             </h3>
                             <h4 class="text-wh">
                                 給想要輕鬆安排行程，又不知道從何下手的你
@@ -42,10 +42,10 @@
                     <div class="container">
                         <div class="banner-info">
                             <h3 class="text-wh">
-                                AI行程規劃功能 <br />讓您輕鬆打造完美旅程
+                                餐廳預約功能 <br />讓您輕鬆預定心儀的餐廳
                             </h3>
                             <h4 class="text-wh">
-                                給想要輕鬆安排行程，又不知道從何下手的你
+                                給想要預約餐廳，又不知道有哪些餐廳可以選擇的你
                             </h4>
                             <div class="buttons mt-4">
                                 <a href="" class="btn">現在開始</a>
@@ -60,13 +60,13 @@
                     <div class="container">
                         <div class="banner-info">
                             <h3 class="text-wh">
-                                AI行程規劃功能 <br />讓您輕鬆打造完美旅程
+                                票券購買功能 <br />讓您輕鬆購買心儀的票券
                             </h3>
                             <h4 class="text-wh">
-                                給想要輕鬆安排行程，又不知道從何下手的你
+                                給想要購買票券，又不知道從哪入手的你
                             </h4>
                             <div class="buttons mt-4">
-                                <a href="" class="btn">現在開始</a>
+                                <a href="${pageContext.request.contextPath}/ticketproduct/list" class="btn">現在開始</a>
                             </div>
                         </div>
                     </div>

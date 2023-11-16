@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	rel="stylesheet">
-
+<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
 <title>修改專欄文章</title>
 
 <%--  include --%>
@@ -36,7 +36,7 @@
 	<div class="container mt-5">
 		<div class="container mt-5">
 			<div class="container mt-5">
-				<h1>修改專欄</h1>
+				<h5>修改專欄</h5>
 				<form action="<%=request.getContextPath()%>/columnmg/edit"
 					method="post" enctype="multipart/form-data">
 					<div class="row">
@@ -58,7 +58,7 @@
 						<!-- 文章標題 -->
 						<div class="form-group col-md-6">
 							<label for="artiTitle">文章標題</label> <input type="text"
-								class="form-control" id="artiTitle" name="artiTitle"
+								class="form-control" id="artiTitle" name="artiTitle" required
 								value="${columnArticles.artiTitle}">
 						</div>
 						<!-- 圖片上傳 -->
@@ -79,7 +79,7 @@
 						<!-- 文章內容 獨立一行-->
 						<div class="form-group col-md-12">
 							<label for="description">描述</label>
-							<textarea class="form-control" id="description"
+							<textarea class="form-control" id="description" required
 								name="artiContent" rows="4">${columnArticles.artiContent}</textarea>
 							<script>
 								CKEDITOR.replace('description');
@@ -111,7 +111,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+
 
 	<script>
 	function previewImage(event) {

@@ -183,7 +183,7 @@
         <label for="tripDuration" id="tripDuration">總天數:${tourVO.allDays}</label>
         <br>
         <br>
-        <!-- 		下拉式選單:選擇縣市 -->
+<!-- 		 下拉式選單:選擇縣市 -->
 <!--         <label style="margin-left: 10px;">選擇你想去的縣市:</label> -->
 <!--         <select name="city" id="city"  style="margin-left: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #f5f5f5; font-family: Arial; font-size: 14px;"> -->
 <%--             <c:forEach var="cityList" items="${cityList}"> --%>

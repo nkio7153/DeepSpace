@@ -26,7 +26,7 @@ import redis.clients.jedis.JedisPool;
 
 public class ColumnArticlesServiceImpl implements ColumnArticlesService {
 
-	public static final int PAGE_MAX_RESULT = 10;
+	public static final int PAGE_MAX_RESULT = 8;
 	private ColumnArticlesDAO dao;
 
 	public ColumnArticlesServiceImpl() {
@@ -159,6 +159,23 @@ public class ColumnArticlesServiceImpl implements ColumnArticlesService {
 	    
 	    // 將上述查到的條件交由dao的方法查詢
 	    return dao.getByCompositeQuery(criteriaMap);
+	}
+
+	@Override
+	public List<ColumnArticlesVO> getAllColumnTypes(Integer colTypeId) {
+		try(Session session = HibernateUtil.getSessionFactory().openSession()){
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<ColumnArticlesVO> criteriaQuery = criteriaBuilder.createQuery(ColumnArticlesVO.class);
+			Root<ColumnArticlesVO> root = criteriaQuery.from(ColumnArticlesVO.class);
+			criteriaQuery.where(criteriaBuilder.equal(root.get("colType").get("colTypeId"), colTypeId));
+			criteriaQuery.select(root);
+			
+			Query<ColumnArticlesVO> query = session.createQuery(criteriaQuery);
+			
+			return query.getResultList();
+		} catch (Exception e) {
+			throw new RuntimeException("Error",e);
+		}
 	}
 
 }
