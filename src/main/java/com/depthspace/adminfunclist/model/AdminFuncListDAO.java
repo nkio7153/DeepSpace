@@ -6,9 +6,11 @@ import java.util.Map;
 public interface AdminFuncListDAO {
 	void insert(AdminFuncListVO entity);
 	
+	void update(AdminFuncListVO entity);
+	
 	void delete(AdminFuncListVO.CompositeDetail id);
 	
 	List<AdminFuncListVO> getByAdminId(Integer adminId);
 	
-	boolean isCollect(Integer adminId, Integer funcId);
+	boolean hasPermission(Integer adminId, Integer funcId);
 }

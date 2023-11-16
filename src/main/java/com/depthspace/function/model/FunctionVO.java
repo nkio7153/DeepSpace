@@ -12,7 +12,6 @@ import javax.persistence.Table;
 public class FunctionVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) //AI鍵要加
 	@Column(name="FUNC_ID")
 	private Integer funcId;
 	
