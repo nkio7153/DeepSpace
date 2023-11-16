@@ -26,21 +26,21 @@ public class AdminFuncListDAOImpl implements AdminFuncListDAO{
     public void insert(AdminFuncListVO entity) {
     	getSession().save(entity);
     }
+    
+    @Override
+    public void update(AdminFuncListVO entity) {
+        getSession().update(entity);
+    }
 
     @Override
 	public void delete(AdminFuncListVO.CompositeDetail id) {
     	AdminFuncListVO acvo = getSession().get(AdminFuncListVO.class, id);
-		// 0:失敗 1:成功
-		int state;
-		if (acvo != null) {
-			getSession().delete(acvo);
-
-			state = 1;
-		} else {
-
-			state = 0;
-		}
-	}
+        if (acvo != null) {
+            getSession().delete(acvo);
+        } else {
+            throw new RuntimeException("刪除失敗：找不到該項目");
+        }
+    }
 
     @Override
 	public List<AdminFuncListVO> getByAdminId(Integer adminId) {
@@ -50,15 +50,13 @@ public class AdminFuncListDAOImpl implements AdminFuncListDAO{
                 .list();
 	}
 
-	@Override
-	public boolean isCollect(Integer adminId, Integer funcId) {
-		List<AdminFuncListVO> results =  getSession()
-                .createQuery("from AdminFuncListVO where adminId= :adminId AND funcId= :funcId", AdminFuncListVO.class)
-                .setParameter("adminId", adminId)
-                .setParameter("funcId", funcId)
-                .list();
-		return !results.isEmpty();
-	}
-   
+    @Override
+    public boolean hasPermission(Integer adminId, Integer funcId) {
+        Query<Long> query = getSession().createQuery(
+                "select count(*) from AdminFuncListVO where adminId = :adminId and funcId = :funcId", Long.class);
+        query.setParameter("adminId", adminId);
+        query.setParameter("funcId", funcId);
+        return query.uniqueResult() > 0;
+    }
 
 }

@@ -40,7 +40,7 @@ body, html {
 <!--     </div> -->
     <div class="col-lg-4 transparent mb-5 mc-5 input-box">
 <%--      放入自己body裡的代碼--%>
-      <form align="center" action="${pageContext.request.contextPath}/backend/backIndex/index.jsp" method="post">
+      <form align="center" action="${pageContext.request.contextPath}/ad/login" method="post">
 		<div class="main-box login">
 			<h3>登入</h3>
 			<label for="adminAcc">帳號</label>
