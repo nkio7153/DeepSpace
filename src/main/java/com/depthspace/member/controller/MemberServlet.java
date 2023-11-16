@@ -31,10 +31,10 @@ public class MemberServlet extends HttpServlet {
 	
 	public int allowUser(String memAcc, String password) {
 		MemVO memvo = null;
-		HbMemService ms= new HbMemService();
+		HbMemService hbms= new HbMemService();
 		MemberService mems= new MemberService();
 		System.out.println("memAcc=" + memAcc);
-		if(ms.findByMemAcc(memAcc) == null) {
+		if(hbms.findByMemAcc(memAcc) == null) {
 			System.out.println("沒有此帳號");
 			return 1;
 		}
@@ -81,11 +81,41 @@ public class MemberServlet extends HttpServlet {
 			case "/save"://新增會員
 				doSave(req, resp);
 				break;
+			case "/memList"://從首頁點擊我的會員資料時
+				doMemList(req, resp);
+				break;
+			
 		}
 		
 		
 	}
 	
+	private void doMemList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Integer memId = null;
+		HttpSession session = req.getSession(false);
+		memId = (Integer) session.getAttribute("memId");
+		HbMemService hbms= new HbMemService();
+		MemVO mem = hbms.getOneMem(memId);
+		
+		if(mem.getMemSex() == 1) {
+			req.setAttribute("sex" , "男");
+		} else {
+			req.setAttribute("sex", "女");
+		}
+		
+		if(mem.getAccStatus() == 1) {
+			req.setAttribute("status" , "正常使用中");
+		} else {
+			req.setAttribute("status", "此帳號停權");
+		}
+		
+		req.setAttribute("authenticatedMem", mem);
+		req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
+		
+		
+	}
+
+
 	private void doLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		HttpSession session=req.getSession();
 		//移除session

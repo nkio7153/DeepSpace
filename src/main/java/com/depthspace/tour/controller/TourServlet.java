@@ -7,6 +7,8 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -156,37 +158,14 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 			}
 		    four = attrs.getAttractionsById(three);
 //		    System.out.println("第" + (y + 1) + "景點編號=" + three);
-		    System.out.println(dayId + allAttr[y] + time + time + four.getAttractionsName());
+//		    System.out.println(dayId + allAttr[y] + time + time + four.getAttractionsName());
 //		    Timestamp nullableTimestamp = null;
 		    TourDetailVO tdvo = new TourDetailVO(dayId , three , time , null , four.getAttractionsName());
+//		insert到detail裡面
 		    tdls.insert(tdvo);
 		    		
 		}
 		
-//		依照景點編號去找景點名稱
-//		把他包成
-//		天數
-//		景點編號
-//		開始時間
-//		景點名稱
-		
-
-		//找出天數對應
-//		for(String one : oneDay) {
-//			//one為Id
-//			System.out.println("天數對應=" + one);
-//			for(String two : allTime) {
-//			//one為Id
-//			System.out.println("時間=" + two);
-//			}
-//			for(String three : allAttr) {
-//				//one為Id			
-//				System.out.println("第" + i + "景點編號=" + three);
-//			}
-//		}
-		
-		
-//		insert到detail裡面
 	}
 	
 	 req.setAttribute("memId", memId);
@@ -197,7 +176,6 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 	private void doGetAttractions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		// 依據cityName找尋對應的景點的集合
 		String cityName = req.getParameter("cityName");
-//		System.out.println("cityName="+cityName);
 		List<AttractionsVO> list = attrs.findOtherAttractions(cityName);
 //		System.out.println("list="+list);
 		//轉型成Josn送回jsp
@@ -373,11 +351,18 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 		
 		//用TourView把所有要放在會員形成列表的資料都拿出來
 		List<TourView> list = ts.getOneTourList(tourId, memId);
-//		for(TourView a : list){
-//			System.out.println("a=" + a);
-//			System.out.println("a.getAttractionsName()=" + a.getAttractionsName());
-//					}
-//		System.out.println(list);
+
+		// 使用Comparator對list物件進行排序
+		Collections.sort(list, Comparator.comparingInt(TourView::getTourDays));
+//		System.out.println("list.size()=" + list.size());
+		
+//		按照tourDays去排序
+//		for(int i = 1 ; i < list.size() ; i++) {
+//			int tourDays = 
+//		}
+//		
+		
+		System.out.println(list);
 		req.setAttribute("list", list);
 		req.getRequestDispatcher("/tour/memTourList.jsp").forward(req, resp);
 	}
