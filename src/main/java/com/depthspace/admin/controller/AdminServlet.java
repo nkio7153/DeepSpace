@@ -306,7 +306,7 @@ public class AdminServlet extends HttpServlet {
 		AdminVO adminvo = null;
 		
 		String loginLocation =req.getParameter("loginLocation");
-		System.out.println("loginLocation="+loginLocation);	
+		System.out.println("adminAcc="+adminAcc + "password="+ password);	
 		
 		if(allowUser(adminAcc,password)==1) {
 			System.out.println("沒有此帳號");
