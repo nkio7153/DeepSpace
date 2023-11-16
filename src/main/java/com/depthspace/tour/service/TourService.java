@@ -33,7 +33,7 @@ public class TourService implements TourService_Interface{
 		tdvo.setTourId(tourvo.getTourId());
 		tdvo.setTourDays(tourvo.getAllDays());
 		tourDaysVO.add(tdvo);
-		System.out.println("tdvo= " + tdvo);
+//		System.out.println("tdvo= " + tdvo);
 		return tourvo;
 	}
 

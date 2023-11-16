@@ -41,11 +41,11 @@ public class MemberServlet extends HttpServlet {
 		
 		else {
 			memvo=mems.getMemberInfo(memAcc);
-	    		System.out.println("2");
+//	    		System.out.println("2");
 	    	}  
 	    	
 	    if (memvo.getMemAcc().equals(memAcc) && memvo.getMemPwd().equals(password)) {
-	       	System.out.println("成功登入");
+//	       	System.out.println("成功登入");
 	       	return 3;
 	          
 	    }else {
@@ -471,7 +471,7 @@ public class MemberServlet extends HttpServlet {
 
 	private void doAddMember(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	//加入會員資料收集
-		System.out.println("有跳");
+//		System.out.println("有跳");
 		req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
 	}
 
@@ -566,7 +566,7 @@ public class MemberServlet extends HttpServlet {
 		HttpSession session=req.getSession();
 		
 		MemVO mem = ms.getMemberInfo(memAcc);
-		System.out.println("mem=" + mem);
+//		System.out.println("mem=" + mem);
 		String base64Image;
 		if(mem.getMemAcc().equals(memAcc) && mem.getMemPwd().equals(password)) {
 			// 創建一個 MemVO 物件並設定它的屬性

@@ -5,7 +5,7 @@ import java.util.List;
 import com.depthspace.tour.model.TourDaysVO;
 
 public interface HbTourDaysDAO_Interface {
-	public TourDaysVO insert(TourDaysVO entity);
+	public int insert(TourDaysVO entity);
 
 	public void update(TourDaysVO entity);
 
@@ -17,5 +17,5 @@ public interface HbTourDaysDAO_Interface {
 	
 	public List<TourDaysVO> getOneTour(Integer tourId);
 
-	public List<TourDaysVO> getLastTourId(Integer tourId);
+	public TourDaysVO getLastTourDaysId(Integer tourDaysId);
 }

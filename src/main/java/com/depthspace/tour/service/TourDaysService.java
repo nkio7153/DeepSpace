@@ -17,18 +17,18 @@ public class TourDaysService{
 	}
 
 	
-	public List<TourDaysVO> insert(TourDaysVO entity) {
+	public TourDaysVO insert(TourDaysVO entity) {
 		dao.insert(entity);
 		
 		//在這邊回傳TourDays新增的最新Id
-		List<TourDaysVO> tourDays = null;
+		TourDaysVO tourDays = null;
 //		再找出會員資料的最後一筆(就會是剛才新增的行程)，把值帶到下一個頁面
-		tourDays= dao.getLastTourId(entity.getTourId());
-		System.out.println("tourvo= " + tourDays);
+		tourDays= dao.getLastTourDaysId(entity.getTourDaysId());
+		System.out.println("找出的最後一筆總天數id= " + tourDays);
 		//new 一個list集合把所有天數及會員編號放進去
 //		List<TourDaysVO> tourDaysVO = new ArrayList<>();
 //		TourDaysVO tdvo = new TourDaysVO();
-//		tdvo.setTourId(tourDays.getTourId());
+//		tdvo.setTourId(tourDays.getTourDaysId());
 //		tdvo.setTourDays(tourDays.getAllDays());
 //		tourDaysVO.add(tdvo);
 //		System.out.println("tdvo= " + tdvo);
