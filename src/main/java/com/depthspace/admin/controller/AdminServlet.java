@@ -117,6 +117,8 @@ public class AdminServlet extends HttpServlet {
 		String st3 = null;
 		String st4 = null;
 		Byte st5 = null;
+		Byte st6 = null;
+		Byte st7 = null;
 
 		try {
 			st2 = req.getParameter("adminAcc");
@@ -138,6 +140,14 @@ public class AdminServlet extends HttpServlet {
 			System.out.println("adminStatus=" + adminStatus);
 			st5 = Byte.parseByte(adminStatus);
 			
+			String adminVerifyStatus = req.getParameter("adminVerifyStatus");
+			System.out.println("adminVerifyStatus=" + adminVerifyStatus);
+			st6 = Byte.parseByte(adminVerifyStatus);
+			
+			String adminFuncName = req.getParameter("adminFuncName");
+			System.out.println("adminFuncName=" + adminFuncName);
+			st7 = Byte.parseByte(adminFuncName);
+			
 			//=======================================================================
 
 			
@@ -149,7 +159,7 @@ public class AdminServlet extends HttpServlet {
 		AdminService m = new AdminService();
 		AdminVO adminvo = null;
 		if (errorMsgs.isEmpty()) {
-			adminvo = new AdminVO(st2, st3, st4, st5);
+			adminvo = new AdminVO(st2, st3, st4, st5, st6, st7);
 		}
 		m.addAdmin(adminvo);
 		
@@ -172,6 +182,19 @@ public class AdminServlet extends HttpServlet {
 			req.setAttribute("status" , "正常使用中");
 		} else {
 			req.setAttribute("status", "此帳號停權");
+		}
+		
+		if(st6 == 1 ) {
+			req.setAttribute("verifyStatus" , "驗證完畢");
+		} else {
+			req.setAttribute("verifyStatus", "未驗證");
+		}
+		if(st7 == 0 ) {
+			req.setAttribute("funcName" , "未啟用");
+		} else if(st7 == 1){
+			req.setAttribute("funcName", "餐廳管理員");
+		} else {
+			req.setAttribute("funcName", "總管理員");
 		}
 		
 		req.getRequestDispatcher("/admin/success.jsp").forward(req, resp);
