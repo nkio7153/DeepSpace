@@ -108,7 +108,7 @@
 					</c:choose>
 					</div>
 				<!-- 排序 -->				    
-				<label for="sortOption">排序方式：</label>
+				<label for="sortOption"></label>
 				<div class="form-group">
 				    <select class="form-control" id="sortOption" onchange="updateTicketList(1)">
 				 <option value="ticketId_asc" ${param.sortField == 'ticketId' && param.sortOrder == 'asc' ? 'selected' : ''}>依上市日(新→舊)</option>
@@ -146,27 +146,32 @@
 												</c:choose>
 											</p>
 											<p class="card-text">
-												<small class="text-muted">
-													${averageStarsMap[ticket.ticketId]} <!-- 實星 --> <c:forEach
-														begin="1" end="${averageStarsMap[ticket.ticketId]}"
-														var="i">
-														<i class="fas fa-star gold-star"></i>
-													</c:forEach> <!-- 半星 --> <c:if
-														test="${averageStarsMap[ticket.ticketId] % 1 != 0}">
-														<i class="fas fa-star-half-alt gold-star"></i>
-														<!-- 有半星就+ -->
-														<c:set var="emptyStarsStart"
-															value="${Math.floor(averageStarsMap[ticket.ticketId]) + 2}" />
-													</c:if> <!-- 沒有半星就往下一個數 --> <c:if
-														test="${averageStarsMap[ticket.ticketId] % 1 == 0}">
-														<c:set var="emptyStarsStart"
-															value="${averageStarsMap[ticket.ticketId] + 1}" />
-													</c:if> <!-- 空星 --> <c:forEach begin="${emptyStarsStart}" end="5"
-														var="j">
-														<i class="far fa-star gold-star"></i>
-													</c:forEach> (${totalRatingCountMap[ticket.ticketId]})
-												</small>
-											</p>
+											<c:choose>
+											    <c:when test="${totalRatingCountMap[ticket.ticketId] == 0 || totalRatingCountMap[ticket.ticketId] == null}">
+											        <p>暫無評價</p>
+											    </c:when>
+											    <c:otherwise>
+											        <p class="card-text">
+											            <small class="text-muted">
+											                ${averageStarsMap[ticket.ticketId]}
+											                <c:forEach begin="1" end="${averageStarsMap[ticket.ticketId]}" var="i">
+											                    <i class="fas fa-star gold-star"></i>
+											                </c:forEach>
+											                <c:if test="${averageStarsMap[ticket.ticketId] % 1 != 0}">
+											                    <i class="fas fa-star-half-alt gold-star"></i>
+											                    <c:set var="emptyStarsStart" value="${Math.floor(averageStarsMap[ticket.ticketId]) + 2}" />
+											                </c:if>
+											                <c:if test="${averageStarsMap[ticket.ticketId] % 1 == 0}">
+											                    <c:set var="emptyStarsStart" value="${averageStarsMap[ticket.ticketId] + 1}" />
+											                </c:if>
+											                <c:forEach begin="${emptyStarsStart}" end="5" var="j">
+											                    <i class="far fa-star gold-star"></i>
+											                </c:forEach>
+											                (${totalRatingCountMap[ticket.ticketId]})
+											            </small>
+											        </p>
+											    </c:otherwise>
+											</c:choose>
 											<p class="card-text">NT$ ${ticket.price}</p>
 										</div>
 									</div>
@@ -197,84 +202,84 @@
 	<script>
  
 
-// 	function updateTicketList(currentPage) {
-// 	    $('#loadingSpinner').show();
-// 	    var searchQuery = $('#ticketName').val(); // 關鍵字查詢
-// 	    var formData = $('#searchForm').serialize();
-// 	    var sortOption = $('#sortOption').val().split('_');
-// 	    var sortField = sortOption[0];
-// 	    var sortOrder = sortOption[1];
-// 	    formData += '&page=' + currentPage + '&ajax=true';
+	function updateTicketList(currentPage) {
+	    $('#loadingSpinner').show();
+	    var searchQuery = $('#ticketName').val(); // 關鍵字查詢
+	    var formData = $('#searchForm').serialize();
+	    var sortOption = $('#sortOption').val().split('_');
+	    var sortField = sortOption[0];
+	    var sortOrder = sortOption[1];
+	    formData += '&page=' + currentPage + '&ajax=true';
 	    
-// 	    $.ajax({
-// 	        url: '<c:url value="/ticketproduct/list"/>', 
-// 	        type: 'GET',
-// 	        data: {
-// 	            page: currentPage,
-// 	            sortField: sortField,
-// 	            sortOrder: sortOrder,
-// 	            searchQuery: searchQuery,
-// 	            formData,
-// 	            ajax: 'true'
-// 	        },
-// 	        success: function(response) {
-// 	            $('#ticketright').html(response); 
-// 	            $('#loadingSpinner').hide();
-// 	        }, 
-// 	        error: function(){
-// 	            $('#loadingSpinner').hide();
-// 	            alert("發生錯誤，請重試！")
-// 	        }
-// 	    });
-// 	}
+	    $.ajax({
+	        url: '<c:url value="/ticketproduct/search"/>', 
+	        type: 'GET',
+	        data: {
+	            page: currentPage,
+	            sortField: sortField,
+	            sortOrder: sortOrder,
+	            searchQuery: searchQuery,
+	            formData,
+	            ajax: 'true'
+	        },
+	        success: function(response) {
+	            $('#ticketright').html(response); 
+	            $('#loadingSpinner').hide();
+	        }, 
+	        error: function(){
+	            $('#loadingSpinner').hide();
+	            alert("發生錯誤，請重試！")
+	        }
+	    });
+	}
 
-function updateTicketList(currentPage) {
-    $('#loadingSpinner').show();
+// function updateTicketList(currentPage) {
+//     $('#loadingSpinner').show();
     
-    // 收集搜索和篩選條件
-    var filterConditions = {};
-    filterConditions['page'] = currentPage;
-    filterConditions['ajax'] = 'true';
+//     // 篩選
+//     var filterConditions = {};
+//     filterConditions['page'] = currentPage;
+//     filterConditions['ajax'] = 'true';
 
-    // 搜尋關鍵字
-    var searchQuery = $('#ticketName').val(); 
-    if (searchQuery) {
-        filterConditions['ticketName'] = [searchQuery];
-    }
+//     // 搜尋
+//     var searchQuery = $('#ticketName').val(); 
+//     if (searchQuery) {
+//         filterConditions['ticketName'] = [searchQuery];
+//     }
 
-    // 篩選條件
-    $('input:checkbox[name="areaId"]:checked').each(function() {
-        if (!filterConditions['areaId']) {
-            filterConditions['areaId'] = [];
-        }
-        filterConditions['areaId'].push($(this).val());
-    });
-    $('input:checkbox[name="ticketTypeId"]:checked').each(function() {
-        if (!filterConditions['ticketTypeId']) {
-            filterConditions['ticketTypeId'] = [];
-        }
-        filterConditions['ticketTypeId'].push($(this).val());
-    });
+//     // 篩選
+//     $('input:checkbox[name="areaId"]:checked').each(function() {
+//         if (!filterConditions['areaId']) {
+//             filterConditions['areaId'] = [];
+//         }
+//         filterConditions['areaId'].push($(this).val());
+//     });
+//     $('input:checkbox[name="ticketTypeId"]:checked').each(function() {
+//         if (!filterConditions['ticketTypeId']) {
+//             filterConditions['ticketTypeId'] = [];
+//         }
+//         filterConditions['ticketTypeId'].push($(this).val());
+//     });
 
-    // 排序選項
-    var sortOption = $('#sortOption').val().split('_');
-    filterConditions['sortField'] = sortOption[0];
-    filterConditions['sortOrder'] = sortOption[1];
+//     // 排序
+//     var sortOption = $('#sortOption').val().split('_');
+//     filterConditions['sortField'] = sortOption[0];
+//     filterConditions['sortOrder'] = sortOption[1];
 
-    $.ajax({
-        url: '<c:url value="/ticketproduct/list"/>', 
-        type: 'GET',
-        data: filterConditions,
-        success: function(response) {
-            $('#ticketright').html(response); 
-            $('#loadingSpinner').hide();
-        }, 
-        error: function(){
-            $('#loadingSpinner').hide();
-            alert("發生錯誤，請重試！")
-        }
-    });
-}
+//     $.ajax({
+//         url: '<c:url value="/ticketproduct/list"/>', 
+//         type: 'GET',
+//         data: filterConditions,
+//         success: function(response) {
+//             $('#ticketright').html(response); 
+//             $('#loadingSpinner').hide();
+//         }, 
+//         error: function(){
+//             $('#loadingSpinner').hide();
+//             alert("發生錯誤，請重試！")
+//         }
+//     });
+// }
 
       
 	</script>

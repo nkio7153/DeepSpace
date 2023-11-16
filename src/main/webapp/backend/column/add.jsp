@@ -13,7 +13,7 @@
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	rel="stylesheet">
-
+<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
 <title>新增專欄文章</title>
 
 <%--  include --%>
@@ -38,7 +38,7 @@
 <div class="table-list">
 
 	<div class="container mt-5">
-		<h1>新增專欄文章</h1>
+		<h5>新增專欄文章</h5>
 		<form action="<%=request.getContextPath()%>/columnmg/add"
 			method="post" enctype="multipart/form-data">
 			<div class="row">
@@ -47,7 +47,7 @@
 				<!-- forEach的var跟option的是有關連的，取自於其forEach遍歷的資料 -->
 				<div class="form-group col-md-6">
 					<label for="colTypeId">專欄類型</label> <select name="colTypeId"
-						id="colTypeId" class="form-control">
+						id="colTypeId" class="form-control" required>
 						<option value="">請選擇專欄類型</option>
 						<c:forEach var="typeItem" items="${columnTypes}">
 							<option value="${typeItem.colTypeId}">${typeItem.colTypeName}</option>
@@ -57,12 +57,12 @@
 				<!-- 文章標題 -->
 				<div class="form-group col-md-6">
 					<label for="artiTitle">文章標題</label> <input type="text"
-						class="form-control" id="artiTitle" name="artiTitle">
+						class="form-control" id="artiTitle" name="artiTitle" required>
 				</div>
 				<!-- 專欄圖片 獨立一行-->
 				<div class="form-group col-md-6">
 					<label for="columnImage">文章主圖</label> <input type="file"
-						class="form-control-file" id="colImg" name="colImg"
+						class="form-control-file" id="colImg" name="colImg" required
 						onchange="previewImage(event)">
 				</div>
 
@@ -74,7 +74,7 @@
 				<div class="form-group col-md-12">
 					<label for="artiContent">描述</label>
 					<textarea class="form-control" id="artiContent" name="artiContent"
-						rows="4"></textarea>
+						rows="4" required></textarea>
 					<script>
 						CKEDITOR.replace('artiContent');
 					</script>
@@ -89,7 +89,7 @@
 				<!-- 發文管理者 -->
 				<div class="form-group col-md-6">
 					<label for="adminId">發文者</label> <select name="adminId"
-						id="adminId" class="form-control">
+						id="adminId" class="form-control" required>
 						<option value="adminId">發文管理者</option>
 						<c:forEach var="adminItem" items="${admins}">
 							<option value="${adminItem.adminId}">${adminItem.adminName}</option>
@@ -112,7 +112,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+
 <script>
 	function previewImage(event) {
 		var file = event.target.files[0];

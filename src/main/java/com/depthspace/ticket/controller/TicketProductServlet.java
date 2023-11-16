@@ -167,6 +167,7 @@ public class TicketProductServlet extends HttpServlet {
 	    RequestDispatcher dispatcher;
 	    if ("true".equals(req.getParameter("ajax"))) {
 	        dispatcher = req.getRequestDispatcher("/frontend/ticketproduct/listpart.jsp");
+System.out.println("TTTTT："+ tickets);
 	    } else {
 	        dispatcher = req.getRequestDispatcher("/frontend/ticketproduct/list.jsp");
 	    }

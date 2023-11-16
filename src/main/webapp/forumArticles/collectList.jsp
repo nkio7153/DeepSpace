@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
+$(document).ready(function() {	
 	//刪除文章收藏
 	 $('.collect-button').click(function() {
 	        var articleId = $(this).data('article-id');
@@ -30,6 +30,12 @@ $(document).ready(function() {
 	    });
 	
     $('#articlesRow').on('click', '.card', function() {
+    	
+    	// 檢查點擊的元素是否為按鈕，如果是，則不進行後續操作
+        if ($(event.target).hasClass('btn')) {
+            return;
+        }
+    	
         var articleImage = $(this).find('img.card-img-top').attr('src');
         var articleTitle = $(this).find('h5.card-title').text();
         var articleText = $(this).find('div.card-text').html();
@@ -89,6 +95,10 @@ $(document).ready(function() {
 	div.font-sizee {
     font-size: 20px;
 	}
+	
+	div.modal-body {
+    padding: 2.5rem !important;;
+	}
 </style>
 </head>
 <body>
@@ -98,7 +108,7 @@ $(document).ready(function() {
         <div class="d-flex justify-content-between align-items-center mb-4">
 	        <div class="btn-group" role="group"> <!-- 添加這個 div 來包裹按鈕 -->
 	            <button type="button" class="btn btn-primary me-2" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles/list.jsp'">瀏覽所有文章</button>
-	            <button type="button" class="btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles/add.jsp'">新增文章</button>
+	            <button type="button" class="btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=addArticle'">新增文章</button>
 	        </div>
     	</div>
         <div id="articlesRow" class="row">
@@ -147,8 +157,9 @@ $(document).ready(function() {
             <img src="" class="card-img-top" alt="文章圖片" id="articleImage">
           </div>
           <div class="card-body">
-            <h1 class="card-title" id="articleTitle">文章標題:</h1>
+            <h3 class="card-title" id="articleTitle">文章標題:</h3>
             <div class="card-text font-sizee" id="articleText">文章內容:</div>
+            <br>
             <div class="d-flex justify-content-end">
               <h6 class="card-text" id="articleDate">發布時間:</h6>
             </div>

@@ -1,10 +1,10 @@
-package com.depthspace.faq.model.service;
+package com.depthspace.faq.service;
 
 import java.util.List;
 
-import com.depthspace.faq.model.model.FaqDAO;
-import com.depthspace.faq.model.model.FaqDAOImpl;
-import com.depthspace.faq.model.model.FaqVO;
+import com.depthspace.faq.model.FaqDAO;
+import com.depthspace.faq.model.FaqDAOImpl;
+import com.depthspace.faq.model.FaqVO;
 
 public class FaqService {
 	private FaqDAO dao;
