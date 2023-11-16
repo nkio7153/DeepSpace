@@ -75,6 +75,13 @@ public class AttractionsDAOImpl implements AttractionsDAO_Interface{
 		List<AttractionsVO> addressList = query.list();
 		return addressList ;
 	}
+	@Override
+	public List<AttractionsVO> getAttractionsName(String attractionsName) {
+		Query <AttractionsVO> query = getSession().createQuery("FROM AttractionsVO WHERE attractionsName LIKE :attractionsName ", AttractionsVO.class);
+		query.setParameter("attractionsName", "%" + attractionsName + "%");
+		List<AttractionsVO> attractionsList = query.list();
+		return attractionsList ;
+	}
 	
 	
 

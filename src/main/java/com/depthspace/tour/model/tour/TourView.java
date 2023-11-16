@@ -2,6 +2,7 @@ package com.depthspace.tour.model.tour;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -54,7 +55,7 @@ public class TourView {
 	private Integer attractionsId;
 	
 	@Column(name = "START")
-	private Timestamp start;
+	private Time start;
 
 	@Column(name="ATTRACTIONS_NAME")
 	private String attractionsName;
@@ -67,7 +68,7 @@ public class TourView {
 	
 	
 	public TourView(Integer tourId, Integer memId, String tourName, Integer allDays, String tourDescription,
-			Date startDate, Date endDate, Integer tourDaysId, Integer tourDays, Integer attractionsId, Timestamp start,
+			Date startDate, Date endDate, Integer tourDaysId, Integer tourDays, Integer attractionsId, Time start,
 			String attractionsName, String address) {
 		super();
 		this.tourId = tourId;
@@ -218,13 +219,13 @@ public class TourView {
 
 
 
-	public Timestamp getStart() {
+	public Time getStart() {
 		return start;
 	}
 
 
 
-	public void setStart(Timestamp start) {
+	public void setStart(Time start) {
 		this.start = start;
 	}
 

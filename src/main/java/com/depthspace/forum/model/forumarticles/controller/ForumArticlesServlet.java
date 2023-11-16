@@ -103,19 +103,60 @@ public class ForumArticlesServlet extends HttpServlet {
 
 	// 選擇符合類型文章
 	private void doArtiTypeList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.setContentType("application/json; charset=UTF-8");
+//		resp.setContentType("application/json; charset=UTF-8");
+//		Integer artiTypeId;
+//		try {
+//			artiTypeId = Integer.valueOf(req.getParameter("artiTypeId"));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return;
+//		}
+//		List<ForumArticlesVO> list = forumArticlesService.getByArtiTypeId(artiTypeId);
+//		req.setAttribute("list", list);
+//		req.setAttribute("artiTypeId", artiTypeId);
+//		System.out.println(list);
+//		req.getRequestDispatcher("/forumArticles/articlesTypeList.jsp").forward(req, resp);
+
+		// ========================
 		Integer artiTypeId;
-		try {
-			artiTypeId = Integer.valueOf(req.getParameter("artiTypeId"));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
+		Integer memId = null;
+		HttpSession session = req.getSession(false);
+		if (session.getAttribute("memId") != null) {
+			memId = (Integer) session.getAttribute("memId");
+			List<ArticlesCollectVO> list = articlesCollectService.getByMemId(memId);
+			try {
+				artiTypeId = Integer.valueOf(req.getParameter("artiTypeId"));
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
+			List<ForumArticlesVO> forum = forumArticlesService.getByArtiTypeId(artiTypeId);
+			// 創建一個包含兩個列表的 JSON 物件
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("articlesCollectList", list); // 第一個列表
+			jsonObject.put("forumArticlesList", forum); // 第二個列表
+
+			// 設置響應內容類型
+			resp.setContentType("application/json; charset=UTF-8");
+			PrintWriter out = resp.getWriter();
+
+			// 將 JSON 物件轉換為字串並發送給前端
+			out.print(jsonObject.toString());
+			System.out.println(jsonObject);
+		} else {
+			try {
+				artiTypeId = Integer.valueOf(req.getParameter("artiTypeId"));
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
+			List<ForumArticlesVO> list = forumArticlesService.getByArtiTypeId(artiTypeId);
+			JSONArray arr = JSONArray.parseArray(JSON.toJSONString(list));
+			resp.setContentType("application/json; charset=UTF-8");
+			PrintWriter out = resp.getWriter();
+			System.out.println(arr.toString());
+			out.print(arr.toString());
 		}
-		List<ForumArticlesVO> list = forumArticlesService.getByArtiTypeId(artiTypeId);
-		req.setAttribute("list", list);
-		req.setAttribute("artiTypeId", artiTypeId);
-		System.out.println(list);
-		req.getRequestDispatcher("/forumArticles/articlesTypeList.jsp").forward(req, resp);
 	}
 
 	// 取得類型列表
