@@ -19,14 +19,15 @@
 <body>
 <jsp:include page="../indexpage/header.jsp"/>
 <jsp:include page="../indexpage/headpic.jsp"/>
-<h3>歡迎會員${memId}</h3>
+<%--<h3>歡迎會員${memId}</h3>--%>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<h3 class="text-primary bg-light p-3 border border-primary text-center shadow mb-4">票券購物車</h3>
 
-<h1 class="text-center display-3">票券購物車</h1>
+<%--<h1 class="text-center display-3">票券購物車</h1>--%>
 <form action="${pageContext.request.contextPath}/tsc/checkout" method="post">
-    <table align="center" width="80%" class="table table-hover table-striped table-bordered">
+    <table align="center" width="80%" class="table table-hover table-striped table-bordered mt-0">
         <%--  //票券圖片、票券名稱、票券介紹、價格、數量、小計--%>
         <tr class="bg-info">
             <th class="text-center text-nowrap">序號</th>
@@ -71,7 +72,6 @@
             </tr>
         </c:forEach>
 
-        <hr>
     </table>
     <c:if test="${list.isEmpty()}">
         <div align="center">
@@ -80,27 +80,25 @@
     </c:if>
     <div style="display:flex; justify-content: space-between" >
         <a href="${pageContext.request.contextPath}/ticketproduct/list"
-           class="btn btn-primary p-2 rounded m-lg-2"> 瀏覽其他票券</a>
-        <a href="javascript:void(0)" class="btn btn-danger p-2 m-lg-2 rounded" onclick="delAll(${memId})">清空購物車</a>
+           class="btn btn-primary p-2 rounded-3 m-lg-2"> 瀏覽其他票券</a>
+        <a href="javascript:void(0)" class="btn btn-danger p-2 m-lg-2 rounded-3" onclick="delAll(${memId})">清空購物車</a>
     </div>
     <hr>
 
     <br>
     <div style="display:flex;" class="my-0 rounded bg-check">
         <div class="fs-5 p-4 rounded" style="margin-left: auto;">
-            <div style="margin-left: -100px;">
-                <div class="pb-1">
-                    <span class="offset-4">小計:</span><span class="sub2 offset-1"></span>
-                </div>
-                <div class="pb-1">
-                    <span class="offset-4">點數:</span><input class="coupen rounded offset-1" name="coupen" style="width: 60px; height:30px"></input>
-                </div>
-                <div class="pb-1 offset-7">
-                    <span style="font-size: 12px">可使用點數:</span><span style="font-size: 12px" name="exist-coupen">${authenticatedMem.memPoint}</span>
-                </div>
-                <div>
-                    <span class="offset-3">總金額:</span><span class="total offset-1"></span>
-                </div>
+            <div style="margin-left: -700px;">
+
+                    <span class="offset-4">小計:</span><span class="sub2"></span>
+
+
+                    <span>點數:</span><input class="coupen" name="coupen" style="width: 60px; height:30px; border: 0px; border-botton:1px solid; background-color:transparent;border-bottom: 2px solid;"></input>
+
+                    <span style="font-size: 12px; color:indianred">可使用點數:</span><span style="font-size: 12px; color:indianred" name="exist-coupen">${authenticatedMem.memPoint}</span>
+
+                    <span>總金額:</span><span class="total"></span>
+
             </div>
             <%--    <span placehoder="請輸入欲使用點數" class="coupen">0</span>--%>
             <div style="margin-left:auto;">

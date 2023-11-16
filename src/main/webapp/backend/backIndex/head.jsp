@@ -8,6 +8,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- 引入jQuery -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<!-- 載入icon -->
+<link rel="shortcut icon" href="${pageContext.request.contextPath}/indexpage/images/iconhtml.png" />
 <style>
     #sidebar-wrapper .nav-item {
         list-style-type: none;
@@ -19,8 +21,9 @@
     }
 
     #sidebar-wrapper {
-        min-width: 15vw;
-        min-height: 60vh;
+        width:180px;
+        min-width: 180px;
+        min-height: 50vh;
     }
 
     .parent-div {
@@ -90,6 +93,14 @@
     /*朦朧區*/
     .transparent{
         background-color: rgba(255, 255, 255, 0.7);
+    }
+    fs-li{
+        font-size: 0.9rem;
+    }
+    .sidebar-center{
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     /*固定側邊欄*/
     .sidebar-sticky{
