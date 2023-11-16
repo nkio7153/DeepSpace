@@ -298,13 +298,6 @@ $(document).ready(function() {
 <div id="list" class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>文章清單</h1>
-            <!-- 查詢表單 -->
-<%--     <form method="post" action="<%=request.getContextPath()%>/forumArticles.do?action=domemlist"> --%>
-<!--         <label for="memId">選擇會員編號：</label> -->
-<!--         <select id="memId" name="memId"> -->
-<!--         </select> -->
-<!--         <input type="submit" value="查詢"> -->
-<!--     </form> -->
     <form method="post" action="<%=request.getContextPath()%>/forumArticles.do?action=doArtiTypeList">
         <label for="artiTypeId">選擇文章類型：</label>
         <select id="artiTypeId" name="artiTypeId">
