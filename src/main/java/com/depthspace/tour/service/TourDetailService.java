@@ -15,15 +15,14 @@ private HbTourDetailDAO_Interface dao;
 	}
 	
 	@Override
-	public void insert(TourDetailVO TourDetailVO) {
-		// TODO Auto-generated method stub
+	public void insert(TourDetailVO entity) {
+		dao.insert(entity);
 		
 	}
 
 	@Override
-	public void update(TourDetailVO tourDetail) {
-		// TODO Auto-generated method stub
-		
+	public void update(TourDetailVO entity) {
+		dao.update(entity);
 	}
 
 	@Override

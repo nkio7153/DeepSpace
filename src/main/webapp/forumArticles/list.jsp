@@ -32,8 +32,8 @@ $(document).ready(function() {
 	                .replace(/<span[^>]*>/g, '')
 	                .replace(/<\/span>/g, '');
                     var likesSpan = '<span class="likes float-right"><i class="fas fa-thumbs-up"></i> ' + item.artiLk + '</span>';
-                    var card = $('<div class="col-md-4 mb-3">')
-                    .append('<div class="card h-100">' +
+                    var card = $('<div class="col-md-3 mb-3">')
+                    .append('<div class="cards">' +
                     		'<li class="list-group-item d-flex justify-content-between align-items-center">會員ID: ' + item.memId + likesSpan + '</li>' +
                         '<img src="data:image/jpeg;base64,' + base64ImageData + '" class="card-img-top fixed-height-img">' +
                         '<div class="card-body card-content">' +
@@ -75,8 +75,8 @@ $(document).ready(function() {
     	                var isCollected = articlesCollectList.some(collectArticle => collectArticle.articleId === item.articleId);
     	                var buttonClass = isCollected ? 'btn btn-primary collect-button float-end collected' : 'btn btn-primary collect-button float-end';
     	                var heartIcon = isCollected ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>';    	               
-    	                var card = $('<div class="col-md-4 mb-3">')
-    	                .append('<div class="card h-100">' +
+    	                var card = $('<div class="col-md-3 mb-3">')
+    	                .append('<div class="cards">' +
     	                        '<li class="list-group-item d-flex justify-content-between align-items-center">會員ID: ' + item.memId + likesSpan + '</li>' +
     	                        '<img src="data:image/jpeg;base64,' + base64ImageData + '" class="card-img-top fixed-height-img">' +
     	                        '<div class="card-body card-content">' +
@@ -153,7 +153,7 @@ $(document).ready(function() {
 	        }
 	    });
 	    
-	    $('#articlesRow').on('click', '.card', function() {
+	    $('#articlesRow').on('click', '.cards', function() {
 	    	
 	    	 // 檢查點擊的元素是否為按鈕，如果是，則不進行後續操作
 	        if ($(event.target).hasClass('btn') || $(event.target).hasClass('fa-heart')){
@@ -191,13 +191,13 @@ $(document).ready(function() {
         return value < 10 ? '0' + value : value;
     }
     
-    function checkSession(e){
-        let check = $("[name='check']").text();
-        if (check == "登入/註冊"){
-            e.preventDefault(); // 阻止點擊事件的預設行為，即防止按鈕的超連結跳轉
-            window.alert("請先登入"); // 顯示警告訊息，提醒使用者登入
-        }
-    }
+//     function checkSession(e){
+//         let check = $("[name='check']").text();
+//         if (check == "登入/註冊"){
+//             e.preventDefault(); // 阻止點擊事件的預設行為，即防止按鈕的超連結跳轉
+//             window.alert("請先登入"); // 顯示警告訊息，提醒使用者登入
+//         }
+//     }
 </script>
 <style>
     .fixed-height-img {
@@ -257,15 +257,37 @@ $(document).ready(function() {
      }
      
     div.hidden {
-     display:none;
+     	display:none;
      }
      
     div.font-sizee p {
-    font-size: 20px;
+    	font-size: 20px;
 	}
 	
 	div.font-sizee {
-    font-size: 20px;
+    	font-size: 20px;
+	}
+	
+	#articlesRow {
+  		display: flex;
+  		flex-wrap: wrap;
+	}
+
+	.cards {
+	  background-color: #fff; /* 设置卡片的背景颜色 */
+	  border: 1px solid #ccc; /* 设置边框 */
+	  border-radius: 5px; /* 圆角边框 */
+	  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
+	  transition: transform 0.2s ease-in-out; /* 添加hover时的平移效果 */
+	}
+
+	.cards:hover {
+	  transform: scale(1.05); /* 鼠标悬停时稍微放大卡片 */
+	  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 提高阴影深度 */
+	}
+	
+	div.modal-body {
+    padding: 2.5rem !important;;
 	}
 </style>
 
@@ -276,22 +298,15 @@ $(document).ready(function() {
 <div id="list" class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>文章清單</h1>
-            <!-- 查詢表單 -->
-<%--     <form method="post" action="<%=request.getContextPath()%>/forumArticles.do?action=domemlist"> --%>
-<!--         <label for="memId">選擇會員編號：</label> -->
-<!--         <select id="memId" name="memId"> -->
-<!--         </select> -->
-<!--         <input type="submit" value="查詢"> -->
-<!--     </form> -->
     <form method="post" action="<%=request.getContextPath()%>/forumArticles.do?action=doArtiTypeList">
         <label for="artiTypeId">選擇文章類型：</label>
         <select id="artiTypeId" name="artiTypeId">
         </select>
         <input type="submit" value="查詢">
     </form>
-		<button type="button" class="btn btn-primary" onclick="checkSession(event);window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=getmemlist'">我的文章</button>
-		<button type="button" class="btn btn-primary" onclick="checkSession(event);window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=doArtiCollectList'">我的收藏</button>
-        <button type="button" class="btn btn-primary" onclick="checkSession(event);window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=addArticle'">新增文章</button>
+		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a>
+		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=doArtiCollectList">我的收藏</a>
+        <a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=addArticle">新增文章</a>
     </div>
     <div id="articlesRow" class="row">
         <!-- 卡片內容將會通過 jQuery 動態加載到這裡 -->

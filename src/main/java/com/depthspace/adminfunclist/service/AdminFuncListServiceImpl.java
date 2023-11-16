@@ -22,6 +22,11 @@ public class AdminFuncListServiceImpl implements AdminFuncListService{
 	public void insert(AdminFuncListVO tod) {
 		dao.insert(tod);
 	}
+	
+	 @Override
+	    public void update(AdminFuncListVO tod) {
+	        dao.update(tod);
+	}
 
 	@Override
 	public void delete(AdminFuncListVO tod) {		
@@ -34,8 +39,8 @@ public class AdminFuncListServiceImpl implements AdminFuncListService{
 	}
 
 	@Override
-	public boolean isCollect(Integer adminId, Integer funcId) {
-		return dao.isCollect(adminId, funcId);
+	public boolean hasPermission(Integer adminId, Integer funcId) {
+		return dao.hasPermission(adminId, funcId);
 	}
 
 }

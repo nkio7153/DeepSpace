@@ -1,6 +1,7 @@
 package com.depthspace.tour.model;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -24,7 +25,7 @@ public class TourDetailVO implements Serializable{
 	private Integer attractionsId;
 	
 	@Column(name="START")
-	private Timestamp start;
+	private Time start;
 	
 	@Column(name="END")
 	private Timestamp end;
@@ -34,7 +35,7 @@ public class TourDetailVO implements Serializable{
 	public TourDetailVO() {
 		super();
 	}
-	public TourDetailVO(Integer tourDaysId, Integer attractionsId, Timestamp start, Timestamp end,
+	public TourDetailVO(Integer tourDaysId, Integer attractionsId, Time start, Timestamp end,
 			String attractionsName) {
 		super();
 		this.tourDaysId = tourDaysId;
@@ -64,10 +65,10 @@ public class TourDetailVO implements Serializable{
 	public void setAttractionsId(Integer attractionsId) {
 		this.attractionsId = attractionsId;
 	}
-	public Timestamp getStart() {
+	public Time getStart() {
 		return start;
 	}
-	public void setStart(Timestamp start) {
+	public void setStart(Time start) {
 		this.start = start;
 	}
 	public Timestamp getEnd() {

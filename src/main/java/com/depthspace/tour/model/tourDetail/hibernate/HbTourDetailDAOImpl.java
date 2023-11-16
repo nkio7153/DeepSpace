@@ -26,8 +26,8 @@ public class HbTourDetailDAOImpl implements HbTourDetailDAO_Interface{
         return factory.getCurrentSession();
     }
 	@Override
-	public void insert(TourDetailVO TourDetailVO) {
-		// TODO Auto-generated method stub
+	public void insert(TourDetailVO entity) {
+		getSession().save(entity);
 		
 	}
 	@Override

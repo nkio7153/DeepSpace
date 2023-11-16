@@ -43,8 +43,6 @@ public class TicketServiceImpl implements TicketService {
 		hbTodDao = new HbTodDaoImpl(HibernateUtil.getSessionFactory());
 	}
 	
-
-
 	// 新增票券
 	@Override
 	public void addTicket(TicketVO ticketVO) {

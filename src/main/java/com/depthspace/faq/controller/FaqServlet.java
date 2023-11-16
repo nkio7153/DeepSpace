@@ -1,4 +1,4 @@
-package com.depthspace.faq.model.controller;
+package com.depthspace.faq.controller;
 
 import java.io.*;
 import java.util.*;
@@ -6,9 +6,9 @@ import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import com.depthspace.faq.model.model.*;
-import com.depthspace.faq.model.service.*;
-import com.depthspace.faq.model.controller.*;
+import com.depthspace.faq.model.*;
+import com.depthspace.faq.service.*;
+import com.depthspace.faq.controller.*;
 
 public class FaqServlet extends HttpServlet {
 

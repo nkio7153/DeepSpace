@@ -30,6 +30,14 @@
                             <a class="active" href="${pageContext.request.contextPath}/indexpage/index.jsp">首頁</a>
                         </li>
                         <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="column" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                專欄
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="column">
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/columnarticles/list">專欄文章</a></li>                             
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTicket" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 票券
                             </a>
@@ -63,10 +71,11 @@
                         <c:if test="${sessionScope.memId != null}">
                         <li class="nav-item dropdown">
                             		<a class="booking">會員</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownTicket">
+                            <ul class="dropdown-menu" aria-labelledby="mem">
                                 <li><a class="dropdown-item">${authenticatedMem.memName}</a></li>
                                 <li><a class="dropdown-item" href="">我的會員資料</a></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList"  onclick="checkSession(event)">我的票券</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList">我的票券</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ticketcollection/list">我的票券收藏</a></li>
                                 <li><a class="dropdown-item" href="">通知</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mem/logout" name="check">登出</a></li>

@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 @Table(name = "ADMIN")
 public class AdminVO implements Serializable{
@@ -25,6 +27,12 @@ public class AdminVO implements Serializable{
 	private String adminPwd;
 	@Column(name = "ADMIN_STATUS")
 	private Byte adminStatus;
+	@Expose
+	@Column(name = "ADMIN_VERIFY_STATUS", columnDefinition = "TINYINT")
+	private Integer adminVerifyStatus;
+	@Expose
+	@Column(name = "ADMIN_FUNC_NAME", columnDefinition = "TINYINT")
+	private Integer adminFuncName;
 	
 	public AdminVO() {
     }

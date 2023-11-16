@@ -4,7 +4,7 @@ import com.depthspace.column.model.ColumnImagesVO;
 
 public interface ColumnImagesDAO {
 	
-	int add(ColumnImagesVO columnImagesVO);
+	void add(ColumnImagesVO colImg);
 	
     ColumnImagesVO findByArticleId(Integer artiId);
     
