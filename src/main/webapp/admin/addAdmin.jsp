@@ -25,12 +25,27 @@
         <label for="adminName">管理員姓名:</label>
         <input type="text" id="adminName" name="adminName" value="" required><br><br>
         
-        <label for="adminStatus" >狀態:</label>
+        <label for="adminStatus" >管理員帳號狀態:</label>
         <select id="adminStatus" name="adminStatus"  >
             <option value="1" >正常使用中</option>
-<!--             <option value="0"  style="display: none;">停用</option> -->
-        </select><br><br>
-        
+<!--             <option value="2"  style="display: none;">停用</option> -->
+        </select>
+         <br>
+         <label for="adminVerifyStatus" >驗證碼狀態:</label>
+        <select id="adminVerifyStatus" name="adminVerifyStatus"  >
+            <option value="1" >已驗證</option>
+<!--             <option value="2"  style="display: none;">未驗證</option> -->
+        </select>
+        <br>
+        <tr>
+			<th>管理員帳號權限</th>
+			<td>
+				<input type="radio" name="adminFuncName" value="0">無功能
+				<input type="radio" name="adminFuncName" value="1" checked>餐廳管理員
+				<input type="radio" name="adminFuncName" value="2">總管理員
+			</td>
+		</tr>
+        <br>
         <input type="submit" value="加入管理員">
         <input type="hidden" name="action" value="save">
     </form>

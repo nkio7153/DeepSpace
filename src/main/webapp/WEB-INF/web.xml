@@ -71,15 +71,15 @@
 		<filter-name>LoginFilter</filter-name>
 		<filter-class>com.depthspace.admin.filter.LoginFilter</filter-class>
 	</filter>
-<!-- 	<filter-mapping> -->
-<!-- 		<filter-name>LoginFilter</filter-name> -->
-<!-- 		<url-pattern>/admin/*</url-pattern> -->
-<!-- 		<url-pattern>/backstage/index.jsp</url-pattern> -->
-<!-- 		<dispatcher>REQUEST</dispatcher> -->
-<!-- 		<dispatcher>FORWARD</dispatcher> -->
-<!-- 		<dispatcher>INCLUDE</dispatcher> -->
-<!-- 		<dispatcher>ERROR</dispatcher> -->
-<!-- 		<dispatcher>ASYNC</dispatcher> -->
-<!-- 	</filter-mapping> -->
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+<!-- 		<url-pattern>/member/*</url-pattern> -->
+		<url-pattern>/backend/backIndex/index.jsp</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+		<dispatcher>ASYNC</dispatcher>
+	</filter-mapping>
 
 </web-app>
