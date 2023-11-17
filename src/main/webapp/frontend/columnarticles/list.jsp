@@ -62,11 +62,11 @@
 				<div class="d-flex justify-content-between align-items-center mb-3">
 					<h2 class="mb-0">共有 ${total} 篇文章</h2>
 					<div class="form-group mb-0">
-						<label for="sortDropdown" class="mr-2">排序方式</label> <select
-							class="form-control d-inline-block" id="sortDropdown"
-							style="width: auto;">
-							<option>按發布日期排序</option>
-							<!-- 其他排序 -->
+						<label for="sortSet" class="mr-2"></label> <select
+							class="form-control d-inline-block" id="sortSet" style="width: auto;" onchange="sortArticles()">
+							<option value="asc">預設</option>
+							<option value="desc">按發布日排序(新→舊)</option>
+							<option value="asc">按發布日排序(舊→新)</option>
 						</select>
 					</div>
 				</div>
@@ -108,13 +108,13 @@
 					</c:forEach>
 				</div>
 				
-	<div id="right">
-	<c:forEach begin="1" end="${pageQty}" var="i">
-    <li class="page-item ${i == currentPage ? 'active' : ''}">
-        <a class="page-link" href="${pageContext.request.contextPath}/columnarticles/list?page=${i}">${i}</a>
-    </li>
-</c:forEach>
-    </div>					
+		<div >
+		<c:forEach begin="1" end="${pageQty}" var="i">
+	    <li class="page-item ${i == currentPage ? 'active' : ''}">
+	        <a class="page-link" href="${pageContext.request.contextPath}/columnarticles/list?page=${i}">${i}</a>
+	    </li>
+		</c:forEach>
+	    </div>					
 				
 			</div>
 		</div>
@@ -178,14 +178,13 @@
     
     //左邊搜尋條件
     $(document).ready(function() {
-        // 處理表單提交事件
         $('#searchForm').on('submit', function(e) {
             e.preventDefault(); 
             $('#loadingAnimation').show();
             var formData = $(this).serialize();
             $.ajax({
                 url: "<%=request.getContextPath()%>/columnarticles/search", 
-				data : formData, // 表單數據
+				data : formData, 
 				success : function(result) {
 					console.log(result);
 					$('#right').html(result);
@@ -197,17 +196,17 @@
 			});
 		});
 
-		// 篩選條件的變更也觸發表單提交
+		// 篩選條件的變更也觸發表單
 		$('input[type=checkbox]').change(function() {
 			$('#searchForm').submit();
 		});
 
-// 		// 更改排序也觸發表單提交
+// 		// 更改排序也觸發表單
 // 		$('#sortDropdown').on('change', function() {
 // 			$('#searchForm').submit();
 // 		});
 	});
-
+	//頁數變動
     function updatePagination(pageQtyA, currentPage) {
         var paginationHtml = '';
         for (var i = 1; i <= pageQtyA; i++) {
@@ -216,14 +215,42 @@
         }
         $('.pagination').html(paginationHtml);
     }
-
     function loadPage(pageNumber) {
         $.ajax({
-            url: '<%=request.getContextPath()%>/columnarticles/list', 
+            url: '<%=request.getContextPath()%>/columnarticles/search', 
             data: { page: pageNumber },
             success: function(response) {
-                // 更新頁面內容
                 $('#right').html(response);
+            }
+        });
+    }
+    //排序
+//     document.getElementById('sortSet').addEventListener('change', function() {
+//         var sortValue = this.value;
+//         $.ajax({
+<%--             url: "<%=request.getContextPath()%>/columnarticles/search",  --%>
+//             type: 'GET',
+//             data: { sort: sortValue },
+//             success: function(response) {
+//                 $('#right').html(response);
+//             },
+//             error: function(error) {
+//                 console.error('排序失敗', error);
+//             }
+//         });
+//     });
+    function sortArticles() {
+        var sortValue = document.getElementById("sortSet").value;
+        $.ajax({
+            url: "<%=request.getContextPath()%>/columnarticles/search", 
+            type: 'GET',
+            data: { sort: sortValue },
+            success: function(response) {
+                $('#right').html(response);
+                document.getElementById("sortSet").value = sortValue;
+            },
+            error: function(error) {
+                console.error('排序失敗', error);
             }
         });
     }
