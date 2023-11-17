@@ -91,11 +91,13 @@
 
 
     nav.navbar {
+
         background-color: rgba(211, 211, 211, 0);
     }
     /*調整導航欄高度*/
     .mh{
-        height: 60px;
+        height: 44px;
+        margin-left:-10px;
     }
     /*朦朧區*/
     .transparent{
@@ -111,8 +113,12 @@
     }
     /*固定側邊欄*/
     .sidebar-sticky{
-        position:sticky;
-        top:68px;
+        position:fixed;
+        top:0px;
     }
+    .logout:hover{
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+
 
 </style>

@@ -71,8 +71,10 @@
         .text-dark.fw-bold:hover {
             text-decoration: underline;
         }
-
-
+        .mh{
+            height: 44px;
+            margin-left:-10px;
+        }
         body {
 
             margin: 0;
@@ -105,9 +107,7 @@
         nav.navbar {
             background-color: rgba(211, 211, 211, 0);
         }
-        .mh{
-            height: 60px;
-        }
+
         .transparent{
             background-color: rgba(255, 255, 255, 0.7);
         }
@@ -119,23 +119,32 @@
             justify-content: center;
             align-items: center;
         }
+        .logout:hover{
+            background-color: rgba(255, 255, 255, 0.3);
+            /*color: rgba(0, 0, 0, 0.3);*/
+        }
+        /*固定側邊欄*/
+        .sidebar-sticky{
+            position:fixed;
+            top:0px;
+        }
     </style>
 </head>
 <body>
 <%--include header.jsp--%>
 <nav class="navbar navbar-expand-lg navbar-light parent-div pb-0 ">
-    <a class="navbar-brand fs-2 mx-2 my-0 fw-bold p-0" href="${pageContext.request.contextPath}/indexpage/index.jsp">
-        <img class="mh my-0" src="${pageContext.request.contextPath}/backend/backIndex/image/logo.jpg">
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+<%--    <a class="navbar-brand fs-2 mx-2 my-0 fw-bold p-0" href="${pageContext.request.contextPath}/indexpage/index.jsp">--%>
+<%--        <img class="mh my-0" src="${pageContext.request.contextPath}/backend/backIndex/image/logo.jpg">--%>
+<%--    </a>--%>
+<%--    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"--%>
+<%--            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">--%>
+<%--        <span class="navbar-toggler-icon"></span>--%>
+<%--    </button>--%>
     <div class="collapse navbar-collapse child-div" id="navbarNav">
         <ul class="navbar-nav ms-auto fs-5 mx-2 ">
             <c:if test="${adminId != null}">
             <li class="nav-item active">
-                <a class="nav-link fs-4 btn btn-outline-primary" href="${pageContext.request.contextPath}/ad/logout">登出<span class="sr-only">()</span></a>
+                <a class="logout nav-link fs-4 btn bg-bu" href="${pageContext.request.contextPath}/ad/logout">登出<span class="sr-only">()</span></a>
             </li>
             </c:if>
         </ul>
@@ -144,7 +153,12 @@
 <div class="container-fluid">
     <div class="row">
         <%--    側邊欄--%>
-        <div class="col-lg-2 g-3 mt-0">
+        <div class="col-lg-2 g-3 mt-0 sidebar-sticky">
+            <div class="mt-2">
+                <a class="navbar-brand fs-2 mx-2 my-0 fw-bold p-0" href="${pageContext.request.contextPath}/indexpage/index.jsp">
+                    <img class="mh my-0" src="${pageContext.request.contextPath}/backend/backIndex/image/logo.jpg">
+                </a>
+            </div>
             <div class="border-right rounded color-2-4" id="sidebar-wrapper">
 <%--                <div class="fs-4 fw-bold offset-1 my-2">後台管理系統</div>--%>
                 <a href="${pageContext.request.contextPath}/backend/backIndex/index.jsp" class="fs-4 text-dark fw-bold my-2 sidebar-center">後台管理系統</a>
@@ -246,22 +260,22 @@
                     </li>
 
                     <!-- 權限設定 -->
-                    <li class="nav-item mb-2">
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                           data-bs-target="#collapsePermissions" aria-expanded="true"
-                           aria-controls="collapsePermissions">
-                                <span class="text-light fs-5">權限設定 <i
-                                        class="fa-solid fa-angle-down"></i></span>
-                        </a>
-                        <div id="collapsePermissions" class="collapse" aria-labelledby="headingPermissions"
-                             data-bs-parent="#sidebar-wrapper">
-                            <div class="color-4-1 py-2 collapse-inner rounded">
-                                <a class="text-choco collapse-item offset-1" href="#">員工權限</a>
-                                <br>
-                                <a class="text-choco collapse-item offset-1" href="#">廠商權限</a>
-                            </div>
-                        </div>
-                    </li>
+<%--                    <li class="nav-item mb-2">--%>
+<%--                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"--%>
+<%--                           data-bs-target="#collapsePermissions" aria-expanded="true"--%>
+<%--                           aria-controls="collapsePermissions">--%>
+<%--                                <span class="text-light fs-5">權限設定 <i--%>
+<%--                                        class="fa-solid fa-angle-down"></i></span>--%>
+<%--                        </a>--%>
+<%--                        <div id="collapsePermissions" class="collapse" aria-labelledby="headingPermissions"--%>
+<%--                             data-bs-parent="#sidebar-wrapper">--%>
+<%--                            <div class="color-4-1 py-2 collapse-inner rounded">--%>
+<%--                                <a class="text-choco collapse-item offset-1" href="#">員工權限</a>--%>
+<%--                                <br>--%>
+<%--                                <a class="text-choco collapse-item offset-1" href="#">廠商權限</a>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </li>--%>
 
                     <!-- 專欄 -->
                     <li class="nav-item mb-2">
