@@ -83,7 +83,6 @@ public class AdminServlet extends HttpServlet {
 				break;
 		}
 		
-		
 	}
 	
 	private void doLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -289,7 +288,7 @@ public class AdminServlet extends HttpServlet {
 			req.setAttribute("funcName", "未啟用");
 		}
 		
-		req.getRequestDispatcher("/admin/success.jsp").forward(req, resp);
+		req.getRequestDispatcher("/backadmin/list").forward(req, resp);
 	}
 
 	// ============================================================================================================================================
