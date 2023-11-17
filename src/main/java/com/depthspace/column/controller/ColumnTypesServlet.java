@@ -19,7 +19,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.alibaba.fastjson.util.IOUtils;
-import com.depthspace.column.*;
+//import com.depthspace.column.*;
 import com.depthspace.column.model.ColumnTypesVO;
 import com.depthspace.column.service.ColumnTypesService;
 import com.depthspace.column.service.ColumnTypesServiceImpl;

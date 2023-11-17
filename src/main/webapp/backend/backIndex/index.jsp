@@ -205,7 +205,9 @@
                         <div id="collapseTickets" class="collapse" aria-labelledby="headingTickets"
                              data-bs-parent="#sidebar-wrapper">
                             <div class="color-4-1 py-2 collapse-inner rounded">
-                                <a class="text-choco collapse-item fs-6 offset-1" href="#">票卷管理</a>
+                                <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/ticketmg/list">票卷列表</a>
+                                <br>
+                                <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/tickettypesmg/list">票卷類型</a>
                                 <br>
                                 <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/to/listAll">訂單管理</a>
                                 <br>
@@ -248,6 +250,24 @@
                                 <a class="text-choco collapse-item offset-1" href="#">員工權限</a>
                                 <br>
                                 <a class="text-choco collapse-item offset-1" href="#">廠商權限</a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- 專欄 -->
+                    <li class="nav-item mb-2">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                           data-bs-target="#collapseColumnManagement" aria-expanded="false"
+                           aria-controls="collapseColumnManagement">
+                                <span class="text-light fs-5">專欄管理 <i
+                                        class="fa-solid fa-angle-down"></i></span>
+                        </a>
+                        <div id="collapseColumnManagement" class="collapse" aria-labelledby="headingColumnManagement"
+                             data-bs-parent="#sidebar-wrapper">
+                            <div class="color-4-1 py-2 collapse-inner rounded">
+                                <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/columnmg/list">專欄列表</a>
+                                <br>
+                                <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/columntypesmg/list">專欄類型</a>
                             </div>
                         </div>
                     </li>
