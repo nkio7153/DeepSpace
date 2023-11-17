@@ -14,11 +14,11 @@
 <div class="container-fluid my-0">
     <div class="row">
         <%--    側邊欄--%>
-        <div class="col-lg-2 g-3 mt-1">
+        <div class="col-lg-2 g-3 mt-0">
             <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
         </div>
 
-            <div class="col-lg-10 g-2 transparent rounded mt-1">
+            <div class="col-lg-10 g-2 transparent rounded mt-2">
             <%--      放入自己body裡的代碼--%>
                 <div class="container mt-4">
                     <a class="btn btn-secondary" href="${pageContext.request.contextPath}/to/listAll">返回訂單全部列表</a>
