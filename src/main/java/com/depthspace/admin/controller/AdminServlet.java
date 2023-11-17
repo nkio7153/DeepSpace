@@ -87,22 +87,16 @@ public class AdminServlet extends HttpServlet {
 	}
 	
 	private void doLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		HttpSession session=req.getSession();
+		HttpSession session=req.getSession(false);
 		//移除session
-				if(session.getAttribute("authenticatedAdmin") != null) {
-					session.removeAttribute("authenticatedAdmin");
+				if(session.getAttribute("admin") != null) {
+					session.removeAttribute("admin");
 				}
 				if(session.getAttribute("adminId") != null) {
 					session.removeAttribute("adminId");
 				}		
-				if(session.getAttribute("mtoPageQty")!=null){
-				    session.removeAttribute("mtoPageQty");
-				}
-				if(session.getAttribute("toAdminPageQty")!=null){
-				    session.removeAttribute("toAdminPageQty");
-				}
 
-				resp.sendRedirect(req.getContextPath()+"/admin/login.jsp?state=logout");
+				resp.sendRedirect(req.getContextPath()+"/admin/login.jsp");
 				
 	}
 
