@@ -113,62 +113,6 @@ form {
 		</c:forEach>
 	</table>
 
-	<script>
-	
-	function goBack() {
-	    // 檢查前一頁的URL是否包含 success.jsp
-	    if (document.referrer && document.referrer.indexOf("success.jsp") !== -1) {
-	        // 如果前一頁是 success.jsp，就使用 history.back()
-	        history.back();
-	    } else {
-	        // 否則導向到 success.jsp
-	        window.location.href = "success.jsp";
-	    }
-	}
-	
-    let tourDes = [];
-//     處理行程明細
-    function showProDetail() {
-        let tr =$(event.target).closest('tr');
-        let tourId=tr.find('td[name="tourId"]').text();
-        gettourDetail(tourId);
-
-    }
-    
-    function gettourDetail(proId) {
-    	let url ="${pageContext.request.contextPath}/tr/showDetail?tourId=" + tourId;
-    	fetch(url)
-    		.then(function (response){
-    			return response.json()
-    		})
-    		.then(function (data){
-    			console.log(data)
-    			tourDes = data;
-    			shoeData();
-    		})
-    		 .catch(function(error){
-              console.log(error);
-            })
-    
-    function shoeData(){
-    	console.log("showData方法被執行了")
-    	for(let i = 0; i < tourDes.length; i++) {
-    		console.log(tourDes[i].tourName);
-    	}
-    	 console.log("遍歷完畢")
-    	 let html="";
-    	for(let i=0; i<tourDes.length; i++){
-    	   html += '<li class="list-group-item"><span>' + proDes[i].ticketName + '</span><span class="text-danger">(' + proDes[i].discount + '折)</span></li>';
-    	    }
-    }
-    	
-    	
-    }
-    
-    
-    
-    
-    </script>
 	<!-- </form> -->
 	<jsp:include page="../indexpage/footer.jsp" />
 </body>

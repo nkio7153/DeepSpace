@@ -1,6 +1,7 @@
 package com.depthspace.attractions.model.attractions.hibernate;
 
 import java.util.List;
+import java.util.Map;
 
 import com.depthspace.attractions.model.AreaVO;
 import com.depthspace.attractions.model.AttractionsVO;
@@ -23,5 +24,9 @@ public interface AttractionsDAO_Interface {
 	List<AttractionsVO> findOtherAttractions(String cityName);
 
 	public List<AttractionsVO> getAttractionsName(String attractionsName);
+
+	long getTotal();
+	
+	List<AttractionsVO> getByCompositeQuery(Map<String, List<String>> map);
 
 }

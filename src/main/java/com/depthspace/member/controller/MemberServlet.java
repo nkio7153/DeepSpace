@@ -94,7 +94,36 @@ public class MemberServlet extends HttpServlet {
 		memId = (Integer) session.getAttribute("memId");
 		HbMemService hbms = new HbMemService();
 		MemVO mem = hbms.getOneMem(memId);
+		
+		//處理圖片
+		String base64Image;
+		byte[] imageBytes = mem.getMemImage();
+		if (imageBytes != null) {
+			base64Image = Base64.getEncoder().encodeToString(imageBytes);
+			req.setAttribute("base64Image", base64Image);
+		} else {
+			String webappPath = getServletContext().getRealPath("/");
+			// 取得相對路径
+			String relativeImagePath = "member/images/1.png";
+			String absoluteImagePath = webappPath + relativeImagePath;
 
+			File defaultImageFile = new File(absoluteImagePath);
+			String defaultImagePath = defaultImageFile.getPath();
+			// 使用ServletContext获取资源流
+//			InputStream defaultImageStream = getServletContext().getResourceAsStream(defaultImagePath);
+			if (defaultImageFile.exists()) {
+				byte[] localImageBytes = Files.readAllBytes(Path.of(defaultImagePath));
+				base64Image = Base64.getEncoder().encodeToString(localImageBytes);
+
+				resp.setContentType("text/plain");
+				resp.getWriter().write(base64Image);
+				req.setAttribute("base64Image", base64Image);
+			} else {
+				// 如無照片會處理錯誤
+				System.out.println("圖不存在");
+			}
+		}
+		
 		if (mem.getMemSex() == 1) {
 			req.setAttribute("sex", "男");
 		} else {
@@ -526,14 +555,6 @@ public class MemberServlet extends HttpServlet {
 			req.setAttribute("memId", memId);
 		}
 
-		// ===================================================================================
-		// try {
-		// memId = Integer.valueOf(req.getParameter("memId"));
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// return;
-		// }
-		// ===================================================================================
 		MemVO memvo = m.findByMemId(memId);
 		if (memvo != null) {
 			// 處理圖片

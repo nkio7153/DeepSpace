@@ -59,6 +59,9 @@
 		
     </style>
     <title>行程詳細資訊</title>
+    
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOKKfj_MwehUJhm-t7jPbO1ydNODLgLOM&libraries=places&callback=initMap"></script>
+    
 </head>
 <body>
 <jsp:include page="../indexpage/header.jsp" />
@@ -103,16 +106,20 @@
 	            	<tr>
 	                	<td>${dayDetail.start}</td>
 	                    <td>${dayDetail.attractionsName}</td>
-	                    <td><a href="https://www.example.com">${dayDetail.address}</a></td>
+	                    <td>${dayDetail.address}</td>
 	                </tr>
 	            </c:if>
 	        </c:forEach>
 	    </c:forEach>
+	    
     </table>
-    
+<!-- <button onclick="initMap()">查看行程路線</button> -->
 <input type="button" value="返回" onclick="history.back()" id="btn_back">
 </div>
-    
+
+    <script>
+      
+    </script>
 <jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

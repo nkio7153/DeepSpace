@@ -8,9 +8,10 @@
 <head>
 <jsp:include page="../indexpage/head.jsp" />
     <title>註冊會員</title>
-      <style>
-        label.hidden {
-            display: none; /* 或者使用 visibility: hidden; */
+    
+    <style>
+    	label.hidden {
+        	display: none; /* 或者使用 visibility: hidden; */
         }
     </style>
 </head>

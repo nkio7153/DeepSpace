@@ -9,19 +9,58 @@
 <jsp:include page="../indexpage/head.jsp" />
 <title>修改會員資料 revise.jsp</title>
 <style>
-  img.image {
+  	img.image {
       border-radius: 60px;
 	  width: 120px;
 	  height: 120px;
-  }
-  #preview span.text{
+	  object-fit: cover;
+  	}
+  	#preview span.text{
         position: absolute;
         display: inline-block;
-        left: 50%;
+/*         left: 50%; */
         top: 50%;
         transform: translate(-50%, -50%);
         color: lightgray;
-      }
+  	}
+  	.image-container {
+        display: flex;
+      	align-items: center;
+   	}
+        
+    .preview {
+        max-width: 200px;
+        max-height: 100px;
+        margin-left: 100px; /* 調整預覽圖片與大頭貼之間的間距 */
+        }
+    .preview_jpg {
+     	border-radius: 60px;
+        width: 120px;
+	    height: 120px;
+	    object-fit: cover;
+	    position: relative;
+        }
+   	.btn_save {
+	    width: 150px;
+	    font-size: 20px;
+	    color: #fff;
+	    background-color: #008CBA;
+	    border: none;
+	    padding: 10px;
+	    cursor: pointer;
+	    border-radius: 10px;
+	    margin: 10px;
+	}
+	.preview_jpg::before {
+	    content: "請上傳圖片";
+	    position: absolute;
+	    top: 50%;
+	    left: 50%;
+	    transform: translate(-50%, -50%);
+	    color: lightgray;
+	    text-align: center;
+	    width: 100%;
+	}
 </style>
 </head>
 <body>
@@ -37,11 +76,26 @@
 			<tr>
 				<th>會員大頭貼</th>
 					<td>
-	                	<img src="data:image/jpeg;base64,${base64Image}" class="image" alt="ProfileImage" />
-	                	<label>更新大頭貼</label>
-	                    <input type="file" id="memImage" name="memImage" onchange="loadFile(event)" />
-	                    <!-- 將 base64Image 存儲在一個隱藏的表單字段中 -->
-	                    <input type="hidden" name="memImage" value="${base64Image}" />
+						<div class="image-container">
+	                        <img src="data:image/jpeg;base64,${base64Image}" class="image" alt="ProfileImage" />
+	                        <div class="upload-container" style="display: flex; align-items: center; margin-left: 20px;">
+						        <!-- 調整 preview 的樣式 -->
+						        <div class="preview" style="margin-right: 10px;">
+									<img id="preview_img" src="" name="memImage" alt="" class="preview_jpg">
+						        </div>
+					        <input type="file" class="form-control" id="picture" name="memImage" style="width: 89px;">
+					    </div>
+					    <input type="hidden" name="memImage" value="${base64Image}" />
+<!-- 						<div class="preview"> -->
+<!--                                 <img id="preview_img" src="" name="pciture1" alt="請上傳圖片" class="preview_jpg"> -->
+<!--                             </div> -->
+<!--                             <input type="file" class="form-control" id="picture" name="picture"><br> -->
+					
+<%-- 	                	<img src="data:image/jpeg;base64,${base64Image}" class="image" alt="ProfileImage" /> --%>
+<!-- <!-- 	                	<label>更新大頭貼</label> -->
+<!-- <!-- 	                    <input type="file" id="memImage" name="memImage" onchange="loadFile(event)" /> -->
+<!-- 	                    將 base64Image 存在一個隱藏的表單字段中 -->
+<%-- 	                    <input type="hidden" name="memImage" value="${base64Image}" /> --%>
 					</td>
 			</tr>
 			<tr>
@@ -103,48 +157,29 @@
 	        
 	    </table>
     <p align="center">
-		<input type="submit" value="儲存會員資料">
+		<input type="submit" class="btn_save" value="儲存會員資料">
 		<input type="hidden" name="action" value="modify">
 	
-        <input type="button" value="取消" onclick="history.back()">
+        <input type="button" class="btn_save" value="取消" onclick="history.back()">
        
-    </p>
+    </p>	
      </form>
     <script type="text/javascript">
-	    var loadFile = function(event){
-	    	var reader = new FileReader();
-	    	reader.onload = function(){
-	    	}
-	    }
-			function change() {
-			// 獲取修改後的資料
-				var modifiedData = {
-				// 這裡放入你的修改後的資料
-					memId : document.getElementById("memId").value,
-					base64Image : document
-							.getElementById("base64Image").value,
-					memAcc : document.getElementById("memAcc").value,
-					memPwd : document.getElementById("memPwd").value,
-					memName : document.getElementById("memName").value,
-					memIdentity : document
-					.getElementById("memIdentity").value,
-					memBth : document.getElementById("memBth").value,
-					memSex : document.getElementById("memSex").value,
-					memEmail : document.getElementById("memEmail").value,
-					memTel : document.getElementById("memTel").value,
-					memAdd : document.getElementById("memAdd").value
-				//                 memName: document.getElementById("memId").value;
-				//                 memName: document.getElementById("memId").value;
+	    var file = $("#picture"); // 獲取input file元素
+	    var preview_el = $("#preview_img"); // 獲取預覽圖片元素
+	    //上傳檔案觸發change事件時，更換預覽圖
+	    file.on("change", function() {
+	        if (this.files && this.files[0]) {
+	            var reader = new FileReader();
+	
+	            reader.onload = function(e) {
+	                preview_el.attr("src", e.target.result);
+	            }
+	
+	            reader.readAsDataURL(this.files[0]);
+	        }
+	    });
 
-				};
-
-				// 存儲修改後的資料到 Local Storage
-				localStorage.setItem('modifiedData', JSON
-						.stringify(modifiedData));
-
-				// 重導向到 success.jsp
-				document.location.href = "${pageContext.request.contextPath}/mem/success";
-			}
 	</script>
 	<jsp:include page="../indexpage/footer.jsp" />
 </body>
