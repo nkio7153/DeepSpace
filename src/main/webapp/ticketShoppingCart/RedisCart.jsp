@@ -15,7 +15,7 @@
         background-color: #ece1be;
     }
     .bg1{
-        background-color: #007bff;
+        background-color: cornflowerblue;
     }
     .bg2{
         background-color: #ff6b6b;
@@ -27,11 +27,14 @@
     /*固定結帳區*/
     .check-sticky{
         position:sticky;
-        top:68px;
+        bottom:0px;
         z-index: 1000;
-
+        background-color:white;
+        border-radius:5px;
         width: 100%; /* 確保滿寬 */
+        padding-top: 5px;
         left: 0;
+        /*height:18vh;*/
     }
 
     /* 表格滾動 */
@@ -55,7 +58,7 @@
 
 </style>
 </head>
-<body>
+<body id="body">
 <jsp:include page="../indexpage/header.jsp"/>
 <jsp:include page="../indexpage/headpic.jsp"/>
 <%--<h3>歡迎會員${memId}</h3>--%>
@@ -87,7 +90,7 @@
     <table align="center" width="80%" class="table table-hover table-striped mt-0">
 <%--          //票券圖片、票券名稱、票券介紹、價格、數量、小計--%>
         <thead>
-        <tr class="bg-info">
+        <tr class="bg1">
             <th class="text-center text-nowrap"style="width:7.5vw">序號</th>
             <th class="hidden">會員編號</th>
             <th class="text-center text-nowrap" style="width: 22.5vw">票券圖片</th>
@@ -140,14 +143,14 @@
     </c:if>
     <div style="display:flex; justify-content: space-between" class="px-3">
         <a href="${pageContext.request.contextPath}/ticketproduct/list"
-           class="btn bg-info p-2 rounded-3 m-lg-2"  style="flex-grow: 1;"> 瀏覽其他票券</a>
+           class="btn bg1 p-2 rounded-3 m-lg-2"  style="flex-grow: 1;"> 瀏覽其他票券</a>
         <a href="javascript:void(0)" class="btn bg2 p-2 m-lg-2 rounded-3"  style="width: 12vw"  onclick="delAll(${memId})">清空購物車</a>
     </div>
     </div>
     <hr>
-
     <div style="display:flex;" class="my-0 rounded mt-0 check-sticky">
         <div class="fs-5 px-4 rounded">
+
             <div style="display: flex; flex-wrap: nowrap; margin-right: 80px" class="mb-3">
 
                 <span class="no-wrap mt-0">總計:</span><span class="sub2"></span>
@@ -165,7 +168,7 @@
 <%--                <span>總金額:</span><span class="total text-black-50"></span>--%>
                 <%--  <input type="button" class="btn btn-primary btn-lg offset-1" onclick="location.href='${pageContext.request.contextPath}/tsc/checkout?memId=${memId}'" value="前往結帳">--%>
             </div>
-            <div style="display: flex">
+            <div style="display: flex; padding-bottom: 8px">
                 <input type="submit" style="flex-grow: 1; width:95vw" id="submit" class="btn bg1 text-light btn-lg wr" value="前往結帳">
             </div>
         </div>
