@@ -2,12 +2,14 @@ package com.depthspace.column.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import java.util.LinkedHashSet;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -81,31 +83,61 @@ public class ColumnArtServlet extends HttpServlet {
 
 	}
 
-	/************ 專欄列表 ************/
+//	/************ 專欄列表 ************/
+//	protected void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+//
+//		String page = req.getParameter("page");
+//		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
+//		long total = columnArticlesService.getTotal();
+//		
+//		List<ColumnArticlesVO> columnList = columnArticlesService.getAllArti2(currentPage);
+//
+//		if (req.getSession().getAttribute("pageQty") == null) {
+//			int pageQty = columnArticlesService.getPageTotal();
+//			req.getSession().setAttribute("pageQty", pageQty);
+//		}
+//		
+////		String sort = req.getParameter("sort");
+////		List<ColumnArticlesVO> sortList = columnArticlesService.getAllSortById(sort);
+////	
+//		searchList(req, res);	
+//		req.setAttribute("total", total); //專欄文章總數
+//		req.setAttribute("currentPage", currentPage); //分頁數
+////		req.setAttribute("sortSet", sortList);  
+//		req.setAttribute("resultSet", columnList);  
+//
+//		RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/columnarticles/list.jsp");
+//		dispatcher.forward(req, res);
+//	}
+	
 	protected void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	    String page = req.getParameter("page");
+	    String sort = req.getParameter("sort"); 
+	    int currentPage = (page == null) ? 1 : Integer.parseInt(page);
+	    long total = columnArticlesService.getTotal();
+	    
+	    List<ColumnArticlesVO> columnList = columnArticlesService.getAllArti2(currentPage);
 
-		String page = req.getParameter("page");
-		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
-		long total = columnArticlesService.getTotal();
-		
-		List<ColumnArticlesVO> columnList = columnArticlesService.getAllArti2(currentPage);
+	    // 排序
+	    if ("desc".equalsIgnoreCase(sort)) {
+	        columnList.sort((a1, a2) -> a2.getArtiId().compareTo(a1.getArtiId()));
+	    } else if ("asc".equalsIgnoreCase(sort)) {
+	        columnList.sort(Comparator.comparing(ColumnArticlesVO::getArtiId));
+	    }
 
-		if (req.getSession().getAttribute("pageQty") == null) {
-			int pageQty = columnArticlesService.getPageTotal();
-			req.getSession().setAttribute("pageQty", pageQty);
-		}
+	    if (req.getSession().getAttribute("pageQty") == null) {
+	        int pageQty = columnArticlesService.getPageTotal();
+	        req.getSession().setAttribute("pageQty", pageQty);
+	    }
 
-		searchList(req, res);	
-		req.setAttribute("total", total); //專欄文章總數
-		req.setAttribute("currentPage", currentPage); //分頁數
-		req.setAttribute("resultSet", columnList);  
+	    searchList(req, res);
+	    req.setAttribute("total", total); // 專欄文章總數
+	    req.setAttribute("currentPage", currentPage); // 分頁數
+	    req.setAttribute("resultSet", columnList); // 排序後的文章列表
 
-
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/columnarticles/list.jsp");
-		dispatcher.forward(req, res);
+	    RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/columnarticles/list.jsp");
+	    dispatcher.forward(req, res);
 	}
-	
-	
 
 	/************ 單一專欄頁面 ************/	
 	protected void doItem(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -162,32 +194,67 @@ public class ColumnArtServlet extends HttpServlet {
 	    res.setContentType("application/json");
 	    res.setCharacterEncoding("UTF-8");
 
-	    // 創建查詢map
+//	    // 萬用查詢
+//	    Map<String, String[]> parameterMap = req.getParameterMap();
+//	    List<ColumnArticlesVO> resultList = columnArticlesService.getColumnArticlesByCompositeQuery(parameterMap);
+////	    Set<ColumnArticlesVO> resultSet = new HashSet<>(resultList);
+//	    
+//	    // 排序
+//	    String sort = req.getParameter("sort");
+//	    if ("desc".equalsIgnoreCase(sort)) {
+//	        resultList.sort((a1, a2) -> a2.getArtiId().compareTo(a1.getArtiId())); 
+//	    } else {
+//	        resultList.sort(Comparator.comparing(ColumnArticlesVO::getArtiId));
+//	    }
 	    Map<String, String[]> parameterMap = req.getParameterMap();
-	    // 調用萬用查詢方法
 	    List<ColumnArticlesVO> resultList = columnArticlesService.getColumnArticlesByCompositeQuery(parameterMap);
-	    Set<ColumnArticlesVO> resultSet = new HashSet<>(resultList);
+	    Set<ColumnArticlesVO> resultSet = new LinkedHashSet<>(resultList);
+
 	    
-		req.setAttribute("paramValues", parameterMap);
-		
+	    String sort = req.getParameter("sort");
+	    
+
+		 // 在排序前列印出前幾個元素的 ID
+		    System.out.println("排序前:");
+		    resultList.stream().limit(5).forEach(article -> System.out.println(article.getArtiId()));
+
+		    
+	    if ("desc".equalsIgnoreCase(sort)) {
+	        // 降序排列
+	        resultList.sort((a1, a2) -> a2.getArtiId().compareTo(a1.getArtiId()));
+	    } else if ("asc".equalsIgnoreCase(sort)) {
+	        // 升序排列
+	        resultList.sort(Comparator.comparing(ColumnArticlesVO::getArtiId));
+	    }
+	    
+	 // 在排序後列印出前幾個元素的 ID
+	    System.out.println("排序後:");
+	    resultList.stream().limit(5).forEach(article -> System.out.println(article.getArtiId()));
+
+//	    Set<ColumnArticlesVO> resultSet = new HashSet<>(resultList);
+//	    req.setAttribute("resultSet", resultSet);    
+	    
+	    req.setAttribute("resultSet", resultList);	    
+	    
+	    System.out.println("?/???????????????"+ sort );
+	    // 排序後的 ID
+	    for (ColumnArticlesVO article : resultList) {
+	        System.out.println("Article ID: " + article.getArtiId());
+	    }
+	    
 	    // 查詢結果的數量
 	    int searchCount = resultSet.size();
 	    req.setAttribute("searchCount", searchCount);
 
-	    // 查詢結果存入
-	    req.setAttribute("resultSet", resultSet);
-	    
-	   
-	    int pageQty = (int) Math.ceil((double) searchCount / PAGE_MAX_RESULT); // 計算總頁數
-
+	    // 計算總頁數
+	    int pageQty = (int) Math.ceil((double) searchCount / PAGE_MAX_RESULT); 
 	    req.setAttribute("searchCount", searchCount);
 	    req.setAttribute("pageQtyA", pageQty); 
-
+	    
 //		List<ColumnArticlesVO> resultSet = columnArticlesService.getAllArti2(searchCount);
 //		req.setAttribute("currentPage", searchCount); //分頁數
 //	    
 	    req.getRequestDispatcher("/frontend/columnarticles/search.jsp").forward(req, res);
 	}
 	
-
 }
