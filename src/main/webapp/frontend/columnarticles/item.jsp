@@ -56,6 +56,10 @@
 		</div>
 		<div>
 		</div>
+		 <c:choose>
+         <c:when test="${recommendedArticles == null}"><p></p>
+         </c:when>
+         <c:otherwise>
 		<h5>你可能還喜歡</h5>
         <div class="row">
             <c:forEach  items="${recommendedArticles}" var="article" begin="0" end="4">
@@ -84,6 +88,8 @@
                 </div>
             </c:forEach>
         </div>
+        				 </c:otherwise>
+                </c:choose>
     	</div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
