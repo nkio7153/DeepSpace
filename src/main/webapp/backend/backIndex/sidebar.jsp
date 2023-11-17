@@ -5,6 +5,7 @@
 <%--    <div class="fs-4 fw-bold offset-1 my-2">後台管理系統</div>--%>
     <a href="${pageContext.request.contextPath}/backend/backIndex/index.jsp" class="fs-4 text-dark fw-bold my-2 sidebar-center">後台管理系統</a>
     <div class="list-group list-group-flush sidebar-center">
+        <c:if test="${adminId!=null && admin.adminFuncName == 2}">
         <!-- 員工管理 -->
         <li class="nav-item mb-2">
             <a class="nav-link collapsed mt-0" href="#" data-bs-toggle="collapse"
@@ -153,6 +154,26 @@
                 </div>
             </div>
         </li>
+        </c:if>
 
+        <c:if test="${adminId!=null && admin.adminFuncName == 1 }">
+            <!-- 餐聽管理 -->
+            <li class="nav-item mb-2">
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                   data-bs-target="#collapseRestService" aria-expanded="false"
+                   aria-controls="collapseRestService">
+                                <span class="text-light fs-5">餐廳管理 <i
+                                        class="fa-solid fa-angle-down"></i></span>
+                </a>
+                <div id="collapseRestService" class="collapse" aria-labelledby="headingRestService"
+                     data-bs-parent="#sidebar-wrapper">
+                    <div class="color-4-1 py-2 collapse-inner rounded">
+                        <a class="text-choco collapse-item fs-6 offset-1" href="#">客服問題</a>
+                        <br>
+                        <a class="text-choco collapse-item fs-6 offset-1" href="#">回報問題</a>
+                    </div>
+                </div>
+            </li>
+        </c:if>
     </div>
 </div>

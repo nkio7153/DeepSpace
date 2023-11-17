@@ -25,6 +25,13 @@
         min-width: 180px;
         min-height: 50vh;
     }
+    <c:if test="${adminId!=null && admin.adminFuncName == 1 }">
+    #sidebar-wrapper {
+        width:180px;
+        min-width: 180px;
+        min-height: 15vh;
+    }
+    </c:if>
 
     .parent-div {
         display: flex;
