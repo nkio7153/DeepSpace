@@ -72,6 +72,9 @@
 		                    <td>
 							    <button class="btn btn-primary" onclick="changeStatus('啟用', ${admin.adminId})" data-adminid="${admin.adminId}">啟用</button>
 							    <button class="btn btn-danger" onclick="changeStatus('停權', ${admin.adminId})" data-adminid="${admin.adminId}">停權</button>
+							
+							 	<button class="btn btn-secondary" onclick="location.href='<%=request.getContextPath()%>/admin/revise.jsp?adminId=${admin.adminId}'">修改</button>
+               					<button class="btn btn-danger" onclick="confirmDelete(${admin.adminId})">刪除</button>
 							</td>
 		                </tr>
 	                </c:forEach>
@@ -170,6 +173,15 @@ $(document).ready(function () {
     }
 
 });
+
+// 添加刪除確認函數
+function confirmDelete(adminId) {
+    var isConfirmed = confirm('確定要刪除這位管理員嗎？');
+    if (isConfirmed) {
+        // 執行刪除操作的URL
+        window.location.href = "<%=request.getContextPath()%>/admin/deleteAdmin?adminId=" + adminId;
+    }
+}
 </script>
 
     <!-- 引入Bootstrap JavaScript，如有需要 -->
