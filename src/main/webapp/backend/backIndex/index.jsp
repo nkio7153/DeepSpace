@@ -133,9 +133,11 @@
     </button>
     <div class="collapse navbar-collapse child-div" id="navbarNav">
         <ul class="navbar-nav ms-auto fs-5 mx-2 ">
+            <c:if test="${adminId != null}">
             <li class="nav-item active">
-                <a class="nav-link fs-4 btn btn-outline-primary" href="${pageContext.request.contextPath}/admin/logout.jsp">登出<span class="sr-only">()</span></a>
+                <a class="nav-link fs-4 btn btn-outline-primary" href="${pageContext.request.contextPath}/ad/logout">登出<span class="sr-only">()</span></a>
             </li>
+            </c:if>
         </ul>
     </div>
 </nav>
