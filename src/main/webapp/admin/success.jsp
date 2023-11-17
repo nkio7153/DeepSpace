@@ -58,19 +58,19 @@
 			<th style="display: none;">管理員編號</th><td  style="display: none;">${admin.adminId} </td>
 		
 		<tr>
-			<th>帳號</th><td>${authenticatedAdmin.adminAcc}</td>
+			<th>帳號</th><td>${admin.adminAcc}</td>
 		</tr>
 		<tr>
-			<th>密碼</th><td>${authenticatedAdmin.adminPwd}</td>
+			<th>密碼</th><td>${admin.adminPwd}</td>
 		</tr>
 		<tr>
-			<th>管理員姓名</th><td>${authenticatedAdmin.adminName}</td>
+			<th>管理員姓名</th><td>${admin.adminName}</td>
 		</tr>
 		<tr class="hidden">
 			<th>狀態</th><td>${adminStatus}</td>
 		</tr>
 	</table>
-	<form align="center" action="${pageContext.request.contextPath}/ad/edit?adminId=${authenticatedAdmin.adminId}" method="post" >
+	<form align="center" action="${pageContext.request.contextPath}/ad/edit?adminId=${admin.adminId}" method="post" >
 		<input type="submit" value="修改管理員資料">
 		<input type="hidden" name="action"	value="update">
 	</form>

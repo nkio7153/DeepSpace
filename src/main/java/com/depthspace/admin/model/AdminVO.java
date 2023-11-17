@@ -15,43 +15,54 @@ import com.google.gson.annotations.Expose;
 @Entity
 @Table(name = "ADMIN")
 public class AdminVO implements Serializable{
+	@Expose
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // AI鍵要加
 	@Column(name = "ADMIN_ID") 
 	private Integer adminId;
+	@Expose
 	@Column(name = "ADMIN_NAME")
 	private String adminName;
+	@Expose
 	@Column(name = "ADMIN_ACC")
 	private String adminAcc;
+	@Expose
 	@Column(name = "ADMIN_PWD")
 	private String adminPwd;
+	@Expose
 	@Column(name = "ADMIN_STATUS")
 	private Byte adminStatus;
 	@Expose
 	@Column(name = "ADMIN_VERIFY_STATUS", columnDefinition = "TINYINT")
-	private Integer adminVerifyStatus;
+	private Byte adminVerifyStatus;
 	@Expose
 	@Column(name = "ADMIN_FUNC_NAME", columnDefinition = "TINYINT")
-	private Integer adminFuncName;
+	private Byte adminFuncName;
 	
 	public AdminVO() {
     }
 
-	public AdminVO(Integer adminId, String adminName, String adminAcc, String adminPwd, Byte adminStatus) {
+	public AdminVO(Integer adminId, String adminName, String adminAcc, String adminPwd, Byte adminStatus,
+			Byte adminVerifyStatus, Byte adminFuncName) {
 		super();
 		this.adminId = adminId;
 		this.adminName = adminName;
 		this.adminAcc = adminAcc;
 		this.adminPwd = adminPwd;
 		this.adminStatus = adminStatus;
+		this.adminVerifyStatus = adminVerifyStatus;
+		this.adminFuncName = adminFuncName;
 	}
-	
-	public AdminVO(String adminName, String adminAcc, String adminPwd, Byte adminStatus) {
+
+	public AdminVO(String adminName, String adminAcc, String adminPwd, Byte adminStatus, Byte adminVerifyStatus,
+			Byte adminFuncName) {
 		super();
 		this.adminName = adminName;
 		this.adminAcc = adminAcc;
 		this.adminPwd = adminPwd;
 		this.adminStatus = adminStatus;
+		this.adminVerifyStatus = adminVerifyStatus;
+		this.adminFuncName = adminFuncName;
 	}
 
 	public Integer getAdminId() {
@@ -94,30 +105,20 @@ public class AdminVO implements Serializable{
 		this.adminStatus = adminStatus;
 	}
 
-	@Override
-	public String toString() {
-		return "AdminVO [adminId=" + adminId + ", adminName=" + adminName + ", adminAcc=" + adminAcc + ", adminPwd="
-				+ adminPwd + ", adminStatus=" + adminStatus + "]";
+	public Byte getAdminVerifyStatus() {
+		return adminVerifyStatus;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(adminAcc, adminId, adminName, adminPwd, adminStatus);
+	public void setAdminVerifyStatus(Byte adminVerifyStatus) {
+		this.adminVerifyStatus = adminVerifyStatus;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AdminVO other = (AdminVO) obj;
-		return Objects.equals(adminAcc, other.adminAcc) && Objects.equals(adminId, other.adminId)
-				&& Objects.equals(adminName, other.adminName) && Objects.equals(adminPwd, other.adminPwd)
-				&& Objects.equals(adminStatus, other.adminStatus);
+	public Byte getAdminFuncName() {
+		return adminFuncName;
 	}
-	
+
+	public void setAdminFuncName(Byte adminFuncName) {
+		this.adminFuncName = adminFuncName;
+	}
 	
 }
