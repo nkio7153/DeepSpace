@@ -82,6 +82,9 @@
                         <div>
                             <p><strong>小計總額:</strong> $<span name="totalAmount">${totalAmount}</span></p>
                             <p><strong>使用點數:</strong> $<span name="coupen">${totalAmount-amountPaid}</span></p>
+<%--                        </div>--%>
+                            <hr>
+<%--                        <div>--%>
                             <p><strong>實付金額:</strong> $<span name="amountPaid">${amountPaid}</span></p>
                         </div>
                     </div>
