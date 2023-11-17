@@ -102,7 +102,7 @@ public class AdminServlet extends HttpServlet {
 				    session.removeAttribute("toAdminPageQty");
 				}
 
-				resp.sendRedirect(req.getContextPath()+"/indexpage/index.jsp?state=logout");
+				resp.sendRedirect(req.getContextPath()+"/admin/login.jsp?state=logout");
 				
 	}
 
@@ -117,6 +117,8 @@ public class AdminServlet extends HttpServlet {
 		String st3 = null;
 		String st4 = null;
 		Byte st5 = null;
+		Byte st6 = null;
+		Byte st7 = null;
 
 		try {
 			st2 = req.getParameter("adminAcc");
@@ -138,6 +140,14 @@ public class AdminServlet extends HttpServlet {
 			System.out.println("adminStatus=" + adminStatus);
 			st5 = Byte.parseByte(adminStatus);
 			
+			String adminVerifyStatus = req.getParameter("adminVerifyStatus");
+			System.out.println("adminVerifyStatus=" + adminVerifyStatus);
+			st6 = Byte.parseByte(adminVerifyStatus);
+			
+			String adminFuncName = req.getParameter("adminFuncName");
+			System.out.println("adminFuncName=" + adminFuncName);
+			st7 = Byte.parseByte(adminFuncName);
+			
 			//=======================================================================
 
 			
@@ -149,7 +159,7 @@ public class AdminServlet extends HttpServlet {
 		AdminService m = new AdminService();
 		AdminVO adminvo = null;
 		if (errorMsgs.isEmpty()) {
-			adminvo = new AdminVO(st2, st3, st4, st5);
+			adminvo = new AdminVO(st2, st3, st4, st5, st6, st7);
 		}
 		m.addAdmin(adminvo);
 		
@@ -174,6 +184,19 @@ public class AdminServlet extends HttpServlet {
 			req.setAttribute("status", "此帳號停權");
 		}
 		
+		if(st6 == 1 ) {
+			req.setAttribute("verifyStatus" , "驗證完畢");
+		} else {
+			req.setAttribute("verifyStatus", "未驗證");
+		}
+		if(st7 == 2 ) {
+			req.setAttribute("funcName", "總管理員");
+		} else if(st7 == 1){
+			req.setAttribute("funcName", "餐廳管理員");
+		} else {
+			req.setAttribute("funcName", "未啟用");
+		}
+		
 		req.getRequestDispatcher("/admin/success.jsp").forward(req, resp);
 	}
 	
@@ -191,6 +214,8 @@ public class AdminServlet extends HttpServlet {
 		String st3 = null;
 		String st4 = null;
 		Byte st5 = null;
+		Byte st6 = null;
+		Byte st7 = null;
 
 		try {
 			//多寫的，先暫時當二次判斷使用
@@ -219,6 +244,22 @@ public class AdminServlet extends HttpServlet {
 				st5 = 2;
 			}
 			
+			String adminVerifyStatus = req.getParameter("adminVerifyStatus");
+			if ("已驗證".equals(adminVerifyStatus)) {
+				st6 = 1;
+			} else {
+				st6 = 0;
+			}
+			
+			String adminFuncName = req.getParameter("adminFuncName");
+			if ("餐廳管理員".equals(adminFuncName)) {
+				st7 = 1;
+			} else if("總管理員".equals(adminFuncName)){
+				st7 = 2;
+			} else {
+				st7 = 0;
+			}
+			
 			AdminService ms = new AdminService();
 			AdminVO admin = ms.findByAdminId(st1);
 			//========================================================================
@@ -230,7 +271,7 @@ public class AdminServlet extends HttpServlet {
 		AdminService m = new AdminService();
 		AdminVO adminvo = null;
 		if (errorMsgs.isEmpty()) {
-			adminvo = new AdminVO(st1, st2, st3, st4, st5);
+			adminvo = new AdminVO(st1, st2, st3, st4, st5, st6, st7);
 		}
 		m.updateAdmin(adminvo);
 		req.setAttribute("authenticatedAdmin", adminvo);
@@ -239,6 +280,19 @@ public class AdminServlet extends HttpServlet {
 			req.setAttribute("status" , "正常使用中");
 		} else {
 			req.setAttribute("status", "此帳號停權");
+		}
+		
+		if(st6 == 1 ) {
+			req.setAttribute("verifyStatus" , "驗證完畢");
+		} else {
+			req.setAttribute("verifyStatus", "未驗證");
+		}
+		if(st7 == 2 ) {
+			req.setAttribute("funcName", "總管理員");
+		} else if(st7 == 1){
+			req.setAttribute("funcName", "餐廳管理員");
+		} else {
+			req.setAttribute("funcName", "未啟用");
 		}
 		
 		req.getRequestDispatcher("/admin/success.jsp").forward(req, resp);
@@ -330,13 +384,13 @@ public class AdminServlet extends HttpServlet {
 				System.out.println("servlet="+admin.getAdminId());
 				    
 				    
-			session.setAttribute("authenticatedAdmin", admin);//會員物件
+			session.setAttribute("admin", admin);//會員物件
 			session.setAttribute("adminId", admin.getAdminId());//會員編號
 			
 			Integer adminno = (Integer) session.getAttribute("adminId");// 測試用(取得存在session會員編號)
 //		    System.out.println("測試取得放入session的會員編號" + adminno);// 測試用
 			
-			req.getRequestDispatcher("/admin/success.jsp").forward(req, resp);
+			req.getRequestDispatcher("/backend/backIndex/index.jsp").forward(req, resp);
 		} else {
 			String URL=req.getContextPath()+"/admin/login.jsp?error=true&requestURI="+loginLocation;
 			resp.sendRedirect(URL);
