@@ -86,6 +86,7 @@ form {
 	
 	
 	<input type="button" value="返回" onclick="history.back()" id="btn_back">
+<!-- 	<input type="button" value="返回" onclick="goBack()" id="btn_back"> -->
 	
 	<!-- <form method="" action=""> -->
 	<table>
@@ -113,6 +114,18 @@ form {
 	</table>
 
 	<script>
+	
+	function goBack() {
+	    // 檢查前一頁的URL是否包含 success.jsp
+	    if (document.referrer && document.referrer.indexOf("success.jsp") !== -1) {
+	        // 如果前一頁是 success.jsp，就使用 history.back()
+	        history.back();
+	    } else {
+	        // 否則導向到 success.jsp
+	        window.location.href = "success.jsp";
+	    }
+	}
+	
     let tourDes = [];
 //     處理行程明細
     function showProDetail() {
@@ -129,6 +142,7 @@ form {
     			return response.json()
     		})
     		.then(function (data){
+    			console.log(data)
     			tourDes = data;
     			shoeData();
     		})

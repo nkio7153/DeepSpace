@@ -349,18 +349,12 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 		//再用找出來的所有行程天數編號去找對應的行程明細
 //		List<TourDetailVO> tourDetail = tdls.getTourDaysId(tourDaysId);
 		
+//		=======================================================================================
 		//用TourView把所有要放在會員形成列表的資料都拿出來
 		List<TourView> list = ts.getOneTourList(tourId, memId);
 
-		// 使用Comparator對list物件進行排序
+		// 使用Comparator對list物件進行排序，依據天數排序
 		Collections.sort(list, Comparator.comparingInt(TourView::getTourDays));
-//		System.out.println("list.size()=" + list.size());
-		
-//		按照tourDays去排序
-//		for(int i = 1 ; i < list.size() ; i++) {
-//			int tourDays = 
-//		}
-//		
 		
 		System.out.println(list);
 		req.setAttribute("list", list);

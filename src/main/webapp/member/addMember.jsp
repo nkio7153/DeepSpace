@@ -6,6 +6,7 @@
 
 <html>
 <head>
+<jsp:include page="../indexpage/head.jsp" />
     <title>註冊會員</title>
       <style>
         label.hidden {
@@ -14,6 +15,8 @@
     </style>
 </head>
 <body>
+<jsp:include page="../indexpage/header.jsp" />
+<jsp:include page="../indexpage/headpic.jsp" />
     <h1>註冊會員</h1>
     <form action="${pageContext.request.contextPath}/mem/save" method="post" enctype="multipart/form-data">
         <label for="memAcc">帳號:</label>
@@ -60,5 +63,6 @@
         <input type="submit" value="加入會員">
         <input type="hidden" name="action" value="save">
     </form>
+    <jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>
