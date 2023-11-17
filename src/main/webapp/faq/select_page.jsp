@@ -70,7 +70,7 @@
     </FORM>
   </li>
 
-  <jsp:useBean id="faqSvc" scope="page" class="com.depthspace.faq.model.service.FaqService" />
+  <jsp:useBean id="faqSvc" scope="page" class="com.depthspace.faq.service.FaqService" />
    
   <li>
      <FORM METHOD="post" ACTION="faq.do" >
