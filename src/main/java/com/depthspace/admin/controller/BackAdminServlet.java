@@ -16,7 +16,7 @@ import com.depthspace.member.service.HbMemService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-@WebServlet({ "/backadmin/*" })
+@WebServlet( "/backadmin/*" )
 public class BackAdminServlet extends HttpServlet{
 	
 	private static final long serialVersionUID = 1L;
