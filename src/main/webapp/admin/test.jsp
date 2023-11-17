@@ -3,7 +3,13 @@
 
 <html>
 <head>
-    <title>Title</title>
+     <title>登出</title>
+    <script>
+        // 5秒後自動重定向到登入頁面
+        setTimeout(function() {
+            window.location.href = "<%=request.getContextPath()%>/admin/login.jsp";
+        }, 3000);
+    </script>
 <%--  include head.jsp--%>
   <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
 </head>
@@ -13,54 +19,22 @@
 <div class="container-fluid my-0">
   <div class="row">
 <%--    側邊欄--%>
-	<div class="col-lg-4 g-3 my-0">
-    	
+    
     </div>
-    <div class="col-lg-4 g-2 transparent rounded my-0">
+
+    <div class="col-lg-10 g-2 transparent rounded mt-1">
 <%--      放入自己body裡的代碼--%>
-      <form align="center" action="${pageContext.request.contextPath}/ad/login" method="post">
-		<div class="main-box login">
-			<h3>登入</h3>
-			<label for="adminAcc">帳號</label>
-			<input type="adminAcc" name="adminAcc" id="adminAcc" value="${adminAcc}" required>
-		</div>
+      <%
+        // 清除session
+        session.invalidate();
 
-		<div class="input-box">
-			<label for="password">密碼</label>
-			<input type="password" name="password" id="password" value="${password}" required>
-		</div>
+        // 顯示登出訊息
+        out.println("<h2>您已成功登出。3秒後將返回登入頁面。</h2>");
+    %>
 
-		<div class="check">
-			<label><input type="checkbox">記住我</label> <a href="#"	id="forgetPwd">忘記密碼</a>
-		</div>
-	<input type="hidden" name="loginLocation" value="${param.requestURI}">
-		<input type="submit" value="登入">
-	
-	<div class="register">
-		<p>
-			如果沒有帳號?
-			<a href="${pageContext.request.contextPath}/ad/addAdmin.jsp" class="register-link" value="update" method="post" >點擊註冊</a>
-		</p>
-	</div>
-	</form>
-	
-	
-
-    </div>
-    <div class="col-lg-4 g-3 my-0">
-    	
     </div>
   </div>
 </div>
-<script>
-	var error='${param.error}';
-	 
-	 if(error=='false'){
-		 console.log("error="+error);
-		 alert("帳號錯誤或無此帳號");
-	 } else if (error=='true') {
-		 alert("密碼錯誤，請從新輸入")
-	 }
-		 </script>
+
 </body>
 </html>
