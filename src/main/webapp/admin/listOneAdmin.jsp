@@ -19,27 +19,27 @@
 <body>
 <%-- 	<form action="${pageContext.request.contextPath}/mem/success" method="post"> --%>
 	<h1 align="center">已修改成功！</h1>
-	<p align="center">您已成功登入，歡迎回來，${authenticatedAdmin.adminName}！</p>
+	<p align="center">您已成功登入，歡迎回來，${admin.adminName}！</p>
 	<hr>
 	<h1 align="center">管理員資訊</h1>
 	<table border="1px" align="center" width="50%">
 		<tr>
-			<th>管理員編號</th><td>${authenticatedAdmin.adminId} </td>
+			<th>管理員編號</th><td>${admin.adminId} </td>
 		</tr>
 		<tr>
-			<th>帳號</th><td>${authenticatedAdmin.adminAcc}</td>
+			<th>帳號</th><td>${admin.adminAcc}</td>
 		</tr>
 		<tr>
-			<th>密碼</th><td>${authenticatedAdmin.adminPwd}</td>
+			<th>密碼</th><td>${admin.adminPwd}</td>
 		</tr>
 		<tr>
-			<th>管理員姓名</th><td>${authenticatedAdmin.adminName}</td>
+			<th>管理員姓名</th><td>${admin.adminName}</td>
 		</tr>
 		<tr>
-			<th>狀態</th><td>${authenticatedAdmin.adminStatus}</td>
+			<th>狀態</th><td>${admin.adminStatus}</td>
 		</tr>
 	</table>
-	<form align="center" action="${pageContext.request.contextPath}/ad/edit?adminId=${authenticatedAdmin.adminId}" method="post" >
+	<form align="center" action="${pageContext.request.contextPath}/ad/edit?adminId=${admin.adminId}" method="post" >
 		<input type="submit" value="修改管理員資料">
 		<input type="hidden" name="action"	value="update">
 	</form>

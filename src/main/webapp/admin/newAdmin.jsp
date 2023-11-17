@@ -21,23 +21,23 @@
 <body>
 <%-- 	<form action="${pageContext.request.contextPath}/admin/success" method="post"> --%>
 	<h1 align="center">歡迎登入成功！</h1>
-	<p align="center">您已成功登入，歡迎回來，${authenticatedAdmin.adminName}！</p>
+	<p align="center">您已成功登入，歡迎回來，${admin.adminName}！</p>
 	<hr>
 	<h1 align="center">管理員資訊</h1>
-	<form align="center" action="${pageContext.request.contextPath}/ad/edit?adminId=${authenticatedAdmin.adminId}" method="post" >
+	<form align="center" action="${pageContext.request.contextPath}/ad/edit?adminId=${admin.adminId}" method="post" >
 	<table border="1px" align="center" width="50%">
 		<tr>
 		<th style="display: none;">管理員編號</th>
 				<input type="hidden" id="adminId" name="adminId" value="${adminId}" "readonly">
 		</tr>
 		<tr>
-			<th>帳號</th><td>${authenticatedAdmin.adminAcc}</td>
+			<th>帳號</th><td>${admin.adminAcc}</td>
 		</tr>
 		<tr>
-			<th>密碼</th><td>${authenticatedAdmin.adminPwd}</td>
+			<th>密碼</th><td>${admin.adminPwd}</td>
 		</tr>
 		<tr>
-			<th>管理員姓名</th><td>${authenticatedAdmin.adminName}</td>
+			<th>管理員姓名</th><td>${admin.adminName}</td>
 		</tr>
 		<tr>
 			<th>狀態</th><td>${adminStatus}</td>
