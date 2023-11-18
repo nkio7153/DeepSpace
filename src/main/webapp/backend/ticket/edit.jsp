@@ -53,39 +53,32 @@
 								</c:forEach>
 							</select>
 						</div>
-
 						<!-- 票券名稱 -->
 						<div class="form-group col-md-6">
 							<label for="ticketName">票券名稱</label> <input type="text"
 								class="form-control" id="ticketName" name="ticketName" required
 								value="${ticket.ticketName}">
 						</div>
-
 						<!-- 價格 -->
 						<div class="form-group col-md-6">
 							<label for="price">價格</label> <input type="number"
 								class="form-control" id="price" name="price" required min="0"
 								value="${ticket.price}">
 						</div>
-
 						<!-- 數量 -->
 						<div class="form-group col-md-6">
 							<label for="stock">數量</label> <input type="number"
 								class="form-control" id="stock" name="stock" required min="0"
 								value="${ticket.stock}">
 						</div>
-
-
 						<div class="row">
-							<!-- 圖片上傳 -->
+						<!-- 圖片上傳 -->
 						<div class="form-group col-md-12">
 						    <label>圖片列表</label>
 						    <div id="image-list" class="d-flex flex-wrap">
-						        <!-- 已上傳的圖片會透過JavaScript動態加載到這裡 -->
 						    </div>
 						    <button type="button" id="addImage" class="btn btn-primary mt-2" name="ticketImages[]" >新增圖片</button>
-						</div>
-            
+						</div>            
 						<!-- 使用天數 -->
 						<div class="form-group col-md-12">
 							<label for="validDays">使用天數</label> <input type="text" required min="0"
@@ -162,9 +155,11 @@
 	<script	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	<script>
+<script>
     $(document).ready(function() {
-        const ticketId = ${ticket.ticketId}; 
+        const ticketId = ${ticket.ticketId};
+        var newImageCount = 0; // 初始化新圖片計數器
+
         $.getJSON("<%=request.getContextPath()%>/ticketallimage?action=getIds&ticketId=" + ticketId, function(serialIds) {
             var imageListDiv = $("#image-list").empty(); // 清空現有的圖片列表
             serialIds.forEach(function(id) {
@@ -182,21 +177,25 @@
                 imageListDiv.append(imageCard); 
             });
         });
-	    // 新增圖片的按鈕
+
+        // 新增圖片按鈕的功能
         $("#addImage").click(function() {
+            newImageCount++;
+            var fileInputName = 'ticketImage_new_' + newImageCount; 
             var newImageCard = $('<div class="card m-2" style="width: 18rem;"></div>');
             var image = $('<img class="card-img-top" style="display:none; max-height: 200px; object-fit: cover;">');
             var cardBody = $('<div class="card-body"></div>');
-            var fileInput = $('<input type="file" name="ticketImage_new">').change(function(event){
+            var fileInput = $('<input type="file" name="' + fileInputName + '">').change(function(event){
                 createImagePreview(event, image);
             });
 
             cardBody.append(fileInput);
             newImageCard.append(image).append(cardBody);
-            $("#image-list").append(newImageCard);
+            $("#image-list").append(newImageCard); 
         });
     });
-	// 圖片上傳瀏覽 
+
+    // 圖片上傳預覽函數
     function createImagePreview(event, imageElement) {
         var reader = new FileReader();
         reader.onload = function(e) {
@@ -204,8 +203,8 @@
         };
         reader.readAsDataURL(event.target.files[0]);
     }
-	
-    // 送出的提示動畫
+
+    // 送出提示動畫
     function showSwal() {
         Swal.fire({
             position: 'center',
@@ -215,6 +214,6 @@
             timer: 1500
         });
     }
-    </script>	
+</script>
 </body>
 </html>

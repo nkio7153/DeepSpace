@@ -64,7 +64,7 @@
 					<div class="form-group mb-0">
 						<label for="sortSet" class="mr-2"></label> <select
 							class="form-control d-inline-block" id="sortSet" style="width: auto;" onchange="sortArticles()">
-							<option value="asc">預設</option>
+							<option>預設</option>
 							<option value="desc">按發布日排序(新→舊)</option>
 							<option value="asc">按發布日排序(舊→新)</option>
 						</select>
@@ -120,56 +120,8 @@
 		</div>
 
 	</div>
-<!-- 	</div> -->
-	<!-- 分頁 -->
-
-<!-- 	<div> -->
-<!-- 		<nav> -->
-<!-- 			<ul class="pagination justify-content-center" id="right"> -->
-<!-- 				"至第一頁" 只在非第一頁時顯示 -->
-<%-- 				<c:if test="${currentPage > 1}"> --%>
-<!-- 					<li class="page-item"><a class="page-link" -->
-<%-- 						href="${pageContext.request.contextPath}/columnarticles/list?page=1">第一頁</a> --%>
-<!-- 					</li> -->
-<%-- 				</c:if> --%>
-
-<!-- 				"上一頁" 如果當前頁是第一頁則隱藏 -->
-<%-- 				<c:if test="${currentPage - 1 != 0}"> --%>
-<!-- 					<li class="page-item"><a class="page-link" -->
-<%-- 						href="${pageContext.request.contextPath}/columnarticles/list?page=${currentPage - 1}" --%>
-<!-- 						aria-label="Previous"> <span aria-hidden="true">&laquo;</span> -->
-<!-- 					</a></li> -->
-<%-- 				</c:if> --%>
-
-<!-- 				動態顯示頁碼，根據總頁數ticketPageQty生成 -->
-<%-- 				<c:forEach var="i" begin="1" end="${pageQty}" step="1"> --%>
-<%-- 					<li class="page-item ${i == currentPage ? 'active' : ''}"><a --%>
-<!-- 						class="page-link" -->
-<%-- 						href="${pageContext.request.contextPath}/columnarticles/list?page=${i}">${i}</a> --%>
-<!-- 					</li> -->
-<%-- 				</c:forEach> --%>
-
-<!-- 				"下一頁" 如果當前頁是最後一頁則隱藏 -->
-<%-- 				<c:if test="${currentPage + 1 <= pageQty}"> --%>
-<!-- 					<li class="page-item"><a class="page-link" -->
-<%-- 						href="${pageContext.request.contextPath}/columnarticles/list?page=${currentPage + 1}" --%>
-<!-- 						aria-label="Next"> <span aria-hidden="true">&raquo;</span> -->
-<!-- 					</a></li> -->
-<%-- 				</c:if> --%>
-
-<!-- 				"至最後一頁" 只在非最後一頁時顯示 -->
-<%-- 				<c:if test="${currentPage != pageQty}"> --%>
-<!-- 					<li class="page-item"><a class="page-link" -->
-<%-- 						href="${pageContext.request.contextPath}/columnarticles/list?page=${pageQty}">尾頁</a> --%>
-<!-- 					</li> -->
-<%-- 				</c:if> --%>
-<!-- 			</ul> -->
-<!-- 		</nav> -->
-<!-- 	</div> -->
 
 
-
-	<!-- jQuery & Bootstrap JS -->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script
@@ -196,15 +148,10 @@
 			});
 		});
 
-		// 篩選條件的變更也觸發表單
+		// 篩選變更也觸發
 		$('input[type=checkbox]').change(function() {
 			$('#searchForm').submit();
 		});
-
-// 		// 更改排序也觸發表單
-// 		$('#sortDropdown').on('change', function() {
-// 			$('#searchForm').submit();
-// 		});
 	});
 	//頁數變動
     function updatePagination(pageQtyA, currentPage) {
@@ -224,21 +171,6 @@
             }
         });
     }
-    //排序
-//     document.getElementById('sortSet').addEventListener('change', function() {
-//         var sortValue = this.value;
-//         $.ajax({
-<%--             url: "<%=request.getContextPath()%>/columnarticles/search",  --%>
-//             type: 'GET',
-//             data: { sort: sortValue },
-//             success: function(response) {
-//                 $('#right').html(response);
-//             },
-//             error: function(error) {
-//                 console.error('排序失敗', error);
-//             }
-//         });
-//     });
     function sortArticles() {
         var sortValue = document.getElementById("sortSet").value;
         $.ajax({

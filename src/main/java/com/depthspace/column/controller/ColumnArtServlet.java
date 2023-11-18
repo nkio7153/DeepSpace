@@ -58,16 +58,6 @@ public class ColumnArtServlet extends HttpServlet {
 			res.sendRedirect(req.getContextPath() + "/frontend/columnarticles/info.jsp");
 			break;
 		case "/list": // 專欄總列表
-//			String searchTerm = req.getParameter("searchTerm");
-//			if (searchTerm == null || searchTerm.trim().isEmpty()) {
-//				// 如果為空沒有觸發搜尋，則列出全部
-//				doList(req, res);
-//				return;
-//			} else {
-//				// 否則執行搜尋
-//				doSearch(req, res);
-//				return;
-//			}
 			doList(req, res);
 			break;
 		case "/item": // 專欄單一頁面
@@ -83,33 +73,7 @@ public class ColumnArtServlet extends HttpServlet {
 
 	}
 
-//	/************ 專欄列表 ************/
-//	protected void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-//
-//		String page = req.getParameter("page");
-//		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
-//		long total = columnArticlesService.getTotal();
-//		
-//		List<ColumnArticlesVO> columnList = columnArticlesService.getAllArti2(currentPage);
-//
-//		if (req.getSession().getAttribute("pageQty") == null) {
-//			int pageQty = columnArticlesService.getPageTotal();
-//			req.getSession().setAttribute("pageQty", pageQty);
-//		}
-//		
-////		String sort = req.getParameter("sort");
-////		List<ColumnArticlesVO> sortList = columnArticlesService.getAllSortById(sort);
-////	
-//		searchList(req, res);	
-//		req.setAttribute("total", total); //專欄文章總數
-//		req.setAttribute("currentPage", currentPage); //分頁數
-////		req.setAttribute("sortSet", sortList);  
-//		req.setAttribute("resultSet", columnList);  
-//
-//		RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/columnarticles/list.jsp");
-//		dispatcher.forward(req, res);
-//	}
-	
+	/************ 專欄列表 ************/
 	protected void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 	    String page = req.getParameter("page");
 	    String sort = req.getParameter("sort"); 
@@ -191,33 +155,16 @@ public class ColumnArtServlet extends HttpServlet {
 	
 	/************ 搜尋 ************/	
 	protected void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-	    res.setContentType("application/json");
-	    res.setCharacterEncoding("UTF-8");
 
-//	    // 萬用查詢
-//	    Map<String, String[]> parameterMap = req.getParameterMap();
-//	    List<ColumnArticlesVO> resultList = columnArticlesService.getColumnArticlesByCompositeQuery(parameterMap);
-////	    Set<ColumnArticlesVO> resultSet = new HashSet<>(resultList);
-//	    
-//	    // 排序
-//	    String sort = req.getParameter("sort");
-//	    if ("desc".equalsIgnoreCase(sort)) {
-//	        resultList.sort((a1, a2) -> a2.getArtiId().compareTo(a1.getArtiId())); 
-//	    } else {
-//	        resultList.sort(Comparator.comparing(ColumnArticlesVO::getArtiId));
-//	    }
 	    Map<String, String[]> parameterMap = req.getParameterMap();
 	    List<ColumnArticlesVO> resultList = columnArticlesService.getColumnArticlesByCompositeQuery(parameterMap);
 	    Set<ColumnArticlesVO> resultSet = new LinkedHashSet<>(resultList);
-
 	    
-	    String sort = req.getParameter("sort");
-	    
+	    String sort = req.getParameter("sort");	    
 
 		 // 在排序前列印出前幾個元素的 ID
 		    System.out.println("排序前:");
 		    resultList.stream().limit(5).forEach(article -> System.out.println(article.getArtiId()));
-
 		    
 	    if ("desc".equalsIgnoreCase(sort)) {
 	        // 降序排列
@@ -226,22 +173,9 @@ public class ColumnArtServlet extends HttpServlet {
 	        // 升序排列
 	        resultList.sort(Comparator.comparing(ColumnArticlesVO::getArtiId));
 	    }
-	    
-	 // 在排序後列印出前幾個元素的 ID
-	    System.out.println("排序後:");
-	    resultList.stream().limit(5).forEach(article -> System.out.println(article.getArtiId()));
-
-//	    Set<ColumnArticlesVO> resultSet = new HashSet<>(resultList);
-//	    req.setAttribute("resultSet", resultSet);    
-	    
+	        
 	    req.setAttribute("resultSet", resultList);	    
-	    
-	    System.out.println("?/???????????????"+ sort );
-	    // 排序後的 ID
-	    for (ColumnArticlesVO article : resultList) {
-	        System.out.println("Article ID: " + article.getArtiId());
-	    }
-	    
+
 	    // 查詢結果的數量
 	    int searchCount = resultSet.size();
 	    req.setAttribute("searchCount", searchCount);
@@ -251,9 +185,6 @@ public class ColumnArtServlet extends HttpServlet {
 	    req.setAttribute("searchCount", searchCount);
 	    req.setAttribute("pageQtyA", pageQty); 
 	    
-//		List<ColumnArticlesVO> resultSet = columnArticlesService.getAllArti2(searchCount);
-//		req.setAttribute("currentPage", searchCount); //分頁數
-//	    
 	    req.getRequestDispatcher("/frontend/columnarticles/search.jsp").forward(req, res);
 	}
 	
