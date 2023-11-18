@@ -41,12 +41,17 @@ public class MemberServlet extends HttpServlet {
 
 		else {
 			memvo = mems.getMemberInfo(memAcc);
-//	    		System.out.println("2");
+			System.out.println("2");
 		}
 
 		if (memvo.getMemAcc().equals(memAcc) && memvo.getMemPwd().equals(password)) {
 //	       	System.out.println("成功登入");
-			return 3;
+
+			if (memvo.getAccStatus() == 2) {
+				return 5;
+			} else {
+				return 3;
+			}
 
 		} else {
 			System.out.println("密碼錯誤");
@@ -94,8 +99,8 @@ public class MemberServlet extends HttpServlet {
 		memId = (Integer) session.getAttribute("memId");
 		HbMemService hbms = new HbMemService();
 		MemVO mem = hbms.getOneMem(memId);
-		
-		//處理圖片
+
+		// 處理圖片
 		String base64Image;
 		byte[] imageBytes = mem.getMemImage();
 		if (imageBytes != null) {
@@ -123,7 +128,7 @@ public class MemberServlet extends HttpServlet {
 				System.out.println("圖不存在");
 			}
 		}
-		
+
 		if (mem.getMemSex() == 1) {
 			req.setAttribute("sex", "男");
 		} else {
@@ -351,6 +356,7 @@ public class MemberServlet extends HttpServlet {
 			failureView.forward(req, resp);
 		}
 	}
+
 	// 儲存修改後的資料
 	private void doModify(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<String> errorMsgs = new LinkedList<String>();
@@ -607,90 +613,76 @@ public class MemberServlet extends HttpServlet {
 			String URL = req.getContextPath() + "/member/login.jsp?error=false&requestURI=" + loginLocation;
 			resp.sendRedirect(URL);
 			return;
-		} else {
+		} else if (allowUser(memAcc, password) == 3) {
 			HttpSession session = req.getSession();
 
 			MemVO mem = ms.getMemberInfo(memAcc);
-//		System.out.println("mem=" + mem);
+//			System.out.println("mem=" + mem);
 			String base64Image;
-			if (mem.getMemAcc().equals(memAcc) && mem.getMemPwd().equals(password)) {
-				// 創建一個 MemVO 物件並設定它的屬性
-//			MemVO authenticatedMem = new MemVO();
+//			if (mem.getMemAcc().equals(memAcc) && mem.getMemPwd().equals(password)) {
 
-//			authenticatedMem.setMemId(mem.getMemId());
-//			authenticatedMem.setMemAcc(mem.getMemAcc());
-//			authenticatedMem.setMemPwd(mem.getMemPwd());
-//			authenticatedMem.setMemName(mem.getMemName());
-//			authenticatedMem.setMemIdentity(mem.getMemIdentity());
-//			authenticatedMem.setMemBth(mem.getMemBth());
-//			authenticatedMem.setMemSex(mem.getMemSex());
-//			authenticatedMem.setMemEmail(mem.getMemEmail());
-//			authenticatedMem.setMemTel(mem.getMemTel());
-//			authenticatedMem.setMemAdd(mem.getMemAdd());
-//			authenticatedMem.setAccStatus(mem.getAccStatus());
-//			authenticatedMem.setMemPoint(mem.getMemPoint());
-				byte[] imageBytes = mem.getMemImage();
-				if (imageBytes != null) {
-					base64Image = Base64.getEncoder().encodeToString(imageBytes);
+			byte[] imageBytes = mem.getMemImage();
+			if (imageBytes != null) {
+				base64Image = Base64.getEncoder().encodeToString(imageBytes);
+				req.setAttribute("base64Image", base64Image);
+			} else {
+				String webappPath = getServletContext().getRealPath("/");
+				// 取得相對路径
+				String relativeImagePath = "member/images/1.png";
+				String absoluteImagePath = webappPath + relativeImagePath;
+
+				File defaultImageFile = new File(absoluteImagePath);
+				String defaultImagePath = defaultImageFile.getPath();
+				if (defaultImageFile.exists()) {
+					byte[] localImageBytes = Files.readAllBytes(Path.of(defaultImagePath));
+					base64Image = Base64.getEncoder().encodeToString(localImageBytes);
+
+					resp.setContentType("text/plain");
+					resp.getWriter().write(base64Image);
 					req.setAttribute("base64Image", base64Image);
 				} else {
-					String webappPath = getServletContext().getRealPath("/");
-					// 取得相對路径
-					String relativeImagePath = "member/images/1.png";
-					String absoluteImagePath = webappPath + relativeImagePath;
-
-					File defaultImageFile = new File(absoluteImagePath);
-					String defaultImagePath = defaultImageFile.getPath();
-					// 使用ServletContext获取资源流
-//					InputStream defaultImageStream = getServletContext().getResourceAsStream(defaultImagePath);
-					if (defaultImageFile.exists()) {
-						byte[] localImageBytes = Files.readAllBytes(Path.of(defaultImagePath));
-						base64Image = Base64.getEncoder().encodeToString(localImageBytes);
-
-						resp.setContentType("text/plain");
-						resp.getWriter().write(base64Image);
-						req.setAttribute("base64Image", base64Image);
-					} else {
-						// 如無照片會處理錯誤
-						System.out.println("圖不存在");
-					}
+					// 無照片處理錯誤
+					System.out.println("圖不存在");
 				}
-
-				// 設定男女顯示
-				byte memSexBytes = mem.getMemSex();
-				if (memSexBytes == 1) {
-					req.setAttribute("sex", "男");
-				} else if (memSexBytes == 2) {
-					req.setAttribute("sex", "女");
-				}
-				// 設定狀態顯示
-				byte accStatus = mem.getAccStatus();
-				if (accStatus == 1) {
-					req.setAttribute("status", "正常使用中");
-				} else {
-					req.setAttribute("status", "此帳號停權");
-				}
-
-				session.setAttribute("authenticatedMem", mem);// 會員物件
-				session.setAttribute("memId", mem.getMemId());// 會員編號
-
-				Integer memno = (Integer) session.getAttribute("memId");// 測試用(取得存在session會員編號)
-//		    System.out.println("測試取得放入session的會員編號" + memno);// 測試用
-
-				req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
-//			resp.sendRedirect(req.getContextPath()+"/indexpage/index.jsp");
-
-			} else {
-//			System.out.println("帳號密碼錯誤");
-//			String errorMsgs = "帳號或密碼錯誤";
-//			req.setAttribute("errorMsgs", errorMsgs);
-//			RequestDispatcher failureView = req.getRequestDispatcher("/member/login.jsp");
-//			failureView.forward(req, resp);
-				String URL = req.getContextPath() + "/member/login.jsp?error=true&requestURI=" + loginLocation;
-				resp.sendRedirect(URL);
-				return;// 程式中斷
 			}
 
+			// 設定男女顯示
+			byte memSexBytes = mem.getMemSex();
+			if (memSexBytes == 1) {
+				req.setAttribute("sex", "男");
+			} else if (memSexBytes == 2) {
+				req.setAttribute("sex", "女");
+			}
+			// 設定狀態顯示
+			byte accStatus = mem.getAccStatus();
+			if (accStatus == 1) {
+				req.setAttribute("status", "正常使用中");
+			} else {
+				req.setAttribute("status", "此帳號停權");
+			}
+
+			session.setAttribute("authenticatedMem", mem);// 會員物件
+			session.setAttribute("memId", mem.getMemId());// 會員編號
+
+			Integer memno = (Integer) session.getAttribute("memId");// 測試用(取得存在session會員編號)
+//		    System.out.println("測試取得放入session的會員編號" + memno);// 測試用
+
+			req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
+//			resp.sendRedirect(req.getContextPath()+"/indexpage/index.jsp");
+
+		} else if (allowUser(memAcc, password) == 4) {
+
+//					System.out.println("帳號密碼錯誤");
+//					String errorMsgs = "帳號或密碼錯誤";
+//					req.setAttribute("errorMsgs", errorMsgs);
+//					RequestDispatcher failureView = req.getRequestDispatcher("/member/login.jsp");
+//					failureView.forward(req, resp);
+			String URL = req.getContextPath() + "/member/login.jsp?error=true&requestURI=" + loginLocation;
+			resp.sendRedirect(URL);
+			return;// 程式中斷
+		} else if (allowUser(memAcc, password) == 5) {
+			String URL = req.getContextPath() + "/member/login.jsp?error=nostatus&requestURI=" + loginLocation;
+			resp.sendRedirect(URL);
 		}
 	}
 }
