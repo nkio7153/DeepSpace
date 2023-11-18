@@ -84,7 +84,6 @@
                                 </form>
                             </div>
                         </div>
-                        <!-- end of row -->
 
                         <div class="row mt-3">
 					    <div class="col-md-8">
