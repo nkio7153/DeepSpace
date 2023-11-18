@@ -4,7 +4,10 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 @Entity
 @Table(name="ATTRACTIONS")
@@ -13,8 +16,13 @@ public class AttractionsVO implements Serializable{
 	@Column(name="ATTRACTIONS_ID")
 	private Integer attractionsId;
 	
-	@Column(name="ATTRACTIONS_TYPE_ID")
-	private Integer attractionsTypeId;
+//	@ManyToOne(fetch = FetchType.EAGER) //多方Many搭配Join，name為自己要映射的表格欄位名、ref為對方要被關聯的表格欄位名
+//	@JoinColumn(name="ATTRACTIONS_TYPE_ID",referencedColumnName = "ATTRACTIONS_TYPE_ID")
+//	private AttractionsVO attractionsTypeId;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="ATTRACTIONS_TYPE_ID", referencedColumnName = "ATTRACTIONS_TYPE_ID")
+	private AttractionsTypeVO attractionsTypeId;
+
 	
 	@Column(name="AREA_ID")
 	private Integer areaId;
@@ -41,7 +49,7 @@ public class AttractionsVO implements Serializable{
 	public AttractionsVO() {
 		super();
 	}
-	public AttractionsVO(Integer attractionsId, Integer attractionsTypeId, Integer areaId, String attractionsName,
+	public AttractionsVO(Integer attractionsId, AttractionsTypeVO attractionsTypeId, Integer areaId, String attractionsName,
 			String description, Integer attractionsStatus) {
 		super();
 		this.attractionsId = attractionsId;
@@ -78,10 +86,10 @@ public class AttractionsVO implements Serializable{
 	public void setAttractionsId(Integer attractionsId) {
 		this.attractionsId = attractionsId;
 	}
-	public Integer getAttractionsTypeId() {
+	public AttractionsTypeVO getAttractionsTypeId() {
 		return attractionsTypeId;
 	}
-	public void setAttractionsTypeId(Integer attractionsTypeId) {
+	public void setAttractionsTypeId(AttractionsTypeVO attractionsTypeId) {
 		this.attractionsTypeId = attractionsTypeId;
 	}
 	public Integer getAreaId() {

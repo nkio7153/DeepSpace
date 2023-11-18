@@ -16,7 +16,7 @@
 		 border-radius: 60px;
 		 width: 120px;
 		 height: 120px;
-		 z-index: 1;
+		 object-fit: cover;
 	 }
 	 #image-container {
 	     text-align: center; /* 圖片置中 */
@@ -33,7 +33,6 @@
 	    border-radius: 10px;
 	}
 	.update {
-		
 	    width: 150px;
 	    font-size: 20px;
 	    color: #fff;
@@ -72,7 +71,7 @@
 	
 	</div>
 	
-	<div style="flex: 70%;">
+	<div style="flex: 80%;">
 		
 		
 		<h1 align="center">我的會員資訊</h1>

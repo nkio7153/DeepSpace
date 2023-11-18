@@ -9,6 +9,8 @@ import java.nio.file.Path;
 import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -33,7 +35,7 @@ public class AdminServlet extends HttpServlet {
 		AdminVO adminvo = null;
 		HbAdminService ms= new HbAdminService();
 		AdminService admins= new AdminService();
-		System.out.println("adminAcc=" + adminAcc);
+//		System.out.println("adminAcc=" + adminAcc);
 		if(ms.findByAdminAcc(adminAcc) == null) {
 			System.out.println("沒有此帳號");
 			return 1;
@@ -83,7 +85,6 @@ public class AdminServlet extends HttpServlet {
 				break;
 		}
 		
-		
 	}
 	
 	private void doLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -117,7 +118,7 @@ public class AdminServlet extends HttpServlet {
 		try {
 			st2 = req.getParameter("adminAcc");
 			if (st2 == null || st2.trim().length() == 0) {
-				errorMsgs.add("帳號請勿空白");
+				errorMsgs.add("管理員信箱請勿空白");
 			}
 
 			st3 = req.getParameter("adminPwd");
@@ -289,7 +290,7 @@ public class AdminServlet extends HttpServlet {
 			req.setAttribute("funcName", "未啟用");
 		}
 		
-		req.getRequestDispatcher("/admin/success.jsp").forward(req, resp);
+		req.getRequestDispatcher("/backadmin/list").forward(req, resp);
 	}
 
 	// ============================================================================================================================================

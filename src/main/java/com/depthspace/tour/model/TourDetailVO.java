@@ -35,8 +35,7 @@ public class TourDetailVO implements Serializable{
 	public TourDetailVO() {
 		super();
 	}
-	public TourDetailVO(Integer tourDaysId, Integer attractionsId, Time start, Timestamp end,
-			String attractionsName) {
+	public TourDetailVO(Integer tourDaysId, Integer attractionsId, Time start, Timestamp end, String attractionsName) {
 		super();
 		this.tourDaysId = tourDaysId;
 		this.attractionsId = attractionsId;

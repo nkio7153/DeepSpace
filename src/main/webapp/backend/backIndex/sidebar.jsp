@@ -1,7 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- 側邊導航欄 -->
-<div class="border-right rounded color-2-4 sidebar-sticky" id="sidebar-wrapper">
+<div class="sidebar-sticky">
+<div class="mt-2">
+    <a class="navbar-brand fs-2 mx-2 my-0 fw-bold p-0" href="${pageContext.request.contextPath}/indexpage/index.jsp">
+        <img class="mh my-0" src="${pageContext.request.contextPath}/backend/backIndex/image/logo.jpg">
+    </a>
+</div>
+<div class="border-right rounded color-2-4 mt-2" id="sidebar-wrapper">
 <%--    <div class="fs-4 fw-bold offset-1 my-2">後台管理系統</div>--%>
     <a href="${pageContext.request.contextPath}/backend/backIndex/index.jsp" class="fs-4 text-dark fw-bold my-2 sidebar-center">後台管理系統</a>
     <div class="list-group list-group-flush sidebar-center">
@@ -102,22 +108,22 @@
         </li>
 
         <!-- 權限設定 -->
-        <li class="nav-item mb-2">
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-               data-bs-target="#collapsePermissions" aria-expanded="true"
-               aria-controls="collapsePermissions">
-                                <span class="text-light fs-5">權限設定 <i
-                                        class="fa-solid fa-angle-down"></i></span>
-            </a>
-            <div id="collapsePermissions" class="collapse" aria-labelledby="headingPermissions"
-                 data-bs-parent="#sidebar-wrapper">
-                <div class="color-4-1 py-2 collapse-inner rounded">
-                    <a class="text-choco collapse-item fs-6 offset-1" href="#">員工權限</a>
-                    <br>
-                    <a class="text-choco collapse-item fs-6 offset-1" href="#">廠商權限</a>
-                </div>
-            </div>
-        </li>
+<%--        <li class="nav-item mb-2">--%>
+<%--            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"--%>
+<%--               data-bs-target="#collapsePermissions" aria-expanded="true"--%>
+<%--               aria-controls="collapsePermissions">--%>
+<%--                                <span class="text-light fs-5">權限設定 <i--%>
+<%--                                        class="fa-solid fa-angle-down"></i></span>--%>
+<%--            </a>--%>
+<%--            <div id="collapsePermissions" class="collapse" aria-labelledby="headingPermissions"--%>
+<%--                 data-bs-parent="#sidebar-wrapper">--%>
+<%--                <div class="color-4-1 py-2 collapse-inner rounded">--%>
+<%--                    <a class="text-choco collapse-item fs-6 offset-1" href="#">員工權限</a>--%>
+<%--                    <br>--%>
+<%--                    <a class="text-choco collapse-item fs-6 offset-1" href="#">廠商權限</a>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </li>--%>
 
         <!-- 專欄 -->
         <li class="nav-item mb-2">
@@ -176,4 +182,5 @@
             </li>
         </c:if>
     </div>
+</div>
 </div>

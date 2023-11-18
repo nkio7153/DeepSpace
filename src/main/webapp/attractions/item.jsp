@@ -40,7 +40,7 @@
         	margin-bottom: 20px;
         }
 
-        #r_name h5 {
+        #t_name h5 {
 		    color: black; /* 評分文字顏色 */
 		}
 		
@@ -74,7 +74,7 @@
         
             <!-- 圖片下方地址及經緯度 -->
             <p>位置資訊：${attractions.address}</p>
-			<h1 id="r_name"></h1>
+			<h1 id="t_name"></h1>
         </div>
     </div>
     <div class="mt-3 border-bottom">
@@ -142,7 +142,7 @@ function initMap() {
 	    placeId = results[0].place_id;
        	var req = {
     		placeId: placeId,
-     		fields: ['name', 'rating', 'photo', 'type', 'opening_hours']
+     		fields: ['name', 'rating', 'photo', 'type', 'opening_hours','url']
 		};
         
         service = new google.maps.places.PlacesService(map);
@@ -153,10 +153,10 @@ function initMap() {
 
 function callback(place, status) {
 	if (status == google.maps.places.PlacesServiceStatus.OK) {
-// 			console.log(place);
-
+			console.log(place.url);
+// 		console.log(place.url)
 		// 評分
-		$("#r_name").append("<p id='rating'>評分：" + place.rating + " <span class='yellow-star'>&#9733;</span></p>")
+		$("#t_name").append("<p id='rating'>評分：" + place.rating + " <span class='yellow-star'>&#9733;</span></p>")
 		
 		// 營業時間
 		var openTime = place.opening_hours.weekday_text;
@@ -169,6 +169,7 @@ function callback(place, status) {
 			$('#rating').append(ul);
 			
 		}
+		
 		
 	  
 	}
