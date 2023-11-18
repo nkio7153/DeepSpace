@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
@@ -72,6 +72,8 @@
 		                    <td>
 							    <button class="btn btn-primary" onclick="changeStatus('啟用', ${admin.adminId})" data-adminid="${admin.adminId}">啟用</button>
 							    <button class="btn btn-danger" onclick="changeStatus('停權', ${admin.adminId})" data-adminid="${admin.adminId}">停權</button>
+							
+							 	<button class="btn btn-secondary" onclick="location.href='<%=request.getContextPath()%>/admin/revise.jsp?adminId=${admin.adminId}&adminAcc=${admin.adminAcc}&adminPwd=${admin.adminPwd}&adminName=${admin.adminName}&adminStatus=${admin.adminStatus}&adminVerifyStatus=${admin.adminVerifyStatus}&adminFuncName=${admin.adminFuncName}'">修改</button>
 							</td>
 		                </tr>
 	                </c:forEach>
@@ -170,6 +172,8 @@ $(document).ready(function () {
     }
 
 });
+
+
 </script>
 
     <!-- 引入Bootstrap JavaScript，如有需要 -->

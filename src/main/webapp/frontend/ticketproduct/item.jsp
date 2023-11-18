@@ -59,6 +59,12 @@
 .display-4{
 	font-size: 2.5rem;
 }
+.swal2-title {
+    font-size: 1em !important; 
+}
+.swal2-icon {
+    font-size: 0.8em !important;
+}
 </style>
 
 
@@ -186,38 +192,46 @@
 				<div id="map" style="width: 100%; height: 400px;"></div>
 			</div>
 		</div>
-
-		<div class="row mt-5">
-			<div class="col-12">
-				<h4>使用者評價</h4>
-				<c:forEach var="reviews" items="${reviews}">
-					<div class="review border-top py-3">
-						<strong>${review.userName}匿名用戶</strong>
-						<div>
-							<!-- 實星 -->
-							<c:forEach begin="1" end="${reviews.stars}" var="i">
-								<i class="fas fa-star gold-star"></i>
-							</c:forEach>
-							<!-- 半星 -->
-							<c:if test="${reviews.stars % 1 != 0}">
-								<i class="fas fa-star-half-alt gold-star"></i>
-								<!-- 有半星就+ -->
-								<c:set var="emptyStarsStart"
-									value="${Math.floor(reviews.stars) + 2}" />
-							</c:if>
-							<!-- 沒有半星就往下一個數 -->
-							<c:if test="${reviews.stars % 1 == 0}">
-								<c:set var="emptyStarsStart" value="${reviews.stars + 1}" />
-							</c:if>
-							<!-- 空星 -->
-							<c:forEach begin="${emptyStarsStart}" end="5" var="j">
-								<i class="far fa-star gold-star"></i>
-							</c:forEach>
-						</div>
-						<p>${reviews.ticketReviews}</p>
-					</div>
-				</c:forEach>
-			</div>
+ <!-- 使用者評價 -->
+<div class="row mt-5">
+    <div class="col-12">
+	 <c:choose>
+       <c:when test="${averageStars == 0 || totalRatingCount == 0 || averageStars == null}">
+           <p></p>
+        </c:when>
+        <c:otherwise>
+        <h4>使用者評價</h4>
+        </c:otherwise>
+        </c:choose>
+        <c:forEach var="review" items="${reviews}">
+            <c:if test="${review.stars > 0}">
+                <div class="review border-top py-3">
+                    <strong>匿名用戶</strong>
+                    <div>
+                        <!-- 實星 -->
+                        <c:forEach begin="1" end="${review.stars}" var="i">
+                            <i class="fas fa-star gold-star"></i>
+                        </c:forEach>
+                        <!-- 半星 -->
+                        <c:if test="${review.stars % 1 != 0}">
+                            <i class="fas fa-star-half-alt gold-star"></i>
+                            <!-- 有半星就+ -->
+                            <c:set var="emptyStarsStart" value="${Math.floor(review.stars) + 2}" />
+                        </c:if>
+                        <!-- 沒有半星就往下一個數 -->
+                        <c:if test="${review.stars % 1 == 0}">
+                            <c:set var="emptyStarsStart" value="${review.stars + 1}" />
+                        </c:if>
+                        <!-- 空星 -->
+                        <c:forEach begin="${emptyStarsStart}" end="5" var="j">
+                            <i class="far fa-star gold-star"></i>
+                        </c:forEach>
+                    </div>
+                    <p>${review.ticketReviews}</p>
+                	</div>
+            	</c:if>
+        	</c:forEach>
+    	</div>
 		</div>
 	</div>
 </div>
@@ -227,7 +241,7 @@
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
 
 $(document).ready(function() {
@@ -260,7 +274,13 @@ $(document).ready(function() {
         // 檢查 memId 是否為 null
         var memId = ${memId != null ? memId : 'null'};
         if(memId == null) {
-            alert("請先登入！");
+        	Swal.fire({
+        		  position: "center",
+        		  icon: "error",
+        		  title: "請先登入！",
+        		  showConfirmButton: false,
+        		  timer: 1500
+        		});
             return; // 終止函數執行
         }
         console.log("Request Data:", requestData);
@@ -284,7 +304,7 @@ $(document).ready(function() {
 //購物車加入
 $(".btn").on("click", function() {
     let button = $(this);
-let quantity=$("#ticketQuantity").val();
+	let quantity=$("#ticketQuantity").val();
 $("#ticketQuantity").val(1);
 console.log(quantity);
     let url = "${pageContext.request.contextPath}/tsc/save?ticketId=" + ${ticket.ticketId} + "&quantity="+quantity;
@@ -299,6 +319,14 @@ console.log(quantity);
             setTimeout(() => {
                 button.removeClass('flash-effect');
             }, 1000);
+            
+        	Swal.fire({
+      		  position: "center",
+      		  icon: "success",
+      		  title: "已加入購物車",
+      		  showConfirmButton: false,
+      		  timer: 1500
+      		});
         })
         .catch(function(error) {
             console.log(error);

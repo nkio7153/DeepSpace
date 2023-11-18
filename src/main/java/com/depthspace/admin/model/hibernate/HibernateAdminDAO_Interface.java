@@ -11,6 +11,7 @@ public interface HibernateAdminDAO_Interface {
 	AdminVO insert(AdminVO entity);
 
 	int update(AdminVO entity);
+//	int update2(AdminVO entity);
 	
 	int delete(Integer adminid);
 	 

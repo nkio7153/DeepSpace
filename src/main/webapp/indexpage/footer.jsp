@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <!--footer -->
-<footer>
+<footer id="footer">
 	<section class="footer footer_w3layouts_section_1its py-5">
 		<div class="container py-lg-4 py-3">
 			<div class="row footer-top">

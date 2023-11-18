@@ -14,11 +14,11 @@ import com.depthspace.member.model.MemVO;
 import com.depthspace.utils.DBUtil;
 
 public class AdminJDBCDAO implements AdminDAO_Interface {
-	private static final String INSERT_STMT = "INSERT INTO ADMIN(ADMIN_ACC, ADMIN_PWD, ADMIN_NAME, ADMIN_STATUS) VALUES(?,?,?,?)";
-	private static final String UPDATE_STMT = "UPDATE ADMIN SET ADMIN_ACC=?, ADMIN_PWD=?, ADMIN_NAME=?, ADMIN_STATUS=? WHERE ADMIN_ID=?";
+	private static final String INSERT_STMT = "INSERT INTO ADMIN(ADMIN_ACC, ADMIN_PWD, ADMIN_NAME, ADMIN_STATUS, ADMIN_VERIFY_STATUS, ADMIN_FUNC_NAME) VALUES(?,?,?,?,?,?)";
+	private static final String UPDATE_STMT = "UPDATE ADMIN SET ADMIN_ACC=?, ADMIN_PWD=?, ADMIN_NAME=?, ADMIN_STATUS=?, ADMIN_VERIFY_STATUS=?, ADMIN_FUNC_NAME=? WHERE ADMIN_ID=?";
 	private static final String DELETE_STMT = "DELETE FROM ADMIN WHERE ADMIN_ID=?";
-	private static final String GET_ONE_STMT = "SELECT ADMIN_ID,ADMIN_ACC, ADMIN_PWD, ADMIN_NAME, ADMIN_STATUS FROM ADMIN WHERE ADMIN_ID=?";
-	private static final String GET_ONE_ADMIN = "SELECT ADMIN_ID,ADMIN_ACC, ADMIN_PWD, ADMIN_NAME, ADMIN_STATUS FROM ADMIN WHERE ADMIN_ACC=?";
+	private static final String GET_ONE_STMT = "SELECT ADMIN_ID,ADMIN_ACC, ADMIN_PWD, ADMIN_NAME, ADMIN_STATUS, ADMIN_VERIFY_STATUS, ADMIN_FUNC_NAME FROM ADMIN WHERE ADMIN_ID=?";
+	private static final String GET_ONE_ADMIN = "SELECT ADMIN_ID,ADMIN_ACC, ADMIN_PWD, ADMIN_NAME, ADMIN_STATUS, ADMIN_VERIFY_STATUS, ADMIN_FUNC_NAME FROM ADMIN WHERE ADMIN_ACC=?";
 	private static final String GET_ALL_STMT = "SELECT * FROM ADMIN";
 	
 	@Override
@@ -32,6 +32,8 @@ public class AdminJDBCDAO implements AdminDAO_Interface {
 			ps.setString(2, AdminVO.getAdminPwd());
 			ps.setString(3, AdminVO.getAdminName());
 			ps.setByte(4, AdminVO.getAdminStatus());
+			ps.setByte(5, AdminVO.getAdminVerifyStatus());
+			ps.setByte(6, AdminVO.getAdminFuncName());
 			
 			ps.executeUpdate();
 		} catch (SQLException e) {
@@ -52,7 +54,9 @@ public class AdminJDBCDAO implements AdminDAO_Interface {
 	        ps.setString(2, adminVO.getAdminPwd());
 	        ps.setString(3, adminVO.getAdminName());
 	        ps.setByte(4, adminVO.getAdminStatus());
-	        ps.setInt(5, adminVO.getAdminId());
+			ps.setByte(5, adminVO.getAdminVerifyStatus());
+			ps.setByte(6, adminVO.getAdminFuncName());
+	        ps.setInt(7, adminVO.getAdminId());
 
 	        ps.executeUpdate();
 	    } catch (SQLException e) {
@@ -98,6 +102,8 @@ public class AdminJDBCDAO implements AdminDAO_Interface {
 				adminVO.setAdminPwd(rs.getString("ADMIN_PWD"));
 				adminVO.setAdminName(rs.getString("ADMIN_NAME"));
 				adminVO.setAdminStatus(rs.getByte("ADMIN_STATUS"));
+				adminVO.setAdminVerifyStatus(rs.getByte("ADMIN_VERIFY_STATUS"));
+				adminVO.setAdminFuncName(rs.getByte("ADMIN_FUNC_NAME"));
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -127,6 +133,8 @@ public class AdminJDBCDAO implements AdminDAO_Interface {
 				adminVO.setAdminPwd(rs.getString("ADMIN_PWD"));
 				adminVO.setAdminName(rs.getString("ADMIN_NAME"));
 				adminVO.setAdminStatus(rs.getByte("ADMIN_STATUS"));
+				adminVO.setAdminVerifyStatus(rs.getByte("ADMIN_VERIFY_STATUS"));
+				adminVO.setAdminFuncName(rs.getByte("ADMIN_FUNC_NAME"));
 				adminList.add(adminVO);
 			}
 		} catch (SQLException e) {
@@ -156,6 +164,8 @@ public class AdminJDBCDAO implements AdminDAO_Interface {
 				adminVO.setAdminPwd(rs.getString("ADMIN_PWD"));
 				adminVO.setAdminName(rs.getString("ADMIN_NAME"));
 				adminVO.setAdminStatus(rs.getByte("ADMIN_STATUS"));
+				adminVO.setAdminVerifyStatus(rs.getByte("ADMIN_VERIFY_STATUS"));
+				adminVO.setAdminFuncName(rs.getByte("ADMIN_FUNC_NAME"));
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -185,6 +195,8 @@ public class AdminJDBCDAO implements AdminDAO_Interface {
 				adminVO.setAdminPwd(rs.getString("ADMIN_PWD"));
 				adminVO.setAdminName(rs.getString("ADMIN_NAME"));
 				adminVO.setAdminStatus(rs.getByte("ADMIN_STATUS"));
+				adminVO.setAdminVerifyStatus(rs.getByte("ADMIN_VERIFY_STATUS"));
+				adminVO.setAdminFuncName(rs.getByte("ADMIN_FUNC_NAME"));
 				
 				
 			}

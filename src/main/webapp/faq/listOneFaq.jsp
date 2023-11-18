@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.depthspace.faq.model.model.FaqVO"%>
-<%@ page import="com.depthspace.faq.model.service.*"%>
-<%@ page import="com.depthspace.faq.model.controller.*"%>
-<%@ page import="com.depthspace.faq.model.model.*"%>
+<%@ page import="com.depthspace.faq.model.FaqVO"%>
+<%@ page import="com.depthspace.faq.service.*"%>
+<%@ page import="com.depthspace.faq.controller.*"%>
+<%@ page import="com.depthspace.faq.model.*"%>
 
 <%
 	FaqVO faqVO = (FaqVO) request.getAttribute("faqVO"); //EmpServlet.java(Concroller), 存入req的empVO物件

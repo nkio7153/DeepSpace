@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.depthspace.faq.model.service.*"%>
-<%@ page import="com.depthspace.faq.model.controller.*"%>
-<%@ page import="com.depthspace.faq.model.model.*"%>
+<%@ page import="com.depthspace.faq.service.*"%>
+<%@ page import="com.depthspace.faq.controller.*"%>
+<%@ page import="com.depthspace.faq.model.*"%>
 
 <% //見com.emp.controller.EmpServlet.java第238行存入req的empVO物件 (此為輸入格式有錯誤時的empVO物件)
 	FaqVO faqVO = (FaqVO) request.getAttribute("faqVO");

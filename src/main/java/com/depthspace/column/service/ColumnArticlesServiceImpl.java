@@ -2,6 +2,7 @@ package com.depthspace.column.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -155,8 +156,7 @@ public class ColumnArticlesServiceImpl implements ColumnArticlesService {
 	            continue;
 	        }	        
 	        criteriaMap.put(key, Arrays.asList(values));
-	    }
-	    
+	    }	    
 	    // 將上述查到的條件交由dao的方法查詢
 	    return dao.getByCompositeQuery(criteriaMap);
 	}
@@ -176,6 +176,17 @@ public class ColumnArticlesServiceImpl implements ColumnArticlesService {
 		} catch (Exception e) {
 			throw new RuntimeException("Error",e);
 		}
+	}
+
+	@Override
+	public List<ColumnArticlesVO> getAllSortById(String sort) {
+		List<ColumnArticlesVO> allArtis = this.getAllArti();
+		if("desc".equalsIgnoreCase(sort)) {
+			allArtis.sort((a1, a2) -> a2.getArtiId().compareTo(a1.getArtiId()));			
+		} else {
+			allArtis.sort(Comparator.comparing(ColumnArticlesVO::getArtiId)); //StreamAPI排序方法 根據屬性，若為Integer從小至大(asc)
+		}
+		return allArtis;
 	}
 
 }
