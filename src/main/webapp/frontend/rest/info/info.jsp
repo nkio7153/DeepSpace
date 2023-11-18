@@ -64,7 +64,7 @@
 		    
 		    service.findPlaceFromQuery(request, function(results, status) {
 		      if (status === google.maps.places.PlacesServiceStatus.OK) {
-// 		        console.log(results[0].formatted_address);
+		        console.log(results[0]);
 		        
 	         	// 用經緯度定位地圖位置
 			    var mapOptions = {
@@ -84,7 +84,7 @@
 			    placeId = results[0].place_id;
 	           	var req = {
 		    		placeId: placeId,
-		     		fields: ['name', 'rating', 'photo', 'type', 'opening_hours', 'adr_address']
+		     		fields: ['name', 'rating', 'photo', 'type', 'opening_hours', 'adr_address','url']
 				};
 		        
 		        service = new google.maps.places.PlacesService(map);
@@ -95,7 +95,7 @@
 		
 			function callback(place, status) {
 			if (status == google.maps.places.PlacesServiceStatus.OK) {
-	// 			console.log(place);
+				console.log(place.url);
 	
 				// 評分
 				$("#r_name").append("<h5 id='rating'>"+place.rating+"</h5>")

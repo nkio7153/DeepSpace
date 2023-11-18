@@ -18,7 +18,7 @@ import com.depthspace.restaurant.service.MemBookingServiceImpl;
 import com.depthspace.restaurant.service.RestService;
 import com.depthspace.restaurant.service.RestServiecImpl;
 
-@WebServlet("/Rests/Rest.do")
+@WebServlet("/backend/Rest.do")
 public class RestServlet extends HttpServlet {
 	
 	private RestService restService;
@@ -74,8 +74,7 @@ public class RestServlet extends HttpServlet {
 	private String getAllRests(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<RestVO> restList = restService.getAllRest();
 		req.setAttribute("restList", restList);
-//		return "/Rest/listAllRests.jsp";
-		return "/backend/Rest/demoRestList.jsp";
+		return "/backend/rest/list.jsp";
 	}
 	
 	private String getCompositeEmpsQuery(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -135,7 +134,7 @@ public class RestServlet extends HttpServlet {
 	private String delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String restId = req.getParameter("restId");
 		restService.deleteRest(Integer.parseInt(restId));
-		return "/Rest/Rest.do?action=getAll";
+		return "/backend/Rest.do?action=getAll";
 	}
 	
 	private String forUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
