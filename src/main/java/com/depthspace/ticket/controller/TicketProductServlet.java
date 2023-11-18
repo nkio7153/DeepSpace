@@ -126,7 +126,7 @@ public class TicketProductServlet extends HttpServlet {
 	        System.out.println("Redis連接失敗：" + e.getMessage());
 	    }
 	    // 計算星星數和評價數
-	    final double UPDATE_PROBABILITY = 0.1; 
+//	    final double UPDATE_PROBABILITY = 0.1; 
 	    for (TicketVO ticket : ticketList) {
 	        Integer ticketId = ticket.getTicketId();
 	        double averageStars;
@@ -136,8 +136,9 @@ public class TicketProductServlet extends HttpServlet {
 	            String averageStarsCache = jedis.get("ticket:" + ticketId + ":averageStars");
 	            String totalRatingCountCache = jedis.get("ticket:" + ticketId + ":totalRatingCount");
 
-	            if (Math.random() < UPDATE_PROBABILITY || averageStarsCache != null && totalRatingCountCache != null) {
-	                averageStars = Double.parseDouble(averageStarsCache);
+//	            if (Math.random() < UPDATE_PROBABILITY || averageStarsCache != null && totalRatingCountCache != null) {
+	            if (averageStarsCache != null && totalRatingCountCache != null) {
+	            	averageStars = Double.parseDouble(averageStarsCache);
 	                totalRatingCount = Integer.parseInt(totalRatingCountCache);
 	            } else {
 	                // 從資料庫更新到 Redis

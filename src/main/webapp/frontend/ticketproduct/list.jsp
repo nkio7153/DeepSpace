@@ -185,22 +185,21 @@
 $(document).ready(function() {
     $('#searchForm').on('submit', function(e) {
         e.preventDefault(); 
-        $('#loadingAnimation').show();
+        $('#loadingSpinner').show(); // 載入動畫
         var formData = $(this).serialize();
         $.ajax({
             url: "<%=request.getContextPath()%>/ticketproduct/search", 
-			data : formData, 
-			success : function(result) {
-				console.log(result);
-				$('#ticketright').html(result);
-				updatePagination(result.pageQtyA, result.currentPage);
-			},
+            data : formData, 
+            success : function(result) {
+                $('#ticketright').html(result);
+                updatePagination(result.pageQtyA, result.currentPage);
+            },
             complete: function() {
-                $('#loadingSpinner').hide();
+                $('#loadingSpinner').hide(); // 隱藏載入動畫
             }
-		});
-	});
-
+        });
+    });
+    
 	// 篩選變更也觸發
 	$('input[type=checkbox]').change(function() {
 		$('#searchForm').submit();
