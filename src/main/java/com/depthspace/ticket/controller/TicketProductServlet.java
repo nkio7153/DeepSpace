@@ -16,6 +16,9 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+
 import com.depthspace.account.model.account.AccountVO;
 import com.depthspace.attractions.model.CityVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
@@ -30,6 +33,7 @@ import com.depthspace.ticketcollection.service.TicketCollectionService;
 import com.depthspace.ticketcollection.service.TicketCollectionServiceImpl;
 import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
+import com.depthspace.utils.JedisUtil;
 
 @WebServlet("/ticketproduct/*")
 public class TicketProductServlet extends HttpServlet {
@@ -102,37 +106,70 @@ public class TicketProductServlet extends HttpServlet {
 	
 	/************ 右側列表評價 ************/
 	private void reviewsList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	    // 取得所有票券內容(VO)
+	    List<TicketVO> ticketList = ticketService.getAllTickets();
 
-		// 取得所有票券內容(VO)
-		List<TicketVO> ticketList = ticketService.getAllTickets();
+	    // 存放星星數跟評價數
+	    Map<Integer, Double> averageStarsMap = new HashMap<>();
+	    Map<Integer, Integer> totalRatingCountMap = new HashMap<>();
 
-		// 存放星星數跟評價數、訂單數
-		Map<Integer, Double> averageStarsMap = new HashMap<>();
-		Map<Integer, Integer> totalRatingCountMap = new HashMap<>();
-		
-		//計算星星跟評價平均數
-		for (TicketVO ticket : ticketList) {
-		    Integer ticketId = ticket.getTicketId();
-		    Integer totalStars = ticketService.getTotalStars(ticketId);
-		    Integer totalRatingCount = ticketService.getTotalRatingCount(ticketId);
-		    
-		    double averageStars = totalRatingCount > 0 ? (double) totalStars / totalRatingCount : 0;
-		    String formattedAverageStars = String.format("%.1f", averageStars);
+	    // Redis連線
+	    JedisPool pool = JedisUtil.getJedisPool();
+	    Jedis jedis = null;
+	    boolean isRedisEnabled = false;
 
-		    averageStarsMap.put(ticketId, Double.parseDouble(formattedAverageStars));
-		    totalRatingCountMap.put(ticketId, totalRatingCount);
-	
-		    //查詢訂單數
-//		    List<TicketOrderDetailVO> ticketOrderDetails = ticketService.findTicketOrderDetailsByTicketId(ticketId);
-//	        int orderCount = ticketOrderDetails.size();  // 訂單數為票券訂單明細列表的大小
-//	        ticketOrderCountMap.put(ticketId, orderCount);  // 將票券ID和對應的訂單數存放到map中
-	 
-		}
-		
-		req.setAttribute("averageStarsMap", averageStarsMap);
-		req.setAttribute("totalRatingCountMap", totalRatingCountMap);
-//		req.setAttribute("ticketOrderCountMap", ticketOrderCountMap);
-		
+	    try {
+	        jedis = pool.getResource();
+	        jedis.select(3);
+	        isRedisEnabled = true;
+	    } catch (Exception e) {
+	        System.out.println("Redis連接失敗：" + e.getMessage());
+	    }
+	    // 計算星星數和評價數
+	    final double UPDATE_PROBABILITY = 0.1; 
+	    for (TicketVO ticket : ticketList) {
+	        Integer ticketId = ticket.getTicketId();
+	        double averageStars;
+	        int totalRatingCount;
+
+	        if (isRedisEnabled) {
+	            String averageStarsCache = jedis.get("ticket:" + ticketId + ":averageStars");
+	            String totalRatingCountCache = jedis.get("ticket:" + ticketId + ":totalRatingCount");
+
+	            if (Math.random() < UPDATE_PROBABILITY || averageStarsCache != null && totalRatingCountCache != null) {
+	                averageStars = Double.parseDouble(averageStarsCache);
+	                totalRatingCount = Integer.parseInt(totalRatingCountCache);
+	            } else {
+	                // 從資料庫更新到 Redis
+	                averageStars = calculateAverageStars(ticketId);
+	                totalRatingCount = calculateTotalRatingCount(ticketId);
+
+	                jedis.set("ticket:" + ticketId + ":averageStars", String.valueOf(averageStars));
+	                jedis.set("ticket:" + ticketId + ":totalRatingCount", String.valueOf(totalRatingCount));
+	            }
+	        } else {
+	            // 無成功連線就直接從資料庫取得
+	            averageStars = calculateAverageStars(ticketId);
+	            totalRatingCount = calculateTotalRatingCount(ticketId);
+	        }
+	        averageStarsMap.put(ticketId, averageStars);
+	        totalRatingCountMap.put(ticketId, totalRatingCount);
+	    }
+	    if (jedis != null) {
+	        jedis.close();
+	    }
+	    req.setAttribute("averageStarsMap", averageStarsMap);
+	    req.setAttribute("totalRatingCountMap", totalRatingCountMap);
+	}
+
+	private double calculateAverageStars(Integer ticketId) {
+	    Integer totalStars = ticketService.getTotalStars(ticketId);
+	    Integer totalRatingCount = ticketService.getTotalRatingCount(ticketId);
+	    return totalRatingCount > 0 ? (double) totalStars / totalRatingCount : 0;
+	}
+
+	private int calculateTotalRatingCount(Integer ticketId) {
+	    return ticketService.getTotalRatingCount(ticketId);
 	}
 
 	/************ 票券列表 ************/
@@ -191,9 +228,9 @@ public class TicketProductServlet extends HttpServlet {
 	    req.setAttribute("searchSet", filteredList);
 	    
 	    int pageQty = (int) Math.ceil((double) searchCount / PAGE_MAX_RESULT); 
-	    req.setAttribute("searchCount", searchCount);
 	    req.setAttribute("pageQtyA", pageQty); 
 	    
+	    reviewsList(req, res);
 	    req.getRequestDispatcher("/frontend/ticketproduct/search.jsp").forward(req, res);
 
 	}
