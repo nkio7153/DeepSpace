@@ -25,6 +25,9 @@ import com.alibaba.fastjson2.JSON;
 import com.depthspace.forum.model.articlescollect.ArticlesCollectVO;
 import com.depthspace.forum.model.articlescollect.service.ArticlesCollectService;
 import com.depthspace.forum.model.articlescollect.service.ArticlesCollectServiceImpl;
+import com.depthspace.forum.model.articleslike.ArticlesLikeVO;
+import com.depthspace.forum.model.articleslike.service.ArticlesLikeService;
+import com.depthspace.forum.model.articleslike.service.ArticlesLikeServiceImpl;
 import com.depthspace.forum.model.articlestype.ArticlesTypeVO;
 import com.depthspace.forum.model.articlestype.service.ArticlesTypeService;
 import com.depthspace.forum.model.articlestype.service.ArticlesTypeServiceImpl;
@@ -38,12 +41,14 @@ public class ForumArticlesServlet extends HttpServlet {
 	private ForumArticlesService forumArticlesService;
 	private ArticlesTypeService articlesTypeService;
 	private ArticlesCollectService articlesCollectService;
+	private ArticlesLikeService articlesLikeService;
 
 	@Override
 	public void init() throws ServletException {
 		forumArticlesService = new ForumArticlesServiceImpl();
 		articlesTypeService = new ArticlesTypeServiceImpl();
 		articlesCollectService = new ArticlesCollectServiceImpl();
+		articlesLikeService = new ArticlesLikeServiceImpl();
 	}
 
 	@Override
@@ -97,66 +102,25 @@ public class ForumArticlesServlet extends HttpServlet {
 		List<ForumArticlesVO> list = forumArticlesService.getByArticleIds(memId);
 		req.setAttribute("list", list);
 		req.setAttribute("memId", memId);
-		System.out.println(list);
+//		System.out.println(list);
 		req.getRequestDispatcher("/forumArticles/collectList.jsp").forward(req, resp);
 	}
 
 	// 選擇符合類型文章
 	private void doArtiTypeList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		resp.setContentType("application/json; charset=UTF-8");
-//		Integer artiTypeId;
-//		try {
-//			artiTypeId = Integer.valueOf(req.getParameter("artiTypeId"));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return;
-//		}
-//		List<ForumArticlesVO> list = forumArticlesService.getByArtiTypeId(artiTypeId);
-//		req.setAttribute("list", list);
-//		req.setAttribute("artiTypeId", artiTypeId);
-//		System.out.println(list);
-//		req.getRequestDispatcher("/forumArticles/articlesTypeList.jsp").forward(req, resp);
-
-		// ========================
+		resp.setContentType("application/json; charset=UTF-8");
 		Integer artiTypeId;
-		Integer memId = null;
-		HttpSession session = req.getSession(false);
-		if (session.getAttribute("memId") != null) {
-			memId = (Integer) session.getAttribute("memId");
-			List<ArticlesCollectVO> list = articlesCollectService.getByMemId(memId);
-			try {
-				artiTypeId = Integer.valueOf(req.getParameter("artiTypeId"));
-			} catch (Exception e) {
-				e.printStackTrace();
-				return;
-			}
-			List<ForumArticlesVO> forum = forumArticlesService.getByArtiTypeId(artiTypeId);
-			// 創建一個包含兩個列表的 JSON 物件
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("articlesCollectList", list); // 第一個列表
-			jsonObject.put("forumArticlesList", forum); // 第二個列表
-
-			// 設置響應內容類型
-			resp.setContentType("application/json; charset=UTF-8");
-			PrintWriter out = resp.getWriter();
-
-			// 將 JSON 物件轉換為字串並發送給前端
-			out.print(jsonObject.toString());
-			System.out.println(jsonObject);
-		} else {
-			try {
-				artiTypeId = Integer.valueOf(req.getParameter("artiTypeId"));
-			} catch (Exception e) {
-				e.printStackTrace();
-				return;
-			}
-			List<ForumArticlesVO> list = forumArticlesService.getByArtiTypeId(artiTypeId);
-			JSONArray arr = JSONArray.parseArray(JSON.toJSONString(list));
-			resp.setContentType("application/json; charset=UTF-8");
-			PrintWriter out = resp.getWriter();
-			System.out.println(arr.toString());
-			out.print(arr.toString());
+		try {
+			artiTypeId = Integer.valueOf(req.getParameter("artiTypeId"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
 		}
+		List<ForumArticlesVO> list = forumArticlesService.getByArtiTypeId(artiTypeId);
+		req.setAttribute("list", list);
+		req.setAttribute("artiTypeId", artiTypeId);
+//		System.out.println(list);
+		req.getRequestDispatcher("/forumArticles/articlesTypeList.jsp").forward(req, resp);
 	}
 
 	// 取得類型列表
@@ -192,7 +156,7 @@ public class ForumArticlesServlet extends HttpServlet {
 		List<ForumArticlesVO> list = forumArticlesService.getByMemId(memId);
 		req.setAttribute("list", list);
 		req.setAttribute("memId", memId);
-		System.out.println(list);
+//		System.out.println(list);
 		req.getRequestDispatcher("/forumArticles/memList.jsp").forward(req, resp);
 	}
 
@@ -204,12 +168,14 @@ public class ForumArticlesServlet extends HttpServlet {
 		if (session.getAttribute("memId") != null) {
 			memId = (Integer) session.getAttribute("memId");
 			List<ArticlesCollectVO> list = articlesCollectService.getByMemId(memId);
-
+			List<ArticlesLikeVO> like = articlesLikeService.getByMemId(memId);
 			List<ForumArticlesVO> forum = forumArticlesService.getAll();
-			// 創建一個包含兩個列表的 JSON 物件
+			// 創建一個包含三個列表的 JSON 物件
 			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("articlesCollectList", list); // 第一個列表
-			jsonObject.put("forumArticlesList", forum); // 第二個列表
+			jsonObject.put("articlesCollectList", list); // 第一個收藏列表
+			jsonObject.put("articlesLikeList", like); // 第二個按讚列表
+			jsonObject.put("forumArticlesList", forum); // 第三個全部列表
+			
 
 			// 設置響應內容類型
 			resp.setContentType("application/json; charset=UTF-8");
@@ -217,13 +183,13 @@ public class ForumArticlesServlet extends HttpServlet {
 
 			// 將 JSON 物件轉換為字串並發送給前端
 			out.print(jsonObject.toString());
-			System.out.println(jsonObject);
+//			System.out.println(jsonObject);
 		} else {
 			List<ForumArticlesVO> forum = forumArticlesService.getAll();
 			JSONArray arr = JSONArray.parseArray(JSON.toJSONString(forum));
 			resp.setContentType("application/json; charset=UTF-8");
 			PrintWriter out = resp.getWriter();
-			System.out.println(arr.toString());
+//			System.out.println(arr.toString());
 			out.print(arr.toString());
 		}
 	}

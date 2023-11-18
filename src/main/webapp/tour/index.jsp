@@ -86,6 +86,7 @@ form {
 	
 	
 	<input type="button" value="返回" onclick="history.back()" id="btn_back">
+<!-- 	<input type="button" value="返回" onclick="goBack()" id="btn_back"> -->
 	
 	<!-- <form method="" action=""> -->
 	<table>
@@ -112,49 +113,6 @@ form {
 		</c:forEach>
 	</table>
 
-	<script>
-    let tourDes = [];
-//     處理行程明細
-    function showProDetail() {
-        let tr =$(event.target).closest('tr');
-        let tourId=tr.find('td[name="tourId"]').text();
-        gettourDetail(tourId);
-
-    }
-    
-    function gettourDetail(proId) {
-    	let url ="${pageContext.request.contextPath}/tr/showDetail?tourId=" + tourId;
-    	fetch(url)
-    		.then(function (response){
-    			return response.json()
-    		})
-    		.then(function (data){
-    			tourDes = data;
-    			shoeData();
-    		})
-    		 .catch(function(error){
-              console.log(error);
-            })
-    
-    function shoeData(){
-    	console.log("showData方法被執行了")
-    	for(let i = 0; i < tourDes.length; i++) {
-    		console.log(tourDes[i].tourName);
-    	}
-    	 console.log("遍歷完畢")
-    	 let html="";
-    	for(let i=0; i<tourDes.length; i++){
-    	   html += '<li class="list-group-item"><span>' + proDes[i].ticketName + '</span><span class="text-danger">(' + proDes[i].discount + '折)</span></li>';
-    	    }
-    }
-    	
-    	
-    }
-    
-    
-    
-    
-    </script>
 	<!-- </form> -->
 	<jsp:include page="../indexpage/footer.jsp" />
 </body>

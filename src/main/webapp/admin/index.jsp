@@ -3,7 +3,7 @@
 
 <html>
 <head>
-    <title>Depthspace後台</title>
+    <title>Title</title>
     <%--  include head.jsp--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
 
@@ -13,8 +13,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- 引入jQuery -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <!-- 載入icon -->
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/indexpage/images/iconhtml.png" />
     <style>
         #sidebar-wrapper .nav-item {
             list-style-type: none;
@@ -25,18 +23,11 @@
             min-height: 60vh;
             /* 設定最小高度為視口的100% */
         }
+
         #sidebar-wrapper {
-            width:180px;
-            min-width: 180px;
-            min-height: 50vh;
+            min-width: 15vw;
+            min-height: 60vh;
         }
-        <c:if test="${adminId!=null && admin.adminFuncName == 1 }">
-        #sidebar-wrapper {
-            width:180px;
-            min-width: 180px;
-            min-height: 15vh;
-        }
-        </c:if>
 
         .parent-div {
             display: flex;
@@ -71,10 +62,8 @@
         .text-dark.fw-bold:hover {
             text-decoration: underline;
         }
-        .mh{
-            height: 44px;
-            margin-left:-10px;
-        }
+
+
         body {
 
             margin: 0;
@@ -107,76 +96,55 @@
         nav.navbar {
             background-color: rgba(211, 211, 211, 0);
         }
-
+        .mh{
+            height: 60px;
+        }
         .transparent{
             background-color: rgba(255, 255, 255, 0.7);
-        }
-        .fs-li{
-            font-size: 0.9rem;
-        }
-        .sidebar-center{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .logout:hover{
-            background-color: rgba(255, 255, 255, 0.3);
-            /*color: rgba(0, 0, 0, 0.3);*/
-        }
-        /*固定側邊欄*/
-        .sidebar-sticky{
-            position:fixed;
-            top:0px;
         }
     </style>
 </head>
 <body>
 <%--include header.jsp--%>
-<nav class="navbar navbar-expand-lg navbar-light parent-div pb-0 ">
-<%--    <a class="navbar-brand fs-2 mx-2 my-0 fw-bold p-0" href="${pageContext.request.contextPath}/indexpage/index.jsp">--%>
-<%--        <img class="mh my-0" src="${pageContext.request.contextPath}/backend/backIndex/image/logo.jpg">--%>
-<%--    </a>--%>
-<%--    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"--%>
-<%--            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">--%>
-<%--        <span class="navbar-toggler-icon"></span>--%>
-<%--    </button>--%>
+<nav class="navbar navbar-expand-lg navbar-light parent-div pb-0">
+    <a class="navbar-brand fs-2 mx-2 my-0 fw-bold p-0" href="${pageContext.request.contextPath}/indexpage/index.jsp">
+        <img class="mh my-0" src="${pageContext.request.contextPath}/backend/backIndex/image/logo.jpg">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse child-div" id="navbarNav">
-        <ul class="navbar-nav ms-auto fs-5 mx-2 ">
-            <c:if test="${adminId != null}">
+        <ul class="navbar-nav ms-auto fs-5 mx-2">
             <li class="nav-item active">
-                <a class="logout nav-link fs-4 btn bg-bu" href="${pageContext.request.contextPath}/ad/logout">登出<span class="sr-only">()</span></a>
+                <a class="nav-link fs-4 btn btn-outline-primary" href="#">登出<span class="sr-only">()</span></a>
             </li>
-            </c:if>
         </ul>
     </div>
 </nav>
-<div class="container-fluid">
+<div class="container-fluid mt-1">
     <div class="row">
         <%--    側邊欄--%>
-        <div class="col-lg-2 g-3 mt-0 sidebar-sticky">
-            <div class="mt-2">
-                <a class="navbar-brand fs-2 mx-2 my-0 fw-bold p-0" href="${pageContext.request.contextPath}/indexpage/index.jsp">
-                    <img class="mh my-0" src="${pageContext.request.contextPath}/backend/backIndex/image/logo.jpg">
-                </a>
-            </div>
+        <div class="col-lg-2 g-3 my-0">
+        (if判斷adminFuncName為1餐廳管理員 只能顯示1的東西)
+        (if判斷adminFuncName為2總管理員 只能顯示2的東西)
             <div class="border-right rounded color-2-4" id="sidebar-wrapper">
 <%--                <div class="fs-4 fw-bold offset-1 my-2">後台管理系統</div>--%>
-                <a href="${pageContext.request.contextPath}/backend/backIndex/index.jsp" class="fs-4 text-dark fw-bold my-2 sidebar-center">後台管理系統</a>
-                <div class="list-group list-group-flush sidebar-center">
-                    <c:if test="${adminId!=null && admin.adminFuncName == 2}">
+                <a href="${pageContext.request.contextPath}/backend/backIndex/index.jsp" class="fs-4 text-dark fw-bold offset-1 my-2">後台管理系統</a>
+                <div class="list-group list-group-flush">
                     <!-- 員工管理 -->
                     <li class="nav-item mb-2">
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                            data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                <span class="text-light fs-5">員工管理 <i
+                                <span class="text-light fs-4 offset-2">員工管理 <i
                                         class="fa-solid fa-angle-down"></i></span>
                         </a>
                         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
                              data-bs-parent="#sidebar-wrapper">
                             <div class="color-4-1 py-2 collapse-inner rounded">
-                                <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backmem/list">查詢資料</a>
+                                <a class="text-choco collapse-item fs-5 offset-3" href="${pageContext.request.contextPath}/backmem/list">查詢資料</a>
                                 <br>
-                                <a class="text-choco collapse-item fs-6 offset-1" href="#">新增資料</a>
+                                <a class="text-choco collapse-item fs-5 offset-3" href="#">新增資料</a>
                             </div>
                         </div>
                     </li>
@@ -186,13 +154,13 @@
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                            data-bs-target="#collapseUtilities" aria-expanded="true"
                            aria-controls="collapseUtilities">
-                                <span class="text-light fs-5">會員管理 <i
+                                <span class="text-light fs-4 offset-2">會員管理 <i
                                         class="fa-solid fa-angle-down"></i></span>
                         </a>
                         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                              data-bs-parent="#sidebar-wrapper">
                             <div class="color-4-1 py-2 collapse-inner rounded">
-                                <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backmem/list">查詢資料</a>
+                                <a class="text-choco collapse-item fs-5 offset-3" href="${pageContext.request.contextPath}/backmem/list">查詢資料</a>
 <%--                                <br>--%>
 <%--                                <a class="text-choco collapse-item fs-5 offset-3" href="#">修改資料</a>--%>
                             </div>
@@ -203,17 +171,17 @@
                     <li class="nav-item mb-2">
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                            data-bs-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                                <span class="text-light fs-5">廠商管理 <i
+                                <span class="text-light fs-4 offset-2">廠商管理 <i
                                         class="fa-solid fa-angle-down"></i></span>
                         </a>
                         <div id="collapsePages" class="collapse" aria-labelledby="headingPages"
                              data-bs-parent="#sidebar-wrapper">
                             <div class="color-4-1 py-2 collapse-inner rounded">
-                                <a class="text-choco collapse-item fs-6 offset-1" href="#">新增資料</a>
+                                <a class="text-choco collapse-item fs-5 offset-3" href="#">新增資料</a>
                                 <br>
-                                <a class="text-choco collapse-item fs-6 offset-1" href="#">修改資料</a>
+                                <a class="text-choco collapse-item fs-5 offset-3" href="#">修改資料</a>
                                 <br>
-                                <a class="text-choco collapse-item fs-6 offset-1" href="#">檢舉廠商</a>
+                                <a class="text-choco collapse-item fs-5 offset-3" href="#">檢舉廠商</a>
                             </div>
                         </div>
                     </li>
@@ -222,21 +190,19 @@
                     <li class="nav-item mb-2">
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                            data-bs-target="#collapseTickets" aria-expanded="true" aria-controls="collapseTickets">
-                                <span class="text-light fs-5">票卷管理 <i
+                                <span class="text-light fs-4 offset-2">票卷管理 <i
                                         class="fa-solid fa-angle-down"></i></span>
                         </a>
                         <div id="collapseTickets" class="collapse" aria-labelledby="headingTickets"
                              data-bs-parent="#sidebar-wrapper">
                             <div class="color-4-1 py-2 collapse-inner rounded">
-                                <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/ticketmg/list">票卷列表</a>
+                                <a class="text-choco collapse-item fs-5 offset-2" href="#">票卷資料管理</a>
                                 <br>
-                                <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/tickettypesmg/list">票卷類型</a>
+                                <a class="text-choco collapse-item fs-5 offset-2" href="${pageContext.request.contextPath}/to/listAll">票卷訂單管理</a>
                                 <br>
-                                <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/to/listAll">訂單管理</a>
+                                <a class="text-choco collapse-item fs-5 offset-2" href="${pageContext.request.contextPath}/pro/getAll">票卷促銷管理</a>
                                 <br>
-                                <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/pro/getAll">促銷管理</a>
-                                <br>
-                                <a class="text-choco collapse-item fs-6 offset-1" href="#">銷售分析</a>
+                                <a class="text-choco collapse-item fs-5 offset-2" href="#">銷售分析</a>
                             </div>
                         </div>
                     </li>
@@ -246,51 +212,33 @@
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                            data-bs-target="#collapseWebManagement" aria-expanded="true"
                            aria-controls="collapseWebManagement">
-                                <span class="text-light fs-5">網頁管理 <i
+                                <span class="text-light fs-4 offset-2">網頁管理 <i
                                         class="fa-solid fa-angle-down"></i></span>
                         </a>
                         <div id="collapseWebManagement" class="collapse" aria-labelledby="headingWebManagement"
                              data-bs-parent="#sidebar-wrapper">
                             <div class="color-4-1 py-2 collapse-inner rounded">
-                                <a class="text-choco collapse-item fs-6 offset-1" href="#">文章管理</a>
+                                <a class="text-choco collapse-item fs-5 offset-3" href="#">文章管理</a>
                                 <br>
-                                <a class="text-choco collapse-item fs-6 offset-1" href="#">檢舉管理</a>
+                                <a class="text-choco collapse-item fs-5 offset-3" href="#">檢舉管理</a>
                             </div>
                         </div>
                     </li>
 
                     <!-- 權限設定 -->
-<%--                    <li class="nav-item mb-2">--%>
-<%--                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"--%>
-<%--                           data-bs-target="#collapsePermissions" aria-expanded="true"--%>
-<%--                           aria-controls="collapsePermissions">--%>
-<%--                                <span class="text-light fs-5">權限設定 <i--%>
-<%--                                        class="fa-solid fa-angle-down"></i></span>--%>
-<%--                        </a>--%>
-<%--                        <div id="collapsePermissions" class="collapse" aria-labelledby="headingPermissions"--%>
-<%--                             data-bs-parent="#sidebar-wrapper">--%>
-<%--                            <div class="color-4-1 py-2 collapse-inner rounded">--%>
-<%--                                <a class="text-choco collapse-item offset-1" href="#">員工權限</a>--%>
-<%--                                <br>--%>
-<%--                                <a class="text-choco collapse-item offset-1" href="#">廠商權限</a>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                    </li>--%>
-
-                    <!-- 專欄 -->
                     <li class="nav-item mb-2">
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                           data-bs-target="#collapseColumnManagement" aria-expanded="false"
-                           aria-controls="collapseColumnManagement">
-                                <span class="text-light fs-5">專欄管理 <i
+                           data-bs-target="#collapsePermissions" aria-expanded="true"
+                           aria-controls="collapsePermissions">
+                                <span class="text-light fs-4 offset-2">權限設定 <i
                                         class="fa-solid fa-angle-down"></i></span>
                         </a>
-                        <div id="collapseColumnManagement" class="collapse" aria-labelledby="headingColumnManagement"
+                        <div id="collapsePermissions" class="collapse" aria-labelledby="headingPermissions"
                              data-bs-parent="#sidebar-wrapper">
                             <div class="color-4-1 py-2 collapse-inner rounded">
-                                <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/columnmg/list">專欄列表</a>
+                                <a class="text-choco collapse-item fs-5 offset-3" href="#">員工權限</a>
                                 <br>
-                                <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/columntypesmg/list">專欄類型</a>
+                                <a class="text-choco collapse-item fs-5 offset-3" href="#">廠商權限</a>
                             </div>
                         </div>
                     </li>
@@ -300,44 +248,23 @@
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                            data-bs-target="#collapseCustomerService" aria-expanded="false"
                            aria-controls="collapseCustomerService">
-                                <span class="text-light fs-5">客服中心 <i
+                                <span class="text-light fs-4 offset-2">客服中心 <i
                                         class="fa-solid fa-angle-down"></i></span>
                         </a>
                         <div id="collapseCustomerService" class="collapse" aria-labelledby="headingCustomerService"
                              data-bs-parent="#sidebar-wrapper">
                             <div class="color-4-1 py-2 collapse-inner rounded">
-                                <a class="text-choco collapse-item fs-6 offset-1" href="#">客服問題</a>
+                                <a class="text-choco collapse-item fs-5 offset-3" href="#">客服問題</a>
                                 <br>
-                                <a class="text-choco collapse-item fs-6 offset-1" href="#">回報問題</a>
+                                <a class="text-choco collapse-item fs-5 offset-3" href="#">回報問題</a>
                             </div>
                         </div>
                     </li>
 
-                    </c:if>
-
-                    <c:if test="${adminId!=null && admin.adminFuncName == 1 }">
-                        <!-- 餐聽管理 -->
-                        <li class="nav-item mb-2">
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                               data-bs-target="#collapseRestService" aria-expanded="false"
-                               aria-controls="collapseRestService">
-                                <span class="text-light fs-5">餐廳管理 <i
-                                        class="fa-solid fa-angle-down"></i></span>
-                            </a>
-                            <div id="collapseRestService" class="collapse" aria-labelledby="headingRestService"
-                                 data-bs-parent="#sidebar-wrapper">
-                                <div class="color-4-1 py-2 collapse-inner rounded">
-                                    <a class="text-choco collapse-item fs-6 offset-1" href="#">客服問題</a>
-                                    <br>
-                                    <a class="text-choco collapse-item fs-6 offset-1" href="#">回報問題</a>
-                                </div>
-                            </div>
-                        </li>
-                    </c:if>
                 </div>
             </div>
         </div>
-            <div class="col-lg-10 g-2 mt-2">
+            <div class="col-lg-10 g-2 my-0">
             <%--      放入自己body裡的代碼--%>
 
 

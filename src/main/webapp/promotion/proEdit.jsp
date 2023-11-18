@@ -66,14 +66,14 @@
 <div class="container-fluid my-0">
     <div class="row">
         <%--    側邊欄--%>
-        <div class="col-lg-2 g-3 mt-1">
+        <div class="col-lg-2 g-3 my-0">
             <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
         </div>
 
-        <div class="col-lg-10 g-2 transparent rounded mt-1">
+        <div class="col-lg-10 g-2 transparent rounded my-0">
             <%--      放入自己body裡的代碼--%>
                 <div class="container mt-5">
-                    <h1 class="text-center">促銷資訊修改頁面</h1>
+                    <h3 class="text-center">促銷資訊修改頁面</h3>
                     <%-- 錯誤表列 --%>
                     <c:if test="${not empty errorMsgs}">
                         <font style="color:red">請修正以下錯誤:</font>

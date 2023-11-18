@@ -39,7 +39,7 @@
 /*      padding: 0; */
  }
 .swal2-title {
-    font-size: 12px !important; /* 設定較小的字體大小 */
+    font-size: 14px !important; 
 }
 /* 新增 */
 .add-button {

@@ -25,16 +25,16 @@
 				<div class="d-flex justify-content-between align-items-center mb-3">
 					<h2 class="mb-0">共有 ${searchCount} 篇文章</h2>
 					<div class="form-group mb-0">
-						<label for="sortDropdown" class="mr-2">排序方式</label> <select
-							class="form-control d-inline-block" id="sortDropdown"
-							style="width: auto;">
-							<option>按發布日期排序</option>
-							<!-- 其他排序 -->
+						<label for="sortSet" class="mr-2"></label> <select
+							class="form-control d-inline-block" id="sortSet" style="width: auto;" onchange="sortArticles()">
+							<option value="asc">預設</option>
+							<option value="desc">按發布日排序(新→舊)</option>
+							<option value="asc">按發布日排序(舊→新)</option>
 						</select>
 					</div>
 				</div>
 				<!-- 專欄文章列表 -->
-				<div class="colum" >
+				<div class="colum" id="right">
 					<c:forEach items="${resultSet}" var="column">
 						<a
 							href="${pageContext.request.contextPath}/columnarticles/item?artiId=${column.artiId}"
@@ -71,7 +71,7 @@
 					</c:forEach>
 				</div>
 				
-	<div id="right">
+	<div>
 	<c:forEach begin="1" end="${pageQtyA}" var="i">
     <li class="page-item ${i == currentPage ? 'active' : ''}">
         <a class="page-link" href="${pageContext.request.contextPath}/columnarticles/list?page=${i}">${i}</a>
@@ -85,7 +85,28 @@
 <!-- 	<script -->
 <!-- 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
 <!--     <script> -->
-    
+ <script>
+ //排序
+ function sortArticles() {
+    var sortValue = document.getElementById("sortSet").value;
+    var formData = $('#searchForm').serialize(); //把搜尋結果放進來
+    formData += '&sort=' + sortValue;
+
+    $.ajax({
+        url: "<%=request.getContextPath()%>/columnarticles/search", 
+        type: 'GET',
+        data: formData,
+        success: function(response) {
+            $('#right').html(response);
+            document.getElementById("sortSet").value = sortValue;
+        },
+        error: function(error) {
+            console.error('排序失敗', error);
+        }
+        
+    });
+}
+ </script>   
 
 
   

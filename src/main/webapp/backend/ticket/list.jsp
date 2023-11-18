@@ -43,7 +43,7 @@
                 <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
             </div>
             
-            <div class="col-lg-10 g-2 transparent rounded my-0">
+            <div class="col-lg-10 g-2 transparent rounded my-0  scrollable-table">
                 <div class="table-list">
                     <div class="container mt-5">
                         <!-- 三個查詢表單並排顯示 -->

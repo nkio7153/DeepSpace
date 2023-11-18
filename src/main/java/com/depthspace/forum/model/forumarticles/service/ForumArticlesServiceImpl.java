@@ -48,7 +48,6 @@ public class ForumArticlesServiceImpl implements ForumArticlesService {
 				// 將二進制數據編碼為字符串
 				String base64EncodedString = encoder.encodeToString(vo.getArtiImg());
 				// 輸出編碼後的字符串
-				System.out.println("Base64 Encoded String : " + base64EncodedString);
 				vo.setBase64Str(base64EncodedString);
 			}
 		}
@@ -66,7 +65,6 @@ public class ForumArticlesServiceImpl implements ForumArticlesService {
 				// 將二進制數據編碼為字符串
 				String base64EncodedString = encoder.encodeToString(vo.getArtiImg());
 				// 輸出編碼後的字符串
-				System.out.println("Base64 Encoded String : " + base64EncodedString);
 				vo.setBase64Str(base64EncodedString);
 			}
 		}
@@ -88,7 +86,6 @@ public class ForumArticlesServiceImpl implements ForumArticlesService {
 				// 將二進制數據編碼為字符串
 				String base64EncodedString = encoder.encodeToString(vo.getArtiImg());
 				// 輸出編碼後的字符串
-				System.out.println("Base64 Encoded String : " + base64EncodedString);
 				vo.setBase64Str(base64EncodedString);
 			}
 		}
@@ -120,7 +117,6 @@ public class ForumArticlesServiceImpl implements ForumArticlesService {
 				// 將二進制數據編碼為字符串
 				String base64EncodedString = encoder.encodeToString(vo.getArtiImg());
 				// 輸出編碼後的字符串
-				System.out.println("Base64 Encoded String : " + base64EncodedString);
 				vo.setBase64Str(base64EncodedString);
 			}
 		}
