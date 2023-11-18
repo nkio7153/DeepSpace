@@ -59,6 +59,12 @@
          .card-text{
              line-height:25px;
          }
+         #btn{
+             border-radius: 5px;
+             padding:3px;
+             border: transparent;
+         }
+
         /*@media (min-width: 768px) {*/
         /*    .container, .container-lg, .container-md, .container-sm {*/
         /*        min-width: 1080px !important;*/
@@ -89,7 +95,7 @@
                             <div class="col-md-5 position-relative">
                                 <img src="${pageContext.request.contextPath}/tsc/image?serialId=${mto.serialId}" class="card-img-top rounded-start" alt="..."> <!-- 图片覆盖整个卡片顶部宽度 -->
                                 <div class="position-absolute bottom-0 start-0 m-3 mx-2 px-2">
-                                    <button type="button" class="btn btn-primary btn-sm fs-4">票券詳情</button>
+                                    <a href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=${mto.ticketId}"type="button" id="btn" class="btn btn-primary btn-sm fs-4">票券詳情</a>
                                 </div>
                                 <div class="position-absolute bottom-0 end-0 m-3 mx-2 px-2">
                                     <span class="badge bg-success rounded-pill p-2 fs-4">$${mto.discountPrice}</span>
@@ -170,6 +176,7 @@
 
 </div>
 <script>
+
     $(document).ready(function(){
         $("[name='status']").each(function(){
             switch ($(this).text()){
