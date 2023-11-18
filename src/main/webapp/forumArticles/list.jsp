@@ -31,10 +31,11 @@ $(document).ready(function() {
                     var cleanArtiText = item.artiText
 	                .replace(/<span[^>]*>/g, '')
 	                .replace(/<\/span>/g, '');
-                    var likesSpan = '<span class="likes float-right"><i class="fas fa-thumbs-up"></i> ' + item.artiLk + '</span>';
+                    var collectbutton = '<button class="btn btn-primary collect-button float-end like-button" data-articleid="' + item.articleId + '"><i class="far fa-heart"></i></button>';
+                    var likeButton = '<button class="btn btn-primary like-buttons likes-button"><i class="far fa-thumbs-up"></i></button>';
                     var card = $('<div class="col-md-3 mb-3">')
                     .append('<div class="cards">' +
-                    		'<li class="list-group-item d-flex justify-content-between align-items-center">會員ID: ' + item.memId + likesSpan + '</li>' +
+                    		'<li class="list-group-item d-flex justify-content-between align-items-center">會員ID: ' + item.memId + collectbutton + '</li>' +
                         '<img src="data:image/jpeg;base64,' + base64ImageData + '" class="card-img-top fixed-height-img">' +
                         '<div class="card-body card-content">' +
                             '<h5 class="card-title">' + item.artiTitle + '</h5>' +
@@ -44,10 +45,11 @@ $(document).ready(function() {
                             '<li class="list-group-item hidden-status">訊息ID: ' + item.msgId + '</li>' +
                             '<li class="list-group-item hidden-status">文章類型: ' + item.artiTypeId + '</li>' +
                             '<li class="list-group-item hidden-status">文章編號: ' + item.articleId + '</li>' +
+                            '<li class="list-group-item hidden-status likeicon">'  + item.artiLk +  '</li>' +
                         '</ul>' +
-                        '<div class="card-footer">' +
-                            '<small class="text-muted">發布時間: ' + formattedDate + '</small>' +
-                            '<button class="btn btn-primary collect-button float-end like-button" data-articleid="' + item.articleId + '"><i class="far fa-heart"></i></button>'+                        
+                        '<div class="card-footer d-flex justify-content-between align-items-center">' +
+                            '<small class="text-muted">發布時間: ' + formattedDate + '</small>' +    
+                            likeButton +
                             '</div>' +
                     '</div>');
                     $('#articlesRow').append(card);
@@ -63,6 +65,7 @@ $(document).ready(function() {
     	        async: false,
     	        success: function(response) {
     	            let articlesCollectList = response.articlesCollectList;
+    	            let articlesLikeList = response.articlesLikeList;
     	            let forumArticlesList = response.forumArticlesList;
     	            forumArticlesList.forEach(function(item) {
     	                var base64ImageData = item.base64Str;
@@ -71,13 +74,20 @@ $(document).ready(function() {
     	                var cleanArtiText = item.artiText
     	                .replace(/<span[^>]*>/g, '')
     	                .replace(/<\/span>/g, '');
-    	                var likesSpan = '<span class="likes float-right"><i class="fas fa-thumbs-up"></i> ' + item.artiLk + '</span>';
+    	                
     	                var isCollected = articlesCollectList.some(collectArticle => collectArticle.articleId === item.articleId);
     	                var buttonClass = isCollected ? 'btn btn-primary collect-button float-end collected' : 'btn btn-primary collect-button float-end';
-    	                var heartIcon = isCollected ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>';    	               
+    	                var heartIcon = isCollected ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>';
+    	                var collectButton = '<button class="' + buttonClass + ' like-button" data-articleid="' + item.articleId + '">' + heartIcon + '</button>';
+    	                
+    	                var islike = articlesLikeList.some(likeArticle => likeArticle.articleId === item.articleId);
+    	                var thumbIcon = islike ? '<i class="fas fa-thumbs-up"></i>' : '<i class="far fa-thumbs-up"></i>';
+    	                var likeButtonClass = islike ? 'btn btn-primary like-buttons liked' : 'btn btn-primary like-buttons float-end';
+    	                var likeButton = '<button class="' + likeButtonClass + ' likes-button" data-articleid="' + item.articleId + '">' + thumbIcon + '</button>';
+    	                  	                
     	                var card = $('<div class="col-md-3 mb-3">')
     	                .append('<div class="cards">' +
-    	                        '<li class="list-group-item d-flex justify-content-between align-items-center">會員ID: ' + item.memId + likesSpan + '</li>' +
+    	                        '<li class="list-group-item d-flex justify-content-between align-items-center">會員ID: ' + item.memId + collectButton + '</li>' +
     	                        '<img src="data:image/jpeg;base64,' + base64ImageData + '" class="card-img-top fixed-height-img">' +
     	                        '<div class="card-body card-content">' +
     	                            '<h5 class="card-title">' + item.artiTitle + '</h5>' +
@@ -87,14 +97,15 @@ $(document).ready(function() {
     	                            '<li class="list-group-item hidden-status">訊息ID: ' + item.msgId + '</li>' +
     	                            '<li class="list-group-item hidden-status">文章類型: ' + item.artiTypeId + '</li>' +
     	                            '<li class="list-group-item hidden-status">文章編號: ' + item.articleId + '</li>' +
+    	                            '<li class="list-group-item hidden-status likeicon">'  + item.artiLk +  '</li>' +
     	                        '</ul>' +
-    	                        '<div class="card-footer">' +
+    	                        '<div class="card-footer d-flex justify-content-between align-items-center">' +
     	                            '<small class="text-muted">發布時間: ' + formattedDate + '</small>' +    	                        
-    	                            '<button class="' + buttonClass + ' like-button" data-articleid="' + item.articleId + '">' + heartIcon + '</button>'+                        
+    	                            likeButton +                        
     	                        '</div>' +
     	                '</div>');
-    	                $('#articlesRow').append(card);
-    	            });
+    	                $('#articlesRow').append(card);   
+    	            }); 	            
     	        }
     	    });
     }
@@ -121,6 +132,35 @@ $(document).ready(function() {
             	    button.addClass('collected');
             	} else if(response.message === '取消收藏') {
             	    button.html('<i class="far fa-heart"></i>'); // 使用空心愛心圖標
+            	    button.removeClass('collected');
+            	}
+            }
+        });
+    });
+    
+    
+    $('#articlesRow').on('click', '.like-buttons', function(event) {
+        var button = $(this); // 獲取當前按鈕的 jQuery 對象
+        var articleId = button.data('articleid');
+
+        let check = $("[name='check']").text();
+        if(check == "登入/註冊") {
+            event.preventDefault();
+            window.alert("請先登入");
+            return; // 阻止後續代碼執行
+        }
+
+        $.ajax({
+            type: 'post',
+            url: '<%=request.getContextPath()%>/like?action=add',
+            data: { articleId: articleId },
+            dataType: 'json',
+            success: function(response) {
+            	if(response.message === '添加按讚') {
+            	    button.html('<i class="fas fa-thumbs-up"></i>'); // 使用實心讚
+            	    button.addClass('collected');
+            	} else if(response.message === '取消按讚') {
+            	    button.html('<i class="far fa-thumbs-up"></i>'); // 使用空心讚
             	    button.removeClass('collected');
             	}
             }
@@ -156,7 +196,7 @@ $(document).ready(function() {
 	    $('#articlesRow').on('click', '.cards', function() {
 	    	
 	    	 // 檢查點擊的元素是否為按鈕，如果是，則不進行後續操作
-	        if ($(event.target).hasClass('btn') || $(event.target).hasClass('fa-heart')){
+	        if ($(event.target).hasClass('btn') || $(event.target).hasClass('fa-heart')|| $(event.target).hasClass('fa-thumbs-up')){
 	            return;
 	        }
 	    	 
@@ -164,12 +204,14 @@ $(document).ready(function() {
 	        var articleTitle = $(this).find('h5.card-title').text();
 	        var articleText = $(this).find('div.card-text').html();
 	        var articleDate = $(this).find('.text-muted').text().replace('發布時間: ', '');
+	        var artiLk = $(this).find('.likeicon').text().replace('總讚數: ', '');
 
 	        // 填充模態對話框中的內容
 	        $('#articleImage').attr('src', articleImage);
 	        $('#articleTitle').text(articleTitle);
 	        $('#articleText').html(articleText);
 	        $('#articleDate').text('發布時間: ' + articleDate);
+	        $('#artiLk').text(artiLk + '人按讚');
 
 	        // 顯示模態對話框
 	        $('#articleDetailsModal').modal('show');
@@ -241,6 +283,7 @@ $(document).ready(function() {
        color: transparent;
        background-color: transparent;
        border-color: transparent;
+       padding-right: 0px;
      }
 
 	.like-button:hover, .like-button:focus, .like-button:active, .like-button:visited {
@@ -304,6 +347,7 @@ $(document).ready(function() {
         </select>
         <input type="submit" value="查詢">
     </form>
+    	<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a>
 		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a>
 		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=doArtiCollectList">我的收藏</a>
         <a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=addArticle">新增文章</a>
@@ -334,8 +378,9 @@ $(document).ready(function() {
               <h6 class="card-text" id="articleDate">發布時間:</h6>
             </div>
           </div>
-          <div class="card-footer">
+          <div class="card-footer d-flex justify-content-between align-items-center">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+             <h5 class="card-text float-end" id="artiLk">總讚數:</h5>
           </div>
         </div>
       </div>

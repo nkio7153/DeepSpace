@@ -64,6 +64,20 @@
 <body>
 <script>
 $(document).ready(function() {
+	
+	$.ajax({
+        type: "post",
+        url: '<%=request.getContextPath()%>/forumArticles.do?action=getArtiTypeList',
+        dataType: "json",
+        success: function(data) {
+            var selectBox = $("#artiTypeId");
+            selectBox.empty(); 
+            $.each(data, function(index, atvo) {
+                selectBox.append($("<option></option>").attr("value", atvo.artiTypeId).text(atvo.artiTypeText));
+            });
+        }
+    });
+	
     $('#articlesRow').on('click', '.card', function() {
     	
     	// 檢查點擊的元素是否為按鈕，如果是，則不進行後續操作
@@ -75,12 +89,14 @@ $(document).ready(function() {
         var articleTitle = $(this).find('h5.card-title').text();
         var articleText = $(this).find('div.card-text').html();
         var articleDate = $(this).find('.text-muted').text().replace('發布時間: ', '');
+        var artiLk = $(this).find('.likeicon').text().replace('總讚數: ', '');
 
         // 填充模態對話框中的內容
         $('#articleImage').attr('src', articleImage);
         $('#articleTitle').text(articleTitle);
         $('#articleText').html(articleText);
         $('#articleDate').text('發布時間: ' + articleDate);
+        $('#artiLk').text(artiLk + '人按讚');
 
         // 顯示模態對話框
         $('#articleDetailsModal').modal('show');
@@ -109,11 +125,18 @@ $(document).ready(function() {
 <jsp:include page="../indexpage/headpic.jsp" />
  	<div id="list" class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-	        <div class="btn-group" role="group"> <!-- 添加這個 div 來包裹按鈕 -->
-	            <button type="button" class="btn btn-primary me-2" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles/list.jsp'">瀏覽所有文章</button>
-	            <button type="button" class="btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=addArticle'">新增文章</button>
-	        </div>
-    	</div>
+	        <h1>我的文章</h1>
+		    <form method="post" action="<%=request.getContextPath()%>/forumArticles.do?action=doArtiTypeList">
+		        <label for="artiTypeId">選擇文章類型：</label>
+		        <select id="artiTypeId" name="artiTypeId">
+		        </select>
+		        <input type="submit" value="查詢">
+		    </form>
+				<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a>
+				<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a>
+				<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=doArtiCollectList">我的收藏</a>
+        		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=addArticle">新增文章</a>
+	    </div>
         <div id="articlesRow" class="row">
             <c:forEach var="article" items="${list}">
                 <div class="col-md-4 mb-3">
@@ -121,9 +144,6 @@ $(document).ready(function() {
                     <div class="card h-100">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             會員ID: ${article.memId} 
-                            <span class="likes float-right">
-                                <i class="fas fa-thumbs-up"></i> ${article.artiLk}
-                            </span>
                         </li>
                         <img src="data:image/jpeg;base64,${article.base64Str}" class="card-img-top fixed-height-img">
                         <div class="card-body card-content">
@@ -134,6 +154,7 @@ $(document).ready(function() {
                             <li class="list-group-item d-none">訊息ID: ${article.msgId}</li>
                             <li class="list-group-item d-none">文章ID: ${article.articleId}</li>
                             <li class="list-group-item d-none">文章類型: ${article.artiTypeId}</li>
+                            <li class="list-group-item d-none likeicon">${article.artiLk}</li>
                         </ul>
                         	<div class="card-footer">
                         	<fmt:formatDate value="${article.artiTime}" pattern="yyyy-MM-dd HH:mm:ss" var="formattedDate"/>
@@ -181,6 +202,7 @@ $(document).ready(function() {
           </div>
           <div class="card-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            <h5 class="card-text float-end" id="artiLk">總讚數:</h5>
           </div>
         </div>
       </div>
