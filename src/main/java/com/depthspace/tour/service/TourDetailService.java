@@ -1,5 +1,6 @@
 package com.depthspace.tour.service;
 
+import java.sql.Time;
 import java.util.List;
 
 import com.depthspace.tour.model.TourDetailVO;
@@ -47,5 +48,7 @@ private HbTourDetailDAO_Interface dao;
 	public List<TourDetailVO> getTourDaysId(Integer tourDaysId) {
 		return dao.getTourDaysId(tourDaysId);
 	}
+
+
 	
 }
