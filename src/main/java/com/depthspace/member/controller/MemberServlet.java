@@ -24,6 +24,8 @@ import com.depthspace.member.model.MemVO;
 import com.depthspace.member.service.HbMemService;
 import com.depthspace.member.service.MemberService;
 
+import redis.clients.jedis.Jedis;
+
 @WebServlet({ "/mem/*" })
 @MultipartConfig
 public class MemberServlet extends HttpServlet {
@@ -88,9 +90,85 @@ public class MemberServlet extends HttpServlet {
 		case "/memList":// 從首頁點擊我的會員資料時
 			doMemList(req, resp);
 			break;
+		case "/forgetPassword":// 忘記密碼
+			doForgetPassword(req, resp);
+			break;
+		case "/checkVerify":// 驗證碼
+			doCheckVerify(req, resp);
+			break;
 
 		}
 
+	}
+	private void doCheckVerify(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		String memAcc = req.getParameter("memAcc");
+		String memEmail = req.getParameter("memEmail");
+		String password = req.getParameter("password");
+		
+		 // 在這裡應該要去Redis取得驗證碼的值，並進行比對
+	    Jedis jedis = new Jedis("localhost", 6379);
+	    jedis.select(14); // 切換到第14個資料庫，請確保這是你存放驗證碼的資料庫
+
+	    String redisKey = jedis.get(memEmail);
+	    System.out.println("redisKey= " + redisKey + "," + "password= "+ password);
+	    if (redisKey != null && redisKey.equals(password)) {
+//	        MemVO memvo = 
+
+	        // 在這裡清除Redis中的驗證碼，因為已經使用過了
+	        jedis.del(memEmail);
+	        
+	        
+	        jedis.close();
+
+	        // 回傳成功訊息
+	        resp.getWriter().write("success");
+	    } else {
+	        // 驗證碼錯誤，回傳錯誤訊息
+	        resp.getWriter().write("error");
+	    }
+		
+	}
+
+	//用ajax傳遞請求
+	private void doForgetPassword(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		String memAcc = req.getParameter("memAcc");
+		String memEmail = req.getParameter("memEmail");
+		
+		HbMemService hbms = new HbMemService();
+		MemVO mem = hbms.findByMemAcc(memAcc);
+		System.out.println(mem);
+		if(mem == null) {
+			String URL = req.getContextPath() + "/member/forgetPassword.jsp?error=true";
+			resp.sendRedirect(URL);
+		} else
+			if(mem.getMemAcc().equals(memAcc) && mem.getMemEmail().equals(memEmail)){
+			String to = mem.getMemEmail();
+			String subject = "DepthSpace會員密碼通知函";
+			String ch_name = mem.getMemName();
+			String random = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			//生成驗證碼
+			String passRandom = ""; 
+			for(int i =1 ; i <= 8 ; i++) {
+				int b =  (int)(Math.random()*62);
+				passRandom = passRandom + random.charAt(b);
+			}
+			System.out.println("驗證碼為:"+ passRandom);
+			//存到Redis裡面
+			Jedis jedis = new Jedis("localhost", 6379);
+			// 切換到第14個資料庫
+	        jedis.select(14);
+	        jedis.set(to, passRandom);
+	        jedis.expire(to, 600);
+	        
+	        jedis.close();
+	        
+	        resp.getWriter().write("success");
+		} else {
+			resp.getWriter().write("error");
+		}
+		
+		
+		
 	}
 
 	private void doMemList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -383,6 +461,7 @@ public class MemberServlet extends HttpServlet {
 //			System.out.println("st1=" + st1);
 
 			st2 = req.getParameter("memAcc");
+			System.out.println("帳號= "+st2);
 			if (st2 == null || st2.trim().length() == 0) {
 				errorMsgs.add("帳號請勿空白");
 			}
@@ -538,7 +617,7 @@ public class MemberServlet extends HttpServlet {
 	// ============================================================================================================================================
 
 	private void doEdit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		MemberService m = new MemberService();
+		MemberService mems = new MemberService();
 		Integer memId = null;
 		String st1 = req.getParameter("memId");
 
@@ -554,14 +633,14 @@ public class MemberServlet extends HttpServlet {
 		} else {
 			MemVO mem = new MemVO();
 
-			List<MemVO> a = m.getAll();
+			List<MemVO> a = mems.getAll();
 			int lastIndex = a.size() - 1; // 找到最後一個元素的索引
 			mem = a.get(lastIndex); // 獲得最後一個元素的值
 			memId = mem.getMemId();
 			req.setAttribute("memId", memId);
 		}
 
-		MemVO memvo = m.findByMemId(memId);
+		MemVO memvo = mems.findByMemId(memId);
 		if (memvo != null) {
 			// 處理圖片
 			byte[] imageBytes = memvo.getMemImage();

@@ -11,6 +11,7 @@ public interface HibernateMemDAO_Interface {
 
 	// 會員修改
 	int update(MemVO entity);
+	int updatePassword(String memAcc,String memPwd);
 
 	//刪除會員
 	int delete(Integer memId);

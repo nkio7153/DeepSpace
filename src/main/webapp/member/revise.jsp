@@ -71,7 +71,7 @@
 		<table border="1" align="center" width="50%">
 			
 				<th style="display: none;">會員編號</th>
-				<input type="hidden" name="memId" value="${memId}" readonly">
+				<input type="hidden" name="memId" value="${memId}" readonly>
 			
 			<tr>
 				<th>會員大頭貼</th>
@@ -86,16 +86,6 @@
 					        <input type="file" class="form-control" id="picture" name="memImage" style="width: 89px;">
 					    </div>
 					    <input type="hidden" name="memImage" value="${base64Image}" />
-<!-- 						<div class="preview"> -->
-<!--                                 <img id="preview_img" src="" name="pciture1" alt="請上傳圖片" class="preview_jpg"> -->
-<!--                             </div> -->
-<!--                             <input type="file" class="form-control" id="picture" name="picture"><br> -->
-					
-<%-- 	                	<img src="data:image/jpeg;base64,${base64Image}" class="image" alt="ProfileImage" /> --%>
-<!-- <!-- 	                	<label>更新大頭貼</label> -->
-<!-- <!-- 	                    <input type="file" id="memImage" name="memImage" onchange="loadFile(event)" /> -->
-<!-- 	                    將 base64Image 存在一個隱藏的表單字段中 -->
-<%-- 	                    <input type="hidden" name="memImage" value="${base64Image}" /> --%>
 					</td>
 			</tr>
 			<tr>
