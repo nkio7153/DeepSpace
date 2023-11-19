@@ -76,7 +76,7 @@
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mem/memList">我的會員資料</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList">我的票券</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ticketcollection/list">我的票券收藏</a></li>
-                                <li><a class="dropdown-item" href="">通知</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/notifications/list">通知</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mem/logout" name="check">登出</a></li>
                             </ul>

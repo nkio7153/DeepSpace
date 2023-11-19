@@ -84,6 +84,7 @@ public class AttractionsServlet  extends HttpServlet {
 			}
 		}else if( attractionsName != null){ //如果沒有選縣市
 			 list = attrs.getAttractionsName(attractionsName);
+			 System.out.println("list="+list);
 		}
 //	    再把所有縣市找回來
 	    List<CityVO> city = cs.getAll();

@@ -88,7 +88,18 @@ public class ForumArticlesServlet extends HttpServlet {
 		case "doArtiCollectList":
 			doArtiCollectList(req, resp);
 			break;
+		case "edit":
+			editForumArticles(req, resp);
+			break;
 		}
+	}
+	//取得文章類型並轉發到修改表單
+	private void editForumArticles(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<ArticlesTypeVO> atvo = articlesTypeService.getAll();
+	    String json = new Gson().toJson(atvo);
+	    resp.setContentType("application/json");
+	    resp.setCharacterEncoding("UTF-8");
+	    resp.getWriter().write(json);
 	}
 
 	// 取得該會員的收藏文章列表
@@ -202,46 +213,48 @@ public class ForumArticlesServlet extends HttpServlet {
 
 	// 修改文章
 	private void updateForumArticles(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException, ServletException {
-		System.out.println("執行Update方法");
+	        throws IOException, ServletException {
+	    System.out.println("執行Update方法");
 
-		try {
-			Integer articleId = parseIntegerParameter(req.getParameter("articleId"));
-			Integer memId = parseIntegerParameter(req.getParameter("memId"));
-			Integer msgId = parseIntegerParameter(req.getParameter("msgId"));
-			Integer artiTypeId = parseIntegerParameter(req.getParameter("artiTypeId"));
-			String artiTitle = req.getParameter("artiTitle");
-			String artiTimeStr = req.getParameter("artiTime");
-			Timestamp artiTime = parseTimestamp(artiTimeStr);
-			String artiText = req.getParameter("artiText");
-			Integer artiLk = parseIntegerParameter(req.getParameter("artiLk"));
+	    try {
+	        Integer articleId = parseIntegerParameter(req.getParameter("articleId"));
 
-			byte[] artiImg = null;
-			Part artiImgStr2 = req.getPart("artiImgStr");
-			if (artiImgStr2 != null && artiImgStr2.getSize() > 0) {
-				System.out.println("進到新圖片");
-				InputStream inputStream = artiImgStr2.getInputStream();
-				artiImg = inputStream.readAllBytes();
-				inputStream.close();
-			} else {
-				System.out.println("進到舊圖片了");
-				ForumArticlesVO forumArticle = forumArticlesService.getByArticleId(articleId);
-				if (forumArticle != null) {
-					artiImg = forumArticle.getArtiImg();
-				}
-			}
+	        // 從數據庫獲取現有的文章
+	        ForumArticlesVO forumArticle = forumArticlesService.getByArticleId(articleId);
 
-			// 無論是否有新圖片，都執行更新操作
-			ForumArticlesVO forum = new ForumArticlesVO(articleId, memId, msgId, artiTypeId, artiTitle, artiTime,
-					artiText, artiLk, artiImg);
-			forumArticlesService.update(forum);
 
-			getMemListForumArticles(req, resp);
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input: " + e.getMessage());
-		}
+	        // 更新文章的其他欄位
+	        forumArticle.setMemId(parseIntegerParameter(req.getParameter("memId")));
+	        forumArticle.setMsgId(parseIntegerParameter(req.getParameter("msgId")));
+	        forumArticle.setArtiTypeId(parseIntegerParameter(req.getParameter("artiTypeId")));
+	        forumArticle.setArtiTitle(req.getParameter("artiTitle"));
+	        forumArticle.setArtiTime(parseTimestamp(req.getParameter("artiTime")));
+	        forumArticle.setArtiText(req.getParameter("artiText"));
+	        forumArticle.setArtiLk(parseIntegerParameter(req.getParameter("artiLk")));
+
+	        // 處理圖片更新
+	        Part artiImgStr2 = req.getPart("artiImgStr");
+	        if (artiImgStr2 != null && artiImgStr2.getSize() > 0) {
+	            System.out.println("進到新圖片");
+	            InputStream inputStream = artiImgStr2.getInputStream();
+	            byte[] artiImg = inputStream.readAllBytes();
+	            forumArticle.setArtiImg(artiImg); // 設置新圖片
+	            inputStream.close();
+	        } else {
+	            System.out.println("保持舊圖片");
+	        }
+
+	        // 執行更新操作
+	        forumArticlesService.update(forumArticle);
+
+	        // 重新獲取並顯示文章列表
+	        getMemListForumArticles(req, resp);
+	    } catch (NumberFormatException | IOException | ServletException e) {
+	        e.printStackTrace();
+	        resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input: " + e.getMessage());
+	    }
 	}
+
 
 	// 新增文章
 	private void addForumArticles(HttpServletRequest req, HttpServletResponse resp)

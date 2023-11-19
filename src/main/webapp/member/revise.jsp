@@ -71,7 +71,7 @@
 		<table border="1" align="center" width="50%">
 			
 				<th style="display: none;">會員編號</th>
-				<input type="hidden" name="memId" value="${memId}" readonly">
+				<input type="hidden" name="memId" value="${memId}" readonly>
 			
 			<tr>
 				<th>會員大頭貼</th>
@@ -85,17 +85,7 @@
 						        </div>
 					        <input type="file" class="form-control" id="picture" name="memImage" style="width: 89px;">
 					    </div>
-					    <input type="hidden" name="memImage" value="${base64Image}" />
-<!-- 						<div class="preview"> -->
-<!--                                 <img id="preview_img" src="" name="pciture1" alt="請上傳圖片" class="preview_jpg"> -->
-<!--                             </div> -->
-<!--                             <input type="file" class="form-control" id="picture" name="picture"><br> -->
-					
-<%-- 	                	<img src="data:image/jpeg;base64,${base64Image}" class="image" alt="ProfileImage" /> --%>
-<!-- <!-- 	                	<label>更新大頭貼</label> -->
-<!-- <!-- 	                    <input type="file" id="memImage" name="memImage" onchange="loadFile(event)" /> -->
-<!-- 	                    將 base64Image 存在一個隱藏的表單字段中 -->
-<%-- 	                    <input type="hidden" name="memImage" value="${base64Image}" /> --%>
+<%-- 					    <input type="hidden" name="memImage" value="${base64Image}" /> --%>
 					</td>
 			</tr>
 			<tr>
@@ -130,7 +120,7 @@
 	        </tr>
 	        <tr>
 	            <th>電子郵件</th>
-	            <td><input type="text" name="memEmail"
+	            <td><input type="email" name="memEmail"
 					value="${mem.memEmail}" required></td>
 	        </tr>
 	        <tr>
@@ -158,12 +148,12 @@
 	    </table>
     <p align="center">
 		<input type="submit" class="btn_save" value="儲存會員資料">
-		<input type="hidden" name="action" value="modify">
-	
-        <input type="button" class="btn_save" value="取消" onclick="history.back()">
-       
-    </p>	
+	</p>	
      </form>
+      <p align="center">
+        <input type="button" class="btn_save" value="取消" onclick="history.back()">
+       </p>
+    
     <script type="text/javascript">
 	    var file = $("#picture"); // 獲取input file元素
 	    var preview_el = $("#preview_img"); // 獲取預覽圖片元素
