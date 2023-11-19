@@ -332,6 +332,26 @@ $(document).ready(function() {
 	div.modal-body {
     padding: 2.5rem !important;;
 	}
+	
+	.likes-button{
+       background-color: #A7BEC6;
+       border-color: transparent;
+	}
+	
+	.likes-button:hover {
+       outline: none;
+       box-shadow: none !important;
+       background-color: #5B7493;
+       border-color: transparent;
+     }
+     
+     .likes-button:focus, .likes-button:active{
+       outline: none;
+       box-shadow: none !important;
+       background-color: #A7BEC6;
+       border-color: transparent;
+     }
+     
 </style>
 
 </head>

@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <title>編輯論壇文章</title>
     <script src="https://cdn.tiny.cloud/1/3u5wm513cfl9shskemk13n936fx56zfolvirppkzq4b61na9/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4" crossorigin="anonymous"></script>
 <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,6 +57,29 @@
 </head>
 <body>
 <script>
+tinymce.init({
+    selector: 'textarea',
+    toolbar: 'bold italic',  // 加入粗體、斜體和下劃線按鈕
+    menubar: false
+});
+
+$(document).ready(function() {
+    $.ajax({
+        url: '<%=request.getContextPath()%>/forumArticles.do?action=edit',
+        type: 'GET',
+        success: function(data) {
+            var select = $('#artiTypeId');
+            data.forEach(function(type) {
+                var isSelected = type.artiTypeId == ${param.artiTypeId};
+                select.append(new Option(type.artiTypeText, type.artiTypeId, isSelected, isSelected));
+            });
+        },
+        error: function(error) {
+            console.log('Error:', error);
+        }
+    });
+});
+
 function previewImage(event) {
     // 獲取上傳的檔案
     var file = event.target.files[0];
@@ -84,10 +107,12 @@ function previewImage(event) {
     <div id="Edit">
         <form id="editForm" method="Post" action="${pageContext.request.contextPath}/forumArticles.do?action=update" enctype="multipart/form-data">
             <table>
-                <tr>
-                    <th>文章類型ID</th>
-                    <td><input type="text" name="artiTypeId" id="artiTypeId" value="${param.artiTypeId}"></td>
-                </tr>
+<tr>
+    <th>文章類型ID</th>
+    <td>
+        <select name="artiTypeId" id="artiTypeId"></select>
+    </td>
+</tr>
                 <tr>
                     <th>文章標題</th>
                     <td><input type="text" name="artiTitle" id="artiTitle" value="${param.artiTitle}"></td>

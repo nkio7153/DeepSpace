@@ -202,6 +202,25 @@ $(document).ready(function() {
 	  transform: scale(1.05); /* 鼠标悬停时稍微放大卡片 */
 	  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 提高阴影深度 */
 	}
+	
+	.likes-button{
+       background-color: #A7BEC6;
+       border-color: transparent;
+	}
+	
+	.likes-button:hover {
+       outline: none;
+       box-shadow: none !important;
+       background-color: #5B7493;
+       border-color: transparent;
+     }
+     
+     .likes-button:focus, .likes-button:active{
+       outline: none;
+       box-shadow: none !important;
+       background-color: #A7BEC6;
+       border-color: transparent;
+     }
 </style>
 
 </head>
