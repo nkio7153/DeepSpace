@@ -56,9 +56,6 @@ public class TicketCollectionServlet extends HttpServlet {
 		case "/":
 			res.sendRedirect(req.getContextPath() + "/frontend/ticketcollection/info.jsp");
 			break;
-		case "/login": // 登入
-			login(req, res);
-			break;
 		case "/list": // 列表
 			doList(req, res);
 			break;
@@ -73,28 +70,19 @@ public class TicketCollectionServlet extends HttpServlet {
 		}
 	}
 
-	/*************** 會員登入 *****************/
-	protected void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<TicketCollectionVO> list = ticketCollectionService.getAll();
-		HashSet<Integer> uniqueMemIds = new HashSet<>();
-
-		for (TicketCollectionVO vo : list) {
-			uniqueMemIds.add(vo.getMemId());
-		}
-		req.setAttribute("uniqueMemIds", uniqueMemIds);
-		req.getRequestDispatcher("/frontend/ticketcollection/login.jsp").forward(req, resp);
-	}
-
 	/*************** 收藏列表 *****************/
 	private void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		HttpSession session = req.getSession(false);
 	    Integer memId = (Integer) session.getAttribute("memId");
-	    
-	    // 取得會員收藏
+
+		if (memId == null) { //判斷無會員id就無法訪問
+			res.sendRedirect(req.getContextPath() + "/frontend/ticketcollection/info.jsp");
+			return;
+		}
+		
 		List<TicketCollectionVO> ticketList = ticketCollectionService.getOne(memId);
 		req.setAttribute("resultSet", ticketList);
-		// 存放於TicketVO
 		List<TicketVO> tickets = new ArrayList<>();
 
 		// 存放星星數跟評價數、訂單數
@@ -165,7 +153,6 @@ public class TicketCollectionServlet extends HttpServlet {
 				isFavorite = true;
 			}
 
-			// 返回更新後的收藏狀態
 			res.setContentType("application/json");
 			res.setCharacterEncoding("UTF-8");
 			PrintWriter out = res.getWriter();
@@ -198,7 +185,6 @@ public class TicketCollectionServlet extends HttpServlet {
 			responseJson.put("message", "移除收藏錯誤: " + e.getMessage());
 		}
 
-		// 發送回前端的 JSON 響應
 		out.print(responseJson.toString());
 		out.flush();
 		out.close();
