@@ -47,6 +47,8 @@
 	                    <th>管理員姓名</th>
 	                    <th>狀態</th>
 	                    <th>會員狀態修改</th>
+	                    <th>驗證狀態</th>
+	                    <th>權限狀態</th>
 	                </tr>
 	            </thead>
 	            <tbody>
@@ -75,6 +77,32 @@
 							
 							 	<button class="btn btn-secondary" onclick="location.href='<%=request.getContextPath()%>/admin/revise.jsp?adminId=${admin.adminId}&adminAcc=${admin.adminAcc}&adminPwd=${admin.adminPwd}&adminName=${admin.adminName}&adminStatus=${admin.adminStatus}&adminVerifyStatus=${admin.adminVerifyStatus}&adminFuncName=${admin.adminFuncName}'">修改</button>
 							</td>
+		                    <td>
+		                    	<c:choose>
+					                <c:when test="${admin.adminVerifyStatus == 1}">
+					                    以驗證
+					                </c:when>
+					                <c:when test="${admin.adminVerifyStatus == 2}">
+					                    未驗證
+					                </c:when>
+					                 <c:otherwise>
+					                    未知狀態
+					                </c:otherwise>
+					            </c:choose>
+                			</td>
+		                    <td>
+		                    	<c:choose>
+					                <c:when test="${admin.adminFuncName == 1}">
+					                    餐廳管理員
+					                </c:when>
+					                <c:when test="${admin.adminFuncName == 2}">
+					                    總管理員
+					                </c:when>
+					                 <c:otherwise>
+					                    未知狀態
+					                </c:otherwise>
+					            </c:choose>
+                			</td>
 		                </tr>
 	                </c:forEach>
 	                
