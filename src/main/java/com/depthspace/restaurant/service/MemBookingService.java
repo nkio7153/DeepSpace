@@ -5,7 +5,7 @@ import java.util.List;
 import com.depthspace.restaurant.model.membooking.MemBookingVO;
 
 public interface MemBookingService {
-	MemBookingVO add(MemBookingVO membookingVO);
+	int add(MemBookingVO membookingVO);
 	MemBookingVO update(MemBookingVO membookingVO);
 	void delete(Integer Membooking);
 	MemBookingVO getByMembookingId(Integer bookingId);

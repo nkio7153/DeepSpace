@@ -3,7 +3,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="../../static/css/main.css">
 <title>餐廳 Demo</title>
 </head>
 <body>

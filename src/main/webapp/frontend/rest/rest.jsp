@@ -6,6 +6,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
+	<title>餐廳</title>
 	<jsp:include page="/indexpage/head.jsp" />
 	<jsp:include page="/indexpage/header.jsp" />
 	<jsp:include page="/indexpage/headpic.jsp" />
@@ -97,9 +98,9 @@
             let maxDateString = maxDate.toISOString().split('T')[0];
             document.getElementById('bookingDate').setAttribute('max', maxDateString);
             
-            console.log(currentDate);
-            console.log(currentDate.toISOString());
-            console.log(maxDate.setMonth(currentDate.getMonth() + 1));
+//             console.log(currentDate);
+//             console.log(currentDate.toISOString());
+//             console.log(maxDate.setMonth(currentDate.getMonth() + 1));
         	
         	
 			$("#btn_info").click(function(){
@@ -136,13 +137,13 @@
 			        			  
 			        		  }
 			                  if (index === "morningNum" && entry){
-			                	  $("#bookingTime").append("<option value='0'>早上</option>");
+			                	  $("#bookingTime").append("<option value='1'>早上</option>");
 			                  }
 			                  if (index === "noonNum" && entry){
-			                	  $("#bookingTime").append("<option value='1'>中午</option>");
+			                	  $("#bookingTime").append("<option value='2'>中午</option>");
 			                  }
 			                  if (index === "eveningNum" && entry){
-			                	  $("#bookingTime").append("<option value='2'>晚上</option>");
+			                	  $("#bookingTime").append("<option value='3'>晚上</option>");
 			                  }
 			              });
 			         }
@@ -199,23 +200,23 @@
 							console.log(data);
 							return false;
 						}
-					})				              
-					
-			    	
+					});
 			    	
 			    	// 新增訂位資訊
 			    	$.ajax({
 				          type: 'post',
 				          data: $('#bookingform').serialize(),
-				          url: $(this).attr('action'),
+				          url: '/DepthSpace/RestApi/doMemBooking?action=add',
 				          success: function(data) {
 				              alert('訂位成功');
+				              console.log(data);
+				              let bookingId = data;
 				              
 							  // 訂位成功發送郵件通知
 				              $.ajax({
 						          type: 'post',
 						          data: $('#bookingform').serialize(),
-						          url: "/DepthSpace/RestApi/toMail",
+						          url: '/DepthSpace/RestApi/toMail?bookingId='+bookingId,
 						          success: function(data) {
 						              console.log(data);
 						          },

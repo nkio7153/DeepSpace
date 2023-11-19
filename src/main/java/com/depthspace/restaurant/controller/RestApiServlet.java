@@ -68,6 +68,7 @@ public class RestApiServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("application/json; charset=UTF-8");
+		req.setCharacterEncoding("UTF-8");
 		String pathInfo = req.getPathInfo();
 		switch (pathInfo) {
 			case "/getRestAll":
@@ -209,6 +210,7 @@ public class RestApiServlet extends HttpServlet {
 	}
 	
 	private void doRest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
 		PrintWriter out = resp.getWriter();
 		String action = "";
 		action = req.getParameter("action");
@@ -249,9 +251,9 @@ public class RestApiServlet extends HttpServlet {
 					rest.setAdminId(Integer.parseInt(req.getParameter("adminId")));
 					rest.setRestId(Integer.parseInt(req.getParameter("restId")));
 					restService.updateRest(rest);
-					out.print("SUCCESS");
+					out.print(gson.toJson("SUCCESS"));
 				} catch (Exception e) {
-					out.print("ERROR");
+					out.print(gson.toJson("ERROR"));
 					e.printStackTrace();
 				}
 				break;
@@ -283,8 +285,10 @@ public class RestApiServlet extends HttpServlet {
 					vo.setBookingTime(Integer.parseInt(req.getParameter("bookingTime")));
 					vo.setBookingNumber(Integer.parseInt(req.getParameter("bookingNumber")));
 					vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
-					memBookingService.add(vo);
-					out.print(gson.toJson("SUCCESS"));
+					int pk = memBookingService.add(vo);
+					System.out.println("PK "+ pk);
+					System.out.println("=============================================================");
+					out.print(gson.toJson(pk));
 				} catch (Exception e) {
 					out.print("ERROR");
 					e.printStackTrace();
@@ -301,6 +305,7 @@ public class RestApiServlet extends HttpServlet {
 					vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
 					vo.setBookingId(Integer.parseInt(req.getParameter("bookingId")));
 					memBookingService.update(vo);
+					System.out.println(vo);
 					out.print("SUCCESS");
 				} catch (Exception e) {
 					out.print("ERROR");
@@ -351,6 +356,7 @@ public class RestApiServlet extends HttpServlet {
 					vo.setNoonNum(Integer.valueOf(req.getParameter("noonNum")));
 					vo.setEveningNum(Integer.valueOf(req.getParameter("eveningNum")));
 					restBookingDateService.update(vo);
+					System.out.println("========================"+vo);
 					out.print("SUCCESS");
 				} catch (Exception e) {
 					out.print("ERROR");
@@ -382,19 +388,18 @@ public class RestApiServlet extends HttpServlet {
 					
 					String bookingTime = req.getParameter("bookingTime");
 					Integer Number = Integer.valueOf(req.getParameter("Num"));
-					System.out.println("bookingTime " + bookingTime);
 					switch (bookingTime) {
-						case ("0"): {
+						case ("1"): {
 							vo.setMorningNum(Integer.valueOf(Number));
 							status = restBookingDateService.updateMorningNum(vo);
 							break;
 						}
-						case ("1"): {
+						case ("2"): {
 							vo.setNoonNum(Integer.valueOf(Number));
 							status = restBookingDateService.updateNoonNum(vo);
 							break;
 						}
-						case ("2"): {
+						case ("3"): {
 							vo.setEveningNum(Integer.valueOf(Number));
 							status = restBookingDateService.updateEveningNum(vo);
 							break;
@@ -418,22 +423,23 @@ public class RestApiServlet extends HttpServlet {
 		HttpSession session = req.getSession();
 		MemVO mem = (MemVO) session.getAttribute("authenticatedMem");
 //		Integer memId = (Integer) session.getAttribute("memId");
-		Integer memId = mem.getMemId();
+//		Integer memId = mem.getMemId();
 		String memName = mem.getMemName();
 		String restName = req.getParameter("restName");
 		String restAddress = req.getParameter("restAddress");
 		String bookingTime = req.getParameter("bookingTime");
 		String bookingNumber = req.getParameter("bookingNumber");
 		String bookingDate = req.getParameter("bookingDate");
+		String bookingId = req.getParameter("bookingId");
 		
 		switch (bookingTime) {
-			case ("0"):
+			case ("1"):
 				bookingTime = "早上";
 				break;
-			case ("1"):
+			case ("2"):
 				bookingTime = "中午";
 				break;
-			case ("2"):
+			case ("3"):
 				bookingTime = "晚上";
 				break;
 		};
@@ -455,7 +461,7 @@ public class RestApiServlet extends HttpServlet {
 		// QRCode https://developers.google.com/chart/infographics/docs/qr_codes?hl=zh-tw
 		// url http "://" localhost ":" 8080 /DepthSpace
         String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath();
-        String uri = "/Rest/getRests";
+        String uri = "/backend/Rest.do?action=checkBooking&bookingId=" + bookingId;
         System.out.println(url + uri);
 		msg.append("<img src=https://chart.googleapis.com/chart?cht=qr&chl=" + url + uri + "&chs=150x150 />");
 		// 將HTML內容加進body再加進Multipart
