@@ -10,6 +10,10 @@ import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -23,6 +27,7 @@ import javax.servlet.http.Part;
 import com.depthspace.member.model.MemVO;
 import com.depthspace.member.service.HbMemService;
 import com.depthspace.member.service.MemberService;
+import com.depthspace.utils.MailService;
 
 import redis.clients.jedis.Jedis;
 
@@ -110,14 +115,64 @@ public class MemberServlet extends HttpServlet {
 	    jedis.select(14); // 切換到第14個資料庫，請確保這是你存放驗證碼的資料庫
 
 	    String redisKey = jedis.get(memEmail);
-	    System.out.println("redisKey= " + redisKey + "," + "password= "+ password);
+//	    System.out.println("redisKey= " + redisKey + "," + "password= "+ password);
 	    if (redisKey != null && redisKey.equals(password)) {
-//	        MemVO memvo = 
+	    	
+	    	//===================================================
+	    	HttpSession session = req.getSession();
+	    	MemberService ms = new MemberService();
+			MemVO mem = ms.getMemberInfo(memAcc);
+//			System.out.println("mem=" + mem);
+			String base64Image;
+//			if (mem.getMemAcc().equals(memAcc) && mem.getMemPwd().equals(password)) {
 
+			byte[] imageBytes = mem.getMemImage();
+			if (imageBytes != null) {
+				base64Image = Base64.getEncoder().encodeToString(imageBytes);
+				session.setAttribute("base64Image", base64Image);
+			} else {
+				String webappPath = getServletContext().getRealPath("/");
+				// 取得相對路径
+				String relativeImagePath = "member/images/1.png";
+				String absoluteImagePath = webappPath + relativeImagePath;
+
+				File defaultImageFile = new File(absoluteImagePath);
+				String defaultImagePath = defaultImageFile.getPath();
+				if (defaultImageFile.exists()) {
+					byte[] localImageBytes = Files.readAllBytes(Path.of(defaultImagePath));
+					base64Image = Base64.getEncoder().encodeToString(localImageBytes);
+
+					resp.setContentType("text/plain");
+					resp.getWriter().write(base64Image);
+//					req.setAttribute("base64Image", base64Image);
+					session.setAttribute("base64Image", base64Image);
+				} else {
+					// 無照片處理錯誤
+					System.out.println("圖不存在");
+				}
+			}
+
+			// 設定男女顯示
+			byte memSexBytes = mem.getMemSex();
+			if (memSexBytes == 1) {
+				session.setAttribute("sex", "男");
+			} else if (memSexBytes == 2) {
+				session.setAttribute("sex", "女");
+			}
+			// 設定狀態顯示
+			byte accStatus = mem.getAccStatus();
+			if (accStatus == 1) {
+				session.setAttribute("status", "正常使用中");
+			} else {
+				session.setAttribute("status", "此帳號停權");
+			}
+
+			session.setAttribute("authenticatedMem", mem);// 會員物件
+			session.setAttribute("memId", mem.getMemId());// 會員編號
+	    	//===================================================
+	    	
 	        // 在這裡清除Redis中的驗證碼，因為已經使用過了
 	        jedis.del(memEmail);
-	        
-	        
 	        jedis.close();
 
 	        // 回傳成功訊息
@@ -136,7 +191,6 @@ public class MemberServlet extends HttpServlet {
 		
 		HbMemService hbms = new HbMemService();
 		MemVO mem = hbms.findByMemAcc(memAcc);
-		System.out.println(mem);
 		if(mem == null) {
 			String URL = req.getContextPath() + "/member/forgetPassword.jsp?error=true";
 			resp.sendRedirect(URL);
@@ -152,8 +206,8 @@ public class MemberServlet extends HttpServlet {
 				int b =  (int)(Math.random()*62);
 				passRandom = passRandom + random.charAt(b);
 			}
-			System.out.println("驗證碼為:"+ passRandom);
-			//存到Redis裡面
+//			System.out.println("驗證碼為:"+ passRandom);
+//			存到Redis裡面
 			Jedis jedis = new Jedis("localhost", 6379);
 			// 切換到第14個資料庫
 	        jedis.select(14);
@@ -161,6 +215,29 @@ public class MemberServlet extends HttpServlet {
 	        jedis.expire(to, 600);
 	        
 	        jedis.close();
+	        
+	        //寄到電子信箱
+//			String messageText = "Hello! " + ch_name + " 請謹記此密碼: " + passRandom;
+			// 使用MimeMultipart 將HTML放入MimeBodyPart中
+			Multipart multipart = new MimeMultipart();
+			MimeBodyPart bodyPart = new MimeBodyPart();
+			// 將要發送的內容用HTML的格式
+			StringBuffer msg = new StringBuffer();
+			msg.append("Hello! " + ch_name + "您的臨時密碼為" + passRandom + "， 請謹記此密碼，並在10分鐘內驗證完畢。" );
+			try {
+				bodyPart.setContent(msg.toString(), "text/html; charset=UTF-8");
+				multipart.addBodyPart(bodyPart);
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+			
+			MailService mailService = new MailService();
+			try {
+				mailService.sendMail(to, subject, multipart);
+//				System.out.println("驗證碼已寄出");
+			} catch (Exception e) {
+				System.out.println("驗證碼寄出失敗");
+			}
 	        
 	        resp.getWriter().write("success");
 		} else {
@@ -437,11 +514,13 @@ public class MemberServlet extends HttpServlet {
 
 	// 儲存修改後的資料
 	private void doModify(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//錯誤存list
 		List<String> errorMsgs = new LinkedList<String>();
 		req.setAttribute("errorMsgs", errorMsgs);
-
+		
 		Integer st1 = null;
-		String st2 = null;
+		String st2 = req.getParameter("memAcc");
+		System.out.println("st2= "+ st2);
 		String st3 = null;
 		String st4 = null;
 		String st5 = null;
@@ -457,14 +536,18 @@ public class MemberServlet extends HttpServlet {
 		try {
 			// 多寫的，先暫時當二次判斷使用
 			String memId = req.getParameter("memId");
-			st1 = Integer.valueOf(memId);
+			if (memId == null) {
+				errorMsgs.add("帳號請勿空白");
+			} else {
+				st1 = Integer.valueOf(memId);
+			}
 //			System.out.println("st1=" + st1);
 
-			st2 = req.getParameter("memAcc");
+//			st2 = req.getParameter("memAcc");
 			System.out.println("帳號= "+st2);
 			if (st2 == null || st2.trim().length() == 0) {
 				errorMsgs.add("帳號請勿空白");
-			}
+			} 
 
 			st3 = req.getParameter("memPwd");
 			if (st3 == null || st3.trim().length() == 0) {
@@ -504,9 +587,10 @@ public class MemberServlet extends HttpServlet {
 			}
 
 			String memTel = req.getParameter("memTel");
-			st9 = Integer.valueOf(memTel);
-			if (st9 == null) {
+			if (memTel == null) {
 				errorMsgs.add("電話請勿空白");
+			} else {
+				st9 = Integer.valueOf(memTel);
 			}
 
 			st10 = req.getParameter("memAdd");
@@ -524,15 +608,6 @@ public class MemberServlet extends HttpServlet {
 			MemVO mem = ms.findByMemId(st1);
 			st12 = mem.getMemPoint();
 
-			// ========================================================================
-//			String memImage = req.getParameter("memImage");
-//			轉型成byte[]陣列
-//			st13 = memImage.getBytes();
-//			System.out.println("Bytes64=" + st13);
-//			解析byte[]變成Base64字串並存在st13裡
-//			st13 = Base64.getDecoder().decode(memImage);
-//			System.out.println("Base64=" + st13);
-			// ========================================================================
 
 //			修改圖片
 			Part filePart = req.getPart("memImage");
@@ -543,12 +618,7 @@ public class MemberServlet extends HttpServlet {
 				inputStream.read(st13);
 				inputStream.close();
 			} else {
-				String memImage = req.getParameter("memImage");
-//				轉型成byte[]陣列
-				st13 = memImage.getBytes();
-//				System.out.println("Bytes64=" + st13);
-//				解析byte[]變成Base64字串並存在st13裡
-				st13 = Base64.getDecoder().decode(memImage);
+				st13 = mem.getMemImage(); 
 			}
 
 //	        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -641,6 +711,7 @@ public class MemberServlet extends HttpServlet {
 		}
 
 		MemVO memvo = mems.findByMemId(memId);
+//		System.out.println("找的會員資料：" + memvo);
 		if (memvo != null) {
 			// 處理圖片
 			byte[] imageBytes = memvo.getMemImage();

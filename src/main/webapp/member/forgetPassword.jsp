@@ -69,9 +69,38 @@
 let error='${param.error}';
 
 if(error=='true'){
-	 console.log("error="+error);
+// 	 console.log("error="+error);
 	 alert("帳號錯誤或電子郵件輸入錯誤");
 }
+
+
+
+function verifyCode() {
+	
+	let memAcc = $("#memAcc").val();
+    let memEmail = $("#memEmail").val();
+    let password = $("#password").val();
+//     console.log(memEmail + "," + password)
+    
+    $.ajax({
+        type: "POST",
+        url: "${pageContext.request.contextPath}/mem/checkVerify",
+        data: { memAcc: memAcc, memEmail: memEmail ,password: password},
+
+        success: function(response) {
+        	console.log(response)
+            if (response === 'success') {
+                alert("驗證成功，導回登入");
+                
+                window.location.href = "${pageContext.request.contextPath}/member/success.jsp";
+            } else {
+                alert("驗證碼輸入錯誤，請從新輸入");
+            }
+        }
+    });
+}
+
+
 
 function submitForm() {
 	let memAcc = $("#memAcc").val();
@@ -84,34 +113,7 @@ function submitForm() {
         data: { memAcc: memAcc, memEmail: memEmail },
 
         success: function(response) {
-        	console.log(response)
-            if (response === 'success') {
-                alert("提交成功，密碼將寄送到您的信箱中！");
-                
-                //驗證畫面打開，輸入畫面藏起
-                $("#verify").show();
-                $("#forgetPassword").hide();
-            } else {
-                alert("帳號錯誤或電子郵件輸入錯誤");
-            }
-        }
-    });
-}
-
-function verifyCode() {
-	let verificationCode = $("#verificationCode").val();
-	let memAcc = $("#memAcc").val();
-    let memEmail = $("#memEmail").val();
-    let password = $("#password").val();
-    console.log(memEmail + "," + password)
-    
-    $.ajax({
-        type: "POST",
-        url: "${pageContext.request.contextPath}/mem/checkVerify",
-        data: { memAcc: memAcc, memEmail: memEmail ,password: password},
-
-        success: function(response) {
-        	console.log(response)
+//         	console.log(response)
             if (response === 'success') {
                 alert("提交成功，密碼將寄送到您的信箱中！");
                 
