@@ -87,7 +87,7 @@ public class TicketServlet extends HttpServlet {
 		case "/find": // 票券查找
 			doSearch(req, res);
 			break;
-		case "/view": 
+		case "/view":
 			view(req, res);
 			break;
 
@@ -107,10 +107,10 @@ public class TicketServlet extends HttpServlet {
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 
 		List<TicketVO> ticketList = ticketService.getAllTickets2(currentPage);
-		
-	    int ticketPageQty = ticketService.getPageTotal();
-	    req.getSession().setAttribute("ticketPageQty", ticketPageQty);
-	    
+
+		int ticketPageQty = ticketService.getPageTotal();
+		req.getSession().setAttribute("ticketPageQty", ticketPageQty);
+
 		req.setAttribute("ticketList", ticketList);
 		req.setAttribute("currentPage", currentPage);
 
@@ -198,48 +198,48 @@ public class TicketServlet extends HttpServlet {
 				}
 			}
 		}
-	    int ticketPageQty = ticketService.getPageTotal();
-	    req.getSession().setAttribute("ticketPageQty", ticketPageQty);
-	    
+		int ticketPageQty = ticketService.getPageTotal();
+		req.getSession().setAttribute("ticketPageQty", ticketPageQty);
+
 		res.sendRedirect(req.getContextPath() + "/ticketmg/list");
 	}
-	
+
 	/************ 票券查看 ************/
-    protected void view(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
-        TicketVO ticket = ticketService.getTicketById(ticketId);
-         
-        JSONObject jsonTicket = new JSONObject();
-        if (ticket != null) {
-            jsonTicket.put("ticketId", ticket.getTicketId());
-            jsonTicket.put("ticketName", ticket.getTicketName());
-            jsonTicket.put("price", ticket.getPrice());
-            jsonTicket.put("description", ticket.getDescription());
-            jsonTicket.put("stock", ticket.getStock());
-            jsonTicket.put("address", ticket.getAddress());
-            jsonTicket.put("latitude", ticket.getLatitude());
-            jsonTicket.put("longitude", ticket.getLongitude());
-            jsonTicket.put("validDays", ticket.getValidDays());
-            jsonTicket.put("status", ticket.getStatus());           
-            
-            if (ticket.getTicketType() != null) {
-                jsonTicket.put("ticketType", ticket.getTicketType().getTypeName());
-            }
-            if (ticket.getCity() != null) {
-                jsonTicket.put("cityName", ticket.getCity().getCityName());
-            }
-        }
+	protected void view(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
+		TicketVO ticket = ticketService.getTicketById(ticketId);
 
-        res.setContentType("application/json");
-        res.setCharacterEncoding("UTF-8");
+		JSONObject jsonTicket = new JSONObject();
+		if (ticket != null) {
+			jsonTicket.put("ticketId", ticket.getTicketId());
+			jsonTicket.put("ticketName", ticket.getTicketName());
+			jsonTicket.put("price", ticket.getPrice());
+			jsonTicket.put("description", ticket.getDescription());
+			jsonTicket.put("stock", ticket.getStock());
+			jsonTicket.put("address", ticket.getAddress());
+			jsonTicket.put("latitude", ticket.getLatitude());
+			jsonTicket.put("longitude", ticket.getLongitude());
+			jsonTicket.put("validDays", ticket.getValidDays());
+			jsonTicket.put("status", ticket.getStatus());
 
-        res.getWriter().write(jsonTicket.toString());
-    }
-    
-	/************ 票券修改 圖片更新尚須修正************/
-    protected void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-			Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
-			TicketVO ticket = ticketService.getTicketById(ticketId);
+			if (ticket.getTicketType() != null) {
+				jsonTicket.put("ticketType", ticket.getTicketType().getTypeName());
+			}
+			if (ticket.getCity() != null) {
+				jsonTicket.put("cityName", ticket.getCity().getCityName());
+			}
+		}
+
+		res.setContentType("application/json");
+		res.setCharacterEncoding("UTF-8");
+
+		res.getWriter().write(jsonTicket.toString());
+	}
+
+	/************ 票券修改 圖片更新尚須修正 ************/
+	protected void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
+		TicketVO ticket = ticketService.getTicketById(ticketId);
 
 		if (!req.getMethod().equalsIgnoreCase("POST")) {
 			// 若不是POST送出請求，就到編輯頁面 (將該id票券的值塞入)
@@ -277,55 +277,46 @@ public class TicketServlet extends HttpServlet {
 			ticketType.setTicketTypeId(ticketTypeId);
 			ticket.setTicketType(ticketType);
 
-	        // 處理圖片更新
-	        processTicketImages(req, ticket);
+			// 圖片
+			Collection<Part> imageParts = req.getParts().stream() //取得圖片名稱(既有或新增)存入list
+					.filter(part -> part.getName().startsWith("image_") || part.getName().startsWith("ticketImage_new"))
+					.collect(Collectors.toList());
 
-	        
-		    ticketService.updateTicket(ticket);
-		    res.sendRedirect(req.getContextPath() + "/ticketmg/list");
+			for (Part imagePart : imageParts) {
+				String partName = imagePart.getName(); //取得list中圖片名稱
+				InputStream inputStream = imagePart.getInputStream(); 
+				byte[] imageBytes = readInputStream(inputStream);
+
+				if (partName.startsWith("ticketImage_new")) { //若是新增則存入
+					TicketImagesVO newImage = new TicketImagesVO();
+					newImage.setTicket(ticket);
+					newImage.setIsMainImage((byte) 0);
+					newImage.setImage(imageBytes);
+					ticketImagesService.save(newImage);
+				} else if (partName.startsWith("image_")) { //若是既有則存入既有或更新
+					Integer serialId = extractSerialId(partName);
+					TicketImagesVO existingImage = ticketImagesService.getImageById(serialId);
+					if (existingImage != null && imageBytes.length > 0) {
+						existingImage.setImage(imageBytes);
+						ticketImagesService.update(existingImage);
+					}
+				}
+			}
+
+			ticketService.updateTicket(ticket);
+			res.sendRedirect(req.getContextPath() + "/ticketmg/list");
 		}
 	}
 
-    protected void processTicketImages(HttpServletRequest req, TicketVO ticket) throws IOException, ServletException {
-	    Collection<Part> imageParts = req.getParts().stream()
-	                                      .filter(part -> part.getName().startsWith("image_"))
-	                                      .collect(Collectors.toList());
-
-	    for (Part imagePart : imageParts) {
-	        InputStream inputStream = imagePart.getInputStream();
-	        byte[] imageBytes = readInputStream(inputStream);
-
-	        String partName = imagePart.getName();
-	        Integer serialId = extractSerialId(partName);
-
-	        TicketImagesVO imageRecord;
-	        if (serialId != null) {
-	            // 更新
-	            imageRecord = ticketImagesService.getImageById(serialId);
-	            if (imageRecord != null) {
-	                imageRecord.setImage(imageBytes);
-	                ticketImagesService.update(imageRecord);
-	            }
-	        } else {
-	            // 新增
-	            imageRecord = new TicketImagesVO();
-	            imageRecord.setTicket(ticket);
-	            imageRecord.setIsMainImage((byte) 0); 
-	            imageRecord.setImage(imageBytes);
-	            ticketImagesService.save(imageRecord);
-	        }
-	    }
-	}
-
-    protected Integer extractSerialId(String partName) {
-	    try {
-	        if (partName != null && partName.startsWith("image_")) {
-	            return Integer.parseInt(partName.substring("image_".length()));
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace(); 
-	    }
-	    return null; 
+	protected Integer extractSerialId(String partName) {
+		try {
+			if (partName != null && partName.startsWith("image_")) {
+				return Integer.parseInt(partName.substring("image_".length()));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 //	private void updateExistingImage(Part part, TicketVO ticket) throws IOException, ServletException {
@@ -360,8 +351,7 @@ public class TicketServlet extends HttpServlet {
 //	    // 保存新圖片到數據庫
 //	    ticketImagesService.save(newTicketImage);
 //	}
-	
-	
+
 //	// 存入多張圖片
 //	Collection<Part> fileParts = req.getParts(); // 多份圖
 //	boolean isFirstImage = true; // 標記是否為第一張圖
@@ -387,9 +377,9 @@ public class TicketServlet extends HttpServlet {
 //			ticketImagesList.add(ticketImage);
 //			// 儲存所有圖片
 //			ticketImagesService.saveAll(ticketImagesList);
-	
+
 	/************ 票券搜尋 ************/
-    protected void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	protected void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		Integer ticketTypeId = null;
 		Integer ticketId = null;
 		Integer cityId = null;
@@ -451,13 +441,13 @@ public class TicketServlet extends HttpServlet {
 	/************ 圖片讀入DB ************/
 
 	public byte[] readInputStream(InputStream inputStream) throws IOException {
-	    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-	    int nRead;
-	    byte[] data = new byte[1024];
-	    while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-	        buffer.write(data, 0, nRead);
-	    }
-	    buffer.flush();
-	    return buffer.toByteArray();
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		int nRead;
+		byte[] data = new byte[1024];
+		while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+			buffer.write(data, 0, nRead);
+		}
+		buffer.flush();
+		return buffer.toByteArray();
 	}
 }

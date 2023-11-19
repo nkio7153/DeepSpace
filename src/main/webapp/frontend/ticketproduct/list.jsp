@@ -54,7 +54,7 @@
 		<div class="row">
 			<!-- 左側篩選 -->
 			<div class="col-md-3">
-				<form id="searchForm" onsubmit="event.preventDefault(); updateTicketList(1);">
+				<form id="searchForm"">
 					<!-- 搜尋框 -->
 					<div class="input-group mb-3">
 						<input type="text" class="form-control" placeholder="票券名稱"
@@ -67,22 +67,22 @@
 						</div>
 					</div>
 					<!-- 目的地 -->
-        <div class="form-group">
-            <c:forEach var="areaItem" items="${uniqueTicketArea}" varStatus="status">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="cityId${status.index}" 
-                           name="areaId" value="${areaItem.cityId}" onchange="updateTicketList(1)">
-                    <label class="custom-control-label" for="cityId${status.index}">${areaItem.cityName}</label>
-                </div>
-            </c:forEach>
-        </div>
+        		<div class="form-group">
+	            <c:forEach var="areaItem" items="${uniqueTicketArea}" varStatus="status">
+	                <div class="custom-control custom-checkbox">
+	                    <input type="checkbox" class="custom-control-input" id="cityId${status.index}" 
+	                           name="areaId" value="${areaItem.cityId}">
+	                    <label class="custom-control-label" for="cityId${status.index}">${areaItem.cityName}</label>
+	                </div>
+	            </c:forEach>
+     		   </div>
 			<!-- 票券類型 -->
 			<h4>票券類型</h4>
 			<div class="form-group">
 			    <c:forEach var="typeItem" items="${uniqueTicketTypes}" varStatus="status">
 			        <div class="custom-control custom-checkbox">
 			            <input type="checkbox" class="custom-control-input" id="ticketTypeId${status.index}" 
-			                   name="ticketTypeId" value="${typeItem.ticketTypeId}" onchange="updateTicketList(1)">
+			                   name="ticketTypeId" value="${typeItem.ticketTypeId}">
 			            <label class="custom-control-label" for="ticketTypeId${status.index}">${typeItem.typeName}</label>
 			        </div>
 			    </c:forEach>
@@ -92,23 +92,15 @@
 		<!-- 右側內容 -->
 		<div class="col-md-9" id="ticketright">
 			<div class="d-flex justify-content-between align-items-center mb-3">
-				<div >
-				<c:choose>
-					<c:when test="${not empty searchCount}">
-						<h3 class="mb-0">搜尋結果 ${searchCount} 項票券</h3>
-					</c:when>
-					<c:otherwise>
-						<h3 class="mb-0">共有 ${totalTickets} 項票券體驗</h3>
-					</c:otherwise>
-				</c:choose>
-				</div>
+			<h3 class="mb-0">共有 ${total} 項票券體驗</h3>
 			<!-- 排序 -->				    
-			<label for="sortOption"></label>
+			<label for="sortet"></label>
 			<div class="form-group">
-			    <select class="form-control" id="sortOption" onchange="updateTicketList(1)">
-			 <option value="ticketId_asc" ${param.sortField == 'ticketId' && param.sortOrder == 'asc' ? 'selected' : ''}>依上市日(新→舊)</option>
-			<option value="ticketId_desc" ${param.sortField == 'ticketId' && param.sortOrder == 'desc' ? 'selected' : ''}>依上市日(舊→新)</option>
-			    </select>
+			    <select class="form-control" id="sortSet" style="width: auto;" onchange="sortArticles()">
+					<option>預設</option>
+					<option value="desc">按發布日排序(新→舊)</option>
+					<option value="asc">按發布日排序(舊→新)</option>
+				</select>
 			</div>
 			</div>
 			<!-- 票券列表 -->
@@ -126,7 +118,7 @@
 								<div class="col-md-8">
 									<div class="card-body">
 										<h5 class="card-title">${ticket.ticketName}</h5>
-										<p class="card-title"><i class="fa-solid fa-tags" style="color: #4e939a;"></i>&ensp;|&ensp;${ticket.ticketType.typeName}&ensp;|&ensp;
+										<p class="card-title"><i class="fa-solid fa-tags" style="color: #4e939a;"></i>&ensp;&ensp;${ticket.ticketType.typeName}&ensp;|&ensp;
 											${ticket.city.cityName}</p>
 										<p class="card-title">
 											<c:choose>
@@ -172,105 +164,80 @@
 						</div>
 					</a>
 				</c:forEach>
+				<div >
+				<c:forEach begin="1" end="${pageQty}" var="i">
+			    <li class="page-item ${i == currentPage ? 'active' : ''}">
+			        <a class="page-link" href="${pageContext.request.contextPath}/ticketproduct/list?page=${i}">${i}</a>
+			    </li>
+				</c:forEach>
+			    </div>	
 			</div>
 		</div>
 	</div>
 
 </div>
-<%-- 分頁--%>
-
-<ul class="pagination justify-content-center">
-   <c:forEach var="i" begin="1" end="${ticketPageQty}" step="1">
-       <li class="page-item ${i == currentPage ? 'active' : ''}">
-           <a class="page-link" href="#" onclick="updateTicketList(${i});">${i}</a>
-       </li>
-   </c:forEach>
-</ul>
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/17a3eedde4.js" crossorigin="anonymous"></script>
 <script>
-
-
-function updateTicketList(currentPage) {
-    $('#loadingSpinner').show();
-    var searchQuery = $('#ticketName').val(); // 關鍵字查詢
-    var formData = $('#searchForm').serialize();
-    var sortOption = $('#sortOption').val().split('_');
-    var sortField = sortOption[0];
-    var sortOrder = sortOption[1];
-    formData += '&page=' + currentPage + '&ajax=true';
+//左邊搜尋條件
+$(document).ready(function() {
+    $('#searchForm').on('submit', function(e) {
+        e.preventDefault(); 
+        $('#loadingSpinner').show(); // 載入動畫
+        var formData = $(this).serialize();
+        $.ajax({
+            url: "<%=request.getContextPath()%>/ticketproduct/search", 
+            data : formData, 
+            success : function(result) {
+                $('#ticketright').html(result);
+                updatePagination(result.pageQtyA, result.currentPage);
+            },
+            complete: function() {
+                $('#loadingSpinner').hide(); // 隱藏載入動畫
+            }
+        });
+    });
     
+	// 篩選變更也觸發
+	$('input[type=checkbox]').change(function() {
+		$('#searchForm').submit();
+	});
+});
+//頁數變動
+function updatePagination(pageQtyA, currentPage) {
+    var paginationHtml = '';
+    for (var i = 1; i <= pageQtyA; i++) {
+        paginationHtml += '<li class="page-item ' + (i === currentPage ? 'active' : '') + '">';
+        paginationHtml += '<a class="page-link" href="#" onclick="loadPage(' + i + '); return false;">' + i + '</a></li>';
+    }
+    $('.pagination').html(paginationHtml);
+}
+function loadPage(pageNumber) {
     $.ajax({
-        url: '<c:url value="/ticketproduct/search"/>', 
-        type: 'GET',
-        data: {
-            page: currentPage,
-            sortField: sortField,
-            sortOrder: sortOrder,
-            searchQuery: searchQuery,
-            formData,
-            ajax: 'true'
-        },
+        url: '<%=request.getContextPath()%>/ticketproduct/search', 
+        data: { page: pageNumber },
         success: function(response) {
-            $('#ticketright').html(response); 
-            $('#loadingSpinner').hide();
-        }, 
-        error: function(){
-            $('#loadingSpinner').hide();
-            alert("發生錯誤，請重試！")
+            $('#ticketright').html(response);
         }
     });
 }
-
-// function updateTicketList(currentPage) {
-//     $('#loadingSpinner').show();
-    
-//     // 篩選
-//     var filterConditions = {};
-//     filterConditions['page'] = currentPage;
-//     filterConditions['ajax'] = 'true';
-
-//     // 搜尋
-//     var searchQuery = $('#ticketName').val(); 
-//     if (searchQuery) {
-//         filterConditions['ticketName'] = [searchQuery];
-//     }
-
-//     // 篩選
-//     $('input:checkbox[name="areaId"]:checked').each(function() {
-//         if (!filterConditions['areaId']) {
-//             filterConditions['areaId'] = [];
-//         }
-//         filterConditions['areaId'].push($(this).val());
-//     });
-//     $('input:checkbox[name="ticketTypeId"]:checked').each(function() {
-//         if (!filterConditions['ticketTypeId']) {
-//             filterConditions['ticketTypeId'] = [];
-//         }
-//         filterConditions['ticketTypeId'].push($(this).val());
-//     });
-
-//     // 排序
-//     var sortOption = $('#sortOption').val().split('_');
-//     filterConditions['sortField'] = sortOption[0];
-//     filterConditions['sortOrder'] = sortOption[1];
-
-//     $.ajax({
-//         url: '<c:url value="/ticketproduct/list"/>', 
-//         type: 'GET',
-//         data: filterConditions,
-//         success: function(response) {
-//             $('#ticketright').html(response); 
-//             $('#loadingSpinner').hide();
-//         }, 
-//         error: function(){
-//             $('#loadingSpinner').hide();
-//             alert("發生錯誤，請重試！")
-//         }
-//     });
-// }
+function sortArticles() {
+    var sortValue = document.getElementById("sortSet").value;
+    $.ajax({
+        url: "<%=request.getContextPath()%>/ticketproduct/search", 
+        type: 'GET',
+        data: { sort: sortValue },
+        success: function(response) {
+            $('#ticketright').html(response);
+            document.getElementById("sortSet").value = sortValue;
+        },
+        error: function(error) {
+            console.error('排序失敗', error);
+        }
+    });
+}
 
       
 </script>

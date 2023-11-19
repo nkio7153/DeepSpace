@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import com.depthspace.forum.model.articlescollect.ArticlesCollectVO;
 import com.depthspace.forum.model.articleslike.ArticlesLikeVO;
 import com.depthspace.forum.model.articleslike.ArticlesLikeVO.CompositeDetail;
 
@@ -43,14 +44,20 @@ public class ArticlesLikeDaoImpl implements ArticlesLikeDao {
 
 	@Override
 	public List<ArticlesLikeVO> getByMemId(Integer memId) {
-		// TODO Auto-generated method stub
-		return null;
+		return getSession()
+			.createQuery("from ArticlesLikeVO where memId= :memId", ArticlesLikeVO.class)
+			.setParameter("memId", memId)
+			.list();
 	}
 
 	@Override
 	public boolean islike(Integer articleId, Integer memId) {
-		// TODO Auto-generated method stub
-		return false;
+		List<ArticlesLikeVO> results = getSession()		
+				.createQuery("from ArticlesLikeVO where articleId= :articleId AND memId= :memId", ArticlesLikeVO.class)
+				.setParameter("articleId", articleId)
+				.setParameter("memId", memId)
+				.list();
+		return !results.isEmpty();
 	}
 
 }
