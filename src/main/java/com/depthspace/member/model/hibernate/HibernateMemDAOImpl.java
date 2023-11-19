@@ -115,5 +115,10 @@ public class HibernateMemDAOImpl implements HibernateMemDAO_Interface {
 		List<MemVO> searchMembersList = query.list();
 		return searchMembersList ;
 	}
+	@Override
+	public int updatePassword(String memAcc,String memPwd) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }
