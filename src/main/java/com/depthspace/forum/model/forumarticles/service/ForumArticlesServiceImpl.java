@@ -122,4 +122,22 @@ public class ForumArticlesServiceImpl implements ForumArticlesService {
 		}
 		return list;
 	}
+	// 對文章進行點讚
+	@Override
+    public void likeArticle(Integer articleId) {
+        ForumArticlesVO article = dao.getByArticleId(articleId);
+        if (article != null) {
+            article.incrementLikes();
+            dao.update(article);
+        }
+    }
+	// 對文章取消點讚
+	@Override
+    public void unlikeArticle(Integer articleId) {
+        ForumArticlesVO article = dao.getByArticleId(articleId);
+        if (article != null) {
+            article.decrementLikes();
+            dao.update(article);
+        }
+    }
 }

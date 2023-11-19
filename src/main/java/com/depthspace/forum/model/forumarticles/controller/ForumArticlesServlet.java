@@ -1,6 +1,7 @@
 package com.depthspace.forum.model.forumarticles.controller;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -260,6 +261,8 @@ public class ForumArticlesServlet extends HttpServlet {
 	private void addForumArticles(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
 		byte[] artiImg = null;
+		// 獲取預設圖片的實際路徑
+		String defaultImagePath = req.getServletContext().getRealPath("/indexpage/images/nopic.jpg");
 		try {
 			Integer memId = null;
 			HttpSession session = req.getSession(false);
@@ -287,6 +290,11 @@ public class ForumArticlesServlet extends HttpServlet {
 //				artiImg = baos.toByteArray();
 				inputStream.close();
 //				baos.close();
+			}else {
+				  // 使用者沒有上傳圖片，使用預設圖片
+			    InputStream inputStream = new FileInputStream(defaultImagePath);
+			    artiImg = inputStream.readAllBytes();
+			    inputStream.close();
 			}
 
 			ForumArticlesVO forum = new ForumArticlesVO(null, memId, msgId, artiTypeId, artiTitle, artiTime, artiText,
