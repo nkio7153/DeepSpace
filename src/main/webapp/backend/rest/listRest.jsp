@@ -71,11 +71,11 @@
 						<form method="post" action="${pageContext.request.contextPath}/backend/Rest.do">
 							<input type="submit" class="btn btn-secondary" value="修改">
 							<input type="hidden" name="restId" value="${rest.restId}">
-							<input type="hidden" name="action" value="getMembooking">
+							<input type="hidden" name="action" value="getId_for_update">
 						</form>
 					</td>
 					<td>
-					<form method="post" action="${pageContext.request.contextPath}/backend/Rest.do">
+						<form method="post" action="${pageContext.request.contextPath}/backend/Rest.do">
 							<input type="submit" class="btn btn-secondary" value="刪除">
 							<input type="hidden" name="restId" value="${rest.restId}">
 							<input type="hidden" name="action" value="delete">
@@ -100,6 +100,16 @@
 	            language: {
 	                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/zh-HANT.json',
 	            },
+	            columnDefs: [
+	                {
+	                	 targets: 1,
+	                     className: "dt-body-center",
+	                },
+	                {
+	                	 targets: 10,
+	                     className: "dt-body-center",
+	                }
+	            ],
 	        });
 	    });
     </script>

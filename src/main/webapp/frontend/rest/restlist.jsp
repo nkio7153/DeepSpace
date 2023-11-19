@@ -9,6 +9,7 @@
 <html>
 
 <head>
+<title>餐廳</title>
 <jsp:include page="/indexpage/head.jsp" />
 <jsp:include page="/indexpage/header.jsp" />
 <jsp:include page="/indexpage/headpic.jsp" />

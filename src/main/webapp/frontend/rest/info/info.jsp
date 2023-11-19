@@ -10,6 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>餐廳</title>
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOKKfj_MwehUJhm-t7jPbO1ydNODLgLOM&libraries=places&callback=initMap"></script>
 	<style>
 /* 		.carousel-inner { */
@@ -84,7 +85,7 @@
 			    placeId = results[0].place_id;
 	           	var req = {
 		    		placeId: placeId,
-		     		fields: ['name', 'rating', 'photo', 'type', 'opening_hours', 'adr_address','url']
+		     		fields: ['name', 'rating', 'photo', 'type', 'opening_hours', 'adr_address']
 				};
 		        
 		        service = new google.maps.places.PlacesService(map);
@@ -95,7 +96,7 @@
 		
 			function callback(place, status) {
 			if (status == google.maps.places.PlacesServiceStatus.OK) {
-				console.log(place.url);
+// 				console.log(place);
 	
 				// 評分
 				$("#r_name").append("<h5 id='rating'>"+place.rating+"</h5>")

@@ -1,33 +1,46 @@
 package com.depthspace.restaurant.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
+import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO;
 import com.depthspace.restaurant.service.MemBookingService;
 import com.depthspace.restaurant.service.MemBookingServiceImpl;
+import com.depthspace.restaurant.service.RestBookingDateService;
+import com.depthspace.restaurant.service.RestBookingDateServiceImpl;
 import com.depthspace.restaurant.service.RestService;
 import com.depthspace.restaurant.service.RestServiecImpl;
 
 @WebServlet("/backend/Rest.do")
+@MultipartConfig
 public class RestServlet extends HttpServlet {
 	
 	private RestService restService;
-	private MemBookingService membookingService;
+	private MemBookingService memBookingService;
+	private RestBookingDateService bookingDateService;
 
 	@Override
 	public void init() throws ServletException {
 		restService = new RestServiecImpl();
-		membookingService = new MemBookingServiceImpl();
+		memBookingService = new MemBookingServiceImpl();
+		bookingDateService = new RestBookingDateServiceImpl();
+		
 	}
 	
 	@Override
@@ -37,15 +50,18 @@ public class RestServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 不緩存設定
+		resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		resp.setHeader("Pragma", "no-cache");
+		resp.setDateHeader("Expires", 0);
+
 		req.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html; charset=UTF-8");
 		String action = req.getParameter("action");
 		String forwardPath = "";
 		switch (action) {
 			case "getAll":
 				forwardPath = getAllRests(req, resp);
-				break;
-			case "compositeQuery":
-				forwardPath = getCompositeEmpsQuery(req, resp);
 				break;
 			case "add":
 				forwardPath = add(req, resp);
@@ -60,13 +76,23 @@ public class RestServlet extends HttpServlet {
 				forwardPath = update(req, resp);
 				break;
 			case "getMembooking":
-				forwardPath = memBooking(req, resp);
+				forwardPath = getMembooking(req, resp);
+				break;
+			case "getBookingDate":
+				forwardPath = getBookingDate(req, resp);
+				break;
+			case "checkBooking":
+				forwardPath = checkBooking(req, resp);
+				break;
+			case "checkBookingUpdate":
+				forwardPath = checkBookingUpdate(req, resp);
 				break;
 			default:
-				forwardPath = "/Rest/indexDemo.jsp";
+				forwardPath = getAllRests(req, resp);
+				break;
+				
 		}
 		
-		resp.setContentType("text/html; charset=UTF-8");
 		RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
 		dispatcher.forward(req, resp);
 	}
@@ -74,17 +100,7 @@ public class RestServlet extends HttpServlet {
 	private String getAllRests(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<RestVO> restList = restService.getAllRest();
 		req.setAttribute("restList", restList);
-		return "/backend/rest/list.jsp";
-	}
-	
-	private String getCompositeEmpsQuery(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String restId = req.getParameter("restId");
-		if (restId == null) { 
-			return "/backend/Rest/listCompositeQuery.jsp";
-		}
-		RestVO restList = restService.getRestByRestId(Integer.parseInt(restId));
-		req.setAttribute("rest", restList);
-		return "/backend/Rest/listCompositeQuery.jsp";
+		return "/backend/rest/listRest.jsp";
 	}
 	
 	private String add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -141,7 +157,7 @@ public class RestServlet extends HttpServlet {
 		String restId = req.getParameter("restId");
 		RestVO restList = restService.getRestByRestId(Integer.parseInt(restId));
 		req.setAttribute("rest", restList);
-		return "/backend/Rest/Update_Rest.jsp";
+		return "/backend/rest/editRest.jsp";
 	}
 	
 	private String update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -155,18 +171,75 @@ public class RestServlet extends HttpServlet {
 		rest.setBookingLimit(Integer.parseInt(req.getParameter("bookingLimit")));
 		rest.setAdminId(Integer.parseInt(req.getParameter("adminId")));
 		rest.setRestId(Integer.parseInt(req.getParameter("restId")));
+		
+		// 設定儲存圖片路徑與檔名
+        String uploadPath = getServletContext().getRealPath("/static/images/rest");
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists())
+        	uploadDir.mkdir();
+        String fileName = "r_" + req.getParameter("restId") + ".jpg";
+        String filePath = uploadPath + File.separator + fileName;
+        // 處理圖片儲存
+        // enctype="multipart/form-data" form上傳 取上傳圖片
+        Part filePart = req.getPart("uploadimg");
+        // 判斷沒上傳圖片則不執行
+        if (filePart != null && filePart.getSize() > 0) {
+        	// 將圖片輸入
+        	InputStream input = filePart.getInputStream();
+        	// 將圖片輸出到設定的檔案路徑
+        	OutputStream output = new FileOutputStream(filePath);
+        	byte[] buffer = new byte[1024];
+        	int nRead;
+        	// 輸入流中讀取檔案數據並寫入輸出流 讀完返回-1
+        	while ((nRead = input.read(buffer)) != -1) {
+        		output.write(buffer, 0, nRead);
+        	}
+        	output.close();
+        	input.close();
+        }
 		restService.updateRest(rest);
-		return "/Rest/Rest.do?action=getAll";
+		return "/backend/Rest.do?action=getAll";
 	}
 	
-	private String memBooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private String getMembooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String restId = req.getParameter("restId");
-		List<MemBookingVO> mb = membookingService.getByRestId(Integer.valueOf(restId));
+		List<MemBookingVO> mb = memBookingService.getByRestId(Integer.valueOf(restId));
 		req.setAttribute("mbList", mb);
-		if (mb == null) {
-			return "/backend/Rest/demoRestList.jsp";
-		}
-		System.out.println(mb.toString());
-		return "/backend/Rest/membooking.jsp";
+		return "/backend/rest/listMembooking.jsp";
 	}
+	
+	private String getBookingDate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String restId = req.getParameter("restId");
+		if (restId != null) {
+			List<RestBookingDateVO> bookDate = bookingDateService.getById(Integer.valueOf(restId));
+			req.setAttribute("bookDate", bookDate);
+			return "/backend/rest/listBookingDate.jsp";
+		}
+		List<RestBookingDateVO> bookDate = bookingDateService.getAll();
+		req.setAttribute("bookDate", bookDate);
+		return "/backend/rest/listBookingDate.jsp";
+	}
+	
+	private String checkBooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		MemBookingVO mb = memBookingService.getByMembookingId(Integer.valueOf(req.getParameter("bookingId")));
+		req.setAttribute("mb", mb);
+		return "/backend/rest/checkBooking.jsp";
+	}
+	
+	private String checkBookingUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		MemBookingVO vo = new MemBookingVO();
+		String restId = req.getParameter("restId");
+		vo.setRestId(Integer.parseInt(req.getParameter("restId")));
+		vo.setMemId(Integer.parseInt(req.getParameter("memId")));
+		vo.setCheckStatus(Integer.parseInt(req.getParameter("checkStatus")));
+		vo.setBookingTime(Integer.parseInt(req.getParameter("bookingTime")));
+		vo.setBookingNumber(Integer.parseInt(req.getParameter("bookingNumber")));
+		vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
+		vo.setBookingId(Integer.parseInt(req.getParameter("bookingId")));
+		memBookingService.update(vo);
+		
+		return "/backend/Rest.do?action=getMembooking&restId=" + restId;
+		
+	}
+	
 }
