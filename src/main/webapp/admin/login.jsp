@@ -53,7 +53,7 @@ body, html {
 		</div>
 
 		<div class="check">
-			<label><input type="checkbox">記住我</label> <a href="#"	id="forgetPwd">忘記密碼</a>
+			<label><input type="checkbox">記住我</label> <a href="${pageContext.request.contextPath}/admin/forgetPassword.jsp"	id="forgetPwd">忘記密碼</a>
 		</div>
 	<input type="hidden" name="loginLocation" value="${param.requestURI}">
 		<input type="submit" value="登入">
@@ -82,7 +82,11 @@ body, html {
 		 alert("帳號錯誤或無此帳號");
 	 } else if (error=='true') {
 		 alert("密碼錯誤，請從新輸入")
+	 } else if(error=='nostatus'){
+		 alert("此帳戶已停權，請聯繫客服")
 	 }
+	 
+	 
 		 </script>
 </body>
 </html>
