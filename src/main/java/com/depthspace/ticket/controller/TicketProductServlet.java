@@ -125,6 +125,7 @@ public class TicketProductServlet extends HttpServlet {
 	    } catch (Exception e) {
 	        System.out.println("Redis連接失敗：" + e.getMessage());
 	    }
+	    
 	    // 計算星星數和評價數
 //	    final double UPDATE_PROBABILITY = 0.1; 
 	    for (TicketVO ticket : ticketList) {
@@ -142,11 +143,13 @@ public class TicketProductServlet extends HttpServlet {
 	                totalRatingCount = Integer.parseInt(totalRatingCountCache);
 	            } else {
 	                // 從資料庫更新到 Redis
-	                averageStars = calculateAverageStars(ticketId);
-	                totalRatingCount = calculateTotalRatingCount(ticketId);
+	            	averageStars = calculateAverageStars(ticketId);
+	            	totalRatingCount = calculateTotalRatingCount(ticketId);
 
-	                jedis.set("ticket:" + ticketId + ":averageStars", String.valueOf(averageStars));
-	                jedis.set("ticket:" + ticketId + ":totalRatingCount", String.valueOf(totalRatingCount));
+	            	String formattedAverage = String.format("%.1f", averageStars);
+	            	jedis.set("ticket:" + ticketId + ":averageStars", formattedAverage);
+	            	jedis.set("ticket:" + ticketId + ":totalRatingCount", String.valueOf(totalRatingCount));
+
 	            }
 	        } else {
 	            // 無成功連線就直接從資料庫取得
@@ -166,8 +169,14 @@ public class TicketProductServlet extends HttpServlet {
 	private double calculateAverageStars(Integer ticketId) {
 	    Integer totalStars = ticketService.getTotalStars(ticketId);
 	    Integer totalRatingCount = ticketService.getTotalRatingCount(ticketId);
-	    return totalRatingCount > 0 ? (double) totalStars / totalRatingCount : 0;
+	    if (totalRatingCount > 0) {
+	        double average = (double) totalStars / totalRatingCount;
+	        return Double.parseDouble(String.format("%.1f", average));
+	    } else {
+	        return 0.0;
+	    }
 	}
+
 
 	private int calculateTotalRatingCount(Integer ticketId) {
 	    return ticketService.getTotalRatingCount(ticketId);
