@@ -111,7 +111,7 @@
             <th style="width: 14vw"></th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="tbody">
         <c:forEach items="${list}" var="cart" varStatus="cartStatus">
             <tr id="tr">
                 <td align="center" class="vertical" style="width:7.5vw">${cartStatus.count}</td>
@@ -214,15 +214,18 @@
 
     //全部確認刪除
     function delAll(memId) {
+        let cartNum=$("#cartNum");
         var ok = window.confirm("確定要刪除嗎");
         if (ok) {
-            $("#tr").remove();
+            $("#tbody").remove();
             let url="${pageContext.request.contextPath}/tsc/deleteAll?memId=" + memId;
             fetch(url).then(function(response){
                 return response.text();
             })
                 .then(function(data){
                     console.log("刪除成功")
+                    cartNum.text(data);
+
                 })
                 .catch(function(error){
                     console.log(error);
@@ -341,7 +344,7 @@
         // });
         //刪除確認
         $(".delete1").on("click", function () {
-
+            let cartNum=$("#cartNum");
             let memId = $('input[name="memId"]').val();
             let ticketId = $(this).closest('tr').find('.tid').text();
             console.log("memId:", memId, "ticketId:", ticketId);
@@ -391,6 +394,7 @@
                     .then(function (data) {
                         if (data != null) {
                             console.log(data);
+                            cartNum.text(data);
                             $(this).closest('tr').remove();
                         }
                     })
