@@ -26,4 +26,10 @@ public interface ForumArticlesService {
 
 	// 根據會員ID取得他收藏的所有文章
 	List<ForumArticlesVO> getByArticleIds(Integer memId);
+	
+    // 對文章進行點讚
+    void likeArticle(Integer articleId);
+
+    // 對文章取消點讚
+    void unlikeArticle(Integer articleId);
 }

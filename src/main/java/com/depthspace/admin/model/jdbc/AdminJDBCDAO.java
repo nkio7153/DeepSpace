@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -25,6 +26,7 @@ public class AdminJDBCDAO implements AdminDAO_Interface {
 	public void insert(AdminVO AdminVO) {
 		Connection conn = null;
 		PreparedStatement ps = null;
+		
 		try {
 			conn = DBUtil.getConnection();
 			ps = conn.prepareStatement(INSERT_STMT);
@@ -36,6 +38,7 @@ public class AdminJDBCDAO implements AdminDAO_Interface {
 			ps.setByte(6, AdminVO.getAdminFuncName());
 			
 			ps.executeUpdate();
+			
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {

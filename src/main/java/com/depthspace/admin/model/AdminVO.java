@@ -54,16 +54,15 @@ public class AdminVO implements Serializable{
 		this.adminFuncName = adminFuncName;
 	}
 
-	public AdminVO(String adminName, String adminAcc, String adminPwd, Byte adminStatus, Byte adminVerifyStatus,
-			Byte adminFuncName) {
-		super();
-		this.adminName = adminName;
-		this.adminAcc = adminAcc;
-		this.adminPwd = adminPwd;
-		this.adminStatus = adminStatus;
-		this.adminVerifyStatus = adminVerifyStatus;
-		this.adminFuncName = adminFuncName;
+	public AdminVO(String adminAcc, String adminPwd, String adminName, Byte adminStatus, Byte adminVerifyStatus, Byte adminFuncName) {
+	    this.adminAcc = adminAcc;
+	    this.adminPwd = adminPwd;
+	    this.adminName = adminName;
+	    this.adminStatus = adminStatus;
+	    this.adminVerifyStatus = adminVerifyStatus;
+	    this.adminFuncName = adminFuncName;
 	}
+
 
 	public Integer getAdminId() {
 		return adminId;

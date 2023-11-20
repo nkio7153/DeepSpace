@@ -9,6 +9,7 @@
 <html>
 
 <head>
+<title>餐廳</title>
 <jsp:include page="/indexpage/head.jsp" />
 <jsp:include page="/indexpage/header.jsp" />
 <jsp:include page="/indexpage/headpic.jsp" />
@@ -66,8 +67,8 @@
 									<span class="d-inline">
 										<!-- 判斷會員已收藏顯示愛心 -->
 										<!-- 設參數status做判斷 -->
-										 <c:set	var="status" value="0" scope="request" />
-										 <c:forEach var="rc" items="${rcList}">
+										<c:set	var="status" value="0" scope="request" />
+										<c:forEach var="rc" items="${rcList}">
 										 	<!-- 判斷餐廳編號有在收藏餐廳編號裡 status為1 -->
 											<c:if test="${rc.restId eq rest.restId}">
 												<c:set var="status" value="1" scope="request" />

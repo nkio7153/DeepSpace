@@ -138,6 +138,18 @@ public class ForumArticlesVO implements Serializable {
 	public void setBase64Str(String base64Str) {
 		this.base64Str = base64Str;
 	}
+	
+	// 增加按讚數
+	public void incrementLikes() {
+	    this.artiLk++; // 由於已經確定初始值為0，直接增加即可
+	}
+
+	// 減少按讚數
+	public void decrementLikes() {
+	    if (this.artiLk > 0) {
+	        this.artiLk--; // 只有當目前讚數大於0時才減少
+	    }
+	}
 
 	@Override
 	public String toString() {

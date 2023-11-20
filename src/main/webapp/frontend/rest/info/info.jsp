@@ -10,6 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>餐廳</title>
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOKKfj_MwehUJhm-t7jPbO1ydNODLgLOM&libraries=places&callback=initMap"></script>
 	<style>
 /* 		.carousel-inner { */
@@ -64,7 +65,7 @@
 		    
 		    service.findPlaceFromQuery(request, function(results, status) {
 		      if (status === google.maps.places.PlacesServiceStatus.OK) {
-// 		        console.log(results[0].formatted_address);
+		        console.log(results[0]);
 		        
 	         	// 用經緯度定位地圖位置
 			    var mapOptions = {
@@ -95,7 +96,7 @@
 		
 			function callback(place, status) {
 			if (status == google.maps.places.PlacesServiceStatus.OK) {
-	// 			console.log(place);
+// 				console.log(place);
 	
 				// 評分
 				$("#r_name").append("<h5 id='rating'>"+place.rating+"</h5>")

@@ -7,6 +7,7 @@ public interface RestBookingDateDAO {
 	int update(RestBookingDateVO restBookingDateVO);
 	int delete(RestBookingDateVO restBookingDateVO);
 	RestBookingDateVO findByPK(RestBookingDateVO restBookingDateVO);
+	List<RestBookingDateVO> getById(Integer restId);
 	List<RestBookingDateVO> getAll();
 	int updateMorningNum(RestBookingDateVO restBookingDateVO);
 	int updateNoonNum(RestBookingDateVO restBookingDateVO);
