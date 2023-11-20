@@ -10,6 +10,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name="NOTIFICATIONS")
@@ -29,8 +33,10 @@ public class NotificationsVO implements Serializable{
 	@Column(name="NOTE_CONTENT",updatable = false)
 	private String noteContent;
 	
-	@Column(name="NOTE_CREATED",updatable = false)
-	private Timestamp noteCreated;
+	@CreationTimestamp
+	@Column(name="NOTE_CREATED",updatable = false, nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date noteCreated;
 	
 	@Column(name="NOTE_READ",updatable = false)
 	private byte noteRead;
