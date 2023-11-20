@@ -138,7 +138,7 @@
 			            </div>
                         </c:if>
                         <li class="">
-                            <a href="${pageContext.request.contextPath}/tsc/memCartList"><img
+                            <a href="${pageContext.request.contextPath}/tsc/memCartList" onclick="checkSession(event)"><img
                                src="${pageContext.request.contextPath}/indexpage/images/shoppingcar.svg"
                                alt=""
                                style="width: 2em"/></a>

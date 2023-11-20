@@ -288,8 +288,22 @@ $(document).ready(function() {
         $.get("${pageContext.request.contextPath}/ticketcollection/toggleFavorite", requestData, function(response) {
             if (response.isFavorite) {
                 iconElement.removeClass("far").addClass("fas");
+            	Swal.fire({
+            		  position: "center",
+//             		  icon: "success",
+            		  title: "成功加入",
+            		  showConfirmButton: false,
+            		  timer: 1500
+            		});
             } else {
                 iconElement.removeClass("fas").addClass("far");
+            	Swal.fire({
+          		  position: "center",
+//           		  icon: "success",
+          		  title: "成功移除",
+          		  showConfirmButton: false,
+          		  timer: 1500
+          		});
             }
         }).fail(function(xhr, status, error) {
             if(memId == null) { 
@@ -303,6 +317,7 @@ $(document).ready(function() {
   
 //購物車加入
 $(".btn").on("click", function() {
+	let cartNum=$("#cartNum");
     let button = $(this);
 	let quantity=$("#ticketQuantity").val();
 $("#ticketQuantity").val(1);
@@ -314,6 +329,7 @@ console.log(quantity);
         })
         .then(function(data) {
             console.log(data);
+            cartNum.text(data);
             button.addClass('flash-effect');
             // 1 秒後移除閃爍效果
             setTimeout(() => {
