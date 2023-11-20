@@ -11,9 +11,9 @@
 <title>專欄文章詳情</title>
 <jsp:include page="/indexpage/head.jsp" />
 
-<link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	rel="stylesheet">
+<!-- <link -->
+<!-- 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" -->
+<!-- 	rel="stylesheet"> -->
 
 
 </head>
