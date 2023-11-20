@@ -1,7 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page import="java.util.*"%>
+<%@ page import="com.depthspace.attractions.service.AttractionsService"%>
+<%@ page import="com.depthspace.attractions.model.AttractionsVO"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+
+<%
+// if (session.getAttribute("list") != null) {
+//     // 如果 session 中沒有 "list" 屬性，則執行以下代碼
+//     AttractionsService attrs = new AttractionsService();
+//     List<AttractionsVO> list = attrs.getAll();
+//     pageContext.setAttribute("list", list);
+// }
+%>
 
 <!DOCTYPE html>
 <html>
@@ -42,7 +55,7 @@
 
 					<h4>選擇你想去的縣市吧!</h4>
 					<div class="form-group">
-						<c:forEach var="areaItem" items="${city}" varStatus="status">
+						<c:forEach var="areaItem" items="${city}" varStatus="status" >
 							<div class="custom-control custom-checkbox">
 								<input type="checkbox" class="custom-control-input"
 									id="cityId_${status.index}" name="cityId"
@@ -58,8 +71,10 @@
 
 			<!-- 右側景點列表 -->
 			<div class="col-md-9" id="attractionsRight">
+<%-- 				<%@ include file="page1.file"%> --%>
 			    <div class="form-group">
-			        <c:forEach var="listItem" items="${list}" varStatus="status">
+			    
+			        <c:forEach var="listItem" items="${list}" varStatus="status" >
 			            <a href="${pageContext.request.contextPath}/attr/oneList?attractionsId=${listItem.attractionsId}" class="no-underline">
 			                <!-- 整張卡片點擊 -->
 			                <div class="card mb-3 clickable-card">
@@ -72,9 +87,17 @@
 			                                <h5 class="card-title">${listItem.attractionsName}</h5>
 			                                <p class="card-text">${listItem.address}&ensp;|&ensp;</p>
 			                                <p class="card-text">
-			                                    <label for="attractionsId_${status.index}">
-			                                        ${listItem.description}
-			                                    </label>
+			                                	<c:choose>
+													<c:when test="${fn:length(listItem.description) > 60}">
+													${fn:substring(listItem.description,0,60)}...
+													</c:when>
+													<c:otherwise>
+													${attr.description}
+													</c:otherwise>
+												</c:choose>
+<%-- 			                                    <label for="attractionsId_${status.index}"> --%>
+<%-- 			                                        ${listItem.description} --%>
+<!-- 			                                    </label> -->
 			                                </p>
 			                            </div>
 			                        </div>
@@ -82,9 +105,12 @@
 			                </div>
 			            </a>
 			        </c:forEach>
+			        
 			    </div>
+<%-- 			    <%@ include file="page2.file"%> --%>
+			    
 			</div>
-
+			
 
 		</div>
 	</div>

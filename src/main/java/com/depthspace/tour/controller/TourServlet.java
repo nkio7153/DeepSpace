@@ -65,7 +65,7 @@ public class TourServlet extends HttpServlet {
 		String pathInfo = req.getPathInfo();
 //		System.out.println("pathInfo=" + pathInfo);
 		switch (pathInfo) {
-		case "/tourList":
+		case "/tourList":// 用會員編號查出該會員所有行程
 			doTourList(req, resp);
 			break;
 			//查詢單一行程內容

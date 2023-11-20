@@ -1,8 +1,15 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page import="com.depthspace.attractions.model.AttractionsVO"%>
+<%@ page import="com.depthspace.attractions.service.AttractionsService"%>
 
+<%
+AttractionsService attractionService = new AttractionsService();
+List<AttractionsVO> list = attractionService.getAll();
+pageContext.setAttribute("list", list);
+%>
 
 <!DOCTYPE html>
 <html>
@@ -48,9 +55,11 @@
 	
 <%-- include end--%>
 
+
 <div class="table-list">
    <div class="table-list">
        <div class="container mt-5">
+		<h5>景點列表</h5>
 		<div class="row">
          <div class="col-md-4">
             <form id="filterForm" method="get" action="<%=request.getContextPath()%>/attractionsEnd/search">
@@ -81,7 +90,9 @@
 				</form>
 		  </div>
        </div>
-		<h5>景點列表</h5>
+		
+		
+		<%@ include file="page1.file"%>
 
 		<!-- 表格 -->
 		<table class="table table-bordered">
@@ -100,7 +111,7 @@
 			<tbody>
 				<!-- 所有資料 -->
 				<tr>
-					<c:forEach var="attr" items="${attrList}" varStatus="status">
+					<c:forEach var="attr" items="${list}" varStatus="status" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 						<td>${attr.attractionsId}</td>
 						<td>${attr.attractionsTypeId.typeName}</td>
 						<td><img
@@ -180,55 +191,55 @@
 		        </div>
 		    </div>
 		</div>
-		
+		<%@ include file="page2.file"%>
 		<!-- 分頁 -->
-		<div>
-			<nav>
-				<ul class="pagination justify-content-center">
-					<!-- "至第一頁" 只在非第一頁時顯示 -->
-					<c:if test="${currentPage > 1}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/attractionsEnd/list?page=1">第一頁</a>
-						</li>
-					</c:if>
+<!-- 		<div> -->
+<!-- 			<nav> -->
+<!-- 				<ul class="pagination justify-content-center"> -->
+<!-- 					"至第一頁" 只在非第一頁時顯示 -->
+<%-- 					<c:if test="${currentPage > 1}"> --%>
+<!-- 						<li class="page-item"><a class="page-link" -->
+<%-- 							href="${pageContext.request.contextPath}/attractionsEnd/list?page=1">第一頁</a> --%>
+<!-- 						</li> -->
+<%-- 					</c:if> --%>
 
-					<!-- "上一頁" 如果當前頁是第一頁則隱藏 -->
-					<c:if test="${currentPage - 1 != 0}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/attractionsEnd/list?page=${currentPage - 1}"
-							aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-						</a></li>
-					</c:if>
+<!-- 					"上一頁" 如果當前頁是第一頁則隱藏 -->
+<%-- 					<c:if test="${currentPage - 1 != 0}"> --%>
+<!-- 						<li class="page-item"><a class="page-link" -->
+<%-- 							href="${pageContext.request.contextPath}/attractionsEnd/list?page=${currentPage - 1}" --%>
+<!-- 							aria-label="Previous"> <span aria-hidden="true">&laquo;</span> -->
+<!-- 						</a></li> -->
+<%-- 					</c:if> --%>
 
-					<!-- 動態顯示頁碼，根據總頁數ticketPageQty生成 -->
-					<c:forEach var="i" begin="1" end="${ticketPageQty}" step="1">
-						<li class="page-item ${i == currentPage ? 'active' : ''}"><a
-							class="page-link"
-							href="${pageContext.request.contextPath}/attractionsEnd/list?page=${i}">${i}</a>
-						</li>
-					</c:forEach>
+<!-- 					動態顯示頁碼，根據總頁數ticketPageQty生成 -->
+<%-- 					<c:forEach var="i" begin="1" end="${ticketPageQty}" step="1"> --%>
+<%-- 						<li class="page-item ${i == currentPage ? 'active' : ''}"><a --%>
+<!-- 							class="page-link" -->
+<%-- 							href="${pageContext.request.contextPath}/attractionsEnd/list?page=${i}">${i}</a> --%>
+<!-- 						</li> -->
+<%-- 					</c:forEach> --%>
 
-					<!-- "下一頁" 如果當前頁是最後一頁則隱藏 -->
-					<c:if test="${currentPage + 1 <= pageQty}">
-				    <li class="page-item"><a class="page-link"
-				        href="${pageContext.request.contextPath}/attractionsEnd/list?page=${currentPage + 1}"
-				        aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-				    </a></li>
-				</c:if>
+<!-- 					"下一頁" 如果當前頁是最後一頁則隱藏 -->
+<%-- 					<c:if test="${currentPage + 1 <= pageQty}"> --%>
+<!-- 				    <li class="page-item"><a class="page-link" -->
+<%-- 				        href="${pageContext.request.contextPath}/attractionsEnd/list?page=${currentPage + 1}" --%>
+<!-- 				        aria-label="Next"> <span aria-hidden="true">&raquo;</span> -->
+<!-- 				    </a></li> -->
+<%-- 				</c:if> --%>
 
-					<!-- "至最後一頁" 只在非最後一頁時顯示 -->
-					<c:if test="${currentPage != pageQty}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/attractionsEnd/list?page=${pageQty}">尾頁</a>
-						</li>
-					</c:if>
-				</ul>
-			</nav>
-			<div class="page-item">
-				<a class="page-link"
-					href="${pageContext.request.contextPath}/attractionsEnd/index.jsp">回首頁</a>
-				</div>
-			</div>
+<!-- 					"至最後一頁" 只在非最後一頁時顯示 -->
+<%-- 					<c:if test="${currentPage != pageQty}"> --%>
+<!-- 						<li class="page-item"><a class="page-link" -->
+<%-- 							href="${pageContext.request.contextPath}/attractionsEnd/list?page=${pageQty}">尾頁</a> --%>
+<!-- 						</li> -->
+<%-- 					</c:if> --%>
+<!-- 				</ul> -->
+<!-- 			</nav> -->
+<!-- 			<div class="page-item"> -->
+<!-- 				<a class="page-link" -->
+<%-- 					href="${pageContext.request.contextPath}/attractionsEnd/index.jsp">回首頁</a> --%>
+<!-- 				</div> -->
+<!-- 			</div> -->
 		</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>

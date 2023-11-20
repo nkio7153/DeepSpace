@@ -1,6 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.*"%>
+<%@ page import="com.depthspace.tour.service.TourService"%>
+<%@ page import="com.depthspace.tour.model.tour.TourVO"%>
+
+<%
+TourService ts = new TourService();
+List<TourVO> list = ts.getByMemId((Integer)session.getAttribute("memId"));
+pageContext.setAttribute("list", list);
+%>
+
 
 <html>
 <head>
@@ -83,19 +93,17 @@ form {
 	<jsp:include page="../indexpage/headpic.jsp" />
 
 	<h1 style="font-size: 24px; color: #333; text-align: center;">查看我的行程列表</h1>
-	
-	
+
 	<input type="button" value="返回" onclick="history.back()" id="btn_back">
-<!-- 	<input type="button" value="返回" onclick="goBack()" id="btn_back"> -->
 	
 	<!-- <form method="" action=""> -->
+ 		<%@ include file="../memberEnd/page1.file"%>
 	<table>
 		<tr>
 			<th style="text-align: center;">行程名稱</th>
 			<th style="text-align: center;">查看行程</th>
 		</tr>
 		
-				
 		<c:forEach var="tour" items="${list}">
 			<tr>
 <%-- 			<input type="text" name="tourId" value="${tour.tourId}" readonly"> --%>
@@ -112,6 +120,7 @@ form {
 			</tr>
 		</c:forEach>
 	</table>
+	<%@ include file="../memberEnd/page2.file"%>
 
 	<!-- </form> -->
 	<jsp:include page="../indexpage/footer.jsp" />

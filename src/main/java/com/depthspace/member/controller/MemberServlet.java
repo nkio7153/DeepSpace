@@ -27,6 +27,8 @@ import javax.servlet.http.Part;
 import com.depthspace.member.model.MemVO;
 import com.depthspace.member.service.HbMemService;
 import com.depthspace.member.service.MemberService;
+import com.depthspace.ticketshoppingcart.service.RedisCartServiceImpl;
+import com.depthspace.utils.JedisUtil;
 import com.depthspace.utils.MailService;
 
 import redis.clients.jedis.Jedis;
@@ -36,6 +38,11 @@ import redis.clients.jedis.Jedis;
 public class MemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	private RedisCartServiceImpl carSv;
+	 @Override
+	 public void init() throws ServletException {
+	  carSv = new RedisCartServiceImpl(JedisUtil.getJedisPool());
+	 }
 	public int allowUser(String memAcc, String password) {
 		MemVO memvo = null;
 		HbMemService hbms = new HbMemService();
@@ -813,7 +820,11 @@ public class MemberServlet extends HttpServlet {
 
 			session.setAttribute("authenticatedMem", mem);// 會員物件
 			session.setAttribute("memId", mem.getMemId());// 會員編號
-
+			
+//			int cartNum = carSv.getCartNum(mem.getMemId());
+//			session.setAttribute("cartNum", cartNum);
+//			System.out.println("購物車品項數量="+session.getAttribute("cartNum"));
+			 
 			Integer memno = (Integer) session.getAttribute("memId");// 測試用(取得存在session會員編號)
 //		    System.out.println("測試取得放入session的會員編號" + memno);// 測試用
 
