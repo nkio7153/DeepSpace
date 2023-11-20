@@ -25,7 +25,7 @@ public class FaqTypesDAOImpl implements FaqTypesDAO{
 			conn = DBUtil.getConnection();
 			pstmt = conn.prepareStatement(INSERT_STMT);
 			
-			pstmt.setString(1, faqtypesVO.getqTypes());
+			pstmt.setString(1, faqtypesVO.getQTypes());
 
 			pstmt.executeUpdate();
 
@@ -44,7 +44,7 @@ public class FaqTypesDAOImpl implements FaqTypesDAO{
 		try {
 			conn = DBUtil.getConnection();
 			pstmt = conn.prepareStatement(UPDATE_STMT);
-			pstmt.setString(1, faqTypesVO.getqTypes());
+			pstmt.setString(1, faqTypesVO.getQTypes());
 			pstmt.setInt(2, faqTypesVO.getFaqNo());
 			
 			pstmt.executeUpdate();
@@ -91,7 +91,7 @@ public class FaqTypesDAOImpl implements FaqTypesDAO{
 			if (rs.next()) {
 				faqtypesVO = new FaqTypesVO();
 				faqtypesVO.setFaqNo(rs.getInt("FAQ_NO"));
-				faqtypesVO.setqTypes(rs.getString("Q_TYPES"));
+				faqtypesVO.setQTypes(rs.getString("Q_TYPES"));
 			}
 
 		} catch (SQLException e) {
@@ -118,7 +118,7 @@ public class FaqTypesDAOImpl implements FaqTypesDAO{
 			while (rs.next()) {
 				FaqTypesVO faqtype = new FaqTypesVO();
 				faqtype.setFaqNo(rs.getInt("FAQ_NO"));
-				faqtype.setqTypes(rs.getString("Q_TYPES"));
+				faqtype.setQTypes(rs.getString("Q_TYPES"));
 				faqtypes.add(faqtype);
 			}
 

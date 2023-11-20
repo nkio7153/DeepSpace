@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.depthspace.faq.model.FaqVO"%>
 <%@ page import="com.depthspace.faq.service.*"%>
 <%@ page import="com.depthspace.faq.controller.*"%>
 <%@ page import="com.depthspace.faq.model.*"%>

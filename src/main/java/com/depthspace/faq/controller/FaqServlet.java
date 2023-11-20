@@ -8,7 +8,6 @@ import javax.servlet.http.*;
 
 import com.depthspace.faq.model.*;
 import com.depthspace.faq.service.*;
-import com.depthspace.faq.controller.*;
 
 public class FaqServlet extends HttpServlet {
 

@@ -71,7 +71,7 @@
 	</tr>
 	<tr>
 		<td>${faqTypesVO.faqNo}</td>
-		<td>${faqTypesVO.qTypes}</td>
+		<td>${faqTypesVO.QTypes}</td>
 	</tr>
 </table>
 

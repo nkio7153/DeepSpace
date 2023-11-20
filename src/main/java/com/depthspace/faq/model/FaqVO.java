@@ -1,6 +1,7 @@
 package com.depthspace.faq.model;
 
 import java.util.Objects;
+import com.depthspace.faqtypes.model.model.FaqTypesVO; 
 
 //FaqVO 類別表示一個FAQ（常見問題）的對象。
 public class FaqVO implements java.io.Serializable{
@@ -8,7 +9,14 @@ public class FaqVO implements java.io.Serializable{
 	private Integer faqNo;
 	private String faqName;
 	private String faqAns;
-
+	
+	private FaqTypesVO faqType; // 添加FaqTypesVO的引用
+	public FaqTypesVO getFaqType() {
+        return faqType;
+    }
+    public void setFaqType(FaqTypesVO faqType) {
+        this.faqType = faqType;
+    }
 	
 
 	public Integer getSerialId() {

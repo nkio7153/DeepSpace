@@ -117,7 +117,7 @@ public class FaqTypesServlet extends HttpServlet{
 			
 			FaqTypesVO faqTypesVO = new FaqTypesVO();
 			faqTypesVO.setFaqNo(faqNo);
-			faqTypesVO.setqTypes(qTypes);
+			faqTypesVO.setQTypes(qTypes);
 
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
@@ -154,7 +154,7 @@ public class FaqTypesServlet extends HttpServlet{
             }
 			
 			FaqTypesVO faqTypesVO = new FaqTypesVO();
-			faqTypesVO.setqTypes(qTypes);
+			faqTypesVO.setQTypes(qTypes);
 
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {

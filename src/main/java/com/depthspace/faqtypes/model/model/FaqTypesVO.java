@@ -16,11 +16,11 @@ public class FaqTypesVO implements java.io.Serializable{
 		this.faqNo = faqNo;
 	}
 
-	public String getqTypes() {
+	public String getQTypes() {
 		return qTypes;
 	}
 
-	public void setqTypes(String qTypes) {
+	public void setQTypes(String qTypes) {
 		this.qTypes = qTypes;
 	}
 
