@@ -12,9 +12,6 @@
   </head>
 	
 	<style>
-		img {
-		    width: 100px;
-		}
 	</style>
   <body>
     <%--include header.jsp--%>
