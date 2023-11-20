@@ -174,11 +174,11 @@
                 <div id="collapseRestService" class="collapse" aria-labelledby="headingRestService"
                      data-bs-parent="#sidebar-wrapper">
                     <div class="color-4-1 py-2 collapse-inner rounded">
-                        <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contentType}/backend/Rest.do?action=getRests">餐廳列表</a>
+                        <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/Rest.do?action=getRests">餐廳列表</a>
                         <br>
-                        <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contentType}/backend/Rest.do?action=getBookingDate">預約設定</a>
+                        <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/Rest.do?action=getBookingDate">預約設定</a>
                         <br>
-                        <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contentType}/backend/Rest.do?action=getMembooking&restId=1">訂位查詢</a>
+                        <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/Rest.do?action=getMembooking&restId=1">訂位查詢</a>
                     </div>
                 </div>
             </li>
