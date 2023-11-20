@@ -10,6 +10,8 @@ import com.depthspace.ticketshoppingcart.model.RedisCart;
 import com.depthspace.ticketshoppingcart.service.RedisCartServiceImpl;
 import com.depthspace.ticketshoppingcart.service.TscServiceImpl;
 import com.depthspace.utils.JedisUtil;
+import com.depthspace.notifications.service.NotificationsService;
+import com.depthspace.notifications.service.NotificationsServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,6 +28,7 @@ public class TicketOrderstServlet extends HttpServlet {
     private ToService toSv;
     private RedisCartServiceImpl cartSv;
     private TscServiceImpl tscSv;
+    private NotificationsService notificationsService;
 
 
     @Override
@@ -33,6 +36,7 @@ public class TicketOrderstServlet extends HttpServlet {
         toSv = new ToServiceImpl();
         cartSv = new RedisCartServiceImpl(JedisUtil.getJedisPool());
         tscSv=new TscServiceImpl();
+        notificationsService = new NotificationsServiceImpl();
     }
 
     @Override
@@ -241,6 +245,9 @@ public class TicketOrderstServlet extends HttpServlet {
             MailService mailService = new MailService();
             //調用寄件方法  放入對方email、
             mailService.sendOrderMail(email, memVo, to2);
+            
+            //發送會員訊息通知
+            notificationsService.ticketOrderNotification(to2, memVo);
         }
 //        List<TicketOrdersVO> list = toSv.getbyMemId(memId);
 //        req.setAttribute("list", list);

@@ -17,8 +17,8 @@
 	<h1>餐廳訂位列表</h1>
 	<table style="width:100%; text-align:center;">
 		<tr>
-			<th>餐廳編號</th>
 			<th>訂位編號</th>
+			<th>餐廳編號</th>
 			<th>會員編號</th>
 			<th>報到狀態</th>
 			<th>訂位時段</th>
@@ -27,8 +27,8 @@
 		</tr>
 		<c:forEach var="mb" items="${mbList}">
 			<tr>
-				<td>${mb.restId}</td>
 				<td>${mb.bookingId}</td>
+				<td>${mb.restId}</td>
 				<td>${mb.memId}</td>
 				<c:choose>
 				    <c:when test="${mb.checkStatus == 0}">
@@ -42,13 +42,13 @@
 				    </c:when>
 				</c:choose>
 				<c:choose>
-				    <c:when test="${mb.bookingTime == 1}">
+				    <c:when test="${mb.bookingTime == 0}">
 				        <td>早</td>
 				    </c:when>
-				    <c:when test="${mb.bookingTime == 2}">
+				    <c:when test="${mb.bookingTime == 1}">
 				        <td>中</td>
 				    </c:when>
-				    <c:when test="${mb.bookingTime == 3}">
+				    <c:when test="${mb.bookingTime == 2}">
 				        <td>晚</td>
 				    </c:when>
 				</c:choose>

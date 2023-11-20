@@ -9,6 +9,7 @@ public interface RestBookingDateService {
 	RestBookingDateVO update(RestBookingDateVO restBookingDateVO);
 	void delete(RestBookingDateVO restBookingDateVO);
 	RestBookingDateVO findByPK(RestBookingDateVO restBookingDateVO);
+	List<RestBookingDateVO> getById(Integer restId);
 	List<RestBookingDateVO> getAll();
 	int updateMorningNum(RestBookingDateVO restBookingDateVO);
 	int updateNoonNum(RestBookingDateVO restBookingDateVO);

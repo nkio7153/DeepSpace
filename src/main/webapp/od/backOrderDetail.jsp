@@ -39,10 +39,10 @@
         </div>
             <div class="col-lg-10 g-2 transparent rounded my-0">
             <%--      放入自己body裡的代碼--%>
-                <div class="container mt-4 transparent rounded">
+                <div class="container mt-4 rounded">
 <%--                    <button type="button" class="btn btn-secondary mb-3" onclick="history.back()">返回</button>--%>
                     <h3 class="text-center my-4">訂單明細列表</h3>
-                    <table class="table table-bordered">
+                    <table class="table table-bordered table-hover table-striped">
                         <thead>
                         <tr>
                             <th class="text-center">序號</th>
@@ -78,16 +78,17 @@
                         </c:forEach>
                         </tbody>
                     </table>
-                    <div class="d-flex justify-content-end">
+                    <div>
                         <div>
-                            <p><strong>小計總額:</strong> $<span name="totalAmount">${totalAmount}</span></p>
-                            <p><strong>使用點數:</strong> $<span name="coupen">${totalAmount-amountPaid}</span></p>
+                            <p><strong class="offset-6">小計總額:</strong> $<span name="totalAmount">${totalAmount}</span>
+                            <strong class="offset-1">使用點數:</strong> $<span name="coupen">${totalAmount-amountPaid}</span>
 <%--                        </div>--%>
-                            <hr>
+
 <%--                        <div>--%>
-                            <p><strong>實付金額:</strong> $<span name="amountPaid">${amountPaid}</span></p>
+                            <strong class="offset-1">實付金額:</strong> $<span name="amountPaid">${amountPaid}</span></p>
                         </div>
                     </div>
+                    <button type="button" class="btn btn-secondary mb-3" onclick="history.back()">返回</button>
                 </div>
 
                 <script type="text/javascript">
