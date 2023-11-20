@@ -14,22 +14,25 @@ public class NotificationsWS {
 
     @OnOpen
     public void onOpen(Session session) {
+    	System.out.println("WSOPENNNNNNNNNNN" + session.getId());
         sessions.add(session);
+        sendNotification("TESTTTTTTTTTTTT消息");
     }
 
     @OnMessage
     public void onMessage(String message, Session session) {
-        
+    	 sendNotification("從前端收到: " + message);
     }
 
     @OnClose
     public void onClose(Session session) {
+    	System.out.println("WSCOLSEEEEEEEE" + session.getId());
         sessions.remove(session);
     }
 
     @OnError
     public void onError(Session session, Throwable e) {
-    	System.out.println("Error: " + e.toString());
+    	System.out.println("ErrorErrorErrorErrorError: " + e.toString());
 	}
 
     public static void sendNotification(String message) {

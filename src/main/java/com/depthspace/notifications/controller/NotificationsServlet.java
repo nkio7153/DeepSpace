@@ -43,7 +43,7 @@ public class NotificationsServlet extends HttpServlet {
 
 		switch (pathInfo) {
 		case "/":
-			res.sendRedirect(req.getContextPath() + "/frontend/notifications/info.jsp");
+			res.sendRedirect(req.getContextPath() + "/indexpage/index.jsp");
 			break;
 		case "/list":
 			doList(req, res);
@@ -61,7 +61,7 @@ public class NotificationsServlet extends HttpServlet {
 		Integer memId = (Integer) session.getAttribute("memId");
 
 		if (memId == null) { //無會員id就無法訪問
-			res.sendRedirect(req.getContextPath() + "/frontend/notifications/info.jsp");
+			res.sendRedirect(req.getContextPath() + "/indexpage/index.jsp");
 			return;
 		}
 		
