@@ -6,6 +6,7 @@ import java.util.List;
 import javax.websocket.Session;
 
 import com.depthspace.member.model.MemVO;
+import com.depthspace.notifications.controller.NotificationsWS;
 import com.depthspace.notifications.model.NotificationsDAO;
 import com.depthspace.notifications.model.NotificationsDAOImpl;
 import com.depthspace.notifications.model.NotificationsVO;
@@ -51,6 +52,9 @@ public class NotificationsServiceImpl implements NotificationsService {
         dao.insert(notification);
         
         // WebSocket 
+        NotificationsWS webSocket = new NotificationsWS();
+        String message = "您有新的" + notification.getNoteType();
+        webSocket.sendNotification(message);
         }
     
 

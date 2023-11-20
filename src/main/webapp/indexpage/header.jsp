@@ -11,7 +11,23 @@
             }
         }
     </script>
-
+    
+   <style>
+    .notification-bell {
+        position: relative;
+        text-decoration: none;
+        color: blue; 
+    }
+    .notification-bell .badge {
+        position: absolute;
+        border-radius: 50%;
+        background-color: rgb(13 110 253 / 16%);
+        font-size: 12px;
+    }
+	</style>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
     <div class="container" style="padding-right: 0;">
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid" style="padding: 20px 0;">
@@ -85,14 +101,22 @@
                             <a class="booking" href="#" id="mem" role="button" data-bs-toggle="dropdown" aria-expanded="false">會員</a>
                             <ul class="dropdown-menu" aria-labelledby="mem">
                                 <li><a class="dropdown-item">${authenticatedMem.memName}</a></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mem/memList">我的會員資料</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mem/memList">會員資料</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList">我的票券</a></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ticketcollection/list">我的票券收藏</a></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/notifications/list">通知</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ticketcollection/list">票券收藏</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mem/logout" name="check">登出</a></li>
                             </ul>
                         </li>
+                        <!-- 會員訊息通知 -->
+                        <div class="notification-bell">
+			            <li class="nav-item">
+			                <a href="${pageContext.request.contextPath}/notifications/list">
+							    <i class="fas fa-bell"></i>
+							    <span class="badge" id="notificationCount">0</span>
+							</a>
+			            </li>
+			            </div>
                         </c:if>
                         <li class="">
                             <a href="${pageContext.request.contextPath}/tsc/memCartList"><img
@@ -105,6 +129,31 @@
             </div>
         </nav>
     </div>
+   <script>
+    if ("WebSocket" in window) {
+        var ws = new WebSocket("ws://localhost:8081/DepthSpace/notifications");
+        var notificationCount = 0;
+
+        ws.onopen = function() {
+            console.log("WebSocketOPEN");
+        };
+        ws.onmessage = function(event) {
+        	console.log("收到消息: " + event.data);
+        	notificationCount++;
+            document.querySelector('.notification-bell .badge').textContent = notificationCount;
+        };
+        window.onbeforeunload = function(event) {
+            ws.close();
+            console.log("WebSocketCLOSE");
+        };
+        ws.onerror = function(event) {
+            console.log("WebSocketerrorerrorerrorerror: ", event);
+        };
+    } else {
+        console.log("發生錯誤");
+    }
+	</script>
+    
 </header>
 
 
