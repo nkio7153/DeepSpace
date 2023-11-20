@@ -33,7 +33,7 @@ public class AttractionsEndServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String pathInfo = req.getPathInfo();
 		switch (pathInfo) {
-		case "/list": // 行程列表
+		case "/list": // 景點列表
 			doList(req, res);
 			break;
 		case "/search": //搜尋
@@ -71,35 +71,35 @@ public class AttractionsEndServlet extends HttpServlet {
 	}
 	private void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		AttractionsService attractionService = new AttractionsService();
-		List<AttractionsVO> allAttr = attractionService.getAll();
-		req.setAttribute("allAttr", allAttr);
+		List<AttractionsVO> list = attractionService.getAll();
+		req.setAttribute("list", list);
 
 		// 取得所有內容(VO) "分頁"
-		String page = req.getParameter("page");
-		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
-
-		List<AttractionsVO> attrList = attractionService.getAllPage(currentPage);
-		
-		int pageQty = attractionService.getPageTotal();
-		req.getSession().setAttribute("pageQty", pageQty);
-		System.out.println("attrList=" + attrList);
-		System.out.println("currentPage=" + currentPage);
-		
-		req.setAttribute("attrList", attrList);
-		req.setAttribute("currentPage", currentPage);
+//		String page = req.getParameter("page");
+//		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
+//
+//		List<AttractionsVO> attrList = attractionService.getAllPage(currentPage);
+//		
+//		int pageQty = attractionService.getPageTotal();
+//		req.getSession().setAttribute("pageQty", pageQty);
+//		System.out.println("attrList=" + attrList);
+//		System.out.println("currentPage=" + currentPage);
+//		
+//		req.setAttribute("attrList", attrList);
+//		req.setAttribute("currentPage", currentPage);
 		
 		//處理類型不重複
-		Set<AttractionsTypeVO> uniqueTypes = new HashSet<>();
-		for (AttractionsVO avo : attrList) {
-			uniqueTypes.add(avo.getAttractionsTypeId());
-			System.out.println("123="+avo);
-		}
-		System.out.println("456="+new ArrayList<>(uniqueTypes));
+//		Set<AttractionsTypeVO> uniqueTypes = new HashSet<>();
+//		for (AttractionsVO avo : attrList) {
+//			uniqueTypes.add(avo.getAttractionsTypeId());
+//			System.out.println("123="+avo);
+//		}
+//		System.out.println("456="+new ArrayList<>(uniqueTypes));
+//		
+//		req.setAttribute("uniqueTypes", new ArrayList<>(uniqueTypes));
 		
-		req.setAttribute("uniqueTypes", new ArrayList<>(uniqueTypes));
 		
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/attractions/list.jsp");
-		dispatcher.forward(req, res);
+		req.getRequestDispatcher("/backend/attractions/list.jsp").forward(req, res);
 		
 	}
 }

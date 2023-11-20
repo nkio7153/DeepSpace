@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.depthspace.attractions.model.AttractionsImagesVO;
 import com.depthspace.attractions.model.AttractionsVO;
@@ -65,6 +66,7 @@ public class AttractionsServlet  extends HttpServlet {
 		String attractionsName = req.getParameter("attractionsName").trim();//使用者搜尋的景點名稱
 		Integer getCityId = null;
 		List<AttractionsVO> list = null ;
+		HttpSession session = req.getSession();
 		
 		if(cityId != null) { //如果有選縣市
 			try {
@@ -89,10 +91,10 @@ public class AttractionsServlet  extends HttpServlet {
 //	    再把所有縣市找回來
 	    List<CityVO> city = cs.getAll();
 	    
-	    req.setAttribute("list", list);//取得所有符合的景點
+	    session.setAttribute("list", list);//取得所有符合的景點
 		req.setAttribute("city", city);//取得台灣所有縣市
 //		帶資料回list
-		req.getRequestDispatcher("/attractions/list.jsp").forward(req, resp);
+		req.getRequestDispatcher("/attractions/search.jsp").forward(req, resp);
 	}
 
 	private void dooneList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -1,7 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="com.depthspace.member.*"%>
+<%@ page import="com.depthspace.member.model.MemVO"%>
+<%@ page import="com.depthspace.member.service.HbMemService"%>
+<%@ page import="java.util.*"%>
 
+<%
+HbMemService hbms = new HbMemService();
+List<MemVO> list = hbms.getAll();
+pageContext.setAttribute("list", list);
+%>
 
 <!DOCTYPE html>
 <html>
@@ -67,9 +76,10 @@
 	                    <th>會員狀態修改</th>
 	                </tr>
 	            </thead>
+	            <%@ include file="page1.file"%>
 	            <tbody>
 				<!-- 迴圈取出所有會員資料-->
-	                <c:forEach items="${list}" var="mem">
+	                <c:forEach items="${list}" var="mem" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 		                <tr align="center">
 		                    <td>${mem.memId}</td>
 		                    <td>${mem.memAcc}</td>
@@ -119,12 +129,11 @@
 							    <button class="btn btn-primary" onclick="changeStatus('啟用', ${mem.memId})" data-memid="${mem.memId}">啟用</button>
 							    <button class="btn btn-danger" onclick="changeStatus('停權', ${mem.memId})" data-memid="${mem.memId}">停權</button>
 							</td>
-
 		                </tr>
 	                </c:forEach>
-	                
 	            </tbody>
 	        </table>
+	        <%@ include file="page2.file"%>
 	    </div>
      </div>
     </div>
