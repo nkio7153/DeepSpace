@@ -76,6 +76,8 @@
 
     <!-- 引入Bootstrap CSS樣式表 -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
 </head>
 <body>
 <jsp:include page="/indexpage/header.jsp"/>
@@ -105,13 +107,13 @@
                                 <div class="card-body">
                                     <div class="watermark">深度漫遊-電子票券</div>
                                     <span class="voucher-sent">憑證已發送</span>
-                                    <h5 class="card-title fs-3 fw-bold"> ${mto.ticketName}</h5>
-                                    <p class="card-text fs-5">訂單編號: ${mto.orderId}</p>
+                                    <h5 class="card-title fs-3 fw-bold" id="ticketName"> ${mto.ticketName}</h5>
+                                    <p class="card-text fs-5">訂單編號:<span id="orderId">${mto.orderId}</span></p>
                                     <p class="card-text fs-5" name="status">${mto.statusOfUse}</p>
                                     <p class="card-text offset-7 fs-4">使用期限: ${mto.expiryDate}</p>
                                 </div>
                                 <div class="card-footer bg-transparent border-0">
-                                    <button type="button" class="btn btn-primary w-100">憑證下載</button>
+                                    <button id="down" type="button" class="btn btn-primary w-100">憑證下載</button>
                                 </div>
                             </div>
                         </div>
@@ -192,8 +194,63 @@
             }
         })
     })
+    //取得票券資料
+    //票券名稱
+    //使用日
+    //訂購人
+    //訂單編號
+    //數量
+
+    //使用方式
+    //注意事項
+    $("#down").on("click",function(){
+        let target=$(this).closest(".row");
+        $("#ticket").text(target.find("#ticketName").text());
+        $("#useDate").text(moment().format('YYYY-MM-DD'));
+        $("#order").text(target.find("#orderId").text());
+        $('#ticketModal').modal('show');
+    })
+
 </script>
 <!-- 引入Bootstrap JavaScript文件（必要時） -->
 <jsp:include page="/indexpage/footer.jsp"/>
 </body>
+
+<!-- 模態對話框 -->
+<div class="modal fade" id="ticketModal" tabindex="-1" aria-labelledby="ticketModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ticketModalLabel" >票券憑證</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 這裡可以放置訂單明細的內容 -->
+                <%--        卡片--%>
+                <div class="card" style="width: 45rem;" >
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold" id="ticket">票券名稱:</h5>
+                        <p class="card-text">使用日:</p><span class="fw-bold" id="useDate"></span>
+                        <p class="card-text">訂購人:</p><span class="fw-bold">${authenticatedMem.memName}</span>
+                        <p class="card-text">訂單編號:</p><span class="fw-bold" id="order"></span>
+                        <p class="card-text">數量:</p><span class="fw-bold">1張</span>
+                    </div>
+                </div>
+                    <div class="card-body">
+                        <h5 class="card-title">使用方式:</h5>
+                        <p class="card-text"></p>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">注意事項:</h5>
+                        <p class="card-text"></p>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </html>
