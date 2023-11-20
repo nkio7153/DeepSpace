@@ -24,7 +24,7 @@ body a {
 
 nav a.booking {
     border-radius: 30px;
-    background: #09777d;
+    background: #A6BAAF;
     padding: 10px 25px;
     display: block;
     margin-top: -7px;
@@ -163,8 +163,7 @@ p {
         text-decoration: none;
         border: none;
         float: right;
-        background-color: #14959b;
-        color: #fff;
+        color: transparent;
     }
 }
 
@@ -231,34 +230,65 @@ a.btn {
     /* 超过最大高度时隐藏内容 */
 }
 
-/* 調整下拉選單的基本樣式 */
-.navbar-nav .dropdown-menu {
-    border: none; /* 移除邊框 */
+
+@media ( min-width : 991px) {
+	.nav-link {
+		/* 移除Bootstrap樣式 */
+		display: initial; /* 移除display屬性 */
+		padding: initial; /* 移除padding屬性 */
+		color: #ddd !important; /* 移除color屬性 */
+	}
+	
+		/* 調整下拉選單的基本樣式 */
+	.navbar-nav .dropdown-menu {
+	    border: none; /* 移除邊框 */
+	}
+	
+	/* 調整下拉選單項目的樣式 */
+	.navbar-nav .dropdown-menu .dropdown-item {
+	    color:#000000; /* 設置文字顏色 */
+	    padding: 8px 15px; /* 設置內部間距 */
+	}
+	
+	/* 下拉選單的動畫效果 */
+	.dropdown-menu {
+	    display: none; /* 初始不顯示 */
+	    opacity: 0;
+	    transition: opacity 0.5s ease; /* 平滑過渡效果 */
+	}
+	
+	.dropdown:hover .dropdown-menu {
+	    display: block; /* 懸停時顯示 */
+	    opacity: 1;
+	}
 }
 
-/* 調整下拉選單項目的樣式 */
-.navbar-nav .dropdown-menu .dropdown-item {
-    color:#000000; /* 設置文字顏色 */
-    padding: 8px 15px; /* 設置內部間距 */
-}
 
-/* 下拉選單的動畫效果 */
-.dropdown-menu {
-    display: none; /* 初始不顯示 */
-    opacity: 0;
-    transition: opacity 0.5s ease; /* 平滑過渡效果 */
-}
-
-.dropdown:hover .dropdown-menu {
-    display: block; /* 懸停時顯示 */
-    opacity: 1;
-}
-
-.nav-link {
-    /* 移除Bootstrap樣式 */
-    display: initial; /* 移除display屬性 */
-    padding: initial; /* 移除padding屬性 */
-    color: #ddd; /* 移除color屬性 */
+@media (max-width: 991px){
+    .menu{
+        background: #ffffff; /* 淺灰色背景 */
+        text-align: left; /* 新增的行，確保文字對齊到左邊 */
+    }
+    .nav-link, nav a{
+    	padding: 0;
+        color: black !important; /* 確保所有連結文字顏色為黑色 */
+        text-align: left !important; /* 確保文字對齊到左邊 */
+    }
+    .menu li{
+        display: block; /* 或者 'inline-block', 根據您的具體需求 */
+        text-align: left; /* 新增的行，確保列表項目文字對齊到左邊 */
+       	margin-bottom: 5px;
+    }
+    .navbar-nav .dropdown-menu {
+	    border: none; /* 移除邊框 */
+	    background: #ddd;
+	}
+		.dropdown-menu[data-bs-popper] {
+	    margin-top: 0.4rem;
+	}
+	nav a.booking {
+    display: inline-block;
+	}
 }
 
 .nav-link:hover {
@@ -269,12 +299,6 @@ a.btn {
 .navbar a:hover {
     color: #ddd;
     text-shadow: 2px 2px 2px rgba(0,0,0,0.5);
-}
-
-/* 這樣會限制樣式只影響導航列(navbar)內的按鈕類<a>標籤 */
-.carousel-caption a.btn:hover {
-    color: #FFFFFF;
-    text-shadow: 3px 3px 3px rgba(0,0,0,0.5);
 }
 
 ul.social_section_1info {
@@ -296,7 +320,6 @@ ul.social_section_1info li:last-child {
     height: 100px; /* 調整圖片高度 */
 }
 
-/* 使用!important来覆盖默认样式（不推荐，除非没有其他办法） */
 .nav-link {
     display: initial !important;
 }

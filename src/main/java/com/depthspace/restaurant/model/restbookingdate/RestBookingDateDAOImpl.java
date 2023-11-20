@@ -48,6 +48,14 @@ private SessionFactory factory;
 	}
 
 	@Override
+	public List<RestBookingDateVO> getById(Integer restId) {
+		List<RestBookingDateVO> list = getSession().createQuery("from RestBookingDateVO where REST_ID = :restId", RestBookingDateVO.class)
+										.setParameter("restId", restId)
+										.list();
+		return list;
+	}
+
+	@Override
 	public List<RestBookingDateVO> getAll() {
 		return getSession().createQuery("from RestBookingDateVO", RestBookingDateVO.class).list();
 	}

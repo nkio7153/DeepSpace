@@ -17,7 +17,7 @@ public class FaqTypesService {
 
 		FaqTypesVO faqTypesVO = new FaqTypesVO();
 
-		faqTypesVO.setqTypes(qTypes);
+		faqTypesVO.setQTypes(qTypes);
 		dao.insert(faqTypesVO);
 
 		return faqTypesVO;
@@ -28,7 +28,7 @@ public class FaqTypesService {
 		FaqTypesVO faqTypesVO = new FaqTypesVO();
 
 		faqTypesVO.setFaqNo(faqNo);
-		faqTypesVO.setqTypes(qTypes);
+		faqTypesVO.setQTypes(qTypes);
 		dao.update(faqTypesVO);
 
 		return faqTypesVO;

@@ -12,6 +12,10 @@ public class FaqService {
 	public FaqService() {
 		dao = new FaqDAOImpl();
 	}
+	
+	public List<String> getAllQTypes() {
+        return dao.getAllQTypes();
+    }
 
 	public FaqVO addFaq(Integer faqNo, String faqName, String faqAns) {
 
@@ -49,5 +53,9 @@ public class FaqService {
 
 	public List<FaqVO> getAll() {
 		return dao.getAllFaqs();
+	}
+	
+	public List<FaqVO> getFaqsCompleteInfo() {
+	    return dao.findAllWithFaqTypes();
 	}
 }

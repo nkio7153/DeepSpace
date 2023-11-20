@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.depthspace.utils.DBUtil;
+import com.depthspace.faqtypes.model.model.FaqTypesVO;
 
 public class FaqDAOImpl implements FaqDAO {
 	private static final String INSERT_STMT = "INSERT INTO FAQ (FAQ_NO,FAQ_NAME,FAQ_ANS) values (?, ?, ?)";
@@ -16,6 +17,69 @@ public class FaqDAOImpl implements FaqDAO {
 	private static final String FIND_BY_SERIALID = "SELECT SERIAL_ID,FAQ_NO,FAQ_NAME,FAQ_ANS FROM FAQ where SERIAL_ID = ?";
 	private static final String GET_ALL = "SELECT SERIAL_ID,FAQ_NO,FAQ_NAME,FAQ_ANS FROM FAQ order by SERIAL_ID";
 
+	private static final String GET_ALL_WITH_FAQ_TYPES = 
+	        "SELECT f.SERIAL_ID, f.FAQ_NO, f.FAQ_NAME, f.FAQ_ANS, t.Q_TYPES " +
+	        "FROM FAQ f " +
+	        "INNER JOIN FAQ_TYPES t ON f.FAQ_NO = t.FAQ_NO";
+
+	    @Override
+	    public List<FaqVO> findAllWithFaqTypes() {
+	        List<FaqVO> list = new ArrayList<>();
+	        Connection conn = null;
+	        PreparedStatement pstmt = null;
+	        ResultSet rs = null;
+
+	        try {
+	            conn = DBUtil.getConnection();
+	            pstmt = conn.prepareStatement(GET_ALL_WITH_FAQ_TYPES);
+	            rs = pstmt.executeQuery();
+
+	            while (rs.next()) {
+	                FaqVO faqVO = new FaqVO();
+	                faqVO.setSerialId(rs.getInt("SERIAL_ID"));
+	                faqVO.setFaqNo(rs.getInt("FAQ_NO"));
+	                faqVO.setFaqName(rs.getString("FAQ_NAME"));
+	                faqVO.setFaqAns(rs.getString("FAQ_ANS"));
+	                
+	                FaqTypesVO faqType = new FaqTypesVO();
+	                faqType.setFaqNo(rs.getInt("FAQ_NO"));
+	                faqType.setQTypes(rs.getString("Q_TYPES"));
+	                faqVO.setFaqType(faqType); // 設置FAQ類型
+
+	                list.add(faqVO);
+	            }
+	        } catch (SQLException e) {
+	            // 處理異常
+	        } finally {
+	            DBUtil.close(conn, pstmt, rs);
+	        }
+	        return list;
+	    }
+	
+	    
+	    
+	    private static final String GET_ALL_Q_TYPES = "SELECT DISTINCT Q_TYPES FROM FAQ_TYPES";
+
+	    @Override
+	    public List<String> getAllQTypes() {
+	        List<String> qTypes = new ArrayList<>();
+	        try (Connection conn = DBUtil.getConnection();
+	             PreparedStatement pstmt = conn.prepareStatement(GET_ALL_Q_TYPES);
+	             ResultSet rs = pstmt.executeQuery()) {
+
+	            while (rs.next()) {
+	                qTypes.add(rs.getString("Q_TYPES"));
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        return qTypes;
+	    }
+	    
+	    
+	    
+	    
+	    
 	@Override
 	public void insert(FaqVO faqVO) {
 		Connection conn = null;

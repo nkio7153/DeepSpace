@@ -32,19 +32,6 @@ public class ColumnArticlesDAOImpl implements ColumnArticlesDAO {
 	@Override
 	public void insert(ColumnArticlesVO columnArticlesVO) {
 		getSession().save(columnArticlesVO);
-
-//		Session session = getSession();
-//		Transaction tx = null;
-//		try {
-//			tx = session.beginTransaction();
-//			session.save(columnArticlesVO);
-//			tx.commit();
-//		} catch (Exception e) {
-//			if (tx != null) {
-//				tx.rollback();
-//			}
-//			throw e;
-//		}
 	}
 
 	@Override
@@ -105,7 +92,6 @@ public class ColumnArticlesDAOImpl implements ColumnArticlesDAO {
 	                predicates.add(builder.like(root.get("artiTitle"), "%" + values.get(0) + "%"));
 	                break;
 	            case "colTypeId":
-	                // 使用 builder.in 
 	                CriteriaBuilder.In<Integer> inColTypeId = builder.in(root.get("colType").get("colTypeId"));
 	                for (String value : values) {
 	                	inColTypeId.value(Integer.parseInt(value));

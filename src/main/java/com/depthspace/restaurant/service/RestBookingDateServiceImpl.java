@@ -39,6 +39,11 @@ public class RestBookingDateServiceImpl implements RestBookingDateService {
 	}
 
 	@Override
+	public List<RestBookingDateVO> getById(Integer restId) {
+		return dao.getById(restId);
+	}
+
+	@Override
 	public List<RestBookingDateVO> getAll() {
 		return dao.getAll();
 	}

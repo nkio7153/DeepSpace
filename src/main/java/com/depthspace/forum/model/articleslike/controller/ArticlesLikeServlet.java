@@ -13,14 +13,18 @@ import javax.servlet.http.HttpSession;
 import com.depthspace.forum.model.articleslike.ArticlesLikeVO;
 import com.depthspace.forum.model.articleslike.service.ArticlesLikeService;
 import com.depthspace.forum.model.articleslike.service.ArticlesLikeServiceImpl;
+import com.depthspace.forum.model.forumarticles.service.ForumArticlesService;
+import com.depthspace.forum.model.forumarticles.service.ForumArticlesServiceImpl;
 
 @WebServlet("/like/*")
 public class ArticlesLikeServlet extends HttpServlet {
 	private ArticlesLikeService articlesLikeService;
+	private ForumArticlesService forumArticlesService;
 
 	@Override
 	public void init() throws ServletException {
 		articlesLikeService = new ArticlesLikeServiceImpl();
+		forumArticlesService = new ForumArticlesServiceImpl(); // 初始化 ForumArticlesService
 	}
 
 	@Override
@@ -58,9 +62,11 @@ public class ArticlesLikeServlet extends HttpServlet {
 		ArticlesLikeVO alvo = new ArticlesLikeVO(articleId, memId);
 		if (islike) {
 			articlesLikeService.delete(alvo);
+			forumArticlesService.unlikeArticle(articleId);
 			setJsonResponse(resp, "取消按讚");
 		} else {
 			articlesLikeService.insert(alvo);
+			forumArticlesService.likeArticle(articleId);
 			setJsonResponse(resp, "添加按讚");
 		}
 

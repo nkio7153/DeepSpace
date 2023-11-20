@@ -9,7 +9,6 @@ request.setCharacterEncoding("UTF-8");
 <html>
 <head>
 <meta charset="UTF-8">
-    <title>Title</title>
 <%--  include head.jsp--%>
   <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
 	<title>修改管理員資料 revise.jsp</title>
@@ -42,75 +41,73 @@ request.setCharacterEncoding("UTF-8");
 		<table border="1" align="center" width="50%">
 			
 				<th style="display: none;">管理員編號</th>
-				<input type="hidden" name="adminId" value="${param.adminId}" readonly">
+				<input type="hidden" name="adminId" value="${admin.adminId}" readonly">
 		
 			<tr>
 	            <th>帳號</th>
-	            <td><input type="text" name="adminAcc" value="${param.adminAcc}" readonly></td>
+	            <td><input type="text" name="adminAcc" value="${admin.adminAcc}" readonly></td>
 	        </tr>
 	        <tr>
 	            <th>密碼</th>
 	            <td><input type="text" name="adminPwd"
-					value="${param.adminPwd}" required></td>
+					value="${admin.adminPwd}" required></td>
 	        </tr>
 	        <tr>
 	            <th>管理員姓名</th>
 	            <td><input type="text" name="adminName"
-					value="${param.adminName}" required></td>
+					value="${admin.adminName}" required></td>
 	        </tr>
 	        <tr>
 	            <th>狀態</th>
 	            <td><input type="text" name="adminStatus"
-					value="${param.adminStatus}" readonly></td>
+					value="${admin.adminStatus}" readonly></td>
 	        </tr>
 	        <tr>
 	            <th>驗證碼狀態</th>
 	            <td><input type="text" name="adminVerifyStatus"
-					value="${param.adminVerifyStatus}" readonly></td>
+					value="${admin.adminVerifyStatus}" readonly></td>
 	        </tr>
 	        <tr>
 	            <th>權限</th>
 	            <td><input type="text" name="adminFuncName"
-					value="${param.adminFuncName}" readonly></td>
+					value="${admin.adminFuncName}" readonly></td>
 	        </tr>
 	    </table>
     <p align="center">
 		<input type="submit" value="儲存管理員資料">
 		<input type="hidden" name="action" value="modify">
 	
-	
-<!--         <input type="button" value="儲存會員資料" onclick="save()" /> -->
         <input type="button" value="取消" onclick="history.back()">
        
     </p>
      </form>
     <script type="text/javascript">
-	    var loadFile = function(event){
-	    	var reader = new FileReader();
-	    	reader.onload = function(){
-	    	}
-	    }
-			function change() {
-			// 獲取修改後的資料
-				var modifiedData = {
-				// 這裡放入你的修改後的資料
-					adminId : document.getElementById("adminId").value,
-					adminAcc : document.getElementById("adminAcc").value,
-					adminPwd : document.getElementById("adminPwd").value,
-					adminName : document.getElementById("adminName").value,
-					adminStatus : document.getElementById("adminStatus").value,
-					adminVerifyStatus : document.getElementById("adminVerifyStatus").value,
-					adminFuncName : document.getElementById("adminFuncName").value
+// 	    var loadFile = function(event){
+// 	    	var reader = new FileReader();
+// 	    	reader.onload = function(){
+// 	    	}
+// 	    }
+// 			function change() {
+// 			// 獲取修改後的資料
+// 				var modifiedData = {
+// 				// 這裡放入你的修改後的資料
+// 					adminId : document.getElementById("adminId").value,
+// 					adminAcc : document.getElementById("adminAcc").value,
+// 					adminPwd : document.getElementById("adminPwd").value,
+// 					adminName : document.getElementById("adminName").value,
+// 					adminStatus : document.getElementById("adminStatus").value,
+// 					adminVerifyStatus : document.getElementById("adminVerifyStatus").value,
+// 					adminFuncName : document.getElementById("adminFuncName").value
 
-				};
+// 				};
 
-				// 存儲修改後的資料到 Local Storage
-				localStorage.setItem('modifiedData', JSON
-						.stringify(modifiedData));
+// 				// 存儲修改後的資料到 Local Storage
+// 				localStorage.setItem('modifiedData', JSON
+// 						.stringify(modifiedData));
 
-				// 重導向到 success.jsp
-				document.location.href = "${pageContext.request.contextPath}/ad/success.jsp";
-			}
+// 				// 重導向到 success.jsp
+// 				document.location.href = "${pageContext.request.contextPath}/ad/success.jsp";
+// 			}
 	</script>
 
     </div>

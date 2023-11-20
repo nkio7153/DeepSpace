@@ -202,6 +202,25 @@ $(document).ready(function() {
 	  transform: scale(1.05); /* 鼠标悬停时稍微放大卡片 */
 	  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 提高阴影深度 */
 	}
+	
+	.likes-button{
+       background-color: #A7BEC6;
+       border-color: transparent;
+	}
+	
+	.likes-button:hover {
+       outline: none;
+       box-shadow: none !important;
+       background-color: #5B7493;
+       border-color: transparent;
+     }
+     
+     .likes-button:focus, .likes-button:active{
+       outline: none;
+       box-shadow: none !important;
+       background-color: #A7BEC6;
+       border-color: transparent;
+     }
 </style>
 
 </head>
@@ -224,7 +243,7 @@ $(document).ready(function() {
     </div>
         <div id="articlesRow" class="row">
             <c:forEach var="article" items="${list}">
-                <div class="col-md-3 mb-3">
+                <div class="col-lg-3 col-md-6 mb-3">
                     <div class="cards">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
 			                會員ID: ${article.memId}

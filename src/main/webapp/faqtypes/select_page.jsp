@@ -90,7 +90,7 @@
        <b>選擇問題類型:</b>
        <select size="1" name="faqNo">
          <c:forEach var="faqTypesVO" items="${faqSvc.all}" > 
-          <option value="${faqTypesVO.faqNo}">${faqTypesVO.qTypes}
+          <option value="${faqTypesVO.faqNo}">${faqTypesVO.QTypes}
          </c:forEach>   
        </select>
        <input type="hidden" name="action" value="getOne_For_Display">

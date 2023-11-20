@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 public class RestDAOImpl implements RestDAO {
 	
@@ -57,5 +58,7 @@ public class RestDAOImpl implements RestDAO {
 	public List<RestVO> showRest() {
 		return getSession().createQuery("from RestVO where REST_STATUS = 1", RestVO.class).list();
 	}
+
+	
 	
 }

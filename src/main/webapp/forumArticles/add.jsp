@@ -56,6 +56,13 @@
 </head>
 <body>
 <script>
+
+tinymce.init({
+    selector: 'textarea',
+    toolbar: 'bold italic',  // 加入粗體、斜體和下劃線按鈕
+    menubar: false
+});
+
 function previewImage(event) {
     // 獲取上傳的檔案
     var file = event.target.files[0];

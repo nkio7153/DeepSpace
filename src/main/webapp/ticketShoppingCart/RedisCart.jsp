@@ -37,6 +37,7 @@
         /*height:18vh;*/
     }
 
+
     /* 表格滾動 */
     .scrollable-table tbody {
         display: block;
@@ -54,6 +55,9 @@
     .scrollable-table {
         width: 100%;
         margin: auto;
+    }
+    input#submit:hover{
+        color:black;
     }
 
 </style>
@@ -158,7 +162,7 @@
 
                 <span class="offset-5 no-wrap">點數:</span><input class="coupen no-wrap" name="coupen" placeholder="可使用點數:${authenticatedMem.memPoint}" style="width: 120px; height:30px; border: 0px; border-bottom:1px solid black; background-color:transparent;"></input>
 
-<%--                    <span class="no-wrap"style="font-size: 12px; color:indianred">可使用點數:</span><span style="font-size: 12px; color:indianred" name="exist-coupen">${authenticatedMem.memPoint}</span>--%>
+                <span name="exist-coupen" class="hidden">${authenticatedMem.memPoint}</span>
 
                 <span class="offset-4 no-wrap">總金額:</span><span class="total no-wrap"></span>
 
@@ -189,7 +193,6 @@
 <%--    <input type="button" class="btn btn-primary btn-lg" value="前往結帳">--%>
 <%--</div>--%>
 <script type="text/javascript">
-
     //結帳檢查
     $("#submit").on("click", function(e) {
         if(parseInt($(".total").text())==0){

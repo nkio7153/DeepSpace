@@ -10,8 +10,7 @@
 <title>論壇文章清單</title>
 <!-- 引入 Bootstrap CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> -->
 <script>
 
 $(document).ready(function() {
@@ -33,7 +32,7 @@ $(document).ready(function() {
 	                .replace(/<\/span>/g, '');
                     var collectbutton = '<button class="btn btn-primary collect-button float-end like-button" data-articleid="' + item.articleId + '"><i class="far fa-heart"></i></button>';
                     var likeButton = '<button class="btn btn-primary like-buttons likes-button"><i class="far fa-thumbs-up"></i></button>';
-                    var card = $('<div class="col-md-3 mb-3">')
+                    var card = $('<div class="col-lg-3 col-md-6 mb-3">')
                     .append('<div class="cards">' +
                     		'<li class="list-group-item d-flex justify-content-between align-items-center">會員ID: ' + item.memId + collectbutton + '</li>' +
                         '<img src="data:image/jpeg;base64,' + base64ImageData + '" class="card-img-top fixed-height-img">' +
@@ -85,7 +84,7 @@ $(document).ready(function() {
     	                var likeButtonClass = islike ? 'btn btn-primary like-buttons liked' : 'btn btn-primary like-buttons float-end';
     	                var likeButton = '<button class="' + likeButtonClass + ' likes-button" data-articleid="' + item.articleId + '">' + thumbIcon + '</button>';
     	                  	                
-    	                var card = $('<div class="col-md-3 mb-3">')
+    	                var card = $('<div class="col-lg-3 col-md-6 mb-3">')
     	                .append('<div class="cards">' +
     	                        '<li class="list-group-item d-flex justify-content-between align-items-center">會員ID: ' + item.memId + collectButton + '</li>' +
     	                        '<img src="data:image/jpeg;base64,' + base64ImageData + '" class="card-img-top fixed-height-img">' +
@@ -332,6 +331,26 @@ $(document).ready(function() {
 	div.modal-body {
     padding: 2.5rem !important;;
 	}
+	
+	.likes-button{
+       background-color: #A7BEC6;
+       border-color: transparent;
+	}
+	
+	.likes-button:hover {
+       outline: none;
+       box-shadow: none !important;
+       background-color: #5B7493;
+       border-color: transparent;
+     }
+     
+     .likes-button:focus, .likes-button:active{
+       outline: none;
+       box-shadow: none !important;
+       background-color: #A7BEC6;
+       border-color: transparent;
+     }
+     
 </style>
 
 </head>

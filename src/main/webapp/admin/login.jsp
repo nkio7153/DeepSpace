@@ -35,9 +35,15 @@ body, html {
 <div class="container-fluid h-100">
   <div class="row justify-content-center align-items-center h-100">
 <%--    側邊欄--%>
-<!-- 	<div class="col-lg-4 g-3 my-0"> -->
-    	
-<!--     </div> -->
+
+		<div class="sidebar-sticky">
+			<div class="mt-2">
+				<a class="navbar-brand fs-2 mx-2 my-0 fw-bold p-0" href="${pageContext.request.contextPath}/indexpage/index.jsp">
+					<img class="mh my-0" src="${pageContext.request.contextPath}/backend/backIndex/image/logo.jpg">
+				</a>
+			</div>
+		</div>
+
     <div class="col-lg-4 transparent mb-5 mc-5 input-box">
 <%--      放入自己body裡的代碼--%>
       <form align="center" action="${pageContext.request.contextPath}/ad/login" method="post">
@@ -53,11 +59,11 @@ body, html {
 		</div>
 
 		<div class="check">
-			<label><input type="checkbox">記住我</label> <a href="#"	id="forgetPwd">忘記密碼</a>
+			<label><input type="checkbox">記住我</label> <a href="${pageContext.request.contextPath}/admin/forgetPassword.jsp"	id="forgetPwd">忘記密碼</a>
 		</div>
 	<input type="hidden" name="loginLocation" value="${param.requestURI}">
 		<input type="submit" value="登入">
-	
+
 	<div class="register">
 		<p>
 			如果沒有帳號?
@@ -65,24 +71,28 @@ body, html {
 		</p>
 	</div>
 	</form>
-	
-	
+
+
 
     </div>
 <!--     <div class="col-lg-4 g-3 my-0"> -->
-    	
+
 <!--     </div> -->
   </div>
 </div>
 <script>
 	var error='${param.error}';
-	 
+
 	 if(error=='false'){
 		 console.log("error="+error);
 		 alert("帳號錯誤或無此帳號");
 	 } else if (error=='true') {
 		 alert("密碼錯誤，請從新輸入")
+	 } else if(error=='nostatus'){
+		 alert("此帳戶已停權，請聯繫客服")
 	 }
+	 
+	 
 		 </script>
 </body>
 </html>

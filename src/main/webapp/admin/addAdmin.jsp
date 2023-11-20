@@ -12,10 +12,32 @@
             display: none; /* 或者使用 visibility: hidden; */
         }
     </style>
+    <script>
+    function validateEmail() {
+        var email = document.getElementById('adminAcc').value;
+        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            document.getElementById('emailError').style.display = 'block';
+            return false;
+        }
+        document.getElementById('emailError').style.display = 'none';
+        return true;
+    }
+    </script>
 </head>
 <body>
     <h1>註冊會員</h1>
     <form action="${pageContext.request.contextPath}/ad/save" method="post" enctype="multipart/form-data">
+     
+      <!-- 在這裡檢查並顯示錯誤訊息 -->
+        <c:if test="${not empty errorMsgs}">
+            <div style="color: red;">
+                <c:forEach var="error" items="${errorMsgs}">
+                    <p>${error}</p>
+                </c:forEach>
+            </div>
+        </c:if>
+     
         <label for="adminAcc">帳號:</label>
         <input type="text" id="adminAcc" name="adminAcc" value="" required><br><br>
         

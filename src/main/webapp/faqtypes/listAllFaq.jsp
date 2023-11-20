@@ -131,7 +131,7 @@ a:hover {
 
 			<tr>
 				<td>${faqTypesVO.faqNo}</td>
-				<td>${faqTypesVO.qTypes}</td>
+				<td>${faqTypesVO.QTypes}</td>
 
 				<td>
 					<FORM METHOD="post"

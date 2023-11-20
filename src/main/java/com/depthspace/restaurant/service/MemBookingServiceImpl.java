@@ -16,9 +16,9 @@ public class MemBookingServiceImpl implements MemBookingService {
 	}
 
 	@Override
-	public MemBookingVO add(MemBookingVO membookingVO) {
-		dao.add(membookingVO);
-		return membookingVO;
+	public int add(MemBookingVO membookingVO) {
+		
+		return dao.add(membookingVO);
 	}
 
 	@Override
