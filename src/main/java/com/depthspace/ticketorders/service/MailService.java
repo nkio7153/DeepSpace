@@ -10,6 +10,9 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import static com.depthspace.utils.Config.MYGMAIL;
+import static com.depthspace.utils.Config.MYGMAIL_PASSWORD;
+
 public class MailService {
 
     // 設定傳送郵件:至收信人的Email信箱,Email主旨,Email內容
@@ -36,18 +39,17 @@ public class MailService {
             //     ●5-1) 下拉式選單【選取應用程式】--> 選取【郵件】
             //     ●5-2) 下拉式選單【選取裝置】--> 選取【Windows 電腦】
             //     ●5-3) 最後按【產生】密碼
-            final String myGmail = "tibame.cha103@gmail.com";
-            final String myGmail_password = "dddn imci lyrx xdkx";
+
             Session session = Session.getInstance(props, new Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(myGmail, myGmail_password);
+                    return new PasswordAuthentication(MYGMAIL, MYGMAIL_PASSWORD);
                 }
             });
             //創建一個MimeMessage
             Message message = new MimeMessage(session);
 
             //設置發件人
-            message.setFrom(new InternetAddress(myGmail));
+            message.setFrom(new InternetAddress(MYGMAIL));
 
             //設置收件人
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
