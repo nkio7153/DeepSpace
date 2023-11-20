@@ -1,6 +1,8 @@
-package com.depthspace.attractions.model;
+package com.depthspace.attractions.model.AttractionsType.hibernate;
 
 import java.util.List;
+
+import com.depthspace.attractions.model.AttractionsTypeVO;
 
 public interface AttractionsTypeDAO_Interface {
 	public void insert(AttractionsTypeVO AttractionsTypeVO);

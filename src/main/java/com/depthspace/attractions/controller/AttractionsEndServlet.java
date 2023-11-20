@@ -78,7 +78,7 @@ public class AttractionsEndServlet extends HttpServlet {
 //		String page = req.getParameter("page");
 //		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 //
-//		List<AttractionsVO> attrList = attractionService.getAllPage(currentPage);
+		List<AttractionsVO> attrList = attractionService.getAll();
 //		
 //		int pageQty = attractionService.getPageTotal();
 //		req.getSession().setAttribute("pageQty", pageQty);
@@ -89,14 +89,14 @@ public class AttractionsEndServlet extends HttpServlet {
 //		req.setAttribute("currentPage", currentPage);
 		
 		//處理類型不重複
-//		Set<AttractionsTypeVO> uniqueTypes = new HashSet<>();
-//		for (AttractionsVO avo : attrList) {
-//			uniqueTypes.add(avo.getAttractionsTypeId());
-//			System.out.println("123="+avo);
-//		}
-//		System.out.println("456="+new ArrayList<>(uniqueTypes));
-//		
-//		req.setAttribute("uniqueTypes", new ArrayList<>(uniqueTypes));
+		Set<AttractionsTypeVO> uniqueTypes = new HashSet<>();
+		for (AttractionsVO avo : attrList) {
+			uniqueTypes.add(avo.getAttractionsTypeId());
+			System.out.println("123="+avo);
+		}
+		System.out.println("456="+new ArrayList<>(uniqueTypes));
+		
+		req.setAttribute("uniqueTypes", new ArrayList<>(uniqueTypes));
 		
 		
 		req.getRequestDispatcher("/backend/attractions/list.jsp").forward(req, res);
