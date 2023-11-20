@@ -74,8 +74,6 @@
     </style>
 
 
-    <!-- 引入Bootstrap CSS樣式表 -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 </head>
@@ -238,11 +236,22 @@
                 </div>
                     <div class="card-body">
                         <h5 class="card-title">使用方式:</h5>
-                        <p class="card-text"></p>
+                        <ul class="list-group list-group-flush" id="itemList">
+                            <li class="list-group-item">1.票券有效性: 此票券僅對應於所購買的活動或景點及指定日期有效。</li>
+                            <li class="list-group-item">2.不得轉售: 票券一經購買，不可轉讓或轉售給他人。</li>
+                            <li class="list-group-item">3.退票政策: 請查看您購票時的退票政策。一般情況下，活動開始前一定時間內可能允許退票。</li>
+                            <li class="list-group-item">4.個人物品: 請注意保管好您的個人物品。主辦方或場地不對個人物品的丟失或損壞負責。</li>
+                        </ul>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">注意事項:</h5>
-                        <p class="card-text"></p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">1.展示票券: 到達活動或景點入口時，請向工作人員展示此電子票券。</li>
+                            <li class="list-group-item">2.憑證驗證: 工作人員將會掃描您的票券上的二維碼或條形碼，以驗證票券的有效性。</li>
+                            <li class="list-group-item">3.入場: 票券驗證成功後，您將獲得入場許可。請按照工作人員的指引進入。</li>
+                            <li class="list-group-item">4.活動時間: 請注意活動的開始和結束時間，並儘量提前到達，避免遲到。</li>
+                            <li class="list-group-item">5.氣候因素: 若活動是在戶外舉行，請關注天氣預報並做好相應準備。</li>
+                        </ul>
                     </div>
             </div>
             <div class="modal-footer">
