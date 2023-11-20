@@ -1,6 +1,7 @@
 package com.depthspace.notifications.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Comparator;
 import java.util.List;
 
@@ -13,9 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.depthspace.column.model.ColumnArticlesVO;
+import com.depthspace.member.model.MemVO;
 import com.depthspace.notifications.model.NotificationsVO;
 import com.depthspace.notifications.service.NotificationsService;
 import com.depthspace.notifications.service.NotificationsServiceImpl;
+
+import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 
 @WebServlet("/notifications/*")
 public class NotificationsServlet extends HttpServlet {
@@ -56,7 +60,7 @@ public class NotificationsServlet extends HttpServlet {
 		HttpSession session = req.getSession(false);
 		Integer memId = (Integer) session.getAttribute("memId");
 
-		if (memId == null) { //判斷無會員id就無法訪問
+		if (memId == null) { //無會員id就無法訪問
 			res.sendRedirect(req.getContextPath() + "/frontend/notifications/info.jsp");
 			return;
 		}
@@ -67,4 +71,7 @@ public class NotificationsServlet extends HttpServlet {
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/notifications/list.jsp");
 		dispatcher.forward(req, res);
 	}
+	
+	
+ 
 }
