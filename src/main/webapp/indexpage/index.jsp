@@ -183,10 +183,6 @@
     </section>
     <!-- //how to book -->
 <jsp:include page="footer.jsp" />
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <!--載入 jQuery-->
-    <script src="js/jquery-3.6.4.min.js"></script>
     <script>
         window.addEventListener("load", function () {
             // 增加動畫

@@ -243,7 +243,7 @@ $(document).ready(function() {
     </div>
         <div id="articlesRow" class="row">
             <c:forEach var="article" items="${list}">
-                <div class="col-md-3 mb-3">
+                <div class="col-lg-3 col-md-6 mb-3">
                     <div class="cards">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
 			                會員ID: ${article.memId}
