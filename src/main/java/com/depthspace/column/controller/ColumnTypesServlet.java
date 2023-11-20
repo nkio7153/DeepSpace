@@ -98,7 +98,7 @@ public class ColumnTypesServlet extends HttpServlet {
     	JSONObject jsonResponse = new JSONObject();
     	jsonResponse.put("status", "success");
     	jsonResponse.put("message", "good!!!!!!!!!!");
-    	jsonResponse.put("newColumnTypeId", newColumnType);
+//    	jsonResponse.put("newColumnTypeId", newColumnType);
     	res.getWriter().write(jsonResponse.toString());   
 	}
 	
