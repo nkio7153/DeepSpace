@@ -71,12 +71,8 @@
 		</tr>
 	</table>
 	<form align="center" action="${pageContext.request.contextPath}/ad/edit?adminId=${admin.adminId}" method="post" >
-		<input type="submit" value="修改管理員資料">
+		<input type="submit" class="update" value="修改管理員資料">
 		<input type="hidden" name="action"	value="update">
-	</form>
-	
-	<form align="center" action="${pageContext.request.contextPath}/ad/logout" method="post" >
-		<input type="submit" value="登出">
 	</form>
 
 	</div>
