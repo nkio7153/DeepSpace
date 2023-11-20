@@ -49,7 +49,7 @@
 	
 	<servlet>
 		<servlet-name>FaqServlet</servlet-name>
-		<servlet-class>com.depthspace.faq.model.controller.FaqServlet</servlet-class>
+		<servlet-class>com.depthspace.faq.controller.FaqServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>

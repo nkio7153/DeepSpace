@@ -84,7 +84,7 @@ FaqTypesVO faqTypesVO = (FaqTypesVO) request.getAttribute("faqTypesVO");
 	
 	<tr>
 		<td>問題類型:</td>
-		<td><input type="TEXT" name="qTypes"   value="<%= (faqTypesVO==null)? "1" : faqTypesVO.getqTypes()%>" size="45"/></td>
+		<td><input type="TEXT" name="qTypes"   value="<%= (faqTypesVO==null)? "1" : faqTypesVO.getQTypes()%>" size="45"/></td>
 	</tr>
 
 

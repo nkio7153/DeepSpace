@@ -4,7 +4,6 @@
 <%@ page import="com.depthspace.faq.service.*"%>
 <%@ page import="com.depthspace.faq.controller.*"%>
 <%@ page import="com.depthspace.faq.model.*"%>
-
 <% //見com.emp.controller.EmpServlet.java第163行存入req的faqVO物件 (此為從資料庫取出的faqVO, 也可以是輸入格式有錯誤時的faqVO物件)
    FaqVO faqVO = (FaqVO) request.getAttribute("faqVO");
 %>
