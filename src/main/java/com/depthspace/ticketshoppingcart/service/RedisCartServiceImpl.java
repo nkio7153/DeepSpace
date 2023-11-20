@@ -7,7 +7,7 @@ import redis.clients.jedis.JedisPool;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RedisCartServiceImpl {
+public class RedisCartServiceImpl implements RedisCartService{
     private JedisPool jedisPool;
     public RedisCartServiceImpl(JedisPool jedisPool) {
         this.jedisPool=jedisPool;
@@ -62,6 +62,18 @@ public class RedisCartServiceImpl {
     public void deleteAllCart(Integer memId){
         try(Jedis jedis=jedisPool.getResource()){
             jedis.del("cart"+memId);
+        }
+    }
+
+    @Override
+    public int getCartNum(Integer memId) {
+        try(Jedis jedis=jedisPool.getResource()){
+            Map<String, String> redisCart = jedis.hgetAll("cart" + memId);
+            int count=0;
+            for(Map.Entry<String,String> entry: redisCart.entrySet()) {
+                count++;
+            }
+            return count;
         }
     }
 }

@@ -16,4 +16,7 @@ public interface RedisCartService {
     public void deleteCart(Integer memId,Integer ticketId);
     //刪除所有票券
     public void deleteAllCart(Integer memId);
+
+    //取得購物車品項數量
+    public int getCartNum(Integer memId);
 }

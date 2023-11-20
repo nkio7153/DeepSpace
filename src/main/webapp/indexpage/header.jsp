@@ -10,6 +10,25 @@
                 window.alert("請先登入")
             }
         }
+        <c:if test="${sessionScope.memId != null}">
+        $(document).ready(function(){
+            console.log("進入此方法")
+            let cartNum=$("#cartNum");
+            fetch("${pageContext.request.contextPath}/tsc/getCartNum")
+            .then(function(response){
+                    return response.text();
+                })
+                    .then(function(data){
+                        console.log(data);
+                        cartNum.text(data)
+                        cartNum.css("background-color","red");
+                    })
+                    .catch(function(error){
+                        console.log(error);
+                    })
+
+        })
+        </c:if>
     </script>
     
    <style>
@@ -124,6 +143,9 @@
                                alt=""
                                style="width: 2em"/></a>
                         </li>
+                        <span id="cartNum" style="position: absolute; top: 30px; right: 0; background-color: transparent; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8em;">
+
+                        </span>
                     </ul>
                 </div>
             </div>
