@@ -89,7 +89,9 @@ public class NotificationsServlet extends HttpServlet {
 	    Integer memId = (Integer) session.getAttribute("memId");
 
 		if (memId == null) { //無會員id就無法訪問
-			res.sendRedirect(req.getContextPath() + "/indexpage/index.jsp");
+		    res.setContentType("application/json");
+		    res.setCharacterEncoding("UTF-8");
+		    res.getWriter().write("{\"error\": \"未登錄\"}");
 			return;
 		}
 

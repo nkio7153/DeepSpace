@@ -351,7 +351,7 @@ h4.destination {
               <div class="destinations-info">
                 <div class="caption mb-lg-3">
                   <h4>Xpark 都會型水生公園門票</h4>
-                  <a href="tickets_detail.html">立即購買</a>
+                  <a href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=324003">立即購買</a>
                 </div>
               </div>
             </div>
@@ -363,7 +363,7 @@ h4.destination {
               <div class="destinations-info">
                 <div class="caption mb-lg-3">
                   <h4>張美阿嬤農場門票</h4>
-                  <a href="tickets_detail.html">立即購買</a>
+                  <a href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=324002">立即購買</a>
                 </div>
               </div>
             </div>
@@ -375,7 +375,7 @@ h4.destination {
               <div class="destinations-info">
                 <div class="caption mb-lg-3">
                   <h4>劍湖山世界主題樂園門票</h4>
-                  <a href="tickets_detail.html">立即購買</a>
+                  <a href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=324001">立即購買</a>
                 </div>
               </div>
             </div>
@@ -387,7 +387,7 @@ h4.destination {
               <div class="destinations-info">
                 <div class="caption mb-lg-3">
                   <h4>佐登妮絲城堡門票</h4>
-                  <a href="tickets_detail.html">立即購買</a>
+                  <a href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=324006">立即購買</a>
                 </div>
               </div>
             </div>
