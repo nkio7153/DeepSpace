@@ -11,4 +11,6 @@ public interface NotificationsDAO {
 	List<NotificationsVO> getByMemId(Integer memeId);
 	
 	List<NotificationsVO> getAll();
+	
+	Integer getUnreadNotificationsCount(Integer memId);
 }

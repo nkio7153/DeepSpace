@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 public class NotificationsDAOImpl implements NotificationsDAO {
 
@@ -39,5 +40,18 @@ public class NotificationsDAOImpl implements NotificationsDAO {
 	public List<NotificationsVO> getAll() {
 		return getSession().createQuery("from NotificationsVO", NotificationsVO.class).list();	
 	}
-	
+
+	@Override
+	public Integer getUnreadNotificationsCount(Integer memId) {
+        Integer unreadCount = 0;
+        try {
+            String hql = "SELECT COUNT(*) FROM NotificationsVO WHERE memId = :memId AND noteRead = 0";
+            Query<Long> query = getSession().createQuery(hql, Long.class);
+            query.setParameter("memId", memId);
+            unreadCount = query.uniqueResult().intValue();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return unreadCount;
+    }
 }

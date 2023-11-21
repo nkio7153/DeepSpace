@@ -16,6 +16,8 @@ public interface NotificationsService {
 	
 	List<NotificationsVO> getAll();
 	
+	Integer getUnreadNotificationsCount(Integer memId);
+	
 	void ticketOrderNotification(TicketOrdersVO order, MemVO member);
 	
 }
