@@ -33,6 +33,13 @@ public class AreaService {
 	}
 	
 	
+	public AreaVO getOneCity(Integer cityId) {
+		
+		AreaVO list = dao.getOneCity(cityId);
+		return list;
+	}
+	
+	
 	
 	
 }

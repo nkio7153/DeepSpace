@@ -59,9 +59,8 @@ public class AreaDAOImpl implements AreaDAO_Interface{
 
 	}
 	@Override
-	public List<AreaVO> getArea(Integer cityId) {
-		// TODO Auto-generated method stub
-		return null;
+	public AreaVO getOneCity(Integer areaId) {
+		return getSession().get(AreaVO.class, areaId);
 	}
 
 }

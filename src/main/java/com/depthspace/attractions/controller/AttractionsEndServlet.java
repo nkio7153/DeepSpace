@@ -85,7 +85,7 @@ public class AttractionsEndServlet extends HttpServlet {
 		Integer attrId = Integer.valueOf(req.getParameter("attractionsId"));
 		
 		AttractionsVO attrvo = attractionService.getAttractionsById(attrId);
-		System.out.println("attrvo裡的地址= " + attrvo);
+		System.out.println("attrvo裡的區域編號= " + attrvo.getAreaId());
 //		[attractionsId=1, attractionsTypeId=AttractionsTypeVO [attractionsTypeId=1, typeName=種類1], areaId=14, attractionsName=台北101, description=台北地標建築，高度508米。, attractionsStatus=0, address=台北市信義區信義路五段7號, lon=121.5654, lat=25.0339]
 
 //		處理地址
@@ -101,15 +101,18 @@ public class AttractionsEndServlet extends HttpServlet {
 		//所有類型
 		List<AttractionsTypeVO> attractionsTypes = attrTypeService.getAll();
 		req.setAttribute("attractionsTypes", attractionsTypes);
-		//存取此景點的類型
-		AttractionsTypeVO attrTypevo = attrTypeService.getOne(attrId);
-//		System.out.println("attrTypevo=" + attrTypevo);
-		req.setAttribute("attrTypevo", attrTypevo);
 		
+		//找尋所有縣市及區域
 		List<CityVO> city = cityService.getAll();
 		req.setAttribute("city", city);
-		List<AreaVO> area = areaService.getAll();
+		//找到區域編號的縣市
+		List<CityVO> area = cityService.getAll();
 		req.setAttribute("area", area);
+		AreaVO area2 = areaService.findByPrimaryKey(attrvo.getAreaId());
+		System.out.println("area=" + area);
+		req.setAttribute("area2", area2);
+		
+		//依照attrvo的areaId去找對應的cityId
 		
 		req.setAttribute("attrvo", attrvo);
 		

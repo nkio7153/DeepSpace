@@ -67,7 +67,7 @@
 				        <option value="">請選縣市</option>
 				        <c:forEach var="typeItem" items="${city}">
 				            <option value="${typeItem.cityId}"
-				            	
+				            	${typeItem.cityId == attrvo.attractionsTypeId.attractionsTypeId ? 'selected' : ''}
 				            >${typeItem.cityName}</option>
 				        </c:forEach>
 				    </select>
