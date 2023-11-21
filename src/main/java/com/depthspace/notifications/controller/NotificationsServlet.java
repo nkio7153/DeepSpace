@@ -48,7 +48,10 @@ public class NotificationsServlet extends HttpServlet {
 		case "/list":
 			doList(req, res);
 			break;
-
+		case "/countUnread":
+		    doCountUnread(req, res);
+		    break;
+		    
 		default:
 			System.out.println("Path not handled: " + pathInfo);
 		}
@@ -66,12 +69,31 @@ public class NotificationsServlet extends HttpServlet {
 		}
 		
 		List<NotificationsVO> notifications = notificationsService.getByMemId(memId);
+		Integer unreadCount = notificationsService.getUnreadNotificationsCount(memId);
 		req.setAttribute("notifications", notifications);
+	    req.setAttribute("unreadCount", unreadCount);
 
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/frontend/notifications/list.jsp");
 		dispatcher.forward(req, res);
 	}
 	
-	
+	/************ 計算未讀數量 ************/
+	protected void doCountUnread(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+
+	    HttpSession session = req.getSession(false);
+	    Integer memId = (Integer) session.getAttribute("memId");
+
+		if (memId == null) { //無會員id就無法訪問
+			res.sendRedirect(req.getContextPath() + "/indexpage/index.jsp");
+			return;
+		}
+
+	    Integer unreadCount = notificationsService.getUnreadNotificationsCount(memId);
+
+	    res.setContentType("application/json");
+	    res.setCharacterEncoding("UTF-8");
+	    res.getWriter().write("{\"unreadCount\": " + unreadCount + "}");
+	}
+		
  
 }

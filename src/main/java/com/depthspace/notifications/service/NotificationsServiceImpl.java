@@ -39,6 +39,10 @@ public class NotificationsServiceImpl implements NotificationsService {
 	public List<NotificationsVO> getAll() {
 		return dao.getAll();
 	}
+	
+	public Integer getUnreadNotificationsCount(Integer memId) {
+        return dao.getUnreadNotificationsCount(memId);
+    }
 
 	@Override
   	public void ticketOrderNotification(TicketOrdersVO order, MemVO member) {

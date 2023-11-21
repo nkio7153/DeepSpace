@@ -11,10 +11,28 @@
 <title>專欄文章詳情</title>
 <jsp:include page="/indexpage/head.jsp" />
 
-<!-- <link -->
-<!-- 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" -->
-<!-- 	rel="stylesheet"> -->
+    <style>
+        #carouselExampleIndicators img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: auto;
+        }
 
+        /* 推薦文章 */
+        .carousel-inner {
+            display: flex;
+            flex-wrap: nowrap;
+        }
+        .carousel-item {
+            flex: 0 0 auto;
+            width: 33%; 
+        }
+        .carousel-item .card {
+            margin: 10px;
+        }
+
+    </style>
 
 </head>
 

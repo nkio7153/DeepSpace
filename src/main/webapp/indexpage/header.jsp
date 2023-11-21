@@ -132,13 +132,13 @@
 			            <li class="nav-item">
 			                <a href="${pageContext.request.contextPath}/notifications/list">
 							    <i class="fas fa-bell"></i>
-							    <span class="badge" id="notificationCount">0</span>
+							    <span class="badge" id="notificationCount">${unreadCount}</span>
 							</a>
 			            </li>
 			            </div>
                         </c:if>
                         <li class="">
-                            <a href="${pageContext.request.contextPath}/tsc/memCartList"><img
+                            <a href="${pageContext.request.contextPath}/tsc/memCartList" onclick="checkSession(event)"><img
                                src="${pageContext.request.contextPath}/indexpage/images/shoppingcar.svg"
                                alt=""
                                style="width: 2em"/></a>
@@ -151,30 +151,42 @@
             </div>
         </nav>
     </div>
-   <script>
+<script>
     if ("WebSocket" in window) {
         var ws = new WebSocket("ws://localhost:8081/DepthSpace/notifications");
-        var notificationCount = 0;
 
         ws.onopen = function() {
             console.log("WebSocketOPEN");
+            fetchUnreadNotifications();
         };
+
         ws.onmessage = function(event) {
-        	console.log("收到消息: " + event.data);
-        	notificationCount++;
-            document.querySelector('.notification-bell .badge').textContent = notificationCount;
+            console.log("收到消息: " + event.data);
+            fetchUnreadNotifications();
         };
+
         window.onbeforeunload = function(event) {
             ws.close();
             console.log("WebSocketCLOSE");
         };
+
         ws.onerror = function(event) {
             console.log("WebSocketerrorerrorerrorerror: ", event);
         };
+
+        function fetchUnreadNotifications() {
+            var url = "<%=request.getContextPath()%>/notifications/countUnread";
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelector('.notification-bell .badge').textContent = data.unreadCount;
+                })
+                .catch(error => console.error('Error fetching notifications:', error));
+        }
     } else {
         console.log("發生錯誤");
     }
-	</script>
+</script>
     
 </header>
 
