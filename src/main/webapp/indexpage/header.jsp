@@ -3,13 +3,19 @@
 <header>
 	<script>
 
-        function checkSession(e){
-            let check=$("[name='check']").text();
-            if(check=="登入/註冊"){
-                e.preventDefault();
-                window.alert("請先登入")
-            }
-        }
+		function checkSession(e){
+		    let check = $("[name='check']").text();
+		    if(check === "登入/註冊"){
+		        e.preventDefault(); // 防止預設事件，例如表單提交或連結跳轉
+	
+		        // 使用 SweetAlert2 顯示彈窗
+		        Swal.fire({
+		            icon: "error",
+		            text: "尚未登入！",
+		            footer: '<a href="${pageContext.request.contextPath}/member/login.jsp">點此登入</a>'
+		        });
+		    }
+		}
         <c:if test="${sessionScope.memId != null}">
         $(document).ready(function(){
             console.log("進入此方法")
@@ -45,7 +51,6 @@
     }
 	</style>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     
     <div class="container" style="padding-right: 0;">
         <nav class="navbar navbar-expand-lg">
