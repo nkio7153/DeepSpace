@@ -5,6 +5,15 @@ import com.depthspace.memticketowned.model.MemTicketOwnedVO;
 import com.depthspace.memticketowned.model.hibernate.HbMtoDao;
 import com.depthspace.memticketowned.service.MtoService;
 import com.depthspace.memticketowned.service.MtoServiceImpl;
+import com.depthspace.ticket.model.TicketVO;
+import com.depthspace.ticket.service.TicketService;
+import com.depthspace.ticket.service.TicketServiceImpl;
+import com.google.gson.Gson;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfDocument;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,9 +28,12 @@ import java.util.Set;
 @WebServlet("/mto/*")
 public class MtoServlet extends HttpServlet {
     private MtoService mtoSv;
+    private TicketService tiSv;
     public MtoServlet(){
         mtoSv=new MtoServiceImpl();
+        tiSv=new TicketServiceImpl();
     }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
@@ -32,6 +44,9 @@ public class MtoServlet extends HttpServlet {
             case "/memList":
                 doMemList(req,resp);
                 break;
+//            case "/pdfWriter":
+//                doPdf(req,resp);
+//                break;
         }
     }
 
@@ -78,4 +93,41 @@ public class MtoServlet extends HttpServlet {
         req.setAttribute("memId",memId);
         req.getRequestDispatcher("/frontend/memticketowned/mto.jsp").forward(req,resp);
     }
+//    private void doPdf(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        System.out.println("進入pdf方法");
+//        Integer ticketId = Integer.parseInt(req.getParameter("ticketId"));
+//        System.out.println(ticketId);
+//        TicketVO ticketInfo = tiSv.getTicketById(ticketId);
+//        System.out.println(ticketInfo.getTicketName());
+//        //設置響應內容類型為pdf
+//        resp.setContentType("application/pdf");
+//        //建議的文件名設置
+//        resp.setHeader("Content-disposition","attachment; filename=ticket_"+ticketId+".pdf");
+//        //初始化pdf文檔
+//        Document document = new Document();
+//        try {
+//            PdfWriter.getInstance(document,resp.getOutputStream());
+//        } catch (DocumentException e) {
+//            throw new RuntimeException(e);
+//        }
+//        //打開文檔
+//        document.open();
+//        //添加內容
+//        try {
+//            document.add(new Paragraph("票券名稱:" + ticketInfo.getTicketName()));
+//        } catch (DocumentException e) {
+//            throw new RuntimeException(e);
+//        }
+//        //關閉文檔
+//        document.close();
+//        setJsonResponse(resp,ticketInfo);
+//    }
+//    //fetch返回json格式
+//    private void setJsonResponse(HttpServletResponse resp, Object obj) throws IOException {
+//        Gson gson = new Gson();
+//        String jsonData = gson.toJson(obj);
+//        resp.setContentType("application/json");
+//        resp.setCharacterEncoding("UTF-8");
+//        resp.getWriter().write(jsonData);
+//    }
 }
