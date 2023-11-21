@@ -6,6 +6,7 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -28,7 +29,7 @@ public class RestCollectionVO implements Serializable {
 	@Column(name = "MEM_ID")
 	private Integer memId;
 	// @JoinColumn(name=FKColumn, referencedColumnName=PKColumn)
-	@ManyToOne(cascade = {})
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "REST_ID", referencedColumnName = "REST_ID", insertable = false, updatable = false)
 	private RestVO restVO;
 	

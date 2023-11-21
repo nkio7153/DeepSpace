@@ -9,4 +9,5 @@ public interface RestDAO {
 	RestVO findByPK(Integer restId);
 	List<RestVO> getAll();
 	List<RestVO> showRest();
+//	List<Object> getAllandAdmin();
 }
