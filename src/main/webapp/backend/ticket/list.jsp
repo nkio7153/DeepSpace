@@ -57,6 +57,13 @@
 	    display: flex;
 	    align-items: center;
 	}
+	.carousel-inner {
+	    position: relative;
+	    width: 50%;
+	    overflow: hidden;
+	    margin: auto;
+	    margin-bottom: 10px;
+	}
 </style>
 
 <title>票券列表</title>
