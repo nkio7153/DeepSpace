@@ -197,8 +197,8 @@
 						</a></li>
 					</c:if>
 
-					<!-- 動態顯示頁碼，根據總頁數ticketPageQty生成 -->
-					<c:forEach var="i" begin="1" end="${ticketPageQty}" step="1">
+					<!-- 動態顯示頁碼，根據總頁數pageQty生成 -->
+					<c:forEach var="i" begin="1" end="${pageQty}" step="1">
 						<li class="page-item ${i == currentPage ? 'active' : ''}"><a
 							class="page-link"
 							href="${pageContext.request.contextPath}/columnmg/list?page=${i}">${i}</a>
@@ -224,7 +224,7 @@
 			</div>
 		 </div>
 	 </div>
-	 
+	</div> 
 	 <!-- 查看 -->		
 		<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
 		    <div class="modal-dialog modal-lg" role="document">

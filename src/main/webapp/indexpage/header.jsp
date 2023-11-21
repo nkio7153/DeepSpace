@@ -167,18 +167,15 @@
         var ws = new WebSocket("ws://localhost:8081/DepthSpace/notifications");
 
         ws.onopen = function() {
-            console.log("WebSocketOPEN");
             fetchUnreadNotifications();
         };
 
         ws.onmessage = function(event) {
-            console.log("收到消息: " + event.data);
             fetchUnreadNotifications();
         };
 
         window.onbeforeunload = function(event) {
             ws.close();
-            console.log("WebSocketCLOSE");
         };
 
         ws.onerror = function(event) {
@@ -188,14 +185,22 @@
         function fetchUnreadNotifications() {
             var url = "<%=request.getContextPath()%>/notifications/countUnread";
             fetch(url)
-                .then(response => response.json())
-                .then(data => {
+            .then(response => {
+                if (response.ok && response.headers.get("content-type").includes("application/json")) {
+                    return response.json();
+                } else {
+                    throw new Error('不是有效的 JSON');
+                }
+            })
+            .then(data => {
+                if (data.error) {
+                    console.error('Error: ', data.error);
+                } else {
                     document.querySelector('.notification-bell .badge').textContent = data.unreadCount;
-                })
-                .catch(error => console.error('Error fetching notifications:', error));
-        }
-    } else {
-        console.log("發生錯誤");
+                }
+            })
+            .catch(error => console.error('Error fetching notifications:', error));
+    }
     }
 </script>
     
