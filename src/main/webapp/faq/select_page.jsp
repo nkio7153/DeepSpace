@@ -4,58 +4,63 @@
 <html>
 <head>
     <title>常見問題 首頁</title>
-<%--  include head.jsp--%>
-  <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
-<style>
-  table#table-1 {
-	width: 450px;
-	background-color: #CCCCFF;
-	margin-top: 5px;
-	margin-bottom: 10px;
-    border: 3px ridge Gray;
-    height: 80px;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
+    <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .container-fluid {
+            padding-top: 20px;
+        }
+        .card {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+        }
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .alert-danger ul {
+            margin-bottom: 0;
+        }
+        h3, h4 {
+            margin-bottom: 15px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-<%--include header.jsp--%>
-<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
-<div class="container-fluid my-0">
-  <div class="row">
-<%--    側邊欄--%>
-    <div class="col-lg-2 g-3 my-0">
-    <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
-    </div>
-
-    <div class="col-lg-10 g-2 transparent rounded my-0">
-<%--      放入自己body裡的代碼--%>
-      <table id="table-1">
-   <tr><td><h3>IBM Faq: Home</h3><h4>( MVC )</h4></td></tr>
-</table>
-
-<p>Faq: Home</p>
-
-<h3>FAQ資料查詢:</h3>
-	
-<%-- 錯誤表列 --%>
-<c:if test="${not empty errorMsgs}">
-	<font style="color:red">請修正以下錯誤:</font>
-	<ul>
-	    <c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
+    <jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-2">
+                <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
+            </div>
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>IBM Faq: Home (MVC)</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Faq: Home</p>
+                        <h3>FAQ資料查詢:</h3>
+                        <c:if test="${not empty errorMsgs}">
+                            <div class="alert alert-danger" role="alert">
+                                <strong>請修正以下錯誤:</strong>
+                                <ul>
+                                    <c:forEach var="message" items="${errorMsgs}">
+                                        <li>${message}</li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                        </c:if>
 
 <ul>
   <li><a href='listAllFaq.jsp'>列表</a> all Faqs.  <br><br></li>
@@ -101,14 +106,15 @@
 
 
 <h3>FAQ管理</h3>
-
-<ul>
-  <li><a href='addFaq.jsp'>新增</a> a new Faq.</li>
-</ul>
-
+                <ul>
+                    <li><a href='addFaq.jsp'>新增</a> a new Faq.</li>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
