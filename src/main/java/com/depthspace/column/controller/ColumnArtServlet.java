@@ -122,7 +122,7 @@ public class ColumnArtServlet extends HttpServlet {
             for (ColumnArticlesVO article : allArticles) {
                 jedis.sadd("columnSet", article.getArtiId().toString());  //加到columnSet集合
             }
-		    List<String> randomArticleIds = jedis.srandmember("columnSet", 5); //任取五篇
+		    List<String> randomArticleIds = jedis.srandmember("columnSet", 3); //任取3篇
 			List<ColumnArticlesVO> recommendedArticles = new ArrayList<>();
 			for (String id : randomArticleIds) {
 		        ColumnArticlesVO article = columnArticlesService.getArtiByArtiId(Integer.parseInt(id));
