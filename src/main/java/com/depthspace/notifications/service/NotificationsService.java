@@ -20,4 +20,6 @@ public interface NotificationsService {
 	
 	void ticketOrderNotification(TicketOrdersVO order, MemVO member);
 	
+	void toBeRead(Integer noteId);
+	
 }

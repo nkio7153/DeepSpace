@@ -51,11 +51,16 @@ public class NotificationsServlet extends HttpServlet {
 		case "/countUnread":
 		    doCountUnread(req, res);
 		    break;
+		case "/toBeRead":
+			toBeRead(req, res);
+			break;
 		    
 		default:
 			System.out.println("Path not handled: " + pathInfo);
 		}
 	}
+
+
 
 	/************ 列表 ************/
 	protected void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -84,7 +89,9 @@ public class NotificationsServlet extends HttpServlet {
 	    Integer memId = (Integer) session.getAttribute("memId");
 
 		if (memId == null) { //無會員id就無法訪問
-			res.sendRedirect(req.getContextPath() + "/indexpage/index.jsp");
+		    res.setContentType("application/json");
+		    res.setCharacterEncoding("UTF-8");
+		    res.getWriter().write("{\"error\": \"未登錄\"}");
 			return;
 		}
 
@@ -95,5 +102,21 @@ public class NotificationsServlet extends HttpServlet {
 	    res.getWriter().write("{\"unreadCount\": " + unreadCount + "}");
 	}
 		
- 
+	/************ 未讀變已讀 ************/
+	protected void toBeRead(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		
+		String noteIdStr = req.getParameter("noteId");
+		System.out.println("YYYYYYYYYYYYYYYYYYYYY??????????????"+noteIdStr);
+		if (noteIdStr != null & !noteIdStr.isEmpty()) {
+			Integer noteId = Integer.parseInt(noteIdStr);
+			notificationsService.toBeRead(noteId);
+			System.out.println("YYYYYYYYYYYYYYYYYYYYYYYY"+noteId);
+		}
+		
+		
+		res.setContentType("application/json");
+		res.setCharacterEncoding("UTF-8");
+		res.getWriter().write("{\"status\":\"success\"}");
+	}
+
 }

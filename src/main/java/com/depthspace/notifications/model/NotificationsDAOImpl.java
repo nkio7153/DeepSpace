@@ -24,13 +24,18 @@ public class NotificationsDAOImpl implements NotificationsDAO {
 	}
 	
 	@Override
+	public void update(NotificationsVO notificationsVO) {
+		getSession().update(notificationsVO);
+	}
+
+	@Override
 	public NotificationsVO getOneByNoteId(Integer noteId) {
 		return getSession().get(NotificationsVO.class, noteId);
 	}
 	
 	@Override
 	public List<NotificationsVO> getByMemId(Integer memId) {
-	    return getSession().createQuery("FROM NotificationsVO n WHERE n.memId = :memId", NotificationsVO.class)
+	    return getSession().createQuery("FROM NotificationsVO n WHERE n.memId = :memId ORDER BY noteCreated DESC", NotificationsVO.class)
 	                       .setParameter("memId", memId)
 	                       .list();
 	}
@@ -54,4 +59,6 @@ public class NotificationsDAOImpl implements NotificationsDAO {
         }
         return unreadCount;
     }
+
+
 }

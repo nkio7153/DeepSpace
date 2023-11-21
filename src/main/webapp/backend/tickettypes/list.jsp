@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">  
 <style>
 .add-button {
     background-color: #63bfc9; 
@@ -39,70 +39,87 @@
 /*      padding: 0; */
  }
 .swal2-title {
-    font-size: 12px !important; /* 設定較小的字體大小 */
+    font-size: 14px !important; 
 }
 /* 新增 */
 .add-button {
-  position: relative;
-  padding: 8px 30px;
-  width: 150px;
-  height: 40px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  border: 1px solid #63bfc9;
-  background-color: #63bfc9;
-  border-radius:5px;
-  border: none;
+	position: relative;
+	padding: 8px 30px;
+	width: 150px;
+	height: 40px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	border: 1px solid #63bfc9;
+	background-color: #63bfc9;
+	border-radius:5px;
+	border: none;
 }
 
 .add-button, .button__icon, .button__text {
-  transition: all 0.3s;
+	transition: all 0.3s;
 }
 
 .add-button .button__text {
-  transform: translateX(30px);
-  color: #fff;
-  font-weight: 600;
+	transform: translateX(30px);
+	color: #fff;
+	font-weight: 600;
 }
 
 .add-button .button__icon {
-  position: absolute;
-  transform: translateX(109px);
-  height: 100%;
-  width: 39px;
-  background-color: #63bfc9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius:5px;
-  border: none;
+	position: absolute;
+	transform: translateX(109px);
+	height: 100%;
+	width: 39px;
+	background-color: #63bfc9;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius:5px;
+	border: none;
 }
 
 .add-button .svg {
-  width: 30px;
-  stroke: #fff;
+	width: 30px;
+	stroke: #fff;
 }
 
 .add-button:hover {
-  background: #63bfc9;
-}
+	background: #63bfc9;
+}ㄋ
 
 .add-button:hover .button__text {
-  color: transparent;
+	color: transparent;
 }
 
 .add-button:hover .button__icon {
-  width: 148px;
-  transform: translateX(0);
+	width: 148px;
+	transform: translateX(0);
 }
 
 .add-button:active .button__icon {
-  background-color: #2e8644;
+	background-color: #2e8644;
 }
 
 .add-button:active {
-  border: 1px solid #2e8644;
+	border: 1px solid #2e8644;
+}
+
+.btn-primary {
+	background: #63bfc9; 
+	border: #63bfc9; 
+}
+.btn-primary:hover {
+	background: #85cdd5 !important; 
+	border: #85cdd5; 
+}
+.btn-success{
+	background: #63bfc9 !important;  
+	border: #63bfc9 !important;  
+}
+.btn-success:hover {
+	background: #85cdd5 !important;  
+	border: #85cdd5; 
 }
 </style>
 
@@ -140,13 +157,26 @@
 	               </tr>
 	           </thead>
 	           <tbody>
-	           <c:forEach var="ticketType" items="${listAll}">
-	               <tr>
-	                   <td>${ticketType.ticketTypeId}</td>
-	                   <td contenteditable="true">${ticketType.typeName}</td>
-	                   <td contenteditable="true">${ticketType.description}</td>
-	                   <td><button type="button" style="none" class="btn btn-primary edit-btn"><i class="fas fa-edit" style="background-color: #63bfc9; border-color: #63bfc9;"></i></button></td>
-	               </tr>
+	           <c:forEach var="ticketType" items="${listAll}" varStatus="status">
+		   			<td style="display: none;">${ticketType.ticketTypeId}</td>
+		            <td>${status.index + 1}</td>
+		            <td>
+	           			<span class="typeName">${ticketType.typeName}</span>
+		                <input type="text" class="form-control typeName-input" style="display: none;">
+		            </td>
+		            <td>
+	           			<span class="description">${ticketType.description}</span>
+		                <input type="text" class="form-control description-input" style="display: none;">
+		            </td>		            
+		            <td>
+		                <span class="edit-icon btn btn-primary edit-btn">
+		                    <i class="fas fa-edit"></i>
+		                </span>
+		                <span class="save-icon btn btn-success save-btn" style="display: none;">
+		                    <i class="fas fa-save"></i>
+		                </span>
+		            </td>
+		            </tr>
 	               </c:forEach>
 	           </tbody>
 	       </table>
@@ -165,103 +195,119 @@
   <script>
   //點選編輯進入編輯，離開後保存
   $(document).ready(function() {
-    $('.edit-icon').on('click', function() {
+	$(document).on('click', '.edit-btn', function() {
         var currentRow = $(this).closest('tr');
-        currentRow.find('td').attr('contenteditable', 'true');
-        currentRow.find('td:eq(1)').focus(); 
+        var typeName = currentRow.find('.typeName').text();
+        var description = currentRow.find('.description').text();
+        currentRow.find('.typeName').hide();
+        currentRow.find('.typeName-input').val(typeName).show().focus();
+        currentRow.find('.edit-icon').hide();
+        currentRow.find('.save-icon').show();
+        currentRow.find('.description').hide();
+        currentRow.find('.description-input').val(description).show().focus();
+        currentRow.find('.edit-icon').hide();
+        currentRow.find('.save-icon').show();
     });
 	//存入資料
-    $('td[contenteditable="true"]').on('blur', function() {
-        var currentRow = $(this).closest('tr');
-        var ticketTypeId = currentRow.find('td:eq(0)').text().trim();
-        var typeName = currentRow.find('td:eq(1)').text().trim();
-        var description = currentRow.find('td:eq(2)').text().trim();
-    	if(typeName === ''){
-    		Swal.fire({
-    			icon: 'error',
-    			title: '票券類型名稱不能為空!!!'
-    		});
-    		return;
-    	}
-        var data = {
-            ticketTypeId: ticketTypeId,        	
-            typeName: typeName,
-            description: description
-        }; 
-        $.ajax({
-        	url:'<%=request.getContextPath()%>/tickettypesmg/edit',
-        	type:'POST',
-        	contentType:'application/json',
-        	data:JSON.stringify(data),
-        	dataType:'json',
-
-        	success:function(response){
-        		if(response.status === "success") {
-                    Swal.fire({
-                        position: 'top',
-                        title: '已完成修改',
-                        showConfirmButton: false,
-                        timer: 500
-                    });
-        		}
-        	},
-        	error: function(xhr, status, error) {
-        		console.error('輸入失敗', xhr, status, error);
-        	}
-        });
-    });
-  });
-	// 新增
-    $('.add-button').on('click', function() {
-        var newRow = $('<tr>').append(
-            $('<td>').text('編號自動產生').attr('contenteditable', 'false'),
-            $('<td>').text('').attr('contenteditable', 'true'),
-            $('<td>').text('').attr('contenteditable', 'true'),
-            $('<td>').append($('<button>').addClass('btn btn-primary save-btn').text('保存'))
-        );
-        $('table tbody').append(newRow);
-    // 新增儲存
     $(document).on('click', '.save-btn', function() {
         var currentRow = $(this).closest('tr');
-        var typeName = currentRow.find('td:eq(1)').text().trim();
-        var description = currentRow.find('td:eq(2)').text().trim();
-	    	if(typeName === ''){
-	    		Swal.fire({
-	    			icon: 'error',
-	    			title: '票券類型名稱不能為空!!!'
-	    		});
-	    		return;
-	    	}
-        var data = {
-            typeName: typeName,
-            description: description
+        var ticketTypeId = currentRow.find('td:eq(0)').text().trim();
+        var typeName = currentRow.find('.typeName-input').val().trim();
+		var description = currentRow.find('.description-input').val().trim();
+        if(typeName === ''){
+            Swal.fire({
+                icon: 'error',
+                title: '類型名稱不能為空！'
+            });
+            return;
+        }	
+        $.ajax({
+            url: '<%=request.getContextPath()%>/tickettypesmg/edit',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ticketTypeId: ticketTypeId, typeName: typeName, description: description}),
+            dataType: 'json',
+            success: function(response) {
+                if(response.status === "success") {
+                    Swal.fire({
+                        position: 'center',
+                        title: '完成修改',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    currentRow.find('.typeName').text(typeName).show();
+                    currentRow.find('.typeName-input').hide();
+                    currentRow.find('.edit-icon').show();
+                    currentRow.find('.save-icon').hide();
+                    currentRow.find('.description').text(description).show();
+                    currentRow.find('.description-input').hide();
+                    currentRow.find('.edit-icon').show();
+                    currentRow.find('.save-icon').hide();    
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('更新失敗', xhr, status, error);
+            }
+        });
+    });
+});
+	// 新增
+    $('.add-button').on('click', function() {
+    	var rowCount = $('table tbody tr').length + 1; // 流水號
+        var newRow = $('<tr>').append(
+           $('<td>').text(rowCount), 
+           $('<td>').append($('<input>').addClass('form-control typeName-input')),
+           $('<td>').append($('<input>').addClass('form-control description-input')),
+           $('<td>').append(
+               $('<span>').addClass('save-icon btn btn-success Nsave-btn').append(
+                   $('<i>').addClass('fas fa-save')
+               )
+           )
+       );
+        $('table tbody').append(newRow);
+    // 新增儲存
+        $(document).on('click', '.Nsave-btn', function() {
+            var currentRow = $(this).closest('tr');
+            var typeName = currentRow.find('.typeName-input').val().trim();
+    		var description = currentRow.find('.description-input').val().trim();
+            
+            if(typeName === ''){
+                Swal.fire({
+                    icon: 'error',
+                    title: '類型名稱不能為空！'
+                });
+                return;
+            }
 
-        }; 
             $.ajax({
-            	url:'<%=request.getContextPath()%>/tickettypesmg/add',
-            	type:'POST',
-            	contentType:'application/json',
-            	data:JSON.stringify(data),
-            	dataType:'json',
-
-            	success:function(response){
-            		if(response.status === "success") {
+                url: '<%=request.getContextPath()%>/tickettypesmg/add',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({typeName: typeName, description: description}),
+                dataType: 'json',
+                success: function(response) {
+                    if(response.status === "success") {
                         Swal.fire({
                             position: 'center',
                             title: '已完成新增',
                             showConfirmButton: false,
-                            timer: 500
+                            timer: 1500
                         });
-                        currentRow.find('.save-btn').replaceWith('<i class="fas fa-edit btn btn-primary edit-btn" style="background-color: #63bfc9; border-color: #63bfc9;"></i>');
-                        currentRow.find('td:eq(0)').text(response.newTicketTypeId);
-            		}
-            	},
-            	error: function(xhr, status, error) {
-            		console.error('輸入失敗', xhr, status, error);
-            	}
+                        currentRow.find('.typeName-input').replaceWith($('<span>').addClass('typeName').text(typeName));
+                        currentRow.find('.description-input').replaceWith($('<span>').addClass('description').text(description));
+                        currentRow.find('.save-icon').replaceWith(
+                            $('<span>').addClass('edit-icon btn btn-primary edit-btn').append(
+                                $('<i>').addClass('fas fa-edit')
+                            )
+                        );
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('新增失敗', xhr, status, error);
+                }
             });
         });
-	});
+        });
   </script>
 	    
 	<%--  include --%>	

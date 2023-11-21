@@ -3,13 +3,19 @@
 <header>
 	<script>
 
-        function checkSession(e){
-            let check=$("[name='check']").text();
-            if(check=="登入/註冊"){
-                e.preventDefault();
-                window.alert("請先登入")
-            }
-        }
+		function checkSession(e){
+		    let check = $("[name='check']").text();
+		    if(check === "登入/註冊"){
+		        e.preventDefault(); // 防止預設事件，例如表單提交或連結跳轉
+	
+		        // 使用 SweetAlert2 顯示彈窗
+		        Swal.fire({
+		            icon: "error",
+		            text: "尚未登入！",
+		            footer: '<a href="${pageContext.request.contextPath}/member/login.jsp">點此登入</a>'
+		        });
+		    }
+		}
         <c:if test="${sessionScope.memId != null}">
         $(document).ready(function(){
             console.log("進入此方法")
@@ -45,7 +51,6 @@
     }
 	</style>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     
     <div class="container" style="padding-right: 0;">
         <nav class="navbar navbar-expand-lg">
@@ -95,8 +100,14 @@
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList"  onclick="checkSession(event)">我的票券</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="" href="${pageContext.request.contextPath}/forumArticles/list.jsp">論壇文章</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="${pageContext.request.contextPath}/forumArticles/list.jsp" id="navbarDropdownArticles" role="button" data-bs-toggle="dropdown" aria-expanded="false">論壇文章</a>
+                            <ul class="dropdown-menu" aria-labelledby="trip">
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles/list.jsp">文章瀏覽</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist" onclick="checkSession(event)">我的文章</a></li>                               
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=doArtiCollectList" onclick="checkSession(event)">我的收藏</a></li>                               
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=addArticle" onclick="checkSession(event)">新增文章</a></li>                               
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="" href="${pageContext.request.contextPath}/Rest/getRests">餐廳</a>
@@ -156,18 +167,15 @@
         var ws = new WebSocket("ws://localhost:8081/DepthSpace/notifications");
 
         ws.onopen = function() {
-            console.log("WebSocketOPEN");
             fetchUnreadNotifications();
         };
 
         ws.onmessage = function(event) {
-            console.log("收到消息: " + event.data);
             fetchUnreadNotifications();
         };
 
         window.onbeforeunload = function(event) {
             ws.close();
-            console.log("WebSocketCLOSE");
         };
 
         ws.onerror = function(event) {
@@ -177,14 +185,22 @@
         function fetchUnreadNotifications() {
             var url = "<%=request.getContextPath()%>/notifications/countUnread";
             fetch(url)
-                .then(response => response.json())
-                .then(data => {
+            .then(response => {
+                if (response.ok && response.headers.get("content-type").includes("application/json")) {
+                    return response.json();
+                } else {
+                    throw new Error('不是有效的 JSON');
+                }
+            })
+            .then(data => {
+                if (data.error) {
+                    console.error('Error: ', data.error);
+                } else {
                     document.querySelector('.notification-bell .badge').textContent = data.unreadCount;
-                })
-                .catch(error => console.error('Error fetching notifications:', error));
-        }
-    } else {
-        console.log("發生錯誤");
+                }
+            })
+            .catch(error => console.error('Error fetching notifications:', error));
+    }
     }
 </script>
     
