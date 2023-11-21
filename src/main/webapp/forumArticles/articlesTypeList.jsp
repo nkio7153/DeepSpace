@@ -229,17 +229,16 @@ $(document).ready(function() {
 <jsp:include page="../indexpage/headpic.jsp" />
  	<div id="list" class="container mt-5">
             <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>文章清單</h1>
         <form method="post" action="<%=request.getContextPath()%>/forumArticles.do?action=doArtiTypeList">
         <label for="artiTypeId">選擇文章類型：</label>
         <select id="artiTypeId" name="artiTypeId">
         </select>
         <input type="submit" value="查詢">
     	</form>     
-		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a>
-		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a>
-		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=doArtiCollectList">我的收藏</a>
-        <a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=addArticle">新增文章</a>
+<%-- 		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a> --%>
+<%-- 		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a> --%>
+<%-- 		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=doArtiCollectList">我的收藏</a> --%>
+<%--         <a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=addArticle">新增文章</a> --%>
     </div>
         <div id="articlesRow" class="row">
             <c:forEach var="article" items="${list}">

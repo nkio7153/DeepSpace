@@ -95,8 +95,14 @@
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList"  onclick="checkSession(event)">我的票券</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="" href="${pageContext.request.contextPath}/forumArticles/list.jsp">論壇文章</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="${pageContext.request.contextPath}/forumArticles/list.jsp" id="navbarDropdownArticles" role="button" data-bs-toggle="dropdown" aria-expanded="false">論壇文章</a>
+                            <ul class="dropdown-menu" aria-labelledby="trip">
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles/list.jsp">文章瀏覽</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist" onclick="checkSession(event)">我的文章</a></li>                               
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=doArtiCollectList" onclick="checkSession(event)">我的收藏</a></li>                               
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=addArticle" onclick="checkSession(event)">新增文章</a></li>                               
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="" href="${pageContext.request.contextPath}/Rest/getRests">餐廳</a>

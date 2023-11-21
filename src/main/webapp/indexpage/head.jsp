@@ -3,6 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Bootstrap CSS -->
 <link href="${pageContext.request.contextPath}/indexpage/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/indexpage/css/bootstrap.css" rel="stylesheet">
 <!-- bookstrap css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/indexpage/css/style.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/indexpage/css/my.css">
