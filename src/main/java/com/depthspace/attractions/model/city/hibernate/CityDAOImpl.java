@@ -19,15 +19,17 @@ public class CityDAOImpl implements CityDAO_Interface{
 	    }
 
 	@Override
-	public void insert(CityVO CityVO) {
-		// TODO Auto-generated method stub
-		
+	public void insert(CityVO entity) {
+		getSession().save(entity);
 	}
 
 	@Override
-	public void update(CityVO CityVO) {
-		// TODO Auto-generated method stub
-		
+	public void update(CityVO entity) {
+		try {
+			getSession().update(entity);
+		} catch (Exception e) {
+			
+		}
 	}
 
 	@Override

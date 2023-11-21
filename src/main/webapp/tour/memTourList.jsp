@@ -38,7 +38,7 @@
 	        margin-left: 50px; /* 调整右边距以控制位置 */
 	        margin-bottom: 20px;
 	    }
-	    #btn_back {
+	    .btn_back , .edit {
 			margin: 0 auto;
 			display: block; /* 讓按鈕變成區塊元素，以佔據滿整行 */
 		    font-size: 18px;
@@ -49,6 +49,12 @@
 		    cursor: pointer;
 		    border-radius: 6px;
 		}
+		.btn-container{
+			display: flex;
+		    justify-content: space-between;
+		    margin: 0 20px; /* 你可以根據需要調整左右邊距 */
+		    margin-top: 5px;
+		}
 		#tourDays {
 			text-align: center;
 			font-size: 20px;
@@ -56,7 +62,7 @@
 		tr.spacing-row {
 	        height: 20px; /* 設定空行的高度 */
 	    }
-			
+	  
 		
     </style>
     <title>行程詳細資訊</title>
@@ -68,11 +74,15 @@
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp" />
 <div style="margin: 20px">
+<form action="${pageContext.request.contextPath}/tr/edit" method="post">
     <h1>${list[0].tourName}</h1>
     
     <div class="info-container">
 	    <h2>基本資訊</h2>
 	    <table style="width: 80%; margin: 0 auto;">
+	    <input type="hidden" id="memId" name="memId" value="${list[0].memId}">
+	    <input type="hidden" id="tourId" name="tourId" value="${list[0].tourId}">
+	    
 	        <tr>
 	            <td colspan="2">${list[0].startDate}~${list[0].endDate}</td>
 	        </tr>
@@ -114,13 +124,17 @@
 	    </c:forEach>
 	    
     </table>
-    
-<!-- <button onclick="initMap()">查看行程路線</button> -->
-<input type="button" value="返回" onclick="history.back()" id="btn_back">
+    <div class="btn-container">
+		<input type="button" value="返回" onclick="history.back()" class="btn_back">
+	</div>
+		
+			<input type="submit" value="編輯行程" class="edit" >
+		</form>
 </div>
 
     <script>
-      
+ 
+   
     </script>
 <jsp:include page="../indexpage/footer.jsp" />
 </body>

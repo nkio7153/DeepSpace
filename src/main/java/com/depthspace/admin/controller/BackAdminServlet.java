@@ -54,20 +54,11 @@ public class BackAdminServlet extends HttpServlet{
 				doSearchAdmins(req, resp);
 				break;
 		}
-		
-		
 	}
 	
 	private void doSearchAdmins(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String adminName = req.getParameter("adminName");
 		List<AdminVO> searchAdmins = hbms.searchAdmins(adminName);
-//		System.out.println("查到的資料=" + searchMembers);
-		
-//		for (AdminVO admin : searchAdmins) {
-//		    if (admin.getAdminPoint() == null) {
-//		    	admin.setAdminPoint(0); //如果點數為null就直接設定為0
-//		    }
-//		}
 		
 		setJsonResponse(resp , searchAdmins);
 	}

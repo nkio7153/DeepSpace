@@ -116,10 +116,15 @@
             <tr id="tr">
                 <td align="center" class="vertical" style="width:7.5vw">${cartStatus.count}</td>
                 <td align="center" style="width: 23vw">
+                    <a href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=${cart.ticketId}">
                     <img src="${pageContext.request.contextPath}/tsc/image?serialId=${cart.serialId}" class="jpg"/>
+                    </a>
                 </td>
                 <td align="center" class="hidden tid" name="ticketId">${cart.ticketId}</td>
-                <td align="center" class="vertical" style="width: 13vw" name="ticketName">${cart.ticketName}</td>
+                <td align="center" class="vertical" style="width: 13vw" name="ticketName">
+                    <a href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=${cart.ticketId}">${cart.ticketName}
+                    </a>
+                </td>
 <%--                <td align="center" class="w200">${cart.description}</td>--%>
                 <td align="center" class="price vertical"  style="width: 7.5vw">${cart.price}</td>
                 <td align="center" class="discount vertical" name="discount" style="width: 8vw">${cart.discount}</td>
