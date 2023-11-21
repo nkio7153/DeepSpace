@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import com.depthspace.attractions.model.AttractionsTypeVO;
+import com.depthspace.attractions.model.AttractionsVO;
 import com.depthspace.attractions.model.AttractionsType.HbAttracttionsTypeDAO;
 import com.depthspace.member.model.MemVO;
 
@@ -54,8 +56,11 @@ public class HbAttractionsTypeDAOImpl implements HbAttracttionsTypeDAO{
 	}
 
 	@Override
-	public AttractionsTypeVO getOneById(Integer attractionsTypeId) {
-		return getSession().get(AttractionsTypeVO.class, attractionsTypeId);
+	public List<AttractionsTypeVO> getOneById(Integer attractionsTypeId) {
+		Query<AttractionsTypeVO> query = getSession().createQuery("FROM AttractionsTypeVO WHERE attractionsTypeId = :attractionsTypeId", AttractionsTypeVO.class);
+		query.setParameter("attractionsTypeId", attractionsTypeId); // 將cityId綁定到命名參數
+		List<AttractionsTypeVO> list = query.list();
+		return list;
 	}
 
 	@Override

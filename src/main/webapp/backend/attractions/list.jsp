@@ -85,8 +85,8 @@ pageContext.setAttribute("list", list);
 	        </form>
 	       </div> 
                <div class="col-md-4 d-flex justify-content-end"> 
-	      		<form method="get" action="<%=request.getContextPath()%>/attractionsEnd/add">
-				<button class="add-button" type="submit">新增</button>
+	      		<form method="post" action="<%=request.getContextPath()%>/attractionsEnd/add">
+					<button class="add-button" type="submit">新增</button>
 				</form>
 		  </div>
        </div>
@@ -114,9 +114,9 @@ pageContext.setAttribute("list", list);
 					<c:forEach var="attr" items="${list}" varStatus="status" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 						<td>${attr.attractionsId}</td>
 						<td>${attr.attractionsTypeId.typeName}</td>
-						<td><img
-							src="<%=request.getContextPath()%>/attractionsImage?attractionsId=${attr.attractionsId}"
-							alt="Main Image"></td>
+						<td>
+							<img src="<%=request.getContextPath()%>/attractionsImage?attractionsId=${attr.attractionsId}">
+						</td>
 						<td>${attr.attractionsName}</td>
 						<td><c:choose>
 								<c:when test="${fn:length(attr.description) > 30}">

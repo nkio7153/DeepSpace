@@ -13,10 +13,12 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import com.depthspace.admin.model.AdminVO;
 import com.depthspace.attractions.model.AttractionsVO;
 import com.depthspace.attractions.model.attractions.hibernate.AttractionsDAOImpl;
 import com.depthspace.attractions.model.attractions.hibernate.AttractionsDAO_Interface;
 import com.depthspace.column.model.ColumnArticlesVO;
+import com.depthspace.column.model.ColumnTypesVO;
 import com.depthspace.utils.HibernateUtil;
 
 public class AttractionsService {
@@ -26,6 +28,14 @@ public class AttractionsService {
 	
 	public AttractionsService() {
 		dao = new AttractionsDAOImpl(HibernateUtil.getSessionFactory());
+	}
+	
+	public AttractionsVO insert(AttractionsVO attrImg) {
+		dao.insert(attrImg);
+		AttractionsVO attrVO = null;
+		attrVO = dao.getLast(attrImg.getAttractionsId());
+		return attrVO;
+		
 	}
 	//取得所有景點
 	public List<AttractionsVO> getAllAttractions(Integer attractionsId){
@@ -58,8 +68,6 @@ public class AttractionsService {
 			throw new RuntimeException("Error", e);
 		}
 		return list;
-
-		
 	}
 	
 	public int getPageTotal() {
@@ -90,7 +98,24 @@ public class AttractionsService {
 		return dao.getAttractionsName(attractionsName);
 	}
 	
+	public List<AttractionsVO> getAllAttrType() {
+		try(Session session = HibernateUtil.getSessionFactory().openSession()){
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<AttractionsVO> criteriaQuery = criteriaBuilder.createQuery(AttractionsVO.class);
+			Root<AttractionsVO> root = criteriaQuery.from(AttractionsVO.class);
+			criteriaQuery.select(root);
+			
+			Query<AttractionsVO> query = session.createQuery(criteriaQuery);
+			
+			return query.getResultList();
+		} catch (Exception e) {
+			throw new RuntimeException("Error",e);
+		}
+	}
+	
 	public List<AttractionsVO> getAllAttrType(Integer attrTypeId) {
+//		return dao.getAllAttrType(attrTypeId);
+		
 		try(Session session = HibernateUtil.getSessionFactory().openSession()){
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 			CriteriaQuery<AttractionsVO> criteriaQuery = criteriaBuilder.createQuery(AttractionsVO.class);
@@ -106,6 +131,21 @@ public class AttractionsService {
 		}
 		
 	}
+	public List<AdminVO> getAllAdmins() {
+		try(Session session = HibernateUtil.getSessionFactory().openSession()){
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<AdminVO> criteriaQuery = criteriaBuilder.createQuery(AdminVO.class);
+			Root<AdminVO> root = criteriaQuery.from(AdminVO.class);
+			criteriaQuery.select(root);
+			
+			Query<AdminVO> query = session.createQuery(criteriaQuery);
+			
+			return query.getResultList();
+		} catch (Exception e) {
+			throw new RuntimeException("Error",e);
+		}
+	}
+	
 	public List<AttractionsVO> getAttractionsByCompositeQuery(Map<String, String[]> queryMap){
 		Map<String, List<String>> criteriaMap = new HashMap<>();
 	    // 遍歷參數，將action非查詢條件的key排除，非空值加入查詢條件(可多個)
@@ -125,5 +165,6 @@ public class AttractionsService {
 	    // 將上述查到的條件交由dao的方法查詢
 	    return dao.getByCompositeQuery(criteriaMap);
 	}
+	
 	
 }

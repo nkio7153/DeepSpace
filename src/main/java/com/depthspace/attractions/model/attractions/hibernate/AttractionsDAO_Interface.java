@@ -29,4 +29,9 @@ public interface AttractionsDAO_Interface {
 	
 	List<AttractionsVO> getByCompositeQuery(Map<String, List<String>> map);
 
+	List<AttractionsVO> getAllAttrType(Integer attrTypeId);
+
+	public AttractionsVO getLast(Integer attractionsId);
+
+//	public List<AttractionsVO> getAttrName(String attractionsName);
 }

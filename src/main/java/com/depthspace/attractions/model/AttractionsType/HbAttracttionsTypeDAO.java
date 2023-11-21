@@ -14,7 +14,7 @@ public interface HbAttracttionsTypeDAO {
 		//刪除
 		int delete(Integer attractionsTypeId);
 
-		AttractionsTypeVO getOneById(Integer attractionsTypeId);
+		List<AttractionsTypeVO> getOneById(Integer attractionsTypeId);
 		
 		List<AttractionsTypeVO> getAll();
 		

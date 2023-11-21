@@ -7,7 +7,7 @@ import com.depthspace.attractions.model.AttractionsImagesVO;
 import com.depthspace.attractions.model.AttractionsVO;
 
 public interface AttractionsImages_Interface {
-	public void insert(AttractionsImagesVO AttractionsImagesVO);
+	public void insert(AttractionsImagesVO attrImg);
 	 public void update(AttractionsImagesVO AttractionsImagesVO);
 	 public void delete(Integer attractionsImagesId);
 	 public AttractionsImagesVO findByPrimaryKey(Integer attractionsImagesId);

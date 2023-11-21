@@ -1,8 +1,9 @@
-package com.depthspace.attractions.model;
+package com.depthspace.attractions.model.AttractionsType;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.depthspace.attractions.model.AttractionsTypeVO;
 import com.depthspace.utils.HibernateUtil;
 
 public class TestAttractionsTypeSession {

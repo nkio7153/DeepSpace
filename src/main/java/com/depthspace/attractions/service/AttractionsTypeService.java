@@ -14,8 +14,8 @@ public class AttractionsTypeService {
 		dao = new HbAttractionsTypeDAOImpl(HibernateUtil.getSessionFactory());
 	}
 	
-	public AttractionsTypeVO getOneById(Integer attractionsTypeId) {
-		AttractionsTypeVO attr = dao.getOneById(attractionsTypeId);
+	public List<AttractionsTypeVO> getOneById(Integer attractionsTypeId) {
+		List<AttractionsTypeVO> attr = dao.getOneById(attractionsTypeId);
 		return attr;
 	}
 	
@@ -23,4 +23,6 @@ public class AttractionsTypeService {
 		List<AttractionsTypeVO> list = dao.getAll();
 		return list;
 	}
+	
+	
 }
