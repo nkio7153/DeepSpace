@@ -78,22 +78,6 @@
 		
 		<tr>
 			<th>會員大頭貼</th>
-<!-- 			<td> -->
-<!-- 		        <div id="image-container"> -->
-<%-- 		            <c:choose> --%>
-<%-- 		                <c:when test="${not empty base64Image}"> --%>
-<%-- 		                    <img id="myImage" src="data:image/jpeg;base64,${base64Image}" /> --%>
-<%-- 		                </c:when> --%>
-<%-- 		                <c:otherwise> --%>
-<!-- 		                    <img src="http://localhost:8081/DepthSpace/member/images/1.png" alt="OtherImage" /> -->
-<%-- 		                </c:otherwise> --%>
-<%-- 		            </c:choose> --%>
-<!-- 		        </div> -->
-<%-- 		        <input type="hidden" name="memImage" value="${base64Image}" /> --%>
-<!-- 		    </td> -->
-
-
-<%-- 				<td><img id="myImage" src="data:image/jpeg;base64,${base64Image != null ? base64Image : 'data:image/jpeg;base64,DefaultImageBase64'}" /> --%>
 
 			<td>
 				<img  id="myImage" src="data:image/jpeg;base64,${base64Image}" />
@@ -105,9 +89,9 @@
 		<tr>
 			<th>帳號</th><td>${authenticatedMem.memAcc}</td>
 		</tr>
-		<tr>
-			<th>密碼</th><td>${authenticatedMem.memPwd}</td>
-		</tr>
+<!-- 		<tr> -->
+<%-- 			<th>密碼</th><td>${authenticatedMem.memPwd}</td> --%>
+<!-- 		</tr> -->
 		<tr>
 			<th>會員姓名</th><td>${authenticatedMem.memName}</td>
 		</tr>

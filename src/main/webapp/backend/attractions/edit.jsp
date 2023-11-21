@@ -47,7 +47,9 @@
 				    <select name="attractionsTypesId" id="attractionsTypesId" class="form-control" required>
 				        <option value="">請選擇景點類型</option>
 				        <c:forEach var="typeItem" items="${attractionsTypes}">
-				            <option value="${typeItem.attractionsTypeId}">${typeItem.typeName}</option>
+				            <option value="${typeItem.attractionsTypeId}"
+				            	${typeItem.attractionsTypeId == attrvo.attractionsTypeId.attractionsTypeId ? 'selected' : ''}>
+				            ${typeItem.typeName}</option>
 				        </c:forEach>
 				    </select>
 				</div>
@@ -56,7 +58,7 @@
 				<div class="form-group col-md-6">
 					<label for="attractionsName">景點名稱</label> 
 <!-- 					<input type="text" id="memAcc" name="memAcc" value="" required> -->
-					<input type="text" class="form-control" id="attractionsName" name="attractionsName" value="" required>
+					<input type="text" class="form-control" id="attractionsName" name="attractionsName" value="${attrvo.attractionsName}" required>
 				</div>
 				<!-- 地址 -->
 				<div class="form-group col-md-6" style="display: flex;">
@@ -64,21 +66,25 @@
 				    <select name="city" id="city" class="form-control" required>
 				        <option value="">請選縣市</option>
 				        <c:forEach var="typeItem" items="${city}">
-				            <option value="${typeItem.cityId}">${typeItem.cityName}</option>
+				            <option value="${typeItem.cityId}"
+				            	
+				            >${typeItem.cityName}</option>
 				        </c:forEach>
 				    </select>
 				    
 				    <!-- 區域 -->
 				    <select name="area" id="area" class="form-control" required>
 				       
-<%-- 				        <c:forEach var="typeItem" items="${area}"> --%>
-<%-- 				            <option value="${typeItem.areaId}">${typeItem.areaName}</option> --%>
-<%-- 				        </c:forEach> --%>
+				        <c:forEach var="typeItem" items="${area}">
+				            <option value="${typeItem.areaId}" 
+				            	${typeItem.areaId == attrvo.areaId ? 'selected' : ''}>
+				            ${typeItem.areaName}</option>
+				        </c:forEach>
 
 				    </select>
 				    
 				    <label for="address">地址</label>
-				    <input type="text" class="form-control" id="address" name="address" required>
+				    <input type="text" class="form-control" id="address" name="address" value="${newAddress}" required>
 				</div>
 				<!-- 圖片 -->
 				<div class="form-group col-md-6">
@@ -115,7 +121,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
 
 <script src="${pageContext.request.contextPath}/backend/attractions/js/add.js"></script>
 </body>

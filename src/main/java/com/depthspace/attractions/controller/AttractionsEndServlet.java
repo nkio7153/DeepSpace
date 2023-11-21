@@ -63,27 +63,55 @@ public class AttractionsEndServlet extends HttpServlet {
 		case "/search": //搜尋
 			doSearch(req, res);
 			break;
-		case "/add": //新增
+		case "/add": //新增前
 			doAdd(req, res);
 			break;
-		case "/add2": //新增
+		case "/add2": //新增後
 			doAdd2(req, res);
 			break;
-		case "/getArea": //新增
+		case "/getArea": //尋找新增時的縣市資料
 			doGetArea(req, res);
 			break;
 		case "/view": //查看該景點
 			doView(req, res);
 			break;
-		case "/edit": //查看該景點
+		case "/edit": //編輯該景點
 			doEdit(req, res);
 			break;
 		}
 	
 	}
 	private void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		Integer attrId = Integer.valueOf(req.getParameter("attractionsId"));
 		
+		AttractionsVO attrvo = attractionService.getAttractionsById(attrId);
+		System.out.println("attrvo裡的地址= " + attrvo);
+//		[attractionsId=1, attractionsTypeId=AttractionsTypeVO [attractionsTypeId=1, typeName=種類1], areaId=14, attractionsName=台北101, description=台北地標建築，高度508米。, attractionsStatus=0, address=台北市信義區信義路五段7號, lon=121.5654, lat=25.0339]
+
+//		處理地址
+		if (attrvo.getAddress().length() > 6) {
+		    String newAddress = attrvo.getAddress().substring(6);
+//		    System.out.println(result);
+		    req.setAttribute("newAddress", newAddress);
+		} else {
+		    // 如果字串的長度小於或等於六，可以處理相應的邏輯，例如返回原始字串或顯示錯誤訊息
+		    System.out.println("字串長度不足六");
+		}
 		
+		//所有類型
+		List<AttractionsTypeVO> attractionsTypes = attrTypeService.getAll();
+		req.setAttribute("attractionsTypes", attractionsTypes);
+		//存取此景點的類型
+		AttractionsTypeVO attrTypevo = attrTypeService.getOne(attrId);
+//		System.out.println("attrTypevo=" + attrTypevo);
+		req.setAttribute("attrTypevo", attrTypevo);
+		
+		List<CityVO> city = cityService.getAll();
+		req.setAttribute("city", city);
+		List<AreaVO> area = areaService.getAll();
+		req.setAttribute("area", area);
+		
+		req.setAttribute("attrvo", attrvo);
 		
 		req.getRequestDispatcher("/backend/attractions/edit.jsp").forward(req, res);
 	}
@@ -253,7 +281,7 @@ public class AttractionsEndServlet extends HttpServlet {
 //		
 //		req.setAttribute("attrList", attrList);
 //		req.setAttribute("currentPage", currentPage);
-		
+//		List<AttractionsTypeVO> attractionsTypes = attrTypeService.getAll();
 		//處理類型不重複
 		Set<AttractionsTypeVO> uniqueTypes = new HashSet<>();
 		for (AttractionsVO avo : attrList) {
