@@ -49,12 +49,19 @@ public class RestVO implements Serializable {
 	@Expose
 	@Column(name = "BOOKING_LIMIT")
 	private Integer bookingLimit;
-	@Expose
-	@Column(name = "ADMIN_ID")
-	private Integer adminId;
+//	@Expose
+//	@Column(name = "ADMIN_ID")
+//	private Integer adminId;
 	
+	@Expose
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ADMIN_ID", referencedColumnName = "ADMIN_ID")
+	private AdminVO adminVO;
+	
+	@Expose
 	@OneToMany(mappedBy = "restVO", cascade = CascadeType.ALL)
 	private Set<RestCollectionVO> rests;
+	@Expose
 	@OneToMany(mappedBy = "restVO", cascade = CascadeType.ALL)
 	private Set<MemBookingVO> memBooking;
 	
@@ -88,7 +95,6 @@ public class RestVO implements Serializable {
 		this.restOpen = restOpen;
 		this.restStatus = restStatus;
 		this.bookingLimit = bookingLimit;
-		this.adminId = adminId;
 	}
 
 	public Integer getRestId() {
@@ -155,18 +161,36 @@ public class RestVO implements Serializable {
 		this.bookingLimit = bookingLimit;
 	}
 
-	public Integer getAdminId() {
-		return adminId;
+	public AdminVO getAdminVO() {
+		return adminVO;
 	}
 
-	public void setAdminId(Integer adminId) {
-		this.adminId = adminId;
+	public void setAdminVO(AdminVO adminVO) {
+		this.adminVO = adminVO;
 	}
 
 	@Override
 	public String toString() {
 		return "RestVO [restId=" + restId + ", restName=" + restName + ", restTel=" + restTel + ", restAddress="
-				+ restAddress + ", restType=" + restType + ", restOpen=" + restOpen + ", restStatus=" + restStatus + ", bookingLimit="
-				+ bookingLimit + ", adminId=" + adminId + "]";
+				+ restAddress + ", restType=" + restType + ", restOpen=" + restOpen + ", restStatus=" + restStatus
+				+ ", bookingLimit=" + bookingLimit + ", adminVO=" + adminVO + ", rests=" + rests + ", memBooking="
+				+ memBooking + "]";
 	}
+
+
+	
+	
+	
+//	public Integer getAdminId() {
+//		return adminId;
+//	}
+//
+//	public void setAdminId(Integer adminId) {
+//		this.adminId = adminId;
+//	}
+
+	
+	
+	
+	
 }

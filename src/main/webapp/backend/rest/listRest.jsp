@@ -41,7 +41,8 @@
 	                <th>營業時間</th>
 	                <th>上/下架</th>
 	                <th>預設可訂位組數</th>
-	                <th>管理員ID</th>
+<!-- 	                <th>管理員ID</th> -->
+	                <th>餐廳管理員帳號</th>
 	                <th>修改</th>
 	                <th>刪除</th>
 	              </tr>
@@ -65,7 +66,8 @@
 					    </c:when>
 					  </c:choose>
 	                  <td>${rest.bookingLimit}</td>
-	                  <td>${rest.adminId}</td>
+<%-- 	                  <td>${rest.adminId}</td> --%>
+	                  <td>${rest.adminVO.adminAcc}</td>
 	                  
 					<td>
 						<form method="post" action="${pageContext.request.contextPath}/backend/Rest.do">
