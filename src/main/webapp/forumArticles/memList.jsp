@@ -110,13 +110,35 @@ $(document).ready(function() {
 		        url: '<%=request.getContextPath()%>/forumArticles.do?action=del',
 		        async: false,
 		        success: function(data) {
-		            alert('刪除成功');    
-		            $('#dataTable tr').each(function() {
-		                if ($(this).find('td:first').text() == articleId) {
-		                    $(this).remove();
-		                }
-		            });
-		            window.location.href='<%=request.getContextPath()%>/forumArticles.do?action=getmemlist'
+		        	Swal.fire({
+		        		  title: "您確定嗎？",
+		        		  text: "刪除後將無法恢復！",
+		        		  icon: "warning",
+		        		  showCancelButton: true,
+		        		  confirmButtonColor: "#3085d6",
+		        		  cancelButtonColor: "#d33",
+		        		  confirmButtonText: "是的"
+		        		}).then((result) => {
+		        		  if (result.isConfirmed) {
+		        		    // 遍歷表格的每一行，尋找與 articleId 匹配的行並刪除
+		        		    $('#dataTable tr').each(function() {
+		        		      if ($(this).find('td:first').text() == articleId) {
+		        		        $(this).remove();
+		        		      }
+		        		    });
+
+		        		    // 顯示刪除成功的消息
+		        		    Swal.fire({
+		        		      title: "已刪除！",
+		        		      text: "您的檔案已被刪除。",
+		        		      icon: "success"
+		        		    }).then(() => {
+		        		      // 刪除成功的訊息確認後，進行頁面跳轉
+		        		      window.location.href = '<%=request.getContextPath()%>/forumArticles.do?action=getmemlist';
+		        		    });
+		        		  }
+		        		});
+
 		        }
 		    });
 		}
