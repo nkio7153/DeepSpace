@@ -34,11 +34,11 @@ public class NotificationsVO implements Serializable{
 	private String noteContent;
 	
 	@CreationTimestamp
-	@Column(name="NOTE_CREATED",updatable = false, nullable = false)
+	@Column(name="NOTE_CREATED",nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date noteCreated;
 	
-	@Column(name="NOTE_READ",updatable = false)
+	@Column(name="NOTE_READ")
 	private byte noteRead;
 	
 	public NotificationsVO() {
