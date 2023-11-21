@@ -30,12 +30,17 @@ public class AttractionsService {
 		dao = new AttractionsDAOImpl(HibernateUtil.getSessionFactory());
 	}
 	
-	public AttractionsVO insert(AttractionsVO attrImg) {
-		dao.insert(attrImg);
+	public AttractionsVO insert(AttractionsVO entity) {
+		dao.insert(entity);
 		AttractionsVO attrVO = null;
-		attrVO = dao.getLast(attrImg.getAttractionsId());
-		return attrVO;
+		attrVO = dao.getLast(entity.getAttractionsId());
+		System.out.println("attrVO=" + attrVO);
+		List<AttractionsVO> list = new ArrayList<>();
+		AttractionsVO attr =  new AttractionsVO();
+		attr.setAttractionsId(attrVO.getAttractionsId());
+		list.add(attr);
 		
+		return attrVO;
 	}
 	//取得所有景點
 	public List<AttractionsVO> getAllAttractions(Integer attractionsId){
@@ -131,20 +136,10 @@ public class AttractionsService {
 		}
 		
 	}
-	public List<AdminVO> getAllAdmins() {
-		try(Session session = HibernateUtil.getSessionFactory().openSession()){
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<AdminVO> criteriaQuery = criteriaBuilder.createQuery(AdminVO.class);
-			Root<AdminVO> root = criteriaQuery.from(AdminVO.class);
-			criteriaQuery.select(root);
-			
-			Query<AdminVO> query = session.createQuery(criteriaQuery);
-			
-			return query.getResultList();
-		} catch (Exception e) {
-			throw new RuntimeException("Error",e);
-		}
-	}
+//	public AttractionsVO getById(Integer attractionsId) {
+//		return dao.getById(attractionsId);
+//		
+//	}
 	
 	public List<AttractionsVO> getAttractionsByCompositeQuery(Map<String, String[]> queryMap){
 		Map<String, List<String>> criteriaMap = new HashMap<>();

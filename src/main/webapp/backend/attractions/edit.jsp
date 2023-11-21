@@ -14,7 +14,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
-<title>新增景點</title>
+<title>修改景點內容</title>
 
 <%--  include --%>
 	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
@@ -38,7 +38,7 @@
 <div class="table-list">
 
 	<div class="container mt-5">
-		<h5>新增景點</h5>
+		<h5>修改景點內容</h5>
 		<form action="<%=request.getContextPath()%>/attractionsEnd/add2" method="post" enctype="multipart/form-data">
 			<div class="row">
 				
@@ -81,15 +81,15 @@
 				    <input type="text" class="form-control" id="address" name="address" required>
 				</div>
 				<!-- 圖片 -->
-				<div class="form-group col-12 mx-auto text-center">
+				<div class="form-group col-md-6">
 					<label for="attractionsImg">圖片</label> <input type="file"
 						class="form-control-file" id="attractionsImg" name="attractionsImg" onchange="previewImage(event)">
 				</div>
 
-				<div class="form-group col-12">
-					<label>圖片預覽</label>
-					<div id="imagePreview"  style="width : 200px" class="text-center mx-auto"> </div>
-				</div>
+<!-- 				<div class="form-group col-md-6"> -->
+<!-- 					<label>圖片預覽</label> -->
+<!-- 					<div id="imagePreview"></div> -->
+<!-- 				</div> -->
 				<!-- 介紹 -->
 				<div class="form-group col-md-12">
 					<label for="description">描述</label>
@@ -120,4 +120,3 @@
 <script src="${pageContext.request.contextPath}/backend/attractions/js/add.js"></script>
 </body>
 </html>
- 

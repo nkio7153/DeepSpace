@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import com.depthspace.attractions.model.AreaVO;
 import com.depthspace.attractions.model.AttractionsTypeVO;
 import com.depthspace.attractions.model.AttractionsVO;
 import com.depthspace.attractions.model.AttractionsType.HbAttracttionsTypeDAO;
@@ -62,6 +63,13 @@ public class HbAttractionsTypeDAOImpl implements HbAttracttionsTypeDAO{
 		List<AttractionsTypeVO> list = query.list();
 		return list;
 	}
+	
+	@Override
+	public AttractionsTypeVO getOne(Integer attractionsTypeId) {
+		return getSession().get(AttractionsTypeVO.class, attractionsTypeId);
+		
+	}
+	
 
 	@Override
 	public List<AttractionsTypeVO> getAll() {
