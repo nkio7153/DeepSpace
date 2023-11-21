@@ -11,7 +11,7 @@
   </head>
 	
 	<style>
-	    img {
+	    #uploadimg {
 		    width: 300px;
             height: 150px;
 		}

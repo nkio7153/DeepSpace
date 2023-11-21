@@ -56,6 +56,9 @@ public class TscServlet extends HttpServlet {
             case "/memCartList":
                 doMemList(req, resp);
                 break;
+            case "/getCartNum":
+                getCartNum(req, resp);
+                break;
             default:
                 // 在這裡處理所有其他情況
                 break;
@@ -207,9 +210,10 @@ public class TscServlet extends HttpServlet {
         }
         //redis版
         carSv.deleteCart(memId, ticketId);
-        //資料庫版
-//        tscSv.deleteTicketShoppingCart(memId, ticketId);
-        setJsonResponse(resp, "刪除成功");
+
+
+        int cartNum = carSv.getCartNum(memId);
+        setJsonResponse(resp,cartNum);
     }
 
     //會員購物車清空(ajax傳遞過來需要改)
@@ -224,7 +228,8 @@ public class TscServlet extends HttpServlet {
         TscServiceImpl tscSv = new TscServiceImpl();
         if (memId != null) {
             carSv.deleteAllCart(memId);
-            setJsonResponse(resp, "購物車清空成功");
+            int cartNum = carSv.getCartNum(memId);
+            setJsonResponse(resp,cartNum);
         }
 //        List<TicketShoppingCartVO> list = tscSv.getAllbyMemId(memId);
 //        req.setAttribute("list", list);
@@ -261,7 +266,8 @@ public class TscServlet extends HttpServlet {
         redisCart.addItem(ticketId, quantity);
         RedisCartServiceImpl carSv = new RedisCartServiceImpl(JedisUtil.getJedisPool());
         carSv.saveCart(memId, redisCart);
-        setJsonResponse(resp, "添加購物車成功");
+        int cartNum = carSv.getCartNum(memId);
+        setJsonResponse(resp,cartNum);
 
 
 //        if (memId != null) {
@@ -406,6 +412,13 @@ public class TscServlet extends HttpServlet {
         req.setAttribute("memId", memId);
         req.setAttribute("coupen",coupen);
         req.getRequestDispatcher("/ticketShoppingCart/checkout.jsp").forward(req, resp);
+    }
+    //ajax取得最新的購物車數量
+    protected void getCartNum(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession(false);
+        Integer memId = (Integer)session.getAttribute("memId");
+        int cartNum = carSv.getCartNum(memId);
+        setJsonResponse(resp,cartNum);
     }
 
     //fetch返回json格式

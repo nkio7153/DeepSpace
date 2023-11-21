@@ -7,10 +7,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/main.css">
 <title>餐廳列表</title>
 	<style>
-	img {
-	    width: auto;
-	    height: auto;
-	}
 	</style>
 </head>
 <body>

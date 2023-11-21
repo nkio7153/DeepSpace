@@ -111,15 +111,20 @@
             <th style="width: 14vw"></th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="tbody">
         <c:forEach items="${list}" var="cart" varStatus="cartStatus">
             <tr id="tr">
                 <td align="center" class="vertical" style="width:7.5vw">${cartStatus.count}</td>
                 <td align="center" style="width: 23vw">
+                    <a href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=${cart.ticketId}">
                     <img src="${pageContext.request.contextPath}/tsc/image?serialId=${cart.serialId}" class="jpg"/>
+                    </a>
                 </td>
                 <td align="center" class="hidden tid" name="ticketId">${cart.ticketId}</td>
-                <td align="center" class="vertical" style="width: 13vw" name="ticketName">${cart.ticketName}</td>
+                <td align="center" class="vertical" style="width: 13vw" name="ticketName">
+                    <a href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=${cart.ticketId}">${cart.ticketName}
+                    </a>
+                </td>
 <%--                <td align="center" class="w200">${cart.description}</td>--%>
                 <td align="center" class="price vertical"  style="width: 7.5vw">${cart.price}</td>
                 <td align="center" class="discount vertical" name="discount" style="width: 8vw">${cart.discount}</td>
@@ -214,15 +219,18 @@
 
     //全部確認刪除
     function delAll(memId) {
+        let cartNum=$("#cartNum");
         var ok = window.confirm("確定要刪除嗎");
         if (ok) {
-            $("#tr").remove();
+            $("#tbody").remove();
             let url="${pageContext.request.contextPath}/tsc/deleteAll?memId=" + memId;
             fetch(url).then(function(response){
                 return response.text();
             })
                 .then(function(data){
                     console.log("刪除成功")
+                    cartNum.text(data);
+
                 })
                 .catch(function(error){
                     console.log(error);
@@ -341,7 +349,7 @@
         // });
         //刪除確認
         $(".delete1").on("click", function () {
-
+            let cartNum=$("#cartNum");
             let memId = $('input[name="memId"]').val();
             let ticketId = $(this).closest('tr').find('.tid').text();
             console.log("memId:", memId, "ticketId:", ticketId);
@@ -391,6 +399,7 @@
                     .then(function (data) {
                         if (data != null) {
                             console.log(data);
+                            cartNum.text(data);
                             $(this).closest('tr').remove();
                         }
                     })

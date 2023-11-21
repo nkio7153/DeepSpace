@@ -76,7 +76,7 @@
     console.log("showData被執行了")
     let html2="";
     for(let i=0; i<proDes.length; i++){
-      html2 += '<li class="list-group-item"><span>' + proDes[i].ticketName + '</span><span class="text-danger">(' + proDes[i].discount + '折)</span></li>';
+      html2 += '<li class="list-group-item"><a href="${pageContext.request.contextPath}/ticketproduct/item?ticketId='+proDes[i].ticketId+'"><span>' + proDes[i].ticketName + '</span><span class="text-danger">(' + proDes[i].discount + '折)</span></a></li>';
     }
     let itemList=$("#itemList");
     itemList.html(html2);

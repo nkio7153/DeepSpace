@@ -193,11 +193,11 @@ public class ColumnArtMgServlet extends HttpServlet {
 		if(!req.getMethod().equalsIgnoreCase("POST")) {
 			//編輯頁面(傳既有資料)
 			List<ColumnTypesVO> columnTypes = columnArticlesService.getAllColumnTypes();
-			List<AdminVO> admin = columnArticlesService.getAllAdmins();
+//			List<AdminVO> admin = columnArticlesService.getAllAdmins();
 			
 			req.setAttribute("columnArticles",columnArticles);
 			req.setAttribute("columnTypes",columnTypes);
-			req.setAttribute("admin",admin);
+//			req.setAttribute("admin",admin);
 			
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/column/edit.jsp");
 			dispatcher.forward(req, res);
@@ -260,7 +260,6 @@ public class ColumnArtMgServlet extends HttpServlet {
 			List<ColumnArticlesVO> artiTitleList = columnArticlesService.getColumnArticlesByCompositeQuery(map);
 			list.addAll(artiTitleList);
 		}
-		System.out.println(list);
 		req.setAttribute("list", list);
 		req.getRequestDispatcher("/backend/column/find.jsp").forward(req, res);
 	}	
