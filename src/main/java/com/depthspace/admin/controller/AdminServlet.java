@@ -26,6 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.depthspace.admin.service.HbAdminService;
 import com.depthspace.member.model.MemVO;
 import com.depthspace.member.service.HbMemService;
@@ -70,19 +72,18 @@ public class AdminServlet extends HttpServlet {
 	    		System.out.println("2");
 	    	}  
 	    	
-	    if (adminvo.getAdminAcc().equals(adminAcc) && adminvo.getAdminPwd().equals(password)) {
-//	       	System.out.println("成功登入");
-	    	if (adminvo.getAdminStatus() == 2) {
-				return 5;
-			} else {
-				return 3;
-			}
-	          
-	    }else {
-	      	System.out.println("密碼錯誤");
-	       	return 4; 
-	    	  }
+		if (adminvo != null && BCrypt.checkpw(password, adminvo.getAdminPwd())) {
+	        // 檢查帳號狀態
+	        if (adminvo.getAdminStatus() == 2) {
+	            return 5; // 帳號狀態問題
+	        } else {
+	            return 3; // 登入成功
+	        }
+	    } else {
+	        System.out.println("密碼錯誤");
+	        return 4; // 密碼錯誤
 	    }
+	}
 		
 
 	@Override
@@ -162,11 +163,12 @@ public class AdminServlet extends HttpServlet {
 			
 			// 設定權限顯示
 			byte adminFuncName = admin.getAdminFuncName();
-			if (adminFuncName == 1) {
+			if (adminFuncName == 2){
+	    	session.setAttribute("status", "總管理員");
+			} else if (adminFuncName == 1) {
 				session.setAttribute("status", "餐廳管理員");
-			} else {
-				session.setAttribute("status", "總管理員");
 			}
+			
 
 			session.setAttribute("admin", admin);// 會員物件
 			session.setAttribute("adminId", admin.getAdminId());// 會員編號
@@ -267,11 +269,11 @@ public class AdminServlet extends HttpServlet {
 				req.setAttribute("status", "未驗證");
 			}
 
-			if (admin.getAdminFuncName() == 1) {
-				req.setAttribute("status", "餐廳管理員");
-			} else {
+			if (admin.getAdminFuncName() == 2) {
 				req.setAttribute("status", "總管理員");
-			}
+			} else if (admin.getAdminFuncName() == 1){
+				req.setAttribute("status", "餐廳管理員");
+			} 
 			req.setAttribute("authenticatedAdmin", admin);
 			req.getRequestDispatcher("/admin/success.jsp").forward(req, resp);
 
@@ -329,6 +331,10 @@ public class AdminServlet extends HttpServlet {
 			st3 = req.getParameter("adminPwd");
 			if (st3 == null || st3.trim().length() == 0) {
 				errorMsgs.add("密碼請勿空白");
+			}else {
+			    // 使用 bcrypt 進行密碼加密
+			    String hashedPassword = BCrypt.hashpw(st3, BCrypt.gensalt());
+			    st3 = hashedPassword;
 			}
 
 			st4 = req.getParameter("adminName");
@@ -394,8 +400,6 @@ public class AdminServlet extends HttpServlet {
 			req.setAttribute("funcName", "總管理員");
 		} else if(st7 == 1){
 			req.setAttribute("funcName", "餐廳管理員");
-		} else {
-			req.setAttribute("funcName", "未啟用");
 		}
 		
 		req.getRequestDispatcher("/admin/login.jsp").forward(req, resp);
@@ -424,27 +428,32 @@ public class AdminServlet extends HttpServlet {
 		Byte st5 = null;
 		Byte st6 = null;
 		Byte st7 = null;
+		AdminVO admin=null;
 
 		try {
 			//多寫的，先暫時當二次判斷使用
 			String adminId = req.getParameter("adminId");
 			st1 = Integer.valueOf(adminId);
 
-			st2 = req.getParameter("adminAcc");
+			st2 = req.getParameter("adminName");
 			if (st2 == null || st2.trim().length() == 0) {
-				errorMsgs.add("帳號請勿空白");
-			}
-
-			st3 = req.getParameter("adminPwd");
-			if (st3 == null || st3.trim().length() == 0) {
-				errorMsgs.add("密碼請勿空白");
-			}
-
-			st4 = req.getParameter("adminName");
-			if (st4 == null || st4.trim().length() == 0) {
 				errorMsgs.add("姓名請勿空白");
 			}
 
+			st3 = req.getParameter("adminAcc");
+			if (st3 == null || st3.trim().length() == 0) {
+				errorMsgs.add("帳號請勿空白");
+			}else {
+			    // 使用 bcrypt 進行密碼加密
+			    String hashedPassword = BCrypt.hashpw(st3, BCrypt.gensalt());
+			    st3 = hashedPassword;
+			}
+
+			st4 = req.getParameter("adminPwd");
+			if (st4 == null || st4.trim().length() == 0) {
+				errorMsgs.add("密碼請勿空白");
+			}
+		
 			String adminStatus = req.getParameter("adminStatus");
 			if ("正常使用中".equals(adminStatus)) {
 				st5 = 1;
@@ -460,16 +469,21 @@ public class AdminServlet extends HttpServlet {
 			}
 			
 			String adminFuncName = req.getParameter("adminFuncName");
-			if ("餐廳管理員".equals(adminFuncName)) {
-				st7 = 1;
-			} else if("總管理員".equals(adminFuncName)){
+//			System.out.println(adminFuncName);
+			if ("2".equals(adminFuncName)) {
+				
 				st7 = 2;
+			} else if("1".equals(adminFuncName)){
+				st7 = 1;
 			} else {
 				st7 = 0;
 			}
 			
 			AdminService ms = new AdminService();
-			AdminVO admin = ms.findByAdminId(st1);
+			admin = ms.findByAdminId(st1);
+			admin.setAdminName(st2);
+			admin.setAdminPwd(st4);
+			admin.setAdminFuncName(st7);
 			//========================================================================
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
@@ -479,10 +493,15 @@ public class AdminServlet extends HttpServlet {
 		AdminService m = new AdminService();
 		AdminVO adminvo = null;
 		if (errorMsgs.isEmpty()) {
-			adminvo = new AdminVO(st1, st2, st3, st4, st5, st6, st7);
+//			adminvo = new AdminVO(st1, st2, st3, st4, st5, st6, st7);
+			admin.setAdminName(st2);
+			admin.setAdminPwd(st4);
+			admin.setAdminFuncName(st7);
 		}
-		m.updateAdmin(adminvo);
-		req.setAttribute("authenticatedAdmin", adminvo);
+//		m.updateAdmin(adminvo);
+		m.updateAdmin(admin);
+//		req.setAttribute("authenticatedAdmin", adminvo);
+		req.setAttribute("authenticatedAdmin", admin);
 		
 		if(st5 == 1 ) {
 			req.setAttribute("status" , "正常使用中");
@@ -499,8 +518,6 @@ public class AdminServlet extends HttpServlet {
 			req.setAttribute("funcName", "總管理員");
 		} else if(st7 == 1){
 			req.setAttribute("funcName", "餐廳管理員");
-		} else {
-			req.setAttribute("funcName", "未啟用");
 		}
 		
 		req.getRequestDispatcher("/backadmin/list").forward(req, resp);
@@ -562,10 +579,8 @@ public class AdminServlet extends HttpServlet {
 				req.setAttribute("funcName", "總管理員");
 			} else if(funcName == 1){
 				req.setAttribute("funcName", "餐廳管理員");
-			} else {
-				req.setAttribute("funcName", "未啟用");
 			}
-
+			
 			req.setAttribute("admin", adminvo);
 			req.getRequestDispatcher("/admin/revise.jsp").forward(req, resp);
 		} else {
@@ -576,53 +591,41 @@ public class AdminServlet extends HttpServlet {
 	// ========================================================================================
 
 	protected void doLogin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String adminAcc = req.getParameter("adminAcc");
-		String password = req.getParameter("password");
-		AdminService ms = new AdminService();
-		HbAdminService hms = new HbAdminService();
-		AdminVO adminvo = null;
-		
-		String loginLocation =req.getParameter("loginLocation");
-		System.out.println("adminAcc="+adminAcc + "password="+ password);	
-		
-		if(allowUser(adminAcc,password)==1) {
-			System.out.println("沒有此帳號");
-			String URL=req.getContextPath()+"/admin/login.jsp?error=false&requestURI="+loginLocation;
-			resp.sendRedirect(URL);
-			return;
-		} else if (allowUser(adminAcc, password) == 3){
-		HttpSession session=req.getSession();
-		
-		AdminVO admin = ms.getAdminInfo(adminAcc);
-		System.out.println("admin=" + admin);
-//		String base64Image;
-//		if(admin.getAdminAcc().equals(adminAcc) && admin.getAdminPwd().equals(password)) {
-				//設定狀態顯示
-				byte adminStatus = admin.getAdminStatus();
-				if(adminStatus == 1) {
-					req.setAttribute("status" , "正常使用中");
-				} else {
-					req.setAttribute("status" , "此帳號停權");
-				}
-				System.out.println("servlet="+admin.getAdminId());
-				    
-				    
-			session.setAttribute("admin", admin);//會員物件
-			session.setAttribute("adminId", admin.getAdminId());//會員編號
-			
-			Integer adminno = (Integer) session.getAttribute("adminId");// 測試用(取得存在session會員編號)
-//		    System.out.println("測試取得放入session的會員編號" + adminno);// 測試用
-			
-			req.getRequestDispatcher("/backend/backIndex/index.jsp").forward(req, resp);
-		} else if (allowUser(adminAcc, password) == 4){
-			String URL=req.getContextPath()+"/admin/login.jsp?error=true&requestURI="+loginLocation;
-			resp.sendRedirect(URL);
-			return;//程式中斷
-		}else if (allowUser(adminAcc, password) == 5) {
-			String URL = req.getContextPath() + "/admin/login.jsp?error=nostatus&requestURI=" + loginLocation;
-			resp.sendRedirect(URL);
-		}
-	
-		
+	    String adminAcc = req.getParameter("adminAcc");
+	    String password = req.getParameter("password");
+	    AdminService ms = new AdminService();
+	    String loginLocation = req.getParameter("loginLocation");
+
+	    // 只調用一次allowUser
+	    int loginResult = allowUser(adminAcc, password);
+
+	    if (loginResult == 1) {
+	        System.out.println("沒有此帳號");
+	        resp.sendRedirect(req.getContextPath() + "/admin/login.jsp?error=false&requestURI=" + loginLocation);
+	    } else if (loginResult == 3) {
+	        HttpSession session = req.getSession();
+	        AdminVO admin = ms.getAdminInfo(adminAcc);
+
+	        // 設定狀態顯示
+	        byte adminStatus = admin.getAdminStatus();
+	        if(adminStatus == 1) {
+	            req.setAttribute("status" , "正常使用中");
+	        } else {
+	            req.setAttribute("status" , "此帳號停權");
+	        }
+	        System.out.println("servlet="+admin.getAdminId());
+
+	        session.setAttribute("admin", admin); // 會員物件
+	        session.setAttribute("adminId", admin.getAdminId()); // 會員編號
+
+	        req.getRequestDispatcher("/backend/backIndex/index.jsp").forward(req, resp);
+	    } else if (loginResult == 4) {
+	        resp.sendRedirect(req.getContextPath() + "/admin/login.jsp?error=true&requestURI=" + loginLocation);
+	    } else if (loginResult == 5) {
+	        resp.sendRedirect(req.getContextPath() + "/admin/login.jsp?error=nostatus&requestURI=" + loginLocation);
+	    } else if (loginResult == 6) {
+	    	resp.sendRedirect(req.getContextPath() + "/admin/login.jsp?error=nostatus&requestURI=" + loginLocation);
+	    }
 	}
+
 }

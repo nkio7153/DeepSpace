@@ -46,8 +46,7 @@
 	                    <th>帳號</th>
 	                    <th>管理員姓名</th>
 	                    <th>狀態</th>
-	                    <th>會員狀態修改</th>
-	                    <th>驗證狀態</th>
+	                    <th>管理員狀態修改</th>
 	                    <th>權限狀態</th>
 	                </tr>
 	            </thead>
@@ -75,34 +74,23 @@
 							    <button class="btn btn-primary" onclick="changeStatus('啟用', ${admin.adminId})" data-adminid="${admin.adminId}">啟用</button>
 							    <button class="btn btn-danger" onclick="changeStatus('停權', ${admin.adminId})" data-adminid="${admin.adminId}">停權</button>
 							
-							 	<button class="btn btn-secondary" onclick="location.href='<%=request.getContextPath()%>/admin/revise.jsp?adminId=${admin.adminId}&adminAcc=${admin.adminAcc}&adminPwd=${admin.adminPwd}&adminName=${admin.adminName}&adminStatus=${admin.adminStatus}&adminVerifyStatus=${admin.adminVerifyStatus}&adminFuncName=${admin.adminFuncName}'">修改</button>
+							 	<button class="btn btn-secondary" onclick="location.href='<%=request.getContextPath()%>/admin/revise.jsp?adminId=${admin.adminId}&adminAcc=${admin.adminAcc}'">修改</button>
 							</td>
+		                   
 		                    <td>
 		                    	<c:choose>
-					                <c:when test="${admin.adminVerifyStatus == 1}">
-					                    以驗證
-					                </c:when>
-					                <c:when test="${admin.adminVerifyStatus == 2}">
-					                    未驗證
-					                </c:when>
-					                 <c:otherwise>
-					                    未知狀態
-					                </c:otherwise>
-					            </c:choose>
-                			</td>
-		                    <td>
-		                    	<c:choose>
-					                <c:when test="${admin.adminFuncName == 1}">
-					                    餐廳管理員
-					                </c:when>
 					                <c:when test="${admin.adminFuncName == 2}">
 					                    總管理員
 					                </c:when>
+					                <c:when test="${admin.adminFuncName == 1}">
+					                    餐廳管理員
+					                </c:when>
 					                 <c:otherwise>
 					                    未知狀態
 					                </c:otherwise>
 					            </c:choose>
                 			</td>
+                			
 		                </tr>
 	                </c:forEach>
 	                
@@ -116,7 +104,7 @@
 <script>
 
 	
-// 	會員更改權限狀態
+// 	管理員更改權限狀態
     function changeStatus(action, adminId) {
         var status = confirm('確定要' + action + '嗎？');
 
@@ -200,7 +188,6 @@ $(document).ready(function () {
     }
 
 });
-
 
 </script>
 
