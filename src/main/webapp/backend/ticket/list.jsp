@@ -196,7 +196,58 @@
 					</tr>
 				</c:forEach>
 		</table>
-	<!-- 查看票券 -->		
+
+
+		<!-- 分頁 -->
+		<div>
+			<nav>
+				<ul class="pagination justify-content-center">
+					<!-- "至第一頁" 只在非第一頁時顯示 -->
+					<c:if test="${currentPage > 1}">
+						<li class="page-item"><a class="page-link"
+							href="${pageContext.request.contextPath}/ticketmg/list?page=1">第一頁</a>
+						</li>
+					</c:if>
+
+					<!-- "上一頁" 如果當前頁是第一頁則隱藏 -->
+					<c:if test="${currentPage - 1 != 0}">
+						<li class="page-item"><a class="page-link"
+							href="${pageContext.request.contextPath}/ticketmg/list?page=${currentPage - 1}"
+							aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+						</a></li>
+					</c:if>
+
+					<!-- 動態顯示頁碼，根據總頁數ticketPageQty生成 -->
+					<c:forEach var="i" begin="1" end="${ticketPageQty}" step="1">
+						<li class="page-item ${i == currentPage ? 'active' : ''}"><a
+							class="page-link"
+							href="${pageContext.request.contextPath}/ticketmg/list?page=${i}">${i}</a>
+						</li>
+					</c:forEach>
+
+					<!-- "下一頁" 如果當前頁是最後一頁則隱藏 -->
+					<c:if test="${currentPage + 1 <= ticketPageQty}">
+						<li class="page-item"><a class="page-link"
+							href="${pageContext.request.contextPath}/ticketmg/list?page=${currentPage + 1}"
+							aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+						</a></li>
+					</c:if>
+
+					<!-- "至最後一頁" 只在非最後一頁時顯示 -->
+					<c:if test="${currentPage != ticketPageQty}">
+						<li class="page-item"><a class="page-link"
+							href="${pageContext.request.contextPath}/ticketmg/list?page=${ticketPageQty}">尾頁</a>
+						</li>
+					</c:if>
+				</ul>
+			</nav>
+			
+		</div>
+	 </div>
+	</div>
+  </div>
+  
+  	<!-- 查看票券 -->		
 		<div class="modal fade" id="viewTicketModal" tabindex="-1" role="dialog" aria-labelledby="viewTicketModalLabel" aria-hidden="true">
 		    <div class="modal-dialog modal-lg" role="document">
 		        <div class="modal-content">
@@ -261,55 +312,7 @@
 		        </div>
 		    </div>
 		</div>
-
-		<!-- 分頁 -->
-		<div>
-			<nav>
-				<ul class="pagination justify-content-center">
-					<!-- "至第一頁" 只在非第一頁時顯示 -->
-					<c:if test="${currentPage > 1}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/ticketmg/list?page=1">第一頁</a>
-						</li>
-					</c:if>
-
-					<!-- "上一頁" 如果當前頁是第一頁則隱藏 -->
-					<c:if test="${currentPage - 1 != 0}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/ticketmg/list?page=${currentPage - 1}"
-							aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-						</a></li>
-					</c:if>
-
-					<!-- 動態顯示頁碼，根據總頁數ticketPageQty生成 -->
-					<c:forEach var="i" begin="1" end="${ticketPageQty}" step="1">
-						<li class="page-item ${i == currentPage ? 'active' : ''}"><a
-							class="page-link"
-							href="${pageContext.request.contextPath}/ticketmg/list?page=${i}">${i}</a>
-						</li>
-					</c:forEach>
-
-					<!-- "下一頁" 如果當前頁是最後一頁則隱藏 -->
-					<c:if test="${currentPage + 1 <= ticketPageQty}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/ticketmg/list?page=${currentPage + 1}"
-							aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-						</a></li>
-					</c:if>
-
-					<!-- "至最後一頁" 只在非最後一頁時顯示 -->
-					<c:if test="${currentPage != ticketPageQty}">
-						<li class="page-item"><a class="page-link"
-							href="${pageContext.request.contextPath}/ticketmg/list?page=${ticketPageQty}">尾頁</a>
-						</li>
-					</c:if>
-				</ul>
-			</nav>
-			
-		</div>
-	 </div>
-	</div>
-  </div>
+		
  </div>
 </div>
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -323,7 +326,7 @@
         	Swal.fire({
                 title: '正在處理',
                 html: '請稍等，正在更新資料。',
-                timer: 1500,
+                timer: 500,
                 timerProgressBar: true,
                 didOpen: () => {
                     Swal.showLoading();
@@ -334,6 +337,30 @@
             });
         });
     });
+    
+    $(document).ready(function() {
+        $('#filterForm, #filterForm2, #filterForm3, #filterForm4, #filterForm5').on('submit', function(e) {
+            e.preventDefault(); 
+            $('#loadingSpinner').show(); // 載入動畫
+            var formData = $(this).serialize();
+            $.ajax({
+                url: "<%=request.getContextPath()%>/ticketmg/find", 
+                data : formData, 
+                success : function(result) {
+                    $('#right').html(result);
+                },
+                complete: function() {
+                    $('#loadingSpinner').hide(); // 隱藏載入動畫
+                }
+            });
+        });
+        
+    	// 篩選變更也觸發
+    	$('input[type=checkbox]').change(function() {
+    		$('#searchForm').submit();
+    	});
+    });
+
     
     $('.view-ticket').on('click', function() {
         var ticketId = $(this).data('ticket-id');

@@ -53,6 +53,11 @@
 .view .page-link {
 	padding: 5px 10px;
 }
+h6 {
+    padding-bottom: 5px;
+    padding-top: 8px;
+    color: #0d6efdb5;
+}
 
 </style>
 
@@ -80,7 +85,7 @@
 						</div>
 					</div>
 					<!-- 目的地 -->
-					<h5>目的地</h5>
+					<h6>目的地</h6>
 	        		<div class="form-group">
 		            <c:forEach var="areaItem" items="${uniqueTicketArea}" varStatus="status">
 		                <div class="custom-control custom-checkbox">
@@ -91,7 +96,7 @@
 		            </c:forEach>
 	     		   </div>
 					<!-- 票券類型 -->
-					<h5>票券類型</h5>
+					<h6>票券類型</h6>
 					<div class="form-group">
 					    <c:forEach var="typeItem" items="${uniqueTicketTypes}" varStatus="status">
 					        <div class="custom-control custom-checkbox">
