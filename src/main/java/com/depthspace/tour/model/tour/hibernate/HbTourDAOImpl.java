@@ -54,7 +54,7 @@ public class HbTourDAOImpl implements HbTourDAO_Interface{
 	@Override
 	public List<TourVO> getByMemId(Integer memId) {
 		return getSession()
-                .createQuery("from TourVO where memId= :memId",TourVO.class)
+                .createQuery("from TourVO where memId= :memId Order by tourId desc",TourVO.class)
                 .setParameter("memId", memId)
                 .list();
 	}

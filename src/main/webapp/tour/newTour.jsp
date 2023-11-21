@@ -216,7 +216,6 @@
 
 		} else {
 			tripDuration.innerText = "總天數:";
-			//	        selectedDays.innerHTML = "";
 			tourdays.innerHTML = ""; // 清除 tourdays 内容
 		}
 	}
@@ -224,7 +223,6 @@
 	document.querySelector("input[name='startDate']").addEventListener("change", updateDurationSelect);
 	document.querySelector("input[name='endDate']").addEventListener("change", updateDurationSelect);
 	</script>
-<%-- 	<script src = "${pageContext.request.contextPath}/tour/js/tour.js"></script> --%>
 	<jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

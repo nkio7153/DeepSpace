@@ -18,4 +18,10 @@ public class AttractionsImageService {
 		return dao.getAttractionsImagesById(attractionsImagesId);
 	}
 	
+	public AttractionsImagesVO save(AttractionsImagesVO attrImg) {
+		dao.insert(attrImg);
+		return attrImg;
+	}
+	
+	
 }

@@ -27,17 +27,17 @@
 		</div>
 
 		<div class="check">
-			<label><input type="checkbox">記住我</label> <a href="${pageContext.request.contextPath}/member/forgetPassword.jsp""	id="forgetPwd">忘記密碼</a>
+			<label><input type="checkbox">記住我</label> <a href="${pageContext.request.contextPath}/member/forgetPassword.jsp"	id="forgetPwd">忘記密碼</a>
 		</div>
-	<input type="hidden" name="loginLocation" value="${param.requestURI}">
-		<input type="submit" value="登入">
-	
-	<div class="register">
-		<p>
-			如果沒有帳號?
-			<a href="${pageContext.request.contextPath}/member/addMember.jsp" class="register-link" value="update" method="post" >點擊註冊</a>
-		</p>
-	</div>
+		<input type="hidden" name="loginLocation" value="${param.requestURI}">
+			<input type="submit" value="登入">
+		
+		<div class="register">
+			<p>
+				如果沒有帳號?
+				<a href="${pageContext.request.contextPath}/member/addMember.jsp" class="register-link" value="update" method="post" >點擊註冊</a>
+			</p>
+		</div>
 	</form>
 	
 	<script>

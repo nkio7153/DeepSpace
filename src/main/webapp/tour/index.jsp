@@ -104,7 +104,7 @@ form {
 			<th style="text-align: center;">查看行程</th>
 		</tr>
 		
-		<c:forEach var="tour" items="${list}">
+		<c:forEach var="tour" items="${list}" varStatus="status" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 			<tr>
 <%-- 			<input type="text" name="tourId" value="${tour.tourId}" readonly"> --%>
 				<td name="tourName" style="text-align: center;">${tour.tourName}</td>

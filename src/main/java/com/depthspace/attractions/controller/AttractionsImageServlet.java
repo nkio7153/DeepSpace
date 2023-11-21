@@ -36,6 +36,7 @@ public class AttractionsImageServlet extends HttpServlet {
 		Transaction tx = null;
 		try {
 			Integer attractionsId = Integer.valueOf(req.getParameter("attractionsId").trim());
+			System.out.println("attractionsId= " + attractionsId);
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
 
