@@ -2,6 +2,7 @@
 <%@ page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
 <head>
@@ -25,6 +26,37 @@
     .table-hover tbody tr:hover {
         background-color: #f5f5f5;
     }
+     .h5, h5 {
+    font-size: 1.2rem;
+    padding: 0px 0px 10px 0px;
+	}
+	.rowrow{
+    padding: 0px 0px 20px 0px;
+	}
+	.custom-select-wrapper {
+	    position: relative;
+	}
+	
+	.custom-select-wrapper select {
+	    appearance: none; 
+	    -webkit-appearance: none;
+	    -moz-appearance: none;
+	    padding-right: 30px; 
+	}
+	
+	.custom-select-wrapper::after {
+	    content: "\f078"; 
+	    font-family: "FontAwesome";
+	    position: absolute;
+	    top: 0;
+	    right: 10px;
+	    pointer-events: none; 
+	    color: #555;
+	    font-size: 18px;
+	    height: 100%;
+	    display: flex;
+	    align-items: center;
+	}
 </style>
 
 <title>票券列表</title>
@@ -46,41 +78,45 @@
             <div class="col-lg-10 g-2 transparent rounded my-0  scrollable-table">
                 <div class="table-list">
                     <div class="container mt-5">
+                    <h5>票券列表</h5>
                         <!-- 三個查詢表單並排顯示 -->
                         <div class="row">
                             <div class="col-md-4">
                                 <form id="filterForm" method="get" action="<%=request.getContextPath()%>/ticketmg/find">
-                                    <label for="ticketId">票券名稱</label>
+                                    <div class="custom-select-wrapper">
                                     <select id="ticketId" name="ticketId" class="form-control mb-2">
-                                        <option value="">全部</option>
+                                        <option value="">票券名稱</option>
                                         <c:forEach var="ticket" items="${ticketListAll}">
                                             <option value="${ticket.ticketId}">${ticket.ticketName}</option>
                                         </c:forEach>
                                     </select>
+                                    </div>
                                 </form>
                             </div>
 
                             <div class="col-md-4">
                                 <form id="filterForm2" method="get" action="<%=request.getContextPath()%>/ticketmg/find">
-                                    <label for="ticketTypeId">票券類型</label>
+                                    <div class="custom-select-wrapper">
                                     <select id="ticketTypeId" name="ticketTypeId" class="form-control mb-2">
-                                        <option value="">全部</option>
+                                        <option value="">票券類型</option>
                                         <c:forEach var="typeItem" items="${uniqueTicketTypes}">
                                             <option value="${typeItem.ticketTypeId}">${typeItem.typeName}</option>
                                         </c:forEach>
                                     </select>
+                                     </div>
                                 </form>
                             </div>
 
                             <div class="col-md-4">
                                 <form id="filterForm3" method="get" action="<%=request.getContextPath()%>/ticketmg/find">
-                                    <label for="cityId">票券區域</label>
+ 									<div class="custom-select-wrapper">
                                     <select id="cityId" name="areaId" class="form-control mb-2">
-                                        <option value="">全部</option>
+                                        <option value="">票券區域</option>
                                         <c:forEach var="areaItem" items="${uniqueTicketArea}">
                                             <option value="${areaItem.cityId}">${areaItem.cityName}</option>
                                         </c:forEach>
                                     </select>
+                                   </div>
                                 </form>
                             </div>
                         </div>
@@ -105,9 +141,8 @@
 					    </div>
 					</div>
 
-		<h5>票券列表</h5>
-
 		<!-- 表格 -->
+		<div id="right">
 		<table class="table table-bordered table-hover" id="table-hover">
 			<thead>
 				<tr>
@@ -129,8 +164,8 @@
 				<c:forEach var="ticket" items="${ticketList}" varStatus="status">
 					<tr >
 						<td>${ticket.ticketId}</td>
-						<td>${ticket.city.cityName}</td>
-						<td>${ticket.ticketType.typeName}</td>
+						<td style="white-space:nowrap;">${ticket.city.cityName}</td>
+						<td style="white-space:nowrap;">${ticket.ticketType.typeName}</td>
 						<td><img
 							src="<%=request.getContextPath()%>/ticketmainimage?ticketId=${ticket.ticketId}"
 							alt="Main Ticket Image"></td>
@@ -145,7 +180,7 @@
 								${ticket.description}
 								</c:otherwise>
 							</c:choose></td>
-						<td>${ticket.publishedDate}</td>
+						<td style="white-space:nowrap;"><fmt:formatDate value="${ticket.publishedDate}" pattern="yyyy-MM-dd" /></td>
 						<td><c:choose>
 								<c:when test="${ticket.status ==1}">上架</c:when>
 								<c:otherwise>未上架</c:otherwise>
@@ -271,9 +306,6 @@
 				</ul>
 			</nav>
 			
-			<div class="page-item"><a class="page-link"
-				href="${pageContext.request.contextPath}/ticketmg/list">回首頁</a>
-			</div>
 		</div>
 	 </div>
 	</div>

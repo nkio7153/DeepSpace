@@ -52,7 +52,6 @@
      width: 80%;
      margin: auto; 
  } 
- 
 .table-list .breadcrumb{
 	 background-color: transparent;
 }
@@ -81,8 +80,8 @@
 		<div class="row mb-4">
 			<div class="col-12">
 				<nav aria-label="breadcrumb">
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/ticketproduct/">首頁</a></li>
+					<ol class="breadcrumb view" style="padding: 10px;">
+						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/">首頁</a></li>
 						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/ticketproduct/list">票券列表</a></li>
 						<li class="breadcrumb-item active" aria-current="page">${ticket.ticketName}</li>
 					</ol>
