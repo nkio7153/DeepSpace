@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson2.JSON;
@@ -34,22 +35,8 @@ public class AccountServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		switch (action) {
-		case "add":
-			addAccount(req, resp);
-			break;
-		case "update":
-			updateAccount(req, resp);
-			break;
 		case "del":
 			deleteAccount(req, resp);
-			break;
-		// 取得ajax分帳表會員列表
-		case "list":
-			listAccounts(req, resp);
-			break;
-		// 取得分帳表會員列表
-		case "getMemList":
-			getMemList(req, resp);
 			break;
 		case "doMemList":
 			doMemList(req, resp);
@@ -64,70 +51,40 @@ public class AccountServlet extends HttpServlet {
 	}
 
 	private void updateMemList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Integer memId = null;
+		HttpSession session = req.getSession(false);
+		if (session.getAttribute("memId") != null) {
+			memId = (Integer) session.getAttribute("memId");
+		}
 		Integer accountId = Integer.parseInt(req.getParameter("accountId"));
 		String accountName = req.getParameter("accountName");
-		Integer memId = Integer.parseInt(req.getParameter("memId"));
 		AccountVO account = new AccountVO(accountId, accountName, memId);
 		accountService.update(account);
 	}
 
 	private void addMemList(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
+		Integer memId = null;
+		HttpSession session = req.getSession(false);
+		if (session.getAttribute("memId") != null) {
+			memId = (Integer) session.getAttribute("memId");
+		}
 		String accountName = req.getParameter("accountName");
-		Integer memId = Integer.parseInt(req.getParameter("memId"));
-		System.out.println(accountName);
 		AccountVO account = new AccountVO(null, accountName, memId);
 		accountService.insert(account);
-		req.getRequestDispatcher("/account/index.jsp").forward(req,resp);
+		doMemList(req,resp);
 	}
 
 	private void doMemList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("application/json; charset=UTF-8");
-		Integer memId;
-		try {
-			memId = Integer.valueOf(req.getParameter("memId"));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
+		Integer memId = null;
+		HttpSession session = req.getSession(false);
+		if (session.getAttribute("memId") != null) {
+			memId = (Integer) session.getAttribute("memId");
 		}
 		List<AccountVO> list = accountService.getbyMemId(memId);
 		req.setAttribute("list", list);
 		req.setAttribute("memId", memId);
-		System.out.println(list);
 		req.getRequestDispatcher("/account/memlist.jsp").forward(req,resp);
-	}
-
-	private void getMemList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<AccountVO> accounts = accountService.getAll();
-		HashSet<Integer> memId = new HashSet<>();
-		for (AccountVO vo : accounts) {
-			memId.add(vo.getMemId());
-		}
-		JSONArray arr = JSONArray.parseArray(JSON.toJSONString(memId));
-		resp.setContentType("application/json; charset=UTF-8");
-		resp.getWriter().write(arr.toString());
-	}
-
-	private void listAccounts(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<AccountVO> accounts = accountService.getAll();
-		JSONArray arr = JSONArray.parseArray(JSON.toJSONString(accounts));
-		resp.setContentType("application/json; charset=UTF-8");
-		PrintWriter out = resp.getWriter();
-		out.print(arr.toString());
-	}
-
-	private void addAccount(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		String accountName = req.getParameter("accountName");
-		Integer memId = Integer.parseInt(req.getParameter("memId"));
-		AccountVO account = new AccountVO(null, accountName, memId);
-		accountService.insert(account);
-	}
-
-	private void updateAccount(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		Integer accountId = Integer.parseInt(req.getParameter("accountId"));
-		String accountName = req.getParameter("accountName");
-		Integer memId = Integer.parseInt(req.getParameter("memId"));
-		AccountVO account = new AccountVO(accountId, accountName, memId);
-		accountService.update(account);
 	}
 
 	private void deleteAccount(HttpServletRequest req, HttpServletResponse resp) throws IOException {

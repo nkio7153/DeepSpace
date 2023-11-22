@@ -94,7 +94,6 @@ public class TourServlet extends HttpServlet {
 			doEdit(req, resp);
 			break;
 		}
-
 	}
 
 private void doEdit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -120,13 +119,34 @@ private void doEdit(HttpServletRequest req, HttpServletResponse resp) throws Ser
 	List<TourView> list = ts.getOneTourList(tourId, memId);
 	// 使用Comparator對list物件進行排序，依據天數排序
 	Collections.sort(list, Comparator.comparingInt(TourView::getTourDays));
-	
+	//找出所有行程資訊
+//	Collections.sort(list, Comparator.comparingInt(TourView::getTourDays)
+//			.thenComparing(TourView::getStartDate));
+	List<CityVO> cityList = cs.getAll();
+	List<TourTypeVO> tourTypeVOS = tts.getAll();
+	TourVO toVo = ts.getByTourId(tourId);
+	Integer tourTypeId = toVo.getTourTypeId();
+	TourTypeVO ttpVo = tts.findByPrimaryKey(tourTypeId);
+	String tourTypName = ttpVo.getTourTypName();
+
+
+
+	List<AttractionsVO> attrvo = attrs.findOneAttractions();
+	List<AttractionsVO> attrAll = attrs.getAll();
+
+	req.setAttribute("tourTypName",tourTypName);
+	req.setAttribute("cityList", cityList);
+	req.setAttribute("attrvo", attrvo);
+	req.setAttribute("attrAll", attrAll);
+
+
+
 //	System.out.println(list);
 	req.setAttribute("list", list);
 	
 //	List<AttractionsVO> attrList = attrs.getAll();
 	
-	req.getRequestDispatcher("/tour/editTourList.jsp").forward(req, resp);
+	req.getRequestDispatcher("/tour/tourEdit.jsp").forward(req, resp);
 	
 	}
 

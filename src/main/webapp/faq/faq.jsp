@@ -16,7 +16,7 @@ request.setAttribute("faqs", faqs);
     <title>常見問題列表</title>
     <jsp:include page="/indexpage/head.jsp" />
     <!-- 引入jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!--     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
     <style>
         body {
             font-family: 'Arial', sans-serif; /* 使用現代化的字體 */

@@ -67,6 +67,12 @@ public class TourService implements TourService_Interface{
 	@Override
 	public List<TourVO> getOneByMemId(Integer tourId, Integer memId) {
 		return dao.getOneByMemId(tourId, memId);
-	}	
-	
+	}
+
+	@Override
+	public TourVO getByTourId(Integer tourId) {
+		return dao.getByTourId(tourId);
+	}
+
+
 }

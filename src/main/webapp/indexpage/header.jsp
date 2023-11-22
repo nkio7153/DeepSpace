@@ -18,14 +18,12 @@
 		}
         <c:if test="${sessionScope.memId != null}">
         $(document).ready(function(){
-            console.log("進入此方法")
             let cartNum=$("#cartNum");
             fetch("${pageContext.request.contextPath}/tsc/getCartNum")
             .then(function(response){
                     return response.text();
                 })
                     .then(function(data){
-                        console.log(data);
                         cartNum.text(data)
                         cartNum.css("background-color","red");
                     })
@@ -132,6 +130,7 @@
                             <ul class="dropdown-menu" aria-labelledby="mem">
                                 <li><a class="dropdown-item">${authenticatedMem.memName}</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mem/memList">會員資料</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/account.do?action=doMemList">我的分帳表</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList">我的票券</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ticketcollection/list">票券收藏</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a></li>
@@ -164,14 +163,14 @@
     </div>
 <script>
     if ("WebSocket" in window) {
-        var ws = new WebSocket("ws://localhost:8081/DepthSpace/notifications");
+        var ws = new WebSocket("ws://localhost:8081/DepthSpace/notificationsws");  
+        fetchUnreadNotifications();
 
         ws.onopen = function() {
-            fetchUnreadNotifications();
         };
 
         ws.onmessage = function(event) {
-            fetchUnreadNotifications();
+        fetchUnreadNotifications();
         };
 
         window.onbeforeunload = function(event) {
@@ -181,7 +180,7 @@
         ws.onerror = function(event) {
             console.log("WebSocketerrorerrorerrorerror: ", event);
         };
-
+    }
         function fetchUnreadNotifications() {
             var url = "<%=request.getContextPath()%>/notifications/countUnread";
             fetch(url)
@@ -194,14 +193,14 @@
             })
             .then(data => {
                 if (data.error) {
-                    console.error('Error: ', data.error);
+//                     console.error('Error: ', data.error);
                 } else {
                     document.querySelector('.notification-bell .badge').textContent = data.unreadCount;
                 }
             })
             .catch(error => console.error('Error fetching notifications:', error));
     }
-    }
+        
 </script>
     
 </header>
