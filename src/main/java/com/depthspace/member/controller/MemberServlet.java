@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.depthspace.member.model.MemVO;
 import com.depthspace.member.service.HbMemService;
 import com.depthspace.member.service.MemberService;
@@ -58,9 +60,9 @@ public class MemberServlet extends HttpServlet {
 			System.out.println("2");
 		}
 
-		if (memvo.getMemAcc().equals(memAcc) && memvo.getMemPwd().equals(password)) {
+		if (memvo != null && BCrypt.checkpw(password, memvo.getMemPwd())) {
 //	       	System.out.println("成功登入");
-
+//			檢查帳號狀態
 			if (memvo.getAccStatus() == 2) {
 				return 5;
 			} else {
@@ -358,6 +360,10 @@ public class MemberServlet extends HttpServlet {
 			st3 = req.getParameter("memPwd");
 			if (st3 == null || st3.trim().length() == 0) {
 				errorMsgs.add("密碼請勿空白");
+			} else {
+				// 使用 bcrypt 進行密碼加密
+			    String hashedPassword = BCrypt.hashpw(st3, BCrypt.gensalt());
+			    st3 = hashedPassword;
 			}
 
 			st4 = req.getParameter("memName");
@@ -559,6 +565,10 @@ public class MemberServlet extends HttpServlet {
 			st3 = req.getParameter("memPwd");
 			if (st3 == null || st3.trim().length() == 0) {
 				errorMsgs.add("密碼請勿空白");
+			} else {
+				// 使用 bcrypt 進行密碼加密
+			    String hashedPassword = BCrypt.hashpw(st3, BCrypt.gensalt());
+			    st3 = hashedPassword;
 			}
 
 			st4 = req.getParameter("memName");
