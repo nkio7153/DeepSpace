@@ -8,6 +8,7 @@
     <%-- include head.jsp--%>
     <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
   </head>
 	
 	<style>
@@ -82,10 +83,14 @@
 				  </div>				    
 				  
 				  <div class="col-12">
-				    <label for="adminId" class="form-label">管理員ID</label>
+				    <label for="restText" class="form-label">餐廳簡介</label>
 				  </div>
-				  <div class="col-auto mb-2">
-				    <input type="number" class="form-control" id="adminId" name="adminId">
+				  <div class="col-12 mb-2">
+				    <textarea class="form-control" id="restText" name="restText"
+						rows="4" required></textarea>
+					<script>
+						CKEDITOR.replace('restText');
+					</script>
 				  </div>
 				  
 				  <div class="col-12">
@@ -99,6 +104,13 @@
 				  </div>
 					
 				  <div class="col-12">
+				    <label for="adminId" class="form-label">管理員ID</label>
+				  </div>
+				  <div class="col-auto mb-2">
+				    <input type="number" class="form-control" id="adminId" name="adminId">
+				  </div>
+				  
+				  <div class="col-12">
 				    <button type="submit" class="btn btn-primary">新增</button>
 				  </div>
 			</form>
@@ -108,16 +120,6 @@
     <script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
     <script>
     	$(function(){
-//     		let restStatus = "${rest.restStatus}";
-//     		console.log(restStatus);
-//     		console.log("${rest.restOpen}");
-//     		if (restStatus == 0){
-//     			$("#restStatus").val("0");
-//     		} else if (restStatus == 1){
-//     			$("#restStatus").val("1");
-//     		}
-    		
-//     		$("#restOpen").val("${rest.restOpen}");
     		
     		$("#formFile").on('change', function() {
     			let file = this.files[0];
