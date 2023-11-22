@@ -37,17 +37,8 @@ public class AttractionsDAOImpl implements AttractionsDAO_Interface{
         return factory.getCurrentSession();
     }
 	@Override
-	public void insert(AttractionsVO attrImg) {
-		 Transaction transaction = null;
-	        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-	            transaction = session.beginTransaction();
-	            session.save(attrImg);
-	            transaction.commit();
-	        } catch (Exception e) {
-	            if (transaction != null) transaction.rollback();
-	           System.out.println("圖片上傳失敗");
-	        }
-		
+	public int insert(AttractionsVO attrImg) {
+		return (Integer)getSession().save(attrImg);
 	}
 
 	@Override

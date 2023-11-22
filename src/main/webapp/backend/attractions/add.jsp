@@ -41,9 +41,7 @@
 		<h5>新增景點</h5>
 		<form action="<%=request.getContextPath()%>/attractionsEnd/add2" method="post" enctype="multipart/form-data">
 			<div class="row">
-				<!-- 類型 -->
-				<!-- 關聯表格說明，三個變數，itmes是servlet傳來的list、option value為其元素值、第三個為出現在選單的文字-->
-				<!-- forEach的var跟option的是有關連的，取自於其forEach遍歷的資料 -->
+				
 				<div class="form-group col-md-6">
 				    <label for="attractionsTypesId">景點類型</label>
 				    <select name="attractionsTypesId" id="attractionsTypesId" class="form-control" required>
@@ -54,44 +52,44 @@
 				    </select>
 				</div>
 
-				
 				<!-- 景點名稱 -->
 				<div class="form-group col-md-6">
-					<label for="attractionsName">景點名稱</label> <input type="text"
-						class="form-control" id="attractionsName" name="attractionsName" required>
+					<label for="attractionsName">景點名稱</label> 
+<!-- 					<input type="text" id="memAcc" name="memAcc" value="" required> -->
+					<input type="text" class="form-control" id="attractionsName" name="attractionsName" value="" required>
 				</div>
 				<!-- 地址 -->
 				<div class="form-group col-md-6" style="display: flex;">
 				    <!-- 縣市 -->
 				    <select name="city" id="city" class="form-control" required>
-				        <option value="">請選區域</option>
+				        <option value="">請選縣市</option>
 				        <c:forEach var="typeItem" items="${city}">
 				            <option value="${typeItem.cityId}">${typeItem.cityName}</option>
 				        </c:forEach>
 				    </select>
 				    
-				    <!-- 地址 -->
+				    <!-- 區域 -->
 				    <select name="area" id="area" class="form-control" required>
-				        <option value="">請選縣市</option>
-				        <c:forEach var="typeItem" items="${area}">
-				            <option value="${typeItem.areaId}">${typeItem.areaName}</option>
-				        </c:forEach>
+				       
+<%-- 				        <c:forEach var="typeItem" items="${area}"> --%>
+<%-- 				            <option value="${typeItem.areaId}">${typeItem.areaName}</option> --%>
+<%-- 				        </c:forEach> --%>
+
 				    </select>
 				    
 				    <label for="address">地址</label>
 				    <input type="text" class="form-control" id="address" name="address" required>
 				</div>
 				<!-- 圖片 -->
-				<div class="form-group col-md-6">
+				<div class="form-group col-12 mx-auto text-center">
 					<label for="attractionsImg">圖片</label> <input type="file"
-						class="form-control-file" id="attractionsImg" name="attractionsImg" required
-						onchange="previewImage(event)">
+						class="form-control-file" id="attractionsImg" name="attractionsImg" onchange="previewImage(event)">
 				</div>
 
-<!-- 				<div class="form-group col-md-6"> -->
-<!-- 					<label>圖片預覽</label> -->
-<!-- 					<div id="imagePreview"></div> -->
-<!-- 				</div> -->
+				<div class="form-group col-12">
+					<label>圖片預覽</label>
+					<div id="imagePreview"  style="width : 200px" class="text-center mx-auto"> </div>
+				</div>
 				<!-- 介紹 -->
 				<div class="form-group col-md-12">
 					<label for="description">描述</label>
@@ -104,7 +102,7 @@
 				
 			</div>
 
-			<button type="submit" class="btn btn-primary" name="action">送出</button>
+			<input type="submit" class="btn btn-primary" name="action" value="送出">
 		</form>
 	</div>
 
@@ -119,37 +117,7 @@
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<script>
-	function previewImage(event) {
-		var file = event.target.files[0];
-		if (file) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				var imagesPreview = document
-						.getElementById('imagePreview');
-
-				// 創建一個div容器，包含圖片和刪除按鈕
-				var container = document.createElement('div');
-				container.className = 'imageContainer';
-
-				var img = document.createElement('img');
-				img.src = e.target.result;
-				img.className = 'previewImg';
-				container.appendChild(img);
-
-				var deleteButton = document.createElement('div');
-				deleteButton.innerText = 'x';
-				deleteButton.className = 'deleteIcon';
-				deleteButton.onclick = function() {
-					imagesPreview.removeChild(container);
-				};
-				container.appendChild(deleteButton);
-
-				imagesPreview.appendChild(container);
-			}
-			reader.readAsDataURL(file);
-		}
-	}
-</script>
+<script src="${pageContext.request.contextPath}/backend/attractions/js/add.js"></script>
 </body>
 </html>
+ 

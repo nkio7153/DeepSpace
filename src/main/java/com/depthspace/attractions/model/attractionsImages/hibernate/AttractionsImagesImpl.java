@@ -71,18 +71,20 @@ public class AttractionsImagesImpl implements AttractionsImages_Interface{
 	}
 	
 	public void add(AttractionsImagesVO attrImg) {
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            session.save(attrImg);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-           System.out.println("圖片上傳失敗");
-        }
+		getSession().save(attrImg);
+		
+//		
+//        Transaction transaction = null;
+//        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+//            transaction = session.beginTransaction();
+//            session.save(attrImg);
+//            transaction.commit();
+//        } catch (Exception e) {
+//            if (transaction != null) {
+//            	transaction.rollback();
+//            }
+//           System.out.println("圖片上傳失敗");
+//        }
 	}
-	
-	
-	
 
 }

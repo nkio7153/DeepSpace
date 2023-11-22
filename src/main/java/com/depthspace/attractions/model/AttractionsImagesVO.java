@@ -6,15 +6,16 @@ import java.util.Arrays;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 @Entity
 @Table(name="ATTRACTIONS_IMAGES")
 public class AttractionsImagesVO implements Serializable{
 	@Id
 	@Column(name="ATTRACTIONS_IMAGES_ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer attractionsImagesId;
 	
 //	@ManyToOne(fetch = FetchType.LAZY)
@@ -25,6 +26,8 @@ public class AttractionsImagesVO implements Serializable{
 	
 	@Column(name="ATTRACTIONS_IMG", columnDefinition ="mediumblob")
 	private byte[] attractionsImg;
+	
+	
 	public AttractionsImagesVO() {
 		super();
 	}

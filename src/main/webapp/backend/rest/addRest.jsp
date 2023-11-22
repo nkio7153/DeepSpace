@@ -4,7 +4,7 @@
 
 <html>
   <head>
-  	<title>餐廳修改</title>
+  	<title>新增餐廳</title>
     <%-- include head.jsp--%>
     <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
@@ -28,41 +28,40 @@
 
         <div class="col-lg-10 g-2 transparent rounded mt-1">
 	          <%-- 放入自己body裡的代碼--%>
-	          <form id="toUpdate" class="row g-2 p-3" action="${pageContext.request.contextPath}/backend/Rest.do?action=update" method="post" enctype="multipart/form-data">
-	          	  <input type="hidden" name="restId" value="${rest.restId}">
+	          <form id="toUpdate" class="row g-2 p-3" action="${pageContext.request.contextPath}/backend/Rest.do?action=add" method="post" enctype="multipart/form-data">
 	          	  <div class="col-12">
 				    <label for="restName" class="form-label">餐廳名稱</label>
 				  </div>
 				  <div class="col-6 mb-2">
-				    <input type="text" class="form-control" id="restName" name="restName" value=${rest.restName}>
+				    <input type="text" class="form-control" id="restName" name="restName">
 				  </div>
 				  
 				  <div class="col-12">
 				    <label for="restTel" class="form-label">餐廳電話</label>
 				  </div>
 				  <div class="col-6 mb-2">
-				    <input type="text" class="form-control" id="restTel" name="restTel" value=${rest.restTel}>
+				    <input type="text" class="form-control" id="restTel" name="restTel">
 				  </div>
 				  
 				  <div class="col-12">
 				    <label for="restAddress" class="form-label">餐廳地址</label>
 				  </div>
 				  <div class="col-6 mb-2">
-				    <input type="text" class="form-control" id="restAddress" name="restAddress" value=${rest.restAddress}>
+				    <input type="text" class="form-control" id="restAddress" name="restAddress">
 				  </div>
 				  
 				  <div class="col-12">
 				    <label for="restType" class="form-label">餐廳類型</label>
 				  </div>
 				  <div class="col-6 mb-2">
-				    <input type="text" class="form-control" id="restType" name="restType" value=${rest.restType}>
+				    <input type="text" class="form-control" id="restType" name="restType">
 				  </div>
 				  
 				  <div class="col-12">
 				    <label for="restOpen" class="form-label">營業時間</label>
 				  </div>
 				  <div class="col-6 mb-2">
-				    <input id="restOpen" type="text" class="form-control" name="restOpen" value=${rest.restOpen}>
+				    <input id="restOpen" type="text" class="form-control" name="restOpen">
 				  </div>
 				  
 				  <div class="col-12">
@@ -71,7 +70,7 @@
 				  <div class="col-auto mb-2">
 				    <select id="restStatus" class="form-select" name="restStatus">
 						<option value="1">上架</option>
-					    <option value="0">下架</option>
+					    <option value="0" selected>下架</option>
 				    </select>
 				  </div>
 				  
@@ -79,14 +78,14 @@
 				    <label for="bookingLimit" class="form-label">預設可訂位組數</label>
 				  </div>
 				  <div class="col-auto mb-2">
-				    <input type="number" class="form-control" id="bookingLimit" name="bookingLimit" value=${rest.bookingLimit}>
+				    <input type="number" class="form-control" id="bookingLimit" name="bookingLimit">
 				  </div>				    
 				  
 				  <div class="col-12">
 				    <label for="adminId" class="form-label">管理員ID</label>
 				  </div>
 				  <div class="col-auto mb-2">
-				    <input type="number" class="form-control" id="adminId" name="adminId" value=${rest.adminId}>
+				    <input type="number" class="form-control" id="adminId" name="adminId">
 				  </div>
 				  
 				  <div class="col-12">
@@ -100,7 +99,7 @@
 				  </div>
 					
 				  <div class="col-12">
-				    <button type="submit" class="btn btn-primary">修改</button>
+				    <button type="submit" class="btn btn-primary">新增</button>
 				  </div>
 			</form>
         </div>
@@ -109,16 +108,16 @@
     <script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
     <script>
     	$(function(){
-    		let restStatus = "${rest.restStatus}";
-    		console.log(restStatus);
-    		console.log("${rest.restOpen}");
-    		if (restStatus == 0){
-    			$("#restStatus").val("0");
-    		} else if (restStatus == 1){
-    			$("#restStatus").val("1");
-    		}
+//     		let restStatus = "${rest.restStatus}";
+//     		console.log(restStatus);
+//     		console.log("${rest.restOpen}");
+//     		if (restStatus == 0){
+//     			$("#restStatus").val("0");
+//     		} else if (restStatus == 1){
+//     			$("#restStatus").val("1");
+//     		}
     		
-    		$("#restOpen").val("${rest.restOpen}");
+//     		$("#restOpen").val("${rest.restOpen}");
     		
     		$("#formFile").on('change', function() {
     			let file = this.files[0];

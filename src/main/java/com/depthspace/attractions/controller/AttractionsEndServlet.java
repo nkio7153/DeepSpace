@@ -1,21 +1,28 @@
 package com.depthspace.attractions.controller;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import com.depthspace.attractions.model.AreaVO;
+import com.depthspace.attractions.model.AttractionsImagesVO;
 import com.depthspace.attractions.model.AttractionsTypeVO;
 import com.depthspace.attractions.model.AttractionsVO;
 import com.depthspace.attractions.model.CityVO;
@@ -24,12 +31,23 @@ import com.depthspace.attractions.service.AttractionsImageService;
 import com.depthspace.attractions.service.AttractionsService;
 import com.depthspace.attractions.service.AttractionsTypeService;
 import com.depthspace.attractions.service.CityService;
+import com.google.gson.Gson;
 
 @WebServlet("/attractionsEnd/*")
+@MultipartConfig
 public class AttractionsEndServlet extends HttpServlet {
+	private AttractionsTypeService attrTypeService;
+	private AttractionsService attractionService;
+	private AttractionsImageService attractionsImageService;
+	private CityService cityService;
+	private AreaService areaService;
 	
 	public void init() throws ServletException {
-		
+		attrTypeService = new AttractionsTypeService();
+		attractionService = new AttractionsService();
+		attractionsImageService = new AttractionsImageService();
+		cityService = new CityService();
+		areaService = new AreaService();
 	}
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
@@ -51,13 +69,50 @@ public class AttractionsEndServlet extends HttpServlet {
 		case "/add2": //新增
 			doAdd2(req, res);
 			break;
+		case "/getArea": //新增
+			doGetArea(req, res);
+			break;
+		case "/view": //查看該景點
+			doView(req, res);
+			break;
+		case "/edit": //查看該景點
+			doEdit(req, res);
+			break;
 		}
 	
 	}
+	private void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		
+		
+		
+		req.getRequestDispatcher("/backend/attractions/edit.jsp").forward(req, res);
+	}
+	private void doView(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		Integer attrId = Integer.valueOf(req.getParameter("attractionsId"));
+		System.out.println("attrId=" + attrId);
+		
+		AttractionsVO attrvo = attractionService.getAttractionsById(attrId);
+		
+		setJsonResponse(res, attrvo);
+		
+	}
+	private void doGetArea(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		Integer cityId;
+		
+		try {
+			cityId = Integer.valueOf(req.getParameter("city"));
+		} catch (NumberFormatException e) {
+					e.printStackTrace();
+					return;
+		}
+		List<AreaVO> list = areaService.getAllArea(cityId);
+		
+		setJsonResponse(res, list);
+		
+	}
 	private void doAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		AttractionsTypeService attrTypeService = new AttractionsTypeService();
-		CityService cityService = new CityService();
-		AreaService areaService = new AreaService();
+		
 		List<AttractionsTypeVO> attractionsTypes = attrTypeService.getAll();
 		List<CityVO> city = cityService.getAll();
 		List<AreaVO> area = areaService.getAll();
@@ -70,70 +125,89 @@ public class AttractionsEndServlet extends HttpServlet {
 	}
 	//新增景點
 	private void doAdd2(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-		AttractionsService attractionService = new AttractionsService();
-		AttractionsImageService attractionsImageService = new AttractionsImageService();
-		Integer attractionsTypesId = Integer.valueOf(req.getParameter("attractionsTypesId"));
-		Integer city = Integer.valueOf(req.getParameter("city"));
-		String attrName = req.getParameter("attractionsName");
+		Integer attractionsTypesId;
+		Integer cityId;
+		Integer areaId;
+		String base64Image;
+        byte[] pic=null;
 		String description = req.getParameter("description");
-		System.out.println("description="+description);
+		String attractionsName = req.getParameter("attractionsName");
+		String address = req.getParameter("address");
+		Part picture;
+		try {
+			attractionsTypesId = Integer.valueOf(req.getParameter("attractionsTypesId"));
+			cityId = Integer.valueOf(req.getParameter("city"));
+			areaId = Integer.valueOf(req.getParameter("area"));
+			
+			//處理圖片
+			picture = req.getPart("attractionsImg");
+            if (picture != null && picture.getSize() > 0) {
+            	InputStream inputStream = picture.getInputStream();
+				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+				int nRead;
+				byte[] data = new byte[1024];
+				while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+					buffer.write(data, 0, nRead);
+				}
+				buffer.flush();
+				pic = buffer.toByteArray();
+				inputStream.close();
+				buffer.close();
+            } else {
+                String webAppPath = getServletContext().getRealPath("/");
+                String relativePath = "backend/attractions/images/none3.png";
+                String absoultePath = webAppPath + relativePath;
+
+                File defaultImageFile = new File(absoultePath);
+                String defaultImagePath = defaultImageFile.getPath();
+
+                if (defaultImageFile.exists()) {
+                    byte[] localImagePath = Files.readAllBytes(Path.of(defaultImagePath));
+                    base64Image = Base64.getEncoder().encodeToString(localImagePath);
+
+                    res.setContentType("text/plain");
+                    res.getWriter().write(base64Image);
+                    req.setAttribute("base64Image", base64Image);
+                } else {
+                    System.out.println("圖不存在");
+                }
+
+            }
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return;
+		}
+//		找對應的景點種類
+		String typeName = attrTypeService.getOne(attractionsTypesId).getTypeName();
+		
+//		處理地址
+		String city = cityService.findByPrimaryKey(cityId).getCityName();
+		String area = areaService.findByPrimaryKey(areaId).getAreaName();
+		String newAddress = city + area + address;
 		
 		
-//		if (!req.getMethod().equalsIgnoreCase("POST")) {
-//			// 新增頁面中要放入選單項目，要取其值，set屬性到頁面中
-//			List<AttractionsVO> attrTypes = attractionService.getAllAttrType();
-////			List<AdminVO> admins = attractionService.getAllAdmins();
-//			req.setAttribute("attrTypes", attrTypes);
-////			req.setAttribute("admins", admins);
-//
-//			RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/attractions/add.jsp");
-//			dispatcher.forward(req, res);
-//			return;
-//		} else {
-//			// 完成表單填寫，按下送出觸發POST，就將下列的資料送出
-//			AttractionsVO attrVO = new AttractionsVO();
-//			attrVO.setAttractionsName(req.getParameter("attractionsName"));
-//			Integer areaId = Integer.valueOf(req.getParameter("areaId"));
-//			attrVO.setDescription(req.getParameter("description"));
-//			attrVO.setAttractionsStatus(Integer.valueOf(req.getParameter("attractionsStatus")));
-//			attrVO.setAddress(req.getParameter("address"));
-//
-//			Integer attrTypeId = Integer.valueOf(req.getParameter("attrTypeId"));
-//			AttractionsTypeVO attr = new AttractionsTypeVO();
-//			attr.setAttractionsTypeId(attrTypeId);
-//			attrVO.setAttractionsTypeId(attr);
-//			attractionService.insert(attrVO);
-//			
-//			
-//			// 存入圖片
-//			Part filePart = req.getPart("Img");
-//			if (filePart != null && filePart.getSize() > 0) {
-//				AttractionsImagesVO attrImg = new AttractionsImagesVO();
-//				attrImg.setAttractionsId(attrVO);
-//
-//				InputStream inputStream = filePart.getInputStream();
-//				byte[] imageBytes = readInputStream(inputStream);
-//				attrImg.setAttractionsImg(imageBytes);
-//				attractionsImageService.save(attrImg);
-//			}
-//		}
-//		int pageQty = attractionService.getPageTotal();
-//		req.getSession().setAttribute("pageQty", pageQty);
+		//新增物件
+		Integer attractionsId = null;
+		Integer status = 0;
+		AttractionsTypeVO attrTypevo = new AttractionsTypeVO(attractionsTypesId, typeName);
+		AttractionsVO attrvo = new AttractionsVO(attractionsId , attrTypevo , areaId , attractionsName , description , status , newAddress);
+		//存入景點
+		AttractionsVO avo = null;
+		avo = attractionService.insert(attrvo);
+		
+		//取得剛剛存的景點ID
+		int lastAttractionsId = attrvo.getAttractionsId();
+//		System.out.println("剛剛存的景點ID：" + lastAttractionsId);
+		//存入照片
+		Integer attractionsImagesId = null;
+		AttractionsImagesVO attrImg = new AttractionsImagesVO(attractionsImagesId, lastAttractionsId , pic);
+		AttractionsImagesVO atvo =  null;
+		atvo = attractionsImageService.save(attrImg);
 		
 		res.sendRedirect(req.getContextPath() + "/attractionsEnd/list");
 		
 	}
-	/************ 圖片讀入DB ************/
-	public byte[] readInputStream(InputStream inputStream) throws IOException {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		byte[] buffer = new byte[1024];
-		int bytesRead;
-
-		while ((bytesRead = inputStream.read(buffer)) != -1) {
-			outputStream.write(buffer, 0, bytesRead);
-		}
-		return outputStream.toByteArray();
-	}
+	
 	private void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		AttractionsService attractionService = new AttractionsService();
 		AttractionsTypeService attrTypeService = new AttractionsTypeService();
@@ -193,4 +267,14 @@ public class AttractionsEndServlet extends HttpServlet {
 		req.getRequestDispatcher("/backend/attractions/list.jsp").forward(req, res);
 		
 	}
+	
+	// fetch返回json格式
+	private void setJsonResponse(HttpServletResponse resp, Object obj) throws IOException {
+		Gson gson = new Gson();
+		String jsonData = gson.toJson(obj);
+		resp.setContentType("application/json");
+		resp.setCharacterEncoding("UTF-8");
+		resp.getWriter().write(jsonData);
+	}
+	
 }

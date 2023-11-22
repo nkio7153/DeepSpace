@@ -179,6 +179,8 @@
                         <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/Rest.do?action=getBookingDate">預約設定</a>
                         <br>
                         <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/Rest.do?action=getMembooking&restId=1">訂位查詢</a>
+                        <br>
+                        <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/rest/addRest.jsp">新增餐廳</a>
                     </div>
                 </div>
             </li>

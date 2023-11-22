@@ -1,10 +1,30 @@
 package com.depthspace.keywordqa.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class KeywordQaVO {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.google.gson.annotations.Expose;
+
+@Entity
+@Table(name = "KEYWORD_QA")
+public class KeywordQaVO implements Serializable {
+	@Expose
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "SERIAL_ID")
 	private Integer serialId;
+	@Expose
+	@Column(name = "KW_TYPES")
 	private String kwTypes;
+	@Expose
+	@Column(name = "KW_ANS")
 	private String kwAns;
 
 	public KeywordQaVO(Integer serialId, String kwTypes, String kwAns) {
@@ -12,10 +32,10 @@ public class KeywordQaVO {
 		this.kwTypes = kwTypes;
 		this.kwAns = kwAns;
 	}
-
+	
 	public KeywordQaVO() {
-		
-	}
+        super();
+    }
 	
 	public Integer getSerialId() {
 		return serialId;

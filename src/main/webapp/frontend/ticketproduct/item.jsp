@@ -10,11 +10,8 @@
 <title>票券詳情</title>
 <jsp:include page="/indexpage/head.jsp" />
 
-<!-- Leaflet的CSS -->
 <link rel="stylesheet"
 	href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-<!-- <link rel="stylesheet" -->
-<!-- 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 		
@@ -52,7 +49,6 @@
      width: 80%;
      margin: auto; 
  } 
- 
 .table-list .breadcrumb{
 	 background-color: transparent;
 }
@@ -81,8 +77,8 @@
 		<div class="row mb-4">
 			<div class="col-12">
 				<nav aria-label="breadcrumb">
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/ticketproduct/">首頁</a></li>
+					<ol class="breadcrumb view" style="padding: 10px;">
+						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/">首頁</a></li>
 						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/ticketproduct/list">票券列表</a></li>
 						<li class="breadcrumb-item active" aria-current="page">${ticket.ticketName}</li>
 					</ol>
@@ -238,7 +234,6 @@
 
 
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -281,7 +276,7 @@ $(document).ready(function() {
         		  showConfirmButton: false,
         		  timer: 1500
         		});
-            return; // 終止函數執行
+            return; 
         }
         console.log("Request Data:", requestData);
         

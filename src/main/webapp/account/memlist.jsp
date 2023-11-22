@@ -63,7 +63,7 @@ function processDelete(accountId) {
     $.ajax({
         type: 'post',
         data: jsonObj,
-        url: '<%=request.getContextPath()%>/account/account.do?action=del',
+        url: '<%=request.getContextPath()%>/account.do?action=del',
         async: false,
         success: function(data) {
             alert('刪除成功');    
@@ -72,7 +72,7 @@ function processDelete(accountId) {
                     $(this).remove();
                 }
             });
-            window.location.href='<%=request.getContextPath()%>/account/index.jsp';
+            window.location.href='<%=request.getContextPath()%>/account.do?action=doMemList';
         }
     });
 }
@@ -149,8 +149,7 @@ input[type="button"] {
 
 </table>
 	<div class="button-container" align="center">
-	  <input type="button" value="新增" onclick="window.location.href='<%=request.getContextPath()%>/account/addmem.jsp?memId=${memId} '">
-	  <input type="button" value="返回" onclick="window.location.href='<%=request.getContextPath()%>/account/index.jsp'">
+	  <input type="button" value="新增" onclick="window.location.href='<%=request.getContextPath()%>/account/addmem.jsp'">
 	</div>
  <jsp:include page="../indexpage/footer.jsp" />
 </body>
