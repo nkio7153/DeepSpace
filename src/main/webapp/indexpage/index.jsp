@@ -380,17 +380,29 @@ h4.destination {
             </div>
           </div>
           <div class="col-md-3 col-sm-12 destinations-grids text-center mt-4 gg">
-            <h4 class="destination mb-3">佐登妮絲城堡</h4>
+            <h4 class="destination mb-3">台北成人展</h4>
             <div class="image-position position-relative">
-              <img src="${pageContext.request.contextPath}/indexpage/images/castle.jpg" class="card-img" alt="" />
+              <img src="${pageContext.request.contextPath}/indexpage/images/girl.jpg" class="card-img" alt="" />
               <div class="destinations-info">
                 <div class="caption mb-lg-3">
-                  <h4>佐登妮絲城堡門票</h4>
+                  <h4>台北成人展門票</h4>
                   <a href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=324006">立即購買</a>
                 </div>
               </div>
             </div>
           </div>
+<!--           <div class="col-md-3 col-sm-12 destinations-grids text-center mt-4 gg"> -->
+<!--             <h4 class="destination mb-3">佐登妮絲城堡</h4> -->
+<!--             <div class="image-position position-relative"> -->
+<%--               <img src="${pageContext.request.contextPath}/indexpage/images/castle.jpg" class="card-img" alt="" /> --%>
+<!--               <div class="destinations-info"> -->
+<!--                 <div class="caption mb-lg-3"> -->
+<!--                   <h4>佐登妮絲城堡門票</h4> -->
+<%--                   <a href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=324006">立即購買</a> --%>
+<!--                 </div> -->
+<!--               </div> -->
+<!--             </div> -->
+<!--           </div> -->
         </div>
       </div>
     </section>

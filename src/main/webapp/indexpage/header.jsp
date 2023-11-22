@@ -3,6 +3,14 @@
 <header>
 	<script>
 
+	    window.onload = function() {
+	        // 假設 isUserLoggedIn 是一個函數，用來檢查用戶是否登錄
+	        let check = $("[name='check']").text();
+	        if (check === "登入/註冊") {
+	            document.getElementById('cartNum').style.display = 'none';
+	        }
+	    };
+
 		function checkSession(e){
 		    let check = $("[name='check']").text();
 		    if(check === "登入/註冊"){
@@ -152,7 +160,7 @@
 						    <a href="${pageContext.request.contextPath}/tsc/memCartList" onclick="checkSession(event)">
 						        <div style="position: relative; display: inline-block;">
 						            <img src="${pageContext.request.contextPath}/indexpage/images/shoppingcar.svg" style="width: 2em"/>
-						            <span id="cartNum" style="position: absolute;top: -8px;right: -12px;background-color: red;border-radius: 50%;padding: 0px 6px;"></span>
+						            <span id="cartNum" style="position: absolute;top: -8px;right: -15px;background-color: red;border-radius: 50%;padding: 2px 6px;"></span>
 						        </div>
 						    </a>
 						</li>                    
