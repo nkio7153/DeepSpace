@@ -1,14 +1,18 @@
 package com.depthspace.member.controller;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -26,12 +30,18 @@ import javax.servlet.http.Part;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import com.depthspace.attractions.model.AreaVO;
+import com.depthspace.attractions.model.CityVO;
+import com.depthspace.attractions.service.AreaService;
+import com.depthspace.attractions.service.CityService;
 import com.depthspace.member.model.MemVO;
 import com.depthspace.member.service.HbMemService;
 import com.depthspace.member.service.MemberService;
 import com.depthspace.ticketshoppingcart.service.RedisCartServiceImpl;
 import com.depthspace.utils.JedisUtil;
 import com.depthspace.utils.MailService;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import redis.clients.jedis.Jedis;
 
@@ -107,12 +117,63 @@ public class MemberServlet extends HttpServlet {
 		case "/forgetPassword":// 忘記密碼
 			doForgetPassword(req, resp);
 			break;
-		case "/checkVerify":// 驗證碼
+		case "/checkVerify":// 忘記密碼的驗證碼
 			doCheckVerify(req, resp);
+			break;
+		case "/checkAccount":// 確認重複帳號
+			doCheckAccount(req, resp);
+			break;
+		case "/signIn":// 確認重複帳號
+			doSignIn(req, resp);
 			break;
 
 		}
 
+	}
+	private void doSignIn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		CityService cityService = new CityService();
+//		AreaService areaService
+		List<CityVO> city = cityService.getAll();
+//		List<AreaVO> area = areaService.getAll();
+		req.setAttribute("city", city);
+		req.getRequestDispatcher("/member/addMember.jsp").forward(req, resp);
+		
+		
+	}
+	private void doCheckAccount(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		
+		String memAcc = req.getParameter("memAcc");
+		System.out.println("memAcc=" + memAcc);
+		HbMemService hbms = new HbMemService();
+		List<MemVO> list = hbms.getAll();
+		
+		for (MemVO memVO : list) {
+		    String memAllAcc = memVO.getMemAcc();
+		    
+		    if (memAcc != null && memAcc.equals(memAllAcc)) {
+				String data = "false";
+				setJsonResponse(resp, data);
+				System.out.println("帳號已存在，帳號不可使用");
+				return;
+			} else {
+				String data = "true";
+				setJsonResponse(resp, data);
+				System.out.println("無此帳號，帳號可用");
+				return;
+			}
+		    
+		}
+		
+//		try {
+//			membersVO = memsSvc.getOneByMemAcc(memaccount);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			// 處理異常
+//		}
+
+		
+		
+		
 	}
 	private void doCheckVerify(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String memAcc = req.getParameter("memAcc");
@@ -215,6 +276,13 @@ public class MemberServlet extends HttpServlet {
 				int b =  (int)(Math.random()*62);
 				passRandom = passRandom + random.charAt(b);
 			}
+			
+			// 將臨時密碼加密
+	        String hashedPassword = BCrypt.hashpw(passRandom, BCrypt.gensalt());
+	        
+	        mem.setMemPwd(hashedPassword);
+	        hbms.update(mem);
+			
 //			System.out.println("驗證碼為:"+ passRandom);
 //			存到Redis裡面
 			Jedis jedis = new Jedis("localhost", 6379);
@@ -856,4 +924,13 @@ public class MemberServlet extends HttpServlet {
 			resp.sendRedirect(URL);
 		}
 	}
+	
+	// fetch返回json格式
+		private void setJsonResponse(HttpServletResponse resp, Object obj) throws IOException {
+			Gson gson = new Gson();
+			String jsonData = gson.toJson(obj);
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+			resp.getWriter().write(jsonData);
+		}
 }

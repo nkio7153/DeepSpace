@@ -17,6 +17,13 @@ public class AttractionsImageService {
 	public List<AttractionsImagesVO> getAttractionsImagesById(Integer attractionsImagesId){
 		return dao.getAttractionsImagesById(attractionsImagesId);
 	}
+	public AttractionsImagesVO findByPrimaryKey(Integer attractionsImagesId){
+		return dao.findByPrimaryKey(attractionsImagesId);
+	}
+	public AttractionsImagesVO findByAttrId(Integer attractionsId){
+		return dao.findByAttrId(attractionsId);
+	}
+	
 	
 	public AttractionsImagesVO save(AttractionsImagesVO attrImg) {
 		dao.add(attrImg);
@@ -34,5 +41,8 @@ public class AttractionsImageService {
 //	    }
 	}
 	
+	public void update(AttractionsImagesVO attrImg) {
+		dao.update(attrImg);
+	}
 	
 }

@@ -92,6 +92,7 @@ public class AttractionsEndServlet extends HttpServlet {
 		req.setAttribute("errorMsgs", errorMsgs);
 		Integer attractionsTypesId;
 		String attractionsName = req.getParameter("attractionsName");
+		Integer attractionsId;
 		Integer cityId;
 		Integer areaId;
 		String base64Image;
@@ -101,11 +102,13 @@ public class AttractionsEndServlet extends HttpServlet {
 		Part picture;
 		try {
 			
+			attractionsId = Integer.valueOf(req.getParameter("attractionsId"));
 			attractionsTypesId = Integer.valueOf(req.getParameter("attractionsTypesId"));
+			
 			cityId = Integer.valueOf(req.getParameter("city"));
 			areaId = Integer.valueOf(req.getParameter("area"));
 			
-//			System.out.println("description=" + description);
+			System.out.println("attractionsId=" + attractionsId);
 //			if(description == null || description.trim().length() == 0) {
 //				errorMsgs.add("景點描述請勿空白");
 //			}
@@ -113,35 +116,15 @@ public class AttractionsEndServlet extends HttpServlet {
 			//處理圖片
 			picture = req.getPart("attractionsImg");
             if (picture != null && picture.getSize() > 0) {
+            	System.out.println("進入新照片");
             	InputStream inputStream = picture.getInputStream();
-				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-				int nRead;
-				byte[] data = new byte[1024];
-				while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-					buffer.write(data, 0, nRead);
-				}
-				buffer.flush();
-				pic = buffer.toByteArray();
+				pic = inputStream.readAllBytes();
 				inputStream.close();
-				buffer.close();
+//				buffer.close();
             } else {
-                String webAppPath = getServletContext().getRealPath("/");
-                String relativePath = "backend/attractions/images/none3.png";
-                String absoultePath = webAppPath + relativePath;
-
-                File defaultImageFile = new File(absoultePath);
-                String defaultImagePath = defaultImageFile.getPath();
-
-                if (defaultImageFile.exists()) {
-                    byte[] localImagePath = Files.readAllBytes(Path.of(defaultImagePath));
-                    base64Image = Base64.getEncoder().encodeToString(localImagePath);
-
-                    res.setContentType("text/plain");
-                    res.getWriter().write(base64Image);
-                    req.setAttribute("base64Image", base64Image);
-                } else {
-                    System.out.println("圖不存在");
-                }
+            	System.out.println("進入舊照片");
+            	AttractionsImagesVO avo = attractionsImageService.findByPrimaryKey(attractionsId);
+                pic = avo.getAttractionsImg();
 
             }
 		} catch (NumberFormatException e) {
@@ -150,20 +133,30 @@ public class AttractionsEndServlet extends HttpServlet {
 		}
 		
 		//更新資料
-		Integer attractionsId = null;
 		Integer status = 0;
 		String typeName = attrTypeService.getOne(attractionsTypesId).getTypeName();
 		
-//		AttractionsTypeVO attrTypevo = new AttractionsTypeVO(attractionsTypesId, typeName);
-//		AttractionsVO attrvo = new AttractionsVO(attractionsId , attrTypevo , areaId , attractionsName , description , status , newAddress);
-//		//存入景點
-//		AttractionsVO avo = null;
-//		avo = attractionService.insert(attrvo);
-//		//存入圖片
-//		Integer attractionsImagesId = null;
-//		AttractionsImagesVO attrImg = new AttractionsImagesVO(attractionsImagesId, lastAttractionsId , pic);
-//		AttractionsImagesVO atvo =  null;
-//		atvo = attractionsImageService.save(attrImg);
+//		處理地址
+		String city = cityService.findByPrimaryKey(cityId).getCityName();
+		String area = areaService.findByPrimaryKey(areaId).getAreaName();
+		String newAddress = city + area + address;
+		
+		AttractionsTypeVO attrTypevo = new AttractionsTypeVO(attractionsTypesId, typeName);
+		AttractionsVO attrvo = new AttractionsVO(attractionsId , attrTypevo , areaId , attractionsName , description , status , newAddress);
+		//更新景點
+		AttractionsVO avo = null;
+		avo = attractionService.update(attrvo);
+				
+		//更新圖片
+		//用attractionsId找到該筆物件
+		AttractionsImagesVO attrImgVo = attractionsImageService.findByAttrId(attractionsId);
+//		由景點編號找到imageId
+		Integer attractionsImagesId = attrImgVo.getAttractionsImagesId();
+		//用set的方式
+		attrImgVo.setAttractionsImagesId(attractionsImagesId);
+		attrImgVo.setAttractionsId(attractionsId);
+		attrImgVo.setAttractionsImg(pic);
+		attractionsImageService.update(attrImgVo);
 		
 		
 		if (!errorMsgs.isEmpty()) {
