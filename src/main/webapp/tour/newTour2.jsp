@@ -96,15 +96,15 @@
             font-weight: bold;
             margin-top: -1px;
             margin-left: 1px;
-        }
 
+        }
         .circle2 {
             width: 21px;
             height: 21px;
             border-radius: 50%;
             background-color: lightcoral;
-            margin-top: 10px;
-            margin-right: 10px;
+            margin-top: 14px;
+            margin-rightt: 0px;
         }
 
         /* 给新增的时间和输入框容器添加样式，调整它们的位置 */
@@ -351,7 +351,7 @@ $(document).ready(function () {
 // 				    </div>`;
 // 1109更新
 		let select_html = `
-		        	<div class="circle2 d-flex align-items-center justify-content-center ms-auto ml-2" id="dash">
+		        	<div class="circle2 d-flex align-items-center justify-content-center ms-auto ml-2 pb-1" name="dash">
 							<span class="dash">-</span>
 				    	</div>
 				    </div>`;
@@ -379,9 +379,16 @@ $(document).ready(function () {
 			var clonedElement = $(this).closest("[class='row']").find('[name="add"]').eq(0).clone(); // 複製原始元素
             clonedElement.find('[name="attractionTime"]').val(''); // 清空時間欄位的值
             clonedElement.find('select').val('請選擇'); // 重置下拉選單的值
-            $(this).closest("[name='afterSelector']").before(clonedElement); // 插入複製的元素到頁面中
-            // 插入新的 select_html
-            $(this).closest("[name='afterSelector']").before(select_html);
+            var clonedElementHtml = clonedElement.prop('outerHTML');
+            // 創建一個 div 元素
+            var div = document.createElement("div");
+            div.className = "container";
+            div.style.display = 'flex';
+            div.innerHTML=clonedElementHtml+select_html
+            $(this).closest("[name='afterSelector']").before(div);
+            // $(this).closest("[name='afterSelector']").before(clonedElement); // 插入複製的元素到頁面中
+            // // 插入新的 select_html
+            // $(this).closest("[name='afterSelector']").before(select_html);
         });
 		//1109測試
 		
@@ -411,8 +418,9 @@ $(document).ready(function () {
 		});
 		
 		$('body').on('click', '.circle2', function() {
-// 			$(this).closest(".row").find('.add').remove();
-			$(this).closest(".row").remove();
+			// $(this).closest('[name="dash"]').prev().remove();
+			// $(this).closest('[name="dash"]').remove();
+			$(this).closest(".container").remove();
 		});
 			
 		//=====================================================================

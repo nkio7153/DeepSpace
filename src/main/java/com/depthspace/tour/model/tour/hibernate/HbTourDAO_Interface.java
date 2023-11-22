@@ -18,5 +18,7 @@ public interface HbTourDAO_Interface {
 	TourVO getLastTourId(Integer tourId);
 	List<TourVO> getOneByMemId(Integer tourId,Integer memId);
 
+	TourVO getByTourId(Integer TourId);
+
 	
 }
