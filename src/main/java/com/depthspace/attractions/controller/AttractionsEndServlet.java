@@ -9,10 +9,12 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -63,27 +65,156 @@ public class AttractionsEndServlet extends HttpServlet {
 		case "/search": //搜尋
 			doSearch(req, res);
 			break;
-		case "/add": //新增
+		case "/add": //新增前
 			doAdd(req, res);
 			break;
-		case "/add2": //新增
+		case "/add2": //新增後
 			doAdd2(req, res);
 			break;
-		case "/getArea": //新增
+		case "/getArea": //尋找新增時的縣市資料
 			doGetArea(req, res);
 			break;
 		case "/view": //查看該景點
 			doView(req, res);
 			break;
-		case "/edit": //查看該景點
+		case "/edit": //編輯前
 			doEdit(req, res);
+			break;
+		case "/edit2": //編輯前
+			doEdit2(req, res);
 			break;
 		}
 	
 	}
+	private void doEdit2(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+		//錯誤存list
+		List<String> errorMsgs = new LinkedList<String>();
+		req.setAttribute("errorMsgs", errorMsgs);
+		Integer attractionsTypesId;
+		String attractionsName = req.getParameter("attractionsName");
+		Integer cityId;
+		Integer areaId;
+		String base64Image;
+        byte[] pic=null;
+        String description = req.getParameter("description");
+		String address = req.getParameter("address");
+		Part picture;
+		try {
+			
+			attractionsTypesId = Integer.valueOf(req.getParameter("attractionsTypesId"));
+			cityId = Integer.valueOf(req.getParameter("city"));
+			areaId = Integer.valueOf(req.getParameter("area"));
+			
+//			System.out.println("description=" + description);
+//			if(description == null || description.trim().length() == 0) {
+//				errorMsgs.add("景點描述請勿空白");
+//			}
+			
+			//處理圖片
+			picture = req.getPart("attractionsImg");
+            if (picture != null && picture.getSize() > 0) {
+            	InputStream inputStream = picture.getInputStream();
+				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+				int nRead;
+				byte[] data = new byte[1024];
+				while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+					buffer.write(data, 0, nRead);
+				}
+				buffer.flush();
+				pic = buffer.toByteArray();
+				inputStream.close();
+				buffer.close();
+            } else {
+                String webAppPath = getServletContext().getRealPath("/");
+                String relativePath = "backend/attractions/images/none3.png";
+                String absoultePath = webAppPath + relativePath;
+
+                File defaultImageFile = new File(absoultePath);
+                String defaultImagePath = defaultImageFile.getPath();
+
+                if (defaultImageFile.exists()) {
+                    byte[] localImagePath = Files.readAllBytes(Path.of(defaultImagePath));
+                    base64Image = Base64.getEncoder().encodeToString(localImagePath);
+
+                    res.setContentType("text/plain");
+                    res.getWriter().write(base64Image);
+                    req.setAttribute("base64Image", base64Image);
+                } else {
+                    System.out.println("圖不存在");
+                }
+
+            }
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		//更新資料
+		Integer attractionsId = null;
+		Integer status = 0;
+		String typeName = attrTypeService.getOne(attractionsTypesId).getTypeName();
+		
+//		AttractionsTypeVO attrTypevo = new AttractionsTypeVO(attractionsTypesId, typeName);
+//		AttractionsVO attrvo = new AttractionsVO(attractionsId , attrTypevo , areaId , attractionsName , description , status , newAddress);
+//		//存入景點
+//		AttractionsVO avo = null;
+//		avo = attractionService.insert(attrvo);
+//		//存入圖片
+//		Integer attractionsImagesId = null;
+//		AttractionsImagesVO attrImg = new AttractionsImagesVO(attractionsImagesId, lastAttractionsId , pic);
+//		AttractionsImagesVO atvo =  null;
+//		atvo = attractionsImageService.save(attrImg);
+		
+		
+		if (!errorMsgs.isEmpty()) {
+			RequestDispatcher failureView = req
+					.getRequestDispatcher("/backend/attractions/edit.jsp");
+			failureView.forward(req, res);
+			return;//程式中斷
+		} else {
+			res.sendRedirect(req.getContextPath() + "/attractionsEnd/list");				
+		}
+		
+	}
 	private void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		Integer attrId = Integer.valueOf(req.getParameter("attractionsId"));
+		AttractionsVO attrvo = attractionService.getAttractionsById(attrId);
+//		System.out.println("attrvo裡的區域編號= " + attrvo.getAreaId());
+//		處理地址
+		if (attrvo.getAddress().length() > 6) {
+		    String newAddress = attrvo.getAddress().substring(6);
+//		    System.out.println(result);
+		    req.setAttribute("newAddress", newAddress);
+		} else {
+		    // 如果字串的長度小於或等於六，可以處理相應的邏輯，例如返回原始字串或顯示錯誤訊息
+		    System.out.println("字串長度不足六");
+		}
+		//找景點表格裡的區域Id attrvo.getAreaId()
+//		[attractionsId=1, attractionsTypeId=AttractionsTypeVO [attractionsTypeId=1, typeName=種類1], areaId=14, attractionsName=台北101, description=台北地標建築，高度508米。, attractionsStatus=0, address=台北市信義區信義路五段7號, lon=121.5654, lat=25.0339]
+		//再依據areaId找cityId
+		AreaVO avo = areaService.findByPrimaryKey(attrvo.getAreaId());
+//		System.out.println("avo的物件=" + avo);
+		//再由cityId找到對應縣市名稱
+//		avo.getCityId()
+		CityVO cvo = cityService.findByPrimaryKey(avo.getCityId());
+		System.out.println("cvo的物件=" + cvo);
+		//將值傳至jsp
+		req.setAttribute("cvo", cvo);
 		
+		//所有景點類型
+		List<AttractionsTypeVO> attractionsTypes = attrTypeService.getAll();
+		req.setAttribute("attractionsTypes", attractionsTypes);
 		
+		//找到所有區域
+		List<AreaVO> area = areaService.getAll();
+		req.setAttribute("area", area);
+//		System.out.println("area=" + area);
+
+		//找尋所有縣市
+		List<CityVO> city = cityService.getAll();
+		req.setAttribute("city", city);
+		
+		req.setAttribute("attrvo", attrvo);
 		
 		req.getRequestDispatcher("/backend/attractions/edit.jsp").forward(req, res);
 	}
@@ -253,7 +384,7 @@ public class AttractionsEndServlet extends HttpServlet {
 //		
 //		req.setAttribute("attrList", attrList);
 //		req.setAttribute("currentPage", currentPage);
-		
+//		List<AttractionsTypeVO> attractionsTypes = attrTypeService.getAll();
 		//處理類型不重複
 		Set<AttractionsTypeVO> uniqueTypes = new HashSet<>();
 		for (AttractionsVO avo : attrList) {
