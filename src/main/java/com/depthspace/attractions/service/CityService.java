@@ -38,6 +38,10 @@ public class CityService {
 		CityVO cityVo = dao.findByPrimaryKey(cityId);
 		return cityVo;
 	}
+	public CityVO findByCityName(String cityName) {
+		CityVO cityVo = dao.findByCityName(cityName);
+		return cityVo;
+	}
 	
 	
 }

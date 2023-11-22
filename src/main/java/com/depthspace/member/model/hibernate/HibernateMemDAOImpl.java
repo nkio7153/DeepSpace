@@ -26,8 +26,8 @@ public class HibernateMemDAOImpl implements HibernateMemDAO_Interface {
 	}
 
 	@Override
-	public MemVO insert(MemVO entity) {
-		return (MemVO) getSession().save(entity);
+	public void insert(MemVO entity) {
+		getSession().save(entity);
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import com.depthspace.member.model.MemVO;
 
 public interface HibernateMemDAO_Interface {
 	// 會員註冊
-	MemVO insert(MemVO entity);
+	void insert(MemVO entity);
 
 	// 會員修改
 	int update(MemVO entity);

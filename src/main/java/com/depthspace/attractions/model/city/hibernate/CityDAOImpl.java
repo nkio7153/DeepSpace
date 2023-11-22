@@ -42,10 +42,12 @@ public class CityDAOImpl implements CityDAO_Interface{
 	public CityVO findByPrimaryKey(Integer cityId) {
 		return getSession().get(CityVO.class, cityId);
 	}
-//	@Override
-//	public CityVO getAreaId(Integer cityId) {
-//		return getSession().get(CityVO.class, cityId);
-//	}
+	@Override
+	public CityVO findByCityName(String cityName) {
+		return getSession().createQuery("from CityVO WHERE cityName = :cityName",CityVO.class)
+				.setParameter("cityName", cityName)
+	            .uniqueResult();
+	}
 
 	@Override
 	public List<CityVO> getAll() {
