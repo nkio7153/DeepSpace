@@ -1,60 +1,40 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"
-	pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
-
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet"	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet"	href="<c:url value='/static/css/backendlist.css'/>">
-
-<title>票券列表</title>
 <style>
- .table-hover tbody tr:hover {
-     background-color: #f5f5f5;
- }
+   .table-hover tbody tr:hover {
+    background-color: #f5f5f5;
+    }
+    .table-list .viewimg{
+    max-width: 30%;
+    max-height: none;
+    display: block;
+    margin: inherit;
+    padding-bottom: 20px;
+    }
+    .empty{
+    margin-top: 0;
+    margin-bottom: 1rem;
+    margin-bottom: 5rem;
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    text-align: center;
+    }
 </style>
-<%--  include --%>
-	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
-  
-</head>
-
-<body>
-
-	<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
-	<div class="container-fluid my-0">
-	<div class="row">
-	  
-	<div class="col-lg-2 g-3 my-0">
-	<jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
-	</div>
-	
-	<div class="col-lg-10 g-2 transparent rounded my-0">
-	
-<%-- include end--%>
-
-<div class="table-list">
- <div class="col-lg-10 g-2 transparent rounded my-0">
-   <div class="table-list">
-	<h5>票券搜尋結果</h5>
-     <div class="container mt-5">
          <!-- 判斷 list 是否為空 -->
          <c:choose>
              <c:when test="${not empty list}">
 		<!-- 表格 -->
-		<table class="table table-bordered">
+		<div id="right">
+		<table class="table table-bordered table-hover" id="table-hover">
 			<thead>
 				<tr>
-					<th>項次</th>
-					<th>類型</th>
 					<th>編號</th>
+					<th>區域</th>
+					<th>類型</th>
 					<th>圖片</th>
 					<th>名稱</th>
 					<th>價格</th>
@@ -62,17 +42,16 @@
 					<th>描述</th>
 					<th>發布日</th>
 					<th>狀況</th>
-					<th>區域</th>
 					<th>操作</th>
 				</tr>
 			</thead>
 			<tbody>
-				<!-- 符合搜尋結果的票券資料 var要填-->
-				<c:forEach items="${list}" var="ticket" varStatus="ticketStatus">
-					<tr>
-						<td>${ticketStatus.count}</td>
-						<td>${ticket.ticketType.typeName}</td>
+				<!-- 票券所有資料 -->
+				<c:forEach var="ticket" items="${list}" varStatus="status">
+					<tr >
 						<td>${ticket.ticketId}</td>
+						<td style="white-space:nowrap;">${ticket.city.cityName}</td>
+						<td style="white-space:nowrap;">${ticket.ticketType.typeName}</td>
 						<td><img
 							src="<%=request.getContextPath()%>/ticketmainimage?ticketId=${ticket.ticketId}"
 							alt="Main Ticket Image"></td>
@@ -87,36 +66,35 @@
 								${ticket.description}
 								</c:otherwise>
 							</c:choose></td>
-						<td>${ticket.publishedDate}</td>
+						<td style="white-space:nowrap;"><fmt:formatDate value="${ticket.publishedDate}" pattern="yyyy-MM-dd" /></td>
 						<td><c:choose>
 								<c:when test="${ticket.status ==1}">上架</c:when>
 								<c:otherwise>未上架</c:otherwise>
 							</c:choose></td>
-						<td>${ticket.city.cityName}</td>
-					<td>
-				    <a href="${pageContext.request.contextPath}/ticketmg/edit?ticketId=${ticket.ticketId}" class="btn btn-primary btn-sm" style="background-color: #63bfc9; border-color: #63bfc9;">
-				        <i class="fas fa-edit"></i>
-				    </a><p></p>
-				    <button type="button" class="btn btn-primary btn-sm view-ticket" data-toggle="modal" data-target="#viewTicketModal" data-ticket-id="${ticket.ticketId}" style="background-color: #63bfc9; border-color: #63bfc9;">
-				        <i class="fas fa-eye"></i>
-				    </button>
-					</td>
-					</tr>
+								<td>
+								    <a href="${pageContext.request.contextPath}/ticketmg/edit?ticketId=${ticket.ticketId}" class="btn btn-primary btn-sm" style="background-color: #63bfc9; border-color: #63bfc9;">
+								        <i class="fas fa-edit"></i>
+								    </a><p></p>
+								    <button type="button" class="btn btn-primary btn-sm view-ticket" data-toggle="modal" data-target="#viewTicketModal" data-ticket-id="${ticket.ticketId}" style="background-color: #63bfc9; border-color: #63bfc9;">
+								        <i class="fas fa-eye"></i>
+								    </button>
+								</td>
+				</tr>
 				</c:forEach>
-                    </table>
+				</table>
                 </c:when>
                 <c:otherwise>
-                    <!-- 查詢結果為空 -->
-                    <div class="text-center">
-<!--                         <img src="path_to_cute_image.jpg" alt="No Results Found" /> -->
+                    <div class="empty">
                         <p>沒有找到任何結果</p>
                     </div>
                 </c:otherwise>
             </c:choose>
-        </div>
-    </div>
-    
-    	<!-- 查看票券 -->		
+    		<!-- 回列表 -->
+			<div class="page-item" style="padding-bottom:50px;text-align:center">
+				<a class="page-link"
+					href="${pageContext.request.contextPath}/ticketmg/list">回總列表</a>
+			</div>
+  	<!-- 查看票券 -->		
 		<div class="modal fade" id="viewTicketModal" tabindex="-1" role="dialog" aria-labelledby="viewTicketModalLabel" aria-hidden="true">
 		    <div class="modal-dialog modal-lg" role="document">
 		        <div class="modal-content">
@@ -181,23 +159,6 @@
 		        </div>
 		    </div>
 		</div>
-		
-	<!-- 回首頁 -->
-	<div class="page-item">
-		<a class="page-link"
-			href="${pageContext.request.contextPath}/ticketmg/list">回票券總列表</a>
-	</div>
-	</div>
-</div>
-<%--  include --%>	
-		</div>
-	</div>		
-</div>
-<%--  include end --%>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
 $('.view-ticket').on('click', function() {
     var ticketId = $(this).data('ticket-id');

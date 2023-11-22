@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import com.depthspace.admin.model.AdminVO;
+import com.depthspace.admin.service.HbAdminService;
 import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO;
@@ -34,12 +36,14 @@ public class RestServlet extends HttpServlet {
 	private RestService restService;
 	private MemBookingService memBookingService;
 	private RestBookingDateService bookingDateService;
+	private HbAdminService hbAdminService;
 
 	@Override
 	public void init() throws ServletException {
 		restService = new RestServiecImpl();
 		memBookingService = new MemBookingServiceImpl();
 		bookingDateService = new RestBookingDateServiceImpl();
+		hbAdminService = new HbAdminService();
 		
 	}
 	
@@ -135,6 +139,7 @@ public class RestServlet extends HttpServlet {
 			bookingLimit = 0;
 		}
 		RestVO rest = new RestVO();
+		AdminVO admin = new AdminVO();
 		rest.setRestName(restName);
 		rest.setRestTel(restTel);
 		rest.setRestAddress(restAddress);
@@ -142,9 +147,13 @@ public class RestServlet extends HttpServlet {
 		rest.setRestOpen(restOpen);
 		rest.setRestStatus(Integer.valueOf(req.getParameter("restStatus")));
 		rest.setBookingLimit(bookingLimit);
-		rest.setAdminId(Integer.valueOf(req.getParameter("adminId")));
-		restService.addRest(rest);
-		return "/backend/Rest/listCompositeQuery.jsp";
+		admin = hbAdminService.getOneAdmin(Integer.parseInt(req.getParameter("adminId")));
+		rest.setAdminVO(admin);
+		
+		String restId = Integer.toString(restService.addRest(rest));
+		saveImg(restId, req.getPart("uploadimg"));
+		
+		return "/backend/Rest.do?action=getAll";
 	}
 	
 	private String delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -162,6 +171,7 @@ public class RestServlet extends HttpServlet {
 	
 	private String update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		RestVO rest = new RestVO();
+		AdminVO admin = new AdminVO();
 		rest.setRestName(req.getParameter("restName"));
 		rest.setRestTel(req.getParameter("restTel"));
 		rest.setRestAddress(req.getParameter("restAddress"));
@@ -169,34 +179,12 @@ public class RestServlet extends HttpServlet {
 		rest.setRestOpen(req.getParameter("restOpen"));
 		rest.setRestStatus(Integer.parseInt(req.getParameter("restStatus")));
 		rest.setBookingLimit(Integer.parseInt(req.getParameter("bookingLimit")));
-		rest.setAdminId(Integer.parseInt(req.getParameter("adminId")));
+		admin = hbAdminService.getOneAdmin(Integer.parseInt(req.getParameter("adminId")));
+		rest.setAdminVO(admin);
 		rest.setRestId(Integer.parseInt(req.getParameter("restId")));
 		
-		// 設定儲存圖片路徑與檔名
-        String uploadPath = getServletContext().getRealPath("/static/images/rest");
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists())
-        	uploadDir.mkdir();
-        String fileName = "r_" + req.getParameter("restId") + ".jpg";
-        String filePath = uploadPath + File.separator + fileName;
-        // 處理圖片儲存
-        // enctype="multipart/form-data" form上傳 取上傳圖片
-        Part filePart = req.getPart("uploadimg");
-        // 判斷沒上傳圖片則不執行
-        if (filePart != null && filePart.getSize() > 0) {
-        	// 將圖片輸入
-        	InputStream input = filePart.getInputStream();
-        	// 將圖片輸出到設定的檔案路徑
-        	OutputStream output = new FileOutputStream(filePath);
-        	byte[] buffer = new byte[1024];
-        	int nRead;
-        	// 輸入流中讀取檔案數據並寫入輸出流 讀完返回-1
-        	while ((nRead = input.read(buffer)) != -1) {
-        		output.write(buffer, 0, nRead);
-        	}
-        	output.close();
-        	input.close();
-        }
+		saveImg(req.getParameter("restId"), req.getPart("uploadimg"));
+		
 		restService.updateRest(rest);
 		return "/backend/Rest.do?action=getAll";
 	}
@@ -237,9 +225,41 @@ public class RestServlet extends HttpServlet {
 		vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
 		vo.setBookingId(Integer.parseInt(req.getParameter("bookingId")));
 		memBookingService.update(vo);
-		
 		return "/backend/Rest.do?action=getMembooking&restId=" + restId;
-		
 	}
+	
+	private void saveImg(String restId, Part file) {
+		// 設定儲存圖片路徑與檔名
+        String uploadPath = getServletContext().getRealPath("/static/images/rest");
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists())
+        	uploadDir.mkdir();
+        String fileName = "r_" + restId + ".jpg";
+        String filePath = uploadPath + File.separator + fileName;
+        // 處理圖片儲存
+        // enctype="multipart/form-data" form上傳 取上傳圖片
+        Part filePart = file;
+        // 判斷沒上傳圖片則不執行
+        if (filePart != null && filePart.getSize() > 0) {
+        	try {
+        		// 將圖片輸入
+        		InputStream input = filePart.getInputStream();
+        		// 將圖片輸出到設定的檔案路徑
+        		OutputStream output = new FileOutputStream(filePath);
+        		byte[] buffer = new byte[1024];
+        		int nRead;
+        		// 輸入流中讀取檔案數據並寫入輸出流 讀完返回-1
+        		while ((nRead = input.read(buffer)) != -1) {
+        			output.write(buffer, 0, nRead);
+        		}
+        		output.close();
+            	input.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        }
+	}
+	
+	
 	
 }

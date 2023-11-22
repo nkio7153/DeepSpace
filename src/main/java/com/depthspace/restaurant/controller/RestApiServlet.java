@@ -11,6 +11,7 @@ import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.depthspace.admin.model.AdminVO;
+import com.depthspace.admin.service.HbAdminService;
 import com.depthspace.member.model.MemVO;
 import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
@@ -44,6 +47,7 @@ public class RestApiServlet extends HttpServlet {
 	private RestService restService;
 	private MemBookingService memBookingService;
 	private RestBookingDateService restBookingDateService;
+	private HbAdminService hbAdminService;
 	
 	@Override
 	public void init() throws ServletException {
@@ -51,6 +55,7 @@ public class RestApiServlet extends HttpServlet {
 		restcollectionService = new RestcollectionServiceImpl();
 		memBookingService = new MemBookingServiceImpl();
 		restBookingDateService = new RestBookingDateServiceImpl();
+		hbAdminService = new HbAdminService();
 		gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
 								.setDateFormat("yyyy-MM-dd").create();
 	}
@@ -100,6 +105,9 @@ public class RestApiServlet extends HttpServlet {
 				break;
 			case "/toMail":
 				toMail(req, resp);
+				break;
+			case "/getcheckBooking":
+				checkBooking(req, resp);
 				break;
 		}
 		
@@ -217,21 +225,17 @@ public class RestApiServlet extends HttpServlet {
 		switch (action) {
 			case("add"):
 				try {
-					String restName = req.getParameter("restName");
-					String restTel = req.getParameter("restTel");
-					String restAddress = req.getParameter("restAddress");
-					String restType = req.getParameter("restType");
-					String restOpen = req.getParameter("restOpen");
-					Integer	bookingLimit = Integer.valueOf(req.getParameter("bookingLimit").trim());
 					RestVO rest = new RestVO();
-					rest.setRestName(restName);
-					rest.setRestTel(restTel);
-					rest.setRestAddress(restAddress);
-					rest.setRestType(restType);
-					rest.setRestOpen(restOpen);
+					AdminVO admin = new AdminVO();
+					rest.setRestName(req.getParameter("restName"));
+					rest.setRestTel(req.getParameter("restTel"));
+					rest.setRestAddress(req.getParameter("restAddress"));
+					rest.setRestType(req.getParameter("restType"));
+					rest.setRestOpen(req.getParameter("restOpen"));
 					rest.setRestStatus(Integer.valueOf(req.getParameter("restStatus")));
-					rest.setBookingLimit(bookingLimit);
-					rest.setAdminId(Integer.valueOf(req.getParameter("adminId")));
+					rest.setBookingLimit(Integer.parseInt(req.getParameter("bookingLimit")));
+					admin = hbAdminService.getOneAdmin(Integer.parseInt(req.getParameter("adminId")));
+					rest.setAdminVO(admin);
 					out.print("SUCCESS" + " " + restService.addRest(rest));
 				} catch (Exception e) {
 					out.print("ERROR");
@@ -241,6 +245,7 @@ public class RestApiServlet extends HttpServlet {
 			case("update"):
 				try {
 					RestVO rest = new RestVO();
+					AdminVO admin = new AdminVO();
 					rest.setRestName(req.getParameter("restName"));
 					rest.setRestTel(req.getParameter("restTel"));
 					rest.setRestAddress(req.getParameter("restAddress"));
@@ -248,7 +253,8 @@ public class RestApiServlet extends HttpServlet {
 					rest.setRestOpen(req.getParameter("restOpen"));
 					rest.setRestStatus(Integer.parseInt(req.getParameter("restStatus")));
 					rest.setBookingLimit(Integer.parseInt(req.getParameter("bookingLimit")));
-					rest.setAdminId(Integer.parseInt(req.getParameter("adminId")));
+					admin = hbAdminService.getOneAdmin(Integer.parseInt(req.getParameter("adminId")));
+					rest.setAdminVO(admin);
 					rest.setRestId(Integer.parseInt(req.getParameter("restId")));
 					restService.updateRest(rest);
 					out.print(gson.toJson("SUCCESS"));
@@ -461,9 +467,11 @@ public class RestApiServlet extends HttpServlet {
 		// QRCode https://developers.google.com/chart/infographics/docs/qr_codes?hl=zh-tw
 		// url http "://" localhost ":" 8080 /DepthSpace
         String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath();
-        String uri = "/backend/Rest.do?action=checkBooking&bookingId=" + bookingId;
+        String uri = "/RestApi/getcheckBooking?bookingId=" + bookingId;
         System.out.println(url + uri);
-		msg.append("<img src=https://chart.googleapis.com/chart?cht=qr&chl=" + url + uri + "&chs=150x150 />");
+        String img = "<img src=https://chart.googleapis.com/chart?cht=qr&chl=" + url + uri + "&chs=150x150 />";
+        System.out.println(img);
+		msg.append(img);
 		// 將HTML內容加進body再加進Multipart
 		try {
 			bodyPart.setContent(msg.toString(), "text/html; charset=UTF-8");
@@ -472,7 +480,7 @@ public class RestApiServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		// 使用大吳老師的範例發發送郵件
+		// 使用大吳老師的範例發送郵件
 		MailService mailService = new MailService();
 		try {
 //			mailService.sendMail(to, subject, messageText);
@@ -483,7 +491,13 @@ public class RestApiServlet extends HttpServlet {
 		}
 	}
 	
-	
+	private void checkBooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		MemBookingVO mb = memBookingService.getByMembookingId(Integer.valueOf(req.getParameter("bookingId")));
+		req.setAttribute("mb", mb);
+		String forwardPath = "/backend/rest/checkBooking.jsp";
+		RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
+		dispatcher.forward(req, resp);
+	}
 	
 	
 	

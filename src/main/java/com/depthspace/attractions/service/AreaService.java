@@ -28,6 +28,9 @@ public class AreaService {
 		List<AreaVO> list = dao.getAllArea(cityId);
 		return list;
 	}
+	public AreaVO findByPrimaryKey(Integer areaId) {
+		return dao.findByPrimaryKey(areaId);
+	}
 	
 	
 	

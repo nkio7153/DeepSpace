@@ -15,5 +15,6 @@ public interface AttractionsImages_Interface {
 	 
 	 //根據景點Id取得一或多筆資料
 	 public List<AttractionsImagesVO> getAttractionsImagesById(Integer attractionsImagesId);
+	public void add(AttractionsImagesVO attrImg);
 
 }

@@ -7,7 +7,7 @@ import com.depthspace.attractions.model.AreaVO;
 import com.depthspace.attractions.model.AttractionsVO;
 
 public interface AttractionsDAO_Interface {
-	public void insert(AttractionsVO AttractionsVO);
+	public int insert(AttractionsVO AttractionsVO);
 
 	public int update(AttractionsVO AttractionsVO);
 

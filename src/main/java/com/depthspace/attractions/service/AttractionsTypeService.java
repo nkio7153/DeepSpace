@@ -19,6 +19,11 @@ public class AttractionsTypeService {
 		return attr;
 	}
 	
+	public AttractionsTypeVO getOne(Integer attractionsTypeId) {
+		AttractionsTypeVO attr = dao.getOne(attractionsTypeId);
+		return attr;
+	}
+	
 	public List<AttractionsTypeVO> getAll() {
 		List<AttractionsTypeVO> list = dao.getAll();
 		return list;

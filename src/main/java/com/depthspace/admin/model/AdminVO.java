@@ -119,5 +119,12 @@ public class AdminVO implements Serializable{
 	public void setAdminFuncName(Byte adminFuncName) {
 		this.adminFuncName = adminFuncName;
 	}
+
+	@Override
+	public String toString() {
+		return "AdminVO [adminId=" + adminId + ", adminName=" + adminName + ", adminAcc=" + adminAcc + ", adminPwd="
+				+ adminPwd + ", adminStatus=" + adminStatus + ", adminVerifyStatus=" + adminVerifyStatus
+				+ ", adminFuncName=" + adminFuncName + "]";
+	}
 	
 }

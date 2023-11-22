@@ -26,7 +26,7 @@
 								<div class="col-md-4">
 									<img
 										src="<%=request.getContextPath()%>/ticketmainimage?ticketId=${ticket.ticketId}"
-										alt="Main Ticket Image" class="ticket-img">
+										alt="Main Ticket Image"  class="h-100 ticket-img">
 								</div>
 								<div class="col-md-8">
 									<div class="card-body">
@@ -77,13 +77,16 @@
 						</div>
 					</a>
 				</c:forEach>
-				<div >
-				<c:forEach begin="1" end="${pageQty}" var="i">
-			    <li class="page-item ${i == currentPage ? 'active' : ''}">
-			        <a class="page-link" href="${pageContext.request.contextPath}/ticketproduct/list?page=${i}">${i}</a>
-			    </li>
-				</c:forEach>
-				<div >
+<!-- 					<div class="view"> -->
+<!-- 						<div class="pagination-container"> -->
+<%-- 							<c:forEach begin="1" end="${pageQty}" var="i"> --%>
+<%-- 								<li class="page-item ${i == currentPage ? 'active' : ''}"> --%>
+<!-- 									<a class="page-link" -->
+<%-- 									href="${pageContext.request.contextPath}/ticketproduct/list?page=${i}">${i}</a> --%>
+<!-- 								</li> -->
+<%-- 							</c:forEach> --%>
+<!-- 						</div> -->
+<!-- 					</div> -->
 
  <script>
  //排序

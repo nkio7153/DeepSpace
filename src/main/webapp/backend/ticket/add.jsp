@@ -20,13 +20,13 @@ body, label {
 }
 
 h1 {
-	white-space: nowrap; /* 防止標題斷行 */
+	white-space: nowrap;
 	font-size: 1.5rem;
 	overflow: hidden;
-	text-overflow: ellipsis; /* 標題過長省略號表示 */
+	text-overflow: ellipsis; 
 }
 
-.form-control, .btn { /* 同時縮小表單控件和按鈕的大小 */
+.form-control, .btn { 
 	font-size: 0.875rem;
 }
 
@@ -57,11 +57,12 @@ h1 {
 }
 </style>
 
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 	<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+	
 	
 <%--  include --%>
 	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
@@ -86,14 +87,14 @@ h1 {
 	<div class="container mt-5">
 		<h5>新增票券</h5>
 		<form action="<%=request.getContextPath()%>/ticketmg/add"
-    		method="post" enctype="multipart/form-data" onsubmit="return showSwal();">
+      	method="post" enctype="multipart/form-data" onsubmit="return validateForm();">
 			<div class="row">
 
 				<!-- 類型 -->
 				<!-- 關聯表格說明，三個變數，itmes是servlet傳來的list、option value為其元素值、第三個為出現在選單的文字-->
 				<!-- forEach的var跟option的是有關連的，取自於其forEach遍歷的資料 -->
 				<div class="form-group col-md-6">
-					<label for="ticketTypeId">票券類型</label> <select name=ticketTypeId
+					<label for="ticketTypeId">票券類型<span style="color: #f27474;">*</span></label> <select name=ticketTypeId
 						id="ticketTypeId" class="form-control" required>
 						<option value="">請選擇票券類型</option>
 						<c:forEach var="typeItem" items="${ticketTypes}">
@@ -104,19 +105,19 @@ h1 {
 
 				<!-- 票券名稱 -->
 				<div class="form-group col-md-6">
-					<label for="ticketName">票券名稱</label> <input type="text"
-						class="form-control" id="ticketName" name="ticketName" required>
+				    <label for="ticketName">票券名稱 <span style="color: #f27474;">*</span></label>
+				    <input type="text" class="form-control" id="ticketName" name="ticketName" required>
 				</div>
 
 				<!-- 價格 -->
 				<div class="form-group col-md-6">
-					<label for="price">價格</label> <input type="number"
-						class="form-control" id="price" name="price" required min="0">
+					<label for="price">價格<span style="color: #f27474;">*</span></label>
+					 <input type="number" class="form-control" id="price" name="price" required min="0">
 				</div>
 
 				<!-- 數量 -->
 				<div class="form-group col-md-6">
-					<label for="stock">數量</label> <input type="number"
+					<label for="stock">數量<span style="color: #f27474;">*</span></label> <input type="number"
 						class="form-control" id="stock" name="stock" required min="0">
 				</div>
 
@@ -133,7 +134,7 @@ h1 {
 
 					<!-- 使用天數 -->
 					<div class="form-group col-md-12">
-						<label for="validDays">使用天數</label> <input type="text"
+						<label for="validDays">使用天數<span style="color: #f27474;">*</span></label> <input type="text"
 							title="請輸入數字，例如: 365" class="form-control" id="validDays"
 							name="validDays"  required min="0">
 					</div>
@@ -149,7 +150,7 @@ h1 {
 
 					<!-- 區域 -->
 					<div class="form-group col-md-6">
-						<label for="cityId">區域</label> <select name="cityId" id="cityId"
+						<label for="cityId">區域<span style="color: #f27474;">*</span></label> <select name="cityId" id="cityId"
 							class="form-control" required>
 							<option value="">請選擇縣市</option>
 							<c:forEach var="cityItem" items="${cities}">
@@ -160,19 +161,19 @@ h1 {
 
 					<!-- 地址 -->
 					<div class="form-group col-md-6">
-						<label for="address">地址</label> <input type="text"
+						<label for="address">地址<span style="color: #f27474;">*</span></label> <input type="text"
 							class="form-control" id="address" name="address" required>
 					</div>
 
 					<!-- 經度 -->
 					<div class="form-group col-md-6">
-						<label for="longitude">經度</label> <input type="text"
+						<label for="longitude">經度<span style="color: #f27474;">*</span></label> <input type="text"
 							class="form-control" id="longitude" name="longitude" required min="0">
 					</div>
 
 					<!-- 緯度 -->
 					<div class="form-group col-md-6">
-						<label for="latitude">緯度</label> <input type="text"
+						<label for="latitude">緯度<span style="color: #f27474;">*</span></label> <input type="text"
 							class="form-control" id="latitude" name="latitude" required min="0">
 					</div>
 
@@ -191,7 +192,33 @@ h1 {
 <br>
 
 <script>
+$(document).ready(function() {
+    $('form').on('submit', function(e) {
+        var isFormValid = true;
+        $(this).find(':input[required]').each(function() {
+            if (!this.value.trim()) {
+                isFormValid = false;
+            }
+        });
 
+        if (!isFormValid) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: '錯誤',
+                text: '請填寫所有必填欄位',
+            });
+        } else {
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: '已送出',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    });
+});
     function previewImages(event) {
         var files = event.target.files;
         var imagesPreview = document.getElementById('imagesPreview');
