@@ -62,7 +62,23 @@ h1 {
 	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 	<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
-	
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxM8Qw1Zvra1gPDfG5mwO-7FlPtXUoFns&libraries=places&callback=initAutocomplete" async defer></script>
+    <script>
+        function initAutocomplete() {
+            var autocomplete = new google.maps.places.Autocomplete(
+                document.getElementById('address'),
+                {types: ['geocode']}
+            );
+
+            autocomplete.addListener('place_changed', fillInAddress);
+        }
+
+        function fillInAddress() {
+            var place = this.getPlace();
+            document.getElementById('latitude').value = place.geometry.location.lat();
+            document.getElementById('longitude').value = place.geometry.location.lng();
+        }
+    </script>
 	
 <%--  include --%>
 	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
@@ -160,22 +176,20 @@ h1 {
 					</div>
 
 					<!-- 地址 -->
-					<div class="form-group col-md-6">
-						<label for="address">地址<span style="color: #f27474;">*</span></label> <input type="text"
-							class="form-control" id="address" name="address" required>
-					</div>
-
-					<!-- 經度 -->
-					<div class="form-group col-md-6">
-						<label for="longitude">經度<span style="color: #f27474;">*</span></label> <input type="text"
-							class="form-control" id="longitude" name="longitude" required min="0">
-					</div>
-
-					<!-- 緯度 -->
-					<div class="form-group col-md-6">
-						<label for="latitude">緯度<span style="color: #f27474;">*</span></label> <input type="text"
-							class="form-control" id="latitude" name="latitude" required min="0">
-					</div>
+				    <div class="form-group col-md-6">
+				        <label for="address">地址<span style="color: #f27474;">*</span></label>
+				        <input type="text" class="form-control" id="address" name="address" required>
+				    </div>
+				
+				    <div class="form-group col-md-6">
+				        <label for="longitude">經度<span style="color: #f27474;">*</span></label>
+				        <input type="text" class="form-control" id="longitude" name="longitude" required readonly>
+				    </div>
+				
+				    <div class="form-group col-md-6">
+				        <label for="latitude">緯度<span style="color: #f27474;">*</span></label>
+				        <input type="text" class="form-control" id="latitude" name="latitude" required readonly>
+				    </div>
 
 					<!-- 上下架狀況 -->
 					<div class="form-group col-md-6">
@@ -263,6 +277,23 @@ $(document).ready(function() {
             title: '已送出',
             showConfirmButton: false,
             timer: 1500
+        });
+    }
+    
+    
+    function geocode() {
+        var address = document.getElementById('address').value;
+        var geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({'address': address}, function(results, status) {
+            if (status === 'OK') {
+                var lat = results[0].geometry.location.lat();
+                var lng = results[0].geometry.location.lng();
+                document.getElementById('latitude').innerHTML = lat;
+                document.getElementById('longitude').innerHTML = lng;
+            } else {
+                alert('Geocode 不成功，原因: ' + status);
+            }
         });
     }
 </script>

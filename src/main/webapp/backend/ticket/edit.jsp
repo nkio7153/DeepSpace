@@ -113,16 +113,14 @@
 						</div>
 						<!-- 地址 -->
 						<div class="form-group col-md-6">
-							<label for="address">地址</label> <input type="text"
-								class="form-control" id="address" name="address" required
-								value="${ticket.address}">
+						    <label for="address">地址</label>
+						    <input type="text" class="form-control" id="address" name="address" required value="${ticket.address}" onchange="geocodeAddress()">
 						</div>
 
 						<!-- 經度 -->
 						<div class="form-group col-md-6">
-							<label for="longitude">經度</label> <input type="text"
-								class="form-control" id="longitude" name="longitude" required min="0"
-								value="${ticket.longitude}">
+						    <label for="longitude">經度</label>
+						    <input type="text" class="form-control" id="longitude" name="longitude" required value="${ticket.longitude}">
 						</div>
 
 						<!-- 緯度 -->
@@ -155,7 +153,25 @@
 	<script	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxM8Qw1Zvra1gPDfG5mwO-7FlPtXUoFns&libraries=places&callback=initAutocomplete" async defer></script>
+    <script>
+    function geocodeAddress() {
+        var address = document.getElementById('address').value;
+        var geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({'address': address}, function(results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+                var latitude = results[0].geometry.location.lat();
+                var longitude = results[0].geometry.location.lng();
+
+                document.getElementById('latitude').value = latitude;
+                document.getElementById('longitude').value = longitude;
+            } else {
+                alert('Geocode 不成功，原因: ' + status);
+            }
+        });
+    }
+        
     $(document).ready(function() {
         const ticketId = ${ticket.ticketId};
         var newImageCount = 0; // 初始化新圖片計數器

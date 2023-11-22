@@ -10,8 +10,7 @@
 <title>票券詳情</title>
 <jsp:include page="/indexpage/head.jsp" />
 
-<link rel="stylesheet"
-	href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 		
@@ -22,11 +21,6 @@
     cursor: pointer;
     font-size: 32px; 
 }
-/* 點擊愛心的顏色 */
-.favorite-active {
-    color: #e74c3c; }
-    
-
 /* 評價的星星樣式(實) */
 .gold-star {
 	color: gold;
@@ -78,8 +72,8 @@
 			<div class="col-12">
 				<nav aria-label="breadcrumb">
 					<ol class="breadcrumb view" style="padding: 10px;">
-						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/">首頁</a></li>
-						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/ticketproduct/list">票券列表</a></li>
+						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/" style="color: #9ba1a7;">首頁</a></li>
+						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/ticketproduct/list" style="color: #9ba1a7;">票券列表</a></li>
 						<li class="breadcrumb-item active" aria-current="page">${ticket.ticketName}</li>
 					</ol>
 				</nav>
@@ -109,7 +103,7 @@
             <div class="col-10 d-flex justify-content-between align-items-center">
                 <h3>${ticket.ticketName}</h3>
                 <i class="fa-heart favorite-icon ${isFavorite ? 'fas' : 'far'}" 
-                   id="favoriteIcon" style="cursor: pointer;" data-ticketId="${ticket.ticketId}"></i>
+                   id="favoriteIcon" style="cursor: pointer;color: #ff160094;" data-ticketId="${ticket.ticketId}"></i>
             </div>
             <div class="col-12 d-flex justify-content-between align-items-center">
                 <h6>${ticket.ticketType.typeName}&emsp;|&emsp;${ticket.city.cityName}</h6>
@@ -237,6 +231,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxM8Qw1Zvra1gPDfG5mwO-7FlPtXUoFns&callback=initMap"></script>
+
 <script>
 
 $(document).ready(function() {
@@ -345,29 +342,21 @@ console.log(quantity);
 });
 
 //地圖
-$(document).ready(function() {
-    // 初始化
-    function initMap(latitude, longitude) {
-        var map = L.map('map').setView([latitude, longitude], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-        L.marker([latitude, longitude]).addTo(map);
-    }
+function initMap() {
+    var latitude = ${ticket.latitude}; // 票券的緯度
+    var longitude = ${ticket.longitude}; // 票券的經度
 
-    <%if (request.getAttribute("ticket") != null) {%>
-        var ticketLatitude = ${ticket.latitude};
-        var ticketLongitude = ${ticket.longitude};
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 13,
+        center: {lat: latitude, lng: longitude}
+    });
 
-        if(!isNaN(ticketLatitude) && !isNaN(ticketLongitude)) {
-            initMap(ticketLatitude, ticketLongitude);
-        } else {
-            console.error('Invalid latitude or longitude for ticketVO.');
-        }
-    <%} else {%>
-        console.error('TicketVO not found in request.');
-    <%}%>
-});
+    var marker = new google.maps.Marker({
+        position: {lat: latitude, lng: longitude},
+        map: map
+    });
+}
+
 </script>
 
 

@@ -16,8 +16,38 @@
 <link rel="stylesheet"
 	href="<c:url value='/static/css/frontendlist.css'/>">
 <style>
+.myset {
+	min-height: 100vh;
+	margin-bottom: 50px;
+}
+
+.no-favorites {
+	text-align: center;
+	margin-top: 20px;
+}
+
 .myfa {
-    margin: auto;
+	margin: auto;
+}
+
+.display-4 {
+	font-size: 2.5rem;
+}
+
+.swal2-title {
+	font-size: 1em !important;
+}
+
+.swal2-icon {
+	font-size: 0.8em !important;
+}
+
+.swal2-cancel {
+	background-color: #f68c8c !important;
+}
+
+.swal2-confirm {
+	background-color: #74b3ef !important;
 }
 </style>
 </head>
@@ -26,25 +56,25 @@
 
 	<jsp:include page="/indexpage/header.jsp" />
 	<jsp:include page="/indexpage/headpic.jsp" />
-	
-	
-	<div class="container mt-5">
 
+
+	<div class="container mt-5 myset">
 		<div class="row">
-
 			<div class="col-md-9 myfa">
 				<div class="d-flex justify-content-between align-items-center mb-3">
-					<%-- 					<h3 class="mb-0">共收藏 ${totalTickets} 項票券</h3> --%>
-					<h3 class="mb-0">您的票券收藏</h3>
-					<form action="<%=request.getContextPath()%>/ticketcollection/list"
-						method="get">
-						<div class="col-md-16">
-							<div
-								class="d-flex justify-content-between align-items-center mb-3">
+					<c:choose>
+						<c:when test="${not empty resultSet}">
+							<h3 class="mb-0">您的票券收藏</h3>
+							<form
+								action="<%=request.getContextPath()%>/ticketcollection/list"
+								method="get">
+								<div class="col-md-16">
+									<div
+										class="d-flex justify-content-between align-items-center mb-3">
 
-							</div>
-						</div>
-					</form>
+									</div>
+								</div>
+							</form>
 				</div>
 				<!-- 票券列表 -->
 				<div class="ticket-list">
@@ -59,7 +89,7 @@
 								<div class="col-md-8">
 									<a
 										href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=${ticketCollection.ticketVO.ticketId}"
-										class="no-underline"> <!-- 整張卡片點擊 -->
+										class="no-underline">
 
 										<div class="card-body">
 											<h5 class="card-title">${ticketCollection.ticketVO.ticketName}</h5>
@@ -107,13 +137,19 @@
 								</div>
 							</div>
 							<!-- 愛心 -->
-							<div class="favorite-icon-container">
-								<i class="fas fa-heart favorite-icon"
+							<div class="favorite-icon-container" style="color: #ff160094;">
+								<i class="fas fa-heart favorite-icon" style="color: #ff160094;"
 									data-ticketId="${ticketCollection.ticketVO.ticketId}"></i>
 							</div>
 						</div>
-
 					</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<div>
+							<h3 class="mb-0">您目前無任何收藏票券</h3>
+						</div>
+					</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 		</div>
@@ -123,7 +159,7 @@
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-		
+
 	<script>
 
 //愛心取消收藏
@@ -134,8 +170,7 @@ $(document).ready(function() {
         var ticketId = iconElement.data('ticketid'); 
 
         Swal.fire({
-            title: "確定移除收藏嗎Q_Q ",
-//             text: "You won't be able to revert this!",
+            title: "確定移除收藏嗎",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -152,7 +187,6 @@ $(document).ready(function() {
                         dataType: 'json', 
                         success: function(response) {
                             if (response.success) {
-                                Swal.fire('移除成功', '移除成功Q_Q', 'success');
                             } else {
                                 Swal.fire('移除失敗', '好像哪裡出錯!!!抱歉"', 'error');
                             }
@@ -165,7 +199,6 @@ $(document).ready(function() {
                             iconElement.closest('.card').remove();
                         }
                     });
-//                     iconElement.removeClass('break-heart-animation');
                 });
             }
         });
