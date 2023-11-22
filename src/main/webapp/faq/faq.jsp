@@ -18,12 +18,6 @@ request.setAttribute("faqs", faqs);
     <!-- 引入jQuery -->
 <!--     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
     <style>
-        body {
-            font-family: 'Arial', sans-serif; /* 使用現代化的字體 */
-            background-color: #f4f4f4; /* 設置背景顏色 */
-            padding: 20px;
-        }
-
         h2 {
             color: #333; /* 標題顏色 */
         }

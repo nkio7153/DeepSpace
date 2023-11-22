@@ -1,6 +1,7 @@
 package com.depthspace.keywordqa.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -10,12 +11,6 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import com.depthspace.account.model.account.AccountVO;
-import com.depthspace.account.model.account.dao.AccountDAO;
-import com.depthspace.account.model.account.dao.AccountDAOImpl;
-import com.depthspace.column.dao.ColumnArticlesDAO;
-import com.depthspace.column.dao.ColumnArticlesDAOImpl;
-import com.depthspace.column.model.ColumnArticlesVO;
 import com.depthspace.keywordqa.model.KeywordQaDAO;
 import com.depthspace.keywordqa.model.KeywordQaDAOImpl;
 import com.depthspace.keywordqa.model.KeywordQaVO;
@@ -49,14 +44,12 @@ public class KeywordQaServiceImpl implements KeywordQaService {
 
 	@Override
 	public KeywordQaVO getKeywordQaiBySerialId(Integer serialId) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.getById(serialId);
 	}
 
 	@Override
 	public long getTotal() {
-		// TODO Auto-generated method stub
-		return 0;
+		return dao.getTotal();
 	}
 
 	@Override
@@ -100,15 +93,14 @@ public class KeywordQaServiceImpl implements KeywordQaService {
 	}
 
 	@Override
-	public List<KeywordQaVO> getAllAdmins() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public List<KeywordQaVO> getAllSortById(String sort) {
-		// TODO Auto-generated method stub
-		return null;
+		List<KeywordQaVO> allArtis = this.getAllKeywordQa();
+		if("desc".equalsIgnoreCase(sort)) {
+			allArtis.sort((a1, a2) -> a2.getSerialId().compareTo(a1.getSerialId()));			
+		} else {
+			allArtis.sort(Comparator.comparing(KeywordQaVO::getSerialId)); //StreamAPI排序方法 根據屬性，若為Integer從小至大(asc)
+		}
+		return allArtis;
 	}
 
 	@Override
