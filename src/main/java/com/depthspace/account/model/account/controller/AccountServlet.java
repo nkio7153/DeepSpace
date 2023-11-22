@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson2.JSON;
@@ -82,12 +83,10 @@ public class AccountServlet extends HttpServlet {
 
 	private void doMemList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("application/json; charset=UTF-8");
-		Integer memId;
-		try {
-			memId = Integer.valueOf(req.getParameter("memId"));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
+		Integer memId = null;
+		HttpSession session = req.getSession(false);
+		if (session.getAttribute("memId") != null) {
+			memId = (Integer) session.getAttribute("memId");
 		}
 		List<AccountVO> list = accountService.getbyMemId(memId);
 		req.setAttribute("list", list);

@@ -132,6 +132,7 @@
                             <ul class="dropdown-menu" aria-labelledby="mem">
                                 <li><a class="dropdown-item">${authenticatedMem.memName}</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mem/memList">會員資料</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/account.do?action=doMemList">我的分帳表</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList">我的票券</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ticketcollection/list">票券收藏</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a></li>

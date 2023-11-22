@@ -22,7 +22,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>AccountServlet</servlet-name>
-		<url-pattern>/account/account.do</url-pattern>
+		<url-pattern>/account.do</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
