@@ -22,8 +22,7 @@
 </head>
 
 <body>
-
-	<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
 	<div class="container-fluid my-0">
 	<div class="row">
 	  
@@ -39,7 +38,18 @@
 
 	<div class="container mt-5">
 		<h5>修改景點內容</h5>
-		<form action="<%=request.getContextPath()%>/attractionsEnd/add2" method="post" enctype="multipart/form-data">
+		<%-- 錯誤表列 --%>
+		<c:if test="${not empty errorMsgs}">
+			<font style="color:red">請修正以下錯誤:</font>
+			<ul>
+				<c:forEach var="message" items="${errorMsgs}">
+					<li style="color:red">${message}</li>
+				</c:forEach>
+			</ul>
+		</c:if>
+		
+		
+		<form action="<%=request.getContextPath()%>/attractionsEnd/edit2" method="post" enctype="multipart/form-data">
 			<div class="row">
 				
 				<div class="form-group col-md-6">
@@ -47,7 +57,9 @@
 				    <select name="attractionsTypesId" id="attractionsTypesId" class="form-control" required>
 				        <option value="">請選擇景點類型</option>
 				        <c:forEach var="typeItem" items="${attractionsTypes}">
-				            <option value="${typeItem.attractionsTypeId}">${typeItem.typeName}</option>
+				            <option value="${typeItem.attractionsTypeId}"
+				            	${typeItem.attractionsTypeId == attrvo.attractionsTypeId.attractionsTypeId ? 'selected' : ''}>
+				            ${typeItem.typeName}</option>
 				        </c:forEach>
 				    </select>
 				</div>
@@ -56,7 +68,7 @@
 				<div class="form-group col-md-6">
 					<label for="attractionsName">景點名稱</label> 
 <!-- 					<input type="text" id="memAcc" name="memAcc" value="" required> -->
-					<input type="text" class="form-control" id="attractionsName" name="attractionsName" value="" required>
+					<input type="text" class="form-control" id="attractionsName" name="attractionsName" value="${attrvo.attractionsName}" required>
 				</div>
 				<!-- 地址 -->
 				<div class="form-group col-md-6" style="display: flex;">
@@ -64,37 +76,43 @@
 				    <select name="city" id="city" class="form-control" required>
 				        <option value="">請選縣市</option>
 				        <c:forEach var="typeItem" items="${city}">
-				            <option value="${typeItem.cityId}">${typeItem.cityName}</option>
+				            <option value="${typeItem.cityId}"
+				            	${typeItem.cityId == cvo.cityId ? 'selected' : ''}
+				            >${typeItem.cityName}</option>
 				        </c:forEach>
 				    </select>
 				    
 				    <!-- 區域 -->
 				    <select name="area" id="area" class="form-control" required>
 				       
-<%-- 				        <c:forEach var="typeItem" items="${area}"> --%>
-<%-- 				            <option value="${typeItem.areaId}">${typeItem.areaName}</option> --%>
-<%-- 				        </c:forEach> --%>
+				        <c:forEach var="typeItem" items="${area}">
+				            <option value="${typeItem.areaId}" 
+				            	${typeItem.areaId == attrvo.areaId ? 'selected' : ''}>
+				            ${typeItem.areaName}</option>
+				        </c:forEach>
 
 				    </select>
 				    
 				    <label for="address">地址</label>
-				    <input type="text" class="form-control" id="address" name="address" required>
+				    <input type="text" class="form-control" id="address" name="address" value="${newAddress}" required>
 				</div>
 				<!-- 圖片 -->
 				<div class="form-group col-md-6">
 					<label for="attractionsImg">圖片</label> <input type="file"
 						class="form-control-file" id="attractionsImg" name="attractionsImg" onchange="previewImage(event)">
 				</div>
+				
 
-<!-- 				<div class="form-group col-md-6"> -->
-<!-- 					<label>圖片預覽</label> -->
-<!-- 					<div id="imagePreview"></div> -->
-<!-- 				</div> -->
+				<div class="form-group col-md-6">
+					<label>圖片預覽</label> <img id="imagePreview"
+						src="<%=request.getContextPath()%>/attractionsImage?attractionsId=${attrvo.attractionsId}"
+						alt="圖片預覽" style="max-width: 100%; max-height: 300px;" />
+				</div>
 				<!-- 介紹 -->
 				<div class="form-group col-md-12">
 					<label for="description">描述</label>
 					<textarea class="form-control" id="description" name="description"
-						rows="4" required></textarea>
+						rows="4" required>${attrvo.description}</textarea>
 					<script>
 						CKEDITOR.replace('description');
 					</script>
@@ -112,11 +130,25 @@
 	</div>		
 </div>
 <%--  include end --%>
+<script>
+	function previewImage(event) {
+		var file = event.target.files[0];
+		if (file) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				var imagePreview = document.getElementById('imagePreview');
+				imagePreview.src = e.target.result;
+				imagePreview.style.display = 'block'; 
+			}
+			reader.readAsDataURL(file);
+		}
+	}
+</script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
 
-<script src="${pageContext.request.contextPath}/backend/attractions/js/add.js"></script>
+<%-- <script src="${pageContext.request.contextPath}/backend/attractions/js/add.js"></script> --%>
 </body>
 </html>

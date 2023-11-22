@@ -7,26 +7,25 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-@ServerEndpoint("/notifications")
+@ServerEndpoint("/notificationsws")
 public class NotificationsWS {
 
 	private static Set<Session> sessions = Collections.synchronizedSet(new HashSet<>());
 
     @OnOpen
     public void onOpen(Session session) {
-    	System.out.println("WSOPENNNNNNNNNNN" + session.getId());
         sessions.add(session);
-        sendNotification("TESTTTTTTTTTTTT消息");
     }
 
     @OnMessage
     public void onMessage(String message, Session session) {
-    	 sendNotification("從前端收到: " + message);
+    	 sendNotification(message);
+
     }
 
     @OnClose
     public void onClose(Session session) {
-    	System.out.println("WSCOLSEEEEEEEE" + session.getId());
+    	System.out.println("WSCOLSE" + session.getId());
         sessions.remove(session);
     }
 
@@ -47,5 +46,9 @@ public class NotificationsWS {
                 }
             }
         }
+    }
+
+    public static void sendNotification(Integer unreadCount) {
+        String message = String.valueOf(unreadCount);
     }
 }

@@ -59,9 +59,6 @@ public class AdminServlet extends HttpServlet {
 	        return 6; // 返回一個特定的錯誤碼表示信箱格式錯誤
 	    }
 	    
-	    
-	    
-//		System.out.println("adminAcc=" + adminAcc);
 		if(ms.findByAdminAcc(adminAcc) == null) {
 			System.out.println("沒有此帳號");
 			return 1;
@@ -72,16 +69,22 @@ public class AdminServlet extends HttpServlet {
 	    		System.out.println("2");
 	    	}  
 	    	
-		if (adminvo != null && BCrypt.checkpw(password, adminvo.getAdminPwd())) {
-	        // 檢查帳號狀態
-	        if (adminvo.getAdminStatus() == 2) {
-	            return 5; // 帳號狀態問題
+		 // 新增的密碼鹽值格式檢查
+	    if (adminvo != null && adminvo.getAdminPwd() != null && adminvo.getAdminPwd().startsWith("$2a$")) {
+	        if (BCrypt.checkpw(password, adminvo.getAdminPwd())) {
+	            // 檢查帳號狀態
+	            if (adminvo.getAdminStatus() == 2) {
+	                return 5; // 帳號狀態問題
+	            } else {
+	                return 3; // 登入成功
+	            }
 	        } else {
-	            return 3; // 登入成功
+	            System.out.println("密碼錯誤");
+	            return 4; // 密碼錯誤
 	        }
 	    } else {
-	        System.out.println("密碼錯誤");
-	        return 4; // 密碼錯誤
+	        System.out.println("儲存的密碼鹽值格式不正確");
+	        return 7; // 或其他錯誤碼
 	    }
 	}
 		
@@ -196,8 +199,7 @@ public class AdminServlet extends HttpServlet {
 			if(admin == null) {
 				String URL = req.getContextPath() + "/admin/forgetPassword.jsp?error=true";
 				resp.sendRedirect(URL);
-			} else
-				if(admin.getAdminAcc().equals(adminAcc)){
+			} else if(admin.getAdminAcc().equals(adminAcc)){
 				String to = admin.getAdminAcc();
 				String subject = "DepthSpace會員密碼通知函";
 				String ch_name = admin.getAdminName();
@@ -208,6 +210,14 @@ public class AdminServlet extends HttpServlet {
 					int b =  (int)(Math.random()*62);
 					passRandom = passRandom + random.charAt(b);
 				}
+				
+				 // 將臨時密碼加密
+		        String hashedPassword = BCrypt.hashpw(passRandom, BCrypt.gensalt());
+
+		        // 更新資料庫中的密碼
+		        admin.setAdminPwd(hashedPassword);
+		        hbms.update(admin); // 假設這是更新資料庫的方法
+			
 //				System.out.println("驗證碼為:"+ passRandom);
 //				存到Redis裡面
 				Jedis jedis = new Jedis("localhost", 6379);
@@ -443,17 +453,17 @@ public class AdminServlet extends HttpServlet {
 			st3 = req.getParameter("adminAcc");
 			if (st3 == null || st3.trim().length() == 0) {
 				errorMsgs.add("帳號請勿空白");
-			}else {
-			    // 使用 bcrypt 進行密碼加密
-			    String hashedPassword = BCrypt.hashpw(st3, BCrypt.gensalt());
-			    st3 = hashedPassword;
 			}
 
 			st4 = req.getParameter("adminPwd");
-			if (st4 == null || st4.trim().length() == 0) {
-				errorMsgs.add("密碼請勿空白");
-			}
-		
+	        if (st4 != null && !st4.trim().isEmpty()) {
+	            // 使用 bcrypt 進行密碼加密
+	            String hashedPassword = BCrypt.hashpw(st4, BCrypt.gensalt());
+	            st4 = hashedPassword;
+	        } else {
+	            errorMsgs.add("密碼請勿空白");
+	        }
+	        
 			String adminStatus = req.getParameter("adminStatus");
 			if ("正常使用中".equals(adminStatus)) {
 				st5 = 1;
@@ -624,6 +634,8 @@ public class AdminServlet extends HttpServlet {
 	    } else if (loginResult == 5) {
 	        resp.sendRedirect(req.getContextPath() + "/admin/login.jsp?error=nostatus&requestURI=" + loginLocation);
 	    } else if (loginResult == 6) {
+	    	resp.sendRedirect(req.getContextPath() + "/admin/login.jsp?error=nostatus&requestURI=" + loginLocation);
+	    } else if (loginResult == 7) {
 	    	resp.sendRedirect(req.getContextPath() + "/admin/login.jsp?error=nostatus&requestURI=" + loginLocation);
 	    }
 	}

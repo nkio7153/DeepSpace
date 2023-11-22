@@ -9,7 +9,7 @@ public interface AreaDAO_Interface {
 	 public void update(AreaVO AreaVO);
 	 public void delete(Integer areaId);
 	 public AreaVO findByPrimaryKey(Integer areaId);
-	 public List<AreaVO> getArea(Integer cityId);
+	 public AreaVO getOneCity(Integer areaId);
 	 public List<AreaVO> getAllArea(Integer cityId);
 	 List<AreaVO> getAll();
 }

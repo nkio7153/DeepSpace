@@ -1,8 +1,6 @@
 package com.depthspace.notifications.controller;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -13,13 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.depthspace.column.model.ColumnArticlesVO;
-import com.depthspace.member.model.MemVO;
 import com.depthspace.notifications.model.NotificationsVO;
 import com.depthspace.notifications.service.NotificationsService;
 import com.depthspace.notifications.service.NotificationsServiceImpl;
-
-import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 
 @WebServlet("/notifications/*")
 public class NotificationsServlet extends HttpServlet {
@@ -96,6 +90,7 @@ public class NotificationsServlet extends HttpServlet {
 		}
 
 	    Integer unreadCount = notificationsService.getUnreadNotificationsCount(memId);
+	    NotificationsWS.sendNotification(unreadCount);
 
 	    res.setContentType("application/json");
 	    res.setCharacterEncoding("UTF-8");

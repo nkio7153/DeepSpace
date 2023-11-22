@@ -42,6 +42,10 @@ public class CityDAOImpl implements CityDAO_Interface{
 	public CityVO findByPrimaryKey(Integer cityId) {
 		return getSession().get(CityVO.class, cityId);
 	}
+//	@Override
+//	public CityVO getAreaId(Integer cityId) {
+//		return getSession().get(CityVO.class, cityId);
+//	}
 
 	@Override
 	public List<CityVO> getAll() {

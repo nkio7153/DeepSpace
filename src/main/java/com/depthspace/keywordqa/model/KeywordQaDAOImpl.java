@@ -6,132 +6,64 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+import com.depthspace.account.model.account.AccountVO;
+import com.depthspace.column.model.ColumnArticlesVO;
 import com.depthspace.utils.DBUtil;
 
 public class KeywordQaDAOImpl implements KeywordQaDAO {
+	public static final int PAGE_MAX_RESULT = 10;
+	private SessionFactory factory;
 
-	private static final String INSERT_STMT = "INSERT INTO KEYWORD_QA values (?, ?, ?)";
-	private static final String UPDATE_STMT = "UPDATE KEYWORD_QA SET KW_TYPES = ?, KW_ANS = ? WHERE SERIAL_ID = ?";
-	private static final String DELETE_STMT = "DELETE FROM KEYWORD_QA WHERE SERIAL_ID = ?";
-	private static final String FIND_BY_SERIALID = "SELECT * FROM KEYWORD_QA WHERE SERIAL_ID = ?";
-	private static final String GET_ALL = "SELECT * FROM KEYWORD_QA";
+	public KeywordQaDAOImpl(SessionFactory factory) {
+		this.factory = factory;
+	}
 
+	private Session getSession() {
+		return factory.getCurrentSession();
+	}
+	
 	@Override
-	public void insert(KeywordQaVO keywordqaVO) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try {
-			conn = DBUtil.getConnection();
-			pstmt = conn.prepareStatement(INSERT_STMT);
-			pstmt.setInt(1, keywordqaVO.getSerialId());
-			pstmt.setString(2, keywordqaVO.getKwTypes());
-			pstmt.setString(3, keywordqaVO.getKwAns());
-
-			pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			DBUtil.close(conn, pstmt, null);
-		}
+	public void insert(KeywordQaVO keywordQaVO) {
+		getSession().save(keywordQaVO);
 	}
 
 	@Override
-	public void update(KeywordQaVO keywordqaVO) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-
-		try {
-			conn = DBUtil.getConnection();
-			pstmt = conn.prepareStatement(UPDATE_STMT);
-			pstmt.setString(1, keywordqaVO.getKwTypes());
-			pstmt.setString(2, keywordqaVO.getKwAns());
-			pstmt.setInt(3, keywordqaVO.getSerialId());
-
-			pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			DBUtil.close(conn, pstmt, null);
-		}
+	public void update(KeywordQaVO keywordQaVO) {
+		getSession().update(keywordQaVO);		
 	}
 
 	@Override
-	public void delete(Integer serialId) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-
-		try {
-			conn = DBUtil.getConnection();
-			pstmt = conn.prepareStatement(DELETE_STMT);
-			pstmt.setInt(1, serialId);
-
-			pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			DBUtil.close(conn, pstmt, null);
-		}
+	public void delete(Integer id) {
+		KeywordQaVO keywordQa = getSession().get(KeywordQaVO.class, id);
+		getSession().delete(keywordQa);
 	}
 
 	@Override
-	public KeywordQaVO findByPrimaryKey(Integer serialId) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		KeywordQaVO keywordqaVO = null;
+	public long getTotal() {
+		return getSession().createQuery("select count(*) from KeywordQaVO", Long.class).uniqueResult();
+	}
 
-		try {
-			con = DBUtil.getConnection();
-			pstmt = con.prepareStatement(FIND_BY_SERIALID);
-			pstmt.setInt(1, serialId);
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				keywordqaVO = new KeywordQaVO();
-				keywordqaVO.setSerialId(rs.getInt("SERIAL_ID"));
-				keywordqaVO.setKwTypes(rs.getString("KW_TYPES"));
-				keywordqaVO.setKwAns(rs.getString("KW_ANS"));
-			}
-
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			DBUtil.close(con, pstmt, rs);
-		}
-
-		return keywordqaVO;
+	@Override
+	public List<KeywordQaVO> getAll(int currentPage) {
+		int first = (currentPage - 1) * PAGE_MAX_RESULT; // 計算當前頁面第一條索引
+		return getSession().createQuery("from KeywordQaVO", KeywordQaVO.class).setFirstResult(first)
+				.setMaxResults(PAGE_MAX_RESULT) // 每頁紀錄數量
+				.list(); // 查出的資料存於此列表
 	}
 
 	@Override
 	public List<KeywordQaVO> getAll() {
-		ArrayList<KeywordQaVO> keywordqas = new ArrayList<>();
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-			con = DBUtil.getConnection();
-			pstmt = con.prepareStatement(GET_ALL);
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				KeywordQaVO keywordqa = new KeywordQaVO();
-				keywordqa.setSerialId(rs.getInt("SERIAL_ID"));
-				keywordqa.setKwTypes(rs.getString("KW_TYPES"));
-				keywordqa.setKwAns(rs.getString("KW_ANS"));
-				keywordqas.add(keywordqa);
-			}
-
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			DBUtil.close(con, pstmt, rs);
-		}
-
-		return keywordqas;
+		return getSession().createQuery("from KeywordQaVO", KeywordQaVO.class).list();
 	}
+
+	@Override
+	public KeywordQaVO getById(Integer serialId) {
+		return getSession().get(KeywordQaVO.class, serialId);
+	}
+
 }
