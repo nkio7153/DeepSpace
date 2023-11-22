@@ -1,11 +1,22 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.depthspace.faqtypes.model.service.*"%>
+<%@ page import="com.depthspace.faqtypes.model.controller.*"%>
+<%@ page import="com.depthspace.faqtypes.model.model.*"%>
 
+<%
+    FaqTypesVO faqTypesVO = (FaqTypesVO) request.getAttribute("faqTypesVO");
+%>
+
+<!DOCTYPE html>
 <html>
 <head>
-    <title>FaqTypes: Home</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>FaqTypes資料新增 - addFaq.jsp</title>
 <%--  include head.jsp--%>
   <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
+  <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
 </head>
 <body>
 <%--include header.jsp--%>
@@ -19,77 +30,37 @@
 
     <div class="col-lg-10 g-2 transparent rounded mt-1">
 <%--      放入自己body裡的代碼--%>
-      <table id="table-1">
-   <tr><td><h3>FaqTypes: Home</h3></td></tr>
-</table>
+      <div class="col-lg-10 g-2 my-0">
+                <h3>FaqTypes資料新增 - addFaq.jsp</h3>
+                <h4><a href="select_page.jsp" class="btn btn-primary">回首頁</a></h4>
 
-<p>FaqTypes: Home</p>
+                <h3>FaqTypes資料新增:</h3>
 
-<h3>FaqTypes資料查詢:</h3>
-	
-<%-- 錯誤表列 --%>
-<c:if test="${not empty errorMsgs}">
-	<font style="color:red">請修正以下錯誤:</font>
-	<ul>
-	    <c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
+                <c:if test="${not empty errorMsgs}">
+                    <div class="alert alert-danger">
+                        <strong>請修正以下錯誤:</strong>
+                        <ul>
+                            <c:forEach var="message" items="${errorMsgs}">
+                                <li>${message}</li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </c:if>
 
-<ul>
-  <li><a href='listAllFaq.jsp'>列表</a> all FaqTypes.  <br><br></li>
-  
-  
-  <li>
-    <FORM METHOD="post" ACTION="faqTypes.do" >
-        <b>輸入常見問題類型編號 :</b>
-        <input type="text" name="faqNo">
-        <input type="hidden" name="action" value="getOne_For_Display">
-        <input type="submit" value="送出">
-    </FORM>
-  </li>
-
-  <jsp:useBean id="faqSvc" scope="page" class="com.depthspace.faqtypes.model.service.FaqTypesService" />
-   
-  <li>
-     <FORM METHOD="post" ACTION="faqTypes.do" >
-       <b>選擇常見問題類型編號:</b>
-       <select size="1" name="faqNo">
-         <c:forEach var="faqTypesVO" items="${faqSvc.all}" > 
-          <option value="${faqTypesVO.faqNo}">${faqTypesVO.faqNo}
-         </c:forEach>   
-       </select>
-       <input type="hidden" name="action" value="getOne_For_Display">
-       <input type="submit" value="送出">
-    </FORM>
-  </li>
-  
-  <li>
-     <FORM METHOD="post" ACTION="faqTypes.do" >
-       <b>選擇問題類型:</b>
-       <select size="1" name="faqNo">
-         <c:forEach var="faqTypesVO" items="${faqSvc.all}" > 
-          <option value="${faqTypesVO.faqNo}">${faqTypesVO.QTypes}
-         </c:forEach>   
-       </select>
-       <input type="hidden" name="action" value="getOne_For_Display">
-       <input type="submit" value="送出">
-     </FORM>
-  </li>
-</ul>
-
-
-<h3>FaqTypes管理</h3>
-
-<ul>
-  <li><a href='addFaq.jsp'>新增</a> a new FaqTypes.</li>
-</ul>
-
+                <form method="post" action="faqTypes.do" name="form1" class="form-group">
+                    <label for="qTypes">問題類型:</label>
+                    <input type="text" class="form-control" name="qTypes" value="<%= (faqTypesVO==null)? "1" : faqTypesVO.getQTypes()%>" size="45">
+                    <input type="hidden" name="action" value="insert">
+                    <button type="submit" class="btn btn-primary mt-2">送出新增</button>
+                </form>
+            </div>
 
     </div>
   </div>
 </div>
 
+<!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
