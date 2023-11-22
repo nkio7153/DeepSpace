@@ -107,8 +107,10 @@ h5{
 		$this.find('.notification-status').text('已讀'); // 更新未讀已讀
 		$.post('${pageContext.request.contextPath}/notifications/toBeRead',
 				{noteId : noteId}).done(function(response) {
-				if (response.status === 'success') {
-					console.log("狀態更新為已讀");
+		            if (response.status === 'success') {
+		                console.log("狀態更新為已讀");
+		                // 這裡觸發 WebSocket 消息發送
+		                ws.send(JSON.stringify({action: "updateUnreadCount"}));
 				}
 		});
 	}

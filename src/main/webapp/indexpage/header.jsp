@@ -163,14 +163,14 @@
     </div>
 <script>
     if ("WebSocket" in window) {
-        var ws = new WebSocket("ws://localhost:8081/DepthSpace/notifications");
+        var ws = new WebSocket("ws://localhost:8081/DepthSpace/notificationsws");  
+        fetchUnreadNotifications();
 
         ws.onopen = function() {
-            fetchUnreadNotifications();
         };
 
         ws.onmessage = function(event) {
-            fetchUnreadNotifications();
+        fetchUnreadNotifications();
         };
 
         window.onbeforeunload = function(event) {
@@ -180,7 +180,7 @@
         ws.onerror = function(event) {
             console.log("WebSocketerrorerrorerrorerror: ", event);
         };
-
+    }
         function fetchUnreadNotifications() {
             var url = "<%=request.getContextPath()%>/notifications/countUnread";
             fetch(url)
@@ -193,14 +193,14 @@
             })
             .then(data => {
                 if (data.error) {
-                    console.error('Error: ', data.error);
+//                     console.error('Error: ', data.error);
                 } else {
                     document.querySelector('.notification-bell .badge').textContent = data.unreadCount;
                 }
             })
             .catch(error => console.error('Error fetching notifications:', error));
     }
-    }
+        
 </script>
     
 </header>
