@@ -403,8 +403,8 @@ h4.destination {
 <!--               </div> -->
 <!--             </div> -->
 <!--           </div> -->
-        </div>
-      </div>
+<!--         </div> -->
+<!--       </div> -->
     </section>
     <!-- destinations -->
 <jsp:include page="footer.jsp" />

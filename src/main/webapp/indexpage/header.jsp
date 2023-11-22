@@ -41,6 +41,61 @@
 
         })
         </c:if>
+        
+        
+        if ("WebSocket" in window) {
+            var loc = window.location;
+            var wsUri;
+            var isS = loc.protocol === 'https:'; //檢查https與否
+            if (isS) {
+                wsUri = "wss://";
+            } else {
+                wsUri = "ws://";
+            }
+            wsUri += loc.host;
+            wsUri += "<%=request.getContextPath()%>/notificationsws";
+            
+            var ws = new WebSocket(wsUri);
+            
+            fetchUnreadNotifications();
+
+            ws.onopen = function() {
+             console.log('ws OPEN');
+            };
+
+            ws.onmessage = function(event) {
+            fetchUnreadNotifications();
+            console.log('ws onmessage');
+            };
+
+            window.onbeforeunload = function(event) {
+                ws.close();
+                console.log('ws close');
+            };
+
+            ws.onerror = function(event) {
+                console.log("WebSocketerro: ", event);
+            };
+        }
+            function fetchUnreadNotifications() {
+                var url = "<%=request.getContextPath()%>/notifications/countUnread";
+                fetch(url)
+                .then(response => {
+                    if (response.ok && response.headers.get("content-type").includes("application/json")) {
+                        return response.json();
+                    } else {
+                        throw new Error('不是有效的 JSON');
+                    }
+                })
+                .then(data => {
+                    if (data.error) {
+//                         console.error('Error: ', data.error);
+                    } else {
+                        document.querySelector('.notification-bell .badge').textContent = data.unreadCount;
+                    }
+                })
+                .catch(error => console.error('Error fetching notifications:', error));
+        }
     </script>
     
    <style>
@@ -124,8 +179,8 @@
                                 景點
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="trip">
-                                <li><a class="dropdown-item" href="">景點瀏覽</a></li>
-                                <li><a class="dropdown-item" href="">我的行程</a></li>                               
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/attr/list">景點瀏覽</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/tr/tourList">我的行程</a></li>                               
                             </ul>
                         </li>
                        	<c:if test="${sessionScope.memId == null}">
@@ -135,14 +190,15 @@
                         </c:if>
                         <c:if test="${sessionScope.memId != null}">
                         <li class="nav-item dropdown">
-                            <a class="booking" href="#" id="mem" role="button" data-bs-toggle="dropdown" aria-expanded="false">會員</a>
+                            <a class="booking" href="#" id="mem" role="button" data-bs-toggle="dropdown" aria-expanded="false">${authenticatedMem.memName}</a>
                             <ul class="dropdown-menu" aria-labelledby="mem">
-                                <li><a class="dropdown-item">${authenticatedMem.memName}</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mem/memList">會員資料</a></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/account.do?action=doMemList">我的分帳表</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList">我的票券</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ticketcollection/list">票券收藏</a></li>
+                                <li><a class="dropdown-item" href="">我的訂位</a></li>
+                                <li><a class="dropdown-item" href="">餐廳收藏</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=doArtiCollectList">文章收藏</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mem/logout" name="check">登出</a></li>
                             </ul>
                         </li>
