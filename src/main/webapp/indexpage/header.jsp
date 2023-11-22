@@ -18,14 +18,12 @@
 		}
         <c:if test="${sessionScope.memId != null}">
         $(document).ready(function(){
-            console.log("進入此方法")
             let cartNum=$("#cartNum");
             fetch("${pageContext.request.contextPath}/tsc/getCartNum")
             .then(function(response){
                     return response.text();
                 })
                     .then(function(data){
-                        console.log(data);
                         cartNum.text(data)
                         cartNum.css("background-color","red");
                     })
