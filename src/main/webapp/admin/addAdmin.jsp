@@ -10,6 +10,8 @@
       <style>
         label.hidden {
             display: none; /* 或者使用 visibility: hidden; */
+        } .error {
+            color: red;
         }
     </style>
     <script>
@@ -22,6 +24,29 @@
         }
         document.getElementById('emailError').style.display = 'none';
         return true;
+    }
+    
+    function checkAccount() {
+        var adminAcc = document.getElementById('adminAcc').value;
+        if (adminAcc.length < 16 || adminAcc.length > 40) {
+            document.getElementById('accountError').innerText = '帳號長度必須在 6 到 30 個字元之間';
+            document.getElementById('accountError').style.display = 'block';
+            return;
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '${pageContext.request.contextPath}/ad/checkAccount', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                if (xhr.responseText === 'false') {
+                    document.getElementById('accountError').innerText = '此帳號已存在';
+                    document.getElementById('accountError').style.display = 'block';
+                } else {
+                    document.getElementById('accountError').style.display = 'none';
+                }
+            }
+        };
+        xhr.send('adminAcc=' + encodeURIComponent(adminAcc));
     }
     </script>
 </head>
@@ -38,9 +63,10 @@
             </div>
         </c:if>
      
-        <label for="adminAcc">帳號:</label>
-        <input type="text" id="adminAcc" name="adminAcc" value="" required><br><br>
-        
+         <label for="adminAcc">帳號:</label>
+        <input type="text" id="adminAcc" name="adminAcc" value="" required onblur="checkAccount()"><br>
+        <span id="accountError" class="error" style="display:none;"></span><br>
+
         <label for="adminPwd">密碼:</label>
         <input type="password" id="adminPwd" name="adminPwd" value="" required><br><br>
         
