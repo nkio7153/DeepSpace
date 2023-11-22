@@ -3,25 +3,30 @@ package com.depthspace.forum.model.articlereport.sevice;
 import java.util.List;
 
 import com.depthspace.forum.model.articlereport.ArticleReportVO;
+import com.depthspace.forum.model.articlereport.dao.ArticleReportDAO;
+import com.depthspace.forum.model.articlereport.dao.ArticleReportDAOImpl;
+import com.depthspace.utils.HibernateUtil;
 
 public class ArticleReportServiceImpl implements ArticleReportService{
-
+	private ArticleReportDAO dao;
+	
+	public ArticleReportServiceImpl() {
+		dao = new ArticleReportDAOImpl(HibernateUtil.getSessionFactory());
+	}
+	
 	@Override
 	public int insert(ArticleReportVO tod) {
-		// TODO Auto-generated method stub
-		return 0;
+		return dao.insert(tod);
 	}
 
 	@Override
 	public int update(ArticleReportVO tod) {
-		// TODO Auto-generated method stub
-		return 0;
+		return dao.update(tod);
 	}
 
 	@Override
 	public List<ArticleReportVO> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.getAll();	
 	}
 
 }

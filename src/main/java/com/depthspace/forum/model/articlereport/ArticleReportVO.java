@@ -28,14 +28,14 @@ public class ArticleReportVO implements Serializable {
 	@Column(name = "REPORT_TIME")
 	private Timestamp reportTime;
 	@Column(name = "REPORT_STATUS")
-	private Integer reportStatus;
+	private byte reportStatus;
 
 	public ArticleReportVO() {
 
 	}
 
 	public ArticleReportVO(Integer articleReportId, Integer articleId, Integer reportId, Integer adminId,
-			String reportContent, Timestamp reportTime, Integer reportStatus) {
+			String reportContent, Timestamp reportTime, byte reportStatus) {
 
 		this.articleReportId = articleReportId;
 		this.articleId = articleId;
@@ -94,11 +94,11 @@ public class ArticleReportVO implements Serializable {
 		this.reportTime = reportTime;
 	}
 
-	public Integer getReportStatus() {
+	public byte getReportStatus() {
 		return reportStatus;
 	}
 
-	public void setReportStatus(Integer reportStatus) {
+	public void setReportStatus(byte reportStatus) {
 		this.reportStatus = reportStatus;
 	}
 
