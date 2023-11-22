@@ -6,26 +6,6 @@
     <title>FaqTypes: Home</title>
 <%--  include head.jsp--%>
   <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
-<style>
-  table#table-1 {
-	width: 450px;
-	background-color: #CCCCFF;
-	margin-top: 5px;
-	margin-bottom: 10px;
-    border: 3px ridge Gray;
-    height: 80px;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
 </head>
 <body>
 <%--include header.jsp--%>
@@ -33,14 +13,14 @@
 <div class="container-fluid my-0">
   <div class="row">
 <%--    側邊欄--%>
-    <div class="col-lg-2 g-3 my-0">
+    <div class="col-lg-2 g-3 mt-1">
     <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
     </div>
 
-    <div class="col-lg-10 g-2 transparent rounded my-0">
+    <div class="col-lg-10 g-2 transparent rounded mt-1">
 <%--      放入自己body裡的代碼--%>
       <table id="table-1">
-   <tr><td><h3>FaqTypes: Home</h3><h4></h4></td></tr>
+   <tr><td><h3>FaqTypes: Home</h3></td></tr>
 </table>
 
 <p>FaqTypes: Home</p>
