@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -12,13 +13,16 @@ import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import com.depthspace.attractions.model.AreaVO;
 import com.depthspace.attractions.model.AttractionsVO;
 import com.depthspace.attractions.model.CityVO;
 import com.depthspace.column.model.ColumnArticlesVO;
+import com.depthspace.tour.model.tour.TourVO;
 import com.depthspace.tour.model.tourtype.TourTypeVO;
+import com.depthspace.utils.HibernateUtil;
 
 public class AttractionsDAOImpl implements AttractionsDAO_Interface{
 	private SessionFactory factory;
@@ -33,9 +37,8 @@ public class AttractionsDAOImpl implements AttractionsDAO_Interface{
         return factory.getCurrentSession();
     }
 	@Override
-	public void insert(AttractionsVO entity) {
-		// TODO Auto-generated method stub
-		
+	public int insert(AttractionsVO attrImg) {
+		return (Integer)getSession().save(attrImg);
 	}
 
 	@Override
@@ -136,5 +139,29 @@ public class AttractionsDAOImpl implements AttractionsDAO_Interface{
 
 	    return query.getResultList();
 	}
+	
+	@Override
+	public List<AttractionsVO> getAllAttrType(Integer attrTypeId) {
+		Query<AttractionsVO> query = getSession().createQuery("FROM AttractionsVO WHERE attrTypeId = :attrTypeId", AttractionsVO.class);
+		query.setParameter("attrTypeId", attrTypeId); // 將cityId綁定到命名參數
+		List<AttractionsVO> list = query.list();
+		return list;
+	}
+	@Override
+	public AttractionsVO getLast(Integer attractionsId) {
+		try {
+            return getSession()
+            		.createQuery("from AttractionsVO order by attractionsId desc", AttractionsVO.class)
+                    .setMaxResults(1)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+	
+	
+//	public List<AttractionsVO> getAttrName(String attractionsName){
+//		
+//	}
 
 }

@@ -15,4 +15,5 @@ public interface TourService_Interface {
 	List<TourVO> getByMemId(Integer MemId);
 	List<TourView> getOneTourList(Integer tourId,Integer memId);
 	List<TourVO> getOneByMemId(Integer tourId,Integer memId);
+	TourVO getByTourId(Integer tourId);
 }

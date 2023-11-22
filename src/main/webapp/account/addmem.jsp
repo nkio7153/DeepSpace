@@ -15,7 +15,7 @@
 <body>
 <jsp:include page="../indexpage/header.jsp" />
  <jsp:include page="../indexpage/headpic.jsp" />
-    <form method="Post" action="${pageContext.request.contextPath}/account/account.do?action=addMemList">
+    <form method="Post" action="${pageContext.request.contextPath}/account.do?action=addMemList">
         <table>
             <tr>
                 <th>分帳表名稱</th>                
@@ -25,12 +25,12 @@
             </tr>
             <tr style="display: none;">
                 <th>會員ID</th>                
-                <td><input type="text" name="memId" value="${param.memId}">
+                <td><input type="text" name="memId" id="memId">
                 </td>
             </tr>
         </table>
         <input type="submit" value="儲存">
-        <input type="button" id="btnCancel" value="取消" onclick="window.location.href='<%=request.getContextPath()%>/account/index.jsp'">
+        <input type="button" id="btnCancel" value="取消" onclick="window.location.href='<%=request.getContextPath()%>/account/memlist.jsp'">
     </form>
 <jsp:include page="../indexpage/footer.jsp" />
 </body>

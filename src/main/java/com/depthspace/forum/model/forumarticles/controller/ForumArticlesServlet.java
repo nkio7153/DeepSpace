@@ -92,8 +92,49 @@ public class ForumArticlesServlet extends HttpServlet {
 		case "edit":
 			editForumArticles(req, resp);
 			break;
+		case "delCollect":
+			delCollect(req, resp);
+			break;
+		case "delLike":
+			delLike(req, resp);
+			break;
 		}
 	}
+	
+	//文章刪除連帶刪除按讚紀錄
+	private void delLike(HttpServletRequest req, HttpServletResponse resp) {
+		Integer articleId = null;
+		try {
+			articleId = Integer.valueOf(req.getParameter("articleId"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Integer memId = null;
+		HttpSession session = req.getSession(false);
+		if (session.getAttribute("memId") != null) {
+			memId = (Integer) session.getAttribute("memId");
+		}
+		ArticlesLikeVO alvo = new ArticlesLikeVO(articleId, memId);
+		articlesLikeService.delete(alvo);		
+	}
+
+	//文章刪除連帶刪除收藏紀錄
+	private void delCollect(HttpServletRequest req, HttpServletResponse resp) {
+		Integer articleId = null;
+		try {
+			articleId = Integer.valueOf(req.getParameter("articleId"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Integer memId = null;
+		HttpSession session = req.getSession(false);
+		if (session.getAttribute("memId") != null) {
+			memId = (Integer) session.getAttribute("memId");
+		}
+		ArticlesCollectVO acvo = new ArticlesCollectVO(articleId, memId);
+		articlesCollectService.delete(acvo);
+	}
+
 	//取得文章類型並轉發到修改表單
 	private void editForumArticles(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<ArticlesTypeVO> atvo = articlesTypeService.getAll();
@@ -114,7 +155,6 @@ public class ForumArticlesServlet extends HttpServlet {
 		List<ForumArticlesVO> list = forumArticlesService.getByArticleIds(memId);
 		req.setAttribute("list", list);
 		req.setAttribute("memId", memId);
-//		System.out.println(list);
 		req.getRequestDispatcher("/forumArticles/collectList.jsp").forward(req, resp);
 	}
 
@@ -168,7 +208,6 @@ public class ForumArticlesServlet extends HttpServlet {
 		List<ForumArticlesVO> list = forumArticlesService.getByMemId(memId);
 		req.setAttribute("list", list);
 		req.setAttribute("memId", memId);
-//		System.out.println(list);
 		req.getRequestDispatcher("/forumArticles/memList.jsp").forward(req, resp);
 	}
 
@@ -195,13 +234,11 @@ public class ForumArticlesServlet extends HttpServlet {
 
 			// 將 JSON 物件轉換為字串並發送給前端
 			out.print(jsonObject.toString());
-//			System.out.println(jsonObject);
 		} else {
 			List<ForumArticlesVO> forum = forumArticlesService.getAll();
 			JSONArray arr = JSONArray.parseArray(JSON.toJSONString(forum));
 			resp.setContentType("application/json; charset=UTF-8");
 			PrintWriter out = resp.getWriter();
-//			System.out.println(arr.toString());
 			out.print(arr.toString());
 		}
 	}
@@ -210,6 +247,8 @@ public class ForumArticlesServlet extends HttpServlet {
 	private void deleteForumArticles(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		Integer articleId = Integer.parseInt(req.getParameter("articleId"));
 		forumArticlesService.delete(articleId);
+		delCollect(req,resp);
+		delLike(req,resp);
 	}
 
 	// 修改文章

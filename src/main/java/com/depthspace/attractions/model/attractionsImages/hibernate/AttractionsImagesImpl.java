@@ -4,14 +4,17 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import com.depthspace.attractions.model.AreaVO;
 import com.depthspace.attractions.model.AttractionsImagesVO;
 import com.depthspace.attractions.model.AttractionsVO;
 import com.depthspace.attractions.model.CityVO;
+import com.depthspace.column.model.ColumnImagesVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.tour.model.tourtype.TourTypeVO;
+import com.depthspace.utils.HibernateUtil;
 
 public class AttractionsImagesImpl implements AttractionsImages_Interface{
 	private SessionFactory factory;
@@ -26,10 +29,18 @@ public class AttractionsImagesImpl implements AttractionsImages_Interface{
         return factory.getCurrentSession();
     }
 	@Override
-	public void insert(AttractionsImagesVO AttractionsImagesVO) {
-		// TODO Auto-generated method stub
-		
+	public void insert(AttractionsImagesVO attrImg) {
+		Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.save(attrImg);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+           System.out.println("圖片上傳失敗");
+        }
 	}
+		
 	@Override
 	public void update(AttractionsImagesVO AttractionsImagesVO) {
 		// TODO Auto-generated method stub
@@ -59,7 +70,21 @@ public class AttractionsImagesImpl implements AttractionsImages_Interface{
 
 	}
 	
-	
-	
+	public void add(AttractionsImagesVO attrImg) {
+		getSession().save(attrImg);
+		
+//		
+//        Transaction transaction = null;
+//        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+//            transaction = session.beginTransaction();
+//            session.save(attrImg);
+//            transaction.commit();
+//        } catch (Exception e) {
+//            if (transaction != null) {
+//            	transaction.rollback();
+//            }
+//           System.out.println("圖片上傳失敗");
+//        }
+	}
 
 }

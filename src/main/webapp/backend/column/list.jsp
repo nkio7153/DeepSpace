@@ -2,6 +2,7 @@
 <%@ page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
 <!DOCTYPE html>
@@ -27,11 +28,50 @@
     .table-hover tbody tr:hover {
         background-color: #f5f5f5;
     }
+    .table-list .viewimg{
+    max-width: 30%;
+    max-height: none;
+    display: block;
+    margin: inherit;
+    padding-bottom: 20px;
+    }
+    .h5, h5 {
+    font-size: 1.2rem;
+    padding: 0px 0px 10px 0px;
+	}
+	.rowrow{
+    padding: 0px 0px 20px 0px;
+	}
+	.custom-select-wrapper {
+	    position: relative;
+	}
+	
+	.custom-select-wrapper select {
+	    appearance: none; 
+	    -webkit-appearance: none;
+	    -moz-appearance: none;
+	    padding-right: 30px; 
+	}
+	
+	.custom-select-wrapper::after {
+	    content: "\f078"; 
+	    font-family: "FontAwesome";
+	    position: absolute;
+	    top: 0;
+	    right: 10px;
+	    pointer-events: none; 
+	    color: #555;
+	    font-size: 18px;
+	    height: 100%;
+	    display: flex;
+	    align-items: center;
+	}
 </style>
 <title>專欄列表</title>
 <%--  include --%>
 	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
-  
+  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    
 </head>
 
 <body>
@@ -49,23 +89,28 @@
 <%-- include end--%>
 
 <div class="table-list">
+
    <div class="table-list">
+
        <div class="container mt-5">
-		<div class="row">
+		<h5>專欄列表</h5>
+		<div class="rowrow"><div class="row">
          <div class="col-md-4">
             <form id="filterForm" method="get" action="<%=request.getContextPath()%>/columnmg/find">
-                <label for="colTypeId" style="display: none";></label><select id="colTypeId" name="colTypeId" class="form-control mb-2">
-                    <option value="">專欄類型選單</option>
-                    <c:forEach var="typeItem" items="${uniqueTypes}">
-                        <option value="${typeItem.colTypeId}">${typeItem.colTypeName}</option>
-                    </c:forEach>
-                </select>
+                <div class="custom-select-wrapper">
+    			<select id="colTypeId" name="colTypeId" class="form-control">
+                        <option value="">專欄類型選單</option>
+                        <c:forEach var="typeItem" items="${uniqueTypes}">
+                            <option value="${typeItem.colTypeId}">${typeItem.colTypeName}</option>
+                        </c:forEach>
+                    </select>
+                    </div>
             </form>
           </div>
           <div class="col-md-4">           
 	        <form id="filterForm2" method="get" action="<%=request.getContextPath()%>/columnmg/find">
 	            <div class="input-group">
-	                <input type="text" id="artiTitle" name="artiTitle" class="form-control" placeholder="文章標題關鍵字搜尋" value="${column.artiTitle}">
+	                <input type="text" id="artiTitle" name="artiTitle" class="form-control" placeholder="標題關鍵字" value="${column.artiTitle}">
 	                <div class="input-group-append">
 	                    <button class="btn btn-outline-secondary" type="submit">
 	                        <i class="fas fa-search"></i>
@@ -79,14 +124,14 @@
 				<button class="add-button" type="submit">新增</button>
 				</form>
 		  </div>
-       </div>
-		<h5>專欄列表</h5>
+       </div></div>
 
 		<!-- 表格 -->
-		<table class="table table-bordered">
+		<div id="right">
+		<table class="table table-bordered table-hover">
 			<thead>
 				<tr>
-					<th>文章編號</th>
+					<th>編號</th>
 					<th>專欄類型</th>
 					<th>圖片</th>
 					<th>專欄標題</th>
@@ -102,7 +147,7 @@
 				<tr>
 					<c:forEach var="column" items="${columnList}" varStatus="status">
 						<td>${column.artiId}</td>
-						<td>${column.colType.colTypeName}</td>
+						<td style="white-space:nowrap;">${column.colType.colTypeName}</td>
 						<td><img
 							src="<%=request.getContextPath()%>/columnmainimage?artiId=${column.artiId}"
 							alt="Main Image"></td>
@@ -115,7 +160,7 @@
 								${column.artiContent}
 								</c:otherwise>
 							</c:choose></td>
-						<td>${column.articleDate}</td>
+						<td style="white-space:nowrap;"><fmt:formatDate value="${column.articleDate}" pattern="yyyy-MM-dd" /></td>
 						<td>${column.admin.adminName}</td>
 						<td><c:choose>
 								<c:when test="${column.artiStatus ==1}">上架</c:when>
@@ -132,60 +177,8 @@
 				</tr>
 				</c:forEach>
 		</table>
-	 </div>
-	 
-	 <!-- 查看 -->		
-		<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
-		    <div class="modal-dialog modal-lg" role="document">
-		        <div class="modal-content">
-		            <div class="modal-header">
-		                <h5 class="modal-title" id="viewModalLabel">專欄文章詳情</h5>
-		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		                    <span aria-hidden="true">&times;</span>
-		                </button>
-		            </div>
-		            <div class="modal-body">
-		                <div class="row">
-                          <!-- 輪播圖 -->
-		                    <div id="carouselExampleIndicators" class="carousel slide">
-		                        <div class="carousel-inner" id="images"></div>
-		                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-		                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		                            <span class="sr-only">Previous</span>
-		                        </a>
-		                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-		                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-		                            <span class="sr-only">Next</span>
-		                        </a>
-							</div>
-		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">專欄類型</strong>
-		                        <p id="colType"></p>
-		                    </div>
-		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">文章標題</strong>
-		                        <p id="artiTitle"></p>
-		                    </div>
-		                    <div class="col-md-12 mb-3"><strong class="d-block mb-2">文章內文</strong>
-		                        <div id="artiContent"></div>
-		                    </div>		                    
-		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">發文日期</strong>
-		                        <p id="articleDate"></p>
-		                    </div>
-		                     <div class="col-md-6 mb-3"><strong class="d-block mb-2">管理者</strong>
-		                        <p id="admin"></p>
-		                    </div>
-		                    <div class="col-md-6 mb-3" id="artiStatus"><strong class="d-block mb-2"></strong>
-		                    </div>
-		                </div>
-		            </div>
-		            <div class="modal-footer">
-		                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-		                <a href="${pageContext.request.contextPath}/columnmg/edit?artiId=${column.artiId}" class="btn btn-primary" id="editButton">修改</a>
-		            </div>
-		        </div>
-		    </div>
-		</div>
 		
-		<!-- 分頁 -->
+				<!-- 分頁 -->
 		<div>
 			<nav>
 				<ul class="pagination justify-content-center">
@@ -204,8 +197,8 @@
 						</a></li>
 					</c:if>
 
-					<!-- 動態顯示頁碼，根據總頁數ticketPageQty生成 -->
-					<c:forEach var="i" begin="1" end="${ticketPageQty}" step="1">
+					<!-- 動態顯示頁碼，根據總頁數pageQty生成 -->
+					<c:forEach var="i" begin="1" end="${pageQty}" step="1">
 						<li class="page-item ${i == currentPage ? 'active' : ''}"><a
 							class="page-link"
 							href="${pageContext.request.contextPath}/columnmg/list?page=${i}">${i}</a>
@@ -228,11 +221,51 @@
 					</c:if>
 				</ul>
 			</nav>
-			<div class="page-item">
-				<a class="page-link"
-					href="${pageContext.request.contextPath}/columnmg/">回首頁</a>
-				</div>
 			</div>
+		 </div>
+	 </div>
+	</div> 
+	 <!-- 查看 -->		
+		<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-lg" role="document">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title" id="viewModalLabel">專欄文章詳情</h5>
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                    <span aria-hidden="true">&times;</span>
+		                </button>
+		            </div>
+		            <div class="modal-body">
+		                <div class="row">
+		                <div>
+		                    <div class="carousel-inner" id="images"></div>
+		                    </div>
+		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">專欄類型</strong>
+		                        <p id="colType"></p>
+		                    </div>
+		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">文章標題</strong>
+		                        <p id="title"></p>
+		                    </div>
+		                    <div class="col-md-12 mb-3"><strong class="d-block mb-2">文章內文</strong>
+		                        <div id="artiContent"></div>
+		                    </div>		                    
+		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">發文日期</strong>
+		                        <p id="articleDate"></p>
+		                    </div>
+		                     <div class="col-md-6 mb-3"><strong class="d-block mb-2">管理者</strong>
+		                        <p id="admin"></p>
+		                    </div>
+		                    <div class="col-md-6 mb-3" id="artiStatus"><strong class="d-block mb-2"></strong>
+		                    </div>
+		                </div>
+		            </div>
+		            <div class="modal-footer">
+		                <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+		                <a href="${pageContext.request.contextPath}/columnmg/edit?artiId=${column.artiId}" class="btn btn-primary" id="editButton">修改</a>
+		            </div>
+		        </div>
+		    </div>
+		</div>
 		</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -245,7 +278,7 @@ $(document).ready(function() {
     	Swal.fire({
             title: '正在處理',
             html: '請稍等，正在更新資料。',
-            timer: 1500,
+            timer: 500,
             timerProgressBar: true,
             didOpen: () => {
                 Swal.showLoading();
@@ -256,6 +289,30 @@ $(document).ready(function() {
         });
     });
 });
+
+$(document).ready(function() {
+    $('#filterForm, #filterForm2').on('submit', function(e) {
+        e.preventDefault(); 
+        $('#loadingSpinner').show(); // 載入動畫
+        var formData = $(this).serialize();
+        $.ajax({
+            url: "<%=request.getContextPath()%>/columnmg/find", 
+            data : formData, 
+            success : function(result) {
+                $('#right').html(result);
+            },
+            complete: function() {
+                $('#loadingSpinner').hide(); // 隱藏載入動畫
+            }
+        });
+    });
+    
+	// 篩選變更也觸發
+	$('input[type=checkbox]').change(function() {
+		$('#searchForm').submit();
+	});
+});
+
     $('.view').on('click', function() {
         var artiId = $(this).data('arti-id');
         $.ajax({
@@ -263,11 +320,12 @@ $(document).ready(function() {
             type: "GET",
             data: {artiId: artiId},           
             success: function(column) {
-            	console.log(column);
+            	 var date = new Date(column.articleDate);
+                 var formattedDate = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0');
             	$('#artiId').text(column.artiId);
-                $('#artiTitle').text(column.artiTitle);
+                $('#title').text(column.artiTitle);
                 $('#artiContent').html(column.artiContent);
-                $('#articleDate').text(column.articleDate);
+                $('#articleDate').text(formattedDate);
                 $('#artiStatus').text(column.artiStatus == 1 ? '此文章上架中' : '此文章未上架');
                 $('#colType').text(column.colType);
                 $('#admin').text(column.admin);
@@ -276,7 +334,7 @@ $(document).ready(function() {
                 var carouselItem = $('<div>').addClass('carousel-item active');
                 var img = $('<img>')
                     .attr("src", "<%=request.getContextPath()%>/columnmainimage?artiId=" + artiId)
-                    .addClass("d-block w-100");
+                    .addClass("viewimg");
                 carouselItem.append(img);
                 carouselInner.append(carouselItem);
             },

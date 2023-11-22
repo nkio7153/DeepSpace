@@ -7,7 +7,7 @@ import com.depthspace.attractions.model.AttractionsImagesVO;
 import com.depthspace.attractions.model.AttractionsVO;
 
 public interface AttractionsImages_Interface {
-	public void insert(AttractionsImagesVO AttractionsImagesVO);
+	public void insert(AttractionsImagesVO attrImg);
 	 public void update(AttractionsImagesVO AttractionsImagesVO);
 	 public void delete(Integer attractionsImagesId);
 	 public AttractionsImagesVO findByPrimaryKey(Integer attractionsImagesId);
@@ -15,5 +15,6 @@ public interface AttractionsImages_Interface {
 	 
 	 //根據景點Id取得一或多筆資料
 	 public List<AttractionsImagesVO> getAttractionsImagesById(Integer attractionsImagesId);
+	public void add(AttractionsImagesVO attrImg);
 
 }

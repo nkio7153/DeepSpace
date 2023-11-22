@@ -10,11 +10,8 @@
 <title>票券詳情</title>
 <jsp:include page="/indexpage/head.jsp" />
 
-<!-- Leaflet的CSS -->
 <link rel="stylesheet"
 	href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-<!-- <link rel="stylesheet" -->
-<!-- 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 		
@@ -52,7 +49,6 @@
      width: 80%;
      margin: auto; 
  } 
- 
 .table-list .breadcrumb{
 	 background-color: transparent;
 }
@@ -81,8 +77,8 @@
 		<div class="row mb-4">
 			<div class="col-12">
 				<nav aria-label="breadcrumb">
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/ticketproduct/">首頁</a></li>
+					<ol class="breadcrumb view" style="padding: 10px;">
+						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/">首頁</a></li>
 						<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/ticketproduct/list">票券列表</a></li>
 						<li class="breadcrumb-item active" aria-current="page">${ticket.ticketName}</li>
 					</ol>
@@ -238,7 +234,6 @@
 
 
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -281,15 +276,29 @@ $(document).ready(function() {
         		  showConfirmButton: false,
         		  timer: 1500
         		});
-            return; // 終止函數執行
+            return; 
         }
         console.log("Request Data:", requestData);
         
         $.get("${pageContext.request.contextPath}/ticketcollection/toggleFavorite", requestData, function(response) {
             if (response.isFavorite) {
                 iconElement.removeClass("far").addClass("fas");
+            	Swal.fire({
+            		  position: "center",
+//             		  icon: "success",
+            		  title: "成功加入",
+            		  showConfirmButton: false,
+            		  timer: 1500
+            		});
             } else {
                 iconElement.removeClass("fas").addClass("far");
+            	Swal.fire({
+          		  position: "center",
+//           		  icon: "success",
+          		  title: "成功移除",
+          		  showConfirmButton: false,
+          		  timer: 1500
+          		});
             }
         }).fail(function(xhr, status, error) {
             if(memId == null) { 
@@ -303,6 +312,7 @@ $(document).ready(function() {
   
 //購物車加入
 $(".btn").on("click", function() {
+	let cartNum=$("#cartNum");
     let button = $(this);
 	let quantity=$("#ticketQuantity").val();
 $("#ticketQuantity").val(1);
@@ -314,6 +324,7 @@ console.log(quantity);
         })
         .then(function(data) {
             console.log(data);
+            cartNum.text(data);
             button.addClass('flash-effect');
             // 1 秒後移除閃爍效果
             setTimeout(() => {

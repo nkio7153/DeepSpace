@@ -96,15 +96,15 @@
             font-weight: bold;
             margin-top: -1px;
             margin-left: 1px;
-        }
 
+        }
         .circle2 {
             width: 21px;
             height: 21px;
             border-radius: 50%;
             background-color: lightcoral;
-            margin-top: 10px;
-            margin-right: 10px;
+            margin-top: 14px;
+            margin-rightt: 0px;
         }
 
         /* 给新增的时间和输入框容器添加样式，调整它们的位置 */
@@ -137,6 +137,17 @@
 	        margin: 10px;
 	        margin-left: 0px;
 	    }
+	     #btn_back {
+			margin: 0 auto;
+			display: block; /* 讓按鈕變成區塊元素，以佔據滿整行 */
+		    font-size: 18px;
+		    color: #fff;
+		    background-color: #008CBA;
+		    border: none;
+		    padding: 8px;
+		    cursor: pointer;
+		    border-radius: 6px;
+		}
     </style>
 </head>
 <body>
@@ -182,6 +193,9 @@
         </div>
         <label for="tripDuration" id="tripDuration">總天數:${tourVO.allDays}</label>
         <br>
+        <div>
+        	<input type="button" value="修改" onclick="history.back()" id="btn_back">
+        </div>
         <br>
 <!-- 		 下拉式選單:選擇縣市 -->
 <!--         <label style="margin-left: 10px;">選擇你想去的縣市:</label> -->
@@ -264,7 +278,7 @@ $(document).ready(function () {
                         	    </select>
                         	</div>
 
-                        	<div class="ml-2 d-flex mt-2" name="add">
+                        	<div class="ml-2 d-flex mt-2" name="add" class="add">
                         	    <label for="attractionTime">時間:</label>
                         	    <input type="time" name="attractionTime[${day}]" style="margin-right: 10px;" required>
                         	    <label style="margin: 10px; display: table-cell; vertical-align: middle;">你要去哪兒?</label>
@@ -337,7 +351,7 @@ $(document).ready(function () {
 // 				    </div>`;
 // 1109更新
 		let select_html = `
-		        	<div class="circle2 d-flex align-items-center justify-content-center ms-auto ml-2" id="dash">
+		        	<div class="circle2 d-flex align-items-center justify-content-center ms-auto ml-2 pb-1" name="dash">
 							<span class="dash">-</span>
 				    	</div>
 				    </div>`;
@@ -364,10 +378,17 @@ $(document).ready(function () {
 // 			console.log("click事件觸發了")
 			var clonedElement = $(this).closest("[class='row']").find('[name="add"]').eq(0).clone(); // 複製原始元素
             clonedElement.find('[name="attractionTime"]').val(''); // 清空時間欄位的值
-            clonedElement.find('select').val(''); // 重置下拉選單的值
-            $(this).closest("[name='afterSelector']").before(clonedElement); // 插入複製的元素到頁面中
-            // 插入新的 select_html
-            $(this).closest("[name='afterSelector']").before(select_html);
+            clonedElement.find('select').val('請選擇'); // 重置下拉選單的值
+            var clonedElementHtml = clonedElement.prop('outerHTML');
+            // 創建一個 div 元素
+            var div = document.createElement("div");
+            div.className = "container";
+            div.style.display = 'flex';
+            div.innerHTML=clonedElementHtml+select_html
+            $(this).closest("[name='afterSelector']").before(div);
+            // $(this).closest("[name='afterSelector']").before(clonedElement); // 插入複製的元素到頁面中
+            // // 插入新的 select_html
+            // $(this).closest("[name='afterSelector']").before(select_html);
         });
 		//1109測試
 		
@@ -397,7 +418,9 @@ $(document).ready(function () {
 		});
 		
 		$('body').on('click', '.circle2', function() {
-			$(this).closest(".row").remove();
+			// $(this).closest('[name="dash"]').prev().remove();
+			// $(this).closest('[name="dash"]').remove();
+			$(this).closest(".container").remove();
 		});
 			
 		//=====================================================================

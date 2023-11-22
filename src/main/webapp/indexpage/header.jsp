@@ -3,23 +3,27 @@
 <header>
 	<script>
 
-        function checkSession(e){
-            let check=$("[name='check']").text();
-            if(check=="登入/註冊"){
-                e.preventDefault();
-                window.alert("請先登入")
-            }
-        }
+		function checkSession(e){
+		    let check = $("[name='check']").text();
+		    if(check === "登入/註冊"){
+		        e.preventDefault(); // 防止預設事件，例如表單提交或連結跳轉
+	
+		        // 使用 SweetAlert2 顯示彈窗
+		        Swal.fire({
+		            icon: "error",
+		            text: "尚未登入！",
+		            footer: '<a href="${pageContext.request.contextPath}/member/login.jsp">點此登入</a>'
+		        });
+		    }
+		}
         <c:if test="${sessionScope.memId != null}">
         $(document).ready(function(){
-            console.log("進入此方法")
             let cartNum=$("#cartNum");
             fetch("${pageContext.request.contextPath}/tsc/getCartNum")
             .then(function(response){
                     return response.text();
                 })
                     .then(function(data){
-                        console.log(data);
                         cartNum.text(data)
                         cartNum.css("background-color","red");
                     })
@@ -45,7 +49,6 @@
     }
 	</style>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     
     <div class="container" style="padding-right: 0;">
         <nav class="navbar navbar-expand-lg">
@@ -95,8 +98,14 @@
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList"  onclick="checkSession(event)">我的票券</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="" href="${pageContext.request.contextPath}/forumArticles/list.jsp">論壇文章</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="${pageContext.request.contextPath}/forumArticles/list.jsp" id="navbarDropdownArticles" role="button" data-bs-toggle="dropdown" aria-expanded="false">論壇文章</a>
+                            <ul class="dropdown-menu" aria-labelledby="trip">
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles/list.jsp">文章瀏覽</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist" onclick="checkSession(event)">我的文章</a></li>                               
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=doArtiCollectList" onclick="checkSession(event)">我的收藏</a></li>                               
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=addArticle" onclick="checkSession(event)">新增文章</a></li>                               
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="" href="${pageContext.request.contextPath}/Rest/getRests">餐廳</a>
@@ -121,6 +130,7 @@
                             <ul class="dropdown-menu" aria-labelledby="mem">
                                 <li><a class="dropdown-item">${authenticatedMem.memName}</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mem/memList">會員資料</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/account.do?action=doMemList">我的分帳表</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList">我的票券</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ticketcollection/list">票券收藏</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a></li>
@@ -132,13 +142,13 @@
 			            <li class="nav-item">
 			                <a href="${pageContext.request.contextPath}/notifications/list">
 							    <i class="fas fa-bell"></i>
-							    <span class="badge" id="notificationCount">0</span>
+							    <span class="badge" id="notificationCount">${unreadCount}</span>
 							</a>
 			            </li>
 			            </div>
                         </c:if>
                         <li class="">
-                            <a href="${pageContext.request.contextPath}/tsc/memCartList"><img
+                            <a href="${pageContext.request.contextPath}/tsc/memCartList" onclick="checkSession(event)"><img
                                src="${pageContext.request.contextPath}/indexpage/images/shoppingcar.svg"
                                alt=""
                                style="width: 2em"/></a>
@@ -151,30 +161,47 @@
             </div>
         </nav>
     </div>
-   <script>
+<script>
     if ("WebSocket" in window) {
-        var ws = new WebSocket("ws://localhost:8081/DepthSpace/notifications");
-        var notificationCount = 0;
+        var ws = new WebSocket("ws://localhost:8081/DepthSpace/notificationsws");  
+        fetchUnreadNotifications();
 
         ws.onopen = function() {
-            console.log("WebSocketOPEN");
         };
+
         ws.onmessage = function(event) {
-        	console.log("收到消息: " + event.data);
-        	notificationCount++;
-            document.querySelector('.notification-bell .badge').textContent = notificationCount;
+        fetchUnreadNotifications();
         };
+
         window.onbeforeunload = function(event) {
             ws.close();
-            console.log("WebSocketCLOSE");
         };
+
         ws.onerror = function(event) {
             console.log("WebSocketerrorerrorerrorerror: ", event);
         };
-    } else {
-        console.log("發生錯誤");
     }
-	</script>
+        function fetchUnreadNotifications() {
+            var url = "<%=request.getContextPath()%>/notifications/countUnread";
+            fetch(url)
+            .then(response => {
+                if (response.ok && response.headers.get("content-type").includes("application/json")) {
+                    return response.json();
+                } else {
+                    throw new Error('不是有效的 JSON');
+                }
+            })
+            .then(data => {
+                if (data.error) {
+//                     console.error('Error: ', data.error);
+                } else {
+                    document.querySelector('.notification-bell .badge').textContent = data.unreadCount;
+                }
+            })
+            .catch(error => console.error('Error fetching notifications:', error));
+    }
+        
+</script>
     
 </header>
 

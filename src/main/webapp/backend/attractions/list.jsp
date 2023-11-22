@@ -85,8 +85,8 @@ pageContext.setAttribute("list", list);
 	        </form>
 	       </div> 
                <div class="col-md-4 d-flex justify-content-end"> 
-	      		<form method="get" action="<%=request.getContextPath()%>/attractionsEnd/add">
-				<button class="add-button" type="submit">新增</button>
+	      		<form method="post" action="<%=request.getContextPath()%>/attractionsEnd/add">
+					<button class="add-button" type="submit">新增</button>
 				</form>
 		  </div>
        </div>
@@ -114,9 +114,9 @@ pageContext.setAttribute("list", list);
 					<c:forEach var="attr" items="${list}" varStatus="status" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 						<td>${attr.attractionsId}</td>
 						<td>${attr.attractionsTypeId.typeName}</td>
-						<td><img
-							src="<%=request.getContextPath()%>/attractionsImage?attractionsId=${attr.attractionsId}"
-							alt="Main Image"></td>
+						<td>
+							<img src="<%=request.getContextPath()%>/attractionsImage?attractionsId=${attr.attractionsId}">
+						</td>
 						<td>${attr.attractionsName}</td>
 						<td><c:choose>
 								<c:when test="${fn:length(attr.description) > 30}">
@@ -156,7 +156,7 @@ pageContext.setAttribute("list", list);
 		            </div>
 		            <div class="modal-body">
 		                <div class="row">
-                          <!-- 輪播圖 -->
+                          
 		                    <div id="carouselExampleIndicators" class="carousel slide">
 		                        <div class="carousel-inner" id="images"></div>
 		                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -172,7 +172,7 @@ pageContext.setAttribute("list", list);
 		                        <p id="attractionsType"></p>
 		                    </div>
 		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">景點</strong>
-		                        <p id="attractionsName"></p>
+		                        <p id="attrnName"></p>
 		                    </div>
 		                    <div class="col-md-12 mb-3"><strong class="d-block mb-2">景點介紹</strong>
 		                        <div id="description"></div>
@@ -192,55 +192,11 @@ pageContext.setAttribute("list", list);
 		    </div>
 		</div>
 		<%@ include file="page2.file"%>
-		<!-- 分頁 -->
-<!-- 		<div> -->
-<!-- 			<nav> -->
-<!-- 				<ul class="pagination justify-content-center"> -->
-<!-- 					"至第一頁" 只在非第一頁時顯示 -->
-<%-- 					<c:if test="${currentPage > 1}"> --%>
-<!-- 						<li class="page-item"><a class="page-link" -->
-<%-- 							href="${pageContext.request.contextPath}/attractionsEnd/list?page=1">第一頁</a> --%>
-<!-- 						</li> -->
-<%-- 					</c:if> --%>
-
-<!-- 					"上一頁" 如果當前頁是第一頁則隱藏 -->
-<%-- 					<c:if test="${currentPage - 1 != 0}"> --%>
-<!-- 						<li class="page-item"><a class="page-link" -->
-<%-- 							href="${pageContext.request.contextPath}/attractionsEnd/list?page=${currentPage - 1}" --%>
-<!-- 							aria-label="Previous"> <span aria-hidden="true">&laquo;</span> -->
-<!-- 						</a></li> -->
-<%-- 					</c:if> --%>
-
-<!-- 					動態顯示頁碼，根據總頁數ticketPageQty生成 -->
-<%-- 					<c:forEach var="i" begin="1" end="${ticketPageQty}" step="1"> --%>
-<%-- 						<li class="page-item ${i == currentPage ? 'active' : ''}"><a --%>
-<!-- 							class="page-link" -->
-<%-- 							href="${pageContext.request.contextPath}/attractionsEnd/list?page=${i}">${i}</a> --%>
-<!-- 						</li> -->
-<%-- 					</c:forEach> --%>
-
-<!-- 					"下一頁" 如果當前頁是最後一頁則隱藏 -->
-<%-- 					<c:if test="${currentPage + 1 <= pageQty}"> --%>
-<!-- 				    <li class="page-item"><a class="page-link" -->
-<%-- 				        href="${pageContext.request.contextPath}/attractionsEnd/list?page=${currentPage + 1}" --%>
-<!-- 				        aria-label="Next"> <span aria-hidden="true">&raquo;</span> -->
-<!-- 				    </a></li> -->
-<%-- 				</c:if> --%>
-
-<!-- 					"至最後一頁" 只在非最後一頁時顯示 -->
-<%-- 					<c:if test="${currentPage != pageQty}"> --%>
-<!-- 						<li class="page-item"><a class="page-link" -->
-<%-- 							href="${pageContext.request.contextPath}/attractionsEnd/list?page=${pageQty}">尾頁</a> --%>
-<!-- 						</li> -->
-<%-- 					</c:if> --%>
-<!-- 				</ul> -->
-<!-- 			</nav> -->
-<!-- 			<div class="page-item"> -->
-<!-- 				<a class="page-link" -->
-<%-- 					href="${pageContext.request.contextPath}/attractionsEnd/index.jsp">回首頁</a> --%>
-<!-- 				</div> -->
-<!-- 			</div> -->
+		
 		</div>
+		</div>
+	</div>		
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -263,42 +219,46 @@ $(document).ready(function() {
         });
     });
 });
+
     $('.view').on('click', function() {
         var artiId = $(this).data('arti-id');
-        $.ajax({
-            url: "<%=request.getContextPath()%>/attractionsEnd/view",
-            type: "GET",
-            data: {attractionsId: attractionsId},           
-            success: function(column) {
-            	console.log(column);
-            	$('#attractionsId').text(attr.attractionsId);
-                $('#attractionsName').text(attr.attractionsName);
-                $('#description').html(attr.description);
-                $('#address').text(attr.address);
-                $('#attractionsStatus').text(attr.attractionsStatus == 0 ? '此文章上架中' : '此文章未上架');
-                $('#attractionsStatus').text(attr.attractionsTypeId);
-                $('#editButton').attr('href', '${pageContext.request.contextPath}/attractionsEnd/edit?attractionsId=' + attractionsId);
-                var carouselInner = $('#images').empty();
-                var carouselItem = $('<div>').addClass('carousel-item active');
-                var img = $('<img>')
-                    .attr("src", "<%=request.getContextPath()%>/attractionsImage?attractionsId=" + attractionsId)
-                    .addClass("d-block w-100");
-                carouselItem.append(img);
-                carouselInner.append(carouselItem);
-            },
-            error: function(error) {
-                console.log("Error: ", error);
-            }
-        });
+        console.log(artiId);
+        
+        let url = "${pageContext.request.contextPath}/attractionsEnd/view?attractionsId="+artiId;
+        fetch(url)
+			.then(function(response){
+	            return response.json();
+	        })
+	        .then(function(data){
+				console.log(data);
+				console.log(data.attractionsId);
+				console.log(data.attractionsName);
+				console.log( $('#attractionsId'));
+				console.log( $('#attractionsName'));
+			 $('#attractionsId').text(data.attractionsId);
+			 $('#attractionsType').text(data.attractionsTypeId.typeName);
+             $('#attrnName').text(data.attractionsName);
+             $('#description').html(data.description);
+             $('#address').text(data.address);
+             $('#attractionsStatus').text(data.attractionsStatus == 0 ? '景點上架中' : '景點未開放');
+             $('#editButton').attr('href', '${pageContext.request.contextPath}/attractionsEnd/edit?attractionsId=' + data.attractionsId);
+             var carouselInner = $('#images').empty();
+             var carouselItem = $('<div>').addClass('carousel-item active');
+             var img = $('<img>')
+                    .data("src", "<%=request.getContextPath()%>/attractionsImage?attractionsId=" + data.attractionsId)
+                 .addClass("d-block w-100");
+             carouselItem.append(img);
+             carouselInner.append(carouselItem);
+	        })
+	        
+	        .catch(function(error){
+	          console.log(error);
+	        })
     });
 
 
 </script>
-<%--  include --%>	
-		</div>
-	</div>		
-</div>
-<%--  include end --%>
+		
 
 </body>
 </html>

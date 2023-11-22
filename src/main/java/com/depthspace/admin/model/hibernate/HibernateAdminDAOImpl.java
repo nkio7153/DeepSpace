@@ -41,24 +41,6 @@ public class HibernateAdminDAOImpl implements HibernateAdminDAO_Interface {
 			return -1;
 		}
     }
-   
-//    @Override
-//    public int update2(AdminVO entity) {
-//    	AdminVO originalData  = findByAdminAcc(entity.getAdminAcc());
-//    	try {
-//    		//修改之前 先查出該管理員的原始資料
-//			//並把HD 和 Status放回 不接受前端參數修改
-//			//---------------------------------------
-//    		entity.setAdminStatus(originalData.getAdminStatus());
-//    		entity.setAdminVerifyStatus(originalData.getAdminVerifyStatus());
-//    		entity.setAdminFuncName(originalData.getAdminFuncName());
-//			getSession().merge(entity);
-//			//---------------------------------------
-//			return 1;
-//		} catch (Exception e) {
-//			return -1;
-//		}
-//    }
     
     @Override
 	public int updateStatus(Integer adminId, byte status) {

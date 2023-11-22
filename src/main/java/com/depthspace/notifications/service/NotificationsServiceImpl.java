@@ -39,6 +39,10 @@ public class NotificationsServiceImpl implements NotificationsService {
 	public List<NotificationsVO> getAll() {
 		return dao.getAll();
 	}
+	
+	public Integer getUnreadNotificationsCount(Integer memId) {
+        return dao.getUnreadNotificationsCount(memId);
+    }
 
 	@Override
   	public void ticketOrderNotification(TicketOrdersVO order, MemVO member) {
@@ -56,6 +60,17 @@ public class NotificationsServiceImpl implements NotificationsService {
         String message = "您有新的" + notification.getNoteType();
         webSocket.sendNotification(message);
         }
+	
+	@Override
+	public void toBeRead(Integer noteId) {
+		NotificationsVO notification = getOneByNoteId(noteId);
+		if(notification != null && notification.getNoteRead() == 0 ) {
+	 		notification.setNoteRead((byte) 1);
+			dao.update(notification);
+		}
+		
+		
+	}
     
 
 }

@@ -54,7 +54,7 @@ public class HbTourDAOImpl implements HbTourDAO_Interface{
 	@Override
 	public List<TourVO> getByMemId(Integer memId) {
 		return getSession()
-                .createQuery("from TourVO where memId= :memId",TourVO.class)
+                .createQuery("from TourVO where memId= :memId Order by tourId desc",TourVO.class)
                 .setParameter("memId", memId)
                 .list();
 	}
@@ -81,12 +81,19 @@ public class HbTourDAOImpl implements HbTourDAO_Interface{
 	public List<TourVO> getOneByMemId(Integer tourId,Integer memId) {
 		System.out.println("tourId= " + tourId + "memId= " + memId);
 		return getSession()
-                .createQuery("from TourVO where TOUR_Id= :tourId AND MEM_ID = :memId",TourVO.class)
+                .createQuery("from TourVO where tourId= :tourId AND memId = :memId",TourVO.class)
                 .setParameter("tourId", tourId)
                 .setParameter("memId", memId)
                 .list();
 	}
-	
+	@Override
+	public TourVO getByTourId(Integer tourId) {
+		return getSession().createQuery("from TourVO where tourId= :tourId", TourVO.class)
+				.setParameter("tourId",tourId)
+				.uniqueResult();
+	}
+
+
 	@Override
 	public List<TourView> getOneTourList(Integer tourId, Integer memId) {
 //		System.out.println("tourId=" + tourId + "memId=" + memId);

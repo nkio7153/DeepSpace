@@ -90,8 +90,64 @@ public class TourServlet extends HttpServlet {
 		case "/saveSecond":
 			doSaveSecond(req, resp);
 			break;
+		case "/edit":
+			doEdit(req, resp);
+			break;
 		}
+	}
 
+private void doEdit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	//使用行程編號跟會員編號查出獨一無二的一筆行程(tour)、行程天數(tourdays)、行稱明細(tourdetail)、景點(attractions)的view
+	//縣市的下拉式選單可以選擇 縣市(city)
+	//縣市跟景點中的區域 區域(area)
+	//縣市對應的景點 景點(attractions)
+	//update
+	//全部刪除、全部重新新增
+	
+	Integer memId;
+	Integer tourId;
+	
+	try {
+		memId = Integer.valueOf(req.getParameter("memId"));
+		tourId = Integer.valueOf(req.getParameter("tourId"));
+	} catch (Exception e) {
+		e.printStackTrace();
+		return;
+	}
+//	System.out.println("memId= " + memId + "," + tourId);
+	//用TourView把所有要放在會員形成列表的資料都拿出來
+	List<TourView> list = ts.getOneTourList(tourId, memId);
+	// 使用Comparator對list物件進行排序，依據天數排序
+	Collections.sort(list, Comparator.comparingInt(TourView::getTourDays));
+	//找出所有行程資訊
+//	Collections.sort(list, Comparator.comparingInt(TourView::getTourDays)
+//			.thenComparing(TourView::getStartDate));
+	List<CityVO> cityList = cs.getAll();
+	List<TourTypeVO> tourTypeVOS = tts.getAll();
+	TourVO toVo = ts.getByTourId(tourId);
+	Integer tourTypeId = toVo.getTourTypeId();
+	TourTypeVO ttpVo = tts.findByPrimaryKey(tourTypeId);
+	String tourTypName = ttpVo.getTourTypName();
+
+
+
+	List<AttractionsVO> attrvo = attrs.findOneAttractions();
+	List<AttractionsVO> attrAll = attrs.getAll();
+
+	req.setAttribute("tourTypName",tourTypName);
+	req.setAttribute("cityList", cityList);
+	req.setAttribute("attrvo", attrvo);
+	req.setAttribute("attrAll", attrAll);
+
+
+
+//	System.out.println(list);
+	req.setAttribute("list", list);
+	
+//	List<AttractionsVO> attrList = attrs.getAll();
+	
+	req.getRequestDispatcher("/tour/tourEdit.jsp").forward(req, resp);
+	
 	}
 
 private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -241,10 +297,6 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 
 		// 尋找所有的景點
 		List<AttractionsVO> attrList = attrs.getAll();
-//		變例出來看看
-//		for (AttractionsVO attraction : attrList) {
-//		    System.out.println(attraction.getAttractionsName());
-//		}
 
 		// 尋找台北市對應景點
 		List<AttractionsVO> attrvo = attrs.findOneAttractions();
