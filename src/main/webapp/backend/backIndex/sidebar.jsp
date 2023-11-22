@@ -57,11 +57,13 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages"
                  data-bs-parent="#sidebar-wrapper">
                 <div class="color-4-1 py-2 collapse-inner rounded">
-                    <a class="text-choco collapse-item fs-6 offset-1" href="#">新增資料</a>
+                    <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/Rest.do?action=getRests">餐廳列表</a>
                     <br>
-                    <a class="text-choco collapse-item fs-6 offset-1" href="#">修改資料</a>
+                    <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/rest/addRest.jsp">新增餐廳</a>
                     <br>
-                    <a class="text-choco collapse-item fs-6 offset-1" href="#">檢舉廠商</a>
+                    <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/Rest.do?action=getBookingDate">預約設定</a>
+                    <br>
+                    <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/Rest.do?action=getMembooking">訂位查詢</a>
                 </div>
             </div>
         </li>
@@ -174,13 +176,11 @@
                 <div id="collapseRestService" class="collapse" aria-labelledby="headingRestService"
                      data-bs-parent="#sidebar-wrapper">
                     <div class="color-4-1 py-2 collapse-inner rounded">
-                        <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/Rest.do?action=getRests">餐廳列表</a>
+                        <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/Rest.do?action=getId_for_update">餐廳修改</a>
                         <br>
                         <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/Rest.do?action=getBookingDate">預約設定</a>
                         <br>
-                        <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/Rest.do?action=getMembooking&restId=1">訂位查詢</a>
-                        <br>
-                        <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/rest/addRest.jsp">新增餐廳</a>
+                        <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/Rest.do?action=getMembooking">訂位查詢</a>
                     </div>
                 </div>
             </li>

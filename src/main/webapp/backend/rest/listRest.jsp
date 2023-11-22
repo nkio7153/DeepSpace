@@ -27,7 +27,6 @@
         </div>
 
         <div class="col-lg-10 g-2 transparent rounded mt-1">
-<!--         	<div class="container pt-3"> -->
 	          <%-- 放入自己body裡的代碼--%>
 	          <table id="myTable" class="hover">
 	            <thead>
@@ -41,7 +40,6 @@
 	                <th>營業時間</th>
 	                <th>上/下架</th>
 	                <th>預設可訂位組數</th>
-<!-- 	                <th>管理員ID</th> -->
 	                <th>餐廳管理員帳號</th>
 	                <th>修改</th>
 	                <th>刪除</th>
@@ -66,7 +64,6 @@
 					    </c:when>
 					  </c:choose>
 	                  <td>${rest.bookingLimit}</td>
-<%-- 	                  <td>${rest.adminId}</td> --%>
 	                  <td>${rest.adminVO.adminAcc}</td>
 	                  
 					<td>
@@ -78,7 +75,7 @@
 					</td>
 					<td>
 						<form method="post" action="${pageContext.request.contextPath}/backend/Rest.do">
-							<input type="submit" class="btn btn-secondary" value="刪除">
+							<input type="submit" class="btn btn-danger" value="刪除">
 							<input type="hidden" name="restId" value="${rest.restId}">
 							<input type="hidden" name="action" value="delete">
 						</form>
@@ -89,7 +86,7 @@
 	            </tbody>
 	          </table>
 	          
-<!--         	</div> -->
+	          
         </div>
       </div>
     </div>
@@ -102,15 +99,13 @@
 	            language: {
 	                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/zh-HANT.json',
 	            },
+	            "deferRender": true,
+	            "processing": "true",
 	            columnDefs: [
 	                {
 	                	 targets: 1,
 	                     className: "dt-body-center",
 	                },
-	                {
-	                	 targets: 10,
-	                     className: "dt-body-center",
-	                }
 	            ],
 	        });
 	    });

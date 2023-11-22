@@ -1,6 +1,15 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"
-%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.depthspace.admin.model.AdminVO" %>
+<%@ page import="com.depthspace.admin.service.HbAdminService" %>
+<%@ page import="java.util.List" %>
+
+
+<%
+	HbAdminService hbAdminService = new HbAdminService();
+    List<AdminVO> adminlist = hbAdminService.getAll();
+	request.setAttribute("adminlist", adminlist);
+%>
 
 <html>
   <head>
@@ -32,37 +41,42 @@
 	          <form id="toUpdate" class="row g-2 p-3" action="${pageContext.request.contextPath}/backend/Rest.do?action=add" method="post" enctype="multipart/form-data">
 	          	  <div class="col-12">
 				    <label for="restName" class="form-label">餐廳名稱</label>
+				    <label class="text-danger">${errorMsgs.restName}</label>
 				  </div>
 				  <div class="col-6 mb-2">
-				    <input type="text" class="form-control" id="restName" name="restName">
+				    <input type="text" class="form-control" id="restName" name="restName" value="${rest.restName}">
 				  </div>
 				  
 				  <div class="col-12">
 				    <label for="restTel" class="form-label">餐廳電話</label>
+				    <label class="text-danger">${errorMsgs.restTel}</label>
 				  </div>
 				  <div class="col-6 mb-2">
-				    <input type="text" class="form-control" id="restTel" name="restTel">
+				    <input type="text" class="form-control" id="restTel" name="restTel" value="${rest.restTel}">
 				  </div>
 				  
 				  <div class="col-12">
 				    <label for="restAddress" class="form-label">餐廳地址</label>
+				    <label class="text-danger">${errorMsgs.restAddress}</label>
 				  </div>
 				  <div class="col-6 mb-2">
-				    <input type="text" class="form-control" id="restAddress" name="restAddress">
+				    <input type="text" class="form-control" id="restAddress" name="restAddress" value="${rest.restAddress}">
 				  </div>
 				  
 				  <div class="col-12">
 				    <label for="restType" class="form-label">餐廳類型</label>
+				    <label class="text-danger">${errorMsgs.restType}</label>
 				  </div>
 				  <div class="col-6 mb-2">
-				    <input type="text" class="form-control" id="restType" name="restType">
+				    <input type="text" class="form-control" id="restType" name="restType" value="${rest.restType}">
 				  </div>
 				  
 				  <div class="col-12">
 				    <label for="restOpen" class="form-label">營業時間</label>
+				    <label class="text-danger">${errorMsgs.restOpen}</label>
 				  </div>
 				  <div class="col-6 mb-2">
-				    <input id="restOpen" type="text" class="form-control" name="restOpen">
+				    <input id="restOpen" type="text" class="form-control" name="restOpen" value="${rest.restOpen}">
 				  </div>
 				  
 				  <div class="col-12">
@@ -77,17 +91,18 @@
 				  
 				  <div class="col-12">
 				    <label for="bookingLimit" class="form-label">預設可訂位組數</label>
+				    <label class="text-danger">${errorMsgs.bookingLimit}</label>
 				  </div>
 				  <div class="col-auto mb-2">
-				    <input type="number" class="form-control" id="bookingLimit" name="bookingLimit">
+				    <input type="number" class="form-control" id="bookingLimit" name="bookingLimit" value="${rest.bookingLimit}">
 				  </div>				    
 				  
 				  <div class="col-12">
 				    <label for="restText" class="form-label">餐廳簡介</label>
+				    <label class="text-danger">${errorMsgs.restText}</label>
 				  </div>
 				  <div class="col-12 mb-2">
-				    <textarea class="form-control" id="restText" name="restText"
-						rows="4" required></textarea>
+				    <textarea class="form-control" id="restText" name="restText" rows="4" required>${rest.restText}</textarea>
 					<script>
 						CKEDITOR.replace('restText');
 					</script>
@@ -104,11 +119,13 @@
 				  </div>
 					
 				  <div class="col-12">
-				    <label for="adminId" class="form-label">管理員ID</label>
+				    <label for="adminId" class="form-label">管理員</label>
 				  </div>
-				  <div class="col-auto mb-2">
-				    <input type="number" class="form-control" id="adminId" name="adminId">
-				  </div>
+				  <select class="col-3" id="adminId" name="adminId">
+					  <c:forEach var="admin" items="${adminlist}">
+					  	<option value="${admin.adminId}">${admin.adminAcc}</option>
+					  </c:forEach>
+				  </select>
 				  
 				  <div class="col-12">
 				    <button type="submit" class="btn btn-primary">新增</button>

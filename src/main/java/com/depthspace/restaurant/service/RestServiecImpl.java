@@ -38,6 +38,11 @@ public class RestServiecImpl implements RestService {
 	}
 
 	@Override
+	public RestVO findByAdmin(Integer adminId) {
+		return dao.findByAdmin(adminId);
+	}
+
+	@Override
 	public List<RestVO> getAllRest() {
 		return dao.getAll();
 	}

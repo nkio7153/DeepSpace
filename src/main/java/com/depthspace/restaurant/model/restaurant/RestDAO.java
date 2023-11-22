@@ -7,7 +7,8 @@ public interface RestDAO {
 	int update(RestVO restVO);
 	int delete(Integer restId);
 	RestVO findByPK(Integer restId);
+	RestVO findByAdmin(Integer adminId);
 	List<RestVO> getAll();
 	List<RestVO> showRest();
-//	List<Object> getAllandAdmin();
+
 }

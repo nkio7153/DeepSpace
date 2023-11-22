@@ -36,6 +36,7 @@
 	          	  <input type="hidden" name="restId" value="${rest.restId}">
 	          	  <div class="col-12">
 				    <label for="restName" class="form-label">餐廳名稱</label>
+				    <label class="text-danger">${errorMsgs.restName}</label>
 				  </div>
 				  <div class="col-6 mb-2">
 				    <input type="text" class="form-control preserve-whitespace" id="restName" name="restName" value="${rest.restName}">
@@ -43,13 +44,16 @@
 				  
 				  <div class="col-12">
 				    <label for="restTel" class="form-label">餐廳電話</label>
+				    <label class="text-danger">${errorMsgs.restTel}</label>
 				  </div>
 				  <div class="col-6 mb-2">
 				    <input type="text" class="form-control" id="restTel" name="restTel" value=${rest.restTel}>
+				    
 				  </div>
 				  
 				  <div class="col-12">
 				    <label for="restAddress" class="form-label">餐廳地址</label>
+				    <label class="text-danger">${errorMsgs.restAddress}</label>
 				  </div>
 				  <div class="col-6 mb-2">
 				    <input type="text" class="form-control" id="restAddress" name="restAddress" value=${rest.restAddress}>
@@ -57,6 +61,7 @@
 				  
 				  <div class="col-12">
 				    <label for="restType" class="form-label">餐廳類型</label>
+				    <label class="text-danger">${errorMsgs.restType}</label>
 				  </div>
 				  <div class="col-6 mb-2">
 				    <input type="text" class="form-control" id="restType" name="restType" value=${rest.restType}>
@@ -64,6 +69,7 @@
 				  
 				  <div class="col-12">
 				    <label for="restOpen" class="form-label">營業時間</label>
+				    <label class="text-danger">${errorMsgs.restOpen}</label>
 				  </div>
 				  <div class="col-6 mb-2">
 				    <input id="restOpen" type="text" class="form-control" name="restOpen" value=${rest.restOpen}>
@@ -81,6 +87,7 @@
 				  
 				  <div class="col-12">
 				    <label for="bookingLimit" class="form-label">預設可訂位組數</label>
+				    <label class="text-danger">${errorMsgs.bookingLimit}</label>
 				  </div>
 				  <div class="col-auto mb-2">
 				    <input type="number" class="form-control" id="bookingLimit" name="bookingLimit" value=${rest.bookingLimit}>
@@ -88,6 +95,7 @@
 				  
 				  <div class="col-12">
 				    <label for="restText" class="form-label">餐廳簡介</label>
+				    <label class="text-danger">${errorMsgs.restText}</label>
 				  </div>
 				  <div class="col-12 mb-2">
 				    <textarea class="form-control" id="restText" name="restText" rows="4" required>${rest.restText}</textarea>
@@ -109,9 +117,18 @@
 				  <div class="col-12">
 				    <label for="adminId" class="form-label">管理員ID</label>
 				  </div>
-				  <div class="col-auto mb-2">
-				    <input type="number" class="form-control" id="adminId" name="adminId" value=${rest.adminVO.adminId}>
-				  </div>
+				  <select class="col-3" id="adminId" name="adminId">
+					  <c:forEach var="admin" items="${adminlist}">
+							<c:choose>
+					            <c:when test="${admin.adminId eq rest.adminVO.adminId}">
+					                <option value="${admin.adminId}" selected>${admin.adminAcc}</option>
+					            </c:when>
+					            <c:otherwise>
+					                <option value="${admin.adminId}">${admin.adminAcc}</option>
+					            </c:otherwise>
+					        </c:choose>
+					  </c:forEach>
+				  </select>
 				  
 				  <div class="col-12">
 				    <button type="submit" class="btn btn-primary">修改</button>
