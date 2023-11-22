@@ -47,6 +47,7 @@
         background-color: rgb(13 110 253 / 16%);
         font-size: 12px;
     }
+    
 	</style>
     
     
@@ -146,21 +147,22 @@
 							</a>
 			            </li>
 			            </div>
-                        </c:if>
-                        <li class="">
-                            <a href="${pageContext.request.contextPath}/tsc/memCartList" onclick="checkSession(event)"><img
-                               src="${pageContext.request.contextPath}/indexpage/images/shoppingcar.svg"
-                               alt=""
-                               style="width: 2em"/></a>
-                        </li>
-                        <span id="cartNum" style="position: absolute; top: 30px; right: 0; background-color: transparent; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8em;">
-
-                        </span>
+                        </c:if>                      
+						<li class="">
+						    <a href="${pageContext.request.contextPath}/tsc/memCartList" onclick="checkSession(event)">
+						        <div style="position: relative; display: inline-block;">
+						            <img src="${pageContext.request.contextPath}/indexpage/images/shoppingcar.svg" style="width: 2em"/>
+						            <span id="cartNum" style="position: absolute;top: -8px;right: -12px;background-color: red;border-radius: 50%;padding: 0px 6px;"></span>
+						        </div>
+						    </a>
+						</li>                    
                     </ul>
                 </div>
             </div>
         </nav>
     </div>
+<!--                                <span class="badge" id="cartNum" style="position: absolute; top: 30px; right: 0; background-color: transparent; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8em;"> -->
+<!--                         </span> -->
 <script>
     if ("WebSocket" in window) {
         var ws = new WebSocket("ws://localhost:8081/DepthSpace/notifications");
