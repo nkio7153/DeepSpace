@@ -59,7 +59,13 @@
 /*  		    max-width: 300px; */
 /*  		    padding-right: 30px; */
  		}
-	    
+	    #preview_img {
+			 border-radius: 60px;
+			 width: 120px;
+			 height: 120px;
+			 object-fit: cover;
+			 outline: none;
+		 }
         
 
     </style>
@@ -160,6 +166,8 @@
 	                <label for="memIdentity" class="col-sm-2 col-form-label text-right">身分證字號:</label>
 	                <div class="col-sm-8">
 	                    <input type="text" class="form-control" id="memIdentity" name="memIdentity" value="${mem.memIdentity}" required>
+	                	<br>
+	                	<div id="result_Id" style="color: red;"></div>
 	                </div>
 	            </div>
             </div>
@@ -168,7 +176,8 @@
 	            <div class="form-group row justify-content-center">
 	                <label for="memBth" class="col-sm-2 col-form-label text-right">生日:</label>
 	                <div class="col-sm-8">
-	                    <input type="date" class="form-control" id="memBth" name="memBth" value="${mem.memBth}" required>
+	                    <input type="date" class="form-control" id="memBth" name="memBth" value="${mem.memBth}" required
+	                    max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
 	                </div>
 	            </div>
             </div>
@@ -228,22 +237,25 @@
 	            </div>
             </div>
 
-			<div class="row">
-	            <div class="form-group row justify-content-center">
-	                <label for="accStatus" class="col-sm-2 col-form-label text-right">狀態:</label>
-	                <div class="col-sm-8">
-	                    <select class="form-control" id="accStatus" name="accStatus">
-	                        <option value="1">正常使用中</option>
-	                        <!-- <option value="0" style="display: none;">停用</option> -->
-	                    </select>
-	                </div>
-	            </div>
-	        </div>
+<!-- 			<div class="row"> -->
+<!-- 	            <div class="form-group row justify-content-center"> -->
+<!-- 	                <label for="accStatus" class="col-sm-2 col-form-label text-right">狀態:</label> -->
+<!-- 	                <div class="col-sm-8"> -->
+<!-- 	                    <select class="form-control" id="accStatus" name="accStatus"> -->
+<!-- 	                        <option value="1">正常使用中</option> -->
+<!-- 	                        <option value="0" style="display: none;">停用</option> -->
+<!-- 	                    </select> -->
+<!-- 	                </div> -->
+<!-- 	            </div> -->
+<!-- 	        </div> -->
+
+			<input type="hidden" id="accStatus" name="accStatus" value="1">
 
 			<div class="row">
 	            <div class="form-group row justify-content-center">
 	                <label for="memImage" class="col-sm-2 col-form-label text-right">會員圖片:</label>
 	                <div class="col-sm-8">
+<!-- 	                預覽圖 -->
 	                    <input type="file" class="form-control-file" id="picture" name="memImage">
 	                    <div class="preview mt-2">
 	                        <img id="preview_img" class="preview_jpg img-fluid">
@@ -335,6 +347,20 @@
             flag = 0;
         }
     }
+    //驗證身分證
+    $("#memIdentity").on('blur', function() {
+	    var id = $("#memIdentity").val().trim();
+	    console.log(id); // 注意這裡應該是 id 而不是 memIdentity
+	
+	    var memIdCheck = /^[A-Z][12]\d{8}$/;
+	    if (memIdCheck.test(id)) {
+	        $("#result_Id").text(""); // 使用 jQuery 簡化修改文字內容的操作
+	        isMemIdValid = true;
+	    } else {
+	        $("#result_Id").text("身分字號不符合規格，首字需大寫");
+	        isMemIdValid = false;
+	    }
+	});
 
     
     

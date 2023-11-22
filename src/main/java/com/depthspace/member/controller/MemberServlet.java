@@ -146,34 +146,45 @@ public class MemberServlet extends HttpServlet {
 		System.out.println("memAcc=" + memAcc);
 		HbMemService hbms = new HbMemService();
 		List<MemVO> list = hbms.getAll();
+		boolean account = false;
 		
 		for (MemVO memVO : list) {
 		    String memAllAcc = memVO.getMemAcc();
 		    
 		    if (memAcc != null && memAcc.equals(memAllAcc)) {
-				String data = "false";
-				setJsonResponse(resp, data);
-				System.out.println("帳號已存在，帳號不可使用");
-				return;
-			} else {
-				String data = "true";
-				setJsonResponse(resp, data);
-				System.out.println("無此帳號，帳號可用");
-				return;
-			}
+		    	account = true;
+	            break;  // 找到相符的帳號後即可跳出迴圈
+	        }
 		    
 		}
 		
+		 if (account) {
+		        String data = "false";
+		        setJsonResponse(resp, data);
+		        System.out.println("帳號已存在，帳號不可使用");
+		    } else {
+		        String data = "true";
+		        setJsonResponse(resp, data);
+		        System.out.println("無此帳號，帳號可用");
+		    }
+		
+//		if (memAcc != null && memAcc.equals(memAllAcc)) {
+//			String data = "false";
+//			setJsonResponse(resp, data);
+//			System.out.println("帳號已存在，帳號不可使用");
+//			return;
+//		} else {
+//			String data = "true";
+//			setJsonResponse(resp, data);
+//			System.out.println("無此帳號，帳號可用");
+//			return;
+//		}
 //		try {
 //			membersVO = memsSvc.getOneByMemAcc(memaccount);
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //			// 處理異常
 //		}
-
-		
-		
-		
 	}
 	private void doCheckVerify(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String memAcc = req.getParameter("memAcc");
