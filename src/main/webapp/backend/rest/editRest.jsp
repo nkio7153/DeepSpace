@@ -8,6 +8,7 @@
     <%-- include head.jsp--%>
     <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
   </head>
 	
 	<style>
@@ -15,6 +16,9 @@
 		    width: 300px;
             height: 150px;
 		}
+		.preserve-whitespace {
+        	white-space: pre-line;
+    	}
 	</style>
   <body>
     <%--include header.jsp--%>
@@ -34,7 +38,7 @@
 				    <label for="restName" class="form-label">餐廳名稱</label>
 				  </div>
 				  <div class="col-6 mb-2">
-				    <input type="text" class="form-control" id="restName" name="restName" value=${rest.restName}>
+				    <input type="text" class="form-control preserve-whitespace" id="restName" name="restName" value="${rest.restName}">
 				  </div>
 				  
 				  <div class="col-12">
@@ -83,10 +87,13 @@
 				  </div>				    
 				  
 				  <div class="col-12">
-				    <label for="adminId" class="form-label">管理員ID</label>
+				    <label for="restText" class="form-label">餐廳簡介</label>
 				  </div>
-				  <div class="col-auto mb-2">
-				    <input type="number" class="form-control" id="adminId" name="adminId" value=${rest.adminVO.adminId}>
+				  <div class="col-12 mb-2">
+				    <textarea class="form-control" id="restText" name="restText" rows="4" required>${rest.restText}</textarea>
+					<script>
+						CKEDITOR.replace('restText');
+					</script>
 				  </div>
 				  
 				  <div class="col-12">
@@ -99,6 +106,13 @@
 					<input class="form-control" type="file" id="formFile" name="uploadimg">
 				  </div>
 					
+				  <div class="col-12">
+				    <label for="adminId" class="form-label">管理員ID</label>
+				  </div>
+				  <div class="col-auto mb-2">
+				    <input type="number" class="form-control" id="adminId" name="adminId" value=${rest.adminVO.adminId}>
+				  </div>
+				  
 				  <div class="col-12">
 				    <button type="submit" class="btn btn-primary">修改</button>
 				  </div>

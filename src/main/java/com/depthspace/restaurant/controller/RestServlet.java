@@ -112,7 +112,7 @@ public class RestServlet extends HttpServlet {
 		req.setAttribute("errorMsgs", errorMsgs);
 		
 		String restName = req.getParameter("restName");
-		if (restName.isEmpty() || restName == null || restName.trim().length() == 0) {
+		if (restName.isEmpty() || restName == null || restName.length() == 0) {
 			errorMsgs.add("餐廳名稱請勿空白");
 		}
 		String restTel = req.getParameter("restTel");
@@ -147,9 +147,9 @@ public class RestServlet extends HttpServlet {
 		rest.setRestOpen(restOpen);
 		rest.setRestStatus(Integer.valueOf(req.getParameter("restStatus")));
 		rest.setBookingLimit(bookingLimit);
+		rest.setRestText(req.getParameter("restText"));
 		admin = hbAdminService.getOneAdmin(Integer.parseInt(req.getParameter("adminId")));
 		rest.setAdminVO(admin);
-		
 		String restId = Integer.toString(restService.addRest(rest));
 		saveImg(restId, req.getPart("uploadimg"));
 		
@@ -179,6 +179,7 @@ public class RestServlet extends HttpServlet {
 		rest.setRestOpen(req.getParameter("restOpen"));
 		rest.setRestStatus(Integer.parseInt(req.getParameter("restStatus")));
 		rest.setBookingLimit(Integer.parseInt(req.getParameter("bookingLimit")));
+		rest.setRestText(req.getParameter("restText"));
 		admin = hbAdminService.getOneAdmin(Integer.parseInt(req.getParameter("adminId")));
 		rest.setAdminVO(admin);
 		rest.setRestId(Integer.parseInt(req.getParameter("restId")));

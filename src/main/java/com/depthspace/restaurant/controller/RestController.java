@@ -122,7 +122,6 @@ public class RestController extends HttpServlet {
 		RestVO restList = restService.getRestByRestId(Integer.valueOf(restId));
 		req.setAttribute("rest", restList);
 		
-		
 		// booking
 		HttpSession session = req.getSession();
 		Integer memId = (Integer) session.getAttribute("memId");
