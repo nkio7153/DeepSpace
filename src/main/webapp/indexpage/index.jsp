@@ -10,7 +10,6 @@
   align-items: end;
 }
 
-/* 如果您希望.counter在水平方向上也居中對齊 */
 .counter {
   display: flex;
   justify-content: center;

@@ -177,19 +177,7 @@ $(document).ready(function() {
             }
         });
     });
-    
-//     $.ajax({
-//         type: "post",
-<%--         url: '<%=request.getContextPath()%>/forumArticles.do?action=getmemlist', --%>
-//         dataType: "json",
-//         success: function(data) {
-//             var selectBox = $("#memId");
-//             selectBox.empty(); 
-//             $.each(data, function(index, value) {
-//                 selectBox.append($("<option></option>").attr("value", value).text(value));
-//             });
-//         }
-//     });
+
     
 	    $.ajax({
 	        type: "post",
