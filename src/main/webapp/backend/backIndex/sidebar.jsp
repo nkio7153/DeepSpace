@@ -98,20 +98,20 @@
                     </div>
                 </li>
 
-                <!-- 網頁管理 -->
+                <!-- 文章管理 -->
                 <li class="nav-item mb-2">
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                       data-bs-target="#collapseWebManagement" aria-expanded="true"
-                       aria-controls="collapseWebManagement">
-                                <span class="text-light fs-5">網頁管理 <i
+                       data-bs-target="#collapseArticleManagement" aria-expanded="true"
+                       aria-controls="collapseArticleManagement">
+                                <span class="text-light fs-5">文章管理 <i
                                         class="fa-solid fa-angle-down"></i></span>
                     </a>
-                    <div id="collapseWebManagement" class="collapse" aria-labelledby="headingWebManagement"
+                    <div id="collapseArticleManagement" class="collapse" aria-labelledby="headingArticleManagement"
                          data-bs-parent="#sidebar-wrapper">
                         <div class="color-4-1 py-2 collapse-inner rounded">
-                            <a class="text-choco collapse-item fs-6 offset-1" href="#">文章管理</a>
+                            <a class="text-choco collapse-item fs-6 offset-1" href="#">文章列表</a>
                             <br>
-                            <a class="text-choco collapse-item fs-6 offset-1" href="#">檢舉管理</a>
+                            <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/reportarticles/list.jsp">檢舉管理</a>
                         </div>
                     </div>
                 </li>
