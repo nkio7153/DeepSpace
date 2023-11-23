@@ -113,22 +113,25 @@
 				  <div class="col-auto mb-2">
 					<input class="form-control" type="file" id="formFile" name="uploadimg">
 				  </div>
-					
-				  <div class="col-12">
-				    <label for="adminId" class="form-label">管理員ID</label>
-				  </div>
-				  <select class="col-3" id="adminId" name="adminId">
-					  <c:forEach var="admin" items="${adminlist}">
-							<c:choose>
-					            <c:when test="${admin.adminId eq rest.adminVO.adminId}">
-					                <option value="${admin.adminId}" selected>${admin.adminAcc}</option>
-					            </c:when>
-					            <c:otherwise>
-					                <option value="${admin.adminId}">${admin.adminAcc}</option>
-					            </c:otherwise>
-					        </c:choose>
-					  </c:forEach>
-				  </select>
+				  
+					<div class="col-12">
+				    <label id="adminblock" for="adminId" class="form-label">管理員</label>
+					  </div>
+					  <select class="col-3" id="adminId" name="adminId">
+						  <c:forEach var="admin" items="${adminlist}">
+								<c:choose>
+						            <c:when test="${admin.adminId eq rest.adminVO.adminId}">
+						                <option value="${admin.adminId}" selected>${admin.adminAcc}</option>
+						            </c:when>
+						            <c:otherwise>
+						                <option value="${admin.adminId}">${admin.adminAcc}</option>
+						            </c:otherwise>
+						        </c:choose>
+						  </c:forEach>
+					  </select>
+				  
+				  
+				  
 				  
 				  <div class="col-12">
 				    <button type="submit" class="btn btn-primary">修改</button>
@@ -140,6 +143,13 @@
     <script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
     <script>
     	$(function(){
+    		
+    		let admin = ${admin.adminFuncName};
+    		if (admin === 1){
+    			$("#adminblock").css('display','none');
+    			$("#adminId").css('display','none');
+    		}
+    		
     		let restStatus = "${rest.restStatus}";
     		console.log(restStatus);
     		console.log("${rest.restOpen}");

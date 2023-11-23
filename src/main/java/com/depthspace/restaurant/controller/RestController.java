@@ -140,7 +140,12 @@ public class RestController extends HttpServlet {
 	private void toRedis(String vo) {
 		Jedis jedis = JedisUtil.getJedisPool().getResource();
 		jedis.select(15);
-		if (!jedis.exists("rests")) {
+//		if (!jedis.exists("rests")) {
+//			jedis.set("rests", vo);
+//		}
+		// 暫時處理修改優化
+		if (jedis.exists("rests")) {
+			jedis.del("rests", vo);
 			jedis.set("rests", vo);
 		}
 		jedis.close();

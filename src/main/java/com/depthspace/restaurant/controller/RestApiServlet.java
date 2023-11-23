@@ -22,6 +22,8 @@ import javax.servlet.http.HttpSession;
 import com.depthspace.admin.model.AdminVO;
 import com.depthspace.admin.service.HbAdminService;
 import com.depthspace.member.model.MemVO;
+import com.depthspace.member.service.HbMemService;
+import com.depthspace.member.service.MemberService;
 import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO;
@@ -48,6 +50,7 @@ public class RestApiServlet extends HttpServlet {
 	private MemBookingService memBookingService;
 	private RestBookingDateService restBookingDateService;
 	private HbAdminService hbAdminService;
+	private HbMemService mem;
 	
 	@Override
 	public void init() throws ServletException {
@@ -56,6 +59,7 @@ public class RestApiServlet extends HttpServlet {
 		memBookingService = new MemBookingServiceImpl();
 		restBookingDateService = new RestBookingDateServiceImpl();
 		hbAdminService = new HbAdminService();
+		mem = new HbMemService();
 		gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
 								.setDateFormat("yyyy-MM-dd").create();
 	}
@@ -292,8 +296,6 @@ public class RestApiServlet extends HttpServlet {
 					vo.setBookingNumber(Integer.parseInt(req.getParameter("bookingNumber")));
 					vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
 					int pk = memBookingService.add(vo);
-					System.out.println("PK "+ pk);
-					System.out.println("=============================================================");
 					out.print(gson.toJson(pk));
 				} catch (Exception e) {
 					out.print("ERROR");
@@ -362,7 +364,6 @@ public class RestApiServlet extends HttpServlet {
 					vo.setNoonNum(Integer.valueOf(req.getParameter("noonNum")));
 					vo.setEveningNum(Integer.valueOf(req.getParameter("eveningNum")));
 					restBookingDateService.update(vo);
-					System.out.println("========================"+vo);
 					out.print("SUCCESS");
 				} catch (Exception e) {
 					out.print("ERROR");
@@ -411,7 +412,6 @@ public class RestApiServlet extends HttpServlet {
 							break;
 						}
 					}
-//					System.out.println(vo.toString());
 					if (status == 1) {
 						out.print("SUCCESS");
 					}
@@ -431,6 +431,7 @@ public class RestApiServlet extends HttpServlet {
 //		Integer memId = (Integer) session.getAttribute("memId");
 //		Integer memId = mem.getMemId();
 		String memName = mem.getMemName();
+		Integer memTel = mem.getMemTel();
 		String restName = req.getParameter("restName");
 		String restAddress = req.getParameter("restAddress");
 		String bookingTime = req.getParameter("bookingTime");
@@ -461,6 +462,7 @@ public class RestApiServlet extends HttpServlet {
 		msg.append("<p>餐廳名稱： "+restName);
 		msg.append("<p>餐廳地址： "+restAddress);
 		msg.append("<p>會員名稱； "+memName);
+		msg.append("<p>會員電話； "+memTel);
 		msg.append("<p>預約日期： "+bookingDate);
 		msg.append("<p>預約時段： "+bookingTime);
 		msg.append("<p>預約人數： "+bookingNumber+"人<br>");
@@ -470,7 +472,6 @@ public class RestApiServlet extends HttpServlet {
         String uri = "/RestApi/getcheckBooking?bookingId=" + bookingId;
         System.out.println(url + uri);
         String img = "<img src=https://chart.googleapis.com/chart?cht=qr&chl=" + url + uri + "&chs=150x150 />";
-        System.out.println(img);
 		msg.append(img);
 		// 將HTML內容加進body再加進Multipart
 		try {
@@ -492,11 +493,23 @@ public class RestApiServlet extends HttpServlet {
 	}
 	
 	private void checkBooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		AdminVO admin = (AdminVO) session.getAttribute("admin");
+		Integer adminId = admin.getAdminId();
 		MemBookingVO mb = memBookingService.getByMembookingId(Integer.valueOf(req.getParameter("bookingId")));
-		req.setAttribute("mb", mb);
-		String forwardPath = "/backend/rest/checkBooking.jsp";
-		RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
-		dispatcher.forward(req, resp);
+		if (adminId == mb.getRestVO().getAdminVO().getAdminId()) {
+			MemVO memVO = mem.getOneMem(mb.getMemId());
+			req.setAttribute("mb", mb);
+			req.setAttribute("mem", memVO);
+			String forwardPath = "/backend/rest/checkBooking.jsp";
+			RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
+			dispatcher.forward(req, resp);
+		} else if (adminId != mb.getRestVO().getAdminVO().getAdminId()) {
+			RequestDispatcher dispatcher = req.getRequestDispatcher("/admin/login.jsp");
+			dispatcher.forward(req, resp);
+		}
+		
+		
 	}
 	
 	

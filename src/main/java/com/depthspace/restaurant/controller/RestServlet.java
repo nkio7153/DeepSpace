@@ -293,6 +293,7 @@ public class RestServlet extends HttpServlet {
 			RestVO restVO = restService.findByAdmin(adminId);
 			Integer restId = restVO.getRestId();
 			List<RestBookingDateVO> bookDate = bookingDateService.getById(Integer.valueOf(restId));
+			req.setAttribute("admin", admin);
 			req.setAttribute("bookDate", bookDate);
 			return "/backend/rest/listBookingDate.jsp";
 		}
