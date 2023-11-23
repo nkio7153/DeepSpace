@@ -34,4 +34,9 @@ public class ArticleReportServiceImpl implements ArticleReportService{
 		return dao.getByArticleReportId(articleReportId);
 	}
 
+	@Override
+	public List<ArticleReportVO> getByReportStatus(Byte reportStatus) {
+		return dao.getByReportStatus(reportStatus);
+	}
+
 }

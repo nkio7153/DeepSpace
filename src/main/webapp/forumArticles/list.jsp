@@ -42,7 +42,6 @@ $(document).ready(function() {
                             '<div class="card-text hidden">'  + cleanArtiText + '</div>' +
                         '</div>' +
                         '<ul class="list-group list-group-flush">' +                       
-                            '<li class="list-group-item hidden-status">訊息ID: ' + item.msgId + '</li>' +
                             '<li class="list-group-item hidden-status">文章類型: ' + item.artiTypeId + '</li>' +
                             '<li class="list-group-item hidden-status">文章編號: ' + item.articleId + '</li>' +
                             '<li class="list-group-item hidden-status likeicon">'  + item.artiLk +  '</li>' +
@@ -97,8 +96,7 @@ $(document).ready(function() {
     	                            '<h5 class="card-title">' + item.artiTitle + '</h5>' +
     	                            '<div class="card-text hidden">'  + cleanArtiText + '</div>' +
     	                        '</div>' +
-    	                        '<ul class="list-group list-group-flush">' +                       
-    	                            '<li class="list-group-item hidden-status">訊息ID: ' + item.msgId + '</li>' +
+    	                        '<ul class="list-group list-group-flush">' +                           	                
     	                            '<li class="list-group-item hidden-status">文章類型: ' + item.artiTypeId + '</li>' +
     	                            '<li class="list-group-item hidden-status">文章編號: ' + item.articleId + '</li>' +
     	                            '<li class="list-group-item hidden-status likeicon">'  + item.artiLk +  '</li>' +
@@ -485,7 +483,7 @@ $(document).ready(function() {
         </div>
     </div>
 </div>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script> -->
 <jsp:include page="../indexpage/footer.jsp" />
 </body>
 </html>

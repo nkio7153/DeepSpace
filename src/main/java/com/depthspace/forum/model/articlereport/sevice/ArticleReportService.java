@@ -12,4 +12,7 @@ public interface ArticleReportService {
 	List<ArticleReportVO> getAll();
 	
 	ArticleReportVO getByArticleReportId(Integer articleReportId);
+	
+	// 根據檢舉狀態取得符合的所有檢舉
+	List<ArticleReportVO> getByReportStatus(Byte reportStatus);
 }

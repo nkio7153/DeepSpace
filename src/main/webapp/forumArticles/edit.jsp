@@ -129,7 +129,6 @@ function previewImage(event) {
                     </td>
                 </tr>
             </table>
-            <input type="hidden" name="msgId" id="msgId" value="${param.msgId}">
             <input type="hidden" name="memId" id="memId" value="${param.memId}">
             <input type="hidden" name="artiTime" id="artiTime" value="${param.formattedDate}">
             <input type="hidden" name="articleId" id="articleId" value="${param.articleId}">
