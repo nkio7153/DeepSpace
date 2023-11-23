@@ -5,39 +5,69 @@
 <jsp:include page="../indexpage/head.jsp" />
     <title>忘記密碼</title>
      <style>
-        .center-form { 
-             display: flex; 
-             flex-direction: column; 
-             align-items: center; 
-         } 
-
-         form { 
-             width: 50%; /* 設置表單寬度，可以根據需要進行調整 */
-             text-align: center;
-         } 
-/*         .center-button { */
-/*             text-align: center; */
-            
-/*         } */	
-         #input, #verifyBtn {
-		    width: 65px; /* 設置按鈕的寬度，可以根據需要進行調整 */
-		    font-size: 20px;
-		    color: #fff;
-		    background-color: #008CBA;
-		    border: none;
-		    padding: 7px; /* 設置按鈕的內邊距，可以根據需要進行調整 */
-		    cursor: pointer;
-		    border-radius: 6px;
-		    margin: 8px; /* 設置按鈕的外邊距，可以根據需要進行調整 */
-		}
-    </style>
+	    body {
+	        background-color: #f7f7f7;
+	        font-family: Arial, sans-serif;
+	    }
+	
+	    .center-form {
+	        display: flex;
+	        flex-direction: column;
+	        align-items: center;
+	        max-width: 400px;
+	        margin: 50px auto;
+	        padding: 20px;
+	        background-color: #ffffff;
+	        border-radius: 8px;
+	        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	    }
+	
+	    form {
+	        width: 100%;
+	        text-align: center;
+	    }
+	
+	    .mb-3 {
+	        margin-bottom: 15px;
+	    }
+	
+	    input {
+	        width: 100%;
+	        padding: 8px;
+	        border: 1px solid #cccccc;
+	        border-radius: 4px;
+	    }
+	
+	    #input, #verifyBtn {
+	        width: 100%;
+	        padding: 10px;
+	        border: none;
+	        background-color: #267af7ba;
+	        color: white;
+	        border-radius: 4px;
+	        cursor: pointer;
+	    }
+	
+	    #input:hover, #verifyBtn:hover {
+	        background-color: #5998f6ba;
+	    }
+	
+	    #password, #verify {
+	        display: none;
+	    }
+	    h6 {
+	    	font-size: 0.8rem;
+	    	margin-top: 10px;
+	    	color: #7D8E95;
+	    }
+	</style>
 </head>
 <body>
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp" />
     <div class="center-form"> 
-        <h2>FORGET PASSWORD 忘記密碼</h2>
-            <h6>系統會自動將密碼寄到您的信箱中，確認送出後再請留意收取唷!</h6>
+        <h2>忘記密碼</h2>
+           
             
             <div id="forgetPassword">
 	            <div class="mb-3 mt-3">
@@ -50,12 +80,11 @@
 	           <div class="center-button">
 	                <input type="submit" id="input" value="提交" onclick="submitForm()">
 	            </div>
+	             <h6>密碼將寄到您的信箱，送出後請收信!</h6>
             </div>
-    </div>
-    
-    	<!-- 新的輸入框和按鈕 -->
+            <!-- 新的輸入框和按鈕 -->
 <%-- 	    <form id="password" action="${pageContext.request.contextPath}/member/login.jsp" method="post"> --%>
-	        <div id="verify" style="display:none;"  class="center-form">
+	        <div id="verify" style="display:none;"  class="m-0 center-form">
 	            <div class="mb-3 mt-3">
 	                <input type="text" name="password" id="password" placeholder="輸入驗證碼">
 	            </div>
@@ -65,6 +94,9 @@
 	            </div>
 	        </div>
 <!--         </form> -->
+    </div>
+    
+    	
 <script type="text/javascript">
 let error='${param.error}';
 
@@ -90,9 +122,9 @@ function verifyCode() {
         success: function(response) {
         	console.log(response)
             if (response === 'success') {
-                alert("驗證成功，導回登入");
+                alert("驗證成功，請先更換密碼");
                 
-                window.location.href = "${pageContext.request.contextPath}/member/success.jsp";
+                window.location.href = "${pageContext.request.contextPath}/member/changePassword.jsp";
             } else {
                 alert("驗證碼輸入錯誤，請從新輸入");
             }
@@ -118,6 +150,7 @@ function submitForm() {
                 alert("提交成功，密碼將寄送到您的信箱中！");
                 
                 //驗證畫面打開，輸入畫面藏起
+                $("#password").show();
                 $("#verify").show();
                 $("#forgetPassword").hide();
             } else {
