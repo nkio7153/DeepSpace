@@ -236,7 +236,7 @@ public class TicketServlet extends HttpServlet {
 		res.getWriter().write(jsonTicket.toString());
 	}
 
-	/************ 票券修改 圖片更新尚須修正 ************/
+	/************ 票券修改 ************/
 	protected void doEdit(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
 		TicketVO ticket = ticketService.getTicketById(ticketId);
@@ -319,65 +319,6 @@ public class TicketServlet extends HttpServlet {
 		return null;
 	}
 
-//	private void updateExistingImage(Part part, TicketVO ticket) throws IOException, ServletException {
-//	    // 從 part 名稱取圖片 ID
-//	    String partName = part.getName();
-//	    Integer imageId = Integer.parseInt(partName.substring(6)); 
-//
-//	    // 根據 imageId 
-//	    TicketImagesVO ticketImage = ticketImagesService.getImageById(imageId);
-//
-//	    if (ticketImage != null) {
-//	        // 讀取圖片並更新
-//	        InputStream inputStream = part.getInputStream();
-//	        byte[] imageBytes = readInputStream(inputStream);
-//	        ticketImage.setImage(imageBytes);
-//
-//	        // 更新數據庫中的圖片
-//	        ticketImagesService.saveOrUpdateImage(ticketImage);
-//	    }
-//	}
-//
-//	private void uploadNewImage(Part part, TicketVO ticket) throws IOException, ServletException {
-//	    TicketImagesVO newTicketImage = new TicketImagesVO();
-//	    newTicketImage.setTicket(ticket);
-//	    newTicketImage.setIsMainImage((byte) 0); // 設定是否為主圖
-//
-//	    // 讀取並設置圖片數據
-//	    InputStream inputStream = part.getInputStream();
-//	    byte[] imageBytes = readInputStream(inputStream);
-//	    newTicketImage.setImage(imageBytes);
-//
-//	    // 保存新圖片到數據庫
-//	    ticketImagesService.save(newTicketImage);
-//	}
-
-//	// 存入多張圖片
-//	Collection<Part> fileParts = req.getParts(); // 多份圖
-//	boolean isFirstImage = true; // 標記是否為第一張圖
-//	List<TicketImagesVO> ticketImagesList = new ArrayList<>(); // 創建一個列表來收集所有的TicketImagesVO
-//
-//	for (Part filePart : fileParts) {
-//		if (filePart.getName().equals("ticketImages[]") && filePart.getSize() > 0) {
-//			TicketImagesVO ticketImage = new TicketImagesVO();
-//			ticketImage.setTicket(ticket);
-//
-//			// 判斷第一張圖則為主圖→byte=1
-//			if (isFirstImage) {
-//				ticketImage.setIsMainImage((byte) 1);
-//				isFirstImage = false;
-//			} else {
-//				ticketImage.setIsMainImage((byte) 0);
-//			}
-//
-//			// 讀取圖片並存入
-//			InputStream inputStream = filePart.getInputStream();
-//			byte[] imageBytes = readInputStream(inputStream);
-//			ticketImage.setImage(imageBytes);
-//			ticketImagesList.add(ticketImage);
-//			// 儲存所有圖片
-//			ticketImagesService.saveAll(ticketImagesList);
-
 	/************ 票券搜尋 ************/
 	protected void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		Integer ticketTypeId = null;
@@ -427,16 +368,13 @@ public class TicketServlet extends HttpServlet {
 			List<TicketVO> ticketNameList = ticketService.getTicketsByCompositeQuery(map);
 			list.addAll(ticketNameList);
 		}
+		
+		
 		System.out.println(list);
 		req.setAttribute("list", list);
 		req.getRequestDispatcher("/backend/ticket/find.jsp").forward(req, res);
 	}
 
-//	/************ 票券刪除 ************/
-//    protected void doDel(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-//		Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));
-//		ticketService.deleteTicket(ticketId);
-//	}
 
 	/************ 圖片讀入DB ************/
 

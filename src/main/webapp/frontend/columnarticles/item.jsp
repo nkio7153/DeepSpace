@@ -63,6 +63,9 @@
     padding-bottom: 10px;
 	
 	}
+	.article p {
+	margin: 10px;
+	}
 
 </style>
 
