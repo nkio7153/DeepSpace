@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.depthspace.admin.filter.LoginFilter;
 import com.depthspace.admin.model.AdminVO;
 import com.depthspace.admin.service.HbAdminService;
 import com.depthspace.member.model.MemVO;
@@ -493,23 +494,39 @@ public class RestApiServlet extends HttpServlet {
 	}
 	
 	private void checkBooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
 		HttpSession session = req.getSession();
 		AdminVO admin = (AdminVO) session.getAttribute("admin");
-		Integer adminId = admin.getAdminId();
-		MemBookingVO mb = memBookingService.getByMembookingId(Integer.valueOf(req.getParameter("bookingId")));
-		if (adminId == mb.getRestVO().getAdminVO().getAdminId()) {
-			MemVO memVO = mem.getOneMem(mb.getMemId());
-			req.setAttribute("mb", mb);
-			req.setAttribute("mem", memVO);
-			String forwardPath = "/backend/rest/checkBooking.jsp";
-			RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
-			dispatcher.forward(req, resp);
-		} else if (adminId != mb.getRestVO().getAdminVO().getAdminId()) {
+		String path = (String) session.getAttribute("location");
+		
+		if (admin != null) {
+			Integer adminId = admin.getAdminId();
+			MemBookingVO mb = memBookingService.getByMembookingId(Integer.valueOf(req.getParameter("bookingId")));
+			if (adminId == mb.getRestVO().getAdminVO().getAdminId()) {
+				MemVO memVO = mem.getOneMem(mb.getMemId());
+				req.setAttribute("mb", mb);
+				req.setAttribute("mem", memVO);
+				String forwardPath = "/backend/rest/checkBooking.jsp";
+				RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
+				dispatcher.forward(req, resp);
+			} 
+		} else {
+			System.out.println("重新登入");
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/admin/login.jsp");
 			dispatcher.forward(req, resp);
 		}
 		
-		
+//		 	Integer bookingId = Integer.valueOf(req.getParameter("bookingId"));
+//		    MemBookingVO mb = memBookingService.getByMembookingId(bookingId);
+//
+//		    // 无需再次检查用户登录状态，由 LoginFilter 负责处理
+//		    MemVO memVO = mem.getOneMem(mb.getMemId());
+//		    req.setAttribute("mb", mb);
+//		    req.setAttribute("mem", memVO);
+//		    
+//		    String forwardPath = "/backend/rest/checkBooking.jsp";
+//		    RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
+//		    dispatcher.forward(req, resp);
 	}
 	
 	

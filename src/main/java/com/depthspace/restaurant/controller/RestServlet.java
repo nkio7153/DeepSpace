@@ -191,13 +191,17 @@ public class RestServlet extends HttpServlet {
 		Integer adminId = admin.getAdminId();
 		Byte adminFunName = admin.getAdminFuncName();
 		if (adminId != null && adminFunName == 1) {
-			RestVO restVO = restService.findByAdmin(adminId);
-			Integer restId = restVO.getRestId();
-			RestVO restList = restService.getRestByRestId(restId);
-			req.setAttribute("rest", restList);
-			List<AdminVO> adminlist = hbAdminService.getAll();
-			req.setAttribute("adminlist", adminlist);
-			return "/backend/rest/editRest.jsp";
+			try {
+				RestVO restVO = restService.findByAdmin(adminId);
+				Integer restId = restVO.getRestId();
+				RestVO restList = restService.getRestByRestId(restId);
+				req.setAttribute("rest", restList);
+				List<AdminVO> adminlist = hbAdminService.getAll();
+				req.setAttribute("adminlist", adminlist);
+				return "/backend/rest/editRest.jsp";
+			} catch (Exception e) {
+				return "/backend/backIndex/index.jsp";
+			}
 		}
 		String restId = req.getParameter("restId");
 		RestVO restList = restService.getRestByRestId(Integer.parseInt(restId));
@@ -273,11 +277,15 @@ public class RestServlet extends HttpServlet {
 		Integer adminId = admin.getAdminId();
 		Byte adminFunName = admin.getAdminFuncName();
 		if (adminId != null && adminFunName == 1) {
-			RestVO restVO = restService.findByAdmin(adminId);
-			Integer restId = restVO.getRestId();
-			List<MemBookingVO> mb = memBookingService.getByRestId(restId);
-			req.setAttribute("mbList", mb);
-			return "/backend/rest/listMembooking.jsp";
+			try {
+				RestVO restVO = restService.findByAdmin(adminId);
+				Integer restId = restVO.getRestId();
+				List<MemBookingVO> mb = memBookingService.getByRestId(restId);
+				req.setAttribute("mbList", mb);
+				return "/backend/rest/listMembooking.jsp";
+			} catch (Exception e) {
+				return "/backend/backIndex/index.jsp";
+			}
 		}
 		List<MemBookingVO> mb = memBookingService.getAllMembooking();
 		req.setAttribute("mbList", mb);
@@ -290,12 +298,16 @@ public class RestServlet extends HttpServlet {
 		Integer adminId = admin.getAdminId();
 		Byte adminFunName = admin.getAdminFuncName();
 		if (adminId != null && adminFunName == 1) {
-			RestVO restVO = restService.findByAdmin(adminId);
-			Integer restId = restVO.getRestId();
-			List<RestBookingDateVO> bookDate = bookingDateService.getById(Integer.valueOf(restId));
-			req.setAttribute("admin", admin);
-			req.setAttribute("bookDate", bookDate);
-			return "/backend/rest/listBookingDate.jsp";
+			try {
+				RestVO restVO = restService.findByAdmin(adminId);
+				Integer restId = restVO.getRestId();
+				List<RestBookingDateVO> bookDate = bookingDateService.getById(Integer.valueOf(restId));
+				req.setAttribute("admin", admin);
+				req.setAttribute("bookDate", bookDate);
+				return "/backend/rest/listBookingDate.jsp";
+			} catch (Exception e) {
+				return "/backend/backIndex/index.jsp";
+			}
 		}
 		List<RestBookingDateVO> bookDate = bookingDateService.getAll();
 		req.setAttribute("bookDate", bookDate);
