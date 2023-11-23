@@ -159,7 +159,6 @@ $(document).ready(function() {
                             <div class="card-text hidden">${article.artiText}</div>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-none">訊息ID: ${article.msgId}</li>
                             <li class="list-group-item d-none">文章ID: ${article.articleId}</li>
                             <li class="list-group-item d-none">文章類型: ${article.artiTypeId}</li>
                             <li class="list-group-item d-none likeicon">${article.artiLk}</li>
@@ -173,7 +172,6 @@ $(document).ready(function() {
 			                    <input type="hidden" name="artiTitle" value="${article.artiTitle}">
 			                    <input type="hidden" name="artiText" value="${article.artiText}">
 			                    <input type="hidden" name="artiLk" value="${article.artiLk}">
-			                    <input type="hidden" name="msgId" value="${article.msgId}">
 			                    <input type="hidden" name="artiTypeId" value="${article.artiTypeId}">
 			                    <input type="hidden" name="base64Str" value="${article.base64Str}">
 			                    <input type="hidden" name="formattedDate" value="${formattedDate}">

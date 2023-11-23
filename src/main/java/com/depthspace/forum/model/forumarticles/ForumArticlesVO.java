@@ -23,8 +23,6 @@ public class ForumArticlesVO implements Serializable {
 	private Integer articleId;
 	@Column(name = "MEM_ID")
 	private Integer memId;
-	@Column(name = "MSG_ID")
-	private Integer msgId;
 	@Column(name = "ARTI_TYPE_ID")
 	private Integer artiTypeId;
 	@Column(name = "ARTI_TITLE")
@@ -45,12 +43,11 @@ public class ForumArticlesVO implements Serializable {
 
 	}
 
-	public ForumArticlesVO(Integer articleId, Integer memId, Integer msgId, Integer artiTypeId, String artiTitle,
+	public ForumArticlesVO(Integer articleId, Integer memId, Integer artiTypeId, String artiTitle,
 			Timestamp artiTime, String artiText, Integer artiLk, byte[] artiImg) {
 		super();
 		this.articleId = articleId;
 		this.memId = memId;
-		this.msgId = msgId;
 		this.artiTypeId = artiTypeId;
 		this.artiTitle = artiTitle;
 		this.artiTime = artiTime;
@@ -73,14 +70,6 @@ public class ForumArticlesVO implements Serializable {
 
 	public void setMemId(Integer memId) {
 		this.memId = memId;
-	}
-
-	public Integer getMsgId() {
-		return msgId;
-	}
-
-	public void setMsgId(Integer msgId) {
-		this.msgId = msgId;
 	}
 
 	public Integer getArtiTypeId() {
@@ -153,7 +142,7 @@ public class ForumArticlesVO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ForumArticlesVO [articleId=" + articleId + ", memId=" + memId + ", msgId=" + msgId + ", artiTypeId="
+		return "ForumArticlesVO [articleId=" + articleId + ", memId=" + memId + ", artiTypeId="
 				+ artiTypeId + ", artiTitle=" + artiTitle + ", artiTime=" + artiTime + ", artiText=" + artiText
 				+ ", artiLk=" + artiLk + ", artiImg=" + Arrays.toString(artiImg) + "]";
 	}
@@ -164,7 +153,7 @@ public class ForumArticlesVO implements Serializable {
 		int result = 1;
 		result = prime * result + Arrays.hashCode(artiImg);
 		result = prime * result
-				+ Objects.hash(artiLk, artiText, artiTime, artiTitle, artiTypeId, articleId, memId, msgId);
+				+ Objects.hash(artiLk, artiText, artiTime, artiTitle, artiTypeId, articleId, memId);
 		return result;
 	}
 
@@ -180,8 +169,7 @@ public class ForumArticlesVO implements Serializable {
 		return Arrays.equals(artiImg, other.artiImg) && Objects.equals(artiLk, other.artiLk)
 				&& Objects.equals(artiText, other.artiText) && Objects.equals(artiTime, other.artiTime)
 				&& Objects.equals(artiTitle, other.artiTitle) && Objects.equals(artiTypeId, other.artiTypeId)
-				&& Objects.equals(articleId, other.articleId) && Objects.equals(memId, other.memId)
-				&& Objects.equals(msgId, other.msgId);
+				&& Objects.equals(articleId, other.articleId) && Objects.equals(memId, other.memId);
 	}
 
 }
