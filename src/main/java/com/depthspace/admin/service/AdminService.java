@@ -43,5 +43,10 @@ public class AdminService {
 		return dao.findByAdminId(adminId);
 	}
 
+	 // 檢查帳號是否已存在
+    public boolean isAccountExist(String adminAcc) {
+        AdminVO adminVO = dao.getAdminInfo(adminAcc);
+        return adminVO != null;
+    }
 
 }

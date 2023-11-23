@@ -11,4 +11,5 @@ public interface CityDAO_Interface {
 	 public void delete(Integer cityId);
 	 public CityVO findByPrimaryKey(Integer cityId);
 	 public List<CityVO> getAll();
+	CityVO findByCityName(String cityName);
 }

@@ -59,6 +59,9 @@ public class RestController extends HttpServlet {
 		case "/Restinfo":
 			forwardPath = toRestinfo(req, resp);
 			break;
+		case "/memCollection":
+			forwardPath = memCollection(req, resp);
+			break;
 
 		}
 
@@ -110,6 +113,8 @@ public class RestController extends HttpServlet {
 			RestcollectionService rcs = new RestcollectionServiceImpl();
 			List<RestCollectionVO> rcList = rcs.findByMemId(memId);
 			req.setAttribute("rcList", rcList);
+			System.out.println("=================================================");
+			System.out.println(rcList);
 		}
 		
 		
@@ -121,7 +126,6 @@ public class RestController extends HttpServlet {
 		RestService restService = new RestServiecImpl();
 		RestVO restList = restService.getRestByRestId(Integer.valueOf(restId));
 		req.setAttribute("rest", restList);
-		
 		
 		// booking
 		HttpSession session = req.getSession();
@@ -173,7 +177,18 @@ public class RestController extends HttpServlet {
 		return list;
 	}
 	
-	
+	private String memCollection(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		
+		Integer memId = (Integer) session.getAttribute("memId");
+		RestcollectionService rcs = new RestcollectionServiceImpl();
+		List<RestCollectionVO> rcList = rcs.findByMemId(memId);
+		req.setAttribute("rcList", rcList);
+		System.out.println(rcList);
+		
+		return "/frontend/rest/memCollection.jsp";
+		
+	}
 
 
 }

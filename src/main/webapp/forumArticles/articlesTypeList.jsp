@@ -221,6 +221,18 @@ $(document).ready(function() {
        background-color: #A7BEC6;
        border-color: transparent;
      }
+     
+     	@media (max-width: 991px) {
+		  .card {
+		    width: 100%; /* 或其他適合小屏幕的寬度 */
+		  }
+		}
+		
+		@media (min-width: 992px) {
+		  .card {
+		    width: 45rem; /* 或其他適合大屏幕的寬度 */
+		  }
+		}
 </style>
 
 </head>
@@ -284,7 +296,7 @@ $(document).ready(function() {
         <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="card" style="width: 45rem;">
+        <div class="card">
           <div id="pic">
             <img src="" class="card-img-top" alt="文章圖片" id="articleImage">
           </div>

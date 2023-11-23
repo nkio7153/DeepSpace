@@ -66,6 +66,7 @@
     </div>
     <script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/plug-ins/1.11.5/features/searchHighlight/dataTables.searchHighlight.min.js"></script>
     <script>
 	    $(function() {
 	        $('#myTable').DataTable({
@@ -74,6 +75,12 @@
 	                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/zh-HANT.json',
 	            },
 	            "pageLength": 50,
+	            "columnDefs":[
+	                {
+	                    "targets":[0],
+	                    "searchable":false
+	                }
+	            ]
 	        });
 	        
 	        $(document).on("click", ".btn-secondary", function() {

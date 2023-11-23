@@ -49,6 +49,10 @@
 .swal2-confirm {
 	background-color: #74b3ef !important;
 }
+.collection-icon, .collection-icon -on {
+	width: 30px;
+	height: 30px;
+}
 </style>
 </head>
 <body>

@@ -59,7 +59,13 @@
 /*  		    max-width: 300px; */
 /*  		    padding-right: 30px; */
  		}
-	    
+	    #preview_img {
+			 border-radius: 60px;
+			 width: 120px;
+			 height: 120px;
+			 object-fit: cover;
+			 outline: none;
+		 }
         
 
     </style>
@@ -67,57 +73,6 @@
 <body>
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp" />
-<!--     <h1>註冊會員</h1> -->
-<%--     <form action="${pageContext.request.contextPath}/mem/save" method="post" enctype="multipart/form-data"> --%>
-<!--         <label for="memAcc">帳號:</label> -->
-<!--         <input type="text" id="memAcc" name="memAcc" value="" required><br><br> -->
-        
-<!--         <label for="memPwd">密碼:</label> -->
-<!--         <input type="password" id="memPwd" name="memPwd" value="" required><br><br> -->
-        
-<!--         <label for="memName">會員姓名:</label> -->
-<%--         <input type="text" id="memName" name="memName" value="${mem.memName}" required><br><br> --%>
-        
-<!--         <label for="memIdentity">身分證字號:</label> -->
-<%--         <input type="text" id="memIdentity" name="memIdentity" value="${mem.memIdentity}" required><br><br> --%>
-        
-<!--         <label for="memBth">生日:</label> -->
-<%--         <input type="date" id="memBth" name="memBth" value="${mem.memBth}" required><br><br> --%>
-        
-<!--         <label for="memSex">性別:</label> -->
-<!--         <input type="radio" id="memSex" name="memSex" value="1"> 男 -->
-<!--         <input type="radio" id="memSex" name="memSex" value="2"> 女<br><br> -->
-        
-<!--         <label for="memEmail">電子郵件:</label> -->
-<%--         <input type="email" id="memEmail" name="memEmail" value="${mem.memEmail}" required><br><br> --%>
-        
-<!--         <label for="memTel">手機電話:</label> -->
-<%--         <input type="tel" id="memTel" name="memTel" value="${mem.memTel}" required><br><br> --%>
-        
-<!--         <label for="memAdd">地址:</label> -->
-<%--         <input type="text" id="memAdd" name="memAdd" value="${mem.memAdd}" required><br><br> --%>
-        
-<!--         <label for="accStatus" >狀態:</label> -->
-<!--         <select id="accStatus" name="accStatus"  > -->
-<!--             <option value="1" >正常使用中</option> -->
-<!-- <!--             <option value="0"  style="display: none;">停用</option> --> 
-<!--         </select><br><br> -->
-        
-<!-- <!--         <label for="memPoint">會員點數:</label> -->
-<%-- <%--         <input type="number" id="memPoint" name="memPoint" value="${mem.memPoint}" ><br><br> --%>
-        
-<!--         <label for="memImage">會員圖片:</label> -->
-<!--         <input type="file" id="picture" name="memImage"> -->
-        
-<!--         <div class="preview" style="margin-right: 10px;"> -->
-<!-- 			<img id="preview_img" class="preview_jpg" > -->
-<!-- 		</div> -->
-<!--         <br><br> -->
-<%-- <%--         <input type="hidden" name="base64Image" value="${base64Image}"> --%>
-        
-<!--         <input type="submit" value="加入會員"> -->
-<!--         <input type="hidden" name="action" value="save"> -->
-<!--     </form> -->
 		<div class="container mt-5">
         <h1 class="text-center">註冊會員</h1>
         <form action="${pageContext.request.contextPath}/mem/save" method="post" enctype="multipart/form-data">
@@ -139,7 +94,7 @@
 	                <div class="col-sm-8">
 	                	<div id="box">
 	                    <input type="password" class="form-control" id="memPwd" name="memPwd" value="" required>
-	                    <!--眼睛图片 -->
+	                    <!--眼睛圖片 -->
 	        			<img src="${pageContext.request.contextPath}/member/images/close.png" id="eye">
 	                	</div>
 	                </div>
@@ -160,6 +115,8 @@
 	                <label for="memIdentity" class="col-sm-2 col-form-label text-right">身分證字號:</label>
 	                <div class="col-sm-8">
 	                    <input type="text" class="form-control" id="memIdentity" name="memIdentity" value="${mem.memIdentity}" required>
+	                	<br>
+	                	<div id="result_Id" style="color: red;"></div>
 	                </div>
 	            </div>
             </div>
@@ -168,7 +125,8 @@
 	            <div class="form-group row justify-content-center">
 	                <label for="memBth" class="col-sm-2 col-form-label text-right">生日:</label>
 	                <div class="col-sm-8">
-	                    <input type="date" class="form-control" id="memBth" name="memBth" value="${mem.memBth}" required>
+	                    <input type="date" class="form-control" id="memBth" name="memBth" value="${mem.memBth}" required
+	                    max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
 	                </div>
 	            </div>
             </div>
@@ -228,23 +186,26 @@
 	            </div>
             </div>
 
-			<div class="row">
-	            <div class="form-group row justify-content-center">
-	                <label for="accStatus" class="col-sm-2 col-form-label text-right">狀態:</label>
-	                <div class="col-sm-8">
-	                    <select class="form-control" id="accStatus" name="accStatus">
-	                        <option value="1">正常使用中</option>
-	                        <!-- <option value="0" style="display: none;">停用</option> -->
-	                    </select>
-	                </div>
-	            </div>
-	        </div>
+<!-- 			<div class="row"> -->
+<!-- 	            <div class="form-group row justify-content-center"> -->
+<!-- 	                <label for="accStatus" class="col-sm-2 col-form-label text-right">狀態:</label> -->
+<!-- 	                <div class="col-sm-8"> -->
+<!-- 	                    <select class="form-control" id="accStatus" name="accStatus"> -->
+<!-- 	                        <option value="1">正常使用中</option> -->
+<!-- 	                        <option value="0" style="display: none;">停用</option> -->
+<!-- 	                    </select> -->
+<!-- 	                </div> -->
+<!-- 	            </div> -->
+<!-- 	        </div> -->
+
+			<input type="hidden" id="accStatus" name="accStatus" value="1">
 
 			<div class="row">
 	            <div class="form-group row justify-content-center">
 	                <label for="memImage" class="col-sm-2 col-form-label text-right">會員圖片:</label>
 	                <div class="col-sm-8">
-	                    <input type="file" class="form-control-file" id="picture" name="memImage">
+<!-- 	                預覽圖 -->
+	                    <input type="file" class="form-control" id="picture" name="memImage">
 	                    <div class="preview mt-2">
 	                        <img id="preview_img" class="preview_jpg img-fluid">
 	                    </div>
@@ -335,6 +296,20 @@
             flag = 0;
         }
     }
+    //驗證身分證
+    $("#memIdentity").on('blur', function() {
+	    var id = $("#memIdentity").val().trim();
+	    console.log(id); // 注意這裡應該是 id 而不是 memIdentity
+	
+	    var memIdCheck = /^[A-Z][12]\d{8}$/;
+	    if (memIdCheck.test(id)) {
+	        $("#result_Id").text(""); // 使用 jQuery 簡化修改文字內容的操作
+	        isMemIdValid = true;
+	    } else {
+	        $("#result_Id").text("身分字號不符合規格，首字需大寫");
+	        isMemIdValid = false;
+	    }
+	});
 
     
     

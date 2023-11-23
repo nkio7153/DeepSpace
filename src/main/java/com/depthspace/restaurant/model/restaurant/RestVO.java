@@ -49,9 +49,9 @@ public class RestVO implements Serializable {
 	@Expose
 	@Column(name = "BOOKING_LIMIT")
 	private Integer bookingLimit;
-//	@Expose
-//	@Column(name = "ADMIN_ID")
-//	private Integer adminId;
+	@Expose
+	@Column(name = "REST_TEXT", columnDefinition = "TEXT")
+	private String restText;
 	
 	@Expose
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -99,6 +99,14 @@ public class RestVO implements Serializable {
 
 	public Integer getRestId() {
 		return restId;
+	}
+
+	public String getRestText() {
+		return restText;
+	}
+
+	public void setRestText(String restText) {
+		this.restText = restText;
 	}
 
 	public void setRestId(Integer restId) {
@@ -173,21 +181,15 @@ public class RestVO implements Serializable {
 	public String toString() {
 		return "RestVO [restId=" + restId + ", restName=" + restName + ", restTel=" + restTel + ", restAddress="
 				+ restAddress + ", restType=" + restType + ", restOpen=" + restOpen + ", restStatus=" + restStatus
-				+ ", bookingLimit=" + bookingLimit + ", adminVO=" + adminVO + ", rests=" + rests + ", memBooking="
-				+ memBooking + "]";
+				+ ", bookingLimit=" + bookingLimit + ", restText=" + restText + ", adminVO=" + adminVO + ", rests="
+				+ rests + ", memBooking=" + memBooking + "]";
 	}
 
 
+
 	
 	
 	
-//	public Integer getAdminId() {
-//		return adminId;
-//	}
-//
-//	public void setAdminId(Integer adminId) {
-//		this.adminId = adminId;
-//	}
 
 	
 	
