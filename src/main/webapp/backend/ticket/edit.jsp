@@ -12,7 +12,46 @@
 		href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 		rel="stylesheet">
 	<title>修改票券</title>
+	<style>
+	
+.swal2-title {
+	font-size: 1em !important;
+}
+
+.swal2-icon {
+	font-size: 0.8em !important;
+}
+
+.swal2-cancel {
+	background-color: #f68c8c !important;
+}
+
+.swal2-confirm {
+	background-color: #74b3ef !important;
+}
+select {
+    -webkit-appearance: menulist !important; 
+    -moz-appearance: menulist !important;
+    appearance: menulist !important;
+}	
+	</style>
 	<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
+	    <script>
+        function initAutocomplete() {
+            var autocomplete = new google.maps.places.Autocomplete(
+                document.getElementById('address'),
+                {types: ['geocode']}
+            );
+
+            autocomplete.addListener('place_changed', fillInAddress);
+        }
+
+        function fillInAddress() {
+            var place = this.getPlace();
+            document.getElementById('latitude').value = place.geometry.location.lat();
+            document.getElementById('longitude').value = place.geometry.location.lng();
+        }
+    </script>
 <%--  include --%>
 	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
   
@@ -35,12 +74,12 @@
 		<div class="container mt-5">
 			<div class="container mt-5">
 				<h5>修改票券</h5>
-				<form action="<%=request.getContextPath()%>/ticketmg/edit" method="post" 
+				<form id="myForm" action="<%=request.getContextPath()%>/ticketmg/edit" method="post" 
 				enctype="multipart/form-data" onsubmit="return showSwal();">
 					<div class="row">
 						<!-- ID -->
 						<input type="hidden" name="ticketId" value="${ticket.ticketId}">
-						<!-- 類型 -->
+						<!-- 類型 -->        
 						<div class="form-group col-md-6">
 							<label for="ticketTypeId">票券類型</label> <select name=ticketTypeId
 								id="ticketTypeId" class="form-control" required>
@@ -53,23 +92,21 @@
 								</c:forEach>
 							</select>
 						</div>
-						<!-- 票券名稱 -->
+						<!-- 票券名稱 --> 						
 						<div class="form-group col-md-6">
-							<label for="ticketName">票券名稱</label> <input type="text"
-								class="form-control" id="ticketName" name="ticketName" required
-								value="${ticket.ticketName}">
+							<label for="ticketName">票券名稱</label> 
+							<a-form-item><input type="text" class="form-control" id="ticketName" name="ticketName"  required="要輸入" value="${ticket.ticketName}">
+							</a-form-item>
 						</div>
 						<!-- 價格 -->
 						<div class="form-group col-md-6">
 							<label for="price">價格</label> <input type="number"
-								class="form-control" id="price" name="price" required min="0"
-								value="${ticket.price}">
+								class="form-control" id="price" name="price" required min="0" value="${ticket.price}">
 						</div>
 						<!-- 數量 -->
 						<div class="form-group col-md-6">
 							<label for="stock">數量</label> <input type="number"
-								class="form-control" id="stock" name="stock" required min="0"
-								value="${ticket.stock}">
+								class="form-control" id="stock" name="stock" required min="0" value="${ticket.stock}">
 						</div>
 						<div class="row">
 						<!-- 圖片上傳 -->
@@ -82,8 +119,7 @@
 						<!-- 使用天數 -->
 						<div class="form-group col-md-12">
 							<label for="validDays">使用天數</label> <input type="text" required min="0"
-								title="請輸入數字，例如: 365" class="form-control" id="validDays"
-								name="validDays" value="${ticket.validDays}">
+								title="請輸入數字，例如: 365" class="form-control" id="validDays" name="validDays" value="${ticket.validDays}">
 						</div>
 
 						<!-- 描述 -->
@@ -95,9 +131,7 @@
 									CKEDITOR.replace('description');
 								</script>
 						</div>
-						
-						
-
+					
 						<!-- 區域 -->
 						<div class="form-group col-md-6">
 							<label for="cityId">區域</label> <select name="cityId" id="cityId" required
@@ -113,23 +147,20 @@
 						</div>
 						<!-- 地址 -->
 						<div class="form-group col-md-6">
-							<label for="address">地址</label> <input type="text"
-								class="form-control" id="address" name="address" required
-								value="${ticket.address}">
+						    <label for="address">地址</label>
+						    <input type="text" class="form-control" id="address" name="address" value="${ticket.address}" onchange="geocodeAddress()">
 						</div>
-
 						<!-- 經度 -->
 						<div class="form-group col-md-6">
-							<label for="longitude">經度</label> <input type="text"
-								class="form-control" id="longitude" name="longitude" required min="0"
-								value="${ticket.longitude}">
+						    <label for="longitude">經度</label>
+						    <input type="text" class="form-control" id="longitude" name="longitude" required value="${ticket.longitude}"  readonly>
 						</div>
 
 						<!-- 緯度 -->
 						<div class="form-group col-md-6">
 							<label for="latitude">緯度</label> <input type="text"
 								class="form-control" id="latitude" name="latitude" required min="0"
-								value="${ticket.latitude}">
+								value="${ticket.latitude}"  readonly>
 						</div>
 
 						<!-- 上下架狀況 -->
@@ -155,7 +186,57 @@
 	<script	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxM8Qw1Zvra1gPDfG5mwO-7FlPtXUoFns&libraries=places&callback=initAutocomplete" async defer></script>
+ 	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    
+    document.getElementById('myForm').addEventListener('submit', function(event) {
+
+        var address = document.getElementById('ticketTypeId').value;
+		var address = document.getElementById('ticketName').value;
+		var address = document.getElementById('price').value;
+		var address = document.getElementById('stock').value;	
+		var address = document.getElementById('validDays').value;	
+		var address = document.getElementById('cityId').value;	
+        var address = document.getElementById('address').value;
+        
+        if (!ticketTypeId || !ticketName || !price || ! stock || ! validDays || ! cityId || ! address) {
+            event.preventDefault(); 
+            Swal.fire({
+            	  position: "center",
+            	  icon: "error",
+            	  title: "不得為空請再檢查",
+            	  showConfirmButton: false,
+            	  timer: 1500
+            	});
+        }  else{
+        	Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: '修改成功',
+            showConfirmButton: false,
+            timer: 1500
+        });
+        }
+    });
+    
+    function geocodeAddress() {
+        var address = document.getElementById('address').value;
+        var geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({'address': address}, function(results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+                var latitude = results[0].geometry.location.lat();
+                var longitude = results[0].geometry.location.lng();
+
+                document.getElementById('latitude').value = latitude;
+                document.getElementById('longitude').value = longitude;
+            } else {
+//                 alert('Geocode 不成功，原因: ' + status);
+            }
+        });
+    }
+        
     $(document).ready(function() {
         const ticketId = ${ticket.ticketId};
         var newImageCount = 0; // 初始化新圖片計數器
@@ -204,16 +285,7 @@
         reader.readAsDataURL(event.target.files[0]);
     }
 
-    // 送出提示動畫
-    function showSwal() {
-        Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: '修改成功',
-            showConfirmButton: false,
-            timer: 1500
-        });
-    }
+ 
 </script>
 </body>
 </html>

@@ -15,23 +15,25 @@ public class NotificationsWS {
     @OnOpen
     public void onOpen(Session session) {
         sessions.add(session);
+        System.out.println("ws open!!!!!");
     }
 
     @OnMessage
     public void onMessage(String message, Session session) {
     	 sendNotification(message);
-
+         System.out.println("ws sendNotification!!!!!");
     }
 
     @OnClose
     public void onClose(Session session) {
     	System.out.println("WSCOLSE" + session.getId());
         sessions.remove(session);
+        System.out.println("ws close!!!!!");
     }
 
     @OnError
     public void onError(Session session, Throwable e) {
-    	System.out.println("ErrorErrorErrorErrorError: " + e.toString());
+    	System.out.println("ws Error: " + e.toString());
 	}
 
     public static void sendNotification(String message) {
