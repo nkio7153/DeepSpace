@@ -280,23 +280,22 @@
                             </div>
                         </li>
 
-                        <!-- 權限設定 -->
-                        <%--                    <li class="nav-item mb-2">--%>
-                        <%--                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"--%>
-                        <%--                           data-bs-target="#collapsePermissions" aria-expanded="true"--%>
-                        <%--                           aria-controls="collapsePermissions">--%>
-                        <%--                                <span class="text-light fs-5">權限設定 <i--%>
-                        <%--                                        class="fa-solid fa-angle-down"></i></span>--%>
-                        <%--                        </a>--%>
-                        <%--                        <div id="collapsePermissions" class="collapse" aria-labelledby="headingPermissions"--%>
-                        <%--                             data-bs-parent="#sidebar-wrapper">--%>
-                        <%--                            <div class="color-4-1 py-2 collapse-inner rounded">--%>
-                        <%--                                <a class="text-choco collapse-item offset-1" href="#">員工權限</a>--%>
-                        <%--                                <br>--%>
-                        <%--                                <a class="text-choco collapse-item offset-1" href="#">廠商權限</a>--%>
-                        <%--                            </div>--%>
-                        <%--                        </div>--%>
-                        <%--                    </li>--%>
+                        <!-- 景點管理 -->
+                        <li class="nav-item mb-2">
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                               data-bs-target="#collapseAttractionsManagement" aria-expanded="true"
+                               aria-controls="collapseAttractionsManagement">
+                                                <span class="text-light fs-5">景點管理 <i
+                                                        class="fa-solid fa-angle-down"></i></span>
+                            </a>
+                            <div id="collapseAttractionsManagement" class="collapse" aria-labelledby="headingAttractionsManagement"
+                                 data-bs-parent="#sidebar-wrapper">
+                                <div class="color-4-1 py-2 collapse-inner rounded">
+                                    <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/attractionsEnd/list">景點列表</a>
+
+                                </div>
+                            </div>
+                        </li>
 
                         <!-- 專欄 -->
                         <li class="nav-item mb-2">
