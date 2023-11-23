@@ -5,8 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.LinkedList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.depthspace.admin.model.AdminVO;
@@ -30,7 +32,7 @@ import com.depthspace.restaurant.service.RestService;
 import com.depthspace.restaurant.service.RestServiecImpl;
 
 @WebServlet("/backend/Rest.do")
-@MultipartConfig
+@MultipartConfig()
 public class RestServlet extends HttpServlet {
 	
 	private RestService restService;
@@ -108,36 +110,57 @@ public class RestServlet extends HttpServlet {
 	}
 	
 	private String add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<String> errorMsgs = new LinkedList<String>();
+		Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
 		req.setAttribute("errorMsgs", errorMsgs);
 		
 		String restName = req.getParameter("restName");
-		if (restName.isEmpty() || restName == null || restName.trim().length() == 0) {
-			errorMsgs.add("餐廳名稱請勿空白");
+		if (restName.isEmpty() || restName == null || restName.length() == 0) {
+			errorMsgs.put("restName", "餐廳名稱請勿空白");
 		}
 		String restTel = req.getParameter("restTel");
 		if (restTel.isEmpty() || restTel == null || restTel.trim().length() == 0) {
-			errorMsgs.add("餐廳電話請勿空白");
+			errorMsgs.put("restTel", "餐廳電話請勿空白");
+		} else if (!restTel.matches("09[0-9]{8}") && !restTel.matches("0[2-9]-[0-9]{7,8}")) {
+			errorMsgs.put("restTel", "餐廳電話格式錯誤");
 		}
 		String restAddress = req.getParameter("restAddress");
 		if (restAddress.isEmpty() || restAddress == null || restAddress.trim().length() == 0) {
-			errorMsgs.add("餐廳電話請勿空白");
+			errorMsgs.put("restAddress", "餐廳地址請勿空白");
 		}
 		String restType = req.getParameter("restType");
 		if (restType.isEmpty() || restType == null || restType.trim().length() == 0) {
-			errorMsgs.add("餐廳類型請勿空白");
+			errorMsgs.put("restType", "餐廳類型請勿空白");
 		}
 		String restOpen = req.getParameter("restOpen");
 		if (restOpen.isEmpty() || restOpen == null || restOpen.trim().length() == 0) {
-			errorMsgs.add("營業時間請勿空白");
+			errorMsgs.put("restOpen", "營業時間請勿空白");
+		} else if (!restOpen.matches("([01]?[0-9]|2[0-3]):[0-5][0-9] - ([01]?[0-9]|2[0-3]):[0-5][0-9]")) {
+			errorMsgs.put("restOpen", "營業時間格式錯誤請用24小時制");
 		}
 		Integer bookingLimit = null;
 		try {
 			bookingLimit = Integer.valueOf(req.getParameter("bookingLimit").trim());
 		} catch (Exception e) {
-			errorMsgs.add("可預約組數請勿空白");
+			errorMsgs.put("bookingLimit", "可預約組數請勿空白");
 			bookingLimit = 0;
 		}
+		
+		if (!errorMsgs.isEmpty()) {
+			RestVO restList = new RestVO();
+			restList.setRestName(restName);
+			restList.setRestTel(restTel);
+			restList.setRestAddress(restAddress);
+			restList.setRestType(restType);
+			restList.setRestOpen(restOpen);
+			restList.setRestStatus(Integer.valueOf(req.getParameter("restStatus")));
+			restList.setBookingLimit(bookingLimit);
+			restList.setRestText(req.getParameter("restText"));
+			
+			req.setAttribute("rest", restList);
+			return "/backend/rest/addRest.jsp";
+		}
+		
+		
 		RestVO rest = new RestVO();
 		AdminVO admin = new AdminVO();
 		rest.setRestName(restName);
@@ -147,9 +170,9 @@ public class RestServlet extends HttpServlet {
 		rest.setRestOpen(restOpen);
 		rest.setRestStatus(Integer.valueOf(req.getParameter("restStatus")));
 		rest.setBookingLimit(bookingLimit);
+		rest.setRestText(req.getParameter("restText"));
 		admin = hbAdminService.getOneAdmin(Integer.parseInt(req.getParameter("adminId")));
 		rest.setAdminVO(admin);
-		
 		String restId = Integer.toString(restService.addRest(rest));
 		saveImg(restId, req.getPart("uploadimg"));
 		
@@ -163,22 +186,77 @@ public class RestServlet extends HttpServlet {
 	}
 	
 	private String forUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		AdminVO admin = (AdminVO) session.getAttribute("admin");
+		Integer adminId = admin.getAdminId();
+		Byte adminFunName = admin.getAdminFuncName();
+		if (adminId != null && adminFunName == 1) {
+			RestVO restVO = restService.findByAdmin(adminId);
+			Integer restId = restVO.getRestId();
+			RestVO restList = restService.getRestByRestId(restId);
+			req.setAttribute("rest", restList);
+			List<AdminVO> adminlist = hbAdminService.getAll();
+			req.setAttribute("adminlist", adminlist);
+			return "/backend/rest/editRest.jsp";
+		}
 		String restId = req.getParameter("restId");
 		RestVO restList = restService.getRestByRestId(Integer.parseInt(restId));
 		req.setAttribute("rest", restList);
+		List<AdminVO> adminlist = hbAdminService.getAll();
+		req.setAttribute("adminlist", adminlist);
 		return "/backend/rest/editRest.jsp";
 	}
 	
 	private String update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+		req.setAttribute("errorMsgs", errorMsgs);
+		
+		String restName = req.getParameter("restName");
+		if (restName.isEmpty() || restName == null || restName.length() == 0) {
+			errorMsgs.put("restName", "餐廳名稱請勿空白");
+		}
+		String restTel = req.getParameter("restTel");
+		if (restTel.isEmpty() || restTel == null || restTel.trim().length() == 0) {
+			errorMsgs.put("restTel", "餐廳電話請勿空白");
+		} else if (!restTel.matches("09[0-9]{8}") && !restTel.matches("0[2-9]-[0-9]{7,8}")) {
+			errorMsgs.put("restTel", "餐廳電話格式錯誤");
+		}
+		String restAddress = req.getParameter("restAddress");
+		if (restAddress.isEmpty() || restAddress == null || restAddress.trim().length() == 0) {
+			errorMsgs.put("restAddress", "餐廳地址請勿空白");
+		}
+		String restType = req.getParameter("restType");
+		if (restType.isEmpty() || restType == null || restType.trim().length() == 0) {
+			errorMsgs.put("restType", "餐廳類型請勿空白");
+		}
+		String restOpen = req.getParameter("restOpen");
+		if (restOpen.isEmpty() || restOpen == null || restOpen.trim().length() == 0) {
+			errorMsgs.put("restOpen", "營業時間請勿空白");
+		} else if (!restOpen.matches("([01]?[0-9]|2[0-3]):[0-5][0-9] - ([01]?[0-9]|2[0-3]):[0-5][0-9]")) {
+			errorMsgs.put("restOpen", "營業時間格式錯誤請用24小時制");
+		}
+		Integer bookingLimit = null;
+		try {
+			bookingLimit = Integer.valueOf(req.getParameter("bookingLimit").trim());
+		} catch (Exception e) {
+			errorMsgs.put("bookingLimit", "可預約組數請勿空白");
+			bookingLimit = 0;
+		}
+		
+		if (!errorMsgs.isEmpty()) {
+			return "/backend/Rest.do?action=getId_for_update";
+		}
+		
 		RestVO rest = new RestVO();
 		AdminVO admin = new AdminVO();
-		rest.setRestName(req.getParameter("restName"));
-		rest.setRestTel(req.getParameter("restTel"));
-		rest.setRestAddress(req.getParameter("restAddress"));
-		rest.setRestType(req.getParameter("restType"));
-		rest.setRestOpen(req.getParameter("restOpen"));
-		rest.setRestStatus(Integer.parseInt(req.getParameter("restStatus")));
-		rest.setBookingLimit(Integer.parseInt(req.getParameter("bookingLimit")));
+		rest.setRestName(restName);
+		rest.setRestTel(restTel);
+		rest.setRestAddress(restAddress);
+		rest.setRestType(restType);
+		rest.setRestOpen(restOpen);
+		rest.setRestStatus(Integer.valueOf(req.getParameter("restStatus")));
+		rest.setBookingLimit(bookingLimit);
+		rest.setRestText(req.getParameter("restText"));
 		admin = hbAdminService.getOneAdmin(Integer.parseInt(req.getParameter("adminId")));
 		rest.setAdminVO(admin);
 		rest.setRestId(Integer.parseInt(req.getParameter("restId")));
@@ -190,15 +268,30 @@ public class RestServlet extends HttpServlet {
 	}
 	
 	private String getMembooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String restId = req.getParameter("restId");
-		List<MemBookingVO> mb = memBookingService.getByRestId(Integer.valueOf(restId));
+		HttpSession session = req.getSession();
+		AdminVO admin = (AdminVO) session.getAttribute("admin");
+		Integer adminId = admin.getAdminId();
+		Byte adminFunName = admin.getAdminFuncName();
+		if (adminId != null && adminFunName == 1) {
+			RestVO restVO = restService.findByAdmin(adminId);
+			Integer restId = restVO.getRestId();
+			List<MemBookingVO> mb = memBookingService.getByRestId(restId);
+			req.setAttribute("mbList", mb);
+			return "/backend/rest/listMembooking.jsp";
+		}
+		List<MemBookingVO> mb = memBookingService.getAllMembooking();
 		req.setAttribute("mbList", mb);
 		return "/backend/rest/listMembooking.jsp";
 	}
 	
 	private String getBookingDate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String restId = req.getParameter("restId");
-		if (restId != null) {
+		HttpSession session = req.getSession();
+		AdminVO admin = (AdminVO) session.getAttribute("admin");
+		Integer adminId = admin.getAdminId();
+		Byte adminFunName = admin.getAdminFuncName();
+		if (adminId != null && adminFunName == 1) {
+			RestVO restVO = restService.findByAdmin(adminId);
+			Integer restId = restVO.getRestId();
 			List<RestBookingDateVO> bookDate = bookingDateService.getById(Integer.valueOf(restId));
 			req.setAttribute("bookDate", bookDate);
 			return "/backend/rest/listBookingDate.jsp";
@@ -236,6 +329,7 @@ public class RestServlet extends HttpServlet {
         	uploadDir.mkdir();
         String fileName = "r_" + restId + ".jpg";
         String filePath = uploadPath + File.separator + fileName;
+        System.out.println(filePath);
         // 處理圖片儲存
         // enctype="multipart/form-data" form上傳 取上傳圖片
         Part filePart = file;
@@ -247,10 +341,10 @@ public class RestServlet extends HttpServlet {
         		// 將圖片輸出到設定的檔案路徑
         		OutputStream output = new FileOutputStream(filePath);
         		byte[] buffer = new byte[1024];
-        		int nRead;
+        		int length;
         		// 輸入流中讀取檔案數據並寫入輸出流 讀完返回-1
-        		while ((nRead = input.read(buffer)) != -1) {
-        			output.write(buffer, 0, nRead);
+        		while ((length = input.read(buffer)) != -1) {
+        			output.write(buffer, 0, length);
         		}
         		output.close();
             	input.close();

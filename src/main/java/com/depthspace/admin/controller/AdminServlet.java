@@ -29,10 +29,13 @@ import javax.servlet.http.Part;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.depthspace.admin.service.HbAdminService;
+import com.depthspace.attractions.model.CityVO;
+import com.depthspace.attractions.service.CityService;
 import com.depthspace.member.model.MemVO;
 import com.depthspace.member.service.HbMemService;
 import com.depthspace.member.service.MemberService;
 import com.depthspace.utils.MailService;
+import com.google.gson.Gson;
 
 import redis.clients.jedis.Jedis;
 
@@ -124,9 +127,42 @@ public class AdminServlet extends HttpServlet {
 			case "/checkVerify":// 驗證碼
 				doCheckVerify(req, resp);
 				break;
-				
+			case "/checkAccount":// 確認重複帳號
+				doCheckAccount(req, resp);
+				break;
+			
 		}
 		
+	}
+	
+	
+	private void doCheckAccount(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		
+		String adminAcc = req.getParameter("adminAcc");
+		System.out.println("adminAcc=" + adminAcc);
+		HbAdminService hbms = new HbAdminService();
+		List<AdminVO> list = hbms.getAll();
+		boolean account = false;
+		
+		for (AdminVO adminVO : list) {
+		    String adminAllAcc = adminVO.getAdminAcc();
+		    
+		    if (adminAcc != null && adminAcc.equals(adminAllAcc)) {
+		    	account = true;
+	            break;  // 找到相符的帳號後即可跳出迴圈
+	        }
+		    
+		}
+		
+		 if (account) {
+		        String data = "false";
+		        setJsonResponse(resp, data);
+		        System.out.println("帳號已存在，帳號不可使用");
+		    } else {
+		        String data = "true";
+		        setJsonResponse(resp, data);
+		        System.out.println("無此帳號，帳號可用");
+		    }
 	}
 	
 	private void doCheckVerify(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -325,8 +361,8 @@ public class AdminServlet extends HttpServlet {
 		try {
 			st2 = req.getParameter("adminAcc");
 			System.out.println("adminAcc: " + st2); // 应该是输入的帐号
-			if (st2 == null || st2.trim().length() == 0) {
-				errorMsgs.add("管理員信箱請勿空白");
+			if (st2 == null || st2.trim().length() < 16 || st2.trim().length() > 40) {
+			    errorMsgs.add("帳號長度必須在 6 到 30 個字元之間");
 			}else {
 	            // 檢查信箱格式
 	            String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
@@ -334,6 +370,12 @@ public class AdminServlet extends HttpServlet {
 	            Matcher matcher = pattern.matcher(st2);
 	            if (!matcher.matches()) {
 	                errorMsgs.add("信箱格式不正確");
+	            }else {
+	                // 檢查帳號是否已存在
+	                AdminService adminService = new AdminService();
+	                if (adminService.getAdminInfo(st2) != null) {
+	                    errorMsgs.add("帳號已存在");
+	                }
 	            }
 	        }
 
@@ -639,5 +681,13 @@ public class AdminServlet extends HttpServlet {
 	    	resp.sendRedirect(req.getContextPath() + "/admin/login.jsp?error=nostatus&requestURI=" + loginLocation);
 	    }
 	}
-
+	
+	// fetch返回json格式
+			private void setJsonResponse(HttpServletResponse resp, Object obj) throws IOException {
+				Gson gson = new Gson();
+				String jsonData = gson.toJson(obj);
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().write(jsonData);
+			}
 }

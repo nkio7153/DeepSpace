@@ -5,45 +5,16 @@
 <%@ page import="com.depthspace.faqtypes.model.model.*"%>
 
 <%
-	FaqTypesVO faqTypesVO = (FaqTypesVO) request.getAttribute("faqTypesVO"); //EmpServlet.java(Concroller), 存入req的empVO物件
+    FaqTypesVO faqTypesVO = (FaqTypesVO) request.getAttribute("faqTypesVO");
 %>
+
 <html>
 <head>
     <title>FaqTypes資料 - listOneFaq.jsp</title>
 <%--  include head.jsp--%>
   <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
-<style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
-
-<style>
-  table {
-	width: 600px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
-  }
-  table, th, td {
-    border: 1px solid #CCCCFF;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-  }
-</style>
+  <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
 </head>
 <body>
 <%--include header.jsp--%>
@@ -51,33 +22,40 @@
 <div class="container-fluid my-0">
   <div class="row">
 <%--    側邊欄--%>
-    <div class="col-lg-2 g-3 my-0">
+    <div class="col-lg-2 g-3 mt-1">
     <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
     </div>
 
-    <div class="col-lg-10 g-2 transparent rounded my-0">
+    <div class="col-lg-10 g-2 transparent rounded mt-1">
 <%--      放入自己body裡的代碼--%>
-      <table id="table-1">
-	<tr><td>
-		 <h3>FaqTypes資料 - listOneFaq.jsp</h3>
-		 <h4><a href="select_page.jsp"><img src="images/back1.gif" width="100" height="32" border="0">回首頁</a></h4>
-	</td></tr>
-</table>
+      <div class="col-lg-10">
+                <h3>FaqTypes資料 - listOneFaq.jsp</h3>
+                <a href="select_page.jsp" class="btn btn-primary mb-3">
+                    <img src="images/back1.gif" alt="回首頁" class="img-fluid">
+                </a>
 
-<table>
-	<tr>
-		<th>常見問題類型編號</th>
-		<th>問題類型</th>
-	</tr>
-	<tr>
-		<td>${faqTypesVO.faqNo}</td>
-		<td>${faqTypesVO.QTypes}</td>
-	</tr>
-</table>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>常見問題類型編號</th>
+                            <th>問題類型</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>${faqTypesVO.faqNo}</td>
+                            <td>${faqTypesVO.QTypes}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
     </div>
   </div>
 </div>
 
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

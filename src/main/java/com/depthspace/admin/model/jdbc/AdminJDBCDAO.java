@@ -182,17 +182,17 @@ public class AdminJDBCDAO implements AdminDAO_Interface {
 
 	@Override
 	public AdminVO getAdminInfo(String adminAcc) {
-		AdminVO adminVO = new AdminVO();
 		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+	    PreparedStatement ps = null;
+	    ResultSet rs = null;
+	    AdminVO adminVO = null;  // 修改此處，預設為 null
 		try {
 			conn = DBUtil.getConnection();
 			ps = conn.prepareStatement(GET_ONE_ADMIN);
 			ps.setString(1, adminAcc);
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				
+				adminVO = new AdminVO();
 				adminVO.setAdminId(rs.getInt("ADMIN_ID"));
 				adminVO.setAdminAcc(rs.getString("ADMIN_ACC"));
 				adminVO.setAdminPwd(rs.getString("ADMIN_PWD"));

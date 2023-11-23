@@ -51,6 +51,7 @@
 		
 		<form action="<%=request.getContextPath()%>/attractionsEnd/edit2" method="post" enctype="multipart/form-data">
 			<div class="row">
+				<input type="hidden" name="attractionsId" id="attractionsId" value="${attrvo.attractionsId}" >
 				
 				<div class="form-group col-md-6">
 				    <label for="attractionsTypesId">景點類型</label>

@@ -12,106 +12,72 @@ List<FaqVO> list = faqSvc.getAll();
 pageContext.setAttribute("list", list);
 %>
 
+<!DOCTYPE html>
 <html>
 <head>
     <title>常見問題</title>
-    <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container-fluid {
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            padding: 15px;
-        }
-
-        h3 {
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        input[type="submit"] {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-    </style>
+<%--  include head.jsp--%>
+  <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
+  <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
-    <div class="container-fluid">
-        <h3>常見問題管理</h3>
-        <a href="select_page.jsp" class="btn btn-primary mb-3">回首頁</a>
-        <table>
-            <tr>
-                <th>流水號</th>
-                <th>FAQ編號</th>
-                <th>FAQ名稱</th>
-                <th>FAQ答案</th>
-                <th>修改</th>
-                <th>刪除</th>
-            </tr>
-            <c:forEach var="faqVO" items="${list}">
-                <tr>
-                    <td>${faqVO.serialId}</td>
-                    <td>${faqVO.faqNo}</td>
-                    <td>${faqVO.faqName}</td>
-                    <td>${faqVO.faqAns}</td>
-                    <td>
-                        <form method="post" action="<%=request.getContextPath()%>/faq/faq.do">
-                            <input type="submit" value="修改">
-                            <input type="hidden" name="serialId" value="${faqVO.serialId}">
-                            <input type="hidden" name="action" value="getOne_For_Update">
-                        </form>
-                    </td>
-                    <td>
-                        <form method="post" action="<%=request.getContextPath()%>/faq/faq.do">
-                            <input type="submit" value="刪除">
-                            <input type="hidden" name="serialId" value="${faqVO.serialId}">
-                            <input type="hidden" name="action" value="delete">
-                        </form>
-                    </td>
-                </tr>
-            </c:forEach>
-        </table>
+<%--include header.jsp--%>
+<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+<div class="container-fluid my-0">
+  <div class="row">
+<%--    側邊欄--%>
+    <div class="col-lg-2 g-3 mt-1">
+    <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
     </div>
+
+    <div class="col-lg-10 g-2 transparent rounded mt-1">
+<%--      放入自己body裡的代碼--%>
+      <div class="container mt-4 bg-light">
+        <h3 class="mb-4">常見問題管理</h3>
+        <a href="select_page.jsp" class="btn btn-primary mb-3">回首頁</a>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>流水號</th>
+                        <th>FAQ編號</th>
+                        <th>FAQ名稱</th>
+                        <th>FAQ答案</th>
+                        <th>修改</th>
+                        <th>刪除</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="faqVO" items="${list}">
+                        <tr>
+                            <td>${faqVO.serialId}</td>
+                            <td>${faqVO.faqNo}</td>
+                            <td>${faqVO.faqName}</td>
+                            <td>${faqVO.faqAns}</td>
+                            <td>
+                                <form method="post" action="<%=request.getContextPath()%>/faq/faq.do">
+                                    <input type="submit" class="btn btn-secondary btn-sm" value="修改">
+                                    <input type="hidden" name="serialId" value="${faqVO.serialId}">
+                                    <input type="hidden" name="action" value="getOne_For_Update">
+                                </form>
+                            </td>
+                            <td>
+                                <form method="post" action="<%=request.getContextPath()%>/faq/faq.do">
+                                    <input type="submit" class="btn btn-danger btn-sm" value="刪除">
+                                    <input type="hidden" name="serialId" value="${faqVO.serialId}">
+                                    <input type="hidden" name="action" value="delete">
+                                </form>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
