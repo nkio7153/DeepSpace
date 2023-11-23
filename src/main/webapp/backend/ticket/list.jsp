@@ -64,6 +64,15 @@
 	    margin: auto;
 	    margin-bottom: 10px;
 	}
+
+.carousel-inner {
+    position: relative;
+    
+ 
+.w-100 {
+    width: 45%!important;
+}
+
 </style>
 
 <title>票券列表</title>

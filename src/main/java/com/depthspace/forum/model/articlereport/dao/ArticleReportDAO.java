@@ -10,4 +10,6 @@ public interface ArticleReportDAO {
 	int update(ArticleReportVO entity);
 
 	List<ArticleReportVO> getAll();
+	
+	ArticleReportVO getByArticleReportId(Integer articleReportId);
 }

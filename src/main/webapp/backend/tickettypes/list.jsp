@@ -86,7 +86,7 @@
 
 .add-button:hover {
 	background: #63bfc9;
-}ㄋ
+}
 
 .add-button:hover .button__text {
 	color: transparent;
@@ -121,6 +121,16 @@
 	background: #85cdd5 !important;  
 	border: #85cdd5; 
 }
+
+.btn-danger {
+    background: #98d6a6  !important;
+    border: #98d6a6 !important;  
+}
+.btn-danger:hover {
+    background: #98d6a6  !important;
+    border: #98d6a6 !important;  
+}
+
 </style>
 
 <title>票券類型列表</title>
@@ -168,14 +178,20 @@
 	           			<span class="description">${ticketType.description}</span>
 		                <input type="text" class="form-control description-input" style="display: none;">
 		            </td>		            
-		            <td>
-		                <span class="edit-icon btn btn-primary edit-btn">
-		                    <i class="fas fa-edit"></i>
-		                </span>
-		                <span class="save-icon btn btn-success save-btn" style="display: none;">
-		                    <i class="fas fa-save"></i>
-		                </span>
-		            </td>
+					<td>
+					    <span class="edit-icon btn btn-primary edit-btn">
+					        <i class="fas fa-edit"></i>
+					    </span>
+					    
+					  
+					<span class="save-icon btn btn-success save-btn" style="display: none;">
+					        <i class="fas fa-save"></i>
+					    </span>
+					    <!-- 新增取消按鈕 -->
+					    <span class="cancel-icon btn btn-danger cancel-btn" style="display: none;">
+					        <i class="fas fa-times"></i>
+					    </span>
+					</td>
 		            </tr>
 	               </c:forEach>
 	           </tbody>
@@ -192,23 +208,24 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   
-  <script>
-  //點選編輯進入編輯，離開後保存
-  $(document).ready(function() {
-	$(document).on('click', '.edit-btn', function() {
-        var currentRow = $(this).closest('tr');
-        var typeName = currentRow.find('.typeName').text();
-        var description = currentRow.find('.description').text();
-        currentRow.find('.typeName').hide();
-        currentRow.find('.typeName-input').val(typeName).show().focus();
-        currentRow.find('.edit-icon').hide();
-        currentRow.find('.save-icon').show();
-        currentRow.find('.description').hide();
-        currentRow.find('.description-input').val(description).show().focus();
-        currentRow.find('.edit-icon').hide();
-        currentRow.find('.save-icon').show();
-    });
-	//存入資料
+ <script>
+   $(document).ready(function() {
+       // 點選編輯進入編輯，離開後保存
+       $(document).on('click', '.edit-btn', function() {
+           var currentRow = $(this).closest('tr');
+           var typeName = currentRow.find('.typeName').text();
+           var description = currentRow.find('.description').text();
+           currentRow.find('.typeName').hide();
+           currentRow.find('.typeName-input').val(typeName).show();
+           currentRow.find('.description').hide();
+           currentRow.find('.description-input').val(description).show();
+           currentRow.find('.edit-icon').hide();
+           currentRow.find('.save-icon').show();
+           currentRow.find('.cancel-btn').show(); // 顯示取消按鈕
+       });
+   });
+
+        // 存入資料
     $(document).on('click', '.save-btn', function() {
         var currentRow = $(this).closest('tr');
         var ticketTypeId = currentRow.find('td:eq(0)').text().trim();
@@ -243,6 +260,7 @@
                     currentRow.find('.description-input').hide();
                     currentRow.find('.edit-icon').show();
                     currentRow.find('.save-icon').hide();    
+                    currentRow.find('.cancel-btn').hide();
                 }
             },
             error: function(xhr, status, error) {
@@ -250,65 +268,39 @@
             }
         });
     });
-});
-	// 新增
-    $('.add-button').on('click', function() {
-    	var rowCount = $('table tbody tr').length + 1; // 流水號
-        var newRow = $('<tr>').append(
-           $('<td>').text(rowCount), 
+
+   // 新增
+   $('.add-button').on('click', function() {
+       var rowCount = $('table tbody tr').length + 1;
+       var newRow = $('<tr>').addClass('new-row').append(
+           $('<td>').text(rowCount),
            $('<td>').append($('<input>').addClass('form-control typeName-input')),
            $('<td>').append($('<input>').addClass('form-control description-input')),
            $('<td>').append(
-               $('<span>').addClass('save-icon btn btn-success Nsave-btn').append(
-                   $('<i>').addClass('fas fa-save')
-               )
+               $('<span>').addClass('save-icon btn btn-success Nsave-btn').append($('<i>').addClass('fas fa-save')),
+               $('<span>').addClass('cancel-btn btn btn-danger').append($('<i>').addClass('fas fa-times'))
            )
        );
-        $('table tbody').append(newRow);
-    // 新增儲存
-        $(document).on('click', '.Nsave-btn', function() {
-            var currentRow = $(this).closest('tr');
-            var typeName = currentRow.find('.typeName-input').val().trim();
-    		var description = currentRow.find('.description-input').val().trim();
-            
-            if(typeName === ''){
-                Swal.fire({
-                    icon: 'error',
-                    title: '類型名稱不能為空！'
-                });
-                return;
-            }
+       $('table tbody').append(newRow);
+   });
 
-            $.ajax({
-                url: '<%=request.getContextPath()%>/tickettypesmg/add',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({typeName: typeName, description: description}),
-                dataType: 'json',
-                success: function(response) {
-                    if(response.status === "success") {
-                        Swal.fire({
-                            position: 'center',
-                            title: '已完成新增',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        currentRow.find('.typeName-input').replaceWith($('<span>').addClass('typeName').text(typeName));
-                        currentRow.find('.description-input').replaceWith($('<span>').addClass('description').text(description));
-                        currentRow.find('.save-icon').replaceWith(
-                            $('<span>').addClass('edit-icon btn btn-primary edit-btn').append(
-                                $('<i>').addClass('fas fa-edit')
-                            )
-                        );
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('新增失敗', xhr, status, error);
-                }
-            });
-        });
-        });
-  </script>
+   // 取消按鈕
+   $(document).on('click', '.cancel-btn', function() {
+       var currentRow = $(this).closest('tr');
+       if (currentRow.hasClass('new-row')) {
+           currentRow.remove();
+       } else {
+           // 編輯模式：恢復
+           currentRow.find('.typeName-input').hide();
+           currentRow.find('.typeName').show();
+           currentRow.find('.description-input').hide();
+           currentRow.find('.description').show();
+           currentRow.find('.save-icon').hide();
+           currentRow.find('.edit-icon').show();
+           currentRow.find('.cancel-btn').hide();
+       }
+   });
+</script>
 	    
 	<%--  include --%>	
 			</div>

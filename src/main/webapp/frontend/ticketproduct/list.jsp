@@ -56,9 +56,17 @@
 h6 {
     padding-bottom: 5px;
     padding-top: 8px;
-    color: #0d6efdb5;
+    color: #6d9de3b5;
+    font-weight: bold;
 }
-
+select {
+    -webkit-appearance: menulist !important; 
+    -moz-appearance: menulist !important;
+    appearance: menulist !important;
+}
+.viewdiv {
+	margin-bottom: 50px;
+}
 </style>
 
 </head>
@@ -69,7 +77,7 @@ h6 {
 
 	<div id="loadingSpinner" class="loading-spinner" style="display: none;"></div>
 	<div class="container mt-5">
-		<div class="row">
+		<div class="row viewdiv">
 			<!-- 左側篩選 -->
 			<div class="col-md-3">
 				<form id="searchForm"">
@@ -79,7 +87,7 @@ h6 {
 							id="ticketName" name="ticketName" value="${ticket.ticketName}"
 							aria-label="Search">
 						<div class="input-group-append">
-							<button class="btn btn-primary" type="submit">
+							<button class="btn btn-primary viewbtn" type="submit">
 								<i class="fa fa-search"></i>
 							</button>
 						</div>
@@ -115,7 +123,7 @@ h6 {
 					<!-- 排序 -->
 					<label for="sortet"></label>
 					<div class="form-group">
-						<select class="form-control" id="sortSet" style="width: auto;"
+						<select class="form-control" id="sortSet" style="cursor: pointer;"
 							onchange="sortArticles()">
 							<option>預設</option>
 							<option value="desc">按發布日排序(新→舊)</option>
@@ -204,6 +212,9 @@ h6 {
 
 		</div>
 	</div>
+
+
+
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script
@@ -235,24 +246,37 @@ $(document).ready(function() {
 		$('#searchForm').submit();
 	});
 });
-//頁數變動
-function updatePagination(pageQtyA, currentPage) {
-    var paginationHtml = '';
-    for (var i = 1; i <= pageQtyA; i++) {
-        paginationHtml += '<li class="page-item ' + (i === currentPage ? 'active' : '') + '">';
-        paginationHtml += '<a class="page-link" href="#" onclick="loadPage(' + i + '); return false;">' + i + '</a></li>';
-    }
-    $('.pagination').html(paginationHtml);
-}
-function loadPage(pageNumber) {
+
+function loadPageData(pageNumber) {
+    var formData = $('#searchForm').serialize();
+    formData += '&page=' + pageNumber;
+    console.log(pageNumber);
+    console.log("YYYYAA");
     $.ajax({
-        url: '<%=request.getContextPath()%>/ticketproduct/search', 
-        data: { page: pageNumber },
+        url: '<%=request.getContextPath()%>/ticketproduct/search',
+        type: 'GET',
+        data: formData,
         success: function(response) {
-            $('#ticketright').html(response);
+            $('#ticketList').html(response.ticketsHtml);
+            updatePagination(response.totalPages, pageNumber);
+    	    console.log(pageNumber);
+        },
+        error: function(error) {
+            console.error('error', error);
         }
     });
 }
+
+function updatePagination(totalPages, filtercurrentPage) {
+    var paginationHtml = '';
+    for (var i = 1; i <= totalPages; i++) {
+        paginationHtml += '<a href="#" onclick="loadPageData(' + i + '); return false;" class="' + (i === filtercurrentPage ? 'active' : '') + '">' + i + '</a>';
+    }
+    $('#pagination').html(paginationHtml);
+}
+
+
+
 function sortArticles() {
     var sortValue = document.getElementById("sortSet").value;
     $.ajax({

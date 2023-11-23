@@ -10,4 +10,6 @@ public interface ArticleReportService {
 	int update(ArticleReportVO tod);
 
 	List<ArticleReportVO> getAll();
+	
+	ArticleReportVO getByArticleReportId(Integer articleReportId);
 }

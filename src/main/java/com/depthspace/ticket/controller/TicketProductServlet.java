@@ -38,7 +38,7 @@ import com.depthspace.utils.JedisUtil;
 @WebServlet("/ticketproduct/*")
 public class TicketProductServlet extends HttpServlet {
 	
-	private static final double PAGE_MAX_RESULT = 8;
+	private static final int PAGE_MAX_RESULT = 8;
 	private TicketService ticketService;
 	private TicketImagesService ticketImagesService;
 	private TicketCollectionService ticketCollectionService;
@@ -231,14 +231,22 @@ public class TicketProductServlet extends HttpServlet {
 	    	filteredList.sort(Comparator.comparing(TicketVO::getTicketId));
 	    }
 	    
-	    req.setAttribute("resultSet", filteredList);	
-	    
-	    int searchCount = filteredList.size();
-	    req.setAttribute("searchCount", searchCount);
+	    // 分頁處理
+	    int filtercurrentPage = Integer.parseInt(req.getParameter("page") != null ? req.getParameter("page") : "1");
+	    int recordsPerPage = PAGE_MAX_RESULT; // 定義每頁的最大記錄數
+	    int totalRecords = filteredList.size();
+	    int totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
+	    int startIndex = (filtercurrentPage - 1) * recordsPerPage;
+	    int endIndex = Math.min(startIndex + recordsPerPage, totalRecords);
+	    List<TicketVO> pageData = filteredList.subList(startIndex, endIndex);
+
+	    req.setAttribute("resultSet", pageData); 
+	    req.setAttribute("searchCount", totalRecords);
 	    req.setAttribute("searchSet", filteredList);
+	    req.setAttribute("pageQtyA", totalPages);
+	    req.setAttribute("currentPage", filtercurrentPage);
 	    
-	    int pageQty = (int) Math.ceil((double) searchCount / PAGE_MAX_RESULT); 
-	    req.setAttribute("pageQtyA", pageQty); 
+	    System.out.println("QQQQQQQQQsearchCount"+ totalRecords+"totalPages"+ totalPages+"filtercurrentPage"+ filtercurrentPage);
 	    
 	    reviewsList(req, res);
 	    req.getRequestDispatcher("/frontend/ticketproduct/search.jsp").forward(req, res);

@@ -9,7 +9,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Bootstrap CSS -->
+<style>
+.previewImg {
+    width: 20%;
+    height: 20%;
+    object-fit: cover; 
+}
+select {
+    -webkit-appearance: menulist !important; 
+    -moz-appearance: menulist !important;
+    appearance: menulist !important;
+}
+</style>
+
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -122,7 +134,7 @@
 				var imagesPreview = document
 						.getElementById('imagePreview');
 
-				// 創建一個div容器，包含圖片和刪除按鈕
+				// div容器，圖片和刪除按鈕
 				var container = document.createElement('div');
 				container.className = 'imageContainer';
 

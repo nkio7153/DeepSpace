@@ -31,8 +31,9 @@ $(document).ready(function() {
 	                .replace(/<span[^>]*>/g, '')
 	                .replace(/<\/span>/g, '');
                     var collectbutton = '<button class="btn btn-primary collect-button float-end like-button" data-articleid="' + item.articleId + '"><i class="far fa-heart"></i></button>';
-                    var likeButton = '<button class="btn btn-primary like-buttons likes-button"><i class="far fa-thumbs-up"></i></button>';
-                    var card = $('<div class="col-lg-3 col-md-6 mb-3">')
+                    var likeButton = '<button class="btn btn-primary like-buttons likes-button" data-articleid="' + item.articleId + '"><i class="far fa-thumbs-up"></i></button>';
+                    var reportButton = '<button class="btn btn-warning report-button"><i class="fas fa-exclamation"></i></button>';
+                    var card = $('<div class="col-lg-4 col-md-6 mb-3">')
                     .append('<div class="cards">' +
                     		'<li class="list-group-item d-flex justify-content-between align-items-center">會員ID: ' + item.memId + collectbutton + '</li>' +
                         '<img src="data:image/jpeg;base64,' + base64ImageData + '" class="card-img-top fixed-height-img">' +
@@ -48,7 +49,10 @@ $(document).ready(function() {
                         '</ul>' +
                         '<div class="card-footer d-flex justify-content-between align-items-center">' +
                             '<small class="text-muted">發布時間: ' + formattedDate + '</small>' +    
-                            likeButton +
+                            '<div>' + // 新增一個容器包住兩個按鈕
+                            reportButton +   // 檢舉按鈕
+                            likeButton +     // 按讚按鈕
+                        	'</div>' +
                             '</div>' +
                     '</div>');
                     $('#articlesRow').append(card);
@@ -83,8 +87,9 @@ $(document).ready(function() {
     	                var thumbIcon = islike ? '<i class="fas fa-thumbs-up"></i>' : '<i class="far fa-thumbs-up"></i>';
     	                var likeButtonClass = islike ? 'btn btn-primary like-buttons liked' : 'btn btn-primary like-buttons float-end';
     	                var likeButton = '<button class="' + likeButtonClass + ' likes-button" data-articleid="' + item.articleId + '">' + thumbIcon + '</button>';
-    	                  	                
-    	                var card = $('<div class="col-lg-3 col-md-6 mb-3">')
+    	               
+    	                var reportButton = '<button class="btn btn-warning report-button" data-articleid="' + item.articleId + '"><i class="fas fa-exclamation"></i></button>';
+    	                var card = $('<div class="col-lg-4 col-md-6 mb-3">')
     	                .append('<div class="cards">' +
     	                        '<li class="list-group-item d-flex justify-content-between align-items-center">會員ID: ' + item.memId + collectButton + '</li>' +
     	                        '<img src="data:image/jpeg;base64,' + base64ImageData + '" class="card-img-top fixed-height-img">' +
@@ -100,7 +105,10 @@ $(document).ready(function() {
     	                        '</ul>' +
     	                        '<div class="card-footer d-flex justify-content-between align-items-center">' +
     	                            '<small class="text-muted">發布時間: ' + formattedDate + '</small>' +    	                        
-    	                            likeButton +                        
+    	                            '<div>' + // 新增一個容器包住兩個按鈕
+    	                            reportButton +   // 檢舉按鈕
+    	                            likeButton +     // 按讚按鈕
+    	                        	'</div>' +                        
     	                        '</div>' +
     	                '</div>');
     	                $('#articlesRow').append(card);   
@@ -195,7 +203,7 @@ $(document).ready(function() {
 	    $('#articlesRow').on('click', '.cards', function() {
 	    	
 	    	 // 檢查點擊的元素是否為按鈕，如果是，則不進行後續操作
-	        if ($(event.target).hasClass('btn') || $(event.target).hasClass('fa-heart')|| $(event.target).hasClass('fa-thumbs-up')){
+	        if ($(event.target).hasClass('btn') || $(event.target).hasClass('fa-heart')|| $(event.target).hasClass('fa-exclamation')||$(event.target).hasClass('fa-thumbs-up')){
 	            return;
 	        }
 	    	 
@@ -216,6 +224,44 @@ $(document).ready(function() {
 	        $('#articleDetailsModal').modal('show');
 	    });
 	    
+	    
+	    $('#articlesRow').on('click', '.report-button', function(event) {
+	        let check = $("[name='check']").text();
+	        if(check == "登入/註冊") {
+	            event.preventDefault(); // 防止預設事件，例如表單提交或連結跳轉
+
+	            // 使用 SweetAlert2 顯示彈窗
+	            Swal.fire({
+	                icon: "error", // 設置彈窗圖示為錯誤
+	                text: "尚未登入！", // 設置顯示的文字
+	                footer: '<a href="${pageContext.request.contextPath}/member/login.jsp">點此登入</a>' // 設置彈窗底部，包含一個登入連結
+	            });
+	            return; // 阻止後續代碼執行
+	        }
+
+	        var articleId = $(this).data('articleid');
+	        $('#articleId').val(articleId);
+	        var now = new Date();
+	        var formattedTime = formatDate(now);
+	        $('#reportTime').val(formattedTime);
+	        $('#reportModal').modal('show');
+	    });
+
+	    $('#reportForm').submit(function(event) {
+	        event.preventDefault();
+	        var formData = $(this).serialize(); // 序列化表單數據
+
+	        $.ajax({
+	            type: 'post',
+	            url: '<%=request.getContextPath()%>/report?action=add',
+	            data: formData,
+	            dataType: 'json',
+	            success: function(response) {	                
+	                    $('#reportModal').modal('hide');
+	            }
+	        });
+	    });
+
 });
 
     function formatDate(date) {
@@ -231,14 +277,6 @@ $(document).ready(function() {
     function padZero(value) {
         return value < 10 ? '0' + value : value;
     }
-    
-//     function checkSession(e){
-//         let check = $("[name='check']").text();
-//         if (check == "登入/註冊"){
-//             e.preventDefault(); // 阻止點擊事件的預設行為，即防止按鈕的超連結跳轉
-//             window.alert("請先登入"); // 顯示警告訊息，提醒使用者登入
-//         }
-//     }
 </script>
 <style>
     .fixed-height-img {
@@ -329,7 +367,7 @@ $(document).ready(function() {
 	}
 	
 	div.modal-body {
-    padding: 2.5rem !important;;
+    padding: 2.5rem !important;
 	}
 	
 	.likes-button{
@@ -363,6 +401,17 @@ $(document).ready(function() {
 		  }
 		}
      
+     .report-button{
+     	margin-right: 12px;
+     	background-color: 	#FF0000 !important;
+    	border-color: 	#FF0000 !important;
+    	width: 40px;
+     }
+      .reportborder:hover, .reportborder:focus, .reportborder:active, .reportborder:visited {
+       outline: none;
+       box-shadow: none !important;
+     }
+
 </style>
 
 </head>
@@ -412,6 +461,29 @@ $(document).ready(function() {
       </div>
     </div>
   </div>
+</div>
+
+<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reportModalLabel">檢舉文章</h5>
+                <button type="button" class="btn-close reportborder" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="reportForm">
+                    <div class="mb-3">
+                        <label for="reportReason" class="form-label">檢舉原因</label>
+                        <textarea class="form-control reportborder" id="reportReason" name="reportContent" rows="3"></textarea>
+                    </div>
+                    <input type="hidden" id="articleId" name="articleId">
+                    <input type="hidden" id="reportTime" name="reportTime">
+    				<input type="hidden" id="reportStatus" name="reportStatus" value="0">
+                    <button type="submit" class="btn btn-danger">提交檢舉</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <jsp:include page="../indexpage/footer.jsp" />
