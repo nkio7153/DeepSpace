@@ -39,14 +39,13 @@ public class TourService implements TourService_Interface{
 
 	@Override
 	public int update(TourVO entity) {
-		   dao.update(entity);
-		   return 0;
+		 dao.update(entity);
+		 return 0;
 	}
 
 	@Override
-	public int delete(Integer tourId) {
-		// TODO Auto-generated method stub
-		return 0;
+	public void delete(Integer tourId) {
+		dao.delete(tourId);
 	}
 
 	@Override

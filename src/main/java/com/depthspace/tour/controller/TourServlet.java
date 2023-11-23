@@ -97,7 +97,22 @@ public class TourServlet extends HttpServlet {
 		case "/update":
 			doUpdate(req, resp);
 			break;
+		case "/deleteByFetch"://前端刪除行程
+			doDeleteByFetch(req, resp);
+			break;
 		}
+	}
+
+private void doDeleteByFetch(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		System.out.println("刪除方法開始");
+		Integer tourId = Integer.valueOf(req.getParameter("tourId"));
+		System.out.println("tourId= " +tourId);
+		tds.deleteByTourId(tourId);
+		ts.delete(tourId);
+		
+		String data = "ok";
+		setJsonResponse(resp, data);
+		
 	}
 
 private void doEdit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

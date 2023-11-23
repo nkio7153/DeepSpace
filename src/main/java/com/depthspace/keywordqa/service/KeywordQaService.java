@@ -1,24 +1,67 @@
 package com.depthspace.keywordqa.service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+
+import com.depthspace.account.model.account.AccountVO;
+import com.depthspace.account.model.account.dao.AccountDAO;
+import com.depthspace.account.model.account.dao.AccountDAOImpl;
+import com.depthspace.faqtypes.model.model.FaqTypesDAOImpl;
+import com.depthspace.faqtypes.model.model.FaqTypesVO;
+import com.depthspace.keywordqa.model.KeywordQaDAO;
+import com.depthspace.keywordqa.model.KeywordQaDAOImpl;
 import com.depthspace.keywordqa.model.KeywordQaVO;
+import com.depthspace.utils.HibernateUtil;
 
-public interface KeywordQaService {
-	KeywordQaVO addKeywordQa(KeywordQaVO keywordQaVO);
+public class KeywordQaService {
+	 private KeywordQaDAO dao;
+	   
+	 public KeywordQaService() {
+			dao = new KeywordQaDAOImpl();
+		}
 
-	KeywordQaVO updateKeywordQa(KeywordQaVO keywordQaVO);
+		public KeywordQaVO addKeywordQa(String kwTypes, String kwAns) {
 
-	void deleteKeywordQa(Integer serialId);
+			KeywordQaVO keywordQaVO = new KeywordQaVO();
 
-	KeywordQaVO getKeywordQaiBySerialId(Integer serialId);		
+			keywordQaVO.setKwTypes(kwTypes);
+			keywordQaVO.setKwAns(kwAns);
+			dao.insert(keywordQaVO);
 
-    long getTotal();   	
+			return keywordQaVO;
+		}
 
-	List<KeywordQaVO> getAllKeywordQa();	//取得所有專欄VO
+		public KeywordQaVO updateKeywordQa(Integer serialId, String kwTypes, String kwAns) {
 
-	List<KeywordQaVO> getAllKeywordQa2(int currentPage);	//取得所有專欄VO根據分頁
+			KeywordQaVO keywordQaVO = new KeywordQaVO();
 
-	List<KeywordQaVO> getAllSortById(String sort);	//根據id排序
-	
-	int getPageTotal();
+			keywordQaVO.setSerialId(serialId);
+			keywordQaVO.setKwTypes(kwTypes);
+			keywordQaVO.setKwAns(kwAns);
+			dao.update(keywordQaVO);
+
+			return keywordQaVO;
+		}
+
+		public void deleteKeywordQa(Integer serialId) {
+			dao.delete(serialId);
+		}
+
+		public KeywordQaVO getOneKeywordQa(Integer serialId) {
+			return dao.findByPrimaryKey(serialId);
+		}
+
+		public List<KeywordQaVO> getAll() {
+			return dao.getAll();
+		}
+	 
 }

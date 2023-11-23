@@ -7,9 +7,9 @@
 
 
 <%
-AttractionsService attrs = new AttractionsService();
-List<AttractionsVO> list = attrs.getAll();
-pageContext.setAttribute("list", list);
+// AttractionsService attrs = new AttractionsService();
+// List<AttractionsVO> list = attrs.getAll();
+// pageContext.setAttribute("list", list);
 %>
 
 <!DOCTYPE html>
@@ -36,7 +36,7 @@ pageContext.setAttribute("list", list);
 			<!-- 左側篩選條件 -->
 			
 			<div class="col-md-3">
-				 <form method="post" id="searchForm" action="<%=request.getContextPath()%>/attr/search">
+				 <form method="post" id="searchForm" action="${pageContext.request.contextPath}/attr/search">
 					搜尋框
 					<div class="input-group mb-3">
 						<input type="text" class="form-control" placeholder="景點名稱"
@@ -63,20 +63,20 @@ pageContext.setAttribute("list", list);
 						</c:forEach>
 					</div>
 				</form>
-					
+		</div>
 
 			<!-- 右側景點列表 -->
 			<div class="col-md-9" id="attractionsRight">
-				<%@ include file="page1.file"%>
+<%-- 				<%@ include file="page1.file"%> --%>
 			    <div class="form-group">
 			    
-			        <c:forEach var="listItem" items="${list}" varStatus="status" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+			        <c:forEach var="listItem" items="${list}" varStatus="status" >
 			            <a href="${pageContext.request.contextPath}/attr/oneList?attractionsId=${listItem.attractionsId}" class="no-underline">
 			                <!-- 整張卡片點擊 -->
 			                <div class="card mb-3 clickable-card">
 			                    <div class="row no-gutters">
 			                        <div class="col-md-4">
-			                            <img src="<%=request.getContextPath()%>/attractionsImage?attractionsId=${listItem.attractionsId}" alt="" class="attractions-img">
+			                            <img src="${pageContext.request.contextPath}/attractionsImage?attractionsId=${listItem.attractionsId}" alt="" class="attractions-img">
 			                        </div>
 			                        <div class="col-md-8">
 			                            <div class="card-body">
@@ -95,12 +95,12 @@ pageContext.setAttribute("list", list);
 			        </c:forEach>
 			        
 			    </div>
-			    <%@ include file="page2.file"%>
+<%-- 			    <%@ include file="page2.file"%> --%>
 			    
 			</div>
 			
 
-		</div>
+		
 	</div>
 
 	<script>   
@@ -111,7 +111,7 @@ pageContext.setAttribute("list", list);
 
 	<!-- jQuery & Bootstrap JS -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- 	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
 
 	<jsp:include page="/indexpage/footer.jsp" />
 
