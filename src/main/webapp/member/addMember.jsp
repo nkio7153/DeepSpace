@@ -256,7 +256,7 @@
 	                <label for="memImage" class="col-sm-2 col-form-label text-right">會員圖片:</label>
 	                <div class="col-sm-8">
 <!-- 	                預覽圖 -->
-	                    <input type="file" class="form-control-file" id="picture" name="memImage">
+	                    <input type="file" class="form-control" id="picture" name="memImage">
 	                    <div class="preview mt-2">
 	                        <img id="preview_img" class="preview_jpg img-fluid">
 	                    </div>

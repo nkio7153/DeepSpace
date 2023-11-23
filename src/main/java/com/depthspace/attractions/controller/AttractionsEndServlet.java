@@ -80,7 +80,7 @@ public class AttractionsEndServlet extends HttpServlet {
 		case "/edit": //編輯前
 			doEdit(req, res);
 			break;
-		case "/edit2": //編輯前
+		case "/edit2": //編輯完成
 			doEdit2(req, res);
 			break;
 		}
@@ -190,7 +190,7 @@ public class AttractionsEndServlet extends HttpServlet {
 		//再由cityId找到對應縣市名稱
 //		avo.getCityId()
 		CityVO cvo = cityService.findByPrimaryKey(avo.getCityId());
-		System.out.println("cvo的物件=" + cvo);
+//		System.out.println("cvo的物件=" + cvo);
 		//將值傳至jsp
 		req.setAttribute("cvo", cvo);
 		
