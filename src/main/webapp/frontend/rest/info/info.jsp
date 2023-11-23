@@ -26,6 +26,16 @@
 
 	<h1 id="r_name">${ rest.restName }</h1>
 	
+	
+	<div class="row mt-5">
+		<h5>餐廳簡介</h5>
+		<div class="col-12">
+			${ rest.restText }
+		</div>
+	</div>
+	
+	
+	
 	<div id="map" style="height: 300px;" class="w-100 mb-3"></div>
 	
 	<!-- https://bootstrap5.hexschool.com/docs/5.0/components/carousel/ -->
