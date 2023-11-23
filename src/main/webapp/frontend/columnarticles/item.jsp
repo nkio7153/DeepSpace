@@ -12,13 +12,13 @@
 <jsp:include page="/indexpage/head.jsp" />
 
 <style>
-    #carouselExampleIndicators img {
-        width: 100%;
-        height: auto;
-        display: block;
-        margin: auto;
-    }
-
+#carouselExampleIndicators img {
+    width: 100%;
+    object-fit: cover;
+    height: 350px;
+    display: block;
+    margin: auto;
+}
     /* 推薦文章 */
     .carousel-inner {
         display: flex;
