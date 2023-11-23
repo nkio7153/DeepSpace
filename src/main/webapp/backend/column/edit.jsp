@@ -14,9 +14,23 @@
 <script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
 <title>修改專欄文章</title>
 
+<style>
+.viewimg {
+    padding-left: 0px;
+    padding-right: 0px;
+    left: 30px;
+}
+select {
+    -webkit-appearance: menulist !important; 
+    -moz-appearance: menulist !important;
+    appearance: menulist !important;
+}
+
+</style>
 <%--  include --%>
 	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
   
+
 </head>
 
 <body>
@@ -45,7 +59,7 @@
 						<!-- 類型 -->
 						<div class="form-group col-md-6">
 							<label for="colTypeId">專欄類型</label> <select name=colTypeId
-								id="colTypeId" class="form-control">
+								id="colTypeId" class="form-control" required>
 								<option value="">請選擇專欄類型</option>
 								<c:forEach var="typeItem" items="${columnTypes}">
 									<!-- 選單原先值 -->
@@ -69,10 +83,10 @@
 									onchange="previewImage(event)">
 							</div>
 							<!-- 圖片預覽 -->
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-6 viewimg">
 								<label>圖片預覽</label> <img id="imagePreview"
 									src="<%=request.getContextPath()%>/columnmainimage?artiId=${columnArticles.artiId}"
-									alt="圖片預覽" style="max-width: 100%; max-height: 300px;" />
+									alt="圖片預覽" style="max-width: 50%; max-height: 300px;" />
 							</div>
 						</div>
 

@@ -323,6 +323,13 @@ console.log(quantity);
             console.log(data);
             cartNum.text(data);
             button.addClass('flash-effect');
+            
+            if (cartNum.text() === "0" || cartNum.text() === "") {
+                cartNum.hide();
+               } else {
+                cartNum.show();
+               }
+            
             // 1 秒後移除閃爍效果
             setTimeout(() => {
                 button.removeClass('flash-effect');

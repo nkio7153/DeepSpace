@@ -29,7 +29,11 @@
 .swal2-confirm {
 	background-color: #74b3ef !important;
 }
-	
+select {
+    -webkit-appearance: menulist !important; 
+    -moz-appearance: menulist !important;
+    appearance: menulist !important;
+}	
 	</style>
 	<script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
 	    <script>
