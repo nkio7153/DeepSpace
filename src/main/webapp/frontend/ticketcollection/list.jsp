@@ -19,6 +19,10 @@
 .myfa {
     margin: auto;
 }
+.collection-icon, .collection-icon -on {
+	width: 30px;
+	height: 30px;
+}
 </style>
 </head>
 <body>

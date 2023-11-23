@@ -41,6 +41,12 @@ public class HbTourDetailDAOImpl implements HbTourDetailDAO_Interface{
 		
 	}
 	@Override
+	public void deleteByTourDaysId(Integer tourDaysId){
+		getSession().createQuery("delete from TourDetailVO where tourDaysId =:tourDaysId")
+				.setParameter("tourDaysId",tourDaysId)
+				.executeUpdate();
+	}
+	@Override
 	public TourDetailVO findByPrimaryKey(Integer tourDaysId, Integer attractionsId) {
 		// TODO Auto-generated method stub
 		return null;
