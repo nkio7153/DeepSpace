@@ -205,7 +205,7 @@
     <div class="form-container">
         <div class="left-div">
             <label>出發日期:</label>
-            <input type="date" name="startDate" value="${list[0].startDate}">
+            <input type="date" name="startDate" id="startDate" value="${list[0].startDate}">
         </div>
         <div class="right-div">
             <label>結束日期:</label>
@@ -401,18 +401,78 @@
         });
     });
 
+    let addHtml=`<div class="ml-2 d-flex mt-2 add" name="add">
+                        <div style="display: flex" class="container">
+                            <input type="time" name="attractionTime[]" style="margin-right: 10px;" required
+                                   value="">
+                            <label style="margin: 10px; display: table-cell; vertical-align: middle;">你要去哪兒?</label>
+
+                            <select name="" class="attraction"
+                                    style="margin-left: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 50px; background-color: #f5f5f5; font-family: Arial; font-size: 14px;">
+                                <option value="" selected disabled>請選擇</option>
+
+                                <c:forEach var="attraction" items="${attrAll}">
+                                        <option value="${attraction.attractionsId}">${attraction.attractionsName}</option>
+                                </c:forEach>
+                            </select>
+
+                            <div class="circle2 d-flex justify-content-center ml-2 pb-1" name="dash">
+                                <span class="dash">-</span>
+                            </div>
+                        </div>
+
+                    </div>`;
     //1109測試
     $('body').on('click', '[name="circle"]', function () {
 // 			console.log("click事件觸發了")
+        if($(this).closest("[class='row']").find('[name="add"]').length != 0) {
+            console.log($(this).closest("[class='row']").find('[name="add"]').eq(0));
+            // 複製 .addContainer 內的第一個 .add 元素
+            var clonedElement = $(this).closest("[class='row']").find('[name="add"]').eq(0).clone();
 
-        // 複製 .addContainer 內的第一個 .add 元素
-        var clonedElement = $(this).closest("[class='row']").find('[name="add"]').eq(0).clone();
+            // 重置複製元素內的特定欄位值
+            clonedElement.find('input[type="time"]').val('');
+            clonedElement.find('select').prop('selectedIndex', 0);
+            // 將複製的元素添加到 .addContainer 的末尾
+            $(this).closest("[name='afterSelector']").before(clonedElement);
+            // $(this).closest("[name='afterSelector']").before(addHtml);
+            console.log("進入clone方法")
+        }else{
+            console.log("進入else");
+            $(this).closest("[name='afterSelector']").before(addHtml);
 
-        // 重置複製元素內的特定欄位值
-        clonedElement.find('input[type="time"]').val('');
-        clonedElement.find('select').prop('selectedIndex', 0);
-        // 將複製的元素添加到 .addContainer 的末尾
-        $(this).closest("[name='afterSelector']").before(clonedElement);
+            let cityName = $(this).closest(".row").find("option:selected").text();
+            cityName = cityName.substring(0, 3)
+		        console.log("cityName="+cityName);
+
+            let attractionsSelect = $(this).closest(".row").find(".attraction");
+            let url = "${pageContext.request.contextPath}/tr/getAttractions?cityName=" + cityName;
+            fetch(url)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+// 		                  console.log(data);
+// 		                  let attractionsSelect = $("[name='attractions']")
+                    // 要先清空原本選項
+                    attractionsSelect.empty();
+                    let option = document.createElement("option");
+                    option.text = "請選擇";
+                    attractionsSelect.append(option);
+                    // 遍歷從後端獲取的景點資料，並生成選項
+                    data.forEach(function (attractions) {
+                        let option = document.createElement("option");
+                        option.value = attractions.attractionsId;
+                        option.text = attractions.attractionsName;
+                        attractionsSelect.append(option);
+
+                    });
+                })
+
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
 
 
     });
@@ -447,24 +507,70 @@
         }
         count=count+1;
         let cal=calculateDays();
-        //如果行程天數 小於 日期相減的話，結束日期+1天 總天數+1天
+        //如果行程天數 大於 日期相減的話，結束日期+1天 總天數+1天
         if(count > cal){
             addOneDayToDate();
             var days = $("#tripDuration").text().split(':').pop().trim();
             $("#tripDuration").text("總天數:"+(parseInt(days)+1));
         }
+
+
+        let cityName = $(this).closest("[name='addDate']").prev().find("option:selected").text();
+        cityName = cityName.substring(0, 3)
+        console.log("cityName="+cityName);
+
+        let attractionsSelect = $(this).closest("[name='addDate']").prev().find(".attraction");
+        let url = "${pageContext.request.contextPath}/tr/getAttractions?cityName=" + cityName;
+        fetch(url)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+// 		                  console.log(data);
+// 		                  let attractionsSelect = $("[name='attractions']")
+                // 要先清空原本選項
+                attractionsSelect.empty();
+                let option = document.createElement("option");
+                option.text = "請選擇";
+                attractionsSelect.append(option);
+                // 遍歷從後端獲取的景點資料，並生成選項
+                data.forEach(function (attractions) {
+                    let option = document.createElement("option");
+                    option.value = attractions.attractionsId;
+                    option.text = attractions.attractionsName;
+                    attractionsSelect.append(option);
+
+                });
+            })
+
+            .catch(function (error) {
+                console.log(error);
+            })
     });
 
     //修改開始日期觸發更改總天數事件
-    $('body').on('click', '#startDate', function () {
-        let count;
-        for (let i = 0; i < $(".oneDay").length; i++) {
+    $('body').on('change', '#startDate', function () {
+        console.log("進入change事件");
+        let cal=calculateDays();
+        $("#tripDuration").text("總天數:"+cal);
+        let count=0;
+        for (let i = 0; i <$(".oneDay").length ; i++) {
             count=i;
         }
-        count=count+1;
-        let cal=calculateDays();
-        var days = $("#tripDuration").text().split(':').pop().trim();
-        $("#tripDuration").text("總天數:"+parseInt(cal));
+        count=count+1;//行程天數
+        //如果行程天數 小於 日期相減的話
+        if(cal > count){
+            for (let i = 0; i < cal-count; i++) {
+                $("[name='addDate']").before(html);
+            }
+            for (let i = 0; i < $(".oneDay").length; i++) {
+                $(".oneDay").eq(i).text("第" + (i + 1) + "天");
+                $(".inputOneDay").eq(i).attr("name", "oneDay[" + (i + 1) + "]");
+                $(".inputOneDay").eq(i).val(i + 1);
+                $(".attraction").attr("name", "attractions[" + (i + 1) + "]");
+                $(".attractionTime").attr("name", "attractionTime[" + (i + 1) + "]");
+            }
+        }
     })
 
 
@@ -511,12 +617,22 @@
     //修改天數
     $('body').on('click', '.circle3', function () {
         $(this).closest(".row").remove();
+        let count=0;
         for (let i = 0; i < $(".oneDay").length; i++) {
             $(".oneDay").eq(i).text("第" + (i + 1) + "天");
             $(".inputOneDay").eq(i).attr("name", "oneDay[" + (i + 1) + "]");
             $(".inputOneDay").eq(i).val(i + 1);
             $(".attraction").attr("name", "attractions[" + (i + 1) + "]");
             $(".attractionTime").attr("name", "attractionTime[" + (i + 1) + "]");
+            count=i;
+        }
+        count=count+1;//行程天數
+        let cal=calculateDays();//相減天數
+        //如果行程天數減一之後，相減後的天數>行程天數，結束日期減一，總天數-1
+        if(cal > count){
+            deOneDayToDate();
+            let cal=calculateDays();
+            $("#tripDuration").text("總天數:"+cal);
         }
     });
 
@@ -528,13 +644,13 @@
 // 			    console.log("拿到的地點" + selectedAttraction);
     }
 
-    $(document).ready(function () {
-
-        $(".city").on("change", function (event) {
+    // $(document).ready(function () {
+        $('body').on("change",".city", function(event){
+        // $(".city").on("change", function (event) {
 
             let cityName = $(this).find("option:selected").text();
-// 		        console.log("cityName="+cityName);
-            console.log(this);
+            cityName = cityName.substring(0, 3)
+		    console.log("cityName="+cityName);
 
             let attractionsSelect = $(this).closest(".row").find(".attraction");
             let url = "${pageContext.request.contextPath}/tr/getAttractions?cityName=" + cityName;
@@ -566,7 +682,7 @@
 
 
         });
-    })
+    // })
     //取得結束日期減掉出發日期的天數
     function calculateDays() {
         // 使用 jQuery 取得出發日期和結束日期的值
@@ -602,6 +718,24 @@
             // 更新輸入欄位的值
             $('input[name="endDate"]').val(newEndDate);
         }
+
+    //結束日期減一天
+    function deOneDayToDate() {
+        // 使用 jQuery 獲取結束日期的值
+        var endDateValue = $('input[name="endDate"]').val();
+
+        // 將結束日期的字串轉換為日期物件
+        var endDate = new Date(endDateValue);
+
+        // 增加一天
+        endDate.setDate(endDate.getDate() - 1);
+
+        // 將更新後的日期轉換回符合輸入格式的字串
+        var newEndDate = endDate.toISOString().split('T')[0];
+
+        // 更新輸入欄位的值
+        $('input[name="endDate"]').val(newEndDate);
+    }
 
 
 
