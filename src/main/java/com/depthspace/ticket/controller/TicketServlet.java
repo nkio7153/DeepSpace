@@ -133,7 +133,7 @@ public class TicketServlet extends HttpServlet {
 
 	/************ 票券新增 ************/
 	protected void doAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		if (!req.getMethod().equalsIgnoreCase("POST")) {
+	    if (!req.getMethod().equalsIgnoreCase("POST")) {
 			// 判斷如果不是POST，就是到新增頁面
 
 			// 新增頁面中要放入選單項目，要取其值，set屬性到頁面中
@@ -145,7 +145,94 @@ public class TicketServlet extends HttpServlet {
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/ticket/add.jsp");
 			dispatcher.forward(req, res);
 			return;
-		} else {
+	    } else {
+	        // 表單送出驗證
+
+	        String ticketTypeIdStr = req.getParameter("ticketTypeId");
+	        String ticketName = req.getParameter("ticketName");
+	        String priceStr = req.getParameter("price");
+	        String stockStr = req.getParameter("stock");
+	        String validDaysStr = req.getParameter("validDays");
+	        String cityIdStr = req.getParameter("cityId");
+	        String address = req.getParameter("address");
+	        String longitudeStr = req.getParameter("longitude");
+	        String latitudeStr = req.getParameter("latitude");
+
+			// 新增頁面中要放入選單項目，要取其值，set屬性到頁面中
+			List<TicketTypesVO> ticketTypes = ticketService.getAllTicketTypes();
+			List<CityVO> cities = ticketService.getAllCities();
+			req.setAttribute("ticketTypes", ticketTypes);
+			req.setAttribute("cities", cities);
+			
+			
+	        boolean hasError = false;
+	        
+	        if (ticketTypeIdStr == null || ticketTypeIdStr.trim().isEmpty()) {
+	        	req.setAttribute("errorMessageTicketTypeIdStr", "必選");
+	            hasError = true;
+	        }
+	        if (ticketName == null || ticketName.trim().isEmpty()) {
+	        	req.setAttribute("errorMessageTicketName", "必填");
+	            hasError = true;
+	        }
+	        if (priceStr == null || priceStr.trim().isEmpty()) {
+	        	req.setAttribute("errorMessagePriceStr", "必填(限半形阿拉伯數字)");
+	            hasError = true;
+	        }
+	        if (stockStr == null || stockStr.trim().isEmpty()) {
+	        	req.setAttribute("errorMessageStockStr", "必填(限半形數字)");
+	            hasError = true;
+	        }
+	        if (validDaysStr == null || validDaysStr.trim().isEmpty()) {
+	        	req.setAttribute("errorMessageValidDaysStr", "必填(限半形數字)");
+	            hasError = true;
+	        }
+	        if (cityIdStr == null || cityIdStr.trim().isEmpty()) {
+	        	req.setAttribute("errorMessageCityIdStr", "必選");
+	            hasError = true;
+	        }
+	        if (address == null || address.trim().isEmpty()) {
+	        	req.setAttribute("errorMessageAddress", "必填");
+	            hasError = true;
+	        }
+
+	        // 圖片驗證
+	        Collection<Part> fileParts = req.getParts();
+	        boolean isFirstImage = true;
+	        List<TicketImagesVO> ticketImagesList = new ArrayList<>();
+
+	        for (Part filePart : fileParts) {
+	            if (filePart.getName().equals("ticketImages[]")) {
+	                if (filePart.getSize() == 0) {
+	    	        	req.setAttribute("errorMessageFilePart", "至少需要一張圖片");
+	                    hasError = true;
+	                    break;
+	                }
+	                // 檢查檔案類型和大小
+	                String contentType = filePart.getContentType();
+	                if (!contentType.startsWith("image/")) {
+	    	        	req.setAttribute("errorMessageContentType", "只能上傳圖片類型");
+	                    hasError = true;
+	                    break;
+	                }
+	            }
+	        }
+	        
+	        if (hasError) {
+	            req.setAttribute("inputTicketTypeId", ticketTypeIdStr);
+	            req.setAttribute("inputTicketName", ticketName);
+	            req.setAttribute("inputPrice", priceStr);
+	            req.setAttribute("inputStock", stockStr);
+	            req.setAttribute("inputValidDays", validDaysStr);
+	            req.setAttribute("inputCityId", cityIdStr);
+	            req.setAttribute("inputAddress", address);
+	            req.setAttribute("inputLongitude", longitudeStr);
+	            req.setAttribute("inputLatitude", latitudeStr);
+	            RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/ticket/add.jsp");
+	            dispatcher.forward(req, res);
+	            return;
+	        }
+
 			// 完成表單填寫，按下送出觸發POST，就將下列的資料送出
 			TicketVO ticket = new TicketVO();
 			ticket.setTicketName(req.getParameter("ticketName"));
@@ -169,41 +256,42 @@ public class TicketServlet extends HttpServlet {
 			ticket.setTicketType(ticketType);
 
 			ticketService.addTicket(ticket); // 必須先將上述資料存入
+			
+	        // 儲存圖片
+	        for (Part filePart : fileParts) {
+					if (filePart.getName().equals("ticketImages[]") && filePart.getSize() > 0) {
+				        if (filePart.getSize() == 0) {
+				        	req.setAttribute("errorMessageFilePart", "至少需要一張圖片");
+				            hasError = true;
+				            break;
+				        }
+						TicketImagesVO ticketImage = new TicketImagesVO();
+						ticketImage.setTicket(ticket);
+		        
+						// 判斷第一張圖則為主圖→byte=1
+						if (isFirstImage) {
+							ticketImage.setIsMainImage((byte) 1);
+							isFirstImage = false;
+						} else {
+							ticketImage.setIsMainImage((byte) 0);
+						}
 
-			// 存入多張圖片
-			Collection<Part> fileParts = req.getParts(); // 多份圖
-			boolean isFirstImage = true; // 標記是否為第一張圖
-			List<TicketImagesVO> ticketImagesList = new ArrayList<>(); // 創建一個列表來收集所有的TicketImagesVO
-
-			for (Part filePart : fileParts) {
-				if (filePart.getName().equals("ticketImages[]") && filePart.getSize() > 0) {
-					TicketImagesVO ticketImage = new TicketImagesVO();
-					ticketImage.setTicket(ticket);
-
-					// 判斷第一張圖則為主圖→byte=1
-					if (isFirstImage) {
-						ticketImage.setIsMainImage((byte) 1);
-						isFirstImage = false;
-					} else {
-						ticketImage.setIsMainImage((byte) 0);
+						// 讀取圖片並存入
+						InputStream inputStream = filePart.getInputStream();
+						byte[] imageBytes = readInputStream(inputStream);
+						ticketImage.setImage(imageBytes);
+						ticketImagesList.add(ticketImage);
+						// 儲存所有圖片
+						ticketImagesService.saveAll(ticketImagesList);
 					}
-
-					// 讀取圖片並存入
-					InputStream inputStream = filePart.getInputStream();
-					byte[] imageBytes = readInputStream(inputStream);
-					ticketImage.setImage(imageBytes);
-					ticketImagesList.add(ticketImage);
-					// 儲存所有圖片
-					ticketImagesService.saveAll(ticketImagesList);
 				}
-			}
-		}
-		int ticketPageQty = ticketService.getPageTotal();
-		req.getSession().setAttribute("ticketPageQty", ticketPageQty);
 
-		res.sendRedirect(req.getContextPath() + "/ticketmg/list");
+	        int ticketPageQty = ticketService.getPageTotal();
+	        req.getSession().setAttribute("ticketPageQty", ticketPageQty);
+	        res.sendRedirect(req.getContextPath() + "/ticketmg/list");
+	    }
 	}
-
+	
 	/************ 票券查看 ************/
 	protected void view(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		Integer ticketId = Integer.valueOf(req.getParameter("ticketId"));

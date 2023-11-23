@@ -64,10 +64,6 @@ select {
     -moz-appearance: menulist !important;
     appearance: menulist !important;
 }
-.viewbtn {
-    background-color: #9bbdd7;
-    border-color: #9bbdd7;
-}
 .viewdiv {
 	margin-bottom: 50px;
 }
@@ -250,55 +246,6 @@ $(document).ready(function() {
 		$('#searchForm').submit();
 	});
 });
-//頁數變動
-// function updatePagination(pageQtyA, currentPage) {
-//     var paginationHtml = '';
-//     for (var i = 1; i <= pageQtyA; i++) {
-//         paginationHtml += '<li class="page-item ' + (i === currentPage ? 'active' : '') + '">';
-//         paginationHtml += '<a class="page-link" href="#" onclick="loadPage(' + i + '); return false;">' + i + '</a></li>';
-//     }
-//     $('.pagination').html(paginationHtml);
-// }
-
-
-
-
-// 	function updatePagination(totalPages, filtercurrentPage) {
-// 	    var paginationHtml = '';
-// 	    for (var i = 1; i <= totalPages; i++) {
-// 	        paginationHtml += '<a href="#" onclick="loadPageData(' + i + '); return false;" class="' + (i === filtercurrentPage ? 'active' : '') + '">' + i + '</a>';
-// 	    }
-// 	    $('#pagination').html(paginationHtml);
-// 	}
-// function loadPage(pageNumber) {
-//     $.ajax({
-<%--         url: '<%=request.getContextPath()%>/ticketproduct/search',  --%>
-//         data: { page: pageNumber },
-//         success: function(response) {
-//             $('#ticketright').html(response);
-//         }
-//     });
-// }
-
-// function loadPageData(pageNumber) {
-//     var formData = $('#searchForm').serialize();
-//     formData += '&page=' + pageNumber;
-
-//     $.ajax({
-<%--         url: '<%=request.getContextPath()%>/ticketproduct/search', --%>
-//         type: 'GET',
-//         data: formData,
-//         success: function(response) {
-//             // 更新票券列表
-//             $('#ticketright').html(response.ticketsHtml);
-//             // 更新分頁按鈕
-//             updatePagination(response.totalPages, pageNumber);
-//         },
-//         error: function(error) {
-//             console.error('分頁錯誤', error);
-//         }
-//     });
-// }
 
 function loadPageData(pageNumber) {
     var formData = $('#searchForm').serialize();
