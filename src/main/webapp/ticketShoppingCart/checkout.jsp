@@ -147,13 +147,13 @@
                     </c:forEach>
                 </table>
             </div>
-            <div class="fs-3 bg-light p-4 rounded mb-4 border rounded shadow-sm">
-                <span>小計:</span><span class="sub2 badge bg-primary"></span><br>
-                <span>點數:</span><span class="coupen badge bg-warning">${coupen}</span>
+            <div class="fs-4 bg-light p-4 rounded mb-4 border rounded shadow-sm">
+                <span>小計:</span><span class="sub2"></span><br>
+                <span>點數:</span><span class="coupen">${coupen}</span>
             </div>
             <div class="last fs-2 bg-light p-4 rounded border rounded shadow-sm">
-                <span class="fs-5">總金額:$</span>
-                <div class="total text-black-50 fs-5"></div>
+                <span class="fs-4">總金額:$</span>
+                <div class="total text-black-50 fs-4"></div>
                 <br>
                 <input type="button" class="btn btn-primary btn-lg ms-2" value="確認付款" id="confirmPaymentButton">
             </div>

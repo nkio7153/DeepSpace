@@ -28,7 +28,7 @@ private HbTourDetailDAO_Interface dao;
 
 
 	public void delete(Integer tourDaysId, Integer attractionsId) {
-		// TODO Auto-generated method stub
+		dao.delete(tourDaysId, attractionsId);
 		
 	}
 

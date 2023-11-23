@@ -4,16 +4,13 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.depthspace.attractions.service.AttractionsService"%>
 <%@ page import="com.depthspace.attractions.model.AttractionsVO"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 
 <%
-// if (session.getAttribute("list") != null) {
-//     // 如果 session 中沒有 "list" 屬性，則執行以下代碼
-//     AttractionsService attrs = new AttractionsService();
-//     List<AttractionsVO> list = attrs.getAll();
-//     pageContext.setAttribute("list", list);
-// }
+AttractionsService attrs = new AttractionsService();
+List<AttractionsVO> list = attrs.getAll();
+pageContext.setAttribute("list", list);
 %>
 
 <!DOCTYPE html>
@@ -38,9 +35,10 @@
 		<div class="row">
 
 			<!-- 左側篩選條件 -->
-			
+
 			<div class="col-md-3">
-				 <form method="post" id="searchForm" action="<%=request.getContextPath()%>/attr/search">
+				<form method="post" id="searchForm"
+					action="${pageContext.request.contextPath}/attr/search">
 					<!-- 搜尋框 -->
 					<div class="input-group mb-3">
 						<input type="text" class="form-control" placeholder="景點名稱"
@@ -55,14 +53,13 @@
 
 					<h4>選擇你想去的縣市吧!</h4>
 					<div class="form-group">
-						<c:forEach var="areaItem" items="${city}" varStatus="status" >
+						<c:forEach var="areaItem" items="${city}" varStatus="status">
 							<div class="custom-control custom-checkbox">
 								<input type="checkbox" class="custom-control-input"
 									id="cityId_${status.index}" name="cityId"
-									value="${areaItem.cityId}">
-									<label class="custom-control-label" for="cityId_${status.index}">
-										${areaItem.cityName} 
-									</label>
+									value="${areaItem.cityId}"> <label
+									class="custom-control-label" for="cityId_${status.index}">
+									${areaItem.cityName} </label>
 							</div>
 						</c:forEach>
 					</div>
@@ -71,23 +68,27 @@
 
 			<!-- 右側景點列表 -->
 			<div class="col-md-9" id="attractionsRight">
-<%-- 				<%@ include file="page1.file"%> --%>
-			    <div class="form-group">
-			    
-			        <c:forEach var="listItem" items="${list}" varStatus="status" >
-			            <a href="${pageContext.request.contextPath}/attr/oneList?attractionsId=${listItem.attractionsId}" class="no-underline">
-			                <!-- 整張卡片點擊 -->
-			                <div class="card mb-3 clickable-card">
-			                    <div class="row no-gutters">
-			                        <div class="col-md-4">
-			                            <img src="<%=request.getContextPath()%>/attractionsImage?attractionsId=${listItem.attractionsId}" alt="" class="attractions-img">
-			                        </div>
-			                        <div class="col-md-8">
-			                            <div class="card-body">
-			                                <h5 class="card-title">${listItem.attractionsName}</h5>
-			                                <p class="card-text">${listItem.address}&ensp;|&ensp;</p>
-			                                <p class="card-text">
-			                                	<c:choose>
+				<%@ include file="page1.file"%>
+				<div class="form-group">
+
+					<c:forEach var="listItem" items="${list}" varStatus="status"
+						begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+						<a
+							href="${pageContext.request.contextPath}/attr/oneList?attractionsId=${listItem.attractionsId}"
+							class="no-underline"> <!-- 整張卡片點擊 -->
+							<div class="card mb-3 clickable-card">
+								<div class="row no-gutters">
+									<div class="col-md-4">
+										<img
+											src="<%=request.getContextPath()%>/attractionsImage?attractionsId=${listItem.attractionsId}"
+											alt="" class="attractions-img">
+									</div>
+									<div class="col-md-8">
+										<div class="card-body">
+											<h5 class="card-title">${listItem.attractionsName}</h5>
+											<p class="card-text">${listItem.address}&ensp;|&ensp;</p>
+											<p class="card-text">
+												<c:choose>
 													<c:when test="${fn:length(listItem.description) > 60}">
 													${fn:substring(listItem.description,0,60)}...
 													</c:when>
@@ -95,99 +96,100 @@
 													${attr.description}
 													</c:otherwise>
 												</c:choose>
-<%-- 			                                    <label for="attractionsId_${status.index}"> --%>
-<%-- 			                                        ${listItem.description} --%>
-<!-- 			                                    </label> -->
-			                                </p>
-			                            </div>
-			                        </div>
-			                    </div>
-			                </div>
-			            </a>
-			        </c:forEach>
-			        
-			    </div>
-<%-- 			    <%@ include file="page2.file"%> --%>
-			    
+												<%-- 			                                    <label for="attractionsId_${status.index}"> --%>
+												<%-- 			                                        ${listItem.description} --%>
+												<!-- 			                                    </label> -->
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</a>
+					</c:forEach>
+
+				</div>
+
+				<div style="text-align: center;">
+					<%@ include file="../tour/page2.file"%>
+				</div>
+
 			</div>
-			
+
 
 		</div>
 	</div>
 
 	<script>
- 
-      //左邊搜尋條件
-//         $(document).ready(function() {
-//         	// 處理表單提交事件
-//             $('#searchForm').on('submit', function(e) {
-//                 e.preventDefault(); // 防止表單的默認提交行為
-//                 // 從表單收集數據，使用 serialize() 方法將表單數據序列化為字串
-//                 let formData = $(this).serialize();
-// //                 console.log(formData)
-                
-//                 let cityId = $('input[name="cityId"]:checked').val();
-//                 if(cityId === undefined){
-//                 	cityId = 0;
-//                 }
-//                 let attractionsName = $('#attractionName').val();
-                
-// //                 console.log(cityId + attractionsName)
-//              	// 發送 fetch 請求
-//              	let url = "${pageContext.request.contextPath}/attr/search?cityId=" + cityId + "&attractionsName=" + attractionsName;
-//              	fetch(url)
-// 		            .then(function(response){
-// 		                return response.text();
-// 		            })
-// 		            .then(function(data){
-// 		                console.log(this);
-// 		            	$('#attricationsRight').empty();
-// 		            	// 重新加入元素
-// 		            	 let jsonData = JSON.parse(data);
-// 		            	// 重新加入元素
-// 		            	    for (let i = 0; i < jsonData.length; i++) {
-// 		            	        let newItem = jsonData[i];
-// 		            	        // 重新加入元素
-// 		            	        let newElement = `
-// 		            	            <a href="${pageContext.request.contextPath}/attr/oneList?attractionsId=${newItem.attractionsId}" class="no-underline">
-// 		            	                <div class="card mb-3 clickable-card">
-// 		            	                    <div class="row no-gutters">
-// 		            	                        <div class="col-md-4">
-// 		            	                            <img src="${request.getContextPath()}/attractionsImage?attractionsId=${newItem.attractionsId}" alt="" class="attractions-img">
-// 		            	                        </div>
-// 		            	                        <div class="col-md-8">
-// 		            	                            <div class="card-body">
-// 		            	                                <h5 class="card-title">${newItem.attractionsName}</h5>
-// 		            	                                <p class="card-title">${newItem.address}&ensp;|&ensp;</p>
-// 		            	                                <p class="card-title">
-// 		            	                                    <label for="attractionsId_${i}">
-// 		            	                                        ${newItem.description}
-// 		            	                                    </label>
-// 		            	                                </p>
-// 		            	                            </div>
-// 		            	                        </div>
-// 		            	                    </div>
-// 		            	                </div>
-// 		            	            </a>
-// 		            	        `;
-	
-// 			            	// 將新元素加入到容器中
-// 			            	$('#attricationsRight .form-group').append(newElement);
-//                         }
-// 		            })
-// 		            .catch(function(error){
-// 		                console.log(error);
-// 		            })
-// 		        })
-                
-//             });
-      
+		//左邊搜尋條件
+		//         $(document).ready(function() {
+		//         	// 處理表單提交事件
+		//             $('#searchForm').on('submit', function(e) {
+		//                 e.preventDefault(); // 防止表單的默認提交行為
+		//                 // 從表單收集數據，使用 serialize() 方法將表單數據序列化為字串
+		//                 let formData = $(this).serialize();
+		// //                 console.log(formData)
 
-    </script>
+		//                 let cityId = $('input[name="cityId"]:checked').val();
+		//                 if(cityId === undefined){
+		//                 	cityId = 0;
+		//                 }
+		//                 let attractionsName = $('#attractionName').val();
+
+		// //                 console.log(cityId + attractionsName)
+		//              	// 發送 fetch 請求
+		//              	let url = "${pageContext.request.contextPath}/attr/search?cityId=" + cityId + "&attractionsName=" + attractionsName;
+		//              	fetch(url)
+		// 		            .then(function(response){
+		// 		                return response.text();
+		// 		            })
+		// 		            .then(function(data){
+		// 		                console.log(this);
+		// 		            	$('#attricationsRight').empty();
+		// 		            	// 重新加入元素
+		// 		            	 let jsonData = JSON.parse(data);
+		// 		            	// 重新加入元素
+		// 		            	    for (let i = 0; i < jsonData.length; i++) {
+		// 		            	        let newItem = jsonData[i];
+		// 		            	        // 重新加入元素
+		// 		            	        let newElement = `
+		// 		            	            <a href="${pageContext.request.contextPath}/attr/oneList?attractionsId=${newItem.attractionsId}" class="no-underline">
+		// 		            	                <div class="card mb-3 clickable-card">
+		// 		            	                    <div class="row no-gutters">
+		// 		            	                        <div class="col-md-4">
+		// 		            	                            <img src="${request.getContextPath()}/attractionsImage?attractionsId=${newItem.attractionsId}" alt="" class="attractions-img">
+		// 		            	                        </div>
+		// 		            	                        <div class="col-md-8">
+		// 		            	                            <div class="card-body">
+		// 		            	                                <h5 class="card-title">${newItem.attractionsName}</h5>
+		// 		            	                                <p class="card-title">${newItem.address}&ensp;|&ensp;</p>
+		// 		            	                                <p class="card-title">
+		// 		            	                                    <label for="attractionsId_${i}">
+		// 		            	                                        ${newItem.description}
+		// 		            	                                    </label>
+		// 		            	                                </p>
+		// 		            	                            </div>
+		// 		            	                        </div>
+		// 		            	                    </div>
+		// 		            	                </div>
+		// 		            	            </a>
+		// 		            	        `;
+
+		// 			            	// 將新元素加入到容器中
+		// 			            	$('#attricationsRight .form-group').append(newElement);
+		//                         }
+		// 		            })
+		// 		            .catch(function(error){
+		// 		                console.log(error);
+		// 		            })
+		// 		        })
+
+		//             });
+	</script>
 
 	<!-- jQuery & Bootstrap JS -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- 	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
 
 	<jsp:include page="/indexpage/footer.jsp" />
 
