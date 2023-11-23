@@ -48,4 +48,10 @@ public class ArticleReportDAOImpl implements ArticleReportDAO{
 		return getSession().get(ArticleReportVO.class, articleReportId);
 	}
 
+	@Override
+	public List<ArticleReportVO> getByReportStatus(Byte reportStatus) {
+		return getSession().createQuery("FROM ArticleReportVO WHERE reportStatus= :reportStatus", ArticleReportVO.class)
+				.setParameter("reportStatus", reportStatus).list();
+	}
+
 }

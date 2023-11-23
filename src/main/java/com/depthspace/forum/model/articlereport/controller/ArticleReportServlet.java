@@ -49,10 +49,22 @@ public class ArticleReportServlet extends HttpServlet {
 		case "list":
 			listReport(req, resp);
 			break;
+		case "liststatus":
+			listStatus(req, resp);
+			break;
 		}
 
 	}
-	
+	// 依審查狀態列出檢舉清單
+	private void listStatus(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		Byte reportStatus = Byte.valueOf(req.getParameter("reportStatus"));
+		List<ArticleReportVO> list = articleReportService.getByReportStatus(reportStatus);
+		JSONArray arr = JSONArray.parseArray(JSON.toJSONString(list));
+		resp.setContentType("application/json; charset=UTF-8");
+		PrintWriter out = resp.getWriter();
+		out.print(arr.toString());
+	}
+
 	// 列出檢舉清單
 	private void listReport(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		List<ArticleReportVO> list = articleReportService.getAll();

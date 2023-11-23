@@ -11,9 +11,11 @@ public class FaqVO implements java.io.Serializable{
 	private String faqAns;
 	
 	private FaqTypesVO faqType; // 添加FaqTypesVO的引用
+	
 	public FaqTypesVO getFaqType() {
         return faqType;
     }
+	
     public void setFaqType(FaqTypesVO faqType) {
         this.faqType = faqType;
     }

@@ -182,7 +182,6 @@ $(document).ready(function() {
                             <div class="card-text hidden">${article.artiText}</div>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-none">訊息ID: ${article.msgId}</li>
                             <li class="list-group-item d-none">文章ID: ${article.articleId}</li>
                             <li class="list-group-item d-none">文章類型: ${article.artiTypeId}</li>
                             <li class="list-group-item d-none likeicon">${article.artiLk}</li>

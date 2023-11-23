@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>常見問題 首頁</title>
+    <title>關鍵字 首頁</title>
 <%--  include head.jsp--%>
   <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
   <!-- 引入 Bootstrap 5 CSS -->
@@ -32,11 +32,11 @@
       <div class="col-lg-10">
                 <div class="card">
                     <div class="card-header">
-                        <h3>常見問題 : 首頁</h3>
+                        <h3>關鍵字問題 : 首頁</h3>
                     </div>
                     <div class="card-body">
-                        <p>Faq: Home</p>
-                        <h3>FAQ資料查詢:</h3>
+                        <p>關鍵字</p>
+                        <h3>關鍵字資料查詢:</h3>
                         <c:if test="${not empty errorMsgs}">
                             <div class="alert alert-danger" role="alert">
                                 <strong>請修正以下錯誤:</strong>
@@ -49,22 +49,22 @@
                         </c:if>
 
                         <ul>
-                          <li><a href='listAllFaq.jsp' class='btn btn-link'>列表</a> all Faqs.</li>
+                          <li><a href='listAll.jsp' class='btn btn-link'>列表</a> all 關鍵字.</li>
                           <li>
-                            <form method="post" action="faq.do" class="form-inline">
-                                <b>輸入FAQ員工編號 :</b>
+                            <form method="post" action="<%=request.getContextPath()%>/keywordqa/keywordQa.do" class="form-inline">
+                                <b>輸入關鍵字編號 :</b>
                                 <input type="text" name="serialId" class="form-control mx-2">
                                 <input type="hidden" name="action" value="getOne_For_Display">
                                 <button type="submit" class="btn btn-primary">送出</button>
                             </form>
                           </li>
-                          <jsp:useBean id="faqSvc" scope="page" class="com.depthspace.faq.service.FaqService" />
+                          <jsp:useBean id="keywordQaSvc" scope="page" class="com.depthspace.keywordqa.service.KeywordQaService" />
                           <li>
-                             <form method="post" action="faq.do" class="form-inline">
-                               <b>選擇FAQ編號:</b>
+                             <form method="post" action="<%=request.getContextPath()%>/keywordqa/keywordQa.do" class="form-inline">
+                               <b>選擇關鍵字編號:</b>
                                <select size="1" name="serialId" class="form-control mx-2">
-                                 <c:forEach var="faqVO" items="${faqSvc.all}" > 
-                                  <option value="${faqVO.serialId}">${faqVO.serialId}
+                                 <c:forEach var="keywordQaVO" items="${keywordQaSvc.all}" > 
+                                  <option value="${keywordQaVO.serialId}">${keywordQaVO.serialId}
                                  </c:forEach>   
                                </select>
                                <input type="hidden" name="action" value="getOne_For_Display">
@@ -72,11 +72,11 @@
                              </form>
                           </li>
                           <li>
-                             <form method="post" action="faq.do" class="form-inline">
-                               <b>選擇FAQ問題:</b>
+                             <form method="post" action="<%=request.getContextPath()%>/keywordqa/keywordQa.do" class="form-inline">
+                               <b>選擇關鍵字問題:</b>
                                <select size="1" name="serialId" class="form-control mx-2">
-                                 <c:forEach var="faqVO" items="${faqSvc.all}" > 
-                                  <option value="${faqVO.serialId}">${faqVO.faqName}
+                                 <c:forEach var="keywordQaVO" items="${keywordQaSvc.all}" > 
+                                  <option value="${keywordQaVO.serialId}">${keywordQaVO.kwTypes}
                                  </c:forEach>   
                                </select>
                                <input type="hidden" name="action" value="getOne_For_Display">
@@ -85,9 +85,9 @@
                           </li>
                         </ul>
 
-                        <h3>FAQ管理</h3>
+                        <h3>關鍵字管理</h3>
                         <ul>
-                            <li><a href='addFaq.jsp' class='btn btn-link'>新增</a> a new Faq.</li>
+                            <li><a href='add.jsp' class='btn btn-link'>新增</a> a new 關鍵字.</li>
                         </ul>
                     </div>
                 </div>
