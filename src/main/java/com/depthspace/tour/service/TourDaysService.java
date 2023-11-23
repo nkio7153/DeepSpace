@@ -5,15 +5,20 @@ import java.util.List;
 
 import com.depthspace.tour.model.TourDaysVO;
 import com.depthspace.tour.model.tour.TourVO;
+import com.depthspace.tour.model.tourDetail.hibernate.HbTourDetailDAOImpl;
+import com.depthspace.tour.model.tourDetail.hibernate.HbTourDetailDAO_Interface;
 import com.depthspace.tour.model.tourdays.hibernate.HbTourDaysDAOImpl;
 import com.depthspace.tour.model.tourdays.hibernate.HbTourDaysDAO_Interface;
 import com.depthspace.utils.HibernateUtil;
 
 public class TourDaysService{
 	private HbTourDaysDAO_Interface dao;
+	private HbTourDetailDAO_Interface tDeDao;
 	
 	public TourDaysService() {
 		dao = new HbTourDaysDAOImpl(HibernateUtil.getSessionFactory());
+		tDeDao= new HbTourDetailDAOImpl(HibernateUtil.getSessionFactory());
+
 	}
 
 	
@@ -44,6 +49,14 @@ public class TourDaysService{
 	public void delete(Integer tourDaysId) {
 		// TODO Auto-generated method stub
 		
+	}
+	//刪除行程編號對應的行程天數及行程明細
+	public void deleteByTourId(Integer tourId) {
+		List<TourDaysVO> tourDaysList = dao.getOneTour(tourId);
+		for(TourDaysVO vo:tourDaysList){
+			tDeDao.deleteByTourDaysId(vo.getTourDaysId());
+		}
+		dao.deleteByTourId(tourId);
 	}
 
 

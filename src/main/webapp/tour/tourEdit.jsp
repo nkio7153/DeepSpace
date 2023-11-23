@@ -185,7 +185,7 @@
 <jsp:include page="../indexpage/headpic.jsp"/>
 <h1 style="font-size: 24px; color: #333; text-align: center;">旅遊行程編輯頁面</h1>
 
-<form action="${pageContext.request.contextPath}/tr/saveSecond" method="post" id="form">
+<form action="${pageContext.request.contextPath}/tr/update" method="post" id="form">
     <!-- 	存會員編號及最新一筆行程編號 -->
     <input type="hidden" name="memId" value="${list[0].memId}">
     <input type="hidden" name="tourId" value="${list[0].tourId}">
@@ -197,9 +197,17 @@
     <br>
     <input type="text" rows="2" cols="100" name="tourDescription" value="${list[0].tourDescription}">
     <br>
-    <!-- 		下拉式選單:行程類型 -->
     <label style="margin-left: 10px;">行程類型:</label>
-    <input type="text" name="tourTypeName" value="${tourTypName}">
+    <!-- 		下拉式選單:行程類型 -->
+    <select name="tourType" id="tourType">
+        <c:forEach var="tourType" items="${typeList}">
+            <option value="${tourType.tourTypeId}" <c:if test="${tourType.tourTypName == tourTypName}">selected </c:if> >${tourType.tourTypName}</option>
+<%--            <option value="${type.tourTypeId}">${type.tourTypName}</option>--%>
+
+        </c:forEach>
+    </select>
+
+<%--    <input type="text" name="tourTypeName" value="${tourTypName}">--%>
     <br>
     <br>
     <div class="form-container">
@@ -214,6 +222,7 @@
     </div>
 
     <label for="tripDuration" id="tripDuration">總天數:${list[0].allDays}</label>
+    <input type="hidden" name="allDays" id="allDays">
     <br>
 
 
@@ -312,8 +321,8 @@
 
 
     <!-- 		讓總天數也可以傳到servlet -->
-    <input type="hidden" name="allDays">
-    <input type="submit" name="addTour" id="addTour" value="儲存行程">
+
+    <input type="submit" name="addTour" id="submit" value="儲存行程">
 </form>
 
 <script>
@@ -345,7 +354,7 @@
                     <div class="ml-2 d-flex mt-2 add" name="add">
                         <div style="display: flex" class="container">
                             <input type="time" name="attractionTime[]" style="margin-right: 10px;" required
-                                   value="">
+                                   value=""  class="attractionTime">
                             <label style="margin: 10px; display: table-cell; vertical-align: middle;">你要去哪兒?</label>
 
                             <select name="" class="attraction"
@@ -353,6 +362,66 @@
                                 <option value="" selected disabled>請選擇</option>
 
                                 <c:forEach var="attraction" items="${attrAll}">
+                                        <option value="${attraction.attractionsId}">${attraction.attractionsName}</option>
+                                </c:forEach>
+                            </select>
+
+                            <div class="circle2 d-flex justify-content-center ml-2 pb-1" name="dash">
+                                <span class="dash">-</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+            <div class="container offset-5" name="afterSelector">
+                <div class="col-md-5 mt-2"></div>
+                <div class="col-md-4 d-flex align-items-center">
+                    <!-- 使用 d-flex 和 align-items-center 使內容垂直居中 -->
+                    <label class="form-label mt-3">新增景點</label>
+                    <div class="circle d-flex align-items-center justify-content-center ml-2 mt-2" name="circle">
+                        <span class="plus">+</span>
+                    </div>
+                </div>
+                <div class="col-md-3 mt-2">
+                </div>
+            </div>
+        </div>`;
+
+    html2=`<div class="row">
+            <br><br>
+                <%--            <div>--%>
+            <br>
+            <div style="display: flex">
+                <span class="oneDay"></span>
+                <div class="circle3 d-flex justify-content-center ml-2 pb-1" name="dash">
+                    <span class="dash">-</span>
+                </div>
+            </div>
+            <input type="hidden" name="oneDay[]" value="" class="inputOneDay">
+            <br><br>
+            <!-- 下拉式選單:選擇縣市 -->
+            <div class="city-container">
+                <label style="margin: 10px; display: table-cell; vertical-align: middle;">選擇你想去的縣市:</label>
+                <select name="city[" class="city""
+                        style="padding: 5px; border: 1px solid #ccc; border-radius: 40px; background-color: #f5f5f5; font-family: Arial; font-size: 18px;">
+                            <c:forEach var="cityList" items="${cityList}">
+                                <%--                        <option value="${cityList.cityId}">${cityList.cityName}</option>--%>
+                                <option value="${cityList.cityId}">${cityList.cityName}</option>
+                            </c:forEach>
+                </select>
+            </div>
+                <%--                <div class="addContainer">--%>
+                    <div class="ml-2 d-flex mt-2 add" name="add">
+                        <div style="display: flex" class="container">
+                            <input type="time" name="attractionTime[]" style="margin-right: 10px;" required
+                                   value=""  class="attractionTime">
+                            <label style="margin: 10px; display: table-cell; vertical-align: middle;">你要去哪兒?</label>
+
+                            <select name="" class="attraction"
+                                    style="margin-left: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 50px; background-color: #f5f5f5; font-family: Arial; font-size: 14px;">
+                                <option value="" selected disabled>請選擇</option>
+
+                                <c:forEach var="attraction" items="${attrvo}">
                                         <option value="${attraction.attractionsId}">${attraction.attractionsName}</option>
                                 </c:forEach>
                             </select>
@@ -501,17 +570,24 @@
             $(".oneDay").eq(i).text("第" + (i + 1) + "天");
             $(".inputOneDay").eq(i).attr("name", "oneDay[" + (i + 1) + "]");
             $(".inputOneDay").eq(i).val(i + 1);
-            $(".attraction").attr("name", "attractions[" + (i + 1) + "]");
-            $(".attractionTime").attr("name", "attractionTime[" + (i + 1) + "]");
+            $(".oneDay").eq(i).closest(".row").find(".attraction").attr("name", "attractions[" + (i + 1) + "]");
+            $(".oneDay").eq(i).closest(".row").find(".attractionTime").attr("name", "attractionTime[" + (i + 1) + "]");
             count=i;
         }
         count=count+1;
+
+        // $(".oneDay").eq(count).closest(".row").find(".attraction").eq(i).attr("name", "attractions[" + (i + 1) + "]");
+        // $(".oneDay").eq(count).closest(".row").find(".attraction").eq(i).attr("name", "attractionTime[" + (i + 1) + "]");
+
+
+
         let cal=calculateDays();
         //如果行程天數 大於 日期相減的話，結束日期+1天 總天數+1天
         if(count > cal){
             addOneDayToDate();
             var days = $("#tripDuration").text().split(':').pop().trim();
             $("#tripDuration").text("總天數:"+(parseInt(days)+1));
+            $("#allDays").val((parseInt(days)+1));
         }
 
 
@@ -553,6 +629,7 @@
         console.log("進入change事件");
         let cal=calculateDays();
         $("#tripDuration").text("總天數:"+cal);
+        $("#allDays").val(cal);
         let count=0;
         for (let i = 0; i <$(".oneDay").length ; i++) {
             count=i;
@@ -561,14 +638,14 @@
         //如果行程天數 小於 日期相減的話
         if(cal > count){
             for (let i = 0; i < cal-count; i++) {
-                $("[name='addDate']").before(html);
+                $("[name='addDate']").before(html2);
             }
             for (let i = 0; i < $(".oneDay").length; i++) {
                 $(".oneDay").eq(i).text("第" + (i + 1) + "天");
                 $(".inputOneDay").eq(i).attr("name", "oneDay[" + (i + 1) + "]");
                 $(".inputOneDay").eq(i).val(i + 1);
-                $(".attraction").attr("name", "attractions[" + (i + 1) + "]");
-                $(".attractionTime").attr("name", "attractionTime[" + (i + 1) + "]");
+                $(".oneDay").eq(i).closest(".row").find(".attraction").attr("name", "attractions[" + (i + 1) + "]");
+                $(".oneDay").eq(i).closest(".row").find(".attractionTime").attr("name", "attractionTime[" + (i + 1) + "]");
             }
         }
     })
@@ -622,8 +699,8 @@
             $(".oneDay").eq(i).text("第" + (i + 1) + "天");
             $(".inputOneDay").eq(i).attr("name", "oneDay[" + (i + 1) + "]");
             $(".inputOneDay").eq(i).val(i + 1);
-            $(".attraction").attr("name", "attractions[" + (i + 1) + "]");
-            $(".attractionTime").attr("name", "attractionTime[" + (i + 1) + "]");
+            $(".oneDay").eq(i).closest(".row").find(".attraction").attr("name", "attractions[" + (i + 1) + "]");
+            $(".oneDay").eq(i).closest(".row").find(".attractionTime").attr("name", "attractionTime[" + (i + 1) + "]");
             count=i;
         }
         count=count+1;//行程天數
@@ -633,6 +710,7 @@
             deOneDayToDate();
             let cal=calculateDays();
             $("#tripDuration").text("總天數:"+cal);
+            $("#allDays").val(cal);
         }
     });
 
@@ -736,8 +814,23 @@
         // 更新輸入欄位的值
         $('input[name="endDate"]').val(newEndDate);
     }
+    //提交錯誤驗證
 
+    $("#submit").on("click",function(e){
+        $(this).closest(".row").remove();
+        let count=0;
+        for (let i = 0; i < $(".oneDay").length; i++) {
+            count=i;
+        }
+        count=count+1;//行程天數
 
+        let cal=calculateDays();//日期相減天數
+
+        if (count != cal){
+            e.preventDefault();
+            window.alert("總天數與行程天數不符，請檢查")
+        }
+    })
 
 
 </script>
