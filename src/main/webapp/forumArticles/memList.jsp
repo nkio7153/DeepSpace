@@ -77,19 +77,6 @@
 <script>
 $(document).ready(function() {
 	
-	$.ajax({
-        type: "post",
-        url: '<%=request.getContextPath()%>/forumArticles.do?action=getArtiTypeList',
-        dataType: "json",
-        success: function(data) {
-            var selectBox = $("#artiTypeId");
-            selectBox.empty(); 
-            $.each(data, function(index, atvo) {
-                selectBox.append($("<option></option>").attr("value", atvo.artiTypeId).text(atvo.artiTypeText));
-            });
-        }
-    });
-	
     $('#articlesRow').on('click', '.card', function() {
     	
     	// 檢查點擊的元素是否為按鈕，如果是，則不進行後續操作
@@ -158,14 +145,6 @@ $(document).ready(function() {
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp" />
  	<div id="list" class="container mt-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-		    <form method="post" action="<%=request.getContextPath()%>/forumArticles.do?action=doArtiTypeList">
-		        <label for="artiTypeId">選擇文章類型：</label>
-		        <select id="artiTypeId" name="artiTypeId">
-		        </select>
-		        <input type="submit" value="查詢">
-		    </form>
-	    </div>
         <div id="articlesRow" class="row">
             <c:forEach var="article" items="${list}">
                 <div class="col-md-4 mb-3">

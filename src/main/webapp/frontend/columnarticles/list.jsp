@@ -43,9 +43,26 @@
     border-radius: 5px;
     margin-left: 5px;
 }
-
+.viewdiv {
+	margin-bottom: 50px;
+}
+.viewbtn {
+    background-color: #9bbdd7;
+    border-color: #9bbdd7;
+}
 .text-right {
     text-align: right;
+}
+h6 {
+    padding-bottom: 5px;
+    padding-top: 8px;
+    color: #6d9de3b5;
+    font-weight: bold;
+}
+select {
+    -webkit-appearance: menulist !important; 
+    -moz-appearance: menulist !important;
+    appearance: menulist !important;
 }
 </style>
 
@@ -57,7 +74,7 @@
 
 	<div class="container mt-5">
 
-		<div class="row">
+		<div class="row viewdiv">
 
 			<!-- 左側篩選條件 -->
 			<div class="col-md-3">
@@ -68,12 +85,12 @@
 							id="artiTitle" name="artiTitle" value="${column.artiTitle}"
 							aria-label="Search">
 						<div class="input-group-append">
-							<button class="btn btn-primary" type="submit">
+							<button class="btn btn-primary viewbtn" type="submit">
 								<i class="fa fa-search"></i>
 							</button>
 						</div>
 					</div>
-					<h4>專欄類型</h4>
+					<h6>專欄類型</h6>
 					<div class="form-group">
 						<c:forEach var="typeItem" items="${uniqueColTypes}"
 							varStatus="status">

@@ -7,7 +7,8 @@
 	        // 假設 isUserLoggedIn 是一個函數，用來檢查用戶是否登錄
 	        let check = $("[name='check']").text();
 	        if (check === "登入/註冊") {
-	            document.getElementById('cartNum').style.display = 'none';
+	        	let cartNum=$("#cartNum");
+	        	cartNum.hide();
 	        }
 	    };
 
@@ -33,13 +34,18 @@
                 })
                     .then(function(data){
                         cartNum.text(data)
-                        cartNum.css("background-color","red");
+                        if (cartNum.text() === "0" || cartNum.text() === "") {
+                            cartNum.hide();
+                        } else {
+                            cartNum.show();
+                        }
                     })
                     .catch(function(error){
                         console.log(error);
                     })
 
         })
+
         </c:if>
         
         
@@ -180,7 +186,8 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="trip">
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/attr/list">景點瀏覽</a></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/tr/tourList">我的行程</a></li>                               
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/tr/tourList" onclick="checkSession(event)">我的行程</a></li>                               
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}}/tr/addTour" onclick="checkSession(event)">新增行程</a></li>                               
                             </ul>
                         </li>
                        	<c:if test="${sessionScope.memId == null}">

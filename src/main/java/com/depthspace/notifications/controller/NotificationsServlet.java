@@ -88,10 +88,10 @@ public class NotificationsServlet extends HttpServlet {
 		    res.getWriter().write("{\"error\": \"未登錄\"}");
 			return;
 		}
-
+		System.out.println("doCountUnreaddoCountUnread執行");
 	    Integer unreadCount = notificationsService.getUnreadNotificationsCount(memId);
 	    NotificationsWS.sendNotification(unreadCount);
-
+		System.out.println("doCountUnreaddoCountUnread方法");
 	    res.setContentType("application/json");
 	    res.setCharacterEncoding("UTF-8");
 	    res.getWriter().write("{\"unreadCount\": " + unreadCount + "}");

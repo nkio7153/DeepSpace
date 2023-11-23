@@ -96,6 +96,7 @@ public class TicketServiceImpl implements TicketService {
 	//取得所有票券VO 
 	@Override
 	public List<TicketVO> getAllTickets() {
+		String sql = "SELECT * FROM tickets ORDER BY ticketId DESC";
 		return dao.getAll();
 	}
 	//取得所有票券VO 根據分頁

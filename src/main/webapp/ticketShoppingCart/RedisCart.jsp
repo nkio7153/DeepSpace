@@ -401,6 +401,11 @@
                             console.log(data);
                             cartNum.text(data);
                             $(this).closest('tr').remove();
+                            if (cartNum.text() === "0" || cartNum.text() === "") {
+                                cartNum.hide();
+                            } else {
+                                cartNum.show();
+                            }
                         }
                     })
                     .catch(function (error) {
