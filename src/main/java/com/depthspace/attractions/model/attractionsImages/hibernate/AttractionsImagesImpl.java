@@ -12,6 +12,7 @@ import com.depthspace.attractions.model.AttractionsImagesVO;
 import com.depthspace.attractions.model.AttractionsVO;
 import com.depthspace.attractions.model.CityVO;
 import com.depthspace.column.model.ColumnImagesVO;
+import com.depthspace.promotion.model.promotion.PromotionVO;
 import com.depthspace.ticket.model.TicketVO;
 import com.depthspace.tour.model.tourtype.TourTypeVO;
 import com.depthspace.utils.HibernateUtil;
@@ -42,8 +43,14 @@ public class AttractionsImagesImpl implements AttractionsImages_Interface{
 	}
 		
 	@Override
-	public void update(AttractionsImagesVO AttractionsImagesVO) {
-		// TODO Auto-generated method stub
+	public int update(AttractionsImagesVO entity) {
+		 try{
+	            getSession().update(entity);
+	            return 1;
+	        }catch (Exception e){
+	            e.printStackTrace();
+	            return -1;
+	        }
 		
 	}
 	@Override
@@ -53,8 +60,11 @@ public class AttractionsImagesImpl implements AttractionsImages_Interface{
 	}
 	@Override
 	public AttractionsImagesVO findByPrimaryKey(Integer attractionsImagesId) {
-		// TODO Auto-generated method stub
-		return null;
+		return getSession().get(AttractionsImagesVO.class, attractionsImagesId);
+	}
+	@Override
+	public AttractionsImagesVO findByAttrId(Integer attractionsId) {
+		return getSession().get(AttractionsImagesVO.class, attractionsId);
 	}
 	@Override
 	public List<AttractionsImagesVO> getAll() {

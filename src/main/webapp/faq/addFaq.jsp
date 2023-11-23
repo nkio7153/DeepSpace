@@ -6,7 +6,7 @@
 <%@ page import="com.depthspace.faq.model.*"%>
 
 <%
-	FaqVO faqVO = (FaqVO) request.getAttribute("faqVO");
+    FaqVO faqVO = (FaqVO) request.getAttribute("faqVO");
 %>
 
 <!DOCTYPE html>
@@ -15,26 +15,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta charset="UTF-8">
     <title>Faq資料新增 - addFaq.jsp</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
-    <style>
-        .container-fluid {
-            padding-top: 20px;
-        }
-        .card-header {
-            background-color: #007bff;
-            color: white;
-        }
-        .alert-danger {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-        }
-        .alert-danger ul {
-            margin-bottom: 0;
-        }
-    </style>
 </head>
-<body bgcolor='white'>
+<body>
     <jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
     <div class="container-fluid">
         <div class="row">
@@ -43,7 +28,7 @@
             </div>
             <div class="col-lg-10">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header text-white bg-primary">
                         <h3>常見問題資料新增</h3>
                         <h4><a href="select_page.jsp" class="text-light">回常見問題的首頁</a></h4>
                     </div>
@@ -59,7 +44,7 @@
                                 </ul>
                             </div>
                         </c:if>
-                        <FORM METHOD="post" ACTION="faq.do" name="form1">
+                        <form method="post" action="faq.do" name="form1">
                             <div class="form-group">
                                 <label for="faqNo">常見問題編號:</label>
                                 <input type="text" class="form-control" name="faqNo" value="<%= (faqVO==null)? "1" : faqVO.getFaqNo()%>" size="45">
@@ -74,15 +59,14 @@
                             </div>
                             <input type="hidden" name="action" value="insert">
                             <button type="submit" class="btn btn-primary">送出新增</button>
-                        </FORM>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Bootstrap JS and Popper.js (for Bootstrap 4) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

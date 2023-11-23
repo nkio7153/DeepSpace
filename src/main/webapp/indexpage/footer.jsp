@@ -29,7 +29,7 @@
 							<li><a href="" class="scroll">關於我們</a></li>
 							<li><a href="" class="scroll">使用者條款 </a></li>
 							<li><a href="" class="scroll">隱私權保護政策</a></li>
-							<li><a href="" class="scroll"> 常見問題與幫助</a></li>
+							<li><a href="${pageContext.request.contextPath}/faq/faq.jsp" class="scroll"> 常見問題與幫助</a></li>
 						</ul>
 					</div>
 				</div>
@@ -51,6 +51,10 @@
 							href="https://www.youtube.com/channel/UClhecf7eOGHwbKW5e7l_pTA"><img
 								src="${pageContext.request.contextPath}/indexpage/images/youtube.svg"
 								alt="youtube" /></a></li>
+						<li class="admin"><a
+							href="${pageContext.request.contextPath}/admin/login.jsp"><img
+								src="${pageContext.request.contextPath}/indexpage/images/admin.png"
+								alt="" /></a></li>
 					</ul>
 				</div>
 			</div>

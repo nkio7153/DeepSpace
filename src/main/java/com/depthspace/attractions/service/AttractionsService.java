@@ -42,6 +42,13 @@ public class AttractionsService {
 		
 		return attrVO;
 	}
+	
+	public AttractionsVO update(AttractionsVO entity) {
+		dao.update(entity);
+		
+		return entity;
+	}
+	
 	//取得所有景點
 	public List<AttractionsVO> getAllAttractions(Integer attractionsId){
 		List<AttractionsVO> list = dao.getAllAttractions(attractionsId);

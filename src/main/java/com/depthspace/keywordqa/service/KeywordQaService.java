@@ -18,8 +18,6 @@ public interface KeywordQaService {
 
 	List<KeywordQaVO> getAllKeywordQa2(int currentPage);	//取得所有專欄VO根據分頁
 
-	List<KeywordQaVO> getAllAdmins();	//取得所有管理者的管理者VO
-
 	List<KeywordQaVO> getAllSortById(String sort);	//根據id排序
 	
 	int getPageTotal();

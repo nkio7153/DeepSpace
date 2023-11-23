@@ -275,7 +275,6 @@ public class ForumArticlesServlet extends HttpServlet {
 	        // 處理圖片更新
 	        Part artiImgStr2 = req.getPart("artiImgStr");
 	        if (artiImgStr2 != null && artiImgStr2.getSize() > 0) {
-	            System.out.println("進到新圖片");
 	            InputStream inputStream = artiImgStr2.getInputStream();
 	            byte[] artiImg = inputStream.readAllBytes();
 	            forumArticle.setArtiImg(artiImg); // 設置新圖片

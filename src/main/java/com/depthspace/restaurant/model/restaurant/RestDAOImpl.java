@@ -1,13 +1,9 @@
 package com.depthspace.restaurant.model.restaurant;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.NativeQuery;
 
 public class RestDAOImpl implements RestDAO {
 	
@@ -53,6 +49,13 @@ public class RestDAOImpl implements RestDAO {
 	}
 
 	@Override
+	public RestVO findByAdmin(Integer adminId) {
+		return getSession().createQuery("from RestVO where ADMIN_ID = :ADMIN_ID", RestVO.class)
+										.setParameter("ADMIN_ID", adminId)
+										.uniqueResult();
+	}
+
+	@Override
 	public List<RestVO> getAll() {
 		return getSession().createQuery("from RestVO", RestVO.class).list();
 	}
@@ -62,32 +65,6 @@ public class RestDAOImpl implements RestDAO {
 		return getSession().createQuery("from RestVO where REST_STATUS = 1", RestVO.class).list();
 	}
 
-//	@Override
-//	public List<Object> getAllandAdmin() {
-//		String sql = "select r.*, a.ADMIN_ACC from RESTAURANT r JOIN ADMIN a on r.admin_id = a.admin_id ";
-//		NativeQuery query = getSession().createNativeQuery(sql);
-//		List<Object[]> list = query.list();
-//		
-//		List<Object> listObject = new ArrayList<>();
-//		for (Object[] row : list) {
-//		    Map<String, Object> rowMap = new LinkedHashMap<>();
-//		    rowMap.put("restId", row[0]);
-//		    rowMap.put("restName", row[1]);
-//		    rowMap.put("restTel", row[2]);
-//		    rowMap.put("restAddress", row[3]);
-//		    rowMap.put("restOpen", row[4]);
-//		    rowMap.put("restStatus", row[5]);
-//		    rowMap.put("bookingLimit", row[6]);
-//		    rowMap.put("adminId", row[7]);
-//		    rowMap.put("restType", row[8]);
-//		    rowMap.put("adminAcc", row[9]);
-//		    listObject.add(rowMap);
-//		}
-////		for (Object v : listObject) {
-////			System.out.println(v);
-////		}
-//		return listObject;
-//	}
 
 	
 	

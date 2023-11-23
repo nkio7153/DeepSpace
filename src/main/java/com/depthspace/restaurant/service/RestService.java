@@ -10,6 +10,7 @@ public interface RestService {
 	RestVO updateRest(RestVO restVO);
 	void deleteRest(Integer restId);
 	RestVO getRestByRestId(Integer restId);
+	RestVO findByAdmin(Integer adminId);
 	List<RestVO> getAllRest();
 	List<RestVO> showRest();
 	

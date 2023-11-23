@@ -30,7 +30,7 @@
 	            <thead>
 	              <tr>
 					<th>訂位編號</th>
-	                <th>餐廳編號</th>
+	                <th>餐廳名稱</th>
 					<th>訂位日期</th>
 					<th>會員編號</th>
 					<th>訂位時段</th>
@@ -43,7 +43,7 @@
 	              <c:forEach var="mb" items="${mbList}">
 					<tr>
 						<td>${mb.bookingId}</td>
-						<td>${mb.restId}</td>
+						<td>${mb.restVO.restName}</td>
 						<td>${mb.bookingDate}</td>
 						<td>${mb.memId}</td>
 						<c:choose>

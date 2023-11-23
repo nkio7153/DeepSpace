@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.depthspace.attractions.model.AreaVO;
 import com.depthspace.attractions.model.AttractionsVO;
@@ -332,13 +333,17 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 
 	// 用會員編號查出該會員所有行程
 	private void doTourList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Integer memId;
-		try {
-			memId = Integer.valueOf(req.getParameter("memId"));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
+		Integer memId = null;
+		HttpSession session = req.getSession(false);
+		if(session.getAttribute("memId")!=null) {
+            memId = (Integer)session.getAttribute("memId");
+        }
+//		try {
+//			memId = Integer.valueOf(session.getParameter("memId"));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return;
+//		}
 		List<TourVO> list = ts.getByMemId(memId);
 		req.setAttribute("list", list);
 		req.setAttribute("memId", memId);
