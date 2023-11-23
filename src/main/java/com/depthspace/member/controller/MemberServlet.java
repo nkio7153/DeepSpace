@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -41,7 +39,6 @@ import com.depthspace.ticketshoppingcart.service.RedisCartServiceImpl;
 import com.depthspace.utils.JedisUtil;
 import com.depthspace.utils.MailService;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import redis.clients.jedis.Jedis;
 
@@ -51,40 +48,46 @@ public class MemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private RedisCartServiceImpl carSv;
+	private HbMemService hbms;
+	
 	 @Override
 	 public void init() throws ServletException {
 	  carSv = new RedisCartServiceImpl(JedisUtil.getJedisPool());
+	  hbms = new HbMemService();
 	 }
-	public int allowUser(String memAcc, String password) {
-		MemVO memvo = null;
-		HbMemService hbms = new HbMemService();
-		MemberService mems = new MemberService();
-		System.out.println("memAcc=" + memAcc);
-		if (hbms.findByMemAcc(memAcc) == null) {
-			System.out.println("沒有此帳號");
-			return 1;
+	 
+	 public int allowUser(String memAcc, String password) {
+		    MemVO memvo = null;
+		    MemberService mems = new MemberService();
+
+		    // 檢查是否存在該帳號
+		    if (hbms.findByMemAcc(memAcc) == null) {
+		        System.out.println("沒有此帳號");
+		        return 1; // 返回一個特定的錯誤碼表示帳號不存在
+		    } else {
+		        memvo = mems.getMemberInfo(memAcc);
+		        System.out.println("2");
+		    }
+
+		    // 新增的密碼鹽值格式檢查
+		    if (memvo != null && memvo.getMemPwd() != null && memvo.getMemPwd().startsWith("$2a$")) {
+		        if (BCrypt.checkpw(password, memvo.getMemPwd())) {
+		            // 檢查帳號狀態
+		            if (memvo.getAccStatus() == 2) {
+		                return 5; // 帳號狀態問題
+		            } else {
+		                return 3; // 登入成功
+		            }
+		        } else {
+		            System.out.println("密碼錯誤");
+		            return 4; // 密碼錯誤
+		        }
+		    } else {
+		        System.out.println("儲存的密碼鹽值格式不正確");
+		        return 6; // 或其他錯誤碼
+		    }
 		}
-
-		else {
-			memvo = mems.getMemberInfo(memAcc);
-			System.out.println("2");
-		}
-
-		if (memvo != null && BCrypt.checkpw(password, memvo.getMemPwd())) {
-//	       	System.out.println("成功登入");
-//			檢查帳號狀態
-			if (memvo.getAccStatus() == 2) {
-				return 5;
-			} else {
-				return 3;
-			}
-
-		} else {
-			System.out.println("密碼錯誤");
-			return 4;
-		}
-	}
-
+	 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);
@@ -123,13 +126,50 @@ public class MemberServlet extends HttpServlet {
 		case "/checkAccount":// 確認重複帳號
 			doCheckAccount(req, resp);
 			break;
-		case "/signIn":// 確認重複帳號
+		case "/signIn":// 註冊帳號把縣市值帶過去
 			doSignIn(req, resp);
+			break;
+		case "/changePassword":// 變更密碼
+			doChangePassword(req, resp);
 			break;
 
 		}
 
 	}
+	private void doChangePassword(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		HttpSession session = req.getSession(false);
+		Integer memId = null;
+		memId = (Integer) session.getAttribute("memId");
+//		System.out.println("memId=" + memId);
+		MemVO memvo = hbms.getOneMem(memId);
+		
+		String changePassword = req.getParameter("changePassword");
+		System.out.println("changePassword= " + changePassword);
+		//將更換過的密碼加密
+		String hashedPassword = BCrypt.hashpw(changePassword, BCrypt.gensalt());
+		
+		
+//		memvo.setMemId(memId);
+//		memvo.setMemAcc(memvo.getMemAcc());
+		memvo.setMemPwd(hashedPassword);
+//		memvo.setMemName(memvo.getMemName());
+//		memvo.setMemIdentity(memvo.getMemIdentity());
+//		memvo.setMemBth(memvo.getMemBth());
+//		memvo.setMemEmail(memvo.getMemEmail());
+//		memvo.setMemTel(memvo.getMemTel());
+//		memvo.setMemAdd(memvo.getMemAdd());
+//		memvo.setAccStatus(memvo.getAccStatus());
+//		memvo.setMemPoint(memvo.getMemPoint());
+//		memvo.setMemImage(memvo.getMemImage());
+		
+		hbms.update(memvo);
+		resp.getWriter().write("success");
+		
+		
+		}
+	
+		
+	
 	private void doSignIn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		CityService cityService = new CityService();
 //		AreaService areaService
@@ -137,7 +177,6 @@ public class MemberServlet extends HttpServlet {
 //		List<AreaVO> area = areaService.getAll();
 		req.setAttribute("city", city);
 		req.getRequestDispatcher("/member/addMember.jsp").forward(req, resp);
-		
 		
 	}
 	private void doCheckAccount(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -167,24 +206,7 @@ public class MemberServlet extends HttpServlet {
 		        setJsonResponse(resp, data);
 		        System.out.println("無此帳號，帳號可用");
 		    }
-		
-//		if (memAcc != null && memAcc.equals(memAllAcc)) {
-//			String data = "false";
-//			setJsonResponse(resp, data);
-//			System.out.println("帳號已存在，帳號不可使用");
-//			return;
-//		} else {
-//			String data = "true";
-//			setJsonResponse(resp, data);
-//			System.out.println("無此帳號，帳號可用");
-//			return;
-//		}
-//		try {
-//			membersVO = memsSvc.getOneByMemAcc(memaccount);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			// 處理異常
-//		}
+
 	}
 	private void doCheckVerify(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String memAcc = req.getParameter("memAcc");
@@ -416,6 +438,10 @@ public class MemberServlet extends HttpServlet {
 	private void doSave(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		List<String> errorMsgs = new LinkedList<String>();
 		req.setAttribute("errorMsgs", errorMsgs);
+		
+		//處理地址需要用到
+		CityService cityService = new CityService();
+		AreaService areaService = new AreaService();
 
 		String st2 = null;
 		String st3 = null;
@@ -425,10 +451,14 @@ public class MemberServlet extends HttpServlet {
 		Byte st7 = null;
 		String st8 = null;
 		Integer st9 = null;
+		Integer cityId;
+		Integer areaId;
 		String st10 = null;
 		Byte st11 = null;
 		String base64Image;
 		byte[] byteArray = null;
+		//處理會員點數為0(新會員無點數)
+		Integer st12 = 0;
 
 		try {
 			st2 = req.getParameter("memAcc");
@@ -478,7 +508,12 @@ public class MemberServlet extends HttpServlet {
 				errorMsgs.add("電話請勿空白");
 			}
 
-			st10 = req.getParameter("memAdd");
+			//處理地址
+			cityId = Integer.valueOf(req.getParameter("city"));
+			areaId = Integer.valueOf(req.getParameter("area"));
+			String city = cityService.findByPrimaryKey(cityId).getCityName();
+			String area = areaService.findByPrimaryKey(areaId).getAreaName();
+			st10 = city + area +req.getParameter("memAdd");
 			if (st10 == null || st10.trim().length() == 0) {
 				errorMsgs.add("地址請勿空白");
 			}
@@ -539,15 +574,24 @@ public class MemberServlet extends HttpServlet {
 			e.printStackTrace();
 			return;
 		}
+		
 
 		// 放入物件
 		MemberService m = new MemberService();
-		MemVO memvo = null;
-		if (errorMsgs.isEmpty()) {
-			memvo = new MemVO(st2, st3, st4, st5, st6, st7, st8, st9, st10, st11, byteArray);
-
-			m.addMember(memvo);
+//		MemVO memvo = null;
+//		if (errorMsgs.isEmpty()) {
+//			memvo = new MemVO(st2, st3, st4, st5, st6, st7, st8, st9, st10, st11, byteArray);
+//
+//			m.addMember(memvo);
 			// =======================================================================================
+		MemVO memvo = null;
+		//用hibernate寫法加入會員
+		if (errorMsgs.isEmpty()) {
+			
+			Integer newMemId = null;
+			memvo = new MemVO(newMemId,st2, st3, st4, st5, st6, st7, st8, st9, st10, st11, st12, byteArray);
+			hbms.insert(memvo);
+		
 
 			// 抓memId值讓修改頁面可以過
 			MemVO mem = new MemVO();
@@ -609,6 +653,9 @@ public class MemberServlet extends HttpServlet {
 		//錯誤存list
 		List<String> errorMsgs = new LinkedList<String>();
 		req.setAttribute("errorMsgs", errorMsgs);
+		//處理地址用
+		CityService cityService = new CityService();
+		AreaService areaService = new AreaService();
 		
 		Integer st1 = null;
 		String st2 = req.getParameter("memAcc");
@@ -620,6 +667,8 @@ public class MemberServlet extends HttpServlet {
 		Byte st7 = null;
 		String st8 = null;
 		Integer st9 = null;
+		Integer cityId;
+		Integer areaId;
 		String st10 = null;
 		Byte st11 = null;
 		Integer st12 = null;
@@ -689,7 +738,13 @@ public class MemberServlet extends HttpServlet {
 				st9 = Integer.valueOf(memTel);
 			}
 
-			st10 = req.getParameter("memAdd");
+			//處理地址
+			cityId = Integer.valueOf(req.getParameter("city"));
+			areaId = Integer.valueOf(req.getParameter("area"));
+			String city = cityService.findByPrimaryKey(cityId).getCityName();
+			String area = areaService.findByPrimaryKey(areaId).getAreaName();
+//			String newAddress = req.getParameter("newAddress");
+			st10 = city + area + req.getParameter("memAdd");
 			if (st10 == null || st10.trim().length() == 0) {
 				errorMsgs.add("地址請勿空白");
 			}
@@ -737,9 +792,9 @@ public class MemberServlet extends HttpServlet {
 
 		MemberService m = new MemberService();
 		MemVO memvo = null;
-		if (errorMsgs.isEmpty()) {
+//		if (errorMsgs.isEmpty()) {
 			memvo = new MemVO(st1, st2, st3, st4, st5, st6, st7, st8, st9, st10, st11, st12, st13);
-		}
+//		}
 		m.updateMember(memvo);
 		req.setAttribute("authenticatedMem", memvo);
 
@@ -833,7 +888,38 @@ public class MemberServlet extends HttpServlet {
 			} else {
 				req.setAttribute("status", "此帳號停權");
 			}
+			//處理地址
+			CityService cityService = new CityService();
+			AreaService areaService = new AreaService();
+			List<CityVO> city = cityService.getAll();
+//			List<AreaVO> area = areaService.getAll();
+			req.setAttribute("city", city);
+			
+			if (memvo.getMemAdd().length() > 6) {
+			    String newAddress = memvo.getMemAdd().substring(6);
+//			    System.out.println(newAddress);
+			    req.setAttribute("newAddress", newAddress);
+			} else {
+			    // 如果字串的長度小於或等於六，可以處理相應的邏輯，例如返回原始字串或顯示錯誤訊息
+			    System.out.println("字串長度不足六");
+			}
+			
+			//要把會員的前三個字拿出來
+			String newAddress = memvo.getMemAdd();
+			String cityName = newAddress.substring(0, Math.min(newAddress.length(), 3));
+			//用比對方式去把id抓到
+			CityVO cvo = cityService.findByCityName(cityName);
+			//再顯示到前端
+			req.setAttribute("cvo", cvo);
+			//透過cvo.getCityId找到對應的區域
+			AreaVO avo = areaService.getOneCity(cvo.getCityId());
+			req.setAttribute("avo", avo);
+			//顯示到前端
+			//找到對應的areaId
+			List<AreaVO> area = areaService.getAllArea(cvo.getCityId());
+			req.setAttribute("area", area);
 
+			
 			req.setAttribute("mem", memvo);
 			req.getRequestDispatcher("/member/revise.jsp").forward(req, resp);
 		} else {
@@ -917,23 +1003,20 @@ public class MemberServlet extends HttpServlet {
 			Integer memno = (Integer) session.getAttribute("memId");// 測試用(取得存在session會員編號)
 //		    System.out.println("測試取得放入session的會員編號" + memno);// 測試用
 
-			req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
+//			req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
+			req.getRequestDispatcher("/indexpage/index.jsp").forward(req, resp);
 //			resp.sendRedirect(req.getContextPath()+"/indexpage/index.jsp");
-
 		} else if (allowUser(memAcc, password) == 4) {
-
-//					System.out.println("帳號密碼錯誤");
-//					String errorMsgs = "帳號或密碼錯誤";
-//					req.setAttribute("errorMsgs", errorMsgs);
-//					RequestDispatcher failureView = req.getRequestDispatcher("/member/login.jsp");
-//					failureView.forward(req, resp);
 			String URL = req.getContextPath() + "/member/login.jsp?error=true&requestURI=" + loginLocation;
 			resp.sendRedirect(URL);
 			return;// 程式中斷
 		} else if (allowUser(memAcc, password) == 5) {
 			String URL = req.getContextPath() + "/member/login.jsp?error=nostatus&requestURI=" + loginLocation;
 			resp.sendRedirect(URL);
-		}
+		} else if (allowUser(memAcc, password) == 6) {
+		String URL = req.getContextPath() + "/member/login.jsp?error=nostatus&requestURI=" + loginLocation;
+		resp.sendRedirect(URL);
+	}
 	}
 	
 	// fetch返回json格式

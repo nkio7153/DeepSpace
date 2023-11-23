@@ -14,8 +14,8 @@ public class HbMemService {
 		dao = new HibernateMemDAOImpl(HibernateUtil.getSessionFactory());
 	}
 	
-	public MemVO insert(MemVO memVO) {
-		return dao.insert(memVO);
+	public void insert(MemVO memVO) {
+		dao.insert(memVO);
 	}
 
 	public void update(MemVO memVO) {

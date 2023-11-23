@@ -11,6 +11,8 @@ public interface HbTourDaysDAO_Interface {
 
 	public void delete(Integer tourDaysId);
 
+	public void deleteByTourId(Integer tourId);
+
 	public TourDaysVO findByPrimaryKey(Integer tourDaysId);
 
 	public List<TourDaysVO> getAll();

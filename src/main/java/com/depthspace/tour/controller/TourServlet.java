@@ -94,6 +94,9 @@ public class TourServlet extends HttpServlet {
 		case "/edit":
 			doEdit(req, resp);
 			break;
+		case "/update":
+			doUpdate(req, resp);
+			break;
 		}
 	}
 
@@ -134,6 +137,10 @@ private void doEdit(HttpServletRequest req, HttpServletResponse resp) throws Ser
 
 	List<AttractionsVO> attrvo = attrs.findOneAttractions();
 	List<AttractionsVO> attrAll = attrs.getAll();
+
+	List<TourTypeVO> typeList = tts.getAll();
+
+	req.setAttribute("typeList", typeList);
 
 	req.setAttribute("tourTypName",tourTypName);
 	req.setAttribute("cityList", cityList);
@@ -325,6 +332,111 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 		req.getRequestDispatcher("/tour/newTour2.jsp").forward(req, resp);
 
 	}
+
+	// 更新行程
+	private void doUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//更新表格Tour
+
+		//取得 欲修改的行程物件變數
+		Integer tourId = Integer.parseInt(req.getParameter("tourId"));
+		String tourName = req.getParameter("tourName");
+		String tourDescription = req.getParameter("tourDescription");
+		Integer tourTypeId = Integer.parseInt(req.getParameter("tourType"));
+		String str1 = req.getParameter("startDate");
+		String str2 = req.getParameter("endDate");
+		Date startDate=java.sql.Date.valueOf(str1);
+		Date endDate=java.sql.Date.valueOf(str2);
+		Integer allDays = Integer.parseInt(req.getParameter("allDays"));
+
+		//取得原本的行程物件
+		TourVO tourVO = ts.getByTourId(tourId);
+		//設定欲修改的變數值
+		tourVO.setAllDays(allDays);
+		tourVO.setTourName(tourName);
+		tourVO.setTourDescription(tourDescription);
+		tourVO.setTourTypeId(tourTypeId);
+		tourVO.setStartDate(startDate);
+		tourVO.setEndDate(endDate);
+		//更新行程物件
+		ts.update(tourVO);
+
+		//刪除後重新新增多個行程天數TOUR_DAYS
+		//		行程天數編號
+		//		行程天數
+		//		行程編號
+
+		//刪除新增行程明細TOUR_DETAIL
+		//		行程天數編號
+		//		景點編號
+		//		開始時間
+		//		結束時間
+		//		景點名稱
+
+//	取得天數
+		Integer tourdaysId = null;
+//	取得會員輸入的時間
+		String[] allTime;
+//	取得會員輸入景點
+		String[] allAttr;
+//	取的幾天的陣列
+		String[] oneDay;
+		//要找對應的時間
+		String two;
+		//要找對應的景點
+		Integer three;
+		//找對應景點名稱
+		AttractionsVO four;
+
+		Time time;
+
+		//轉型
+
+		Integer memId = Integer.parseInt(req.getParameter("memId"));
+
+		//刪除原本行程編號對應的  多個行程天數物件 及 多個行程明細物件
+		tds.deleteByTourId(tourId);
+
+		//用總天數的數量去新增天數到資料庫
+		for(int i=1 ; i <= allDays ; i++) {
+			TourDaysVO tourDaysVO = new TourDaysVO(tourdaysId , i , tourId);
+			tds.insert(tourDaysVO);
+//		回傳剛才新增的天數編號
+			int dayId = tourDaysVO.getTourDaysId();
+//		System.out.println("新增的天數編號=" + tourDaysVO.getTourDaysId());
+			System.out.println("回傳新增的tourdaysId=" + dayId);
+//			取得自行輸入的時間及景點
+			allTime = req.getParameterValues("attractionTime[" + i + "]");
+			allAttr = req.getParameterValues("attractions[" + i + "]");
+			oneDay = req.getParameterValues("oneDay[" + i + "]");
+
+			for (int y = 0; y < allAttr.length; y++) {
+				two = allTime[y];
+//		    System.out.println("第" + (y + 1) + "時間=" + two);
+				try {
+					//時間轉型，經查Java 8或更新版本中，建議使用java.time.LocalTime
+					LocalTime localTime = LocalTime.parse(two);
+					time = Time.valueOf(localTime);
+//	            System.out.println("time=" + time);
+					//景點編號轉型
+					three = Integer.valueOf(allAttr[y]);
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+					return;
+				}
+				four = attrs.getAttractionsById(three);
+//		    System.out.println("第" + (y + 1) + "景點編號=" + three);
+//		    System.out.println(dayId + allAttr[y] + time + time + four.getAttractionsName());
+//		    Timestamp nullableTimestamp = null;
+				TourDetailVO tdvo = new TourDetailVO(dayId , three , time , null , four.getAttractionsName());
+//		insert到detail裡面
+				tdls.insert(tdvo);
+
+			}
+
+		}
+		resp.sendRedirect(req.getContextPath()+"/tr/tourList");
+	}
+
 
 	private void showDetail(HttpServletRequest req, HttpServletResponse resp) {
 		// TODO Auto-generated method stub

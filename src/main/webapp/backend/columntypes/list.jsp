@@ -122,6 +122,15 @@
 	background: #85cdd5 !important;  
 	border: #85cdd5; 
 }
+
+.btn-danger {
+    background: #98d6a6  !important;
+    border: #98d6a6 !important;  
+}
+.btn-danger:hover {
+    background: #98d6a6  !important;
+    border: #98d6a6 !important;  
+}
 </style>
 
 <title>專欄類型列表</title>
@@ -164,14 +173,20 @@
 				                <span class="col-type-name">${columnType.colTypeName}</span>
 				                <input type="text" class="form-control col-type-input" style="display: none;">
 				            </td>
-				            <td>
-				                <span class="edit-icon btn btn-primary edit-btn">
-				                    <i class="fas fa-edit"></i>
-				                </span>
-				                <span class="save-icon btn btn-success save-btn" style="display: none;">
-				                    <i class="fas fa-save"></i>
-				                </span>
-				            </td>
+							<td>
+							    <span class="edit-icon btn btn-primary edit-btn">
+							        <i class="fas fa-edit"></i>
+							    </span>
+							    
+							  
+							<span class="save-icon btn btn-success save-btn" style="display: none;">
+							        <i class="fas fa-save"></i>
+							    </span>
+							    <!-- 新增取消按鈕 -->
+							    <span class="cancel-icon btn btn-danger cancel-btn" style="display: none;">
+							        <i class="fas fa-times"></i>
+							    </span>
+							</td>
 				        </tr>
 				    </c:forEach>
 				</tbody>
@@ -199,8 +214,10 @@ $(document).ready(function() {
         currentRow.find('.col-type-input').val(colTypeName).show().focus();
         currentRow.find('.edit-icon').hide();
         currentRow.find('.save-icon').show();
+        currentRow.find('.cancel-btn').show(); // 顯示取消按鈕
     });
-    // 點擊保存按鈕送出
+});
+    //送出
     $(document).on('click', '.save-btn', function() {
         var currentRow = $(this).closest('tr');
         var colTypeId = currentRow.find('td:eq(0)').text().trim();
@@ -231,6 +248,7 @@ $(document).ready(function() {
                     currentRow.find('.col-type-input').hide();
                     currentRow.find('.edit-icon').show();
                     currentRow.find('.save-icon').hide();
+                    currentRow.find('.cancel-btn').hide();
                 }
             },
             error: function(xhr, status, error) {
@@ -238,62 +256,35 @@ $(document).ready(function() {
             }
         });
     });
-});
 
 //新增
 $('.add-button').on('click', function() {
     var rowCount = $('table tbody tr').length + 1; // 流水號
-    var newRow = $('<tr>').append(
+    var newRow = $('<tr>').addClass('new-row').append(
         $('<td>').text(rowCount), 
         $('<td>').append($('<input>').addClass('form-control col-type-input')),
         $('<td>').append(
-            $('<span>').addClass('save-icon btn btn-success Nsave-btn').append(
-                $('<i>').addClass('fas fa-save')
+                $('<span>').addClass('save-icon btn btn-success Nsave-btn').append($('<i>').addClass('fas fa-save')),
+                $('<span>').addClass('cancel-btn btn btn-danger').append($('<i>').addClass('fas fa-times'))
             )
-        )
-    );
+        );
     $('table tbody').append(newRow);
-
-// 新增儲存
-$(document).on('click', '.Nsave-btn', function() {
-    var currentRow = $(this).closest('tr');
-    var colTypeName = currentRow.find('.col-type-input').val().trim();
-
-    if(colTypeName === ''){
-        Swal.fire({
-            icon: 'error',
-            title: '專欄類型名稱不能為空！'
-        });
-        return;
-    }
-
-    $.ajax({
-        url: '<%=request.getContextPath()%>/columntypesmg/add',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({colTypeName: colTypeName }),
-        dataType: 'json',
-        success: function(response) {
-            if(response.status === "success") {
-                Swal.fire({
-                    position: 'center',
-                    title: '已完成新增',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-                currentRow.find('.col-type-input').replaceWith($('<span>').addClass('col-type-name').text(colTypeName));
-                currentRow.find('.save-icon').replaceWith(
-                    $('<span>').addClass('edit-icon btn btn-primary edit-btn').append(
-                        $('<i>').addClass('fas fa-edit')
-                    )
-                );
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('新增失敗', xhr, status, error);
-        }
-    });
 });
+
+
+// 取消按鈕
+$(document).on('click', '.cancel-btn', function() {
+    var currentRow = $(this).closest('tr');
+    if (currentRow.hasClass('new-row')) {
+        currentRow.remove();
+    } else {
+        // 編輯模式：恢復
+        currentRow.find('.col-type-input').hide();
+        currentRow.find('.col-type').show();
+        currentRow.find('.edit-icon').show();
+        currentRow.find('.save-icon').hide();
+        currentRow.find('.cancel-btn').hide();
+    }
 });
 </script>
 	    
