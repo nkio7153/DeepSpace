@@ -142,7 +142,7 @@
 		</tr>
 		<tr>
 			<th>手機電話</th>
-			<td>${authenticatedMem.memTel}</td>
+			<td>0${authenticatedMem.memTel}</td>
 		</tr>
 		<tr>
 			<th>地址</th>

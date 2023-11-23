@@ -125,7 +125,7 @@
       
       <tr>
         <th>手機電話</th>
-        <td><input type="text" name="memTel" value="${mem.memTel}" required></td>
+        <td><input type="text" name="memTel" value="0${mem.memTel}" required></td>
       </tr>
       
       <tr>
@@ -144,10 +144,10 @@
 			<!-- 區域 -->
 			<select name="area" id="area"  required>
 				<c:forEach var="typeItem" items="${area}">
-				            <option value="${typeItem.areaId}" 
-				            	${typeItem.areaId == avo.areaId ? 'selected' : ''}>
+					<option value="${typeItem.areaId}" 
+				         	${typeItem.areaId == avo.areaId ? 'selected' : ''}>
 				            ${typeItem.areaName}</option>
-				        </c:forEach>
+				</c:forEach>
 			</select>
 <!-- 	        <input type="text" class="form-control" id="memAdd" name="memAdd" value="" placeholder="請輸入地址" required> -->
         <input type="text" name="memAdd" value="${newAddress}" required></td>

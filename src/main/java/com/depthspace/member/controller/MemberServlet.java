@@ -70,10 +70,11 @@ public class MemberServlet extends HttpServlet {
 
 		else {
 			memvo = mems.getMemberInfo(memAcc);
+			System.out.println(memvo);
 			System.out.println("2");
 		}
 
-		if (memvo != null && BCrypt.checkpw(password, memvo.getMemPwd())) {
+		if (memvo != null && memvo.getMemPwd() != null && memvo.getMemPwd().startsWith("$2a$") ) {
 //	       	System.out.println("成功登入");
 //			檢查帳號狀態
 			if (memvo.getAccStatus() == 2) {
@@ -129,10 +130,20 @@ public class MemberServlet extends HttpServlet {
 		case "/signIn":// 註冊帳號把縣市值帶過去
 			doSignIn(req, resp);
 			break;
+		case "/checkPassword":// 變更密碼
+			doCheckPassword(req, resp);
+			break;
 
 		}
 
 	}
+	private void doCheckPassword(HttpServletRequest req, HttpServletResponse resp) {
+		HttpSession session = req.getSession(false);
+		Integer memId = null;
+		memId = (Integer) session.getAttribute("memId");
+		System.out.println("memId=" + memId);
+	}
+	
 	private void doSignIn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		CityService cityService = new CityService();
 //		AreaService areaService
@@ -140,7 +151,6 @@ public class MemberServlet extends HttpServlet {
 //		List<AreaVO> area = areaService.getAll();
 		req.setAttribute("city", city);
 		req.getRequestDispatcher("/member/addMember.jsp").forward(req, resp);
-		
 		
 	}
 	private void doCheckAccount(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -725,7 +735,7 @@ public class MemberServlet extends HttpServlet {
 			String city = cityService.findByPrimaryKey(cityId).getCityName();
 			String area = areaService.findByPrimaryKey(areaId).getAreaName();
 //			String newAddress = req.getParameter("newAddress");
-			st10 = city + area +req.getParameter("memAdd");
+			st10 = city + area + req.getParameter("memAdd");
 			if (st10 == null || st10.trim().length() == 0) {
 				errorMsgs.add("地址請勿空白");
 			}
@@ -878,7 +888,7 @@ public class MemberServlet extends HttpServlet {
 			
 			if (memvo.getMemAdd().length() > 6) {
 			    String newAddress = memvo.getMemAdd().substring(6);
-//			    System.out.println(result);
+//			    System.out.println(newAddress);
 			    req.setAttribute("newAddress", newAddress);
 			} else {
 			    // 如果字串的長度小於或等於六，可以處理相應的邏輯，例如返回原始字串或顯示錯誤訊息
