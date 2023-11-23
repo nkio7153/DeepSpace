@@ -124,7 +124,11 @@ public class AttractionsEndServlet extends HttpServlet {
             } else {
             	System.out.println("進入舊照片");
             	AttractionsImagesVO avo = attractionsImageService.findByPrimaryKey(attractionsId);
-                pic = avo.getAttractionsImg();
+                if(avo.getAttractionsImg() == null ) {
+                	pic = null;
+                } else {
+                	pic=avo.getAttractionsImg();
+                }
 
             }
 		} catch (NumberFormatException e) {
