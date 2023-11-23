@@ -7,7 +7,8 @@
 	        // 假設 isUserLoggedIn 是一個函數，用來檢查用戶是否登錄
 	        let check = $("[name='check']").text();
 	        if (check === "登入/註冊") {
-	            document.getElementById('cartNum').style.display = 'none';
+	        	let cartNum=$("#cartNum");
+	        	cartNum.hide();
 	        }
 	    };
 
@@ -33,7 +34,11 @@
                 })
                     .then(function(data){
                         cartNum.text(data)
-                        cartNum.css("background-color","red");
+                        if (cartNum.text() === "0" || cartNum.text() === "") {
+                            cartNum.hide();
+                        } else {
+                            cartNum.show();
+                        }
                     })
                     .catch(function(error){
                         console.log(error);
