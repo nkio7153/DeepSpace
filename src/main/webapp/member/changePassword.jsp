@@ -5,50 +5,79 @@
 <jsp:include page="../indexpage/head.jsp" />
     <title>修改密碼</title>
      <style>
-        .center-form { 
-             display: flex; 
-             flex-direction: column; 
-             align-items: center; 
-         } 
+        body {
+            background-color: #f7f7f7;
+            font-family: Arial, sans-serif;
+        }
 
-         form { 
-             width: 50%; /* 設置表單寬度，可以根據需要進行調整 */
-             text-align: center;
-         } 
+        .center-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
+        form {
+            width: 100%;
+            text-align: center;
+        }
 
-         #input, #verifyBtn {
-		    width: 65px; /* 設置按鈕的寬度，可以根據需要進行調整 */
-		    font-size: 20px;
-		    color: #fff;
-		    background-color: #008CBA;
-		    border: none;
-		    padding: 7px; /* 設置按鈕的內邊距，可以根據需要進行調整 */
-		    cursor: pointer;
-		    border-radius: 6px;
-		    margin: 8px; /* 設置按鈕的外邊距，可以根據需要進行調整 */
-		}
+        .mb-3 {
+            margin-bottom: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+        }
+
+        #input, #verifyBtn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #267af7ba;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #input:hover, #verifyBtn:hover {
+            background-color: #5998f6ba;
+        }
+
+        #password, #verify {
+            display: none;
+        }
     </style>
 </head>
 <body>
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp" />
     <div class="center-form"> 
-        <h2>FORGET PASSWORD 忘記密碼</h2>
-            <h6>更新密碼</h6>            
-            <div id="">
-	            <div class="mb-3 mt-3">
-	            	<input type="text" name="changePassword" class="changePassword" id="changePassword" required placeholder="請輸入新密碼">
-	            </div>
-	    
-	    		<div class="mb-3">
-	            	<input type="text" name="changePassword" class="changePassword" id="checkPassword" required placeholder="確認新密碼">
-	            </div>
-	           <div class="center-button">
-	                <input type="submit" id="input" value="提交" onclick="submitForm()">
-	            </div>
+        <h2>變更密碼</h2>
+<!--         <h6>更新密碼</h6>             -->
+        <div id="">
+            <div class="mb-3 mt-3">
+                <input type="password" name="changePassword" class="changePassword" id="changePassword" required placeholder="請輸入新密碼">
             </div>
+
+            <div class="mb-3">
+                <input type="password" name="changePassword" class="changePassword" id="checkPassword" required placeholder="確認新密碼">
+            </div>
+            
+            <div class="center-button">
+                <input type="submit" id="input" value="提交" onclick="submitForm()">
+            </div>
+        </div>
     </div>
+
     
 
 <script type="text/javascript">
@@ -83,17 +112,16 @@ function submitForm() {
     // 使用 jQuery 的 AJAX 函數
     $.ajax({
         type: "POST",
-        url: "${pageContext.request.contextPath}/mem/checkPassword",
-        data: { memAcc: memAcc, changePassword: changePassword },
+        url: "${pageContext.request.contextPath}/mem/changePassword",
+        data: { changePassword: changePassword },
 
         success: function(response) {
 //         	console.log(response)
             if (response === 'success') {
-                alert("提交成功，密碼將寄送到您的信箱中！");
+                alert("密碼更新成功");
                 
-                //驗證畫面打開，輸入畫面藏起
-                $("#verify").show();
-                $("#forgetPassword").hide();
+                window.location.href = "${pageContext.request.contextPath}/member/success.jsp";
+                
             } else {
                 alert("帳號錯誤或電子郵件輸入錯誤");
             }

@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -41,7 +39,6 @@ import com.depthspace.ticketshoppingcart.service.RedisCartServiceImpl;
 import com.depthspace.utils.JedisUtil;
 import com.depthspace.utils.MailService;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import redis.clients.jedis.Jedis;
 
@@ -58,37 +55,39 @@ public class MemberServlet extends HttpServlet {
 	  carSv = new RedisCartServiceImpl(JedisUtil.getJedisPool());
 	  hbms = new HbMemService();
 	 }
-	public int allowUser(String memAcc, String password) {
-		MemVO memvo = null;
-		
-		MemberService mems = new MemberService();
-		System.out.println("memAcc=" + memAcc);
-		if (hbms.findByMemAcc(memAcc) == null) {
-			System.out.println("沒有此帳號");
-			return 1;
+	 
+	 public int allowUser(String memAcc, String password) {
+		    MemVO memvo = null;
+		    MemberService mems = new MemberService();
+
+		    // 檢查是否存在該帳號
+		    if (hbms.findByMemAcc(memAcc) == null) {
+		        System.out.println("沒有此帳號");
+		        return 1; // 返回一個特定的錯誤碼表示帳號不存在
+		    } else {
+		        memvo = mems.getMemberInfo(memAcc);
+		        System.out.println("2");
+		    }
+
+		    // 新增的密碼鹽值格式檢查
+		    if (memvo != null && memvo.getMemPwd() != null && memvo.getMemPwd().startsWith("$2a$")) {
+		        if (BCrypt.checkpw(password, memvo.getMemPwd())) {
+		            // 檢查帳號狀態
+		            if (memvo.getAccStatus() == 2) {
+		                return 5; // 帳號狀態問題
+		            } else {
+		                return 3; // 登入成功
+		            }
+		        } else {
+		            System.out.println("密碼錯誤");
+		            return 4; // 密碼錯誤
+		        }
+		    } else {
+		        System.out.println("儲存的密碼鹽值格式不正確");
+		        return 6; // 或其他錯誤碼
+		    }
 		}
-
-		else {
-			memvo = mems.getMemberInfo(memAcc);
-			System.out.println(memvo);
-			System.out.println("2");
-		}
-
-		if (memvo != null && memvo.getMemPwd() != null && memvo.getMemPwd().startsWith("$2a$") ) {
-//	       	System.out.println("成功登入");
-//			檢查帳號狀態
-			if (memvo.getAccStatus() == 2) {
-				return 5;
-			} else {
-				return 3;
-			}
-
-		} else {
-			System.out.println("密碼錯誤");
-			return 4;
-		}
-	}
-
+	 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);
@@ -130,19 +129,46 @@ public class MemberServlet extends HttpServlet {
 		case "/signIn":// 註冊帳號把縣市值帶過去
 			doSignIn(req, resp);
 			break;
-		case "/checkPassword":// 變更密碼
-			doCheckPassword(req, resp);
+		case "/changePassword":// 變更密碼
+			doChangePassword(req, resp);
 			break;
 
 		}
 
 	}
-	private void doCheckPassword(HttpServletRequest req, HttpServletResponse resp) {
+	private void doChangePassword(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		HttpSession session = req.getSession(false);
 		Integer memId = null;
 		memId = (Integer) session.getAttribute("memId");
-		System.out.println("memId=" + memId);
-	}
+//		System.out.println("memId=" + memId);
+		MemVO memvo = hbms.getOneMem(memId);
+		
+		String changePassword = req.getParameter("changePassword");
+		System.out.println("changePassword= " + changePassword);
+		//將更換過的密碼加密
+		String hashedPassword = BCrypt.hashpw(changePassword, BCrypt.gensalt());
+		
+		
+//		memvo.setMemId(memId);
+//		memvo.setMemAcc(memvo.getMemAcc());
+		memvo.setMemPwd(hashedPassword);
+//		memvo.setMemName(memvo.getMemName());
+//		memvo.setMemIdentity(memvo.getMemIdentity());
+//		memvo.setMemBth(memvo.getMemBth());
+//		memvo.setMemEmail(memvo.getMemEmail());
+//		memvo.setMemTel(memvo.getMemTel());
+//		memvo.setMemAdd(memvo.getMemAdd());
+//		memvo.setAccStatus(memvo.getAccStatus());
+//		memvo.setMemPoint(memvo.getMemPoint());
+//		memvo.setMemImage(memvo.getMemImage());
+		
+		hbms.update(memvo);
+		resp.getWriter().write("success");
+		
+		
+		}
+	
+		
 	
 	private void doSignIn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		CityService cityService = new CityService();
@@ -180,24 +206,7 @@ public class MemberServlet extends HttpServlet {
 		        setJsonResponse(resp, data);
 		        System.out.println("無此帳號，帳號可用");
 		    }
-		
-//		if (memAcc != null && memAcc.equals(memAllAcc)) {
-//			String data = "false";
-//			setJsonResponse(resp, data);
-//			System.out.println("帳號已存在，帳號不可使用");
-//			return;
-//		} else {
-//			String data = "true";
-//			setJsonResponse(resp, data);
-//			System.out.println("無此帳號，帳號可用");
-//			return;
-//		}
-//		try {
-//			membersVO = memsSvc.getOneByMemAcc(memaccount);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			// 處理異常
-//		}
+
 	}
 	private void doCheckVerify(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String memAcc = req.getParameter("memAcc");
@@ -783,9 +792,9 @@ public class MemberServlet extends HttpServlet {
 
 		MemberService m = new MemberService();
 		MemVO memvo = null;
-		if (errorMsgs.isEmpty()) {
+//		if (errorMsgs.isEmpty()) {
 			memvo = new MemVO(st1, st2, st3, st4, st5, st6, st7, st8, st9, st10, st11, st12, st13);
-		}
+//		}
 		m.updateMember(memvo);
 		req.setAttribute("authenticatedMem", memvo);
 
@@ -997,16 +1006,17 @@ public class MemberServlet extends HttpServlet {
 //			req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
 			req.getRequestDispatcher("/indexpage/index.jsp").forward(req, resp);
 //			resp.sendRedirect(req.getContextPath()+"/indexpage/index.jsp");
-
 		} else if (allowUser(memAcc, password) == 4) {
-
 			String URL = req.getContextPath() + "/member/login.jsp?error=true&requestURI=" + loginLocation;
 			resp.sendRedirect(URL);
 			return;// 程式中斷
 		} else if (allowUser(memAcc, password) == 5) {
 			String URL = req.getContextPath() + "/member/login.jsp?error=nostatus&requestURI=" + loginLocation;
 			resp.sendRedirect(URL);
-		}
+		} else if (allowUser(memAcc, password) == 6) {
+		String URL = req.getContextPath() + "/member/login.jsp?error=nostatus&requestURI=" + loginLocation;
+		resp.sendRedirect(URL);
+	}
 	}
 	
 	// fetch返回json格式
