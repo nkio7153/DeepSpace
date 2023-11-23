@@ -125,22 +125,22 @@ public class AttractionsService {
 		}
 	}
 	
-	public List<AttractionsVO> getAllAttrType(Integer attrTypeId) {
-//		return dao.getAllAttrType(attrTypeId);
+	public List<AttractionsVO> getAllAttrType(Integer attractionsTypeId) {
+		return dao.getAllAttrType(attractionsTypeId);
 		
-		try(Session session = HibernateUtil.getSessionFactory().openSession()){
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<AttractionsVO> criteriaQuery = criteriaBuilder.createQuery(AttractionsVO.class);
-			Root<AttractionsVO> root = criteriaQuery.from(AttractionsVO.class);
-			criteriaQuery.where(criteriaBuilder.equal(root.get("attractionsTypeId").get("attrTypeId"), attrTypeId));
-			criteriaQuery.select(root);
-			
-			Query<AttractionsVO> query = session.createQuery(criteriaQuery);
-			
-			return query.getResultList();
-		} catch (Exception e) {
-			throw new RuntimeException("Error",e);
-		}
+//		try(Session session = HibernateUtil.getSessionFactory().openSession()){
+//			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+//			CriteriaQuery<AttractionsVO> criteriaQuery = criteriaBuilder.createQuery(AttractionsVO.class);
+//			Root<AttractionsVO> root = criteriaQuery.from(AttractionsVO.class);
+//			criteriaQuery.where(criteriaBuilder.equal(root.get("attractionsTypeId").get("attrTypeId"), attrTypeId));
+//			criteriaQuery.select(root);
+//			
+//			Query<AttractionsVO> query = session.createQuery(criteriaQuery);
+//			
+//			return query.getResultList();
+//		} catch (Exception e) {
+//			throw new RuntimeException("Error",e);
+//		}
 		
 	}
 //	public AttractionsVO getById(Integer attractionsId) {
