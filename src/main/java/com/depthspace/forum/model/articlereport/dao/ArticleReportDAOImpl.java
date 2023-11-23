@@ -43,4 +43,9 @@ public class ArticleReportDAOImpl implements ArticleReportDAO{
 		return dataList;
 	}
 
+	@Override
+	public ArticleReportVO getByArticleReportId(Integer articleReportId) {
+		return getSession().get(ArticleReportVO.class, articleReportId);
+	}
+
 }

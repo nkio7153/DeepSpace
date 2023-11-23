@@ -180,7 +180,8 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="trip">
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/attr/list">景點瀏覽</a></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/tr/tourList">我的行程</a></li>                               
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/tr/tourList" onclick="checkSession(event)">我的行程</a></li>                               
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}}/tr/addTour" onclick="checkSession(event)">新增行程</a></li>                               
                             </ul>
                         </li>
                        	<c:if test="${sessionScope.memId == null}">

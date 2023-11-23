@@ -29,4 +29,9 @@ public class ArticleReportServiceImpl implements ArticleReportService{
 		return dao.getAll();	
 	}
 
+	@Override
+	public ArticleReportVO getByArticleReportId(Integer articleReportId) {
+		return dao.getByArticleReportId(articleReportId);
+	}
+
 }
