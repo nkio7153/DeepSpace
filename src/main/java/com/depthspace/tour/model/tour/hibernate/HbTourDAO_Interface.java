@@ -8,7 +8,7 @@ import com.depthspace.tour.model.tour.TourView;
 public interface HbTourDAO_Interface {
 	int insert(TourVO entity);
 	int update(TourVO entity);
-	int delete(Integer tourId);
+	void delete(Integer tourId);
 	//應該要用tourId+memId去刪除 否則刪除一個就會全刪掉
 	int delete(Integer tourId, Integer memId);
 	List<TourVO> getAll();

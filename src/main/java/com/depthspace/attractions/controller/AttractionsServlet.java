@@ -64,6 +64,7 @@ public class AttractionsServlet  extends HttpServlet {
 	private void doSearch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {	    
 		String cityId = req.getParameter("cityId");//縣市編號
 		String attractionsName = req.getParameter("attractionsName").trim();//使用者搜尋的景點名稱
+		System.out.println("cityId=" + cityId +","+"attractionsName=" + attractionsName);
 		Integer getCityId = null;
 		List<AttractionsVO> list = null ;
 		HttpSession session = req.getSession();

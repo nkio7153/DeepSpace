@@ -102,6 +102,7 @@
 	<!-- 				<input type="submit" value="新增行程" class="btn_style"> -->
 	<!-- 			</form> -->
 	<!-- 		</div> -->
+	<!-- 	</div> -->
 
 	<!-- 		<div class="info-details"> -->
 	<h1 align="center">我的會員資訊</h1>
