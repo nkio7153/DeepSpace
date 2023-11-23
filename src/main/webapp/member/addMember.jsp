@@ -9,7 +9,20 @@
 <jsp:include page="../indexpage/head.jsp" />
     <title>註冊會員</title>
     
+<!--     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
     <style>
+     body {
+        background-color: #f7f7f7; /* 設置背景顏色 */
+        font-family: Arial, sans-serif; /* 設置字體 */
+    }
+    .add-container{
+    	max-width: 650px; /* 最大寬度 */
+        margin: 50px auto; /* 上下邊距和自動水平居中 */
+        padding: 20px;
+        background-color: #ffffff; /* 設置背景顏色 */
+        border-radius: 8px; /* 圓角邊框 */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 邊框陰影 */
+    }
 /*     	label.hidden { */
 /*         	display: none; /* 或者使用 visibility: hidden; */ */
 /*         } */
@@ -43,14 +56,11 @@
 		    z-index: 1; /* 讓圖片疊在密碼輸入框上方 */
 		}
 
-	    
-	        /* 为img设置样式 */
 	    #box img {
 	        position: absolute;
 /* 	        top: 4px; */
 	        right: 6px;
 	        width: 24px;
-	        /* 把鼠标的样式换成小手 */
 	        cursor: pointer;
 	    }
 	    
@@ -66,22 +76,20 @@
 			 object-fit: cover;
 			 outline: none;
 		 }
-        
-
     </style>
 </head>
 <body>
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp" />
-		<div class="container mt-5">
+		<div class="container mt-5 add-container">
         <h1 class="text-center">註冊會員</h1>
         <form action="${pageContext.request.contextPath}/mem/save" method="post" enctype="multipart/form-data">
             
             <div class="row">
 	            <div class="form-group row justify-content-center">
-	                <label for="memAcc" class="col-sm-2 col-form-label text-right">帳號:</label>
+	                <label for="memAcc" class="col-sm-3 col-form-label text-right">帳號:</label>
 	                <div class="col-sm-8">
-	                    <input type="text" class="form-control" id="memAcc" name="memAcc" value="" required>
+	                    <input type="text" class="form-control" id="memAcc" name="memAcc" value="" required placeholder="請輸入帳號">
 	                	<br>
 	                	<div id="accountError" style="color: red;"></div>
 	                </div>
@@ -90,10 +98,10 @@
 
 			<div class="row">
 	            <div class="form-group row justify-content-center" >
-	                <label for="memPwd" class="col-sm-2 col-form-label text-right">密碼:</label>
+	                <label for="memPwd" class="col-sm-3 col-form-label text-right">密碼:</label>
 	                <div class="col-sm-8">
 	                	<div id="box">
-	                    <input type="password" class="form-control" id="memPwd" name="memPwd" value="" required>
+	                    <input type="password" class="form-control" id="memPwd" name="memPwd" value="" required placeholder="請輸入密碼">
 	                    <!--眼睛圖片 -->
 	        			<img src="${pageContext.request.contextPath}/member/images/close.png" id="eye">
 	                	</div>
@@ -103,18 +111,18 @@
             
             <div class="row">
 	            <div class="form-group row justify-content-center">
-	                <label for="memName" class="col-sm-2 col-form-label text-right">會員姓名:</label>
+	                <label for="memName" class="col-sm-3 col-form-label text-right">會員姓名:</label>
 	                <div class="col-sm-8">
-	                    <input type="text" class="form-control" id="memName" name="memName" value="${mem.memName}" required>
+	                    <input type="text" class="form-control" id="memName" name="memName" value="${mem.memName}" required placeholder="請輸入姓名">
 	                </div>
 	            </div>
 	        </div>
 	
 			<div class="row">
 	            <div class="form-group row justify-content-center">
-	                <label for="memIdentity" class="col-sm-2 col-form-label text-right">身分證字號:</label>
+	                <label for="memIdentity" class="col-sm-3 col-form-label text-right">身分證號碼:</label>
 	                <div class="col-sm-8">
-	                    <input type="text" class="form-control" id="memIdentity" name="memIdentity" value="${mem.memIdentity}" required>
+	                    <input type="text" class="form-control" id="memIdentity" name="memIdentity" value="${mem.memIdentity}" placeholder="請輸入身分證號碼" required>
 	                	<br>
 	                	<div id="result_Id" style="color: red;"></div>
 	                </div>
@@ -123,9 +131,9 @@
 
 			<div class="row">
 	            <div class="form-group row justify-content-center">
-	                <label for="memBth" class="col-sm-2 col-form-label text-right">生日:</label>
+	                <label for="memBth" class="col-sm-3 col-form-label text-right">生日:</label>
 	                <div class="col-sm-8">
-	                    <input type="date" class="form-control" id="memBth" name="memBth" value="${mem.memBth}" required
+	                    <input type="date" class="form-control" id="memBth" name="memBth" value="${mem.memBth}" required placeholder="YYYY/MM/DD"
 	                    max="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
 	                </div>
 	            </div>
@@ -133,7 +141,7 @@
 
 			<div class="row">
 	             <div class="form-group row justify-content-center">
-	                <label for="memSex" class="col-sm-2 col-form-label text-right">性別:</label>
+	                <label for="memSex" class="col-sm-3 col-form-label text-right">性別:</label>
 	                <div class="col-sm-8">
 	                    <div class="form-check form-check-inline">
 	                        <input type="radio" class="form-check-input" id="memSex1" name="memSex" value="1">
@@ -149,25 +157,25 @@
 
 			<div class="row">
 	            <div class="form-group row justify-content-center">
-	                <label for="memEmail" class="col-sm-2 col-form-label text-right">電子郵件:</label>
+	                <label for="memEmail" class="col-sm-3 col-form-label text-right">電子郵件:</label>
 	                <div class="col-sm-8">
-	                    <input type="email" class="form-control" id="memEmail" name="memEmail" value="${mem.memEmail}" required>
+	                    <input type="email" class="form-control" id="memEmail" name="memEmail" value="${mem.memEmail}" placeholder="請輸入電子郵件" required>
 	                </div>
 	            </div>
 	        </div>
 	        
 			<div class="row">
 	            <div class="form-group row justify-content-center">
-	                <label for="memTel" class="col-sm-2 col-form-label text-right">手機電話:</label>
+	                <label for="memTel" class="col-sm-3 col-form-label text-right">手機電話:</label>
 	                <div class="col-sm-8">
-	                    <input type="tel" class="form-control" id="memTel" name="memTel" value="${mem.memTel}" required>
+	                    <input type="tel" class="form-control" id="memTel" name="memTel" value="${mem.memTel}" placeholder="請輸入手機號碼" required>
 	                </div>
 	            </div>
 	        </div>
 
 			<div class="row">
 	            <div class="form-group row justify-content-center">
-	                <label for="memAdd" class="col-sm-2 col-form-label text-right">地址:</label>
+	                <label for="memAdd" class="col-sm-3 col-form-label text-right">地址:</label>
 	                <div class="col-sm-8">
 	                	<!-- 縣市 -->
 					    <select name="city" id="city" class="form-control" required>
@@ -202,7 +210,7 @@
 
 			<div class="row">
 	            <div class="form-group row justify-content-center">
-	                <label for="memImage" class="col-sm-2 col-form-label text-right">會員圖片:</label>
+	                <label for="memImage" class="col-sm-3 col-form-label text-right">會員圖片:</label>
 	                <div class="col-sm-8">
 <!-- 	                預覽圖 -->
 	                    <input type="file" class="form-control" id="picture" name="memImage">
@@ -218,11 +226,12 @@
         </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<!--     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<!--     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
     
     
-    <script>
+    <script>    
     var file = $("#picture"); // 獲取input file元素
     var preview_el = $("#preview_img"); // 獲取預覽圖片元素
     //上傳檔案觸發change事件時，更換預覽圖

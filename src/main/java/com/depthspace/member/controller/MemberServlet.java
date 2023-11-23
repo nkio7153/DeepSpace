@@ -732,6 +732,10 @@ public class MemberServlet extends HttpServlet {
 			}
 
 			String memTel = req.getParameter("memTel");
+			System.out.println("memTel=" + memTel);
+			if (memTel.startsWith("0")) {
+				memTel = memTel.substring(1);
+			}
 			if (memTel == null) {
 				errorMsgs.add("電話請勿空白");
 			} else {

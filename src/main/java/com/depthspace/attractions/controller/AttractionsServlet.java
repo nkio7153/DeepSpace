@@ -92,8 +92,10 @@ public class AttractionsServlet  extends HttpServlet {
 //	    再把所有縣市找回來
 	    List<CityVO> city = cs.getAll();
 	    
-	    session.setAttribute("list", list);//取得所有符合的景點
+	    req.setAttribute("list", list);//取得所有符合的景點
 		req.setAttribute("city", city);//取得台灣所有縣市
+//		List<AttractionsVO> memno = (List<AttractionsVO>) session.getAttribute("list");// 測試用(取得存在session會員編號)
+//	    System.out.println("測試取得放入session的物件" + memno);
 //		帶資料回list
 		req.getRequestDispatcher("/attractions/search.jsp").forward(req, resp);
 	}

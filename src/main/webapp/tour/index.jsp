@@ -53,7 +53,7 @@ pageContext.setAttribute("list", list);
     }
 
     #btn, #btn_back, #btn_add, .delete1 {
-        background-color: lightblue;
+        background-color: #008CBA;
         color: #fff;
         border: none;
         border-radius: 10px;
@@ -62,7 +62,7 @@ pageContext.setAttribute("list", list);
     }
 
     #btn:hover, #btn_back:hover, #btn_add:hover, .delete1:hover {
-        background-color: #008CBA;
+        background-color: lightblue;
     }
 
     h1 {
