@@ -172,7 +172,7 @@ $(document).ready(function() {
         e.preventDefault();
         var iconElement = $(this); 
         var ticketId = iconElement.data('ticketid'); 
-
+		
         Swal.fire({
             title: "確定移除收藏嗎",
             icon: "warning",

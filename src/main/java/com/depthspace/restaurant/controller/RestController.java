@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.alibaba.fastjson2.JSON;
+import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.restaurant.model.restcollection.RestCollectionVO;
 import com.depthspace.restaurant.service.MemBookingService;
@@ -33,12 +34,14 @@ public class RestController extends HttpServlet {
 
 	private RestService restService;
 	private MemBookingService membookingService;
+	private RestcollectionService restcollectionService;
 	private Gson gson;
 
 	@Override
 	public void init() throws ServletException {
 		restService = new RestServiecImpl();
 		membookingService = new MemBookingServiceImpl();
+		restcollectionService = new RestcollectionServiceImpl();
 		gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setDateFormat("yyyy-MM-dd").create();
 	}
 
@@ -61,6 +64,9 @@ public class RestController extends HttpServlet {
 			break;
 		case "/memCollection":
 			forwardPath = memCollection(req, resp);
+			break;
+		case "/membooking":
+			forwardPath = membooking(req, resp);
 			break;
 
 		}
@@ -140,7 +146,12 @@ public class RestController extends HttpServlet {
 	private void toRedis(String vo) {
 		Jedis jedis = JedisUtil.getJedisPool().getResource();
 		jedis.select(15);
-		if (!jedis.exists("rests")) {
+//		if (!jedis.exists("rests")) {
+//			jedis.set("rests", vo);
+//		}
+		// 暫時處理修改優化
+		if (jedis.exists("rests")) {
+			jedis.del("rests", vo);
 			jedis.set("rests", vo);
 		}
 		jedis.close();
@@ -179,15 +190,18 @@ public class RestController extends HttpServlet {
 	
 	private String memCollection(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
-		
 		Integer memId = (Integer) session.getAttribute("memId");
-		RestcollectionService rcs = new RestcollectionServiceImpl();
-		List<RestCollectionVO> rcList = rcs.findByMemId(memId);
+		List<RestCollectionVO> rcList = restcollectionService.findByMemId(memId);
 		req.setAttribute("rcList", rcList);
-		System.out.println(rcList);
-		
 		return "/frontend/rest/memCollection.jsp";
-		
+	}
+	
+	private String membooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		Integer memId = (Integer) session.getAttribute("memId");
+		List<MemBookingVO> mbList =  membookingService.getByMemId(memId);
+		req.setAttribute("mbList", mbList);
+		return "/frontend/rest/membooking.jsp";
 	}
 
 

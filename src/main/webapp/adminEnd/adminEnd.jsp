@@ -74,7 +74,7 @@
 							    <button class="btn btn-primary" onclick="changeStatus('啟用', ${admin.adminId})" data-adminid="${admin.adminId}">啟用</button>
 							    <button class="btn btn-danger" onclick="changeStatus('停權', ${admin.adminId})" data-adminid="${admin.adminId}">停權</button>
 							
-							 	<button class="btn btn-secondary" onclick="location.href='<%=request.getContextPath()%>/admin/revise.jsp?adminId=${admin.adminId}&adminAcc=${admin.adminAcc}'">修改</button>
+							 	<button class="btn btn-secondary" onclick="location.href='<%=request.getContextPath()%>/admin/revise.jsp?adminId=${admin.adminId}&adminAcc=${admin.adminAcc}&adminName=${admin.adminName}'">修改</button>
 							</td>
 		                   
 		                    <td>

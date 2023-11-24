@@ -34,7 +34,7 @@
 					<th>訂位日期</th>
 					<th>會員編號</th>
 					<th>訂位時段</th>
-					<th>訂位組數</th>
+					<th>訂位人數</th>
 					<th>報到狀態</th>
 					<th>報到</th>
 	              </tr>
@@ -70,10 +70,9 @@
 						    </c:when>
 						</c:choose>
 						<td>
-			                <form method="post" action="${pageContext.request.contextPath}/backend/Rest.do">
+			                <form method="post" action="${pageContext.request.contextPath}/RestApi/getcheckBooking">
 							<input type="submit" class="btn btn-secondary" value="報到確認">
 							<input type="hidden" name="bookingId" value="${mb.bookingId}">
-							<input type="hidden" name="action" value="checkBooking">
 						</form>
 			            </td>
 					</tr>

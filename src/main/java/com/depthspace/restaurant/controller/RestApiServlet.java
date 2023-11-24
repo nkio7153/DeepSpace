@@ -22,6 +22,9 @@ import javax.servlet.http.HttpSession;
 import com.depthspace.admin.model.AdminVO;
 import com.depthspace.admin.service.HbAdminService;
 import com.depthspace.member.model.MemVO;
+import com.depthspace.member.service.HbMemService;
+import com.depthspace.notifications.service.NotificationsService;
+import com.depthspace.notifications.service.NotificationsServiceImpl;
 import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO;
@@ -132,7 +135,7 @@ public class RestApiServlet extends HttpServlet {
 					vo.setMemId(Integer.valueOf(req.getParameter("memId")));
 					vo.setRestId(Integer.valueOf(req.getParameter("restId")));
 					restcollectionService.add(vo);
-					out.print("SUCCESS");
+					out.print("ADD");
 				} catch (Exception e) {
 					out.print("ERROR");
 					e.printStackTrace();
@@ -144,7 +147,7 @@ public class RestApiServlet extends HttpServlet {
 					vo.setMemId(Integer.valueOf(req.getParameter("memId")));
 					vo.setRestId(Integer.valueOf(req.getParameter("restId")));
 					restcollectionService.delete(vo);
-					out.print("SUCCESS");
+					out.print("DEL");
 				} catch (Exception e) {
 					out.print("ERROR");
 					e.printStackTrace();
@@ -292,8 +295,8 @@ public class RestApiServlet extends HttpServlet {
 					vo.setBookingNumber(Integer.parseInt(req.getParameter("bookingNumber")));
 					vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
 					int pk = memBookingService.add(vo);
-					System.out.println("PK "+ pk);
-					System.out.println("=============================================================");
+					NotificationsService msg = new NotificationsServiceImpl();
+					msg.RestOrderNotification(vo);
 					out.print(gson.toJson(pk));
 				} catch (Exception e) {
 					out.print("ERROR");
@@ -311,7 +314,6 @@ public class RestApiServlet extends HttpServlet {
 					vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
 					vo.setBookingId(Integer.parseInt(req.getParameter("bookingId")));
 					memBookingService.update(vo);
-					System.out.println(vo);
 					out.print("SUCCESS");
 				} catch (Exception e) {
 					out.print("ERROR");
@@ -327,6 +329,19 @@ public class RestApiServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 				break;
+			case("cancel"):
+				try {
+					MemBookingVO vo = memBookingService.getByMembookingId(Integer.parseInt(req.getParameter("bookingId")));
+					vo.setCheckStatus(2);
+					System.out.println("vo "+vo);
+					int status = memBookingService.update(vo);
+					System.out.println("status   "+status);
+					out.print(status);
+				} catch (Exception e) {
+					out.print("ERROR");
+					e.printStackTrace();
+				}
+			break;
 		}
 		
 	}
@@ -362,7 +377,6 @@ public class RestApiServlet extends HttpServlet {
 					vo.setNoonNum(Integer.valueOf(req.getParameter("noonNum")));
 					vo.setEveningNum(Integer.valueOf(req.getParameter("eveningNum")));
 					restBookingDateService.update(vo);
-					System.out.println("========================"+vo);
 					out.print("SUCCESS");
 				} catch (Exception e) {
 					out.print("ERROR");
@@ -494,6 +508,10 @@ public class RestApiServlet extends HttpServlet {
 	private void checkBooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		MemBookingVO mb = memBookingService.getByMembookingId(Integer.valueOf(req.getParameter("bookingId")));
 		req.setAttribute("mb", mb);
+		Integer memId = mb.getMemId();
+		HbMemService memService = new HbMemService();
+		MemVO mem = memService.getOneMem(memId);
+		req.setAttribute("mem", mem);
 		String forwardPath = "/backend/rest/checkBooking.jsp";
 		RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
 		dispatcher.forward(req, resp);

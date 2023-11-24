@@ -6,7 +6,7 @@ import com.depthspace.restaurant.model.membooking.MemBookingVO;
 
 public interface MemBookingService {
 	int add(MemBookingVO membookingVO);
-	MemBookingVO update(MemBookingVO membookingVO);
+	int update(MemBookingVO membookingVO);
 	void delete(Integer Membooking);
 	MemBookingVO getByMembookingId(Integer bookingId);
 	List<MemBookingVO> getByMemId(Integer memId);

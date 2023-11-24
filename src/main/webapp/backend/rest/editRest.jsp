@@ -86,12 +86,23 @@
 				  </div>
 				  
 				  <div class="col-12">
-				    <label for="bookingLimit" class="form-label">預設可訂位組數</label>
+				    <label for="bookingLimit" class="form-label bookingLimit">預設可訂位人數</label>
 				    <label class="text-danger">${errorMsgs.bookingLimit}</label>
 				  </div>
-				  <div class="col-auto mb-2">
-				    <input type="number" class="form-control" id="bookingLimit" name="bookingLimit" value=${rest.bookingLimit}>
-				  </div>				    
+				  <div class="row">
+				    <div class="col-2 mb-2">
+				        <div class="bookingLimit">早上</div>
+				        <input type="number" class="form-control bookingLimit" id="amLimit" name="amLimit" value="${rest.amLimit}">
+				    </div>
+				    <div class="col-2 mb-2">
+				        <div class="bookingLimit">中午</div>
+				        <input type="number" class="form-control bookingLimit" id="noonLimit" name="noonLimit" value="${rest.noonLimit}">
+				    </div>
+					<div class="col-2 mb-2">
+				        <div class="bookingLimit">晚上</div>
+				        <input type="number" class="form-control bookingLimit" id="pmLimit" name="pmLimit" value="${rest.pmLimit}">
+				    </div>
+				</div>			    
 				  
 				  <div class="col-12">
 				    <label for="restText" class="form-label">餐廳簡介</label>
@@ -113,22 +124,25 @@
 				  <div class="col-auto mb-2">
 					<input class="form-control" type="file" id="formFile" name="uploadimg">
 				  </div>
-					
-				  <div class="col-12">
-				    <label for="adminId" class="form-label">管理員ID</label>
-				  </div>
-				  <select class="col-3" id="adminId" name="adminId">
-					  <c:forEach var="admin" items="${adminlist}">
-							<c:choose>
-					            <c:when test="${admin.adminId eq rest.adminVO.adminId}">
-					                <option value="${admin.adminId}" selected>${admin.adminAcc}</option>
-					            </c:when>
-					            <c:otherwise>
-					                <option value="${admin.adminId}">${admin.adminAcc}</option>
-					            </c:otherwise>
-					        </c:choose>
-					  </c:forEach>
-				  </select>
+				  
+					<div class="col-12">
+				    <label id="adminblock" for="adminId" class="form-label">管理員</label>
+					  </div>
+					  <select class="col-3" id="adminId" name="adminId">
+						  <c:forEach var="admin" items="${adminlist}">
+								<c:choose>
+						            <c:when test="${admin.adminId eq rest.adminVO.adminId}">
+						                <option value="${admin.adminId}" selected>${admin.adminAcc}</option>
+						            </c:when>
+						            <c:otherwise>
+						                <option value="${admin.adminId}">${admin.adminAcc}</option>
+						            </c:otherwise>
+						        </c:choose>
+						  </c:forEach>
+					  </select>
+				  
+				  
+				  
 				  
 				  <div class="col-12">
 				    <button type="submit" class="btn btn-primary">修改</button>
@@ -140,6 +154,14 @@
     <script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
     <script>
     	$(function(){
+    		
+    		let admin = ${admin.adminFuncName};
+    		if (admin === 1){
+    			$("#adminblock").css('display','none');
+    			$("#adminId").css('display','none');
+    			$(".bookingLimit").css('display','none');
+    		}
+    		
     		let restStatus = "${rest.restStatus}";
     		console.log(restStatus);
     		console.log("${rest.restOpen}");

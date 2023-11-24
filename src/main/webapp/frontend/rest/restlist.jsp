@@ -105,6 +105,7 @@
 	<jsp:include page="/indexpage/footer.jsp" />
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 	<script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
 		$(function() {
 			restList = "${restList}";
@@ -134,10 +135,7 @@
 			
 			
 			function doCollection(action, memId, restId) {
-				let origin = window.location.origin; // http://hostname:port
-// 				let url = origin+"/DepthSpace/RestApi/doRestCollection?action="+action+"&memId="+memId+"&restId="+restId;
 				let url = "/DepthSpace/RestApi/doRestCollection?action="+action+"&memId="+memId+"&restId="+restId;
-				console.log(url);
 				fetch(url, {
 					method: "POST",
 					})
@@ -148,14 +146,16 @@
 			            return response.text();
 					})
 					.then(data => {
-						alert(data);
+						if (data == "ADD") {
+							Swal.fire("已收藏");
+						} else if (data == "DEL") {
+							Swal.fire("已取消收藏");
+						}
 					})
 					.catch(error => {
 						console.error(error);
 					});
 			}
-			
-			
 			
 		})
 	</script>
