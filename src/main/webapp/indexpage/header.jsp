@@ -56,7 +56,7 @@
             if (isS) {
                 wsUri = "wss://";
             } else {
-                wsUri = "ws://";
+                wsUri = "wss://";
             }
             wsUri += loc.host;
             wsUri += "<%=request.getContextPath()%>/notificationsws";
@@ -163,9 +163,9 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownTicket">
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ticketproduct/list">票券瀏覽</a></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/to/memOrderList" onclick="checkSession(event)">訂單管理</a></li>
+<%--                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/to/memOrderList" onclick="checkSession(event)">訂單管理</a></li> --%>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/pro/getCard">促銷活動</a></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList"  onclick="checkSession(event)">我的票券</a></li>
+<%--                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList"  onclick="checkSession(event)">我的票券</a></li> --%>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -206,6 +206,7 @@
                                 <li><a class="dropdown-item" href="">餐廳收藏</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/forumArticles.do?action=doArtiCollectList">文章收藏</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/to/memOrderList" onclick="checkSession(event)">訂單管理</a></li>                                
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mem/logout" name="check">登出</a></li>
                             </ul>
                         </li>
@@ -232,9 +233,6 @@
             </div>
         </nav>
     </div>
-<!--                                <span class="badge" id="cartNum" style="position: absolute; top: 30px; right: 0; background-color: transparent; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8em;"> -->
-<!--                         </span> -->
-
     
 </header>
 
