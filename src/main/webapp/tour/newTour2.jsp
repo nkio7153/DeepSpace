@@ -15,28 +15,28 @@
 /* 		日期 */
         .form-container {
             display: flex; /* 使用 Flex 布局 */
+            margin-left: -10px;
         }
 
         .left-div {
-            flex: 1; /* 左边占据 50% 的宽度 */
-            padding: 10px; /* 可以根据需要添加内边距 */
+            flex: 1; 
+            padding: 10px; 
         }
 
         .right-div {
-            flex: 1; /* 右边占据 50% 的宽度 */
-            padding: 10px; /* 可以根据需要添加内边距 */
+            flex: 1;
+            padding: 10px;
         }
 
         #tripDuration {
             font-weight: bold;
             color: #008CBA;
-            margin-left: 10px; /* 將元素往右移10px */
             margin-bottom: 0px;
             font-size: 18px;
         }
 
         #tripDurationSelect {
-            margin-left: 10px; /* 將元素往右移10px */
+            margin-left: 10px;
         }
 
         .attraction {
@@ -73,8 +73,8 @@
         }
 
         form {
-            width: 70%; /* 設置表單的寬度為頁面寬度的70% */
-            margin: 0 auto; /* 水平置中 */
+            width: 70%;
+            margin: 0 auto;
             background-color: #fff;
             padding: 20px;
             border-radius: 5px;
@@ -107,16 +107,14 @@
             margin-rightt: 0px;
         }
 
-        /* 给新增的时间和输入框容器添加样式，调整它们的位置 */
+        
         .new {
-/*             display: flex; */
             margin-top: 10px;
-/*             align-items: center;  */
         }
 
         /* 调整景点输入框的样式 */
         .new-input-container input[type="text"] {
-            /* width: 100%; /* 取消宽度100% */
+            /* width: 100%; */
         }
 
         li {
@@ -127,8 +125,10 @@
             line-height: 1; 
         }
         .oneDay {
-		    margin-top: 10px;
+ 			margin-top: 10px;
+            font-weight: bold;
 		}
+
 		.city-container {
 		    display: flex;
 		    align-items: center;
@@ -191,7 +191,7 @@
                 <input type="text" name="endDate" value="${tourVO.endDate}" readonly>
             </div>
         </div>
-        <label for="tripDuration" id="tripDuration">總天數:${tourVO.allDays}</label>
+        <label for="tripDuration" id="tripDuration">總天數: ${tourVO.allDays} 天</label>
         <br>
         <div>
         	<input type="button" value="修改" onclick="history.back()" id="btn_back">

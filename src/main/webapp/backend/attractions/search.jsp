@@ -56,39 +56,47 @@
 <div class="table-list">
    <div class="table-list">
        <div class="container mt-5">
-		<h5>景點列表</h5>
-		<div class="row">
-         <div class="col-md-4">
-            <form id="filterForm" method="get" action="<%=request.getContextPath()%>/attractionsEnd/search">
-                <label for="attrTypeId" style="display: none";></label>
-                <select id="attrTypeId" name="attrTypeId" class="form-control mb-2">
-				    <option value="">景點類型選單</option>
-				    <c:forEach var="typeItem" items="${uniqueTypes}">
-				        <option value="${typeItem.attractionsTypeId}">${typeItem.typeName}</option>
-				    </c:forEach>
-				</select>
-            </form>
-          </div>
-          <div class="col-md-4">           
-	        <form id="filterForm2" method="get" action="<%=request.getContextPath()%>/attractionsEnd/search">
-	            <div class="input-group">
-	                <input type="text" id="attractionsName" name="attractionsName" class="form-control" placeholder="關鍵字搜尋" value="${attr.attractionsName}">
-	                <div class="input-group-append">
-	                    <button class="btn btn-outline-secondary" type="submit">
-	                        <i class="fas fa-search"></i>
-	                    </button>
-	                </div>
-	            </div>
-	        </form>
-	       </div> 
-               <div class="col-md-4 d-flex justify-content-end"> 
-	      		<form method="post" action="<%=request.getContextPath()%>/attractionsEnd/add">
-					<button class="add-button" type="submit">新增</button>
-				</form>
-		  </div>
-       </div>
-	<h5>搜尋結果</h5>
-     <div class="container mt-5">
+			 <div class="row" style="margin-bottom: 10px">
+    <div class="col-md-6 d-flex align-items-center">
+        <h4 style="font-weight: bold; margin: 0;">景點列表</h4>
+    </div>
+    <div class="col-md-6 d-flex justify-content-end align-items-center">
+        <a class="add-button" href="${pageContext.request.contextPath}/attractionsEnd/list" style="padding: 8px 32px;">回列表</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form id="filterForm" method="get" action="${pageContext.request.contextPath}/attractionsEnd/search">
+            <label for="attrTypeId" style="display: none";></label>
+            <select id="attrTypeId" name="attrTypeId" class="form-control mb-2">
+                <option value="">景點類型選單</option>
+                <c:forEach var="typeItem" items="${uniqueTypes}">
+                    <option value="${typeItem.attractionsTypeId}">${typeItem.typeName}</option>
+                </c:forEach>
+            </select>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <form id="filterForm2" method="get" action="${pageContext.request.contextPath}/attractionsEnd/search">
+            <div class="input-group">
+                <input type="text" id="attractionsName" name="attractionsName" class="form-control" placeholder="關鍵字搜尋" value="${attr.attractionsName}">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4 d-flex justify-content-end">
+        <form method="post" action="${pageContext.request.contextPath}/attractionsEnd/add">
+            <button class="add-button" type="submit" style="padding: 8px 40px;">新增</button>
+        </form>
+    </div>
+</div>
+
+	<h5 style="font-weight: bold; text-align: center; margin-top: 4px; margin-bottom: -4px;">搜尋結果共有 <font color=#344648>${fn:length(list)} </font> 筆</h5>
+     <div class="container mt-4">
          <!-- 判斷 list 是否為空 -->
          <c:choose>
              <c:when test="${not empty list}">
@@ -113,7 +121,7 @@
 						<td>${attr.attractionsId}</td>
 						<td>${attr.attractionsTypeId.typeName}</td>
 						<td><img
-							src="<%=request.getContextPath()%>/attractionsImage?attractionsId=${attr.attractionsId}"
+							src="${pageContext.request.contextPath}/attractionsImage?attractionsId=${attr.attractionsId}"
 							alt="Main Image"></td>
 						<td>${attr.attractionsName}</td>
 						<td><c:choose>
@@ -200,21 +208,17 @@
 		    </div>
 		</div>
 		        </div>
-		    </div>
-		</div>
 		
 	<!-- 回首頁 -->
-	<div class="page-item">
-		<a class="page-link"
-			href="${pageContext.request.contextPath}/attractionsEnd/index.jsp">回總列表</a>
+<!-- 	<div class="page-item" style="text-align: center;"> -->
+<!-- 		<a class="add-button" -->
+<%-- 			href="${pageContext.request.contextPath}/attractionsEnd/list">回列表</a> --%>
+<!-- 	</div> -->
+		    </div>
 	</div>
-	</div>
-</div>
-<%--  include --%>	
 		</div>
-	</div>		
 </div>
-<%--  include end --%>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>

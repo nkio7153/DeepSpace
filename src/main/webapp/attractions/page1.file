@@ -32,6 +32,6 @@
     } 
 %>
 
-<div style="text-align: center;">
+<div style="text-align: center; margin-bottom: 10px;">
 <b style="font-size: 22px;"> 共有 <font color=#344648><%=rowNumber%></font> 筆</b>
 </div>

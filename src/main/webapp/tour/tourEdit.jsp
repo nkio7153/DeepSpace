@@ -17,7 +17,8 @@
 
         /* 		日期 */
         .form-container {
-            display: flex; /* 使用 Flex 布局 */
+            display: flex;
+            margin-left: -10px;
         }
 
         .left-div {
@@ -33,8 +34,8 @@
         #tripDuration {
             font-weight: bold;
             color: #008CBA;
-            margin-left: 10px; /* 將元素往右移10px */
-            margin-bottom: 0px;
+            
+            margin-bottom: 4px;
             font-size: 18px;
         }
 
@@ -142,10 +143,13 @@
 
         div.row {
             line-height: 1;
+            margin-left: 0px;
         }
 
         .oneDay {
             margin-top: 10px;
+            font-weight: bold;
+/*             color: #008CBA; */
         }
 
         .city-container {
@@ -197,7 +201,7 @@
     <br>
     <input type="text" rows="2" cols="100" name="tourDescription" value="${list[0].tourDescription}">
     <br>
-    <label style="margin-left: 10px;">行程類型:</label>
+    <label style="margin-top: 10px;">行程類型:</label>
     <!-- 		下拉式選單:行程類型 -->
     <select name="tourType" id="tourType" style="border-radius: 50px;">
         <c:forEach var="tourType" items="${typeList}">
@@ -221,8 +225,8 @@
         </div>
     </div>
 
-    <label for="tripDuration" id="tripDuration">總天數:${list[0].allDays}</label>
-    <input type="hidden" name="allDays" id="allDays">
+    <label for="tripDuration" id="tripDuration">總天數: ${list[0].allDays} 天</label>
+    <input type="hidden" name="allDays" id="allDays" value="${list[0].allDays}">
     <br>
 
 
@@ -322,7 +326,7 @@
 
     <!-- 		讓總天數也可以傳到servlet -->
 
-    <input type="submit" name="addTour" id="submit" value="儲存行程">
+    <input type="submit" id="addTour" value="儲存行程">
 </form>
 
 <script>
@@ -358,7 +362,7 @@
                             <label style="margin: 10px; display: table-cell; vertical-align: middle;">你要去哪兒?</label>
 
                             <select name="" class="attraction"
-                                    style="margin-left: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 50px; background-color: #f5f5f5; font-family: Arial; font-size: 14px;">
+                                    style="margin-left: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 40px; background-color: #f5f5f5; font-family: Arial; font-size: 14px;">
                                 <option value="" selected disabled>請選擇</option>
 
                                 <c:forEach var="attraction" items="${attrAll}">
