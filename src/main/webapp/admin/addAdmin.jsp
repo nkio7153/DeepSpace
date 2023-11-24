@@ -3,15 +3,26 @@
 <%@ page import="com.depthspace.admin.service.AdminService"%>
 <%@ page import="com.depthspace.admin.model.AdminVO"%>
 
-
 <html>
 <head>
+    <%-- include head.jsp --%>
+    <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
     <title>註冊管理員</title>
-      <style>
+       <style>
         label.hidden {
             display: none; /* 或者使用 visibility: hidden; */
-        } .error {
+        } 
+        .error {
             color: red;
+        }
+        .centered-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .centered-form > * {
+            width: 50%;
+            margin-bottom: 15px;
         }
     </style>
     <script>
@@ -51,51 +62,62 @@
     </script>
 </head>
 <body>
-    <h1>註冊會員</h1>
-    <form action="${pageContext.request.contextPath}/ad/save" method="post" enctype="multipart/form-data">
-     
-      <!-- 在這裡檢查並顯示錯誤訊息 -->
-        <c:if test="${not empty errorMsgs}">
-            <div style="color: red;">
-                <c:forEach var="error" items="${errorMsgs}">
-                    <p>${error}</p>
-                </c:forEach>
+    <%-- include header.jsp --%>
+    <jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+    <div class="container-fluid my-0">
+        <div class="row">
+            <%-- 側邊欄 --%>
+            <div class="col-lg-2 g-3 mt-1">
+                <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
             </div>
-        </c:if>
-     
-         <label for="adminAcc">帳號:</label>
-        <input type="text" id="adminAcc" name="adminAcc" value="" required onblur="checkAccount()"><br>
-        <span id="accountError" class="error" style="display:none;"></span><br>
 
-        <label for="adminPwd">密碼:</label>
-        <input type="password" id="adminPwd" name="adminPwd" value="" required><br><br>
-        
-        <label for="adminName">管理員姓名:</label>
-        <input type="text" id="adminName" name="adminName" value="" required><br><br>
-        
-        <label for="adminStatus" >管理員帳號狀態:</label>
-        <select id="adminStatus" name="adminStatus"  >
-            <option value="1" >正常使用中</option>
-<!--             <option value="2"  style="display: none;">停用</option> -->
-        </select>
-         <br>
-         <label for="adminVerifyStatus" >驗證碼狀態:</label>
-        <select id="adminVerifyStatus" name="adminVerifyStatus"  >
-            <option value="1" >已驗證</option>
-<!--             <option value="2"  style="display: none;">未驗證</option> -->
-        </select>
-        <br>
-        <tr>
-			<th>管理員帳號權限</th>
-			<td>
-				<input type="radio" name="adminFuncName" value="0">無功能
-				<input type="radio" name="adminFuncName" value="1" checked>餐廳管理員
-				<input type="radio" name="adminFuncName" value="2">總管理員
-			</td>
-		</tr>
-        <br>
-        <input type="submit" value="加入管理員">
-        <input type="hidden" name="action" value="save">
-    </form>
+            <div class="col-lg-10 g-2 transparent rounded mt-1">
+                <h1 class="mb-4 text-center">註冊會員</h1>
+                <form action="${pageContext.request.contextPath}/ad/save" method="post" enctype="multipart/form-data" class="centered-form">
+                    <c:if test="${not empty errorMsgs}">
+                        <div class="alert alert-danger" style="width: 50%;">
+                            <c:forEach var="error" items="${errorMsgs}">
+                                <p>${error}</p>
+                            </c:forEach>
+                        </div>
+                    </c:if>
+                    
+                    <input type="text" class="form-control" id="adminAcc" name="adminAcc" placeholder="帳號" required onblur="checkAccount()">
+                    <span id="accountError" class="error"></span>
+
+                    <input type="password" class="form-control" id="adminPwd" name="adminPwd" placeholder="密碼" required>
+
+                    <input type="text" class="form-control" id="adminName" name="adminName" placeholder="管理員姓名" required>
+
+                    <select class="form-select" id="adminStatus" name="adminStatus">
+                        <option value="1">正常使用中</option>
+                        <!-- <option value="2" style="display: none;">停用</option> -->
+                    </select>
+
+                    <select class="form-select" id="adminVerifyStatus" name="adminVerifyStatus">
+                        <option value="1">已驗證</option>
+                        <!-- <option value="2" style="display: none;">未驗證</option> -->
+                    </select>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="adminFuncName" value="0" id="noFunction">
+                        <label class="form-check-label" for="noFunction">無功能</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="adminFuncName" value="1" id="restaurantAdmin" checked>
+                        <label class="form-check-label" for="restaurantAdmin">餐廳管理員</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="adminFuncName" value="2" id="superAdmin">
+                        <label class="form-check-label" for="superAdmin">總管理員</label>
+                    </div>
+
+                    <input type="submit" class="btn btn-primary" value="加入管理員">
+                    <input type="hidden" name="action" value="save">
+                </form>
+            </div>
+        </div>
+    </div>
+   
 </body>
 </html>
