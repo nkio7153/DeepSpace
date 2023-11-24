@@ -63,9 +63,9 @@ public class NotificationsServiceImpl implements NotificationsService {
         }
 
 	@Override
-  	public void RestOrderNotification(MemBookingVO order, MemVO member) {
+  	public void RestOrderNotification(MemBookingVO order) {
         NotificationsVO notification = new NotificationsVO();
-        notification.setMemId(member.getMemId());
+        notification.setMemId(order.getMemId());
         notification.setNoteType("餐廳通知");    
         notification.setNoteContent("您的訂單已成功建立！訂單號碼為 " + order.getBookingId());
         notification.setNoteCreated(new Timestamp(System.currentTimeMillis()));
