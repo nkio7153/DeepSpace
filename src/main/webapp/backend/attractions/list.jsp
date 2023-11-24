@@ -59,10 +59,10 @@ pageContext.setAttribute("list", list);
 <div class="table-list">
    <div class="table-list">
        <div class="container mt-5">
-		<h5>景點列表</h5>
+		<h4 style="font-weight: bold;">景點列表</h4>
 		<div class="row">
          <div class="col-md-4">
-            <form id="filterForm" method="get" action="<%=request.getContextPath()%>/attractionsEnd/search">
+            <form id="filterForm" method="get" action="${pageContext.request.contextPath}/attractionsEnd/search">
                 <label for="attrTypeId" style="display: none";></label>
                 <select id="attrTypeId" name="attrTypeId" class="form-control mb-2">
 				    <option value="">景點類型選單</option>
@@ -73,7 +73,7 @@ pageContext.setAttribute("list", list);
             </form>
           </div>
           <div class="col-md-4">           
-	        <form id="filterForm2" method="get" action="<%=request.getContextPath()%>/attractionsEnd/search">
+	        <form id="filterForm2" method="get" action="${pageContext.request.contextPath}/attractionsEnd/search">
 	            <div class="input-group">
 	                <input type="text" id="attractionsName" name="attractionsName" class="form-control" placeholder="關鍵字搜尋" value="${attr.attractionsName}">
 	                <div class="input-group-append">
@@ -85,17 +85,17 @@ pageContext.setAttribute("list", list);
 	        </form>
 	       </div> 
                <div class="col-md-4 d-flex justify-content-end"> 
-	      		<form method="post" action="<%=request.getContextPath()%>/attractionsEnd/add">
+	      		<form method="post" action="${pageContext.request.contextPath}/attractionsEnd/add">
 					<button class="add-button" type="submit">新增</button>
 				</form>
 		  </div>
        </div>
 		
 		
-		<%@ include file="page1.file"%>
 
 		<!-- 表格 -->
 		<table class="table table-bordered">
+		<%@ include file="page1.file"%>
 			<thead>
 				<tr>
 					<th>景點編號</th>
@@ -115,7 +115,7 @@ pageContext.setAttribute("list", list);
 						<td>${attr.attractionsId}</td>
 						<td>${attr.attractionsTypeId.typeName}</td>
 						<td>
-							<img src="<%=request.getContextPath()%>/attractionsImage?attractionsId=${attr.attractionsId}">
+							<img src="${pageContext.request.contextPath}/attractionsImage?attractionsId=${attr.attractionsId}">
 						</td>
 						<td>${attr.attractionsName}</td>
 						<td><c:choose>

@@ -246,14 +246,14 @@ h4.destination {
                         <strong>讓旅行更輕鬆，讓生活更美好</strong>
                     </h3>
                     <p class="mt-4">
-                        在現今生活水平提升的時代，人們渴望深度的旅行體驗。在台灣，個人自由行已逐漸超越傳統團體旅遊。因此，我們推出一個彈性旅遊規劃平台，不僅可以追隨旅遊達人，還能自訂行程，讓每次旅行都是一段獨特的回憶。
+                        在這個追求深度旅遊體驗的時代，我們的平台提供了個性化的台灣自由行計畫工具，您可以不僅跟隨旅遊達人的腳步，也能依照自己的喜好訂製專屬於自己的行程，確保每一次的旅行都是難忘的經歷。
                     </p>
                     <p class="mt-3">
-                        如果您需要更加輕鬆的選擇，可以考慮購買我們的套裝行程。我們的套裝行程已經為您精心設計，可以讓您輕鬆享受美好的旅行體驗，而無需擔心任何瑣碎的細節。另外，我們也提供各種各樣的票券，包括景點、活動、表演等等。只需透過我們的網站，便可以輕鬆購買您感興趣的票券，讓您的旅行更加豐富多彩。
+                        除此之外，我們還提供了豐富的票券選擇，從風景名勝到當地活動，從震撼的表演到文化體驗，所有的票券都可以透過我們的網站輕鬆購得。這不僅讓您的旅程更加繽紛多彩，也讓您享受到真正貼心且靈活的旅遊規劃。
                     </p>
                 </div>
                 <div class="col-lg-6 about-right text-lg-right mt-lg-0 mt-5">
-                    <img src="${pageContext.request.contextPath}/indexpage/images/travel.jpg" alt="" class="img-fluid abt-image" />
+                    <img src="${pageContext.request.contextPath}/indexpage/images/hotgirl.png" alt="" class="img-fluid abt-image" />
                 </div>
             </div>
             <div class="row mt-5 text-center test">

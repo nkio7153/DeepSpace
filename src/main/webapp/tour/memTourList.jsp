@@ -22,7 +22,10 @@
             color: #fff;
         }
         h1, h2 {
-		    text-align: center;
+       		width: 75%;
+		   	text-align: center;
+		   	 margin: auto;
+		    
 		}
 		.info-container {
 		    width: 50%;
@@ -35,7 +38,7 @@
 		}
 	
 	    label {
-	        margin-left: 50px; /* 调整右边距以控制位置 */
+	        margin-left: 50px;
 	        margin-bottom: 20px;
 	    }
 	    .btn-container {
@@ -77,7 +80,7 @@
 <jsp:include page="../indexpage/headpic.jsp" />
 <div style="margin: 20px">
 <form action="${pageContext.request.contextPath}/tr/edit" method="post">
-    <h1 style="margin-bottom: revert">${list[0].tourName}</h1>
+    <h2 style="margin-bottom: revert">${list[0].tourName}</h2>
     
     <div style="align-items: center;margin-left: 95px;">
 	    <div class="info-container">

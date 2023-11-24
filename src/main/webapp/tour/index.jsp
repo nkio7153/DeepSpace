@@ -5,6 +5,7 @@
 <%@ page import="com.depthspace.tour.service.TourService"%>
 <%@ page import="com.depthspace.tour.model.tour.TourVO"%>
 <%@ page import="java.text.SimpleDateFormat"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%
 TourService ts = new TourService();
@@ -41,11 +42,21 @@ pageContext.setAttribute("list", list);
         margin: 10px auto;
     }
 
-    table th, table td {
+    table th {
         border: 1px solid #ccc;
         padding: 10px;
         text-align: left;
     }
+    
+    table td {
+	    border: 1px solid #ccc;
+	    padding: 10px;
+	    text-align: left;
+	    max-width: 200px; /* 設定最大寬度，根據您的需求調整 */
+	    overflow: hidden;
+	    white-space: nowrap;
+	    text-overflow: ellipsis;
+	}
 
     th {
         background-color: #008CBA;
@@ -192,9 +203,12 @@ pageContext.setAttribute("list", list);
                         <input type="hidden" name="tourId" value="${tour.tourId}">
                         <span class="tourDescription">${tour.tourDescription}</span>
                         <br>
-                        <span class="dateRange"></span>
+                        <span class="dateRange">
+			                <fmt:formatDate value="${tour.startDate}" pattern="yyyy年MM月dd日"/> ~ 
+			                <fmt:formatDate value="${tour.endDate}" pattern="yyyy年MM月dd日"/>
+			            </span>
                 </td>
-                <td style="text-align: center; display: flex; justify-content: center; align-items: center;">
+                <td style="text-align: center; align-items: center;">
                     <a href="${pageContext.request.contextPath}/tr/memTourList?memId=${memId}&tourId=${tourId}"
                         style="text-decoration: none; margin-right: 10px;">
                         <button id="btn">查看行程</button>
@@ -217,11 +231,11 @@ pageContext.setAttribute("list", list);
     var dateRanges = document.getElementsByClassName('dateRange');
     
     for (var i = 0; i < tourDescriptions.length; i++) {
-        var startDate = new Date(${list[i].startDate.time});
-        var endDate = new Date(${list[i].endDate.time});
-        var formattedStartDate = startDate.getFullYear() + "年" + (startDate.getMonth() + 1) + "月" + startDate.getDate() + "日";
-        var formattedEndDate = endDate.getFullYear() + "年" + (endDate.getMonth() + 1) + "月" + endDate.getDate() + "日";
-        dateRanges[i].innerHTML = formattedStartDate + "~" + formattedEndDate;
+//         var startDate = new Date(${list[i].startDate.time});
+//         var endDate = new Date(${list[i].endDate.time});
+//         var formattedStartDate = startDate.getFullYear() + "年" + (startDate.getMonth() + 1) + "月" + startDate.getDate() + "日";
+//         var formattedEndDate = endDate.getFullYear() + "年" + (endDate.getMonth() + 1) + "月" + endDate.getDate() + "日";
+//         dateRanges[i].innerHTML = formattedStartDate + "~" + formattedEndDate;
         
         //避免描述太多字
         var maxChars = 20; // 設定最大字數

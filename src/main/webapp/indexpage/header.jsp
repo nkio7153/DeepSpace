@@ -162,10 +162,8 @@
                                 票券
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownTicket">
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ticketproduct/list">票券瀏覽</a></li>
-<%--                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/to/memOrderList" onclick="checkSession(event)">訂單管理</a></li> --%>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ticketproduct/list">票券瀏覽</a></li>        
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/pro/getCard">促銷活動</a></li>
-<%--                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/mto/memList"  onclick="checkSession(event)">我的票券</a></li> --%>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
