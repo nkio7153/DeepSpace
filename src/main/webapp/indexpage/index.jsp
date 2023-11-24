@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>DepthSpace</title>
 <jsp:include page="head.jsp" />
 <style type="text/css">
 .test {

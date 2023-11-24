@@ -144,6 +144,7 @@ $(document).ready(function() {
 </script>
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp" />
+<h3 class="text-primary bg-light p-3 border border-primary text-center shadow">我的文章列表</h3>
  	<div id="list" class="container mt-5">
         <div id="articlesRow" class="row">
             <c:forEach var="article" items="${list}">
@@ -184,7 +185,12 @@ $(document).ready(function() {
             </c:forEach>
         </div>
     </div>
-    
+  <c:if test="${list.isEmpty()}">
+    <div align="center">
+      <h1>暫無文章</h1>
+      <h3>趕快來新增你的第一篇文章吧!</h3>
+    </div>
+  </c:if> 
     <!-- 模態對話框 -->
 <div class="modal fade" id="articleDetailsModal" tabindex="-1" aria-labelledby="articleDetailsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">

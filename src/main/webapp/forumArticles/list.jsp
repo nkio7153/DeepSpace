@@ -421,6 +421,7 @@ $(document).ready(function() {
 <body>
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp" />
+<h3 class="text-primary bg-light p-3 border border-primary text-center shadow">文章列表</h3>
 <div id="list" class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
     <form method="post" action="<%=request.getContextPath()%>/forumArticles.do?action=doArtiTypeList">
@@ -429,6 +430,7 @@ $(document).ready(function() {
         </select>
         <input type="submit" value="查詢">
     </form>
+    <a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a>
     </div>
     <div id="articlesRow" class="row">
         <!-- 卡片內容將會通過 jQuery 動態加載到這裡 -->

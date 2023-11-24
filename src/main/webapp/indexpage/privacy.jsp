@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>隱私權保護政策</title>
 <jsp:include page="head.jsp" />
 <style>
 h3.heading, h2.heading {

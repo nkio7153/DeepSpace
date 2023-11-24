@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>關於我們</title>
 <jsp:include page="head.jsp" />
 <style>
 h3.heading, h2.heading {
@@ -79,7 +80,7 @@ p.text {
                   style="max-width: 250px; width: 100%"
                 />
               </div>
-              <h3 class="mt-md-4 mt-3">Johnson</h3>
+              <h3 class="mt-md-4 mt-3">李彥廷</h3>
             </div>
           </div>
           <div class="col-md-4 test-grid px-lg-4">
@@ -87,13 +88,13 @@ p.text {
               <p class="text-li">簡介</p>
               <div class="test-img text-center mt-4">
                 <img
-                  src="${pageContext.request.contextPath}/indexpage/images/about.png"
+                  src="${pageContext.request.contextPath}/indexpage/images/about4.png"
                   class="img-thumbnail img-fluid"
                   alt="user-image"
                   style="max-width: 250px; width: 100%"
                 />
               </div>
-              <h3 class="mt-md-4 mt-3">李彥廷</h3>
+              <h3 class="mt-md-4 mt-3">謝閔萱</h3>
             </div>
           </div>
         </div>
@@ -109,7 +110,7 @@ p.text {
                   style="max-width: 250px; width: 100%"
                 />
               </div>
-              <h3 class="mt-md-4 mt-3"></h3>
+              <h3 class="mt-md-4 mt-3">陳進旺</h3>
             </div>
           </div>
           <div class="col-md-4 test-grid px-lg-4 my-md-0 my-5">
@@ -117,13 +118,13 @@ p.text {
               <p class="text-li">簡介</p>
               <div class="test-img text-center mt-4">
                 <img
-                  src="${pageContext.request.contextPath}/indexpage/images/about4.png"
+                  src="${pageContext.request.contextPath}/indexpage/images/about.png"                 
                   class="img-thumbnail img-fluid"
                   alt="user-image"
                   style="max-width: 250px; width: 100%"
                 />
               </div>
-              <h3 class="mt-md-4 mt-3">Johnson</h3>
+              <h3 class="mt-md-4 mt-3">黃欣怡</h3>
             </div>
           </div>
           <div class="col-md-4 test-grid px-lg-4">
@@ -137,7 +138,7 @@ p.text {
                   style="max-width: 250px; width: 100%"
                 />
               </div>
-              <h3 class="mt-md-4 mt-3">Elizabeth</h3>
+              <h3 class="mt-md-4 mt-3">涂昌宏</h3>
             </div>
           </div>
         </div>

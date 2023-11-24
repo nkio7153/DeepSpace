@@ -65,7 +65,7 @@
 
 <!-- copyright -->
 <div class="copyright py-3 text-center">
-    <p>COPYRIGHT © 2023 深度漫遊 All rights reserved.</p>
+    <p>COPYRIGHT © 2023 DepthSpace All rights reserved.</p>
 </div>
 <!-- //copyright -->
 <!-- Bootstrap CSS -->
