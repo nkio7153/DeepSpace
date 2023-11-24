@@ -23,6 +23,8 @@ import com.depthspace.admin.model.AdminVO;
 import com.depthspace.admin.service.HbAdminService;
 import com.depthspace.member.model.MemVO;
 import com.depthspace.member.service.HbMemService;
+import com.depthspace.notifications.service.NotificationsService;
+import com.depthspace.notifications.service.NotificationsServiceImpl;
 import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO;
@@ -302,6 +304,8 @@ public class RestApiServlet extends HttpServlet {
 					vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
 					int pk = memBookingService.add(vo);
 					out.print(gson.toJson(pk));
+					NotificationsService msg = new NotificationsServiceImpl();
+					msg.RestOrderNotification(vo);
 				} catch (Exception e) {
 					out.print("ERROR");
 					e.printStackTrace();

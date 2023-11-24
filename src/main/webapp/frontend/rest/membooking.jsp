@@ -105,33 +105,36 @@
 		    	var bookingId = $(this).data('booking-id');
 		    	
 	            Swal.fire({
-		            title: "確定移除收藏嗎",
+		            title: "確定取消嗎",
 		            icon: "warning",
 		            showCancelButton: true,
 		            confirmButtonColor: "#3085d6",
 		            cancelButtonColor: "#d33",
 		            confirmButtonText: "YES"
 		        }).then((result) => {
-		        	fetch("/DepthSpace/RestApi/doMemBooking?action=cancel&bookingId="+bookingId, {
-						method: "POST",
-						})
-						.then(response => {
-				            if (!response.ok) {
-				                throw new Error(`HTTP error! status: ${response.status}`);
-				            }
-				            return response.text();
-						})
-						.then(data => {
-							if (data == 1) {
-								Swal.fire("已取消訂位");
-							} else if (data == -1) {
-								Swal.fire("系統異常");
-							}
-						})
-						.catch(error => {
-							console.error(error);
-						});
-		        });
+		        	if (result.isConfirmed) {
+			        	fetch("/DepthSpace/RestApi/doMemBooking?action=cancel&bookingId="+bookingId, {
+							method: "POST",
+							})
+							.then(response => {
+					            if (!response.ok) {
+					                throw new Error(`HTTP error! status: ${response.status}`);
+					            }
+					            return response.text();
+							})
+							.then(data => {
+								if (data == 1) {
+									Swal.fire("已取消訂位");
+									location.reload(true);
+								} else if (data == -1) {
+									Swal.fire("系統異常");
+								}
+							})
+							.catch(error => {
+								console.error(error);
+							});
+		        	}
+			      });
 		        
 		    });
 		    
