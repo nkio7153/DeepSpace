@@ -68,7 +68,7 @@
         <td class="text-center">${order.pointsFeedback}</td>
         <td class="text-center" name="paymentMethod">${order.paymentMethod}</td>
         <td class="text-center">
-          <a href="${pageContext.request.contextPath}/tod/frontList?orderId=${order.orderId}&totalAmount=${order.totalAmount}&amountPaid=${order.amountPaid}" class="bg1 button2">訂單明細</a>
+          <a href="${pageContext.request.contextPath}/tod/frontList?orderId=${order.orderId}" class="bg1 button2">訂單明細</a>
           <a href="#" class="button2 bg2" >取消訂單</a>
         </td>
       </tr>

@@ -223,7 +223,7 @@
 						    <a href="${pageContext.request.contextPath}/tsc/memCartList" onclick="checkSession(event)">
 						        <div style="position: relative; display: inline-block;">
 						            <img src="${pageContext.request.contextPath}/indexpage/images/shoppingcar.svg" style="width: 2em"/>
-						            <span id="cartNum" style="position: absolute;top: -8px;right: -15px;background-color: red;border-radius: 50%;padding: 2px 6px;"></span>
+						            <span id="cartNum" style="display:none;position: absolute;top: -8px;right: -15px;background-color: red;border-radius: 50%;padding: 2px 6px;"></span>
 						        </div>
 						    </a>
 						</li>                    
