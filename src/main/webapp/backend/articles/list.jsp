@@ -31,10 +31,26 @@ $(document).ready(function() {
                 rows += '<td class="text-center arti-content">' + cleanArtiText + '</td>';
                 rows += '<td class="text-center">' + value.artiLk + '</td>';
                 rows += '<td class="text-center pic"><img src="data:image/jpeg;base64,' + base64ImageData + '" class="card-img-top fixed-height-img"></td>';
+                rows += '<td class="text-center"><button class="delete-btn" data-article-id="' + value.articleId + '"><i class="fas fa-trash"></i></button></td>';
                 rows += '</tr>';
             });
             $("#listTable tbody").html(rows);
         }
+    });
+    
+    //刪除該篇文章
+    $(document).on("click", ".delete-btn", function() {
+        var articleIdToDelete = $(this).data("article-id");
+
+        // 發送Ajax請求刪除文章
+        $.ajax({
+            url: '<%=request.getContextPath()%>/forumArticles.do?action=backdel&articleId=' + articleIdToDelete,
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+                location.reload();
+            }
+        });
     });
 });
 
@@ -118,6 +134,7 @@ function padZero(value) {
             <th>文章內容</th>
             <th>按讚數</th>
             <th>圖片</th>
+            <th>操作</th>
         </tr>
     </thead>
     <tbody>

@@ -234,47 +234,7 @@
     </div>
 <!--                                <span class="badge" id="cartNum" style="position: absolute; top: 30px; right: 0; background-color: transparent; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8em;"> -->
 <!--                         </span> -->
-<script>
-    if ("WebSocket" in window) {
-        var ws = new WebSocket("ws://localhost:8081/DepthSpace/notificationsws");  
-        fetchUnreadNotifications();
 
-        ws.onopen = function() {
-        };
-
-        ws.onmessage = function(event) {
-        fetchUnreadNotifications();
-        };
-
-        window.onbeforeunload = function(event) {
-            ws.close();
-        };
-
-        ws.onerror = function(event) {
-            console.log("WebSocketerrorerrorerrorerror: ", event);
-        };
-    }
-        function fetchUnreadNotifications() {
-            var url = "<%=request.getContextPath()%>/notifications/countUnread";
-            fetch(url)
-            .then(response => {
-                if (response.ok && response.headers.get("content-type").includes("application/json")) {
-                    return response.json();
-                } else {
-                    throw new Error('不是有效的 JSON');
-                }
-            })
-            .then(data => {
-                if (data.error) {
-//                     console.error('Error: ', data.error);
-                } else {
-                    document.querySelector('.notification-bell .badge').textContent = data.unreadCount;
-                }
-            })
-            .catch(error => console.error('Error fetching notifications:', error));
-    }
-        
-</script>
     
 </header>
 
