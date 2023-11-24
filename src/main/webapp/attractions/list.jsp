@@ -81,24 +81,24 @@ pageContext.setAttribute("list", list);
 									<div class="col-md-4">
 										<img
 											src="<%=request.getContextPath()%>/attractionsImage?attractionsId=${listItem.attractionsId}"
-											alt="" class="attractions-img">
+											alt="" class="attractions-img h-100">
 									</div>
 									<div class="col-md-8">
-										<div class="card-body">
+										<div class="card-body" >
 											<h5 class="card-title">${listItem.attractionsName}</h5>
 											<p class="card-text">${listItem.address}&ensp;|&ensp;</p>
-											<p class="card-text">
+											<p class="card-text" >
 												<c:choose>
 													<c:when test="${fn:length(listItem.description) > 60}">
 													${fn:substring(listItem.description,0,60)}...
 													</c:when>
 													<c:otherwise>
-													${attr.description}
+													${listItem.description}
 													</c:otherwise>
 												</c:choose>
-												<%-- 			                                    <label for="attractionsId_${status.index}"> --%>
-												<%-- 			                                        ${listItem.description} --%>
-												<!-- 			                                    </label> -->
+												<%-- <label for="attractionsId_${status.index}"> --%>
+												<%-- ${listItem.description} --%>
+												<!-- </label> -->
 											</p>
 										</div>
 									</div>

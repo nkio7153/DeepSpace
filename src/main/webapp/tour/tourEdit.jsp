@@ -199,7 +199,7 @@
     <br>
     <label style="margin-left: 10px;">行程類型:</label>
     <!-- 		下拉式選單:行程類型 -->
-    <select name="tourType" id="tourType">
+    <select name="tourType" id="tourType" style="border-radius: 50px;">
         <c:forEach var="tourType" items="${typeList}">
             <option value="${tourType.tourTypeId}" <c:if test="${tourType.tourTypName == tourTypName}">selected </c:if> >${tourType.tourTypName}</option>
 <%--            <option value="${type.tourTypeId}">${type.tourTypName}</option>--%>
