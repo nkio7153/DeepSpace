@@ -248,6 +248,7 @@ public class TicketOrderstServlet extends HttpServlet {
             
             //發送會員訊息通知
             notificationsService.ticketOrderNotification(to2, memVo);
+            notificationsService.getUnreadNotificationsCount(memId);
         }
 //        List<TicketOrdersVO> list = toSv.getbyMemId(memId);
 //        req.setAttribute("list", list);

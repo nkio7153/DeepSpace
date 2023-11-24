@@ -187,7 +187,7 @@
                             <ul class="dropdown-menu" aria-labelledby="trip">
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/attr/list">景點瀏覽</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/tr/tourList" onclick="checkSession(event)">我的行程</a></li>                               
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}}/tr/addTour" onclick="checkSession(event)">新增行程</a></li>                               
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/tr/addTour" onclick="checkSession(event)">新增行程</a></li>                               
                             </ul>
                         </li>
                        	<c:if test="${sessionScope.memId == null}">
@@ -223,7 +223,7 @@
 						    <a href="${pageContext.request.contextPath}/tsc/memCartList" onclick="checkSession(event)">
 						        <div style="position: relative; display: inline-block;">
 						            <img src="${pageContext.request.contextPath}/indexpage/images/shoppingcar.svg" style="width: 2em"/>
-						            <span id="cartNum" style="position: absolute;top: -8px;right: -15px;background-color: red;border-radius: 50%;padding: 2px 6px;"></span>
+						            <span id="cartNum" style="display:none;position: absolute;top: -8px;right: -15px;background-color: red;border-radius: 50%;padding: 2px 6px;"></span>
 						        </div>
 						    </a>
 						</li>                    
@@ -234,47 +234,7 @@
     </div>
 <!--                                <span class="badge" id="cartNum" style="position: absolute; top: 30px; right: 0; background-color: transparent; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8em;"> -->
 <!--                         </span> -->
-<script>
-    if ("WebSocket" in window) {
-        var ws = new WebSocket("ws://localhost:8081/DepthSpace/notificationsws");  
-        fetchUnreadNotifications();
 
-        ws.onopen = function() {
-        };
-
-        ws.onmessage = function(event) {
-        fetchUnreadNotifications();
-        };
-
-        window.onbeforeunload = function(event) {
-            ws.close();
-        };
-
-        ws.onerror = function(event) {
-            console.log("WebSocketerrorerrorerrorerror: ", event);
-        };
-    }
-        function fetchUnreadNotifications() {
-            var url = "<%=request.getContextPath()%>/notifications/countUnread";
-            fetch(url)
-            .then(response => {
-                if (response.ok && response.headers.get("content-type").includes("application/json")) {
-                    return response.json();
-                } else {
-                    throw new Error('不是有效的 JSON');
-                }
-            })
-            .then(data => {
-                if (data.error) {
-//                     console.error('Error: ', data.error);
-                } else {
-                    document.querySelector('.notification-bell .badge').textContent = data.unreadCount;
-                }
-            })
-            .catch(error => console.error('Error fetching notifications:', error));
-    }
-        
-</script>
     
 </header>
 

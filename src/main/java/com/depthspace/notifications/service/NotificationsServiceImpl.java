@@ -49,16 +49,22 @@ public class NotificationsServiceImpl implements NotificationsService {
         NotificationsVO notification = new NotificationsVO();
         notification.setMemId(member.getMemId());
         notification.setNoteType("票券通知");
-        notification.setNoteContent("您的訂單已成功建立！訂單號碼為" + order.getOrderId());
+
+//        String orderLink = "/tod/frontList?orderId="+order.getOrderId();
+//        notification.setNoteContent("您的訂單已成功建立！訂單號碼為 " + order.getOrderId() +
+//                                    "。 <a href='" + orderLink + "'>點擊此處查看訂單詳情</a>");
+    
+        notification.setNoteContent("您的訂單已成功建立！訂單號碼為 " + order.getOrderId());
         notification.setNoteCreated(new Timestamp(System.currentTimeMillis()));
         notification.setNoteRead((byte) 0);
 
         dao.insert(notification);
         
-        // WebSocket 
-        NotificationsWS webSocket = new NotificationsWS();
-        String message = "您有新的" + notification.getNoteType();
-        webSocket.sendNotification(message);
+//        // WebSocket 
+//        NotificationsWS webSocket = new NotificationsWS();
+//        String message = "您有新的" + notification.getNoteType();
+//        webSocket.sendNotification(message);
+//        System.out.println(message);
         }
 	
 	@Override

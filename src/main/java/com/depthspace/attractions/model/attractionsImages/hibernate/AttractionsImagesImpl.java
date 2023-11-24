@@ -64,7 +64,9 @@ public class AttractionsImagesImpl implements AttractionsImages_Interface{
 	}
 	@Override
 	public AttractionsImagesVO findByAttrId(Integer attractionsId) {
-		return getSession().get(AttractionsImagesVO.class, attractionsId);
+		return  getSession().createQuery("FROM AttractionsImagesVO WHERE attractionsId = :attractionsId",AttractionsImagesVO.class)
+				.setParameter("attractionsId", attractionsId)
+				.uniqueResult();
 	}
 	@Override
 	public List<AttractionsImagesVO> getAll() {
