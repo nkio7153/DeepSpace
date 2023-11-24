@@ -230,7 +230,7 @@
                                        href="${pageContext.request.contextPath}/backend/Rest.do?action=getRests">餐廳列表</a>
                                     <br>
                                     <a class="text-choco collapse-item fs-6 offset-1"
-                                       href="${pageContext.request.contextPath}/backend/rest/addRest.jsp">新增餐廳</a>
+                                       href="${pageContext.request.contextPath}/backend/Rest.do?action=forAdd">新增餐廳</a>
                                     <br>
                                     <a class="text-choco collapse-item fs-6 offset-1"
                                        href="${pageContext.request.contextPath}/backend/Rest.do?action=getBookingDate">預約設定</a>
