@@ -17,14 +17,12 @@ public class MemBookingServiceImpl implements MemBookingService {
 
 	@Override
 	public int add(MemBookingVO membookingVO) {
-		
 		return dao.add(membookingVO);
 	}
 
 	@Override
-	public MemBookingVO update(MemBookingVO membookingVO) {
-		dao.update(membookingVO);
-		return membookingVO;
+	public int update(MemBookingVO membookingVO) {
+		return dao.update(membookingVO);
 	}
 
 	@Override

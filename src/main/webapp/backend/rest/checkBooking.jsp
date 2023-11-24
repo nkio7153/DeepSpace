@@ -26,6 +26,7 @@
 	          <%-- 放入自己body裡的代碼--%>
 	          <form id="toUpdate" class="row g-2 p-3" action="${pageContext.request.contextPath}/backend/Rest.do?action=checkBookingUpdate" method="post">
 	          	  <input type="hidden" name="restId" value="${mb.restId}">
+	          	  <input type="hidden" name="memId" value="${mb.memId}">
 	          	  <div class="col-12">
 				    <label for="bookingId" class="form-label">訂位編號</label>
 				  </div>
@@ -36,7 +37,13 @@
 				    <label for="memId" class="form-label">會員</label>
 				  </div>
 				  <div class="col-6 mb-2">
-				    <input type="text" class="form-control" id="memId" name="memId" value=${mb.memId} readonly>
+				    <input type="text" class="form-control" id="memName" name="memName" value=${mem.memName} readonly>
+				  </div>
+	          	  <div class="col-12">
+				    <label for="memId" class="form-label">會員電話</label>
+				  </div>
+				  <div class="col-6 mb-2">
+				    <input type="text" class="form-control" id="memTel" name="memTel" value=${mem.memTel} readonly>
 				  </div>
 				  
 				  <div class="col-12">

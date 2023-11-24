@@ -26,9 +26,9 @@
 					</div>
 					<div class="row">
 						<ul class="col-10 links">
-							<li><a href="" class="scroll">關於我們</a></li>
-							<li><a href="" class="scroll">使用者條款 </a></li>
-							<li><a href="" class="scroll">隱私權保護政策</a></li>
+							<li><a href="${pageContext.request.contextPath}/indexpage/aboutus.jsp" class="scroll">關於我們</a></li>
+							<li><a href="${pageContext.request.contextPath}/indexpage/userterms.jsp" class="scroll">使用者條款 </a></li>
+							<li><a href="${pageContext.request.contextPath}/indexpage/privacy.jsp" class="scroll">隱私權保護政策</a></li>
 							<li><a href="${pageContext.request.contextPath}/faq/faq.jsp" class="scroll"> 常見問題與幫助</a></li>
 						</ul>
 					</div>

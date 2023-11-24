@@ -64,12 +64,12 @@ body, html {
 	<input type="hidden" name="loginLocation" value="${param.requestURI}">
 		<input type="submit" value="登入">
 
-	<div class="register">
-		<p>
-			如果沒有帳號?
-			<a href="${pageContext.request.contextPath}/admin/addAdmin.jsp" class="register-link" value="update" method="post" >點擊註冊</a>
-		</p>
-	</div>
+<!-- 	<div class="register"> -->
+<!-- 		<p> -->
+<!-- 			如果沒有帳號? -->
+<%-- 			<a href="${pageContext.request.contextPath}/admin/addAdmin.jsp" class="register-link" value="update" method="post" >點擊註冊</a> --%>
+<!-- 		</p> -->
+<!-- 	</div> -->
 	</form>
 
 
