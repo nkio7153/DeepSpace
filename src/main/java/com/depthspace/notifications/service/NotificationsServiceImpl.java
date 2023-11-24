@@ -10,6 +10,7 @@ import com.depthspace.notifications.controller.NotificationsWS;
 import com.depthspace.notifications.model.NotificationsDAO;
 import com.depthspace.notifications.model.NotificationsDAOImpl;
 import com.depthspace.notifications.model.NotificationsVO;
+import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 import com.depthspace.utils.HibernateUtil;
 
@@ -50,21 +51,38 @@ public class NotificationsServiceImpl implements NotificationsService {
         notification.setMemId(member.getMemId());
         notification.setNoteType("票券通知");
 
-//        String orderLink = "/tod/frontList?orderId="+order.getOrderId();
-//        notification.setNoteContent("您的訂單已成功建立！訂單號碼為 " + order.getOrderId() +
-//                                    "。 <a href='" + orderLink + "'>點擊此處查看訂單詳情</a>");
+        String orderLink = "http://depthspace.ddns.net/DepthSpace/tod/frontList?orderId="+order.getOrderId();
+        notification.setNoteContent("您的訂單已成功建立！訂單號碼為 " + order.getOrderId() +
+                                    "。 <a href='" + orderLink + "'>點擊此處查看訂單詳情</a>");
     
-        notification.setNoteContent("您的訂單已成功建立！訂單號碼為 " + order.getOrderId());
         notification.setNoteCreated(new Timestamp(System.currentTimeMillis()));
         notification.setNoteRead((byte) 0);
 
         dao.insert(notification);
         
-//        // WebSocket 
-//        NotificationsWS webSocket = new NotificationsWS();
-//        String message = "您有新的" + notification.getNoteType();
-//        webSocket.sendNotification(message);
-//        System.out.println(message);
+        }
+
+	@Override
+  	public void RestOrderNotification(MemBookingVO mb, MemVO member) {
+//        NotificationsVO notification = new NotificationsVO();
+//        notification.setMemId(member.getMemId());
+//        notification.setNoteType("餐廳通知");
+//
+////        String orderLink = "/tod/frontList?orderId="+order.getOrderId();
+////        notification.setNoteContent("您的訂單已成功建立！訂單號碼為 " + order.getOrderId() +
+////                                    "。 <a href='" + orderLink + "'>點擊此處查看訂單詳情</a>");
+//    
+//        notification.setNoteContent("您的訂單已成功建立！訂單號碼為 " + order.getOrderId());
+//        notification.setNoteCreated(new Timestamp(System.currentTimeMillis()));
+//        notification.setNoteRead((byte) 0);
+//
+//        dao.insert(notification);
+//        
+////        // WebSocket 
+////        NotificationsWS webSocket = new NotificationsWS();
+////        String message = "您有新的" + notification.getNoteType();
+////        webSocket.sendNotification(message);
+////        System.out.println(message);
         }
 	
 	@Override
