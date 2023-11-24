@@ -112,7 +112,6 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>LoginFilter</filter-name>
-		<!-- <url-pattern>/member/*</url-pattern> -->
 		<url-pattern>/backend/backIndex/index.jsp</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
