@@ -201,7 +201,6 @@ public class RestController extends HttpServlet {
 		Integer memId = (Integer) session.getAttribute("memId");
 		List<MemBookingVO> mbList =  membookingService.getByMemId(memId);
 		req.setAttribute("mbList", mbList);
-		System.out.println(mbList);
 		return "/frontend/rest/membooking.jsp";
 	}
 

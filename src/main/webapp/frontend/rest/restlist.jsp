@@ -135,10 +135,7 @@
 			
 			
 			function doCollection(action, memId, restId) {
-				let origin = window.location.origin; // http://hostname:port
-// 				let url = origin+"/DepthSpace/RestApi/doRestCollection?action="+action+"&memId="+memId+"&restId="+restId;
 				let url = "/DepthSpace/RestApi/doRestCollection?action="+action+"&memId="+memId+"&restId="+restId;
-				console.log(url);
 				fetch(url, {
 					method: "POST",
 					})

@@ -324,16 +324,12 @@ public class RestServlet extends HttpServlet {
 	
 	private String checkBookingUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		MemBookingVO vo = new MemBookingVO();
-		String restId = req.getParameter("restId");
-		vo.setRestId(Integer.parseInt(req.getParameter("restId")));
-		vo.setMemId(Integer.parseInt(req.getParameter("memId")));
+		Integer bookingId = Integer.parseInt(req.getParameter("bookingId"));
+		vo = memBookingService.getByMembookingId(bookingId);
 		vo.setCheckStatus(Integer.parseInt(req.getParameter("checkStatus")));
-		vo.setBookingTime(Integer.parseInt(req.getParameter("bookingTime")));
-		vo.setBookingNumber(Integer.parseInt(req.getParameter("bookingNumber")));
-		vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
-		vo.setBookingId(Integer.parseInt(req.getParameter("bookingId")));
 		memBookingService.update(vo);
-		return "/backend/Rest.do?action=getMembooking&restId=" + restId;
+		
+		return "/backend/Rest.do?action=getMembooking";
 	}
 	
 	private void saveImg(String restId, Part file) {
