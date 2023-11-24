@@ -253,7 +253,7 @@ h4.destination {
                     </p>
                 </div>
                 <div class="col-lg-6 about-right text-lg-right mt-lg-0 mt-5">
-                    <img src="${pageContext.request.contextPath}/indexpage/images/124.png" alt="" class="img-fluid abt-image" />
+                    <img src="${pageContext.request.contextPath}/indexpage/images/travel.jpg" alt="" class="img-fluid abt-image" />
                 </div>
             </div>
             <div class="row mt-5 text-center test">
@@ -386,7 +386,7 @@ h4.destination {
               <div class="destinations-info">
                 <div class="caption mb-lg-3">
                   <h4>台北成人展門票</h4>
-                  <a href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=324006">立即購買</a>
+                  <a href="javascript:void(0);" onclick="showMessage()">立即購買</a>
                 </div>
               </div>
             </div>
@@ -459,6 +459,11 @@ h4.destination {
                 }
             );
         });
+        
+        function showMessage() {
+//         	Swal.fire("即將上架，敬請期待");
+            alert("即將上架，敬請期待");
+        }
     </script>
 </body>
 </html>

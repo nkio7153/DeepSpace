@@ -12,4 +12,6 @@ public interface ArticlesLikeService {
 	List<ArticlesLikeVO> getByMemId(Integer memId);
 
 	boolean islike(Integer articleId, Integer memId);
+	
+	void deleteByArticleId(Integer articleId);
 }

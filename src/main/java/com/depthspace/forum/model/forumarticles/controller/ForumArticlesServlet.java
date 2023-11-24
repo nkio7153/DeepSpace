@@ -116,6 +116,8 @@ public class ForumArticlesServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		out.print("{\"status\":\"success\"}");
 		out.flush();
+		delCollect(req,resp);
+		delLike(req,resp);
 	}
 
 	//後臺取得所有文章
@@ -129,36 +131,14 @@ public class ForumArticlesServlet extends HttpServlet {
 
 	//文章刪除連帶刪除按讚紀錄
 	private void delLike(HttpServletRequest req, HttpServletResponse resp) {
-		Integer articleId = null;
-		try {
-			articleId = Integer.valueOf(req.getParameter("articleId"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		Integer memId = null;
-		HttpSession session = req.getSession(false);
-		if (session.getAttribute("memId") != null) {
-			memId = (Integer) session.getAttribute("memId");
-		}
-		ArticlesLikeVO alvo = new ArticlesLikeVO(articleId, memId);
-		articlesLikeService.delete(alvo);		
+		Integer articleId = Integer.valueOf(req.getParameter("articleId"));
+		articlesLikeService.deleteByArticleId(articleId);
 	}
 
 	//文章刪除連帶刪除收藏紀錄
 	private void delCollect(HttpServletRequest req, HttpServletResponse resp) {
-		Integer articleId = null;
-		try {
-			articleId = Integer.valueOf(req.getParameter("articleId"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		Integer memId = null;
-		HttpSession session = req.getSession(false);
-		if (session.getAttribute("memId") != null) {
-			memId = (Integer) session.getAttribute("memId");
-		}
-		ArticlesCollectVO acvo = new ArticlesCollectVO(articleId, memId);
-		articlesCollectService.delete(acvo);
+		Integer articleId = Integer.valueOf(req.getParameter("articleId"));
+		articlesCollectService.deleteByArticleId(articleId);	
 	}
 
 	//取得文章類型並轉發到修改表單
