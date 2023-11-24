@@ -167,8 +167,6 @@ h4.destination {
             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
                 aria-label="Slide 3"></button>
         </div>
-        <style>
-        </style>
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="${pageContext.request.contextPath}/indexpage/images/picicon.jpg" class="picfak w-100">
@@ -391,20 +389,8 @@ h4.destination {
               </div>
             </div>
           </div>
-<!--           <div class="col-md-3 col-sm-12 destinations-grids text-center mt-4 gg"> -->
-<!--             <h4 class="destination mb-3">佐登妮絲城堡</h4> -->
-<!--             <div class="image-position position-relative"> -->
-<%--               <img src="${pageContext.request.contextPath}/indexpage/images/castle.jpg" class="card-img" alt="" /> --%>
-<!--               <div class="destinations-info"> -->
-<!--                 <div class="caption mb-lg-3"> -->
-<!--                   <h4>佐登妮絲城堡門票</h4> -->
-<%--                   <a href="${pageContext.request.contextPath}/ticketproduct/item?ticketId=324006">立即購買</a> --%>
-<!--                 </div> -->
-<!--               </div> -->
-<!--             </div> -->
-<!--           </div> -->
-<!--         </div> -->
-<!--       </div> -->
+        </div>
+      </div>
     </section>
     <!-- destinations -->
 <jsp:include page="footer.jsp" />
@@ -461,9 +447,17 @@ h4.destination {
         });
         
         function showMessage() {
-//         	Swal.fire("即將上架，敬請期待");
-            alert("即將上架，敬請期待");
-        }
+        	 Swal.fire({ 
+        		    title: '即將上架，敬請期待', 
+        		    text: '我們的票券很快就會推出！',
+        		    icon: 'info', 
+        		    confirmButtonText: '確定' 
+        		  }).then((result) => { 
+        		    if (result.isConfirmed) { 
+        		    	location.reload();
+        		    }
+        		  });
+        	}
     </script>
 </body>
 </html>

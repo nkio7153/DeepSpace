@@ -32,7 +32,7 @@ $(document).ready(function() {
 	                .replace(/<\/span>/g, '');
                     var collectbutton = '<button class="btn btn-primary collect-button float-end like-button" data-articleid="' + item.articleId + '"><i class="far fa-heart"></i></button>';
                     var likeButton = '<button class="btn btn-primary like-buttons likes-button" data-articleid="' + item.articleId + '"><i class="far fa-thumbs-up"></i></button>';
-                    var reportButton = '<button class="btn btn-warning report-button"><i class="fas fa-exclamation"></i></button>';
+                    var reportButton = '<button class="btn btn-warning report-button"><i class="fas fa-exclamation reporticon"></i></button>';
                     var card = $('<div class="col-lg-4 col-md-6 mb-3">')
                     .append('<div class="cards">' +
                     		'<li class="list-group-item d-flex justify-content-between align-items-center">會員ID: ' + item.memId + collectbutton + '</li>' +
@@ -87,7 +87,7 @@ $(document).ready(function() {
     	                var likeButtonClass = islike ? 'btn btn-primary like-buttons liked' : 'btn btn-primary like-buttons float-end';
     	                var likeButton = '<button class="' + likeButtonClass + ' likes-button" data-articleid="' + item.articleId + '">' + thumbIcon + '</button>';
     	               
-    	                var reportButton = '<button class="btn btn-warning report-button" data-articleid="' + item.articleId + '"><i class="fas fa-exclamation"></i></button>';
+    	                var reportButton = '<button class="btn btn-warning report-button" data-articleid="' + item.articleId + '"><i class="fas fa-exclamation reporticon"></i></button>';
     	                var card = $('<div class="col-lg-4 col-md-6 mb-3">')
     	                .append('<div class="cards">' +
     	                        '<li class="list-group-item d-flex justify-content-between align-items-center">會員ID: ' + item.memId + collectButton + '</li>' +
@@ -102,11 +102,11 @@ $(document).ready(function() {
     	                            '<li class="list-group-item hidden-status likeicon">'  + item.artiLk +  '</li>' +
     	                        '</ul>' +
     	                        '<div class="card-footer d-flex justify-content-between align-items-center">' +
-    	                            '<small class="text-muted">發布時間: ' + formattedDate + '</small>' +    	                        
-    	                            '<div>' + // 新增一個容器包住兩個按鈕
-    	                            reportButton +   // 檢舉按鈕
-    	                            likeButton +     // 按讚按鈕
-    	                        	'</div>' +                        
+    	                        '<small class="text-muted">發布時間: ' + formattedDate + '</small>' +    	                        
+    	                        '<div>' + // 新增一個容器包住兩個按鈕
+    	                        reportButton +   // 檢舉按鈕
+    	                        likeButton +     // 按讚按鈕
+    	                        '</div>' +                        
     	                        '</div>' +
     	                '</div>');
     	                $('#articlesRow').append(card);   
@@ -401,13 +401,18 @@ $(document).ready(function() {
      
      .report-button{
      	margin-right: 12px;
-     	background-color: 	#FF0000 !important;
-    	border-color: 	#FF0000 !important;
+     	background-color: #FF0000 !important;
+    	border-color: #FF0000 !important;
     	width: 40px;
      }
       .reportborder:hover, .reportborder:focus, .reportborder:active, .reportborder:visited {
        outline: none;
        box-shadow: none !important;
+     }
+     
+     .reporticon{
+     color:	#FFFFFF;
+     font-size: 20px;
      }
 
 </style>

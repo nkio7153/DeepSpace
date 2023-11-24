@@ -117,6 +117,23 @@
         font-size: 12px;
     }
     
+    #chat-icon {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: transform 1s ease;
+	}
+	
+	.gm{
+	border-radius: 50%;
+	}
 	</style>
     
     
@@ -231,7 +248,12 @@
             </div>
         </nav>
     </div>
-    
+        <!-- 聊天室 -->
+    <div id="chat-icon">
+      <a href="${pageContext.request.contextPath}/keywordQa/question_submission.jsp">
+      <img src="${pageContext.request.contextPath}/indexpage/images/gm.png" class="gm" /></a>
+    </div>
+    <!-- 聊天室 -->
 </header>
 
 
