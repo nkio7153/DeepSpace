@@ -20,6 +20,10 @@
 		    max-width: 100%;
 		    height: auto;
 	    }
+	    .yellow-star {
+		    color: Gold;
+		    font-size: 16px;
+		}
 	</style>
 </head>
 <body class="border border-light">
@@ -109,9 +113,9 @@
 // 				console.log(place);
 	
 				// 評分
-				$("#r_name").append("<h5 id='rating'>"+place.rating+"</h5>")
+				$("#r_name").append("<p id='rating'>評分："+place.rating+"<span class='yellow-star'>★</span></p>")
 				
-				$('#rating').append("<h5 id='address'>"+place.adr_address+"</h5>")
+				$('#rating').append("<p id='address'>地址："+place.adr_address+"</p>")
 				
 				// 營業時間
 				var openTime = place.opening_hours.weekday_text;

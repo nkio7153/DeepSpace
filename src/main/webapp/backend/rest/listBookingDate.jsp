@@ -28,7 +28,9 @@
 	          <table id="myTable" class="hover">
 	            <thead>
 	              <tr>
-	                <th>餐廳編號</th>
+	                <c:if test="${admin.adminFuncName eq 2}">
+						<th>餐廳編號</th>
+					</c:if>
 					<th>日期</th>
 					<th>營業狀態</th>
 					<th>早上可預約組數</th>
@@ -40,7 +42,9 @@
 	            <tbody>
 	              <c:forEach var="bookDate" items="${bookDate}">
 					<tr>
-						<td>${bookDate.restId}</td>
+						<c:if test="${admin.adminFuncName eq 2}">
+					        <td>${bookDate.restId}</td>
+					    </c:if>
 						<td>${bookDate.bookingDate}</td>
 						<c:choose>
 						    <c:when test="${bookDate.restOpen == 0}">

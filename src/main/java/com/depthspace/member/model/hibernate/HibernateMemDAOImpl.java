@@ -1,14 +1,22 @@
 package com.depthspace.member.model.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import com.depthspace.attractions.model.AttractionsVO;
+import com.depthspace.column.model.ColumnArticlesVO;
 import com.depthspace.member.model.MemVO;
 public class HibernateMemDAOImpl implements HibernateMemDAO_Interface {
 	//宣告一個factory變數
@@ -122,5 +130,46 @@ public class HibernateMemDAOImpl implements HibernateMemDAO_Interface {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	// 萬用查詢
+		@Override
+		public List<MemVO> getByCompositeQuery(Map<String, List<String>> map) {
+		    
+		    if (map.size() == 0) {
+		        return getAll();
+		    }
+
+		    CriteriaBuilder builder = getSession().getCriteriaBuilder();
+		    CriteriaQuery<MemVO> criteria = builder.createQuery(MemVO.class);
+		    Root<MemVO> root = criteria.from(MemVO.class);
+
+		    List<Predicate> predicates = new ArrayList<>();
+
+		    for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+		        String key = entry.getKey();
+		        List<String> values = entry.getValue();
+	 
+//		        switch (key) {
+//		            case "artiTitle":
+//		                predicates.add(builder.like(root.get("artiTitle"), "%" + values.get(0) + "%"));
+//		                break;
+//		            case "colTypeId":
+//		                CriteriaBuilder.In<Integer> inColTypeId = builder.in(root.get("colType").get("colTypeId"));
+//		                for (String value : values) {
+//		                	inColTypeId.value(Integer.parseInt(value));
+//		                }
+//		                predicates.add(inColTypeId);
+//		                break;
+//		            case "artiId":
+//		                predicates.add(builder.equal(root.get("artiId"), Integer.parseInt(values.get(0))));
+//		                break;
+//		        }
+		    }
+
+		    criteria.where(builder.and(predicates.toArray(new Predicate[0])));
+		    criteria.orderBy(builder.asc(root.get("artiId")));
+		    TypedQuery<MemVO> query = getSession().createQuery(criteria);
+
+		    return query.getResultList();
+		}
 
 }

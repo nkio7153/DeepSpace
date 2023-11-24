@@ -80,7 +80,7 @@
 	<jsp:include page="/indexpage/footer.jsp" />
 	<script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-	
+	<script src="https://cdn.jsdelivr.net/npm/sweetSwal.fire2@11"></script>
 	<script>
 		$(function() {
 			let memId = "${memId}";
@@ -132,7 +132,7 @@
 			          success: function(data) {
 			        	  $.each(data, function(index, entry) {
 			        		  if (index === "restOpen" && !entry){
-			        			  alert("本日公休，請重新選擇日期");
+			        			  Swal.fire("本日公休，請重新選擇日期");
 			        			  $("#bookingDate").val("");
 			        			  
 			        		  }
@@ -208,7 +208,7 @@
 				          data: $('#bookingform').serialize(),
 				          url: '/DepthSpace/RestApi/doMemBooking?action=add',
 				          success: function(data) {
-				              alert('訂位成功');
+				              Swal.fire('訂位成功');
 				              console.log(data);
 				              let bookingId = data;
 				              
@@ -227,14 +227,16 @@
 				              $("#bookingform")[0].reset();
 				          },
 				          error: function(xhr, status, error) {
-				              alert('訂位失敗');
+				              Swal.fire('訂位失敗');
 				              $("#bookingform")[0].reset();
 				          }
 					});
 			    } else {
 			    	// 未登入，提示請先登入並跳轉至登入頁面
-					alert("請先登入");
-					window.location.href = "/DepthSpace/member/login.jsp";
+					Swal.fire("請先登入");
+					setTimeout(function() {
+							window.location.href = "/DepthSpace/member/login.jsp";
+						}, 2000);
 			    }
 			}
 			
@@ -251,11 +253,11 @@
 				
 			    // 若沒選擇時段則停止表單發送
 			    if (bookingDate === "請選擇"){
-			    	alert("請選擇時段");
+			    	Swal.fire("請選擇時段");
 			    	return false;			    	
 			    }
 			    if (bookingNumber == 0){
-			    	alert("人數不可為0");
+			    	Swal.fire("人數不可為0");
 			    	return false;
 			    }
 			    // 判斷訂位當下是否有剩餘可以訂位 若無則跳出提示並中斷
@@ -290,7 +292,7 @@
 				        	// 執行訂位
 				        	bookingStart(booking.Num);
 				        } else {
-				        	alert("此時段已無法訂位");
+				        	Swal.fire("此時段已無法訂位");
 				        	$("#bookingform")[0].reset();
 				        }
 				   	},

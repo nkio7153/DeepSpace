@@ -249,7 +249,7 @@ $(document).ready(function () {
     // 獲取alldays的文字資料
     let alldaysText = $("#tripDuration").text();
 
-    // 使用政則表達式提取數字部分\d來匹配數字
+    // 使用正則表達式提取數字部分\d來匹配數字
     let alldaysMatch = alldaysText.match(/\d+/);
     if (alldaysMatch) {
         // 如果找到匹配的數字部分，就轉型變成數字

@@ -271,7 +271,7 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 		if(session.getAttribute("memId")!=null) {
             memId = (Integer)session.getAttribute("memId");
         }
-		req.setAttribute("memId", memId);
+		session.setAttribute("memId", memId);
 		req.getRequestDispatcher("/tour/newTour.jsp").forward(req, resp);
 	}
 
