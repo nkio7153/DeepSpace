@@ -101,9 +101,23 @@ public class ForumArticlesServlet extends HttpServlet {
 		case "backlist":
 			backList(req, resp);
 			break;
+		case "backdel":
+			backDel(req, resp);
+			break;
 		}
 	}
 	
+	//後臺刪除文章
+	private void backDel(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		Integer articleId = Integer.parseInt(req.getParameter("articleId"));
+		forumArticlesService.delete(articleId);	
+		resp.setContentType("application/json");
+		resp.setCharacterEncoding("UTF-8");
+		PrintWriter out = resp.getWriter();
+		out.print("{\"status\":\"success\"}");
+		out.flush();
+	}
+
 	//後臺取得所有文章
 	private void backList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		List<ForumArticlesVO> forum = forumArticlesService.getAll();
