@@ -5,6 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,14 +187,20 @@ public class RestServlet extends HttpServlet {
 		rest.setRestText(req.getParameter("restText"));
 		admin = hbAdminService.getOneAdmin(Integer.parseInt(req.getParameter("adminId")));
 		rest.setAdminVO(admin);
-		String restId = Integer.toString(restService.addRest(rest));
-		saveImg(restId, req.getPart("uploadimg"));
+		Integer restId = restService.addRest(rest);
+		saveImg(restId.toString(), req.getPart("uploadimg"));
+		System.out.println("RESTID==="+restId);
+		rest.setRestId(restId);
+		System.out.println("RESTVO===="+rest);
+		addRestToDate(rest);
 		
 		return "/backend/Rest.do?action=getAll";
 	}
 	
 	private String delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String restId = req.getParameter("restId");
+		System.out.println("rest++++++++++++++++++++++++++++"+restId);
+		bookingDateService.deleteForRestId(Integer.parseInt(restId));
 		restService.deleteRest(Integer.parseInt(restId));
 		return "/backend/Rest.do?action=getAll";
 	}
@@ -375,6 +384,33 @@ public class RestServlet extends HttpServlet {
 		req.setAttribute("citylist", citylist);
 		
 		return "/backend/rest/addRest.jsp";
+	}
+	
+	private void addRestToDate(RestVO restVO) {
+		
+		
+		
+		// 從今天開始
+        LocalDate startDate = LocalDate.now();
+        // 設置日期格式
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        // 生成未來三個月的日期
+        for (int i = 0; i < 90; i++) {
+        	RestBookingDateVO vo = new RestBookingDateVO(); 
+    		vo.setRestId(restVO.getRestId());
+    		vo.setRestOpen(1);
+    		vo.setMorningNum(restVO.getAmLimit());
+    		vo.setNoonNum(restVO.getNoonLimit());
+    		vo.setEveningNum(restVO.getPmLimit());
+            String formattedDate = startDate.format(formatter);
+//            System.out.println(formattedDate);
+            vo.setBookingDate(java.sql.Date.valueOf(formattedDate));
+            System.out.println("VO======"+vo);
+            bookingDateService.add(vo);
+            // 下一天
+            startDate = startDate.plusDays(1);
+        }
+		
 	}
 	
 	
