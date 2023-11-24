@@ -111,7 +111,7 @@ public class AttractionsServlet  extends HttpServlet {
 	//前端關鍵字及選取框搜尋
 	private void doSearch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {	    
 		String cityId = req.getParameter("cityId");//縣市編號
-		String attractionsName = req.getParameter("attractionsName").trim();//使用者搜尋的景點名稱
+		String attractionsName = req.getParameter("attractionsName");//使用者搜尋的景點名稱
 		System.out.println("cityId=" + cityId +","+"attractionsName=" + attractionsName);
 		Integer getCityId = null;
 		List<AttractionsVO> list = null ;
@@ -129,6 +129,9 @@ public class AttractionsServlet  extends HttpServlet {
 //			    System.out.println("firstCityname=" + firstCityname);
 //			    再用模糊比對找出對應的景點
 			    list = attrs.findOtherAttractions(firstCityname);
+			    req.setAttribute("list", list);
+			    setJsonResponse(resp,list);
+			    return;
 		    } catch (NumberFormatException e) {
 				e.printStackTrace();	
 				return;
@@ -144,7 +147,6 @@ public class AttractionsServlet  extends HttpServlet {
 		req.setAttribute("city", city);//取得台灣所有縣市
 //		List<AttractionsVO> memno = (List<AttractionsVO>) session.getAttribute("list");// 測試用(取得存在session會員編號)
 //	    System.out.println("測試取得放入session的物件" + memno);
-//		帶資料回list
 		req.getRequestDispatcher("/attractions/search.jsp").forward(req, resp);
 	}
 

@@ -37,10 +37,10 @@
 
 			<!-- 左側篩選條件 -->
 
-			<div class="col-md-3">
+			<div class="col-md-3 mt-5">
 				<form method="post" id="searchForm"
 					action="${pageContext.request.contextPath}/attr/search">
-					<!-- 					搜尋框 -->
+					<!-- 搜尋框 -->
 					<div class="input-group mb-3">
 						<input type="text" class="form-control" placeholder="景點名稱"
 							id="attractionName" name="attractionsName"
@@ -51,20 +51,30 @@
 							</button>
 						</div>
 					</div>
-
-					<h4>選擇你想去的縣市吧!</h4>
-					<div class="form-group">
-						<c:forEach var="areaItem" items="${city}" varStatus="status">
-							<div class="custom-control custom-checkbox">
-								<input type="checkbox" class="custom-control-input"
-									id="cityId_${status.index}" name="cityId"
-									value="${areaItem.cityId}"> <label
-									class="custom-control-label" for="cityId_${status.index}">
-									${areaItem.cityName} </label>
-							</div>
-						</c:forEach>
-					</div>
 				</form>
+				
+<!-- 					<h4>選擇你想去的縣市吧!</h4> -->
+					<div class="form-group">
+					    <label for="citySelect">選擇你想去的縣市吧!</label>
+					    <select class="form-control" id="citySelect" name="cityId">
+					        <c:forEach var="areaItem" items="${city}">
+					            <option value="${areaItem.cityId}">${areaItem.cityName}</option>
+					        </c:forEach>
+					    </select>
+					</div>
+					
+<!-- 					<div class="form-group"> -->
+<%-- 						<c:forEach var="areaItem" items="${city}" varStatus="status"> --%>
+<!-- 							<div class="custom-control custom-checkbox"> -->
+<!-- 								<input type="checkbox" class="custom-control-input" -->
+<%-- 									id="cityId_${status.index}" name="cityId" --%>
+<%-- 									value="${areaItem.cityId}"> <label --%>
+<%-- 									class="custom-control-label" for="cityId_${status.index}"> --%>
+<%-- 									${areaItem.cityName} </label> --%>
+<!-- 							</div> -->
+<%-- 						</c:forEach> --%>
+<!-- 					</div> -->
+				
 			</div>
 
 			<!-- 右側景點列表 -->
@@ -132,7 +142,69 @@
     <jsp:include page="/indexpage/footer.jsp" />
 </div>
 
+<script>	
+$(document).ready(function() {
+    // 監聽下拉式選單值改變事件
+    $("#citySelect").change(function() {
+        // 取得選擇的縣市值
+        var cityId = $(this).val();
+        console.log(cityId)
 
+        // 使用 AJAX 將值傳送到後端
+        $.ajax({
+            type: "POST",
+            url: "<%=request.getContextPath()%>/attr/search",
+            data: { cityId: cityId },
+            success: function(response) {
+                var html = "";
+                for (var i = 0; i < response.length; i++) {
+                    var listItem = response[i];
+                    var attractionsId = listItem.attractionsId;
+                    var attractionsName = listItem.attractionsName;
+                    var description = listItem.description;
+                    var address = listItem.address;
+                    var contextPath = "${pageContext.request.contextPath}";
+
+                    html += "<a href='" + window.location.pathname.replace("/list", "") + "/oneList?attractionsId=" + attractionsId + "' class='no-underline'>";
+                    html += "<div class='card mb-3 clickable-card'>";
+                    html += "<div class='row no-gutters'>";
+                    html += "<div class='col-md-4'>";
+                    html += "<img src='" + contextPath + "/attractionsImage?attractionsId=" + attractionsId + "' alt='' class='attractions-img h-100'>";
+                    html += "</div>";
+                    html += "<div class='col-md-8'>";
+                    html += "<div class='card-body'>";
+                    html += "<h5 class='card-title'>" + attractionsName + "</h5>";
+                    html += "<p class='card-text'>" + address + "&ensp;|&ensp;</p>";
+                    html += "<p class='card-text'>";
+
+                    if (description.length > 60) {
+                        html += description.substring(0, 60) + "...";
+                    } else {
+                        html += description;
+                    }
+
+                    html += "</p>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "</a>";
+                }
+
+                $('#attractionsRight .form-group').empty().append(html);
+                $('.page').hide();
+             // 設置 #form-right 的 margin-top 為 46px
+                $('#form-right').css('margin-top', '46px');
+            },
+            error: function(error) {
+                console.error("傳送到後端時發生錯誤");
+                console.error(error);
+            }
+        });
+    });
+});
+
+</script>
 </body>
 </html>
 

@@ -1,13 +1,19 @@
 package com.depthspace.member.service;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.depthspace.column.model.ColumnArticlesVO;
 import com.depthspace.member.model.MemVO;
 import com.depthspace.member.model.hibernate.HibernateMemDAOImpl;
 import com.depthspace.member.model.hibernate.HibernateMemDAO_Interface;
 import com.depthspace.utils.HibernateUtil;
 
 public class HbMemService {
+	public static final int PAGE_MAX_RESULT = 8;
+
 	private HibernateMemDAO_Interface dao;
 	
 	public HbMemService() {
@@ -53,6 +59,25 @@ public class HbMemService {
 	
 	public List<MemVO> searchMembers(String memName) {
 		return dao.searchMembers(memName);
+	}
+	
+	public List<MemVO> getMemByCompositeQuery(Map<String, String[]> queryMap) {
+	    Map<String, List<String>> criteriaMap = new HashMap<>();
+	    // 遍歷參數，將action非查詢條件的key排除，非空值加入查詢條件(可多個)
+	    for (Map.Entry<String, String[]> entry : queryMap.entrySet()) {
+	        String key = entry.getKey();
+	        if ("action".equals(key)) {
+	            continue;
+	        }
+	        String[] values = entry.getValue();
+	        
+	        if (values == null || values.length == 0) {
+	            continue;
+	        }	        
+	        criteriaMap.put(key, Arrays.asList(values));
+	    }	    
+	    // 將上述查到的條件交由dao的方法查詢
+	    return dao.getByCompositeQuery(criteriaMap);
 	}
 	
 }
