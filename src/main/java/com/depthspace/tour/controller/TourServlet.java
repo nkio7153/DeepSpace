@@ -266,6 +266,12 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 		List<TourTypeVO> list = tts.getAll();
 //		System.out.println("list=" + list);
 		req.setAttribute("list", list);
+		Integer memId = null;
+		HttpSession session = req.getSession(false);
+		if(session.getAttribute("memId")!=null) {
+            memId = (Integer)session.getAttribute("memId");
+        }
+		req.setAttribute("memId", memId);
 		req.getRequestDispatcher("/tour/newTour.jsp").forward(req, resp);
 	}
 
@@ -273,6 +279,10 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 	private void doSave(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Integer tourId = null;
 		Integer memId = null;
+//		HttpSession session = req.getSession(false);
+//		if(session.getAttribute("memId")!=null) {
+//            memId = (Integer)session.getAttribute("memId");
+//        }
 		String tourName = req.getParameter("tourName");
 		Integer tourTypeId = null;
 		// 行程描述
@@ -474,6 +484,8 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 		List<TourVO> list = ts.getByMemId(memId);
 		req.setAttribute("list", list);
 		req.setAttribute("memId", memId);
+		
+		
 		req.getRequestDispatcher("/tour/index.jsp").forward(req, resp);
 	}
 

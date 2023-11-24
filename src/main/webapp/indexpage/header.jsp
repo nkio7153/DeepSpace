@@ -56,7 +56,7 @@
             if (isS) {
                 wsUri = "wss://";
             } else {
-                wsUri = "wss://";
+                wsUri = "ws://";
             }
             wsUri += loc.host;
             wsUri += "<%=request.getContextPath()%>/notificationsws";
