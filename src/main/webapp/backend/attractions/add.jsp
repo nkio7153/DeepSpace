@@ -12,6 +12,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.ckeditor.com/4.16.1/basic/ckeditor.js"></script>
     <title>新增景點</title>
+    <style>
+    	.viewalert {
+		    --bs-alert-bg: #0000 !important; 
+		    --bs-alert-border-color: #0000 !important; 
+			color: #ec8383 !important;
+		    padding-left: 0px !important;
+		    font-size: small !important;;
+		}
+    </style>
 
     <%-- include --%>
     <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
@@ -60,7 +69,7 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="city">縣市<span style="color: #f27474;">* </span></label>
+                                    <label for="city">縣市<span style="color: #f27474;">* </span><span class="viewalert"><%= request.getAttribute("errorMessageCityId") != null ? request.getAttribute("errorMessageCityId"): "" %></span></label>
                                     <select name="city" id="city" class="form-control" >
                                         <option value="">請選擇縣市</option>
                                         	<c:forEach var="typeItem" items="${city}">
@@ -80,7 +89,7 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="area">區域<span style="color: #f27474;">* </span></label>
+                                    <label for="area">區域<span style="color: #f27474;">* </span><span class="viewalert"><%= request.getAttribute("errorMessageAreaId") != null ? request.getAttribute("errorMessageAreaId"): "" %></span></label>
                                     <select name="area" id="area" class="form-control" >
                                     	<c:forEach var="typeItem" items="${area}">
 		                                        <c:choose>
@@ -105,7 +114,7 @@
                                 </div>
 
                                 <div class="col-12 mb-3">
-                                    <label for="attractionsImg">圖片<span style="color: #f27474;">* </span></label>
+                                    <label for="attractionsImg">圖片</label>
                                     <input type="file" class="form-control-file" id="attractionsImg" name="attractionsImg" onchange="previewImage(event)" >
                                 </div>
 

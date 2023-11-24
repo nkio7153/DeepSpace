@@ -240,7 +240,7 @@ public class AttractionsEndServlet extends HttpServlet {
 		
 	}
 	private void doAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		AttractionsTypeService attrTypeService = new AttractionsTypeService();
+//		AttractionsTypeService attrTypeService = new AttractionsTypeService();
 		
 		List<AttractionsTypeVO> attractionsTypes = attrTypeService.getAll();
 		List<CityVO> city = cityService.getAll();
@@ -352,6 +352,13 @@ public class AttractionsEndServlet extends HttpServlet {
         	req.setAttribute("description", description);
         	req.setAttribute("attractionsName", attractionsName);
         	req.setAttribute("address", address);
+        	
+        	List<AttractionsTypeVO> attractionsTypes = attrTypeService.getAll();
+    		List<CityVO> city = cityService.getAll();
+    		List<AreaVO> area = areaService.getAll();
+    		req.setAttribute("attractionsTypes", attractionsTypes);
+    		req.setAttribute("city", city);
+    		req.setAttribute("area", area);
         	RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/attractions/add.jsp");
             dispatcher.forward(req, res);
             return;
