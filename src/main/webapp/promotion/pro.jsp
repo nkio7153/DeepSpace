@@ -52,14 +52,14 @@
               <table class="table table-bordered table-hover" width="70%">
                 <thead>
                 <tr>
-                  <th scope="col"class="num-width">序號</th>
-                  <th scope="col" class="hidden">促銷編號</th>
-                  <th scope="col" class="data-width">促銷名稱</th>
-                  <th scope="col" class="data-width">開始日期</th>
-                  <th scope="col" class="data-width">結束日期</th>
-                  <th scope="col">描述</th>
-                  <th scope="col" class="img-bd">圖片</th>
-                  <th scope="col" class="img-bd">操作</th>
+                  <th scope="col"class="num-width text-center">序號</th>
+                  <th scope="col" class="hidden text-center">促銷編號</th>
+                  <th scope="col" class="data-width text-center">促銷名稱</th>
+                  <th scope="col" class="data-width text-center">開始日期</th>
+                  <th scope="col" class="data-width text-center">結束日期</th>
+                  <th scope="col" class="text-center">描述</th>
+                  <th scope="col" class="img-bd text-center">圖片</th>
+                  <th scope="col" class="img-bd text-center">操作</th>
                 </tr>
                 </thead>
                 <tbody>
