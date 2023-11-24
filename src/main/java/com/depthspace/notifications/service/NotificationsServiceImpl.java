@@ -63,26 +63,16 @@ public class NotificationsServiceImpl implements NotificationsService {
         }
 
 	@Override
-  	public void RestOrderNotification(MemBookingVO mb, MemVO member) {
-//        NotificationsVO notification = new NotificationsVO();
-//        notification.setMemId(member.getMemId());
-//        notification.setNoteType("餐廳通知");
-//
-////        String orderLink = "/tod/frontList?orderId="+order.getOrderId();
-////        notification.setNoteContent("您的訂單已成功建立！訂單號碼為 " + order.getOrderId() +
-////                                    "。 <a href='" + orderLink + "'>點擊此處查看訂單詳情</a>");
-//    
-//        notification.setNoteContent("您的訂單已成功建立！訂單號碼為 " + order.getOrderId());
-//        notification.setNoteCreated(new Timestamp(System.currentTimeMillis()));
-//        notification.setNoteRead((byte) 0);
-//
-//        dao.insert(notification);
-//        
-////        // WebSocket 
-////        NotificationsWS webSocket = new NotificationsWS();
-////        String message = "您有新的" + notification.getNoteType();
-////        webSocket.sendNotification(message);
-////        System.out.println(message);
+  	public void RestOrderNotification(MemBookingVO order) {
+        NotificationsVO notification = new NotificationsVO();
+        notification.setMemId(order.getMemId());
+        notification.setNoteType("餐廳通知");    
+        notification.setNoteContent("您的訂單已成功建立！訂單號碼為 " + order.getBookingId());
+        notification.setNoteCreated(new Timestamp(System.currentTimeMillis()));
+        notification.setNoteRead((byte) 0);
+
+        dao.insert(notification);
+        
         }
 	
 	@Override

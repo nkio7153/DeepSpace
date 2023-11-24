@@ -21,7 +21,7 @@ public interface NotificationsService {
 	
 	void ticketOrderNotification(TicketOrdersVO order, MemVO member);
 	
-	void RestOrderNotification(MemBookingVO mb, MemVO member);
+	void RestOrderNotification(MemBookingVO order);
 	
 	void toBeRead(Integer noteId);
 	
