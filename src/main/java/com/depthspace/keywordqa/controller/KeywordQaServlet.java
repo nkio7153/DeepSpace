@@ -212,6 +212,29 @@ public class KeywordQaServlet extends HttpServlet {
 			RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
 			successView.forward(req, res);
 		}
+		
+
+if ("getSubQuestions".equals(action)) {
+    List<String> errorMsgs = new LinkedList<String>();
+    req.setAttribute("errorMsgs", errorMsgs);
+
+    try {
+        Integer parentId = Integer.valueOf(req.getParameter("parentId"));
+        KeywordQaService service = new KeywordQaService();
+        List<KeywordQaVO> subQuestions = service.getQuestionsByParentId(parentId);
+
+        // 將 subQuestions 數據設置到請求屬性中，以便在 JSP 頁面中顯示
+        req.setAttribute("subQuestions", subQuestions);
+        
+        // 轉發到適當的 JSP 頁面（根據您的實際路徑和頁面結構進行調整）
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/keywordQa/keywordQa.jsp");
+        dispatcher.forward(req, res);
+    } catch (NumberFormatException e) {
+        errorMsgs.add("非法的 parentId 格式或值。");
+        RequestDispatcher failureView = req.getRequestDispatcher("/keywordQa/keywordQa.jsp");
+        failureView.forward(req, res);
+    }
+}
 	}
 	
 }

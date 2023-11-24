@@ -64,4 +64,8 @@ public class KeywordQaService {
 			return dao.getAll();
 		}
 	 
+		public List<KeywordQaVO> getQuestionsByParentId(Integer parentId) {
+		    return dao.findByParentId(parentId);
+		}
+
 }

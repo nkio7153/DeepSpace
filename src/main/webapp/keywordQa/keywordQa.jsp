@@ -16,49 +16,54 @@
 <html>
 <head>
     <title>關鍵字管理</title>
-<%--  include head.jsp--%>
-  <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
-  <!-- Bootstrap CSS -->
+    <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .kwAns { display: none; }
+    </style>
 </head>
 <body>
-<%--include header.jsp--%>
 <jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
 <div class="container-fluid my-0">
-  <div class="row">
-<%--    側邊欄--%>
-    <div class="col-lg-2 g-3 mt-1">
-    <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
-    </div>
-
-    <div class="col-lg-10 g-2 transparent rounded mt-1">
-<%--      放入自己body裡的代碼--%>
-      <div class="container mt-4 bg-light">
-        <h3 class="mb-4">關鍵字管理</h3>
-        <a href="<%=request.getContextPath()%>/keywordQa/select_page.jsp" class="btn btn-primary mb-3">回首頁</a>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>關鍵字編號</th>
-                        <th>關鍵字名稱</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="keywordQaVO" items="${list}">
-                        <tr>
-                            <td>${keywordQaVO.kwTypes}</td>
-                            <td>${keywordQaVO.kwAns}</td>
-                         
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
+    <div class="row">
+        <div class="col-lg-2 g-3 mt-1">
+            <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
+        </div>
+        <div class="col-lg-10 g-2 transparent rounded mt-1">
+            <div class="container mt-4 bg-light">
+                <h3 class="mb-4">關鍵字管理</h3>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>關鍵字編號</th>
+                                <th>關鍵字名稱</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="keywordQaVO" items="${list}">
+                                <tr>
+                                    <td class="kwType" data-type="${keywordQaVO.kwTypes}">${keywordQaVO.kwTypes}</td>
+                                    <td class="kwAns" data-type="${keywordQaVO.kwTypes}">${keywordQaVO.kwAns}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-    </div>
-  </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.kwType').click(function() {
+            var type = $(this).data('type');
+            $('.kwAns[data-type="' + type + '"]').toggle(); // 切換顯示/隱藏對應的答案
+        });
+    });
+</script>
 
 </body>
 </html>
