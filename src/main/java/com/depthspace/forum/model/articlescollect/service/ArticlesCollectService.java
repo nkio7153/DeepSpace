@@ -12,4 +12,6 @@ public interface ArticlesCollectService {
 	List<ArticlesCollectVO> getByMemId(Integer memId);
 
 	boolean isCollect(Integer articleId, Integer memId);
+	
+	void deleteByArticleId(Integer articleId);
 }
