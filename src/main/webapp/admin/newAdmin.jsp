@@ -6,10 +6,9 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="org.json.JSONObject" %>
-
 <html>
 <head>
-<title>您好，您已加入管理員 newAdmin.jsp</title>
+    <title>您好，您已加入管理員 newAdmin.jsp</title>
 <style>
   img {
       border-radius: 60px;
@@ -17,10 +16,22 @@
 	  height: 120px;
   }
 </style>
+<%--  include head.jsp--%>
+  <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
 </head>
 <body>
-<%-- 	<form action="${pageContext.request.contextPath}/admin/success" method="post"> --%>
-	<h1 align="center">歡迎登入成功！</h1>
+<%--include header.jsp--%>
+<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+<div class="container-fluid my-0">
+  <div class="row">
+<%--    側邊欄--%>
+    <div class="col-lg-2 g-3 mt-1">
+    <jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
+    </div>
+
+    <div class="col-lg-10 g-2 transparent rounded mt-1">
+<%--      放入自己body裡的代碼--%>
+     <h1 align="center">歡迎登入成功！</h1>
 	<p align="center">您已成功登入，歡迎回來，${admin.adminName}！</p>
 	<hr>
 	<h1 align="center">管理員資訊</h1>
@@ -56,6 +67,10 @@
 	        document.location.href = "${pageContext.request.contextPath}/ad/revise.jsp";
 	    }
 	</script>
+
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
