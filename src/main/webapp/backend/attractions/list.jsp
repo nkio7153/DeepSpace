@@ -191,7 +191,9 @@ pageContext.setAttribute("list", list);
 		        </div>
 		    </div>
 		</div>
+		<div style="text-align: center;">
 		<%@ include file="page2.file"%>
+		</div>
 		
 		</div>
 		</div>

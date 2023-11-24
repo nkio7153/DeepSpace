@@ -1,7 +1,9 @@
 package com.depthspace.attractions.controller;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -51,15 +53,61 @@ public class AttractionsServlet  extends HttpServlet {
 			doList(req, resp);
 			break;
 		case "/oneList"://單一頁面
-			dooneList(req, resp);
+			doOneList(req, resp);
 			break;
 		case "/search"://前端送出搜尋請求
 			doSearch(req, resp);
+			break;
+		case "/search2"://前端送出搜尋請求
+			doSearch2(req, resp);
 			break;
 			
 		}
 
 	}
+	private void doSearch2(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		String[] cityIds = req.getParameterValues("cityId");
+		List<Integer> cityIdList = Arrays.stream(cityIds)
+					                .map(Integer::parseInt)
+					                .collect(Collectors.toList());
+		String attractionsName = req.getParameter("attractionsName").trim();//使用者搜尋的景點名稱
+		System.out.println("cityId=" + cityIdList );
+		System.out.println("attractionsName=" + attractionsName);
+		Integer getCityId = null;
+		List<AttractionsVO> list = null ;
+		HttpSession session = req.getSession();
+		
+//		if(cityId != null) { //如果有選縣市
+//			try {
+//		    	getCityId = Integer.valueOf(cityId);
+//		    	
+////			    先將cityId對應的cityName的中文找出來
+//			    CityVO cityName = cs.findByPrimaryKey(getCityId);
+////			    再把對應的城市名前兩個字取出
+//			    String Cityname2 = cityName.getCityName();
+//			    String firstCityname = Cityname2.substring(0,2);
+////			    System.out.println("firstCityname=" + firstCityname);
+////			    再用模糊比對找出對應的景點
+//			    list = attrs.findOtherAttractions(firstCityname);
+//		    } catch (NumberFormatException e) {
+//				e.printStackTrace();	
+//				return;
+//			}
+//		} else if ( attractionsName != null){ //如果沒有選縣市
+//			 list = attrs.getAttractionsName(attractionsName);
+//			 System.out.println("list="+list);
+//		}
+//	    再把所有縣市找回來
+//	    List<CityVO> city = cs.getAll();
+	    
+//		 setJsonResponse(resp, list);//取得所有符合的景點
+//		req.setAttribute("city", city);//取得台灣所有縣市
+//		List<AttractionsVO> memno = (List<AttractionsVO>) session.getAttribute("list");// 測試用(取得存在session會員編號)
+//	    System.out.println("測試取得放入session的物件" + memno);
+//		帶資料回list
+		
+	}
+
 	//前端關鍵字及選取框搜尋
 	private void doSearch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {	    
 		String cityId = req.getParameter("cityId");//縣市編號
@@ -87,11 +135,11 @@ public class AttractionsServlet  extends HttpServlet {
 			}
 		}else if( attractionsName != null){ //如果沒有選縣市
 			 list = attrs.getAttractionsName(attractionsName);
-			 System.out.println("list="+list);
+//			 System.out.println("list="+list);
 		}
 //	    再把所有縣市找回來
 	    List<CityVO> city = cs.getAll();
-	    
+	    System.out.println("list的長度為" + list.size());
 	    req.setAttribute("list", list);//取得所有符合的景點
 		req.setAttribute("city", city);//取得台灣所有縣市
 //		List<AttractionsVO> memno = (List<AttractionsVO>) session.getAttribute("list");// 測試用(取得存在session會員編號)
@@ -100,7 +148,7 @@ public class AttractionsServlet  extends HttpServlet {
 		req.getRequestDispatcher("/attractions/search.jsp").forward(req, resp);
 	}
 
-	private void dooneList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void doOneList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //		System.out.println("跳轉成功");
 		Integer attractionsId;//使用者搜尋的景點名稱
 				
@@ -136,14 +184,15 @@ public class AttractionsServlet  extends HttpServlet {
 	
 	// fetch返回json格式
 		private void setJsonResponse(HttpServletResponse resp, Object obj) throws IOException {
-			Gson gson = new GsonBuilder()
-					 .setDateFormat("yyyy-MM-dd") // 設定日期格式
-		             .create();
-			String jsonData = gson.toJson(obj);
-//			System.out.println("jsonData=" + jsonData);
-			resp.setContentType("application/json");
-			resp.setCharacterEncoding("UTF-8");
-			resp.getWriter().write(jsonData);
+		    Gson gson = new GsonBuilder()
+		            .setDateFormat("yyyy-MM-dd") // 設定日期格式
+		            .create();
+		    String jsonData = gson.toJson(obj);
+		    // System.out.println("jsonData=" + jsonData);
+		    resp.setContentType("application/json");
+		    resp.setCharacterEncoding("UTF-8");
+		    resp.getWriter().write(jsonData);
+
 		}
 	
 }

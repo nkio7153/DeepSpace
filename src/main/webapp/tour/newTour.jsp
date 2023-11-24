@@ -136,13 +136,12 @@
 </head>
 <body>
 <%
-	Integer memId;
-	try {
-	    memId = Integer.valueOf(request.getParameter("memId"));
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    return;
-	}
+    Integer memId = (Integer) session.getAttribute("memId");
+    if(memId == null) {
+        // 如果 session 中沒有 memId，這裡可以添加處理邏輯，例如重新導向到登入頁面
+        response.sendRedirect("${pageContext.request.contextPath}/login.jsp");
+        return;
+    }
 %>
 	<jsp:include page="../indexpage/header.jsp" />
 	<jsp:include page="../indexpage/headpic.jsp" />
