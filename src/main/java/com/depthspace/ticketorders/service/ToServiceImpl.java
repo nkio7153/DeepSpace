@@ -126,6 +126,9 @@ public class ToServiceImpl implements ToService {
 
         return dao.getByMemId(MemId);
     }
+    public TicketOrdersVO getbyId(Integer orderId){
+        return dao.getById(orderId);
+    }
     //取得當前頁面所有訂單資料
     @Override
     public List<TicketOrdersVO> getAll(int currentPage) {

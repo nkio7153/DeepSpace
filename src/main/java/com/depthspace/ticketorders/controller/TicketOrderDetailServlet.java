@@ -1,6 +1,9 @@
 package com.depthspace.ticketorders.controller;
 
 import com.depthspace.ticketorders.model.ticketorderdetail.TicketOrderDetailVO;
+import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
+import com.depthspace.ticketorders.service.ToService;
+import com.depthspace.ticketorders.service.ToServiceImpl;
 import com.depthspace.ticketorders.service.TodServiceImpl;
 import com.depthspace.ticketorders.service.TodService;
 import com.google.gson.Gson;
@@ -18,10 +21,12 @@ import static java.lang.Integer.parseInt;
 @WebServlet("/tod/*")
 public class TicketOrderDetailServlet extends HttpServlet {
     private TodService todSv;
+    private ToService toSv;
 
     @Override
     public void init() throws ServletException {
         todSv = new TodServiceImpl();
+        toSv = new ToServiceImpl();
     }
 
     @Override
@@ -88,18 +93,12 @@ public class TicketOrderDetailServlet extends HttpServlet {
     }
     //查出前台會員訂單明細
     protected void frontList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer orderId;
-        Integer totalAmount;
-        Integer amountPaid;
+        Integer orderId = Integer.parseInt(req.getParameter("orderId"));
+        TicketOrdersVO toVo = toSv.getbyId(orderId);
 
-        try{
-            orderId = Integer.valueOf(req.getParameter("orderId"));
-            totalAmount=Integer.valueOf(req.getParameter("totalAmount"));
-            amountPaid=Integer.valueOf(req.getParameter("amountPaid"));
-        }catch(Exception e){
-            e.printStackTrace();
-            return;
-        }
+        Integer amountPaid = toVo.getAmountPaid();
+        Integer totalAmount = toVo.getTotalAmount();
+
         System.out.println(orderId);
         //取得訂單明細列表
         List<Object[]> list = todSv.getResult(orderId);
