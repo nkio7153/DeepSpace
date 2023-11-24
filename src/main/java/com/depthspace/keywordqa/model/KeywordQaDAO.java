@@ -13,7 +13,4 @@ public interface KeywordQaDAO {
     KeywordQaVO findByPrimaryKey(Integer serialId);
     List<KeywordQaVO> getAll();
     
-    List<KeywordQaVO> findByParentId(Integer parentId);
-
-    
 }

@@ -85,7 +85,7 @@
 		<servlet-name>FaqTypesServlet</servlet-name>
 		<url-pattern>/faqtypes/faqTypes.do</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>KeywordQaServlet</servlet-name>
 		<servlet-class>com.depthspace.keywordqa.controller.KeywordQaServlet</servlet-class>
@@ -95,6 +95,16 @@
 		<servlet-name>KeywordQaServlet</servlet-name>
 		<url-pattern>/keywordqa/keywordQa.do</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>QuestionSubmissionServlet</servlet-name>
+		<servlet-class>com.depthspace.keywordqa.controller.QuestionSubmissionServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>QuestionSubmissionServlet</servlet-name>
+		<url-pattern>/keywordQa/QuestionSubmissionServlet</url-pattern>
+	</servlet-mapping>
+
 
 	<filter>
 		<filter-name>LoginFilter</filter-name>

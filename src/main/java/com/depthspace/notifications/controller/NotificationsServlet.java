@@ -88,10 +88,8 @@ public class NotificationsServlet extends HttpServlet {
 		    res.getWriter().write("{\"error\": \"未登錄\"}");
 			return;
 		}
-		System.out.println("doCountUnreaddoCountUnread執行");
+		System.out.println("doCountUnread執行");
 	    Integer unreadCount = notificationsService.getUnreadNotificationsCount(memId);
-	    NotificationsWS.sendNotification(unreadCount);
-		System.out.println("doCountUnreaddoCountUnread方法");
 	    res.setContentType("application/json");
 	    res.setCharacterEncoding("UTF-8");
 	    res.getWriter().write("{\"unreadCount\": " + unreadCount + "}");
@@ -101,11 +99,9 @@ public class NotificationsServlet extends HttpServlet {
 	protected void toBeRead(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		
 		String noteIdStr = req.getParameter("noteId");
-		System.out.println("YYYYYYYYYYYYYYYYYYYYY??????????????"+noteIdStr);
 		if (noteIdStr != null & !noteIdStr.isEmpty()) {
 			Integer noteId = Integer.parseInt(noteIdStr);
 			notificationsService.toBeRead(noteId);
-			System.out.println("YYYYYYYYYYYYYYYYYYYYYYYY"+noteId);
 		}
 		
 		

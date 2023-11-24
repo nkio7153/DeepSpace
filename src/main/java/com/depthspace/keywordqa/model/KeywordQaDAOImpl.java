@@ -140,36 +140,4 @@ public class KeywordQaDAOImpl implements KeywordQaDAO {
 
 		return keywordQas;
 	}
-	
-	@Override
-	public List<KeywordQaVO> findByParentId(Integer parentId) {
-	    List<KeywordQaVO> list = new ArrayList<>();
-	    Connection con = null;
-	    PreparedStatement pstmt = null;
-	    ResultSet rs = null;
-
-	    try {
-	        con = DBUtil.getConnection();
-	        pstmt = con.prepareStatement("SELECT * FROM KEYWORD_QA WHERE PARENT_ID = ?");
-	        pstmt.setInt(1, parentId);
-	        rs = pstmt.executeQuery();
-
-	        while (rs.next()) {
-	            KeywordQaVO keywordQa = new KeywordQaVO();
-	            keywordQa.setSerialId(rs.getInt("SERIAL_ID"));
-	            keywordQa.setKwTypes(rs.getString("KW_TYPES"));
-	            keywordQa.setKwAns(rs.getString("KW_ANS"));
-	            keywordQa.setParentId(rs.getInt("PARENT_ID")); // 假設您已經在KeywordQaVO中添加了parentId屬性
-	            list.add(keywordQa);
-	        }
-	    } catch (SQLException e) {
-	        throw new RuntimeException(e);
-	    } finally {
-	        DBUtil.close(con, pstmt, rs);
-	    }
-
-	    return list;
-	}
-
-
 }
