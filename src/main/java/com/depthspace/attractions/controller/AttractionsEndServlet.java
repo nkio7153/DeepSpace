@@ -150,10 +150,11 @@ public class AttractionsEndServlet extends HttpServlet {
 		//更新景點
 		AttractionsVO avo = null;
 		avo = attractionService.update(attrvo);
-				
+		System.out.println("attractionsId= " + attractionsId);
 		//更新圖片
 		//用attractionsId找到該筆物件
 		AttractionsImagesVO attrImgVo = attractionsImageService.findByAttrId(attractionsId);
+		System.out.println("attrImgVo物件=" + attrImgVo);
 //		由景點編號找到imageId
 		Integer attractionsImagesId = attrImgVo.getAttractionsImagesId();
 		//用set的方式
@@ -239,7 +240,7 @@ public class AttractionsEndServlet extends HttpServlet {
 		
 	}
 	private void doAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		AttractionsTypeService attrTypeService = new AttractionsTypeService();
+//		AttractionsTypeService attrTypeService = new AttractionsTypeService();
 		
 		List<AttractionsTypeVO> attractionsTypes = attrTypeService.getAll();
 		List<CityVO> city = cityService.getAll();
@@ -253,19 +254,22 @@ public class AttractionsEndServlet extends HttpServlet {
 	}
 	//新增景點
 	private void doAdd2(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-		Integer attractionsTypesId;
-		Integer cityId;
-		Integer areaId;
+		String checkAttractionsTypesId = req.getParameter("attractionsTypesId");
+		Integer attractionsTypesId = null;
+		String checkCityId = req.getParameter("city");
+		Integer cityId = null;
+		String checkAreaId = req.getParameter("area");
+		Integer areaId = null;
 		String base64Image;
-        byte[] pic=null;
+        byte[] pic = null;
 		String description = req.getParameter("description");
 		String attractionsName = req.getParameter("attractionsName");
 		String address = req.getParameter("address");
 		Part picture;
 		try {
-			attractionsTypesId = Integer.valueOf(req.getParameter("attractionsTypesId"));
-			cityId = Integer.valueOf(req.getParameter("city"));
-			areaId = Integer.valueOf(req.getParameter("area"));
+//			attractionsTypesId = Integer.valueOf(req.getParameter("attractionsTypesId"));
+//			cityId = Integer.valueOf(req.getParameter("city"));
+//			areaId = Integer.valueOf(req.getParameter("area"));
 			
 			//處理圖片
 			picture = req.getPart("attractionsImg");
@@ -305,6 +309,63 @@ public class AttractionsEndServlet extends HttpServlet {
 			e.printStackTrace();
 			return;
 		}
+		
+		boolean hasError = false;
+        
+        if (description == null || description.trim().isEmpty()) {
+        	req.setAttribute("errorMessageDescription", "必填");
+            hasError = true;
+        } else {
+        	
+        }
+        if (attractionsName == null || attractionsName.trim().isEmpty()) {
+        	req.setAttribute("errorMessageAattractionsName", "必填");
+            hasError = true;
+        }
+        if (address == null || address.trim().isEmpty()) {
+        	req.setAttribute("errorMessageAddress", "必填");
+            hasError = true;
+        }
+        if (checkAttractionsTypesId == null || checkAttractionsTypesId.trim().isEmpty()) {
+        	req.setAttribute("errorMessageAttractionsTypesId", "必選");
+            hasError = true;
+        } else {
+        	attractionsTypesId = Integer.valueOf(req.getParameter("attractionsTypesId"));
+        }
+        if (checkCityId == null || checkCityId.trim().isEmpty()) {
+        	req.setAttribute("errorMessageCityId", "必選");
+            hasError = true;
+        } else {
+        	cityId = Integer.valueOf(req.getParameter("city"));
+        }
+        if (checkAreaId == null || checkAreaId.trim().isEmpty()) {
+        	req.setAttribute("errorMessageAreaId", "必選");
+            hasError = true;
+        } else {
+        	areaId = Integer.valueOf(req.getParameter("area"));
+        }
+       
+        if (hasError) {
+        	req.setAttribute("checkAttractionsTypesId", checkAttractionsTypesId);
+        	req.setAttribute("checkCityId", checkCityId);
+        	req.setAttribute("checkAreaId", checkAreaId);
+        	req.setAttribute("description", description);
+        	req.setAttribute("attractionsName", attractionsName);
+        	req.setAttribute("address", address);
+        	
+        	List<AttractionsTypeVO> attractionsTypes = attrTypeService.getAll();
+    		List<CityVO> city = cityService.getAll();
+    		List<AreaVO> area = areaService.getAll();
+    		req.setAttribute("attractionsTypes", attractionsTypes);
+    		req.setAttribute("city", city);
+    		req.setAttribute("area", area);
+        	RequestDispatcher dispatcher = req.getRequestDispatcher("/backend/attractions/add.jsp");
+            dispatcher.forward(req, res);
+            return;
+        }
+
+		
+		
 //		找對應的景點種類
 		String typeName = attrTypeService.getOne(attractionsTypesId).getTypeName();
 		
@@ -339,21 +400,21 @@ public class AttractionsEndServlet extends HttpServlet {
 	private void doSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		AttractionsService attractionService = new AttractionsService();
 		AttractionsTypeService attrTypeService = new AttractionsTypeService();
-		Integer attrTypeId = null;
+		Integer attractionsTypeId = null;
 //		String attractionsName = req.getParameter("attractionsName");
     	Map<String, String[]> map =req.getParameterMap();
     	
     	try {
-    		attrTypeId = Integer.valueOf(req.getParameter("attrTypeId"));
-//    		System.out.println("attrTypeId= " + attrTypeId);
+    		attractionsTypeId = Integer.valueOf(req.getParameter("attrTypeId"));
+    		System.out.println("attrTypeId= " + attractionsTypeId);
     	} catch (NumberFormatException e) {
-    		attrTypeId = null;
+    		attractionsTypeId = null;
     	}
     	
     	List<AttractionsVO> list = new ArrayList<>();
     	
-    	if (attrTypeId != null) {
-    		List<AttractionsVO> atteList = attractionService.getAllAttrType(attrTypeId);
+    	if (attractionsTypeId != null) {
+    		List<AttractionsVO> atteList = attractionService.getAllAttrType(attractionsTypeId);
     		list.addAll(atteList);
 		} 
     	
@@ -363,10 +424,23 @@ public class AttractionsEndServlet extends HttpServlet {
 			list.addAll(attrName);
 		}
     	
+    	
+    	List<AttractionsVO> attrList = attractionService.getAll();
+    	Set<AttractionsTypeVO> uniqueTypes = new HashSet<>();
+		for (AttractionsVO avo : attrList) {
+			uniqueTypes.add(avo.getAttractionsTypeId());
+//			System.out.println("123="+avo);
+		}
+//		System.out.println("456="+new ArrayList<>(uniqueTypes));
+		
+		req.setAttribute("uniqueTypes", new ArrayList<>(uniqueTypes));
+    	
 //    	System.out.println(list);
     	req.setAttribute("list", list);
 		req.getRequestDispatcher("/backend/attractions/search.jsp").forward(req, res);
 	}
+	
+	//總列表
 	private void doList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		AttractionsService attractionService = new AttractionsService();
 		List<AttractionsVO> list = attractionService.getAll();

@@ -22,7 +22,7 @@ public class ArticlesCollectServiceImpl implements ArticlesCollectService{
 
 	@Override
 	public void delete(ArticlesCollectVO tod) {		
-		 dao.delete(new ArticlesCollectVO.CompositeDetail(tod.getArticleId(),tod.getMemId()));
+		 dao.delete(new ArticlesCollectVO.CompositeDetails(tod.getArticleId(),tod.getMemId()));
 	}
 
 	@Override
@@ -34,5 +34,10 @@ public class ArticlesCollectServiceImpl implements ArticlesCollectService{
 	public boolean isCollect(Integer articleId, Integer memId) {
 		return dao.isCollect(articleId, memId);
 	}
+	
+	@Override
+	 public void deleteByArticleId(Integer articleId) {
+		 	dao.deleteByArticleId(articleId);
+	    }
 
 }

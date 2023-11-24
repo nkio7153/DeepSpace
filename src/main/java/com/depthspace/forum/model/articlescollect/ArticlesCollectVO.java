@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ARTICLES_COLLECT")
-@IdClass(ArticlesCollectVO.CompositeDetail.class)
+@IdClass(ArticlesCollectVO.CompositeDetails.class)
 public class ArticlesCollectVO implements Serializable {
 	@Id
 	@Column(name = "ARTICLE_ID", nullable = false)
@@ -45,16 +45,16 @@ public class ArticlesCollectVO implements Serializable {
 		this.memId = memId;
 	}
 
-	public static class CompositeDetail implements Serializable {
+	public static class CompositeDetails implements Serializable {
 		private static final long serialVersionUID = 1L;
 		private Integer articleId;
 		private Integer memId;
 
-		public CompositeDetail() {
+		public CompositeDetails() {
 			
 		}
 
-		public CompositeDetail(Integer articleId, Integer memId) {
+		public CompositeDetails(Integer articleId, Integer memId) {
 			this.articleId = articleId;
 			this.memId = memId;
 		}
@@ -88,7 +88,7 @@ public class ArticlesCollectVO implements Serializable {
 				return false;
 			if (getClass() != obj.getClass())
 				return false;
-			CompositeDetail other = (CompositeDetail) obj;
+			CompositeDetails other = (CompositeDetails) obj;
 			return Objects.equals(articleId, other.articleId) && Objects.equals(memId, other.memId);
 		}
 

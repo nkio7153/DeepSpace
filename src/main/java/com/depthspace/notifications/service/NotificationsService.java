@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.depthspace.member.model.MemVO;
 import com.depthspace.notifications.model.NotificationsVO;
+import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 
 public interface NotificationsService {
@@ -19,6 +20,8 @@ public interface NotificationsService {
 	Integer getUnreadNotificationsCount(Integer memId);
 	
 	void ticketOrderNotification(TicketOrdersVO order, MemVO member);
+	
+	void RestOrderNotification(MemBookingVO order);
 	
 	void toBeRead(Integer noteId);
 	

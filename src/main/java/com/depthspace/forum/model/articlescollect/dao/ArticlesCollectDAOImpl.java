@@ -6,6 +6,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.depthspace.forum.model.articlescollect.ArticlesCollectVO;
+import com.depthspace.forum.model.articleslike.ArticlesLikeVO;
+import com.depthspace.forum.model.forumarticles.ForumArticlesVO;
 
 public class ArticlesCollectDAOImpl implements ArticlesCollectDAO{
 	private SessionFactory factory;
@@ -24,7 +26,7 @@ public class ArticlesCollectDAOImpl implements ArticlesCollectDAO{
 	}
 
 	@Override
-	public void delete(ArticlesCollectVO.CompositeDetail id) {
+	public void delete(ArticlesCollectVO.CompositeDetails id) {
 		ArticlesCollectVO acvo = getSession().get(ArticlesCollectVO.class, id);
 		// 0:失敗 1:成功
 		int state;
@@ -55,5 +57,17 @@ public class ArticlesCollectDAOImpl implements ArticlesCollectDAO{
                 .list();
 		return !results.isEmpty();
 	}
-	
+
+	@Override
+	public void deleteByArticleId(Integer articleId) {
+	    List<ArticlesCollectVO> results = getSession()
+	            .createQuery("from ArticlesCollectVO where articleId= :articleId", ArticlesCollectVO.class)
+	            .setParameter("articleId", articleId)
+	            .list();
+	    
+	    // 遍歷結果並刪除對象
+	    for (ArticlesCollectVO collect : results) {
+	        getSession().delete(collect);
+	    }
+	}
 }

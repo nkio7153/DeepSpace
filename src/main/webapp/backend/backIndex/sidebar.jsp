@@ -94,8 +94,6 @@
                             <br>
                             <a class="text-choco collapse-item fs-6 offset-1"
                                href="${pageContext.request.contextPath}/pro/getAll">促銷管理</a>
-                            <br>
-                            <a class="text-choco collapse-item fs-6 offset-1" href="#">銷售分析</a>
                         </div>
                     </div>
                 </li>
@@ -111,7 +109,7 @@
                     <div id="collapseArticleManagement" class="collapse" aria-labelledby="headingArticleManagement"
                          data-bs-parent="#sidebar-wrapper">
                         <div class="color-4-1 py-2 collapse-inner rounded">
-                            <a class="text-choco collapse-item fs-6 offset-1" href="#">文章列表</a>
+                            <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/articles/list.jsp">文章列表</a>
                             <br>
                             <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/reportarticles/list.jsp">檢舉管理</a>
                         </div>

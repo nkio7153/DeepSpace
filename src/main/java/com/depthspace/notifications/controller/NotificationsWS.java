@@ -49,8 +49,4 @@ public class NotificationsWS {
             }
         }
     }
-
-    public static void sendNotification(Integer unreadCount) {
-        String message = String.valueOf(unreadCount);
-    }
 }

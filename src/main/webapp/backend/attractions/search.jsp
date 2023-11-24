@@ -12,15 +12,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet"	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- <link rel="stylesheet"	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
 <link rel="stylesheet"	href="<c:url value='/static/css/backendlist.css'/>">
 
 <title>景點列表</title>
 <style>
- .table-hover tbody tr:hover {
-     background-color: #f5f5f5;
- }
-</style>
+        .add-button {
+            background-color: #63bfc9;
+            color: white;
+            padding: 8px 40px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-button:hover {
+            background-color: #5b969c;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
 <%--  include --%>
 	<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
   
@@ -41,8 +54,39 @@
 <%-- include end--%>
 
 <div class="table-list">
- <div class="col-lg-10 g-2 transparent rounded my-0">
    <div class="table-list">
+       <div class="container mt-5">
+		<h5>景點列表</h5>
+		<div class="row">
+         <div class="col-md-4">
+            <form id="filterForm" method="get" action="<%=request.getContextPath()%>/attractionsEnd/search">
+                <label for="attrTypeId" style="display: none";></label>
+                <select id="attrTypeId" name="attrTypeId" class="form-control mb-2">
+				    <option value="">景點類型選單</option>
+				    <c:forEach var="typeItem" items="${uniqueTypes}">
+				        <option value="${typeItem.attractionsTypeId}">${typeItem.typeName}</option>
+				    </c:forEach>
+				</select>
+            </form>
+          </div>
+          <div class="col-md-4">           
+	        <form id="filterForm2" method="get" action="<%=request.getContextPath()%>/attractionsEnd/search">
+	            <div class="input-group">
+	                <input type="text" id="attractionsName" name="attractionsName" class="form-control" placeholder="關鍵字搜尋" value="${attr.attractionsName}">
+	                <div class="input-group-append">
+	                    <button class="btn btn-outline-secondary" type="submit">
+	                        <i class="fas fa-search"></i>
+	                    </button>
+	                </div>
+	            </div>
+	        </form>
+	       </div> 
+               <div class="col-md-4 d-flex justify-content-end"> 
+	      		<form method="post" action="<%=request.getContextPath()%>/attractionsEnd/add">
+					<button class="add-button" type="submit">新增</button>
+				</form>
+		  </div>
+       </div>
 	<h5>搜尋結果</h5>
      <div class="container mt-5">
          <!-- 判斷 list 是否為空 -->
@@ -65,6 +109,7 @@
 			<tbody>
 				<!-- 所有資料 -->
 				<c:forEach var="attr" items="${list}" varStatus="status">
+				<tr>
 						<td>${attr.attractionsId}</td>
 						<td>${attr.attractionsTypeId.typeName}</td>
 						<td><img
@@ -91,8 +136,8 @@
 						    <button type="button" class="btn btn-primary btn-sm view" data-toggle="modal" data-target="#viewModal" data-arti-id="${attr.attractionsId}" style="background-color: #63bfc9; border-color: #63bfc9;">
 						        <i class="fas fa-eye"></i>
 						    </button>
-						</td>				
-				</tr>
+						</td>
+					</tr>
 				</c:forEach>
 				</table>
                 </c:when>
@@ -154,6 +199,9 @@
 		        </div>
 		    </div>
 		</div>
+		        </div>
+		    </div>
+		</div>
 		
 	<!-- 回首頁 -->
 	<div class="page-item">
@@ -171,34 +219,62 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+
+$(document).ready(function() {
+    $('#filterForm, #filterForm2').on('change', 'select', function() {
+        var formId = $(this).closest('form').attr('id');
+    	Swal.fire({
+            title: '正在處理',
+            html: '請稍等，正在更新資料。',
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            willClose: () => {
+                $('#' + formId).submit();
+            }
+        });
+    });
+});
+
+
 $('.view').on('click', function() {
-    var artiId = $(this).data('arti-id');
-	    $.ajax({
-	        url: "<%=request.getContextPath()%>/attractionsEnd/view",
-	        type: "GET",
-	        data: {attractionsId: attractionsId},           
-	        success: function(column) {
-	        	console.log(column);
-	        	$('#attractionsId').text(attr.attractionsId);
-	            $('#attractionsName').text(attr.attractionsName);
-	            $('#description').html(attr.description);
-	            $('#address').text(attr.address);
-	            $('#attractionsStatus').text(attr.attractionsStatus == 0 ? '此文章上架中' : '此文章未上架');
-	            $('#attractionsStatus').text(attr.attractionsTypeId);
-	            $('#editButton').attr('href', '${pageContext.request.contextPath}/attractionsEnd/edit?attractionsId=' + attractionsId);
-	            var carouselInner = $('#images').empty();
-	            var carouselItem = $('<div>').addClass('carousel-item active');
-	            var img = $('<img>')
-	                .attr("src", "<%=request.getContextPath()%>/attractionsImage?attractionsId=" + attractionsId)
-	                .addClass("d-block w-100");
-	            carouselItem.append(img);
-	            carouselInner.append(carouselItem);
-	        },
-	        error: function(error) {
-	            console.log("Error: ", error);
-	        }
-	    });
+	 var artiId = $(this).data('arti-id');
+     console.log(artiId);
+     
+     let url = "${pageContext.request.contextPath}/attractionsEnd/view?attractionsId="+artiId;
+     fetch(url)
+			.then(function(response){
+	            return response.json();
+	        })
+	        .then(function(data){
+				console.log(data);
+				console.log(data.attractionsId);
+				console.log(data.attractionsName);
+				console.log( $('#attractionsId'));
+				console.log( $('#attractionsName'));
+			 $('#attractionsId').text(data.attractionsId);
+			 $('#attractionsType').text(data.attractionsTypeId.typeName);
+          $('#attrnName').text(data.attractionsName);
+          $('#description').html(data.description);
+          $('#address').text(data.address);
+          $('#attractionsStatus').text(data.attractionsStatus == 0 ? '景點上架中' : '景點未開放');
+          $('#editButton').attr('href', '${pageContext.request.contextPath}/attractionsEnd/edit?attractionsId=' + data.attractionsId);
+          var carouselInner = $('#images').empty();
+          var carouselItem = $('<div>').addClass('carousel-item active');
+          var img = $('<img>')
+                 .data("src", "<%=request.getContextPath()%>/attractionsImage?attractionsId=" + data.attractionsId)
+              .addClass("d-block w-100");
+          carouselItem.append(img);
+          carouselInner.append(carouselItem);
+	        })
+	        
+	        .catch(function(error){
+	          console.log(error);
+	        })
     });
 
 </script>

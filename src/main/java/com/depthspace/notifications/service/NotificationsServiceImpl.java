@@ -10,6 +10,7 @@ import com.depthspace.notifications.controller.NotificationsWS;
 import com.depthspace.notifications.model.NotificationsDAO;
 import com.depthspace.notifications.model.NotificationsDAOImpl;
 import com.depthspace.notifications.model.NotificationsVO;
+import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.ticketorders.model.ticketorders.TicketOrdersVO;
 import com.depthspace.utils.HibernateUtil;
 
@@ -49,16 +50,29 @@ public class NotificationsServiceImpl implements NotificationsService {
         NotificationsVO notification = new NotificationsVO();
         notification.setMemId(member.getMemId());
         notification.setNoteType("票券通知");
-        notification.setNoteContent("您的訂單已成功建立！訂單號碼為" + order.getOrderId());
+
+        String orderLink = "http://depthspace.ddns.net/DepthSpace/tod/frontList?orderId="+order.getOrderId();
+        notification.setNoteContent("您的訂單已成功建立！訂單號碼為 " + order.getOrderId() +
+                                    "。 <a href='" + orderLink + "'>點擊此處查看訂單詳情</a>");
+    
         notification.setNoteCreated(new Timestamp(System.currentTimeMillis()));
         notification.setNoteRead((byte) 0);
 
         dao.insert(notification);
         
-        // WebSocket 
-        NotificationsWS webSocket = new NotificationsWS();
-        String message = "您有新的" + notification.getNoteType();
-        webSocket.sendNotification(message);
+        }
+
+	@Override
+  	public void RestOrderNotification(MemBookingVO order) {
+        NotificationsVO notification = new NotificationsVO();
+        notification.setMemId(order.getMemId());
+        notification.setNoteType("餐廳通知");    
+        notification.setNoteContent("您的訂單已成功建立！訂單號碼為 " + order.getBookingId());
+        notification.setNoteCreated(new Timestamp(System.currentTimeMillis()));
+        notification.setNoteRead((byte) 0);
+
+        dao.insert(notification);
+        
         }
 	
 	@Override

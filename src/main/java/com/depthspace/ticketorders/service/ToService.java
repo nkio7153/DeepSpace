@@ -17,6 +17,8 @@ public interface ToService {
     //取得一筆訂單資料
     public List<TicketOrdersVO> getbyMemId(Integer MemId);
     //取得當前頁面所有訂單資料
+    public TicketOrdersVO getbyId(Integer orderId);
+    //取得當前頁面所有訂單資料
     public List<TicketOrdersVO> getAll(int currentPage);
     //取得所有訂單資料
     public List<TicketOrdersVO> getAll();

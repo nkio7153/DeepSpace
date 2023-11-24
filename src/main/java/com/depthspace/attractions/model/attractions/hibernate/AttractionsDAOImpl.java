@@ -141,11 +141,16 @@ public class AttractionsDAOImpl implements AttractionsDAO_Interface{
 	}
 	
 	@Override
-	public List<AttractionsVO> getAllAttrType(Integer attrTypeId) {
-		Query<AttractionsVO> query = getSession().createQuery("FROM AttractionsVO WHERE attrTypeId = :attrTypeId", AttractionsVO.class);
-		query.setParameter("attrTypeId", attrTypeId); // 將cityId綁定到命名參數
-		List<AttractionsVO> list = query.list();
-		return list;
+	public List<AttractionsVO> getAllAttrType(Integer attractionsTypeId) {
+//		Query<AttractionsVO> query = getSession().createQuery("FROM AttractionsVO WHERE attractionsTypeId = :attractionsTypeId", AttractionsVO.class);
+//		query.setParameter("attractionsTypeId", attractionsTypeId); // 將cityId綁定到命名參數
+//		List<AttractionsVO> list = query.list();
+//		return list;
+		String hql = "FROM AttractionsVO WHERE attractionsTypeId.attractionsTypeId = :attractionsTypeId";
+	    Query<AttractionsVO> query = getSession().createQuery(hql, AttractionsVO.class);
+	    query.setParameter("attractionsTypeId", attractionsTypeId);
+
+	    return query.list();
 	}
 	@Override
 	public AttractionsVO getLast(Integer attractionsId) {
