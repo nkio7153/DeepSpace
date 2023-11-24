@@ -101,11 +101,12 @@ public class MailService {
 //                    + "<td>$30.00</td>"
 //                    + "</tr>"
 //                    + "</table>"
-                    + "<p>您可以透過<a href=\"http://localhost:8081/DepthSpace/\">官網首頁連結</a>至訂單管理查看詳細訂單信息。</p>"
+                    + "<p>您可以透過<a href=\"http://depthspace.ddns.net/DepthSpace/\">官網首頁連結</a>至訂單管理查看詳細訂單信息。</p>"
                     + "<p>如果您有任何疑問或需要協助，請隨時與我們聯絡。我們感謝您的業務，並期待為您提供最優質的服務。</p>"
                     + "<p>再次感謝您的訂購！</p>"
                     + "<p>祝您有一個美好的一天！</p>"
                     + "<p>最誠摯的問候，<br>Depthspace</p>"
+                    + "<a href=\"http://depthspace.ddns.net/DepthSpace/tod/frontList?orderId=" + toVo.getOrderId() + "\">訂單連結" + toVo.getOrderId() + "</a>"
                     + "<img src='https://filedn.eu/l0aeIVKWqXgS9G0JKMwoFXJ/logo.png'>"
                     + "</body>"
                     + "</html>";
