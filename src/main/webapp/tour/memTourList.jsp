@@ -8,7 +8,7 @@
     <style>
         table {
             border-collapse: collapse;
-            width: 80%;
+            width: 75%;
             margin: 20 auto;
         }
         
@@ -30,7 +30,7 @@
 		}
 		
 		.description-container {
-		    width: 50%;
+		    width: 38%;
 		    float: left;
 		}
 	
@@ -38,22 +38,21 @@
 	        margin-left: 50px; /* 调整右边距以控制位置 */
 	        margin-bottom: 20px;
 	    }
-	    .btn_back , .edit {
-			margin: 0 auto;
-			display: block; /* 讓按鈕變成區塊元素，以佔據滿整行 */
-		    font-size: 18px;
-		    color: #fff;
-		    background-color: #008CBA;
-		    border: none;
-		    padding: 8px;
-		    cursor: pointer;
-		    border-radius: 6px;
+	    .btn-container {
+		  display: flex;
+		  justify-content: center;
+		  margin: 0 10px; /* 保留左右各 10px 的距離 */
 		}
-		.btn-container{
-			display: flex;
-		    justify-content: space-between;
-		    margin: 0 20px; /* 你可以根據需要調整左右邊距 */
-		    margin-top: 5px;
+		
+		.btn_back, .edit {
+		  font-size: 18px;
+		  color: #fff;
+		  background-color: #008CBA;
+		  border: none;
+		  padding: 8px;
+		  cursor: pointer;
+		  border-radius: 6px;
+		  margin-right: 10px;
 		}
 		#tourDays {
 			text-align: center;
@@ -62,12 +61,15 @@
 		tr.spacing-row {
 	        height: 20px; /* 設定空行的高度 */
 	    }
+	    .btn_back:hover, .edit:hover {
+	        background-color: lightblue;
+	    }
 	  
 		
     </style>
     <title>行程詳細資訊</title>
     
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOKKfj_MwehUJhm-t7jPbO1ydNODLgLOM&libraries=places&callback=initMap"></script>
+<!-- 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOKKfj_MwehUJhm-t7jPbO1ydNODLgLOM&libraries=places&callback=initMap"></script> -->
     
 </head>
 <body>
@@ -75,30 +77,32 @@
 <jsp:include page="../indexpage/headpic.jsp" />
 <div style="margin: 20px">
 <form action="${pageContext.request.contextPath}/tr/edit" method="post">
-    <h1>${list[0].tourName}</h1>
+    <h1 style="margin-bottom: revert">${list[0].tourName}</h1>
     
-    <div class="info-container">
-	    <h2>基本資訊</h2>
-	    <table style="width: 80%; margin: 0 auto;">
-	    <input type="hidden" id="memId" name="memId" value="${list[0].memId}">
-	    <input type="hidden" id="tourId" name="tourId" value="${list[0].tourId}">
-	    
-	        <tr>
-	            <td colspan="2">${list[0].startDate}~${list[0].endDate}</td>
-	        </tr>
-	        <tr style="text-align: center;">
-	            <td>總天數：</td>
-	            <td>${list[0].allDays} 天</td>
-	        </tr>
+    <div style="align-items: center;margin-left: 95px;">
+	    <div class="info-container">
+		    <h2>基本資訊</h2>
+		    <table style="width: 80%; margin: 0 auto;">
+		    <input type="hidden" id="memId" name="memId" value="${list[0].memId}">
+		    <input type="hidden" id="tourId" name="tourId" value="${list[0].tourId}">
+		    
+		        <tr>
+		            <td colspan="2">${list[0].startDate}~${list[0].endDate}</td>
+		        </tr>
+		        <tr style="text-align: center;">
+		            <td>總天數：</td>
+		            <td>${list[0].allDays} 天</td>
+		        </tr>
+		    </table>
+	    </div>
+    
+	    <table>
+		    <div class="description-container">
+			    <h2>行程敘述</h2>
+			    <p >${list[0].tourDescription}</p>
+		    </div>
 	    </table>
     </div>
-    
-    <table>
-	    <div class="description-container">
-		    <h2>行程敘述</h2>
-		    <p >${list[0].tourDescription}</p>
-	    </div>
-    </table>
    
 	<table>
 		<c:forEach var="day" begin="1" end="${list[0].allDays}">
@@ -125,10 +129,9 @@
 	    
     </table>
     <div class="btn-container">
+		<input type="submit" value="編輯行程" class="edit" >
 		<input type="button" value="返回" onclick="history.back()" class="btn_back">
 	</div>
-		
-			<input type="submit" value="編輯行程" class="edit" >
 		</form>
 </div>
 

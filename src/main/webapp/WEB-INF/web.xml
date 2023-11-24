@@ -1,22 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
-         version="4.0">
-         
-    <welcome-file-list>
-<!--		<welcome-file>account/index.jsp</welcome-file>-->
-        <welcome-file>indexpage/index.jsp</welcome-file>
-<!--		<welcome-file>indexpage/test2.jsp</welcome-file>-->
-        <welcome-file>account/list.jsp</welcome-file>
-        <welcome-file>index.html</welcome-file>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+	version="4.0">
+
+	<display-name>WebSocketChatWeb</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+
+	<servlet>
+		<servlet-name>NameServlet</servlet-name>
+		<servlet-class>com.depthspace.websocketchat.controller.NameServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>NameServlet</servlet-name>
+		<url-pattern>/chat.do</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<!-- <welcome-file>account/index.jsp</welcome-file> -->
+		<welcome-file>indexpage/index.jsp</welcome-file>
+		<!-- <welcome-file>indexpage/test2.jsp</welcome-file> -->
+		<welcome-file>account/list.jsp</welcome-file>
+		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.xhtml</welcome-file>
 		<welcome-file>index.htm?"?</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
-    
-    
-   	<servlet>
+	</welcome-file-list>
+
+
+	<servlet>
 		<servlet-name>AccountServlet</servlet-name>
 		<servlet-class>com.depthspace.account.model.account.controller.AccountServlet</servlet-class>
 	</servlet>
@@ -24,7 +43,7 @@
 		<servlet-name>AccountServlet</servlet-name>
 		<url-pattern>/account.do</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>AccountItemServlet</servlet-name>
 		<servlet-class>com.depthspace.account.model.accountitem.controller.AccountItemServlet</servlet-class>
@@ -33,7 +52,7 @@
 		<servlet-name>AccountItemServlet</servlet-name>
 		<url-pattern>/accountItem.do</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>ForumArticlesServlet</servlet-name>
 		<servlet-class>com.depthspace.forum.model.forumarticles.controller.ForumArticlesServlet</servlet-class>
@@ -46,7 +65,7 @@
 	<listener>
 		<listener-class>com.depthspace.listener.InitializerListener</listener-class>
 	</listener>
-	
+
 	<servlet>
 		<servlet-name>FaqServlet</servlet-name>
 		<servlet-class>com.depthspace.faq.controller.FaqServlet</servlet-class>
@@ -56,7 +75,7 @@
 		<servlet-name>FaqServlet</servlet-name>
 		<url-pattern>/faq/faq.do</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>FaqTypesServlet</servlet-name>
 		<servlet-class>com.depthspace.faqtypes.model.controller.FaqTypesServlet</servlet-class>
@@ -67,13 +86,23 @@
 		<url-pattern>/faqtypes/faqTypes.do</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>KeywordQaServlet</servlet-name>
+		<servlet-class>com.depthspace.keywordqa.controller.KeywordQaServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>KeywordQaServlet</servlet-name>
+		<url-pattern>/keywordqa/keywordQa.do</url-pattern>
+	</servlet-mapping>
+
 	<filter>
 		<filter-name>LoginFilter</filter-name>
 		<filter-class>com.depthspace.admin.filter.LoginFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>LoginFilter</filter-name>
-<!-- 		<url-pattern>/member/*</url-pattern> -->
+		<!-- <url-pattern>/member/*</url-pattern> -->
 		<url-pattern>/backend/backIndex/index.jsp</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>

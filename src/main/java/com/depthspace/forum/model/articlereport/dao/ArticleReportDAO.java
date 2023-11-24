@@ -12,4 +12,6 @@ public interface ArticleReportDAO {
 	List<ArticleReportVO> getAll();
 	
 	ArticleReportVO getByArticleReportId(Integer articleReportId);
+	
+	List<ArticleReportVO> getByReportStatus(Byte reportStatus);
 }

@@ -41,13 +41,12 @@ public class TourDaysService{
 	}
 
 	public void update(TourDaysVO entity) {
-		// TODO Auto-generated method stub
-		
+		dao.update(entity);
 	}
 
 
 	public void delete(Integer tourDaysId) {
-		// TODO Auto-generated method stub
+		dao.delete(tourDaysId);
 		
 	}
 	//刪除行程編號對應的行程天數及行程明細
@@ -67,8 +66,7 @@ public class TourDaysService{
 
 
 	public List<TourDaysVO> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.getAll();
 	}
 	//找會員某行程的對應天數值(行程幾天就會是幾天的TourDaysId)-ok
 

@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"> -->
 <script>
 $(document).ready(function() {
     $.ajax({
@@ -25,19 +25,17 @@ $(document).ready(function() {
                 rows += '<td class="text-center">' + value.articleId + '</td>';
                 rows += '<td class="text-center">' + value.reportId + '</td>';
                 rows += '<td class="text-center">' + adminText + '</td>';
-                rows += '<td class="text-center">' + value.reportContent + '</td>';
+                rows += '<td class="text-center report-content">' + value.reportContent + '</td>';
                 rows += '<td class="text-center">' + formattedDate + '</td>';
                 rows += '<td class="text-center">' + statusText + '</td>';
                 rows += '<td class="text-center"><button class="edit-btn" data-article-report-id="' + value.articleReportId + '" data-article-id="' + value.articleId + '" data-report-id="' + value.reportId + '" data-admin-id="' + value.adminId + '" data-report-status="' + value.reportStatus + '" data-report-content="' + value.reportContent + '" data-report-time="' + formattedDate + '"><i class="fas fa-pencil-alt"></i></button></td>';
                 rows += '</tr>';
             });
             $("#reportTable tbody").html(rows);
-        },
-        error: function(error) {
-            console.log(error);
         }
     });
     
+    //更改狀態的ajax
     $('#saveChanges').click(function() {
         // 從表單中獲取數據
         var formData = $('#editReportForm').serialize();
@@ -51,11 +49,31 @@ $(document).ready(function() {
                 // 這裡可以根據後端回應更新 UI，例如重新加載列表
                 $('#editReportModal').modal('hide');
                 alert('更新成功');
-                // 可能需要重新加載或更新表格數據
+                location.reload();
+            }
+        });
+    });
+    
+  //選擇審核狀態的ajax
+    $('#statusFilter').change(function() {
+        var selectedStatus = $(this).val();
+        var ajaxUrl = '<%=request.getContextPath()%>/report?action=';
+        if (selectedStatus !== '') {
+            ajaxUrl += 'liststatus&reportStatus=' + selectedStatus;
+        } else {
+            ajaxUrl += 'list';
+        }
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                updateTable(data);
             },
             error: function(error) {
                 console.log(error);
-                alert('更新失敗');
+                alert('數據加載失敗');
             }
         });
     });
@@ -100,6 +118,36 @@ $(document).on('click', '.edit-btn', function() {
     };
     openEditModal(reportAr);
 });
+
+//選擇完下拉選單後呈現的版面
+function updateTable(data) {
+    var rows = '';
+    $.each(data, function(key, value){
+    	var statusText = value.reportStatus == 0 ? '未審核' :
+        (value.reportStatus == 1 ? '已審核已通過' : '已審核未通過');
+    	var date = new Date(value.reportTime);
+        var formattedDate = formatDate(date);
+        var adminText = value.adminId ? value.adminId : '-';
+        rows += '<tr>';
+        rows += '<td class="text-center">' + value.articleReportId + '</td>';
+        rows += '<td class="text-center">' + value.articleId + '</td>';
+        rows += '<td class="text-center">' + value.reportId + '</td>';
+        rows += '<td class="text-center">' + adminText + '</td>';
+        rows += '<td class="text-center report-content">' + value.reportContent + '</td>';
+        rows += '<td class="text-center">' + formattedDate + '</td>';
+        rows += '<td class="text-center">' + statusText + '</td>';
+        rows += '<td class="text-center"><button class="edit-btn" data-article-report-id="' + value.articleReportId + '" data-article-id="' + value.articleId + '" data-report-id="' + value.reportId + '" data-admin-id="' + value.adminId + '" data-report-status="' + value.reportStatus + '" data-report-content="' + value.reportContent + '" data-report-time="' + formattedDate + '"><i class="fas fa-pencil-alt"></i></button></td>';
+        rows += '</tr>';
+    });
+    $('#reportTable tbody').html(rows);
+}
+
+$(document).on('click', '.report-content', function() {
+    var fullContent = $(this).text(); // 從單元格中獲取完整內容
+    $('#fullReportContent').text(fullContent); // 將內容設置到模態框中
+    $('#reportContentModal').modal('show'); // 顯示模態框
+});
+
 </script>
 <style>
     table {
@@ -125,6 +173,13 @@ $(document).on('click', '.edit-btn', function() {
     .text-center {
         text-align: center;
     }
+    
+    .report-content {
+    	max-width: 150px; /* 設置最大寬度 */
+    	text-overflow: ellipsis; /* 文本超出時顯示省略號 */
+    	overflow: hidden; /* 隱藏超出部分的文本 */
+    	white-space: nowrap; /* 保持文本在一行內 */
+	}
 </style>
 </head>
 <body>
@@ -139,6 +194,15 @@ $(document).on('click', '.edit-btn', function() {
 	<div class="col-lg-10 g-2 transparent rounded mt-1">
 	 <h3 class="text-center mt-2">檢舉列表</h3>
 	        <hr class="my-0">
+	        <div class="filter-by-status">
+			    <label for="statusFilter">審查狀態：</label>
+			    <select id="statusFilter" name="reportStatus">
+			        <option value="">請選擇</option>
+			        <option value="0">未審核</option>
+			        <option value="1">已審核已通過</option>
+			        <option value="2">已審核未通過</option>
+			    </select>
+			</div>
 <table id="reportTable" class="reportTable">
     <thead>
         <tr>
@@ -168,10 +232,7 @@ $(document).on('click', '.edit-btn', function() {
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editReportModalLabel">修改報告</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <h5 class="modal-title" id="editReportModalLabel">修改狀況</h5>
       </div>
       <div class="modal-body">
         <form id="editReportForm">
@@ -194,12 +255,28 @@ $(document).on('click', '.edit-btn', function() {
 	    </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
         <button type="button" class="btn btn-primary" id="saveChanges">儲存變更</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- 檢舉內容模態框 -->
+<div class="modal fade" id="reportContentModal" tabindex="-1" aria-labelledby="reportContentModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reportContentModalLabel">檢舉內容</h5>
+      </div>
+      <div class="modal-body" id="fullReportContent">
+        <!-- 完整的檢舉內容將在這裡顯示 -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

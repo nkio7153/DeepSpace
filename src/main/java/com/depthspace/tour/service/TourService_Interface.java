@@ -8,7 +8,7 @@ import com.depthspace.tour.model.tour.TourView;
 public interface TourService_Interface {
 	TourVO insert(TourVO entity);
 	int update(TourVO entity);
-	int delete(Integer tourId);
+	void delete(Integer tourId);
 	
 	List<TourVO> getAll();
 	//取得該會員行程資料

@@ -93,10 +93,6 @@ function previewImage(event) {
                 <td><input type="hidden" name="memId" id="memId"></td>
             </tr>
             <tr>
-                <th>訊息ID</th>
-                <td><input type="text" name="msgId" id="msgId"></td>
-            </tr>
-            <tr>
                 <th>文章類型ID</th>
                 <td> 
                 <select id="artiTypeId" name="artiTypeId">

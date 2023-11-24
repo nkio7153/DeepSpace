@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import com.depthspace.column.model.ColumnTypesVO;
 import com.depthspace.promotion.model.promotion.PromotionVO;
 import com.depthspace.tour.model.TourDaysVO;
 import com.depthspace.tour.model.tour.TourVO;
@@ -32,12 +33,12 @@ public class HbTourDaysDAOImpl implements HbTourDaysDAO_Interface{
 	}
 	@Override
 	public void update(TourDaysVO entity) {
-		// TODO Auto-generated method stub
+		getSession().update(entity);
 		
 	}
 	@Override
 	public void delete(Integer tourDaysId) {
-		// TODO Auto-generated method stub
+		getSession().delete(tourDaysId);
 		
 	}
 	@Override
@@ -53,8 +54,7 @@ public class HbTourDaysDAOImpl implements HbTourDaysDAO_Interface{
 	}
 	@Override
 	public List<TourDaysVO> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return getSession().createQuery("from TourDaysVO", TourDaysVO.class).list();
 		}
 		
 	@Override

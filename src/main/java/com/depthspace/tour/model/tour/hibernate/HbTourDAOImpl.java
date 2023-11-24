@@ -7,6 +7,7 @@ import javax.persistence.NoResultException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import com.depthspace.column.model.ColumnArticlesVO;
 import com.depthspace.tour.model.tour.TourVO;
 import com.depthspace.tour.model.tour.TourView;
 
@@ -59,9 +60,9 @@ public class HbTourDAOImpl implements HbTourDAO_Interface{
                 .list();
 	}
 	@Override
-	public int delete(Integer tourId) {
-		// TODO Auto-generated method stub
-		return 0;
+	public void delete(Integer tourId) {
+		TourVO tourVO = getSession().get(TourVO.class, tourId);
+		getSession().delete(tourVO);
 	}
 	
 	//查詢最後一筆行程

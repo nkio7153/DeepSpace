@@ -98,9 +98,21 @@ public class ForumArticlesServlet extends HttpServlet {
 		case "delLike":
 			delLike(req, resp);
 			break;
+		case "backlist":
+			backList(req, resp);
+			break;
 		}
 	}
 	
+	//後臺取得所有文章
+	private void backList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		List<ForumArticlesVO> forum = forumArticlesService.getAll();
+		JSONArray arr = JSONArray.parseArray(JSON.toJSONString(forum));
+		resp.setContentType("application/json; charset=UTF-8");
+		PrintWriter out = resp.getWriter();
+		out.print(arr.toString());	
+	}
+
 	//文章刪除連帶刪除按讚紀錄
 	private void delLike(HttpServletRequest req, HttpServletResponse resp) {
 		Integer articleId = null;
@@ -171,7 +183,6 @@ public class ForumArticlesServlet extends HttpServlet {
 		List<ForumArticlesVO> list = forumArticlesService.getByArtiTypeId(artiTypeId);
 		req.setAttribute("list", list);
 		req.setAttribute("artiTypeId", artiTypeId);
-//		System.out.println(list);
 		req.getRequestDispatcher("/forumArticles/articlesTypeList.jsp").forward(req, resp);
 	}
 
@@ -265,7 +276,6 @@ public class ForumArticlesServlet extends HttpServlet {
 
 	        // 更新文章的其他欄位
 	        forumArticle.setMemId(parseIntegerParameter(req.getParameter("memId")));
-	        forumArticle.setMsgId(parseIntegerParameter(req.getParameter("msgId")));
 	        forumArticle.setArtiTypeId(parseIntegerParameter(req.getParameter("artiTypeId")));
 	        forumArticle.setArtiTitle(req.getParameter("artiTitle"));
 	        forumArticle.setArtiTime(parseTimestamp(req.getParameter("artiTime")));
@@ -307,7 +317,6 @@ public class ForumArticlesServlet extends HttpServlet {
 			if (session.getAttribute("memId") != null) {
 				memId = (Integer) session.getAttribute("memId");
 			}
-			Integer msgId = parseIntegerParameter(req.getParameter("msgId"));
 			Integer artiTypeId = parseIntegerParameter(req.getParameter("artiTypeId"));
 			String artiTitle = req.getParameter("artiTitle");
 			String artiTimeStr = req.getParameter("artiTime");
@@ -335,7 +344,7 @@ public class ForumArticlesServlet extends HttpServlet {
 			    inputStream.close();
 			}
 
-			ForumArticlesVO forum = new ForumArticlesVO(null, memId, msgId, artiTypeId, artiTitle, artiTime, artiText,
+			ForumArticlesVO forum = new ForumArticlesVO(null, memId, artiTypeId, artiTitle, artiTime, artiText,
 					artiLk, artiImg);
 			forumArticlesService.insert(forum);
 			resp.sendRedirect(req.getContextPath() + "/forumArticles/list.jsp");
