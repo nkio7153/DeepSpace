@@ -21,8 +21,8 @@
 		    height: auto;
 	    }
 	    .yellow-star {
-		    color: yellow;
-		    font-size: 24px;
+		    color: Gold;
+		    font-size: 16px;
 		}
 	</style>
 </head>
@@ -113,7 +113,7 @@
 // 				console.log(place);
 	
 				// 評分
-				$("#r_name").append("<p id='rating'>評分：<span class='yellow-star'>★</span>"+place.rating+"</p>")
+				$("#r_name").append("<p id='rating'>評分："+place.rating+"<span class='yellow-star'>★</span></p>")
 				
 				$('#rating').append("<p id='address'>地址："+place.adr_address+"</p>")
 				

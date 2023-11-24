@@ -50,21 +50,30 @@ public class RestVO implements Serializable {
 	@Column(name = "BOOKING_LIMIT")
 	private Integer bookingLimit;
 	@Expose
+	@Column(name = "AMLimit")
+	private Integer amLimit;
+	@Expose
+	@Column(name = "NoonLimit")
+	private Integer noonLimit;
+	@Expose
+	@Column(name = "PMLimit")
+	private Integer pmLimit;
+	@Expose
 	@Column(name = "REST_TEXT", columnDefinition = "TEXT")
 	private String restText;
-	
+
 	@Expose
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ADMIN_ID", referencedColumnName = "ADMIN_ID")
 	private AdminVO adminVO;
-	
+
 	@Expose
 	@OneToMany(mappedBy = "restVO", cascade = CascadeType.ALL)
 	private Set<RestCollectionVO> rests;
 	@Expose
 	@OneToMany(mappedBy = "restVO", cascade = CascadeType.ALL)
 	private Set<MemBookingVO> memBooking;
-	
+
 	public Set<RestCollectionVO> getRests() {
 		return rests;
 	}
@@ -85,7 +94,7 @@ public class RestVO implements Serializable {
 		super();
 	}
 
-	public RestVO(Integer restId, String restName, String restTel, String restAddress, String restType ,String restOpen,
+	public RestVO(Integer restId, String restName, String restTel, String restAddress, String restType, String restOpen,
 			Integer restStatus, Integer bookingLimit, Integer adminId) {
 		super();
 		this.restId = restId;
@@ -144,7 +153,7 @@ public class RestVO implements Serializable {
 	public void setRestType(String restType) {
 		this.restType = restType;
 	}
-	
+
 	public String getRestOpen() {
 		return restOpen;
 	}
@@ -177,22 +186,37 @@ public class RestVO implements Serializable {
 		this.adminVO = adminVO;
 	}
 
+	public Integer getAmLimit() {
+		return amLimit;
+	}
+
+	public void setAmLimit(Integer amLimit) {
+		this.amLimit = amLimit;
+	}
+
+	public Integer getNoonLimit() {
+		return noonLimit;
+	}
+
+	public void setNoonLimit(Integer noonLimit) {
+		this.noonLimit = noonLimit;
+	}
+
+	public Integer getPmLimit() {
+		return pmLimit;
+	}
+
+	public void setPmLimit(Integer pmLimit) {
+		this.pmLimit = pmLimit;
+	}
+
 	@Override
 	public String toString() {
 		return "RestVO [restId=" + restId + ", restName=" + restName + ", restTel=" + restTel + ", restAddress="
 				+ restAddress + ", restType=" + restType + ", restOpen=" + restOpen + ", restStatus=" + restStatus
-				+ ", bookingLimit=" + bookingLimit + ", restText=" + restText + ", adminVO=" + adminVO + ", rests="
-				+ rests + ", memBooking=" + memBooking + "]";
+				+ ", bookingLimit=" + bookingLimit + ", amLimit=" + amLimit + ", noonLimit=" + noonLimit + ", pmLimit="
+				+ pmLimit + ", restText=" + restText + ", adminVO=" + adminVO + ", rests=" + rests + ", memBooking="
+				+ memBooking + "]";
 	}
 
-
-
-	
-	
-	
-
-	
-	
-	
-	
 }

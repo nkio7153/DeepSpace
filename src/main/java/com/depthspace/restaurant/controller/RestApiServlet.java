@@ -19,12 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.depthspace.admin.filter.LoginFilter;
 import com.depthspace.admin.model.AdminVO;
 import com.depthspace.admin.service.HbAdminService;
 import com.depthspace.member.model.MemVO;
 import com.depthspace.member.service.HbMemService;
-import com.depthspace.member.service.MemberService;
 import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO;
@@ -137,7 +135,7 @@ public class RestApiServlet extends HttpServlet {
 					vo.setMemId(Integer.valueOf(req.getParameter("memId")));
 					vo.setRestId(Integer.valueOf(req.getParameter("restId")));
 					restcollectionService.add(vo);
-					out.print("SUCCESS");
+					out.print("ADD");
 				} catch (Exception e) {
 					out.print("ERROR");
 					e.printStackTrace();
@@ -149,7 +147,7 @@ public class RestApiServlet extends HttpServlet {
 					vo.setMemId(Integer.valueOf(req.getParameter("memId")));
 					vo.setRestId(Integer.valueOf(req.getParameter("restId")));
 					restcollectionService.delete(vo);
-					out.print("SUCCESS");
+					out.print("DEL");
 				} catch (Exception e) {
 					out.print("ERROR");
 					e.printStackTrace();
@@ -238,7 +236,10 @@ public class RestApiServlet extends HttpServlet {
 					rest.setRestType(req.getParameter("restType"));
 					rest.setRestOpen(req.getParameter("restOpen"));
 					rest.setRestStatus(Integer.valueOf(req.getParameter("restStatus")));
-					rest.setBookingLimit(Integer.parseInt(req.getParameter("bookingLimit")));
+					rest.setBookingLimit(Integer.parseInt("0"));
+					rest.setAmLimit(Integer.parseInt(req.getParameter("amLimit")));;
+					rest.setNoonLimit(Integer.parseInt(req.getParameter("noonLimit")));
+					rest.setPmLimit(Integer.parseInt(req.getParameter("pmLimit")));
 					admin = hbAdminService.getOneAdmin(Integer.parseInt(req.getParameter("adminId")));
 					rest.setAdminVO(admin);
 					out.print("SUCCESS" + " " + restService.addRest(rest));
@@ -257,7 +258,10 @@ public class RestApiServlet extends HttpServlet {
 					rest.setRestType(req.getParameter("restType"));
 					rest.setRestOpen(req.getParameter("restOpen"));
 					rest.setRestStatus(Integer.parseInt(req.getParameter("restStatus")));
-					rest.setBookingLimit(Integer.parseInt(req.getParameter("bookingLimit")));
+					rest.setBookingLimit(Integer.parseInt("0"));
+					rest.setAmLimit(Integer.parseInt(req.getParameter("amLimit")));;
+					rest.setNoonLimit(Integer.parseInt(req.getParameter("noonLimit")));
+					rest.setPmLimit(Integer.parseInt(req.getParameter("pmLimit")));
 					admin = hbAdminService.getOneAdmin(Integer.parseInt(req.getParameter("adminId")));
 					rest.setAdminVO(admin);
 					rest.setRestId(Integer.parseInt(req.getParameter("restId")));
@@ -330,6 +334,16 @@ public class RestApiServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 				break;
+			case("cancel"):
+				try {
+					MemBookingVO vo = memBookingService.getByMembookingId(Integer.parseInt(req.getParameter("bookingId")));
+					vo.setCheckStatus(2);
+					out.print(memBookingService.update(vo));
+				} catch (Exception e) {
+					out.print("ERROR");
+					e.printStackTrace();
+				}
+			break;
 		}
 		
 	}

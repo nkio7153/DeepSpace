@@ -21,6 +21,9 @@ import javax.servlet.http.Part;
 
 import com.depthspace.admin.model.AdminVO;
 import com.depthspace.admin.service.HbAdminService;
+import com.depthspace.attractions.model.CityVO;
+import com.depthspace.attractions.service.AreaService;
+import com.depthspace.attractions.service.CityService;
 import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.restaurant.model.restbookingdate.RestBookingDateVO;
@@ -72,6 +75,9 @@ public class RestServlet extends HttpServlet {
 			case "add":
 				forwardPath = add(req, resp);
 				break;
+			case "forAdd":
+				forwardPath = forAdd(req, resp);
+				break;
 			case "delete":
 				forwardPath = delete(req, resp);
 				break;
@@ -86,9 +92,6 @@ public class RestServlet extends HttpServlet {
 				break;
 			case "getBookingDate":
 				forwardPath = getBookingDate(req, resp);
-				break;
-			case "checkBooking":
-				forwardPath = checkBooking(req, resp);
 				break;
 			case "checkBookingUpdate":
 				forwardPath = checkBookingUpdate(req, resp);
@@ -110,6 +113,16 @@ public class RestServlet extends HttpServlet {
 	}
 	
 	private String add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		List<AdminVO> adminlist = hbAdminService.getAll();
+		req.setAttribute("adminlist", adminlist);
+		
+		CityService cityService = new CityService();
+		List<CityVO> citylist = cityService.getAll();
+		req.setAttribute("citylist", citylist);
+		
+		AreaService areaService = new AreaService();
+		
 		Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
 		req.setAttribute("errorMsgs", errorMsgs);
 		
@@ -120,9 +133,10 @@ public class RestServlet extends HttpServlet {
 		String restTel = req.getParameter("restTel");
 		if (restTel.isEmpty() || restTel == null || restTel.trim().length() == 0) {
 			errorMsgs.put("restTel", "餐廳電話請勿空白");
-		} else if (!restTel.matches("09[0-9]{8}") && !restTel.matches("0[2-9]-[0-9]{7,8}")) {
-			errorMsgs.put("restTel", "餐廳電話格式錯誤");
 		}
+		
+		String city = cityService.findByPrimaryKey(Integer.parseInt(req.getParameter("city"))).getCityName();
+		String area = areaService.findByPrimaryKey(Integer.parseInt(req.getParameter("area"))).getAreaName();
 		String restAddress = req.getParameter("restAddress");
 		if (restAddress.isEmpty() || restAddress == null || restAddress.trim().length() == 0) {
 			errorMsgs.put("restAddress", "餐廳地址請勿空白");
@@ -137,13 +151,9 @@ public class RestServlet extends HttpServlet {
 		} else if (!restOpen.matches("([01]?[0-9]|2[0-3]):[0-5][0-9] - ([01]?[0-9]|2[0-3]):[0-5][0-9]")) {
 			errorMsgs.put("restOpen", "營業時間格式錯誤請用24小時制");
 		}
-		Integer bookingLimit = null;
-		try {
-			bookingLimit = Integer.valueOf(req.getParameter("bookingLimit").trim());
-		} catch (Exception e) {
-			errorMsgs.put("bookingLimit", "可預約組數請勿空白");
-			bookingLimit = 0;
-		}
+		
+		
+		System.out.println(city + " " + area + " " + restAddress );
 		
 		if (!errorMsgs.isEmpty()) {
 			RestVO restList = new RestVO();
@@ -153,23 +163,24 @@ public class RestServlet extends HttpServlet {
 			restList.setRestType(restType);
 			restList.setRestOpen(restOpen);
 			restList.setRestStatus(Integer.valueOf(req.getParameter("restStatus")));
-			restList.setBookingLimit(bookingLimit);
 			restList.setRestText(req.getParameter("restText"));
-			
 			req.setAttribute("rest", restList);
+			
 			return "/backend/rest/addRest.jsp";
 		}
-		
 		
 		RestVO rest = new RestVO();
 		AdminVO admin = new AdminVO();
 		rest.setRestName(restName);
 		rest.setRestTel(restTel);
-		rest.setRestAddress(restAddress);
+		rest.setRestAddress(city + area + restAddress);
 		rest.setRestType(restType);
 		rest.setRestOpen(restOpen);
 		rest.setRestStatus(Integer.valueOf(req.getParameter("restStatus")));
-		rest.setBookingLimit(bookingLimit);
+		rest.setBookingLimit(0);
+		rest.setAmLimit(Integer.parseInt(req.getParameter("amLimit")));
+		rest.setNoonLimit(Integer.parseInt(req.getParameter("noonLimit")));
+		rest.setPmLimit(Integer.parseInt(req.getParameter("pmLimit")));
 		rest.setRestText(req.getParameter("restText"));
 		admin = hbAdminService.getOneAdmin(Integer.parseInt(req.getParameter("adminId")));
 		rest.setAdminVO(admin);
@@ -239,13 +250,6 @@ public class RestServlet extends HttpServlet {
 		} else if (!restOpen.matches("([01]?[0-9]|2[0-3]):[0-5][0-9] - ([01]?[0-9]|2[0-3]):[0-5][0-9]")) {
 			errorMsgs.put("restOpen", "營業時間格式錯誤請用24小時制");
 		}
-		Integer bookingLimit = null;
-		try {
-			bookingLimit = Integer.valueOf(req.getParameter("bookingLimit").trim());
-		} catch (Exception e) {
-			errorMsgs.put("bookingLimit", "可預約組數請勿空白");
-			bookingLimit = 0;
-		}
 		
 		if (!errorMsgs.isEmpty()) {
 			return "/backend/Rest.do?action=getId_for_update";
@@ -259,7 +263,10 @@ public class RestServlet extends HttpServlet {
 		rest.setRestType(restType);
 		rest.setRestOpen(restOpen);
 		rest.setRestStatus(Integer.valueOf(req.getParameter("restStatus")));
-		rest.setBookingLimit(bookingLimit);
+		rest.setBookingLimit(0);
+		rest.setAmLimit(Integer.parseInt(req.getParameter("amLimit")));
+		rest.setNoonLimit(Integer.parseInt(req.getParameter("noonLimit")));
+		rest.setPmLimit(Integer.parseInt(req.getParameter("pmLimit")));
 		rest.setRestText(req.getParameter("restText"));
 		admin = hbAdminService.getOneAdmin(Integer.parseInt(req.getParameter("adminId")));
 		rest.setAdminVO(admin);
@@ -314,11 +321,6 @@ public class RestServlet extends HttpServlet {
 		return "/backend/rest/listBookingDate.jsp";
 	}
 	
-	private String checkBooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		MemBookingVO mb = memBookingService.getByMembookingId(Integer.valueOf(req.getParameter("bookingId")));
-		req.setAttribute("mb", mb);
-		return "/backend/rest/checkBooking.jsp";
-	}
 	
 	private String checkBookingUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		MemBookingVO vo = new MemBookingVO();
@@ -367,6 +369,17 @@ public class RestServlet extends HttpServlet {
         }
 	}
 	
+	private String forAdd(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+	    List<AdminVO> adminlist = hbAdminService.getAll();
+		req.setAttribute("adminlist", adminlist);
+		
+		CityService cityService = new CityService();
+		List<CityVO> citylist = cityService.getAll();
+		req.setAttribute("citylist", citylist);
+		
+		return "/backend/rest/addRest.jsp";
+	}
 	
 	
 }

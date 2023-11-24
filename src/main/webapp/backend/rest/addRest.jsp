@@ -4,13 +4,6 @@
 <%@ page import="com.depthspace.admin.service.HbAdminService" %>
 <%@ page import="java.util.List" %>
 
-
-<%
-	HbAdminService hbAdminService = new HbAdminService();
-    List<AdminVO> adminlist = hbAdminService.getAll();
-	request.setAttribute("adminlist", adminlist);
-%>
-
 <html>
   <head>
   	<title>新增餐廳</title>
@@ -57,6 +50,21 @@
 				  
 				  <div class="col-12">
 				    <label for="restAddress" class="form-label">餐廳地址</label>
+				    <div class="row">
+					    <div class="col-3 mb-2">
+					        <select name="city" id="city" class="form-control" required>
+					            <option value="">請選縣市</option>
+					            <c:forEach var="typeItem" items="${citylist}">
+					                <option value="${typeItem.cityId}">${typeItem.cityName}</option>
+					            </c:forEach>
+					        </select>
+					    </div>
+					    <div class="col-3 mb-2">
+					        <select name="area" id="area" class="form-control" required>
+					            <option value="">請選地區</option>
+					        </select>
+					    </div>
+					</div>
 				    <label class="text-danger">${errorMsgs.restAddress}</label>
 				  </div>
 				  <div class="col-6 mb-2">
@@ -90,12 +98,23 @@
 				  </div>
 				  
 				  <div class="col-12">
-				    <label for="bookingLimit" class="form-label">預設可訂位組數</label>
+				    <label for="bookingLimit" class="form-label bookingLimit">預設可訂位人數</label>
 				    <label class="text-danger">${errorMsgs.bookingLimit}</label>
 				  </div>
-				  <div class="col-auto mb-2">
-				    <input type="number" class="form-control" id="bookingLimit" name="bookingLimit" value="${rest.bookingLimit}">
-				  </div>				    
+				  <div class="row">
+				    <div class="col-2 mb-2">
+				        <div class="bookingLimit">早上</div>
+				        <input type="number" class="form-control bookingLimit" id="amLimit" name="amLimit" value="${rest.amLimit}">
+				    </div>
+				    <div class="col-2 mb-2">
+				        <div class="bookingLimit">中午</div>
+				        <input type="number" class="form-control bookingLimit" id="noonLimit" name="noonLimit" value="${rest.noonLimit}">
+				    </div>
+					<div class="col-2 mb-2">
+				        <div class="bookingLimit">晚上</div>
+				        <input type="number" class="form-control bookingLimit" id="pmLimit" name="pmLimit" value="${rest.pmLimit}">
+				    </div>
+				</div>
 				  
 				  <div class="col-12">
 				    <label for="restText" class="form-label">餐廳簡介</label>
@@ -135,6 +154,7 @@
       </div>
     </div>
     <script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
+    <script src="${pageContext.request.contextPath}/member/js/add.js"></script>
     <script>
     	$(function(){
     		

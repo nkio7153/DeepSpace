@@ -23,6 +23,9 @@
 		width: 30px;
 		height: 30px;
 	}
+	.blank-line {
+     	height: 500px;
+    }
 </style>
 </head>
 <body>
@@ -38,18 +41,20 @@
 
 			<div class="col-md-9 myfa">
 				<div class="d-flex justify-content-between align-items-center mb-3">
-					<h3 class="mb-0">您的餐廳收藏</h3>
-					<form action="${pageContext.request.contextPath}/Rest/Restinfo?restId=${rc.restId}"
-						method="get">
+					<c:choose>
+			            <c:when test="${not empty rcList }">
+			                <h3 class="mb-0">您的餐廳收藏</h3>
+			            </c:when>
+			            <c:otherwise>
+			                <h3 class="mb-0 blank-line">您目前無任何餐廳收藏</h3>
+			            </c:otherwise>
+			        </c:choose>
 						<div class="col-md-16">
 							<div
 								class="d-flex justify-content-between align-items-center mb-3">
-
 							</div>
 						</div>
-					</form>
 				</div>
-				<!-- 票券列表 -->
 				<div class="row">
 
 			<c:forEach var="rc" items="${rcList}">
@@ -114,7 +119,7 @@
 		            return response.text();
 				})
 				.then(data => {
-					alert("已取消收藏");
+					Swal.fire("已取消收藏");
 					location.reload(true);
 				})
 				.catch(error => {
