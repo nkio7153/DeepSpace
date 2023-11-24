@@ -12,4 +12,6 @@ public interface ArticlesLikeDao {
 	List<ArticlesLikeVO> getByMemId(Integer memId);
 	
 	boolean islike(Integer articleId, Integer memId);
+	
+	void deleteByArticleId(Integer id);
 }

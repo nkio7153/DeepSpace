@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import com.depthspace.forum.model.articlescollect.ArticlesCollectVO;
 import com.depthspace.forum.model.articleslike.ArticlesLikeVO;
 import com.depthspace.forum.model.articleslike.ArticlesLikeVO.CompositeDetail;
+import com.depthspace.forum.model.forumarticles.ForumArticlesVO;
 
 public class ArticlesLikeDaoImpl implements ArticlesLikeDao {
 	private SessionFactory factory;
@@ -58,6 +59,19 @@ public class ArticlesLikeDaoImpl implements ArticlesLikeDao {
 				.setParameter("memId", memId)
 				.list();
 		return !results.isEmpty();
+	}
+
+	@Override
+	public void deleteByArticleId(Integer articleId) {
+	    List<ArticlesLikeVO> results = getSession()
+	            .createQuery("from ArticlesLikeVO where articleId= :articleId", ArticlesLikeVO.class)
+	            .setParameter("articleId", articleId)
+	            .list();
+	    
+	    // 遍歷結果並刪除對象
+	    for (ArticlesLikeVO collect : results) {
+	        getSession().delete(collect);
+	    }
 	}
 
 }
