@@ -1,68 +1,43 @@
 <%@ page import="com.depthspace.admin.service.AdminService" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<jsp:include page="../indexpage/head.jsp" />
+    <jsp:include page="../indexpage/head.jsp" />
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>忘記密碼</title>
-     <style>
-        .center-form { 
-             display: flex; 
-             flex-direction: column; 
-             align-items: center; 
-         } 
-
-         form { 
-             width: 50%; /* 設置表單寬度，可以根據需要進行調整 */
-             text-align: center;
-         } 
-/*         .center-button { */
-/*             text-align: center; */
-            
-/*         } */	
-         #input, #verifyBtn {
-		    width: 65px; /* 設置按鈕的寬度，可以根據需要進行調整 */
-		    font-size: 20px;
-		    color: #fff;
-		    background-color: #008CBA;
-		    border: none;
-		    padding: 7px; /* 設置按鈕的內邊距，可以根據需要進行調整 */
-		    cursor: pointer;
-		    border-radius: 6px;
-		    margin: 8px; /* 設置按鈕的外邊距，可以根據需要進行調整 */
-		}
-    </style>
 </head>
 <body>
-<jsp:include page="../indexpage/header.jsp" />
-<jsp:include page="../indexpage/headpic.jsp" />
-    <div class="center-form"> 
-        <h2>FORGET PASSWORD 忘記密碼</h2>
-            <h6>系統會自動將密碼寄到您的信箱中，確認送出後再請留意收取唷!</h6>
-            
-            <div id="forgetPassword">
-	            <div class="mb-3 mt-3">
-	            	<input type="text" name="adminAcc" class="adminAcc" id="adminAcc" required placeholder="輸入您的帳號">
-	            </div>
-	    
-	            </div>
-	           <div class="center-button">
-	                <input type="submit" id="input" value="提交" onclick="submitForm()">
-	            </div>
-            </div>
-    </div>
+    <jsp:include page="../indexpage/header.jsp" />
+    <jsp:include page="../indexpage/headpic.jsp" />
     
-    	<!-- 新的輸入框和按鈕 -->
-<%-- 	    <form id="password" action="${pageContext.request.contextPath}/member/login.jsp" method="post"> --%>
-	        <div id="verify" style="display:none;"  class="center-form">
-	            <div class="mb-3 mt-3">
-	                <input type="text" name="password" id="password" placeholder="輸入驗證碼">
-	            </div>
-	
-	            <div class="center-button">
-	                <input type="button" id="verifyBtn" value="驗證" onclick="verifyCode()">
-	            </div>
-	        </div>
-<!--         </form> -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="text-center mb-4">
+                    <h2>FORGET PASSWORD 忘記密碼</h2>
+                    <p class="lead">系統會自動將密碼寄到您的信箱中，確認送出後再請留意收取唷!</p>
+                </div>
+                <div id="forgetPassword" class="card p-4 shadow-sm">
+                    <div class="mb-3">
+                        <input type="text" name="adminAcc" class="form-control" id="adminAcc" required placeholder="輸入您的帳號">
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary" onclick="submitForm()">提交</button>
+                    </div>
+                </div>
+                <div id="verify" class="card p-4 shadow-sm mt-3" style="display:none;">
+                    <div class="mb-3">
+                        <input type="text" name="password" class="form-control" id="password" placeholder="輸入驗證碼">
+                    </div>
+                    <div class="d-grid">
+                        <button type="button" class="btn btn-primary" onclick="verifyCode()">驗證</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 <script type="text/javascript">
 let error='${param.error}';
 
@@ -88,7 +63,6 @@ function verifyCode() {
         	console.log(response)
             if (response === 'success') {
                 alert("驗證成功，導回登入");
-                
                 window.location.href = "${pageContext.request.contextPath}/admin/success.jsp";
             } else {
                 alert("驗證碼輸入錯誤，請從新輸入");
@@ -116,6 +90,7 @@ function submitForm() {
                 //驗證畫面打開，輸入畫面藏起
                 $("#verify").show();
                 $("#forgetPassword").hide();
+                $("#input").hide();
             } else {
                 alert("帳號錯誤或電子郵件輸入錯誤");
             }
@@ -124,5 +99,8 @@ function submitForm() {
 }
 </script>
 <jsp:include page="../indexpage/footer.jsp" />
+    <!-- 引入 Bootstrap Bundle (包含 Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

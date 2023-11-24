@@ -53,8 +53,7 @@ request.setCharacterEncoding("UTF-8");
 						</tr>
 						<tr>
 							<th>密碼</th>
-							<td><input type="text" name="adminPwd"
-								value="${param.adminPwd}" required></td>
+							<td><input type="text" name="adminPwd" required></td>
 						</tr>
 						<tr>
 							<th>管理員姓名</th>
