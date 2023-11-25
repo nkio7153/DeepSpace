@@ -88,7 +88,13 @@ public class TicketDAOImpl implements TicketDAO {
 				.setFirstResult(first).setMaxResults(Constants.PAGE_MAX_RESULT) // 每頁紀錄數量
 				.list(); // 查出的資料存於此列表
 	}
-
+	@Override
+	public List<TicketVO> getAllDESC(int currentPage) {
+		int first = (currentPage - 1) * Constants.PAGE_MAX_RESULT; // 計算當前頁面第一條
+		return getSession().createQuery("from TicketVO ORDER BY ticketId DESC", TicketVO.class) // 查詢ticketVO實體 創建新查詢對象createQuery
+				.setFirstResult(first).setMaxResults(Constants.PAGE_MAX_RESULT) // 每頁紀錄數量
+				.list(); // 查出的資料存於此列表
+	}
 	@Override
 	public List<TicketVO> findAllWithOrder(int currentPage, String sortField, String sortOrder) {
 		CriteriaBuilder builder = getSession().getCriteriaBuilder();

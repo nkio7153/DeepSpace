@@ -104,6 +104,11 @@ public class TicketServiceImpl implements TicketService {
 	public List<TicketVO> getAllTickets2(int currentPage) {
 		return dao.getAll2(currentPage);
 	}
+	
+	@Override
+	public List<TicketVO> getAllTicketsDESC(int currentPage) {
+		return dao.getAllDESC(currentPage);
+	}
 
 	// 計算數量每頁*筆的話總共有幾頁
 	@Override

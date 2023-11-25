@@ -130,7 +130,12 @@
     background: #98d6a6  !important;
     border: #98d6a6 !important;  
 }
-
+.add-button:active {
+    border: 1px solid #98d6a6 !important;
+}
+.add-button:active .button__icon {
+    background-color: #98d6a6 !important;
+}
 </style>
 
 <title>票券類型列表</title>
@@ -282,6 +287,49 @@
            )
        );
        $('table tbody').append(newRow);
+   });
+// 新增儲存
+   $(document).on('click', '.Nsave-btn', function() {
+       var currentRow = $(this).closest('tr');
+       var typeName = currentRow.find('.typeName-input').val().trim();
+       var description = currentRow.find('.description-input').val().trim();
+
+       if(typeName === ''){
+           Swal.fire({
+               icon: 'error',
+               title: '類型名稱不能為空！'
+           });
+           return;
+       }
+
+       $.ajax({
+           url: '<%=request.getContextPath()%>/tickettypesmg/add',
+           type: 'POST',
+           contentType: 'application/json',
+           data: JSON.stringify({typeName: typeName, description: description}),
+           dataType: 'json',
+           success: function(response) {
+               if(response.status === "success") {
+                   Swal.fire({
+                       position: 'center',
+                       title: '已完成新增',
+                       showConfirmButton: false,
+                       timer: 1500
+                   });
+                   currentRow.find('.typeName-input').replaceWith($('<span>').addClass('typeName').text(typeName));
+                   currentRow.find('.description-input').replaceWith($('<span>').addClass('description').text(description));
+                   currentRow.find('.cancel-btn').hide();
+                   currentRow.find('.save-icon').replaceWith(
+                       $('<span>').addClass('edit-icon btn btn-primary edit-btn').append(
+                           $('<i>').addClass('fas fa-edit')
+                       )
+                   );
+               }
+           },
+           error: function(xhr, status, error) {
+               console.error('新增失敗', xhr, status, error);
+           }
+       });
    });
 
    // 取消按鈕
