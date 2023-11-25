@@ -506,15 +506,28 @@ public class RestApiServlet extends HttpServlet {
 	}
 	
 	private void checkBooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		MemBookingVO mb = memBookingService.getByMembookingId(Integer.valueOf(req.getParameter("bookingId")));
-		req.setAttribute("mb", mb);
-		Integer memId = mb.getMemId();
-		HbMemService memService = new HbMemService();
-		MemVO mem = memService.getOneMem(memId);
-		req.setAttribute("mem", mem);
-		String forwardPath = "/backend/rest/checkBooking.jsp";
-		RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
-		dispatcher.forward(req, resp);
+		HttpSession session = req.getSession();
+		AdminVO admin = (AdminVO) session.getAttribute("admin");
+		if (admin != null) {
+		    MemBookingVO mb = memBookingService.getByMembookingId(Integer.valueOf(req.getParameter("bookingId")));
+		    
+		    if (admin.getAdminId() == mb.getRestVO().getAdminVO().getAdminId()) {
+		    	HbMemService memService = new HbMemService();
+		        MemVO memVO = memService.getOneMem(mb.getMemId());
+		        req.setAttribute("mb", mb);
+		        req.setAttribute("mem", memVO);
+		        String forwardPath = "/backend/rest/checkBooking.jsp";
+		        RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
+		        dispatcher.forward(req, resp);
+		    } else {
+		        RequestDispatcher dispatcher = req.getRequestDispatcher("/DepthSpace/admin/login.jsp");
+		        dispatcher.forward(req, resp);
+		    }
+		} else {
+		    resp.sendRedirect("/DepthSpace/admin/login.jsp");
+		}
+
+		
 	}
 	
 	
