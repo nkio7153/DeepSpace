@@ -241,21 +241,21 @@
                             </div>
                         </li>
 
-                        <!-- 票卷管理 -->
+                        <!-- 票券管理 -->
                         <li class="nav-item mb-2">
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                data-bs-target="#collapseTickets" aria-expanded="true" aria-controls="collapseTickets">
-                                <span class="text-light fs-5">票卷管理 <i
+                                <span class="text-light fs-5">票券管理 <i
                                         class="fa-solid fa-angle-down"></i></span>
                             </a>
                             <div id="collapseTickets" class="collapse" aria-labelledby="headingTickets"
                                  data-bs-parent="#sidebar-wrapper">
                                 <div class="color-4-1 py-2 collapse-inner rounded">
                                     <a class="text-choco collapse-item fs-6 offset-1"
-                                       href="${pageContext.request.contextPath}/ticketmg/list">票卷列表</a>
+                                       href="${pageContext.request.contextPath}/ticketmg/list">票券列表</a>
                                     <br>
                                     <a class="text-choco collapse-item fs-6 offset-1"
-                                       href="${pageContext.request.contextPath}/tickettypesmg/list">票卷類型</a>
+                                       href="${pageContext.request.contextPath}/tickettypesmg/list">票券類型</a>
                                     <br>
                                     <a class="text-choco collapse-item fs-6 offset-1"
                                        href="${pageContext.request.contextPath}/to/listAll">訂單管理</a>
@@ -326,23 +326,7 @@
                             </div>
                         </li>
 
-                        <!-- 客服中心 -->
-                        <li class="nav-item mb-2">
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                               data-bs-target="#collapseCustomerService" aria-expanded="false"
-                               aria-controls="collapseCustomerService">
-                                <span class="text-light fs-5">客服中心 <i
-                                        class="fa-solid fa-angle-down"></i></span>
-                            </a>
-                            <div id="collapseCustomerService" class="collapse" aria-labelledby="headingCustomerService"
-                                 data-bs-parent="#sidebar-wrapper">
-                                <div class="color-4-1 py-2 collapse-inner rounded">
-                                    <a class="text-choco collapse-item fs-6 offset-1" href="#">客服問題</a>
-                                    <br>
-                                    <a class="text-choco collapse-item fs-6 offset-1" href="#">回報問題</a>
-                                </div>
-                            </div>
-                        </li>
+
 
                         <!-- faq管理 -->
                         <li class="nav-item mb-2">
