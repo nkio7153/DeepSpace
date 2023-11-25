@@ -308,12 +308,23 @@ $(document).ready(function() {
 });
   
 //購物車加入
-$(".btn").on("click", function() {
+$(".btn").on("click", function(e) {
+	let check = $("[name='check']").text();
+	if(check === "登入/註冊"){
+		e.preventDefault(); // 防止預設事件，例如表單提交或連結跳轉
+
+		// 使用 SweetAlert2 顯示彈窗
+		Swal.fire({
+			icon: "error",
+			text: "尚未登入！",
+			footer: '<a href="${pageContext.request.contextPath}/member/login.jsp">點此登入</a>'
+		});
+	}else{
 	let cartNum=$("#cartNum");
     let button = $(this);
 	let quantity=$("#ticketQuantity").val();
-$("#ticketQuantity").val(1);
-console.log(quantity);
+	$("#ticketQuantity").val(1);
+	console.log(quantity);
     let url = "${pageContext.request.contextPath}/tsc/save?ticketId=" + ${ticket.ticketId} + "&quantity="+quantity;
     fetch(url)
         .then(function(response) {
@@ -346,6 +357,7 @@ console.log(quantity);
         .catch(function(error) {
             console.log(error);
         });
+	}
 });
 
 //地圖
