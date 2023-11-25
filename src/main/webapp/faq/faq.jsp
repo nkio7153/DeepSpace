@@ -60,7 +60,7 @@ request.setAttribute("faqs", faqs);
             padding-top: 10px;
         }
   .selected-category {
-    color: #ff0000; /* 這裡設置點擊後的顏色，例如紅色 */
+    color: #000000; /* 這裡設置點擊後的顏色，例如紅色 */
 }
     </style>
     <script>
