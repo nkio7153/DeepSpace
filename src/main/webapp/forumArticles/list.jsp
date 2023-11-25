@@ -246,26 +246,43 @@ $(document).ready(function() {
 	    });
 
 	    $('#reportForm').submit(function(event) {
-	        event.preventDefault();
-	        var formData = $(this).serialize(); // 序列化表單數據
+	        event.preventDefault(); // 阻止表單的默認提交行為
+	        
+	        // 獲取檢舉原因的輸入值
+	        var reportContent = $('#reportReason').val().trim();
 
-	        $.ajax({
-	            type: 'post',
-	            url: '<%=request.getContextPath()%>/report?action=add',
-	            data: formData,
-	            dataType: 'json',
-	            success: function(response) {	                
-	                Swal.fire({
-	                    position: "top-center",
-	                    icon: "success",
-	                    title: "檢舉成功",
-	                    showConfirmButton: false,
-	                    timer: 1000
-	                });
-	                $('#reportModal').modal('hide');
-	            }
-	        });
+	        // 檢查是否輸入了檢舉原因
+	        if(reportContent === '') {
+	            // 如果沒有輸入，顯示錯誤提示
+	            Swal.fire({
+	                icon: 'error',
+	                title: '錯誤',
+	                text: '請輸入檢舉原因！'
+	            });
+	        } else {
+	            // 如果輸入了檢舉原因，則序列化表單數據並發送 AJAX 請求
+	            var formData = $(this).serialize();
+
+	            $.ajax({
+	                type: 'post',
+	                url: '<%=request.getContextPath()%>/report?action=add',
+	                data: formData,
+	                dataType: 'json',
+	                success: function(response) {
+	                    // 如果提交成功，顯示成功提示並關閉模態框
+	                    Swal.fire({
+	                        position: "top-center",
+	                        icon: "success",
+	                        title: "檢舉成功",
+	                        showConfirmButton: false,
+	                        timer: 1000
+	                    });
+	                    $('#reportModal').modal('hide');
+	                }
+	            });
+	        }
 	    });
+
 
 });
 
