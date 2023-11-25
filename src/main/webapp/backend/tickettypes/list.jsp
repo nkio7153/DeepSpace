@@ -318,6 +318,7 @@
                    });
                    currentRow.find('.typeName-input').replaceWith($('<span>').addClass('typeName').text(typeName));
                    currentRow.find('.description-input').replaceWith($('<span>').addClass('description').text(description));
+                   currentRow.find('.cancel-btn').hide();
                    currentRow.find('.save-icon').replaceWith(
                        $('<span>').addClass('edit-icon btn btn-primary edit-btn').append(
                            $('<i>').addClass('fas fa-edit')
