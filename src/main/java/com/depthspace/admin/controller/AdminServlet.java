@@ -492,7 +492,7 @@ public class AdminServlet extends HttpServlet {
 				req.setAttribute("funcName", "餐廳管理員");
 			}
 
-			req.getRequestDispatcher("/admin/login.jsp").forward(req, resp);
+			req.getRequestDispatcher("/backadmin/list").forward(req, resp);
 		} else {
 			String revise = "請修正以下資訊";
 			req.setAttribute("errorMsgs", errorMsgs);
