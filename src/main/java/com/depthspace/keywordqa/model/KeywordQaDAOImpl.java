@@ -11,7 +11,6 @@ import java.util.Map;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import com.depthspace.account.model.account.AccountVO;
 import com.depthspace.column.model.ColumnArticlesVO;
 import com.depthspace.faqtypes.model.model.FaqTypesVO;
 import com.depthspace.utils.DBUtil;

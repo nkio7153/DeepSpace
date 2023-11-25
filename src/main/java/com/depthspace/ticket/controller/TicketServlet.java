@@ -27,7 +27,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.alibaba.fastjson.util.IOUtils;
-import com.depthspace.account.model.account.AccountVO;
 import com.depthspace.attractions.model.CityVO;
 import com.depthspace.column.model.ColumnImagesVO;
 import com.depthspace.ticket.model.TicketImagesVO;

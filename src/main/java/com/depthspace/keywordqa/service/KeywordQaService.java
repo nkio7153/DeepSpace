@@ -12,9 +12,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
-import com.depthspace.account.model.account.AccountVO;
-import com.depthspace.account.model.account.dao.AccountDAO;
-import com.depthspace.account.model.account.dao.AccountDAOImpl;
 import com.depthspace.faqtypes.model.model.FaqTypesDAOImpl;
 import com.depthspace.faqtypes.model.model.FaqTypesVO;
 import com.depthspace.keywordqa.model.KeywordQaDAO;

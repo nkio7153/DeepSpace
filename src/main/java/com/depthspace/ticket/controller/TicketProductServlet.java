@@ -19,7 +19,6 @@ import com.google.gson.Gson;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-import com.depthspace.account.model.account.AccountVO;
 import com.depthspace.attractions.model.CityVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.ticket.model.TicketImagesVO;
