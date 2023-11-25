@@ -710,7 +710,7 @@ public class AdminServlet extends HttpServlet {
 			
 			if (loginLocation != null && !loginLocation.isEmpty()) {
 				System.out.println("loginLocation:" + loginLocation);
-				req.getRequestDispatcher(loginLocation).forward(req, resp);
+				resp.sendRedirect("/DepthSpace/"+loginLocation);
 			} else {
 				req.getRequestDispatcher("/backend/backIndex/index.jsp").forward(req, resp);
 				System.out.println(3);
