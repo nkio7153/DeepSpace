@@ -41,9 +41,9 @@ pageContext.setAttribute("list", list);
                 <thead>
                     <tr>
                         <th>流水號</th>
-                        <th>FAQ編號</th>
-                        <th>FAQ名稱</th>
-                        <th>FAQ答案</th>
+                        <th>常見問題編號</th>
+                        <th>常見問題名稱</th>
+                        <th>常見問題答案</th>
                         <th>修改</th>
                         <th>刪除</th>
                     </tr>

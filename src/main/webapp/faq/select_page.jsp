@@ -26,8 +26,7 @@
                             <h3>常見問題 : 首頁</h3>
                         </div>
                         <div class="card-body">
-                        <p>Faq: Home</p>
-                        <h3>FAQ資料查詢:</h3>
+                        <h3>常見問題資料查詢:</h3>
                         <c:if test="${not empty errorMsgs}">
                             <div class="alert alert-danger" role="alert">
                                 <strong>請修正以下錯誤:</strong>
@@ -40,10 +39,10 @@
                         </c:if>
 
                         <ul>
-                          <li><a href='listAllFaq.jsp' class='btn btn-link'>列表</a> all Faqs.</li>
+                          <li><a href='listAllFaq.jsp' class='btn btn-link'>列表</a> 所有常見問題</li>
                           <li>
                             <form method="post" action="faq.do" class="form-inline">
-                                <b>輸入FAQ員工編號 :</b>
+                                <b>輸入常見問題編號 :</b>
                                 <input type="text" name="serialId" class="form-control mx-2">
                                 <input type="hidden" name="action" value="getOne_For_Display">
                                 <button type="submit" class="btn btn-primary">送出</button>
@@ -52,7 +51,7 @@
                           <jsp:useBean id="faqSvc" scope="page" class="com.depthspace.faq.service.FaqService" />
                           <li>
                              <form method="post" action="faq.do" class="form-inline">
-                               <b>選擇FAQ編號:</b>
+                               <b>選擇常見問題編號:</b>
                                <select size="1" name="serialId" class="form-control mx-2">
                                  <c:forEach var="faqVO" items="${faqSvc.all}" > 
                                   <option value="${faqVO.serialId}">${faqVO.serialId}
@@ -64,7 +63,7 @@
                           </li>
                           <li>
                              <form method="post" action="faq.do" class="form-inline">
-                               <b>選擇FAQ問題:</b>
+                               <b>選擇常見問題:</b>
                                <select size="1" name="serialId" class="form-control mx-2">
                                  <c:forEach var="faqVO" items="${faqSvc.all}" > 
                                   <option value="${faqVO.serialId}">${faqVO.faqName}
@@ -76,7 +75,7 @@
                           </li>
                         </ul>
 
-                        <h3>FAQ管理</h3>
+                        <h3>常見問題管理</h3>
                         <ul>
                             <li><a href='addFaq.jsp' class='btn btn-link'>新增</a> a new Faq.</li>
                         </ul>

@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>常見問題 - listOneFaq</title>
+    <title>常見問題</title>
 <%--  include head.jsp--%>
   <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
   <!-- Bootstrap 5 CSS -->
@@ -30,7 +30,7 @@
     <div class="col-lg-10 g-2 transparent rounded mt-1">
 <%--      放入自己body裡的代碼--%>
       <div class="container mt-4">
-        <h3 class="mb-3">常見問題 - listOneFaq</h3>
+        <h3 class="mb-3">常見問題</h3>
         <a href="select_page.jsp" class="btn btn-primary mb-3">
             <img src="images/back1.gif" alt="回首頁" class="img-fluid">
         </a>
@@ -40,9 +40,9 @@
                 <thead class="thead-light">
                     <tr>
                         <th>流水號</th>
-                        <th>FAQ編號</th>
-                        <th>FAQ名稱</th>
-                        <th>FAQ答案</th>
+                        <th>常見問題編號</th>
+                        <th>常見問題名稱</th>
+                        <th>常見問題答案</th>
                     </tr>
                 </thead>
                 <tbody>
