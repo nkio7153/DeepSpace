@@ -187,9 +187,7 @@ public class AttractionsEndServlet extends HttpServlet {
 		    // 如果字串的長度小於或等於六，可以處理相應的邏輯，例如返回原始字串或顯示錯誤訊息
 		    System.out.println("字串長度不足六");
 		}
-		//找景點表格裡的區域Id attrvo.getAreaId()
-//		[attractionsId=1, attractionsTypeId=AttractionsTypeVO [attractionsTypeId=1, typeName=種類1], areaId=14, attractionsName=台北101, description=台北地標建築，高度508米。, attractionsStatus=0, address=台北市信義區信義路五段7號, lon=121.5654, lat=25.0339]
-		//再依據areaId找cityId
+		//找景點表格裡的區域Id attrvo.getAreaId()，再依據areaId找cityId
 		AreaVO avo = areaService.findByPrimaryKey(attrvo.getAreaId());
 //		System.out.println("avo的物件=" + avo);
 		//再由cityId找到對應縣市名稱
@@ -204,8 +202,10 @@ public class AttractionsEndServlet extends HttpServlet {
 		req.setAttribute("attractionsTypes", attractionsTypes);
 		
 		//找到所有區域
-		List<AreaVO> area = areaService.getAll();
+		List<AreaVO> area = areaService.getAllArea(cvo.getCityId());
 		req.setAttribute("area", area);
+//		List<AreaVO> area = areaService.getAll();
+//		req.setAttribute("area", area);
 //		System.out.println("area=" + area);
 
 		//找尋所有縣市

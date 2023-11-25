@@ -105,11 +105,10 @@
                                     <label for="area">區域<span class="required-field">* </span></label>
                                     <select name="area" id="area" class="form-control" required>
                                         <c:forEach var="typeItem" items="${area}">
-                                            <option value="${typeItem.areaId}" 
-                                                ${typeItem.areaId == attrvo.areaId ? 'selected' : ''}>
-                                                ${typeItem.areaName}
-                                            </option>
-                                        </c:forEach>
+											<option value="${typeItem.areaId}" 
+										         	${typeItem.areaId == attrvo.areaId ? 'selected' : ''}>
+										            ${typeItem.areaName}</option>
+										</c:forEach>
                                     </select>
                                 </div>
 
@@ -170,6 +169,9 @@
                 reader.readAsDataURL(file);
             }
         }
+        
     </script>
+        <script src="${pageContext.request.contextPath}/backend/attractions/js/edit.js"></script>
+    
 </body>
 </html>
