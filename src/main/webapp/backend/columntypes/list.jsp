@@ -131,6 +131,13 @@
     background: #98d6a6  !important;
     border: #98d6a6 !important;  
 }
+
+.add-button:active {
+    border: 1px solid #98d6a6 !important;
+}
+.add-button:active .button__icon {
+    background-color: #98d6a6 !important;
+}
 </style>
 
 <title>專欄類型列表</title>

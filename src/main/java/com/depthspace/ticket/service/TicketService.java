@@ -26,6 +26,7 @@ public interface TicketService {
 	List<TicketVO> getAllTickets();   
     //取得所有票券(根據頁面)
     List<TicketVO> getAllTickets2(int currentPage);  
+    List<TicketVO> getAllTicketsDESC(int currentPage);  
     //取得所有票券總頁面數量
     int getPageTotal();
     //取得總票券數 

@@ -106,7 +106,7 @@ public class TicketServlet extends HttpServlet {
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 
-		List<TicketVO> ticketList = ticketService.getAllTickets2(currentPage);
+		List<TicketVO> ticketList = ticketService.getAllTicketsDESC(currentPage);
 
 		int ticketPageQty = ticketService.getPageTotal();
 		req.getSession().setAttribute("ticketPageQty", ticketPageQty);
@@ -193,6 +193,14 @@ public class TicketServlet extends HttpServlet {
 	        }
 	        if (address == null || address.trim().isEmpty()) {
 	        	req.setAttribute("errorMessageAddress", "必填");
+	            hasError = true;
+	        }
+	        if (longitudeStr == null || longitudeStr.trim().isEmpty()) {
+	        	req.setAttribute("errorMessageLongitude", "不得為空(輸入地址自動帶出)");
+	            hasError = true;
+	        }
+	        if (latitudeStr == null || latitudeStr.trim().isEmpty()) {
+	        	req.setAttribute("errorMessageLatitude", "不得為空(輸入地址自動帶出)");
 	            hasError = true;
 	        }
 
