@@ -42,6 +42,17 @@ private SessionFactory factory;
 		}
 	}
 
+	
+	@Override
+	public void deleteForRestId(Integer restId) {
+		List<RestBookingDateVO> list = getSession().createQuery("from RestBookingDateVO where REST_ID = :restId", RestBookingDateVO.class)
+										.setParameter("restId", restId)
+										.list();
+		for (RestBookingDateVO vo : list) {
+			getSession().delete(vo);
+		}
+	}
+
 	@Override
 	public RestBookingDateVO findByPK(RestBookingDateVO restBookingDateVO) {
 		return getSession().get(RestBookingDateVO.class, restBookingDateVO.getCompositeKey());

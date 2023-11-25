@@ -112,7 +112,10 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>LoginFilter</filter-name>
-		<url-pattern>/backend/backIndex/index.jsp</url-pattern>
+		<url-pattern>/ad/*</url-pattern>
+		<url-pattern>/backadmin/*</url-pattern>
+		<url-pattern>/backend/*</url-pattern>
+		<url-pattern>/backadmin/list</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
