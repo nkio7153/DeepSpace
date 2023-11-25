@@ -34,6 +34,44 @@ pageContext.setAttribute("list", list);
     .table-hover tbody tr:hover {
         background-color: #f5f5f5;
     }
+    .table-list .viewimg{
+    max-width: 50%;
+    max-height: none;
+    display: block;
+/*     margin: inherit; */
+    padding-bottom: 20px;
+    }
+    .h5, h5 {
+    font-size: 1.2rem;
+    padding: 0px 0px 10px 0px;
+	}
+	.rowrow{
+    padding: 0px 0px 20px 0px;
+	}
+	.custom-select-wrapper {
+	    position: relative;
+	}
+	
+	.custom-select-wrapper select {
+	    appearance: none; 
+	    -webkit-appearance: none;
+	    -moz-appearance: none;
+	    padding-right: 30px; 
+	}
+	
+	.custom-select-wrapper::after {
+	    content: "\f078"; 
+	    font-family: "FontAwesome";
+	    position: absolute;
+	    top: 0;
+	    right: 10px;
+	    pointer-events: none; 
+	    color: #555;
+	    font-size: 18px;
+	    height: 100%;
+	    display: flex;
+	    align-items: center;
+	}
 </style>
 <title>景點列表</title>
 <%--  include --%>
@@ -159,14 +197,6 @@ pageContext.setAttribute("list", list);
                           
 		                    <div id="carouselExampleIndicators" class="carousel slide">
 		                        <div class="carousel-inner" id="images"></div>
-		                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-		                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		                            <span class="sr-only">Previous</span>
-		                        </a>
-		                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-		                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-		                            <span class="sr-only">Next</span>
-		                        </a>
 							</div>
 		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">景點類型</strong>
 		                        <p id="attractionsType"></p>
@@ -235,8 +265,8 @@ $(document).ready(function() {
 				console.log(data);
 				console.log(data.attractionsId);
 				console.log(data.attractionsName);
-				console.log( $('#attractionsId'));
-				console.log( $('#attractionsName'));
+				console.log( "測試1" + $('#attractionsId'));
+				console.log( "測試2" + $('#attractionsName'));
 			 $('#attractionsId').text(data.attractionsId);
 			 $('#attractionsType').text(data.attractionsTypeId.typeName);
              $('#attrnName').text(data.attractionsName);
@@ -247,10 +277,11 @@ $(document).ready(function() {
              var carouselInner = $('#images').empty();
              var carouselItem = $('<div>').addClass('carousel-item active');
              var img = $('<img>')
-                    .data("src", "<%=request.getContextPath()%>/attractionsImage?attractionsId=" + data.attractionsId)
-                 .addClass("d-block w-100");
-             carouselItem.append(img);
-             carouselInner.append(carouselItem);
+	             .attr("src", "<%=request.getContextPath()%>/attractionsImage?attractionsId=" + data.attractionsId)
+	             .addClass("viewimg");
+	         carouselItem.append(img);
+	         carouselInner.append(carouselItem);
+
 	        })
 	        
 	        .catch(function(error){

@@ -1,6 +1,7 @@
 package com.depthspace.member.model.hibernate;
 
 import java.util.List;
+import java.util.Map;
 
 import com.depthspace.attractions.model.AttractionsVO;
 import com.depthspace.member.model.MemVO;
@@ -35,4 +36,6 @@ public interface HibernateMemDAO_Interface {
 	int updateStatus(Integer memId , byte status);
 
 	List<MemVO> searchMembers(String memName);
+
+	List<MemVO> getByCompositeQuery(Map<String, List<String>> map);
 }

@@ -33,6 +33,21 @@
                             </select>
                     		<input type="hidden" name="adminStatus" id="adminStatus" value="${adminvo.adminStatus}">
                     		
+                    		<td>
+		                    	<c:choose>
+					                <c:when test="${admin.adminFuncName == 2}">
+					                    總管理員
+					                </c:when>
+					                <c:when test="${admin.adminFuncName == 1}">
+					                    餐廳管理員
+					                </c:when>
+					                 <c:otherwise>
+					                    未知狀態
+					                </c:otherwise>
+					            </c:choose>
+                			</td>
+                			
+                    		
                     	</div>
                     	<div class="col-md-4">測試2</div>
                     	<div class="col-md-2"></div>

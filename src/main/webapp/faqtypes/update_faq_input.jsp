@@ -16,7 +16,7 @@
 <%--  include head.jsp--%>
   <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
   <!-- Bootstrap 5 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+<!--     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"> -->
 </head>
 <body>
 <%--include header.jsp--%>
@@ -58,7 +58,7 @@
                         <tr>
                             <td>問題類型:</td>
                             <td>
-                                <input type="text" class="form-control" name="qTypes" value="${faqTypesVO.qTypes}" size="45"/>
+                                <input type="text" class="form-control" name="qTypes" value="${faqTypesVO.QTypes}" size="45"/>
                             </td>
                         </tr>
                     </table>
@@ -73,7 +73,7 @@
 </div>
 
 <!-- Bootstrap 5 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<!--     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script> -->
+<!--     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script> -->
 </body>
 </html>

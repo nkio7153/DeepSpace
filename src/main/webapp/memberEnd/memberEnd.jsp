@@ -164,7 +164,7 @@ pageContext.setAttribute("list", list);
                   return response.json();
                 })
                 .then(function(data){
-//                 	console.log(data); //啟用
+                	console.log(data); //啟用
                 	var row = document.querySelector('[data-memid="' + memId + '"]').closest('tr');
                     updateTableRow(row, data);
                 })
@@ -177,6 +177,24 @@ pageContext.setAttribute("list", list);
     function updateTableRow(row, newData) {
         // 根據實際的資料結構更新表格行的內容
         row.cells[9].textContent = newData; //accStatus 是表格中的第 10 個欄位
+        
+     // 找到按鈕所在的單元格
+        var buttonCell = row.cells[11]; // 假設按鈕在第 12 個欄位，你需要根據實際情況調整
+        
+        // 取得按鈕的 HTML 代碼
+        var buttonHtml = buttonCell.innerHTML;
+        
+        // 使用正則表達式將停權和啟用的按鈕顏色和功能對調
+        buttonHtml = buttonHtml.replace(/btn-danger/g, 'tempColor'); // 將 btn-danger 替換為一個臨時標識
+        buttonHtml = buttonHtml.replace(/btn-primary/g, 'btn-danger');
+        buttonHtml = buttonHtml.replace(/tempColor/g, 'btn-primary'); // 將臨時標識替換為 btn-primary
+        
+        buttonHtml = buttonHtml.replace(/停權/g, 'tempAction'); // 將停權替換為一個臨時標識
+        buttonHtml = buttonHtml.replace(/啟用/g, '停權');
+        buttonHtml = buttonHtml.replace(/tempAction/g, '啟用'); // 將臨時標識替換為啟用
+        
+        // 將修改後的 HTML 設置回按鈕所在的單元格
+        buttonCell.innerHTML = buttonHtml;
     }
     
 $(document).ready(function () {
@@ -242,6 +260,7 @@ $(document).ready(function () {
             }
 
             newRow.append("<td>" + statusButton + "</td>");
+            $("#page1").hide();
             $("#page2").hide();
             
 //             newRow.append("<td>" +

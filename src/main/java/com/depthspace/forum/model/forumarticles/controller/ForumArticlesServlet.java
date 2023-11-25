@@ -106,48 +106,49 @@ public class ForumArticlesServlet extends HttpServlet {
 			break;
 		}
 	}
-	
-	//後臺刪除文章
+
+	// 後臺刪除文章
 	private void backDel(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		Integer articleId = Integer.parseInt(req.getParameter("articleId"));
-		forumArticlesService.delete(articleId);	
+		forumArticlesService.delete(articleId);
 		resp.setContentType("application/json");
 		resp.setCharacterEncoding("UTF-8");
 		PrintWriter out = resp.getWriter();
 		out.print("{\"status\":\"success\"}");
 		out.flush();
-		delCollect(req,resp);
-		delLike(req,resp);
+		delCollect(req, resp);
+		delLike(req, resp);
 	}
 
-	//後臺取得所有文章
+	// 後臺取得所有文章
 	private void backList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		List<ForumArticlesVO> forum = forumArticlesService.getAll();
 		JSONArray arr = JSONArray.parseArray(JSON.toJSONString(forum));
 		resp.setContentType("application/json; charset=UTF-8");
 		PrintWriter out = resp.getWriter();
-		out.print(arr.toString());	
+		out.print(arr.toString());
 	}
 
-	//文章刪除連帶刪除按讚紀錄
+	// 文章刪除連帶刪除按讚紀錄
 	private void delLike(HttpServletRequest req, HttpServletResponse resp) {
 		Integer articleId = Integer.valueOf(req.getParameter("articleId"));
 		articlesLikeService.deleteByArticleId(articleId);
 	}
 
-	//文章刪除連帶刪除收藏紀錄
+	// 文章刪除連帶刪除收藏紀錄
 	private void delCollect(HttpServletRequest req, HttpServletResponse resp) {
 		Integer articleId = Integer.valueOf(req.getParameter("articleId"));
-		articlesCollectService.deleteByArticleId(articleId);	
+		articlesCollectService.deleteByArticleId(articleId);
 	}
 
-	//取得文章類型並轉發到修改表單
-	private void editForumArticles(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	// 取得文章類型並轉發到修改表單
+	private void editForumArticles(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		List<ArticlesTypeVO> atvo = articlesTypeService.getAll();
-	    String json = new Gson().toJson(atvo);
-	    resp.setContentType("application/json");
-	    resp.setCharacterEncoding("UTF-8");
-	    resp.getWriter().write(json);
+		String json = new Gson().toJson(atvo);
+		resp.setContentType("application/json");
+		resp.setCharacterEncoding("UTF-8");
+		resp.getWriter().write(json);
 	}
 
 	// 取得該會員的收藏文章列表
@@ -231,7 +232,6 @@ public class ForumArticlesServlet extends HttpServlet {
 			jsonObject.put("articlesCollectList", list); // 第一個收藏列表
 			jsonObject.put("articlesLikeList", like); // 第二個按讚列表
 			jsonObject.put("forumArticlesList", forum); // 第三個全部列表
-			
 
 			// 設置響應內容類型
 			resp.setContentType("application/json; charset=UTF-8");
@@ -252,52 +252,50 @@ public class ForumArticlesServlet extends HttpServlet {
 	private void deleteForumArticles(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		Integer articleId = Integer.parseInt(req.getParameter("articleId"));
 		forumArticlesService.delete(articleId);
-		delCollect(req,resp);
-		delLike(req,resp);
+		delCollect(req, resp);
+		delLike(req, resp);
 	}
 
 	// 修改文章
 	private void updateForumArticles(HttpServletRequest req, HttpServletResponse resp)
-	        throws IOException, ServletException {
-	    System.out.println("執行Update方法");
+			throws IOException, ServletException {
+		System.out.println("執行Update方法");
 
-	    try {
-	        Integer articleId = parseIntegerParameter(req.getParameter("articleId"));
+		try {
+			Integer articleId = parseIntegerParameter(req.getParameter("articleId"));
 
-	        // 從數據庫獲取現有的文章
-	        ForumArticlesVO forumArticle = forumArticlesService.getByArticleId(articleId);
+			// 從數據庫獲取現有的文章
+			ForumArticlesVO forumArticle = forumArticlesService.getByArticleId(articleId);
 
+			// 更新文章的其他欄位
+			forumArticle.setMemId(parseIntegerParameter(req.getParameter("memId")));
+			forumArticle.setArtiTypeId(parseIntegerParameter(req.getParameter("artiTypeId")));
+			forumArticle.setArtiTitle(req.getParameter("artiTitle"));
+			forumArticle.setArtiTime(parseTimestamp(req.getParameter("artiTime")));
+			forumArticle.setArtiText(req.getParameter("artiText"));
+			forumArticle.setArtiLk(parseIntegerParameter(req.getParameter("artiLk")));
 
-	        // 更新文章的其他欄位
-	        forumArticle.setMemId(parseIntegerParameter(req.getParameter("memId")));
-	        forumArticle.setArtiTypeId(parseIntegerParameter(req.getParameter("artiTypeId")));
-	        forumArticle.setArtiTitle(req.getParameter("artiTitle"));
-	        forumArticle.setArtiTime(parseTimestamp(req.getParameter("artiTime")));
-	        forumArticle.setArtiText(req.getParameter("artiText"));
-	        forumArticle.setArtiLk(parseIntegerParameter(req.getParameter("artiLk")));
+			// 處理圖片更新
+			Part artiImgStr2 = req.getPart("artiImgStr");
+			if (artiImgStr2 != null && artiImgStr2.getSize() > 0) {
+				InputStream inputStream = artiImgStr2.getInputStream();
+				byte[] artiImg = inputStream.readAllBytes();
+				forumArticle.setArtiImg(artiImg); // 設置新圖片
+				inputStream.close();
+			} else {
+				System.out.println("保持舊圖片");
+			}
 
-	        // 處理圖片更新
-	        Part artiImgStr2 = req.getPart("artiImgStr");
-	        if (artiImgStr2 != null && artiImgStr2.getSize() > 0) {
-	            InputStream inputStream = artiImgStr2.getInputStream();
-	            byte[] artiImg = inputStream.readAllBytes();
-	            forumArticle.setArtiImg(artiImg); // 設置新圖片
-	            inputStream.close();
-	        } else {
-	            System.out.println("保持舊圖片");
-	        }
+			// 執行更新操作
+			forumArticlesService.update(forumArticle);
 
-	        // 執行更新操作
-	        forumArticlesService.update(forumArticle);
-
-	        // 重新獲取並顯示文章列表
-	        getMemListForumArticles(req, resp);
-	    } catch (NumberFormatException | IOException | ServletException e) {
-	        e.printStackTrace();
-	        resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input: " + e.getMessage());
-	    }
+			// 重新獲取並顯示文章列表
+			getMemListForumArticles(req, resp);
+		} catch (NumberFormatException | IOException | ServletException e) {
+			e.printStackTrace();
+			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input: " + e.getMessage());
+		}
 	}
-
 
 	// 新增文章
 	private void addForumArticles(HttpServletRequest req, HttpServletResponse resp)
@@ -331,17 +329,17 @@ public class ForumArticlesServlet extends HttpServlet {
 //				artiImg = baos.toByteArray();
 				inputStream.close();
 //				baos.close();
-			}else {
-				  // 使用者沒有上傳圖片，使用預設圖片
-			    InputStream inputStream = new FileInputStream(defaultImagePath);
-			    artiImg = inputStream.readAllBytes();
-			    inputStream.close();
+			} else {
+				// 使用者沒有上傳圖片，使用預設圖片
+				InputStream inputStream = new FileInputStream(defaultImagePath);
+				artiImg = inputStream.readAllBytes();
+				inputStream.close();
 			}
 
-			ForumArticlesVO forum = new ForumArticlesVO(null, memId, artiTypeId, artiTitle, artiTime, artiText,
-					artiLk, artiImg);
+			ForumArticlesVO forum = new ForumArticlesVO(null, memId, artiTypeId, artiTitle, artiTime, artiText, artiLk,
+					artiImg);
 			forumArticlesService.insert(forum);
-			resp.sendRedirect(req.getContextPath() + "/forumArticles/list.jsp");
+			getMemListForumArticles(req, resp);
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input: " + e.getMessage());
