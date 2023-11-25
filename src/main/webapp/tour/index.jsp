@@ -19,7 +19,7 @@ pageContext.setAttribute("list", list);
 <jsp:include page="../indexpage/head.jsp" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<!--     <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">  
   
 
@@ -77,8 +77,8 @@ pageContext.setAttribute("list", list);
     }
 
     h1 {
-        font-size: 24px;
-        color: #008CBA;
+        font-size: 2.5rem;
+         color: #2D3E4E;
         text-align: center;
         margin-top: 20px;
     }
@@ -169,8 +169,8 @@ pageContext.setAttribute("list", list);
 	<jsp:include page="../indexpage/header.jsp" />
 	<jsp:include page="../indexpage/headpic.jsp" />
 
-	<h1>查看我的行程列表</h1>
-
+	<h1>行程列表</h1>
+	<hr>
         <div style="display: none">
             <%@ include file="../tour/page1.file"%>
         </div>

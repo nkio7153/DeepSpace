@@ -97,7 +97,7 @@ public class HbTourDAOImpl implements HbTourDAO_Interface{
 
 	@Override
 	public List<TourView> getOneTourList(Integer tourId, Integer memId) {
-//		System.out.println("tourId=" + tourId + "memId=" + memId);
+		System.out.println("tourId=" + tourId + "memId=" + memId);
 //	    Session session = getSession();
 	    List<TourView> list = getSession().createQuery("from TourView where tourId= :tourId AND memId = :memId", TourView.class)
 	            .setParameter("tourId", tourId)

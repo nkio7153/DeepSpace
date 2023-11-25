@@ -88,9 +88,10 @@
 	<jsp:include page="../indexpage/header.jsp" />
 	<jsp:include page="../indexpage/headpic.jsp" />
 
-	<h1 align="center">歡迎登入成功！</h1>
-	<p align="center">您已成功登入，歡迎回來，${authenticatedMem.memName}！</p>
-	<hr>
+	<h2 style="font-weight:500; margin-top:10px;" align="center">親愛的 ${authenticatedMem.memName} 您好</h2>
+<%-- 	<p align="center">您好，${authenticatedMem.memName}！</p> --%>
+	<h4 style="font-weight:500; margin-top:10px;" align="center">會員資訊</h4>
+	<hr style="box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);">
 
 	<!-- 新增行程規劃查詢按鈕 -->
 	<!-- 	<div class="info-container"> -->
@@ -105,7 +106,6 @@
 	<!-- 	</div> -->
 
 	<!-- 		<div class="info-details"> -->
-	<h1 align="center">我的會員資訊</h1>
 	<table class="info-table">
 		<tr>
 			<th style="display: none;">會員編號</th>

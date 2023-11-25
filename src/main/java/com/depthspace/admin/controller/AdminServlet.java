@@ -683,16 +683,17 @@ public class AdminServlet extends HttpServlet {
 		String adminAcc = req.getParameter("adminAcc");
 		String password = req.getParameter("password");
 		AdminService ms = new AdminService();
-		String loginLocation = req.getParameter("loginLocation");
+		HttpSession session = req.getSession();
+		String loginLocation = (String) session.getAttribute("location");
+		System.out.println("loginLocation1:" + loginLocation);
 
 		// 只調用一次allowUser
 		int loginResult = allowUser(adminAcc, password);
 
 		if (loginResult == 1) {
 			System.out.println("沒有此帳號");
-			resp.sendRedirect(req.getContextPath() + "/admin/login.jsp?error=false&requestURI=" + loginLocation);
+			resp.sendRedirect(req.getContextPath() + "/admin/login.jsp");
 		} else if (loginResult == 3) {
-			HttpSession session = req.getSession();
 			AdminVO admin = ms.getAdminInfo(adminAcc);
 
 			// 設定狀態顯示
@@ -706,16 +707,22 @@ public class AdminServlet extends HttpServlet {
 
 			session.setAttribute("admin", admin); // 會員物件
 			session.setAttribute("adminId", admin.getAdminId()); // 會員編號
-
-			req.getRequestDispatcher("/backend/backIndex/index.jsp").forward(req, resp);
+			
+			if (loginLocation != null && !loginLocation.isEmpty()) {
+				System.out.println("loginLocation:" + loginLocation);
+				req.getRequestDispatcher(loginLocation).forward(req, resp);
+			} else {
+				req.getRequestDispatcher("/backend/backIndex/index.jsp").forward(req, resp);
+				System.out.println(3);
+			}
 		} else if (loginResult == 4) {
-			resp.sendRedirect(req.getContextPath() + "/admin/login.jsp?error=true&requestURI=" + loginLocation);
+			resp.sendRedirect(req.getContextPath() + "/admin/login.jsp");
 		} else if (loginResult == 5) {
-			resp.sendRedirect(req.getContextPath() + "/admin/login.jsp?error=nostatus&requestURI=" + loginLocation);
+			resp.sendRedirect(req.getContextPath() + "/admin/login.jsp");
 		} else if (loginResult == 6) {
-			resp.sendRedirect(req.getContextPath() + "/admin/login.jsp?error=nostatus&requestURI=" + loginLocation);
+			resp.sendRedirect(req.getContextPath() + "/admin/login.jsp");
 		} else if (loginResult == 7) {
-			resp.sendRedirect(req.getContextPath() + "/admin/login.jsp?error=nostatus&requestURI=" + loginLocation);
+			resp.sendRedirect(req.getContextPath() + "/admin/login.jsp");
 		}
 	}
 

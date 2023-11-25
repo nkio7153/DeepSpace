@@ -71,7 +71,7 @@ public class TourServlet extends HttpServlet {
 			break;
 			//查詢單一行程內容
 		case "/memTourList":
-			domemTourList(req, resp);
+			doMemTourList(req, resp);
 			break;
 		case "/showDetail":
 			showDetail(req, resp);
@@ -475,22 +475,16 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 		if(session.getAttribute("memId")!=null) {
             memId = (Integer)session.getAttribute("memId");
         }
-//		try {
-//			memId = Integer.valueOf(session.getParameter("memId"));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return;
-//		}
+
 		List<TourVO> list = ts.getByMemId(memId);
 		req.setAttribute("list", list);
 		req.setAttribute("memId", memId);
-		
-		
+
 		req.getRequestDispatcher("/tour/index.jsp").forward(req, resp);
 	}
 
 	// 查詢單獨行程
-	private void domemTourList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void doMemTourList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Integer memId;
 		Integer tourId;
 		
@@ -548,11 +542,17 @@ private void doSaveSecond(HttpServletRequest req, HttpServletResponse resp) thro
 //		=======================================================================================
 		//用TourView把所有要放在會員形成列表的資料都拿出來
 		List<TourView> list = ts.getOneTourList(tourId, memId);
-
+		System.out.println(list);
+		
 		// 使用Comparator對list物件進行排序，依據天數排序
 		Collections.sort(list, Comparator.comparingInt(TourView::getTourDays));
 		
-		System.out.println(list);
+//		if(list == null) {
+//			List<TourView> list2 ;
+//			list2 = ts.getOneByMemId(tourId, memId);
+//		}
+		
+		
 		req.setAttribute("list", list);
 		req.getRequestDispatcher("/tour/memTourList.jsp").forward(req, resp);
 	}
