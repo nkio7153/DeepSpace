@@ -708,7 +708,7 @@ public class AdminServlet extends HttpServlet {
 			session.setAttribute("admin", admin); // 會員物件
 			session.setAttribute("adminId", admin.getAdminId()); // 會員編號
 			
-			if (!loginLocation.isEmpty()) {
+			if (loginLocation != null && !loginLocation.isEmpty()) {
 				System.out.println("loginLocation:" + loginLocation);
 				req.getRequestDispatcher(loginLocation).forward(req, resp);
 			} else {
