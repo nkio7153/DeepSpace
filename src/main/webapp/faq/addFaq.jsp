@@ -47,15 +47,15 @@
                         <form method="post" action="faq.do" name="form1">
                             <div class="form-group">
                                 <label for="faqNo">常見問題編號:</label>
-                                <input type="text" class="form-control" name="faqNo" value="<%= (faqVO==null)? "1" : faqVO.getFaqNo()%>" size="45">
+                                <input type="text" class="form-control" name="faqNo" value="<%= (faqVO==null)? "101" : faqVO.getFaqNo()%>" size="45">
                             </div>
                             <div class="form-group">
                                 <label for="faqName">常見問題名稱:</label>
-                                <input type="text" class="form-control" name="faqName" value="<%= (faqVO==null)? "愛莉" : faqVO.getFaqName()%>" size="45">
+                                <input type="text" class="form-control" name="faqName" value="<%= (faqVO==null)? "測試" : faqVO.getFaqName()%>" size="45">
                             </div>
                             <div class="form-group">
                                 <label for="faqAns">常見問題答案:</label>
-                                <input type="text" class="form-control" name="faqAns" value="<%= (faqVO==null)? "殺殺" : faqVO.getFaqName()%>" size="45">
+                                <input type="text" class="form-control" name="faqAns" value="<%= (faqVO==null)? "你好" : faqVO.getFaqName()%>" size="45">
                             </div>
                             <input type="hidden" name="action" value="insert">
                             <button type="submit" class="btn btn-primary">送出新增</button>

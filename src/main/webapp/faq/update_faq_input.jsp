@@ -14,7 +14,7 @@
 <html>
 <head>
      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>FAQ資料修改 - update_faq_input.jsp</title>
+    <title>常見問題資料修改</title>
 <%--  include head.jsp--%>
   <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
   <!-- Bootstrap 5 CSS -->
@@ -35,11 +35,11 @@
       <div class="col-lg-10">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
-                        <h3>FAQ員工資料修改 - update_faq_input.jsp</h3>
+                        <h3>常見問題資料修改</h3>
                     </div>
                     <div class="card-body">
                         <h4><a href="select_page.jsp" class="text-light">回首頁</a></h4>
-                        <h3>資料修改:</h3>
+                        <h3>常見問題資料修改:</h3>
                         <c:if test="${not empty errorMsgs}">
                             <div class="alert alert-danger">
                                 <strong>請修正以下錯誤:</strong>
@@ -52,19 +52,19 @@
                         </c:if>
                         <form method="post" action="faq.do" name="form1">
                             <div class="form-group">
-                                <label>SerialId:</label>
+                                <label>流水號:</label>
                                 <input type="text" class="form-control" name="serialId" value="<%=faqVO.getSerialId()%>" readonly>
                             </div>
                             <div class="form-group">
-                                <label>Faq編號:</label>
+                                <label>常見問題編號:</label>
                                 <input type="text" class="form-control" name="faqNo" value="<%=faqVO.getFaqNo()%>">
                             </div>
                             <div class="form-group">
-                                <label>Faq名稱:</label>
+                                <label>常見問題名稱:</label>
                                 <input type="text" class="form-control" name="faqName" value="<%=faqVO.getFaqName()%>">
                             </div>
                             <div class="form-group">
-                                <label>Faq答案:</label>
+                                <label>常見問題答案:</label>
                                 <input type="text" class="form-control" name="faqAns" value="<%=faqVO.getFaqAns()%>">
                             </div>
                             <input type="hidden" name="action" value="update">
