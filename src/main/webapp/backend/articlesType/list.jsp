@@ -8,10 +8,10 @@
 <head>
 <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
     <title>文章類型列表</title>
-    <!-- 引入 Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- 引入 FontAwesome 圖標 -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
 
@@ -40,14 +40,22 @@
         // 初始載入文章類型列表
         getTypeList();
 
-        // 綁定新增類型按鈕的點擊事件
+     	// 綁定新增類型按鈕的點擊事件
         $("#btnAdd").click(function(){
             $("#Add").show(); // 顯示新增表單
+            $("#btnAdd").hide(); // 隱藏新增按鈕
         });
 
         // 綁定取消按鈕的點擊事件
         $("#btnCancel").click(function(){
             $("#Add").hide(); // 隱藏新增表單
+            $("#btnAdd").show(); // 顯示新增按鈕
+        });
+        
+        // 綁定取消按鈕的點擊事件
+        $("#btnAddSave").click(function(){
+            $("#Add").hide(); // 隱藏新增表單
+            $("#btnAdd").show(); // 顯示新增按鈕
         });
 
         // 綁定儲存按鈕的提交事件
@@ -63,9 +71,6 @@
                     $("#Add").hide(); // 隱藏新增表單
                     $("#addForm")[0].reset(); // 重置表單欄位為初始值
                     getTypeList(); // 刷新文章類型列表
-                },
-                error: function() {
-                    alert("提交失敗");
                 	}
             	});
             }
@@ -74,18 +79,35 @@
     });
     
     function deleteType(artiTypeId) {
-        var jsonObj = { artiTypeId: artiTypeId };
-        $.ajax({
-            type: 'post',
-            data: jsonObj,
-            url: '<%=request.getContextPath()%>/type?action=del',
-            async: false,
-            success: function(data) {
-                alert('刪除成功');    
-                // 清除list
-                $('#typeList table tr').each(function() {
-                    if ($(this).find('td:first').text() == artiTypeId) {
-                        $(this).remove();
+        // 首先顯示確認彈窗
+        Swal.fire({
+            title: "您確定要刪除嗎?",
+            text: "您將無法恢復此操作！",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "是的",
+            cancelButtonText: "取消"
+        }).then((result) => {
+            // 如果用戶確認了刪除操作
+            if (result.isConfirmed) {
+                var jsonObj = { artiTypeId: artiTypeId };
+                $.ajax({
+                    type: 'post',
+                    data: jsonObj,
+                    url: '<%=request.getContextPath()%>/type?action=del',
+                    async: true,
+                    success: function(data) {
+                        // 刪除成功，顯示提示彈窗
+                        Swal.fire("已刪除！", "類型已被刪除。", "success").then(() => {
+                            // 從頁面中移除該類型的元素
+                            $('#typeList table tr').each(function() {
+                                if ($(this).find('td:first').text() == artiTypeId) {
+                                    $(this).remove();
+                                }
+                            });
+                        });
                     }
                 });
             }
@@ -113,36 +135,24 @@
     }
     </script>
     <style>
-        table {
-        width: 95%;
-        border-collapse: collapse;
-        background: #fff;
-        background: #fff;
-    	margin-left: 35px;
-    	margin-top: 10px;
-    	margin-bottom: 20px;
-	    }
-	    th, td {
-	        border: 1px solid #ddd;
-	        padding: 8px;
-	        text-align: left;
-	    }
-	    th {
-	        background-color: #f2f2f2;
-	        text-align: center; /* 加入這行代碼來置中表頭 */
-	    }
-		.custom-thead {
-		    background-color: #ADADAD; /* 藍色背景 */
-		    color: white; /* 白色文字 */
-		}
-		
-		.width-id {
-        	max-width: 60px; /* 限制 ID 欄位的最大寬度 */
-    	}
     	
    		.width-action {
         	max-width: 90px; /* 限制操作欄位（垃圾桶圖標）的最大寬度 */
     	}
+    	
+    	.type{
+    		margin-top: 10px;
+    	}
+    	
+    	.marg{
+		margin-top: 10px;
+		margin-bottom: 10px;
+		}
+		
+		.margs{
+		margin-top: -10px;
+		margin-bottom: 20px;
+		}
 	</style>
 </head>
 <body>
@@ -157,29 +167,26 @@
 	<div class="col-lg-10 g-2 transparent rounded mt-1">
 	<h3 class="text-center mt-2">文章類型列表</h3>
 	 <hr class="my-0">
-		<div>
-		<!-- 修改按鈕的 onclick 事件，並給新增按鈕添加 id -->
-		<button id="btnAdd" class="btn btn-primary mb-2 float-right">新增類型</button>
-		<div id="Add" class="row" style="display: none;">
-			<div class="col-md-6 offset-md-4">
-				<form id="addForm" method="Post"
-					action="${pageContext.request.contextPath}/type?action=add">
-					<div class="form-group row">
-						<label for="artiTypeText" class="col-form-label">類型名稱</label>
-						<div class="col-sm-6">
-							<input type="text" name="artiTypeText" id="artiTypeText"
-								class="form-control">
-						</div>
-						<div class="col-sm-4">
-							<input type="submit" id="btnAddSave" value="儲存"
-								class="btn btn-primary"> <input type="button"
-								id="btnCancel" value="取消" class="btn btn-secondary">
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+		<div class="row">
+            <!-- 新增按鈕，默認顯示 -->
+            <div class="col-lg-12 marg">
+                <button id="btnAdd" class="btn btn-primary mb-2 float-right">新增類型</button>
+            </div>
+        </div>
+        <!-- 新增類型的表單，默認隱藏 -->
+        <form id="addForm" method="Post" action="${pageContext.request.contextPath}/type?action=add">
+	        <div id="Add" class="row" style="display: none;">
+	            <!-- 類型名稱輸入框 -->
+	            <div class="col-lg-4 margs">
+	                <input type="text" name="artiTypeText" id="artiTypeText" class="form-control">
+	            </div>
+	            <!-- 儲存和取消按鈕 -->
+	            <div class="col-lg-4 margs">
+	                <input type="submit" id="btnAddSave" value="儲存" class="btn btn-primary">
+	                <input type="button" id="btnCancel" value="取消" class="btn btn-secondary">
+	            </div>
+	        </div>
+        </form>
 		<div id="typeList">
 			<!-- 這裡將顯示從 Servlet 獲取的數據 -->
 		</div>

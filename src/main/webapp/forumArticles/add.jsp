@@ -57,6 +57,26 @@
 <body>
 <script>
 
+$(document).ready(function() {
+    // 綁定表單的提交事件
+    $("#addForm").submit(function(event) {
+        var artiTitle = $("#artiTitle").val().trim(); // 獲取並去除兩邊空白
+        var artiText = $("#artiText").val().trim(); // 同上
+
+        // 檢查是否為空
+        if (artiTitle === "" || artiText === "") {
+            event.preventDefault(); // 阻止表單提交
+            Swal.fire({ // 使用 SweetAlert 顯示錯誤信息
+                icon: 'error',
+                title: '錯誤',
+                text: '文章標題和內容都不能為空！'
+            });
+        }
+        // 如果不為空，表單將正常提交
+    });
+});
+
+
 tinymce.init({
     selector: 'textarea',
     toolbar: 'bold italic',  // 加入粗體、斜體和下劃線按鈕

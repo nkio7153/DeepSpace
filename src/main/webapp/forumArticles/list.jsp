@@ -459,7 +459,7 @@ $(document).ready(function() {
         </select>
         <input type="submit" value="查詢">
     </form>
-    <a type="button" class="btn btn-primary select" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a>
+    <a type="button" class="btn btn-primary select" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a>
     </div>
     <div id="articlesRow" class="row">
         <!-- 卡片內容將會通過 jQuery 動態加載到這裡 -->

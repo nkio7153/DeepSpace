@@ -242,9 +242,6 @@ function closeModal() {
 	    height: 100px; /* 設定圖片固定高度 */
 	    object-fit: fill; /* 會改變圖片的寬高比以填滿容器 */
 	}
-	.marg{
-		margin-top: 10px;
-	}
 	.select {
 	    background-color: #63bfc9;
 	    color: white;

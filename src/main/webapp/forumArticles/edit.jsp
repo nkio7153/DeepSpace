@@ -19,7 +19,7 @@
             padding: 0;
             background-color: #f7f7f7;
         }
-        #Add {
+        #Edit {
             width: 80%;
             margin: 20px auto;
         }
@@ -77,6 +77,23 @@ $(document).ready(function() {
         error: function(error) {
             console.log('Error:', error);
         }
+    });
+    
+    // 綁定表單的提交事件
+    $("#editForm").submit(function(event) {
+        var artiTitle = $("#artiTitle").val().trim(); // 獲取並去除兩邊空白
+        var artiText = $("#artiText").val().trim(); // 同上
+
+        // 檢查是否為空
+        if (artiTitle === "" || artiText === "") {
+            event.preventDefault(); // 阻止表單提交
+            Swal.fire({ // 使用 SweetAlert 顯示錯誤信息
+                icon: 'error',
+                title: '錯誤',
+                text: '文章標題和內容都不能為空！'
+            });
+        }
+        // 如果不為空，表單將正常提交
     });
 });
 

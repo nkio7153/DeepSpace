@@ -278,11 +278,12 @@
                                  aria-labelledby="headingArticleManagement"
                                  data-bs-parent="#sidebar-wrapper">
                                 <div class="color-4-1 py-2 collapse-inner rounded">
-                                    <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/articles/list.jsp">文章列表</a>
-                                    <br>
-                                    <a class="text-choco collapse-item fs-6 offset-1"
-                                       href="${pageContext.request.contextPath}/backend/reportarticles/list.jsp">檢舉管理</a>
-                                </div>
+		                            <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/articles/list.jsp">文章列表</a>
+		                            <br>
+		                            <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/reportarticles/list.jsp">檢舉管理</a>
+		                            <br>
+		                            <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/articlesType/list.jsp">類型管理</a>
+		                        </div>
                             </div>
                         </li>
 
