@@ -307,6 +307,7 @@ $(document).on('click', '.Nsave-btn', function() {
                     timer: 1500
                 });
                 currentRow.find('.col-type-input').replaceWith($('<span>').addClass('colTypeName').text(colTypeName));
+                currentRow.find('.cancel-btn').hide();
                 currentRow.find('.save-icon').replaceWith(
                     $('<span>').addClass('edit-icon btn btn-primary edit-btn').append(
                         $('<i>').addClass('fas fa-edit')                    
