@@ -123,8 +123,9 @@
 		<url-pattern>/backend/tickettypes/*</url-pattern>
 		
 		<url-pattern>/RestApi/getcheckBooking</url-pattern>
-		<url-pattern>/backend/tickettypes/*</url-pattern>
 		
+		<url-pattern>/backmem/*</url-pattern>
+		<url-pattern>/backmem/list</url-pattern>
 		<url-pattern>/backadmin/*</url-pattern>
 		<url-pattern>/backadmin/list</url-pattern>
 		<dispatcher>REQUEST</dispatcher>

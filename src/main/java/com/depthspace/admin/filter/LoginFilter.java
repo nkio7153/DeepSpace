@@ -41,6 +41,7 @@ public class LoginFilter implements Filter{
 			String requestURI = req.getRequestURI();
 			String contextPath = req.getContextPath();
 	        String location = requestURI.substring(contextPath.length());
+	        
 			session.setAttribute("location", location);//將當前請求的URI存入Session中，以便稍後重定向後能夠知道用戶原來要訪問的頁面。
 			System.out.println("非登入會員時，所在的location="+location);
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/admin/login.jsp");
