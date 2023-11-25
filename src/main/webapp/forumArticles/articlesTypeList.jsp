@@ -35,8 +35,14 @@ $(document).ready(function() {
 
 	        let check = $("[name='check']").text();
 	        if(check == "登入/註冊") {
-	            event.preventDefault();
-	            window.alert("請先登入");
+	            event.preventDefault(); // 防止預設事件，例如表單提交或連結跳轉
+
+	            // 使用 SweetAlert2 顯示彈窗
+	            Swal.fire({
+	                icon: "error", // 設置彈窗圖示為錯誤
+	                text: "尚未登入！", // 設置顯示的文字
+	                footer: '<a href="${pageContext.request.contextPath}/member/login.jsp">點此登入</a>' // 設置彈窗底部，包含一個登入連結
+	            });
 	            return; // 阻止後續代碼執行
 	        }
 
@@ -63,8 +69,14 @@ $(document).ready(function() {
 
 	        let check = $("[name='check']").text();
 	        if(check == "登入/註冊") {
-	            event.preventDefault();
-	            window.alert("請先登入");
+	            event.preventDefault(); // 防止預設事件，例如表單提交或連結跳轉
+
+	            // 使用 SweetAlert2 顯示彈窗
+	            Swal.fire({
+	                icon: "error", // 設置彈窗圖示為錯誤
+	                text: "尚未登入！", // 設置顯示的文字
+	                footer: '<a href="${pageContext.request.contextPath}/member/login.jsp">點此登入</a>' // 設置彈窗底部，包含一個登入連結
+	            });
 	            return; // 阻止後續代碼執行
 	        }
 
@@ -143,8 +155,14 @@ $(document).ready(function() {
             data: formData,
             dataType: 'json',
             success: function(response) {	                
-                    alert("檢舉成功");
-                    $('#reportModal').modal('hide');
+                Swal.fire({
+                    position: "top-center",
+                    icon: "success",
+                    title: "檢舉成功",
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+                $('#reportModal').modal('hide');
             }
         });
     });
@@ -301,12 +319,41 @@ function padZero(value) {
 	     color:	#FFFFFF;
 	     font-size: 20px;
 	     }
+	     
+	     .select {
+	    background-color: #63bfc9;
+	    color: white;
+	    padding: 8px 40px;
+	    border: none;
+	    border-radius: 5px;
+	    cursor: pointer;
+		}
+		
+		.select:hover {
+       outline: none;
+       box-shadow: none !important;
+       background-color: #63bfc9;
+       border-color: transparent;
+     }
+     
+     .select:focus, .select:active{
+       outline: none;
+       box-shadow: none !important;
+       background-color: #63bfc9;
+       border-color: transparent;
+     }
+     
+     .notthing {
+    	margin-bottom: 100px;
+    	margin-top: 50px;
+	}
 </style>
 
 </head>
 <body>
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp" />
+<h3 class="text-primary bg-light p-3 border border-primary text-center shadow">類型文章列表</h3>
  	<div id="list" class="container mt-5">
             <div class="d-flex justify-content-between align-items-center mb-4">
         <form method="post" action="<%=request.getContextPath()%>/forumArticles.do?action=doArtiTypeList">
@@ -315,7 +362,7 @@ function padZero(value) {
         </select>
         <input type="submit" value="查詢">
     	</form>     
-		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a>
+		<a type="button" class="btn btn-primary select" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a>
 <%-- 		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a> --%>
 <%-- 		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=doArtiCollectList">我的收藏</a> --%>
 <%--         <a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=addArticle">新增文章</a> --%>
@@ -357,6 +404,12 @@ function padZero(value) {
             </c:forEach>
         </div>
     </div>
+    <c:if test="${list.isEmpty()}">
+    <div align="center" class="notthing">
+      <h1>該類型暫無文章</h1>
+      <h3>為這個類型新增一篇屬於它的文章吧!</h3>
+    </div>
+  	</c:if>   
     
     
     <!-- 模態對話框 -->

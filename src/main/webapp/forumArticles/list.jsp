@@ -255,7 +255,14 @@ $(document).ready(function() {
 	            data: formData,
 	            dataType: 'json',
 	            success: function(response) {	                
-	                    $('#reportModal').modal('hide');
+	                Swal.fire({
+	                    position: "top-center",
+	                    icon: "success",
+	                    title: "檢舉成功",
+	                    showConfirmButton: false,
+	                    timer: 1000
+	                });
+	                $('#reportModal').modal('hide');
 	            }
 	        });
 	    });
@@ -414,7 +421,29 @@ $(document).ready(function() {
      color:	#FFFFFF;
      font-size: 20px;
      }
-
+	
+		     .select {
+	    background-color: #63bfc9;
+	    color: white;
+	    padding: 8px 40px;
+	    border: none;
+	    border-radius: 5px;
+	    cursor: pointer;
+		}
+		
+		.select:hover {
+       outline: none;
+       box-shadow: none !important;
+       background-color: #63bfc9;
+       border-color: transparent;
+     }
+     
+     .select:focus, .select:active{
+       outline: none;
+       box-shadow: none !important;
+       background-color: #63bfc9;
+       border-color: transparent;
+     }
 </style>
 
 </head>
@@ -430,7 +459,7 @@ $(document).ready(function() {
         </select>
         <input type="submit" value="查詢">
     </form>
-    <a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a>
+    <a type="button" class="btn btn-primary select" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a>
     </div>
     <div id="articlesRow" class="row">
         <!-- 卡片內容將會通過 jQuery 動態加載到這裡 -->

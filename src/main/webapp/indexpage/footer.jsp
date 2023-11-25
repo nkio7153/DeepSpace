@@ -13,7 +13,7 @@
 							<li><a href="https://www.google.com/maps?q=桃園市中壢區復興路46號9樓"
 								target="_blank">地址：桃園市中壢區復興路46號9樓</a></li>
 							<li><a href="tel:02-1234-5678">電話：02-1234-5678</a></li>
-							<li><a href="mailto:contact@example.com">信箱：triplirht@gmail.com</a>
+							<li><a href="mailto:contact@example.com">信箱：depthspace@gmail.com</a>
 							</li>
 							<li><a href="tel:02-1234-5678">傳真：02-1234-5678</a></li>
 						</ul>

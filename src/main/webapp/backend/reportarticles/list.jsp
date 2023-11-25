@@ -148,6 +148,80 @@ $(document).on('click', '.report-content', function() {
     $('#reportContentModal').modal('show'); // 顯示模態框
 });
 
+//搜尋符合文章編號的文章
+function showArticle() {
+    var articleId = $('#articleIdInput').val();
+    if (articleId) {
+        $.ajax({
+            url: '<%=request.getContextPath()%>/report?action=list',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                // 使用 filter 函數來找出所有匹配的文章
+                var matchingArticles = data.filter(article => article.articleId == articleId);
+                var rows = '';
+                
+                if (matchingArticles.length > 0) {
+                    // 遍歷所有找到的文章並為每篇文章建立表格行
+                    $.each(matchingArticles, function(index, selectedArticle) {
+                        var statusText = selectedArticle.reportStatus == 0 ? '未審核' :
+                            (selectedArticle.reportStatus == 1 ? '已審核已通過' : '已審核未通過');
+                        var date = new Date(selectedArticle.reportTime);
+                        var formattedDate = formatDate(date);
+                        var adminText = selectedArticle.adminId ? selectedArticle.adminId : '-';
+                        rows += '<tr>';
+                        rows += '<td class="text-center">' + selectedArticle.articleReportId + '</td>';
+                        rows += '<td class="text-center">' + selectedArticle.articleId + '</td>';
+                        rows += '<td class="text-center">' + selectedArticle.reportId + '</td>';
+                        rows += '<td class="text-center">' + adminText + '</td>';
+                        rows += '<td class="text-center report-content">' + selectedArticle.reportContent + '</td>';
+                        rows += '<td class="text-center">' + formattedDate + '</td>';
+                        rows += '<td class="text-center">' + statusText + '</td>';
+                        rows += '<td class="text-center"><button class="edit-btn" data-article-report-id="' + selectedArticle.articleReportId + '" data-article-id="' + selectedArticle.articleId + '" data-report-id="' + selectedArticle.reportId + '" data-admin-id="' + selectedArticle.adminId + '" data-report-status="' + selectedArticle.reportStatus + '" data-report-content="' + selectedArticle.reportContent + '" data-report-time="' + formattedDate + '"><i class="fas fa-pencil-alt"></i></button></td>';
+                        rows += '</tr>';
+                    });
+                    $("#reportTable tbody").html(rows); 
+                } else {
+                    alert('沒有找到匹配的文章');
+                }
+            },
+            complete: function() {
+                $('#articleIdInput').val('');
+            }
+        });
+    }
+}
+
+//查詢全部文章
+function performNewAction() {
+    $.ajax({
+        url: '<%=request.getContextPath()%>/report?action=list',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            var rows = '';
+            $.each(data, function(key, value){
+            	var statusText = value.reportStatus == 0 ? '未審核' :
+                (value.reportStatus == 1 ? '已審核已通過' : '已審核未通過');
+            	var date = new Date(value.reportTime);
+                var formattedDate = formatDate(date);
+                var adminText = value.adminId ? value.adminId : '-';
+                rows += '<tr>';
+                rows += '<td class="text-center">' + value.articleReportId + '</td>';
+                rows += '<td class="text-center">' + value.articleId + '</td>';
+                rows += '<td class="text-center">' + value.reportId + '</td>';
+                rows += '<td class="text-center">' + adminText + '</td>';
+                rows += '<td class="text-center report-content">' + value.reportContent + '</td>';
+                rows += '<td class="text-center">' + formattedDate + '</td>';
+                rows += '<td class="text-center">' + statusText + '</td>';
+                rows += '<td class="text-center"><button class="edit-btn" data-article-report-id="' + value.articleReportId + '" data-article-id="' + value.articleId + '" data-report-id="' + value.reportId + '" data-admin-id="' + value.adminId + '" data-report-status="' + value.reportStatus + '" data-report-content="' + value.reportContent + '" data-report-time="' + formattedDate + '"><i class="fas fa-pencil-alt"></i></button></td>';
+                rows += '</tr>';
+            });
+            $("#reportTable tbody").html(rows);
+        }
+    });
+}
+
 </script>
 <style>
     table {
@@ -184,6 +258,42 @@ $(document).on('click', '.report-content', function() {
 	
 	.marg{
 	margin-top: 10px;
+	margin-left: 15px;
+	}
+	
+	.select {
+	    background-color: #63bfc9;
+	    color: white;
+	    padding: 8px 40px;
+	    border: none;
+	    border-radius: 5px;
+	    cursor: pointer;
+	}
+	.selects {
+	    background-color: #63bfc9;
+	    color: white;
+	    padding: 8px 40px;
+	    border: none;
+	    border-radius: 5px;
+	    cursor: pointer;
+	}
+	.write{
+		height: 40px;
+    	width: 270px;
+	}
+	.container {
+	    margin: 10px; /* 設定外部容器的邊距 */
+	}
+
+	.write{
+	    margin-right: 120px;
+	}
+	.select{
+	    margin-left: -110px;
+	    margin-right: 10px;
+	}
+	.selects{
+	    margin-right: 30px;
 	}
 </style>
 </head>
@@ -199,14 +309,21 @@ $(document).on('click', '.report-content', function() {
 	<div class="col-lg-10 g-2 transparent rounded mt-1">
 	 <h3 class="text-center mt-2">檢舉列表</h3>
 	        <hr class="my-0">
-	        <div class="filter-by-status marg">
-			    <label for="statusFilter">審查狀態：</label>
-			    <select id="statusFilter" name="reportStatus">
-			        <option value="">請選擇</option>
-			        <option value="0">未審核</option>
-			        <option value="1">已審核已通過</option>
-			        <option value="2">已審核未通過</option>
-			    </select>
+	        <div class="container" style="display: flex; justify-content: space-between;">
+	        	<div class="filter-by-status marg">
+				    <label for="statusFilter">審查狀態：</label>
+				    <select id="statusFilter" name="reportStatus">
+				        <option value="">請選擇</option>
+				        <option value="0">未審核</option>
+				        <option value="1">已審核已通過</option>
+				        <option value="2">已審核未通過</option>
+				    </select>
+				</div>
+			    <div>
+			        <input type="text" id="articleIdInput" placeholder="輸入文章編號" class="write">
+			        <button onclick="showArticle()" class="select">搜尋文章</button>
+			        <button onclick="performNewAction()" class="selects">顯示所有文章</button>
+			    </div>			    
 			</div>
 <table id="reportTable" class="reportTable">
     <thead>

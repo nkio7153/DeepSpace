@@ -151,6 +151,34 @@ $(document).ready(function() {
 		    width: 45rem; /* 或其他適合大屏幕的寬度 */
 		  }
 		}
+		
+			     .select {
+	    background-color: #63bfc9;
+	    color: white;
+	    padding: 8px 40px;
+	    border: none;
+	    border-radius: 5px;
+	    cursor: pointer;
+		}
+		
+		.select:hover {
+       outline: none;
+       box-shadow: none !important;
+       background-color: #63bfc9;
+       border-color: transparent;
+     }
+     
+     .select:focus, .select:active{
+       outline: none;
+       box-shadow: none !important;
+       background-color: #63bfc9;
+       border-color: transparent;
+     }
+     
+      .notthing {
+    	margin-bottom: 100px;
+    	margin-top: 50px;
+	 }
 </style>
 </head>
 <body>
@@ -165,7 +193,7 @@ $(document).ready(function() {
 		        </select>
 		        <input type="submit" value="查詢">
 		    </form>
-				<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a>
+				<a type="button" class="btn btn-primary select" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a>
 <%-- 				<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a> --%>
 <%-- 				<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=doArtiCollectList">我的收藏</a> --%>
 <%-- 		        <a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=addArticle">新增文章</a> --%>
@@ -198,7 +226,7 @@ $(document).ready(function() {
         </div>
     </div>
   <c:if test="${list.isEmpty()}">
-    <div align="center">
+    <div align="center" class="notthing">
       <h1>暫無收藏文章</h1>
       <h3>快去瀏覽文章看看有沒有喜歡的文章吧!</h3>
     </div>
