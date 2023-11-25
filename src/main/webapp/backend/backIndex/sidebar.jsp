@@ -112,6 +112,8 @@
                             <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/articles/list.jsp">文章列表</a>
                             <br>
                             <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/reportarticles/list.jsp">檢舉管理</a>
+                            <br>
+                            <a class="text-choco collapse-item fs-6 offset-1" href="${pageContext.request.contextPath}/backend/articlesType/list.jsp">類型管理</a>
                         </div>
                     </div>
                 </li>

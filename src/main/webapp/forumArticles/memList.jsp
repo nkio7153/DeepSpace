@@ -71,6 +71,11 @@
 		  width: 45rem; /* 或其他適合大屏幕的寬度 */
 		 }
 	}
+	
+	.notthing {
+    	margin-bottom: 100px;
+    	margin-top: 50px;
+	}
 </style>
 </head>
 <body>
@@ -186,7 +191,7 @@ $(document).ready(function() {
         </div>
     </div>
   <c:if test="${list.isEmpty()}">
-    <div align="center">
+    <div align="center" class="notthing">
       <h1>暫無文章</h1>
       <h3>趕快來新增你的第一篇文章吧!</h3>
     </div>

@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
     <title>文章類型列表</title>
     <!-- 引入 Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -25,7 +26,7 @@
                     var table = "<table class='table table-bordered'><thead class='custom-thead'><tr><th class='width-id'>類型ID</th><th>類型名稱</th><th class='width-action'></th></tr></thead><tbody>";
                     $.each(data, function(index, item){
                         // 添加 text-center 使垃圾桶圖標置中
-                        table += "<tr><td>" + item.artiTypeId + "</td><td>" + item.artiTypeText + "</td><td class='text-center'><button class='btn btn-danger btn-sm' onclick='deleteType(" + item.artiTypeId + ")'><i class='fas fa-trash'></i></button></td></tr>";
+                        table += "<tr><td class='text-center'>" + item.artiTypeId + "</td><td class='text-center'>" + item.artiTypeText + "</td><td class='text-center'><button class='btn btn-danger btn-sm' onclick='deleteType(" + item.artiTypeId + ")'><i class='fas fa-trash'></i></button></td></tr>";
                     });
                     table += "</tbody></table>";
                     $("#typeList").html(table);
@@ -112,6 +113,24 @@
     }
     </script>
     <style>
+        table {
+        width: 95%;
+        border-collapse: collapse;
+        background: #fff;
+        background: #fff;
+    	margin-left: 35px;
+    	margin-top: 10px;
+    	margin-bottom: 20px;
+	    }
+	    th, td {
+	        border: 1px solid #ddd;
+	        padding: 8px;
+	        text-align: left;
+	    }
+	    th {
+	        background-color: #f2f2f2;
+	        text-align: center; /* 加入這行代碼來置中表頭 */
+	    }
 		.custom-thead {
 		    background-color: #ADADAD; /* 藍色背景 */
 		    color: white; /* 白色文字 */
@@ -127,8 +146,17 @@
 	</style>
 </head>
 <body>
-	<div class="container mt-5">
-		<h2>文章類型列表</h2>
+<jsp:include page="/backend/backIndex/header.jsp"></jsp:include>
+<div class="container-fluid my-0">
+	<div class="row">
+	  
+	<div class="col-lg-2 g-3 mt-1">
+	<jsp:include page="/backend/backIndex/sidebar.jsp"></jsp:include>
+	</div>
+	
+	<div class="col-lg-10 g-2 transparent rounded mt-1">
+	<h3 class="text-center mt-2">文章類型列表</h3>
+	 <hr class="my-0">
 		<div>
 		<!-- 修改按鈕的 onclick 事件，並給新增按鈕添加 id -->
 		<button id="btnAdd" class="btn btn-primary mb-2 float-right">新增類型</button>
@@ -155,7 +183,13 @@
 		<div id="typeList">
 			<!-- 這裡將顯示從 Servlet 獲取的數據 -->
 		</div>
-	</div>
+
+
+<%--  include --%>	
+		</div>
+	</div>		
+</div>
+<%--  include end --%>
 	<!-- 引入 Bootstrap JS 和 Popper.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
