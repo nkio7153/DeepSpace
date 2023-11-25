@@ -74,7 +74,7 @@ p.text {
               <p class="text-li">簡介</p>
               <div class="test-img text-center mt-4">
                 <img
-                  src="${pageContext.request.contextPath}/indexpage/images/about2.png"
+                  src="${pageContext.request.contextPath}/indexpage/images/about6.png"
                   class="img-thumbnail img-fluid"
                   alt="user-image"
                   style="max-width: 250px; width: 100%"
@@ -104,7 +104,7 @@ p.text {
               <p class="text-li">簡介</p>
               <div class="test-img text-center mt-4">
                 <img
-                  src="${pageContext.request.contextPath}/indexpage/images/about3.png"
+                  src="${pageContext.request.contextPath}/indexpage/images/about5.png"
                   class="img-thumbnail img-fluid"
                   alt="user-image"
                   style="max-width: 250px; width: 100%"
@@ -132,7 +132,7 @@ p.text {
               <p class="text-li">簡介</p>
               <div class="test-img text-center mt-4">
                 <img
-                  src="images/te3.jpg"
+                  src="${pageContext.request.contextPath}/indexpage/images/about7.png" 
                   class="img-thumbnail img-fluid"
                   alt="user-image"
                   style="max-width: 250px; width: 100%"

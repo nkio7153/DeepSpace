@@ -181,7 +181,7 @@ h4.destination {
                                 給想要輕鬆安排行程，又不知道從何下手的你
                             </h4>
                             <div class="buttons mt-4">
-                                <a href="" class="btn">現在開始</a>
+                                <a href="${pageContext.request.contextPath}/tr/tourList" class="btn" onclick="checkSession(event)">現在開始</a>
                             </div>
                         </div>
                     </div>
@@ -199,7 +199,7 @@ h4.destination {
                                 給想要預約餐廳，又不知道有哪些餐廳可以選擇的你
                             </h4>
                             <div class="buttons mt-4">
-                                <a href="" class="btn">現在開始</a>
+                                <a href="${pageContext.request.contextPath}/Rest/getRests" class="btn">現在開始</a>
                             </div>
                         </div>
                     </div>
@@ -252,7 +252,7 @@ h4.destination {
                     </p>
                 </div>
                 <div class="col-lg-6 about-right text-lg-right mt-lg-0 mt-5">
-                    <img src="${pageContext.request.contextPath}/indexpage/images/hotgirl.png" alt="" class="img-fluid abt-image" />
+                    <img src="${pageContext.request.contextPath}/indexpage/images/gotrip.jpg" alt="" class="img-fluid abt-image" />
                 </div>
             </div>
             <div class="row mt-5 text-center test">
