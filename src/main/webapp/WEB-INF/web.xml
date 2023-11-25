@@ -112,6 +112,19 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>LoginFilter</filter-name>
+		
+		<url-pattern>/backend/articles/*</url-pattern>
+		<url-pattern>/backend/attractions/*</url-pattern>
+		<url-pattern>/backend/column/*</url-pattern>
+		<url-pattern>/backend/columntypes/*</url-pattern>
+		<url-pattern>/backend/reportarticles/*</url-pattern>
+		<url-pattern>/backend/rest/*</url-pattern>
+		<url-pattern>/backend/ticket/*</url-pattern>
+		<url-pattern>/backend/tickettypes/*</url-pattern>
+		
+		<url-pattern>/RestApi/getcheckBooking</url-pattern>
+		<url-pattern>/backend/tickettypes/*</url-pattern>
+		
 		<url-pattern>/backadmin/*</url-pattern>
 		<url-pattern>/backadmin/list</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
