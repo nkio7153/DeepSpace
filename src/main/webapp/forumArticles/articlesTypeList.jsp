@@ -90,7 +90,7 @@ $(document).ready(function() {
     $('#articlesRow').on('click', '.cards', function() {
     	
     	// 檢查點擊的元素是否為按鈕，如果是，則不進行後續操作
-        if ($(event.target).hasClass('btn')|| $(event.target).hasClass('fa-heart')|| $(event.target).hasClass('fa-thumbs-up')) {
+        if ($(event.target).hasClass('btn')|| $(event.target).hasClass('fa-heart')|| $(event.target).hasClass('fa-thumbs-up')|| $(event.target).hasClass('fa-exclamation')) {
             return;
         }
     	
@@ -110,7 +110,59 @@ $(document).ready(function() {
         // 顯示模態對話框
         $('#articleDetailsModal').modal('show');
     });
+    
+    $('#articlesRow').on('click', '.report-button', function(event) {
+        let check = $("[name='check']").text();
+        if(check == "登入/註冊") {
+            event.preventDefault(); // 防止預設事件，例如表單提交或連結跳轉
+
+            // 使用 SweetAlert2 顯示彈窗
+            Swal.fire({
+                icon: "error", // 設置彈窗圖示為錯誤
+                text: "尚未登入！", // 設置顯示的文字
+                footer: '<a href="${pageContext.request.contextPath}/member/login.jsp">點此登入</a>' // 設置彈窗底部，包含一個登入連結
+            });
+            return; // 阻止後續代碼執行
+        }
+
+        var articleId = $(this).data('articleid');
+        $('#articleId').val(articleId);
+        var now = new Date();
+        var formattedTime = formatDate(now);
+        $('#reportTime').val(formattedTime);
+        $('#reportModal').modal('show');
+    });
+
+    $('#reportForm').submit(function(event) {
+        event.preventDefault();
+        var formData = $(this).serialize(); // 序列化表單數據
+
+        $.ajax({
+            type: 'post',
+            url: '<%=request.getContextPath()%>/report?action=add',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {	                
+                    alert("檢舉成功");
+                    $('#reportModal').modal('hide');
+            }
+        });
+    });
 });
+
+function formatDate(date) {
+    var year = date.getFullYear();
+    var month = padZero(date.getMonth() + 1); // 月份從0開始
+    var day = padZero(date.getDate());
+    var hours = padZero(date.getHours());
+    var minutes = padZero(date.getMinutes());
+    var seconds = padZero(date.getSeconds());
+    return year + '/' + month + '/' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+}
+
+function padZero(value) {
+    return value < 10 ? '0' + value : value;
+}
 </script>
 <style>
     .fixed-height-img {
@@ -233,6 +285,22 @@ $(document).ready(function() {
 		    width: 45rem; /* 或其他適合大屏幕的寬度 */
 		  }
 		}
+		
+		.report-button{
+	     	margin-right: 12px;
+	     	background-color: #FF0000 !important;
+	    	border-color: #FF0000 !important;
+	    	width: 40px;
+	     }
+	      .reportborder:hover, .reportborder:focus, .reportborder:active, .reportborder:visited {
+	       outline: none;
+	       box-shadow: none !important;
+	     }
+	     
+	     .reporticon{
+	     color:	#FFFFFF;
+	     font-size: 20px;
+	     }
 </style>
 
 </head>
@@ -247,7 +315,7 @@ $(document).ready(function() {
         </select>
         <input type="submit" value="查詢">
     	</form>     
-<%-- 		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a> --%>
+		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a>
 <%-- 		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a> --%>
 <%-- 		<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=doArtiCollectList">我的收藏</a> --%>
 <%--         <a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=addArticle">新增文章</a> --%>
@@ -275,9 +343,14 @@ $(document).ready(function() {
                         	<div class="card-footer d-flex justify-content-between align-items-center">
                         	<fmt:formatDate value="${article.artiTime}" pattern="yyyy-MM-dd HH:mm:ss" var="formattedDate"/>
                             <small class="text-muted">發布時間:${formattedDate}</small>
-                            <button class="btn btn-primary like-buttons likes-button" data-articleid="${article.articleId}">
-                            <i class="far fa-thumbs-up"></i>
-                            </button>
+	                            <div>
+	                            <button class="btn btn-warning report-button" data-articleid="${article.articleId}">
+	                            <i class="fas fa-exclamation reporticon"></i>
+	                            </button>
+	                            <button class="btn btn-primary like-buttons likes-button" data-articleid="${article.articleId}">
+	                            <i class="far fa-thumbs-up"></i>
+	                            </button>
+	                            </div>
                        		</div>
                     	</div>                   
                 </div>
@@ -315,6 +388,29 @@ $(document).ready(function() {
       </div>
     </div>
   </div>
+</div>
+
+<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reportModalLabel">檢舉文章</h5>
+                <button type="button" class="btn-close reportborder" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="reportForm">
+                    <div class="mb-3">
+                        <label for="reportReason" class="form-label">檢舉原因</label>
+                        <textarea class="form-control reportborder" id="reportReason" name="reportContent" rows="3"></textarea>
+                    </div>
+                    <input type="hidden" id="articleId" name="articleId">
+                    <input type="hidden" id="reportTime" name="reportTime">
+    				<input type="hidden" id="reportStatus" name="reportStatus" value="0">
+                    <button type="submit" class="btn btn-danger">提交檢舉</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <jsp:include page="../indexpage/footer.jsp" />

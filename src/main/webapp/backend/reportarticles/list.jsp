@@ -157,6 +157,7 @@ $(document).on('click', '.report-content', function() {
         background: #fff;
     	margin-left: 35px;
     	margin-top: 10px;
+    	margin-bottom: 20px;
     }
     th, td {
         border: 1px solid #ddd;
@@ -180,6 +181,10 @@ $(document).on('click', '.report-content', function() {
     	overflow: hidden; /* 隱藏超出部分的文本 */
     	white-space: nowrap; /* 保持文本在一行內 */
 	}
+	
+	.marg{
+	margin-top: 10px;
+	}
 </style>
 </head>
 <body>
@@ -194,7 +199,7 @@ $(document).on('click', '.report-content', function() {
 	<div class="col-lg-10 g-2 transparent rounded mt-1">
 	 <h3 class="text-center mt-2">檢舉列表</h3>
 	        <hr class="my-0">
-	        <div class="filter-by-status">
+	        <div class="filter-by-status marg">
 			    <label for="statusFilter">審查狀態：</label>
 			    <select id="statusFilter" name="reportStatus">
 			        <option value="">請選擇</option>

@@ -196,9 +196,8 @@ a.btn {
 .picfak {
     filter: brightness(0.7);
     opacity: 0.8;
-    width: 100%;   /* 讓圖片寬度隨著容器的大小改變 */
-    max-width: 1600px; /* 最大寬度為1200px */
-    height: 700px;  /* 高度自動調整以保持圖片比例 */
+    max-width: 100% !important;
+    height: 700px;
 }
 
 /* 小於768px寬的裝置 */

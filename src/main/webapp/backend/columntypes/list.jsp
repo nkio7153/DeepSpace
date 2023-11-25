@@ -131,6 +131,13 @@
     background: #98d6a6  !important;
     border: #98d6a6 !important;  
 }
+
+.add-button:active {
+    border: 1px solid #98d6a6 !important;
+}
+.add-button:active .button__icon {
+    background-color: #98d6a6 !important;
+}
 </style>
 
 <title>專欄類型列表</title>
@@ -271,6 +278,48 @@ $('.add-button').on('click', function() {
     $('table tbody').append(newRow);
 });
 
+//新增儲存
+$(document).on('click', '.Nsave-btn', function() {
+    var currentRow = $(this).closest('tr');
+    var colTypeId = currentRow.find('td:eq(0)').text().trim();
+    var colTypeName = currentRow.find('.col-type-input').val().trim();
+
+    if(colTypeName === ''){
+        Swal.fire({
+            icon: 'error',
+            title: '類型名稱不能為空！'
+        });
+        return;
+    }
+
+    $.ajax({
+        url: '<%=request.getContextPath()%>/columntypesmg/add',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({colTypeId: colTypeId, colTypeName: colTypeName}),
+        dataType: 'json',
+        success: function(response) {
+            if(response.status === "success") {
+                Swal.fire({
+                    position: 'center',
+                    title: '已完成新增',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                currentRow.find('.col-type-input').replaceWith($('<span>').addClass('colTypeName').text(colTypeName));
+                currentRow.find('.cancel-btn').hide();
+                currentRow.find('.save-icon').replaceWith(
+                    $('<span>').addClass('edit-icon btn btn-primary edit-btn').append(
+                        $('<i>').addClass('fas fa-edit')                    
+                    )
+                );
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('新增失敗', xhr, status, error);
+        }
+    });
+});
 
 // 取消按鈕
 $(document).on('click', '.cancel-btn', function() {

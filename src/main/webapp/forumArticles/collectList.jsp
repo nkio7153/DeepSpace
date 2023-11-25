@@ -9,7 +9,7 @@
 <html>
 <head>
 <jsp:include page="../indexpage/head.jsp" />
-<title>我的文章</title>
+<title>我的文章收藏</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script type="text/javascript">
@@ -156,6 +156,7 @@ $(document).ready(function() {
 <body>
 <jsp:include page="../indexpage/header.jsp" />
 <jsp:include page="../indexpage/headpic.jsp" />
+<h3 class="text-primary bg-light p-3 border border-primary text-center shadow">收藏文章列表</h3>
  	<div id="list" class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
 		    <form method="post" action="<%=request.getContextPath()%>/forumArticles.do?action=doArtiTypeList">
@@ -164,7 +165,7 @@ $(document).ready(function() {
 		        </select>
 		        <input type="submit" value="查詢">
 		    </form>
-<%-- 				<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a> --%>
+				<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles/list.jsp">所有文章</a>
 <%-- 				<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=getmemlist">我的文章</a> --%>
 <%-- 				<a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=doArtiCollectList">我的收藏</a> --%>
 <%-- 		        <a type="button" class="btn btn-primary" onclick="checkSession(event)" href="${pageContext.request.contextPath}/forumArticles.do?action=addArticle">新增文章</a> --%>
@@ -196,7 +197,12 @@ $(document).ready(function() {
             </c:forEach>
         </div>
     </div>
-    
+  <c:if test="${list.isEmpty()}">
+    <div align="center">
+      <h1>暫無收藏文章</h1>
+      <h3>快去瀏覽文章看看有沒有喜歡的文章吧!</h3>
+    </div>
+  </c:if>     
     
     <!-- 模態對話框 -->
 <div class="modal fade" id="articleDetailsModal" tabindex="-1" aria-labelledby="articleDetailsModalLabel" aria-hidden="true">
