@@ -225,12 +225,12 @@ select {
 					</div>
 				
 				    <div class="form-group col-md-6">
-				        <label for="longitude">經度</label>
+				        <label for="longitude">經度<span style="color: #f27474;">* </span><span class="viewalert"><%= request.getAttribute("errorMessageLongitude") != null ? request.getAttribute("errorMessageLongitude"): "" %></span></label>
 				        <input type="text" class="form-control" id="longitude" name="longitude" value="${inputLongitude != null ? inputLongitude : ticket.longitude}" readonly>
 				    </div>
 				
 				    <div class="form-group col-md-6">
-				        <label for="latitude">緯度</label>
+				        <label for="latitude">緯度<span style="color: #f27474;">* </span><span class="viewalert"><%= request.getAttribute("errorMessageLlatitude") != null ? request.getAttribute("errorMessageLatitude"): "" %></span></label>
 				       <input type="text" class="form-control" id="latitude" name="latitude" value="${inputLatitude != null ? inputLatitude : ticket.latitude}" readonly>
 				    </div>
 
