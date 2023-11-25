@@ -57,7 +57,6 @@ p.text {
         <div class="row pt-xl-4">
           <div class="col-md-4 test-grid px-lg-4">
             <div class="testi-info text-center">
-              <p class="text-li">簡介</p>
               <div class="test-img text-center mt-4">
                 <img
                   src="${pageContext.request.contextPath}/indexpage/images/about.jpg"
@@ -71,7 +70,6 @@ p.text {
           </div>
           <div class="col-md-4 test-grid px-lg-4 my-md-0 my-5">
             <div class="testi-info text-center">
-              <p class="text-li">簡介</p>
               <div class="test-img text-center mt-4">
                 <img
                   src="${pageContext.request.contextPath}/indexpage/images/about6.png"
@@ -85,7 +83,6 @@ p.text {
           </div>
           <div class="col-md-4 test-grid px-lg-4">
             <div class="testi-info text-center">
-              <p class="text-li">簡介</p>
               <div class="test-img text-center mt-4">
                 <img
                   src="${pageContext.request.contextPath}/indexpage/images/about4.png"
@@ -101,7 +98,6 @@ p.text {
         <div class="row pt-xl-4">
           <div class="col-md-4 test-grid px-lg-4">
             <div class="testi-info text-center">
-              <p class="text-li">簡介</p>
               <div class="test-img text-center mt-4">
                 <img
                   src="${pageContext.request.contextPath}/indexpage/images/about5.png"
@@ -115,7 +111,6 @@ p.text {
           </div>
           <div class="col-md-4 test-grid px-lg-4 my-md-0 my-5">
             <div class="testi-info text-center">
-              <p class="text-li">簡介</p>
               <div class="test-img text-center mt-4">
                 <img
                   src="${pageContext.request.contextPath}/indexpage/images/about.png"                 
@@ -129,7 +124,6 @@ p.text {
           </div>
           <div class="col-md-4 test-grid px-lg-4">
             <div class="testi-info text-center">
-              <p class="text-li">簡介</p>
               <div class="test-img text-center mt-4">
                 <img
                   src="${pageContext.request.contextPath}/indexpage/images/about7.png" 
