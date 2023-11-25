@@ -22,7 +22,7 @@
         <property name="hibernate.current_session_context_class">thread</property>
         
         
-        <mapping class="com.depthspace.account.model.account.AccountVO"/>
+        
         
         <!-- Column -->
         <mapping class="com.depthspace.column.model.ColumnArticlesVO"/>
@@ -75,9 +75,7 @@
         <mapping class="com.depthspace.memticketowned.model.MemTicketOwnedVO"/>
         <mapping class="com.depthspace.ticketshoppingcart.model.CartInfo"/>
                 
-        <mapping class="com.depthspace.account.model.accountitem.AccountItemVO"/>
-        <mapping class="com.depthspace.account.model.accountper.AccountPerVO"/>
-        <mapping class="com.depthspace.account.model.expenses.ExpensesVO"/>
+      
         <mapping class="com.depthspace.forum.model.articlescollect.ArticlesCollectVO"/>
         <mapping class="com.depthspace.forum.model.articleslike.ArticlesLikeVO"/>
         <mapping class="com.depthspace.forum.model.articlereport.ArticleReportVO"/>
