@@ -39,7 +39,6 @@
 	                <th>餐廳類型</th>
 	                <th>營業時間</th>
 	                <th>上/下架</th>
-	                <th>預設可訂位組數</th>
 	                <th>餐廳管理員帳號</th>
 	                <th>修改</th>
 	                <th>刪除</th>
@@ -63,7 +62,6 @@
 					        <td>上架</td>
 					    </c:when>
 					  </c:choose>
-	                  <td>${rest.bookingLimit}</td>
 	                  <td>${rest.adminVO.adminAcc}</td>
 	                  
 					<td>
@@ -76,7 +74,7 @@
 					<td>
 						<form method="post" action="${pageContext.request.contextPath}/backend/Rest.do">
 							<input type="submit" class="btn btn-danger" value="刪除">
-							<input type="hidden" name="restId" value="${rest.restId}">
+							<input type="hidden" name="restId" id="restId" value="${rest.restId}">
 							<input type="hidden" name="action" value="delete">
 						</form>
 					</td>
@@ -92,6 +90,7 @@
     </div>
     <script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
 	    $(function() {
 	        $('#myTable').DataTable({
@@ -108,6 +107,43 @@
 	                },
 	            ],
 	        });
+	        
+// 	        $(".btn-danger").click(function(e){
+// 	        	e.preventDefault();
+// 		        Swal.fire({
+// 		            title: "確定刪除嗎",
+// 		            icon: "warning",
+// 		            showCancelButton: true,
+// 		            confirmButtonColor: "#3085d6",
+// 		            cancelButtonColor: "#d33",
+// 		            confirmButtonText: "YES"
+// 		        }).then((result) => {
+// 		        	if (result.isConfirmed) {
+// 		        		let restId = $("#restId").val();
+// 			        	fetch("/backend/Rest.do?action=delete&restId=" + restId, {
+// 							method: "POST",
+// 							})
+// 							.then(response => {
+// 					            if (!response.ok) {
+// 					                throw new Error(`HTTP error! status: ${response.status}`);
+// 					            }
+// 					            return response.text();
+// 							})
+// 							.then(data => {
+// 									Swal.fire("已刪除");
+						
+// 							})
+// 							.catch(error => {
+// 								console.error(error);
+// 							});
+// 		        	}
+// 			      });
+// 	        });
+	        
+	        	
+	        
+	        
+	        
 	    });
     </script>
   </body>

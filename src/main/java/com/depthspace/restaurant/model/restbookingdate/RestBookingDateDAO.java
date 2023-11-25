@@ -6,6 +6,7 @@ public interface RestBookingDateDAO {
 	void add(RestBookingDateVO restBookingDateVO);
 	int update(RestBookingDateVO restBookingDateVO);
 	int delete(RestBookingDateVO restBookingDateVO);
+	void deleteForRestId(Integer restId);
 	RestBookingDateVO findByPK(RestBookingDateVO restBookingDateVO);
 	List<RestBookingDateVO> getById(Integer restId);
 	List<RestBookingDateVO> getAll();

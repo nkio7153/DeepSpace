@@ -80,7 +80,6 @@
 	<jsp:include page="/indexpage/footer.jsp" />
 	<script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetSwal.fire2@11"></script>
 	<script>
 		$(function() {
 			let memId = "${memId}";

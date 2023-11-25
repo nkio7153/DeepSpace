@@ -28,9 +28,7 @@
 	          <table id="myTable" class="hover">
 	            <thead>
 	              <tr>
-	                <c:if test="${admin.adminFuncName eq 2}">
-						<th>餐廳編號</th>
-					</c:if>
+					<th class="restId">餐廳編號</th>
 					<th>日期</th>
 					<th>營業狀態</th>
 					<th>早上可預約組數</th>
@@ -42,10 +40,8 @@
 	            <tbody>
 	              <c:forEach var="bookDate" items="${bookDate}">
 					<tr>
-						<c:if test="${admin.adminFuncName eq 2}">
-					        <td>${bookDate.restId}</td>
-					    </c:if>
-						<td>${bookDate.bookingDate}</td>
+					    <td class="restId">${bookDate.restId}</td>
+						<td class="bookingDate">${bookDate.bookingDate}</td>
 						<c:choose>
 						    <c:when test="${bookDate.restOpen == 0}">
 						        <td id="Open"><span class="text-danger">公休</span></td>
@@ -73,6 +69,12 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/plug-ins/1.11.5/features/searchHighlight/dataTables.searchHighlight.min.js"></script>
     <script>
 	    $(function() {
+	    	
+	    	let admin = ${admin.adminFuncName};
+    		if (admin === 1){
+    			$(".restId").css('display','none');
+    		}
+	    	
 	        $('#myTable').DataTable({
 	            // 中文化
 	            language: {
@@ -145,6 +147,9 @@
 	                // update
 	                var restId = row.find("td:eq(0)").text().trim();
    					var bookingDate = row.find("td:eq(1)").text().trim();
+// 	                var restId = row.find(".restId").text();
+//        				var bookingDate = row.find(".bookingDate").text();
+   					console.log(restId + " " +bookingDate);
 	                var data = {
 	                	restId: restId,
 	                	bookingDate: bookingDate,

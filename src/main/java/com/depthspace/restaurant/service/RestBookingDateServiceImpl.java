@@ -30,7 +30,11 @@ public class RestBookingDateServiceImpl implements RestBookingDateService {
 	@Override
 	public void delete(RestBookingDateVO restBookingDateVO) {
 		dao.delete(restBookingDateVO);
-		
+	}
+
+	@Override
+	public void deleteForRestId(Integer restId) {
+		dao.deleteForRestId(restId);
 	}
 
 	@Override
