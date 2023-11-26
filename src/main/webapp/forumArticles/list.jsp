@@ -278,6 +278,8 @@ $(document).ready(function() {
 	                        timer: 1000
 	                    });
 	                    $('#reportModal').modal('hide');
+	                 	// 清空表單
+	                    $('#reportForm')[0].reset();
 	                }
 	            });
 	        }

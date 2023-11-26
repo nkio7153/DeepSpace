@@ -82,16 +82,12 @@ public class ArticleReportServlet extends HttpServlet {
 		ArticleReportVO formData = articleReportService.getByArticleReportId(articleReportId);
 
         // 更新文章的其他欄位
-		formData.setArticleId(parseIntegerParameter(req.getParameter("articleId")));
 		Integer adminId = null;
 		HttpSession session = req.getSession(false);
 		if (session.getAttribute("adminId") != null) {
 			adminId = (Integer) session.getAttribute("adminId");
 		}
 		formData.setAdminId(adminId);
-		formData.setReportId(parseIntegerParameter(req.getParameter("reportId")));
-		formData.setReportContent(req.getParameter("reportContent"));
-		formData.setReportTime(parseTimestamp(req.getParameter("reportTime")));
 		formData.setReportStatus(Byte.valueOf(req.getParameter("reportStatus")));
 		articleReportService.update(formData);
 	}

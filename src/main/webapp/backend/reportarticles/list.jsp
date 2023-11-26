@@ -96,6 +96,7 @@ function padZero(value) {
 function openEditModal(reportAr) {
     $('#articleReportIdInput').val(reportAr.articleReportId);
     $('#articleIdInput').val(reportAr.articleId);
+    console.log(reportAr.articleId);
     $('#reportIdInput').val(reportAr.reportId);
     $('#adminIdInput').val(reportAr.adminId);
     $('#reportContentInput').val(reportAr.reportContent);
