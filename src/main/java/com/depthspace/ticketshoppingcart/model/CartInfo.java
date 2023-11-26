@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name="CartInfo")
+@Table(name="CartInfo2")
 public class CartInfo {
     @Id
     @Column(name="TICKET_ID")

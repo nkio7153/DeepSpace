@@ -250,7 +250,7 @@
     </div>
         <!-- 聊天室 -->
     <div id="chat-icon">
-      <a href="${pageContext.request.contextPath}/keywordQa/question_submission.jsp">
+      <a href="${pageContext.request.contextPath}/keywordQa/question_submission.jsp" onclick="checkSession(event)">
       <img src="${pageContext.request.contextPath}/indexpage/images/gm.png" class="gm" /></a>
     </div>
     <!-- 聊天室 -->

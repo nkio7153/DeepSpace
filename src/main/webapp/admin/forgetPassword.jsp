@@ -77,7 +77,7 @@ function verifyCode() {
         success: function(response) {
         	console.log(response)
             if (response === 'success') {
-                alert("驗證成功，導回登入");
+                alert("驗證成功");
                 window.location.href = "${pageContext.request.contextPath}/admin/changePassword.jsp";
             } else {
                 alert("驗證碼輸入錯誤，請從新輸入");

@@ -284,7 +284,14 @@ public class RestServlet extends HttpServlet {
 		saveImg(req.getParameter("restId"), req.getPart("uploadimg"));
 		
 		restService.updateRest(rest);
-		return "/backend/Rest.do?action=getAll";
+		
+		HttpSession session = req.getSession();
+		Byte adminFuncName = ((AdminVO) session.getAttribute("admin")).getAdminFuncName();
+		if (adminFuncName == 1) {
+			return "/backend/backIndex/index.jsp";
+		} else {
+			return "/backend/Rest.do?action=getAll";
+		}
 	}
 	
 	private String getMembooking(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

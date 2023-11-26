@@ -20,6 +20,11 @@ request.setAttribute("faqs", faqs);
     <style>
         h2 {
             color: #333; /* 標題顏色 */
+            text-align: center; /* 標題置中 */
+        }
+        
+        #faqCategories {
+            text-align: center; /* 類型按鈕置中 */
         }
 
         .category {
@@ -54,24 +59,39 @@ request.setAttribute("faqs", faqs);
             color: #555; /* 答案顏色 */
             padding-top: 10px;
         }
+  .selected-category {
+    color: #000000; /* 這裡設置點擊後的顏色，例如紅色 */
+}
     </style>
     <script>
-        $(document).ready(function(){
-            $('.category').click(function(){
-                var category = $(this).data('category');
-                $('.faq-item').slideUp(); // 使用滑動效果隱藏
-                $('.faq-answer').slideUp(); // 使用滑動效果隱藏答案
-                $('.faq-item[data-category="' + category + '"]').delay(400).slideDown(); // 延遲後滑動顯示
-            });
+$(document).ready(function(){
+    $('.category').click(function(){
+        // 移除所有類型標題的selected-category類別
+        $('.category').removeClass('selected-category');
+        // 為被點擊的元素添加selected-category類別
+        $(this).addClass('selected-category');
 
-            // 問題點擊事件
-            $(document).on('click', '.faq-question', function(){
-                $(this).next('.faq-answer').slideToggle(); // 使用滑動切換效果
-            });
-        });
-    </script>
+        var category = $(this).data('category');
+        $('.faq-item').slideUp(); // 使用滑動效果隱藏
+        $('.faq-answer').slideUp(); // 使用滑動效果隱藏答案
+        $('.faq-item[data-category="' + category + '"]').delay(400).slideDown(); // 延遲後滑動顯示
+    });
+
+    // 問題點擊事件
+    $(document).on('click', '.faq-question', function(){
+        $(this).next('.faq-answer').slideToggle(); // 使用滑動切換效果
+    });
+
+    // 預設展開特定類型的問題
+    var defaultCategory = '客戶服務相關'; // 在這裡設定您想預設展開的類型
+    $('.faq-item[data-category="' + defaultCategory + '"]').show(); // 展開問題
+});
+</script>
+
 </head>
 <body>
+
+
 
 	<jsp:include page="/indexpage/header.jsp" />
 	<jsp:include page="/indexpage/headpic.jsp" />

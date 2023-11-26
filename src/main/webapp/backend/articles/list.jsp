@@ -22,6 +22,7 @@ $(document).ready(function() {
                 var cleanArtiText = value.artiText
                 .replace(/<span[^>]*>/g, '')
                 .replace(/<\/span>/g, '')
+                .replace(/<br\s*\/?>/gi, '')
                 .replace(/<p[^>]*>/g, '')
                 .replace(/<\/p>/g, '');
                 rows += '<tr>';
@@ -35,7 +36,7 @@ $(document).ready(function() {
                 rows += '<td class="text-center pic"><img src="data:image/jpeg;base64,' + base64ImageData + '" class="card-img-top fixed-height-img"></td>';
                 rows += '<td class="text-center">' +
                 '<div class="d-flex flex-column align-items-center">' +
-                '<button onclick="showModal(\'' + value.articleId + '\', \'' + value.artiTitle + '\', \'' + formattedDate + '\', \'' + cleanArtiText + '\', \'' + base64ImageData + '\')" class="btn btn-info btn-sm my-1 btn-fixed-width"><i class="fas fa-eye"></i></button>' +
+                '<button onclick="showModal(\'' + value.articleId + '\', \'' + value.artiTitle + '\', \'' + formattedDate + '\', \'' + value.artiText + '\', \'' + base64ImageData + '\')" class="btn btn-info btn-sm my-1 btn-fixed-width"><i class="fas fa-eye"></i></button>' +
                 '<button class="delete-btn btn btn-danger btn-sm my-1 btn-fixed-width" data-article-id="' + value.articleId + '"><i class="fas fa-trash"></i></button>' +
                 '</div>' +
                 '</td>';
@@ -116,6 +117,7 @@ function showArticle() {
                     var cleanArtiText = selectedArticle.artiText
                         .replace(/<span[^>]*>/g, '')
                         .replace(/<\/span>/g, '')
+                        .replace(/<br\s*\/?>/gi, '')
                         .replace(/<p[^>]*>/g, '')
                         .replace(/<\/p>/g, '');
                     row += '<tr>';
@@ -129,7 +131,7 @@ function showArticle() {
                     row += '<td class="text-center pic"><img src="data:image/jpeg;base64,' + base64ImageData + '" class="card-img-top fixed-height-img"></td>';
                     row += '<td class="text-center">' +
                     '<div class="d-flex flex-column align-items-center">' +
-                    '<button onclick="showModal(\'' + selectedArticle.articleId + '\', \'' + selectedArticle.artiTitle + '\', \'' + formattedDate + '\', \'' + cleanArtiText + '\', \'' + base64ImageData + '\')" class="btn btn-info btn-sm my-1 btn-fixed-width"><i class="fas fa-eye"></i></button>' +
+                    '<button onclick="showModal(\'' + selectedArticle.articleId + '\', \'' + selectedArticle.artiTitle + '\', \'' + formattedDate + '\', \'' + selectedArticle.artiText + '\', \'' + base64ImageData + '\')" class="btn btn-info btn-sm my-1 btn-fixed-width"><i class="fas fa-eye"></i></button>' +
                     '<button class="delete-btn btn btn-danger btn-sm my-1 btn-fixed-width" data-article-id="' + selectedArticle.articleId + '"><i class="fas fa-trash"></i></button>' +
                     '</div>' +
                     '</td>';
@@ -161,6 +163,7 @@ function performNewAction() {
                 var cleanArtiText = value.artiText
                 .replace(/<span[^>]*>/g, '')
                 .replace(/<\/span>/g, '')
+                .replace(/<br\s*\/?>/gi, '')
                 .replace(/<p[^>]*>/g, '')
                 .replace(/<\/p>/g, '');
                 rows += '<tr>';
@@ -174,7 +177,7 @@ function performNewAction() {
                 rows += '<td class="text-center pic"><img src="data:image/jpeg;base64,' + base64ImageData + '" class="card-img-top fixed-height-img"></td>';
                 rows += '<td class="text-center">' +
                 '<div class="d-flex flex-column align-items-center">' +
-                '<button onclick="showModal(\'' + value.articleId + '\', \'' + value.artiTitle + '\', \'' + formattedDate + '\', \'' + cleanArtiText + '\', \'' + base64ImageData + '\')" class="btn btn-info btn-sm my-1 btn-fixed-width"><i class="fas fa-eye"></i></button>' +
+                '<button onclick="showModal(\'' + value.articleId + '\', \'' + value.artiTitle + '\', \'' + formattedDate + '\', \'' + value.artiText + '\', \'' + base64ImageData + '\')" class="btn btn-info btn-sm my-1 btn-fixed-width"><i class="fas fa-eye"></i></button>' +
                 '<button class="delete-btn btn btn-danger btn-sm my-1 btn-fixed-width" data-article-id="' + value.articleId + '"><i class="fas fa-trash"></i></button>' +
                 '</div>' +
                 '</td>';
@@ -187,7 +190,7 @@ function performNewAction() {
 
 function showModal(articleId, title, date, content, imageData) {
     $('#modalArticleTitle').text(title);
-    $('#modalArticleContent').text(content);
+    $('#modalArticleContent').html(content);
     $('#modalArticleDate').text(date);
     $('#modalArticleImage').attr('src', 'data:image/jpeg;base64,' + imageData);
 

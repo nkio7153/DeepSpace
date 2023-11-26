@@ -492,7 +492,7 @@ public class AdminServlet extends HttpServlet {
 				req.setAttribute("funcName", "餐廳管理員");
 			}
 
-			req.getRequestDispatcher("/admin/login.jsp").forward(req, resp);
+			req.getRequestDispatcher("/backadmin/list").forward(req, resp);
 		} else {
 			String revise = "請修正以下資訊";
 			req.setAttribute("errorMsgs", errorMsgs);
@@ -692,7 +692,7 @@ public class AdminServlet extends HttpServlet {
 
 		if (loginResult == 1) {
 			System.out.println("沒有此帳號");
-			resp.sendRedirect(req.getContextPath() + "/admin/login.jsp");
+			resp.sendRedirect(req.getContextPath() + "/admin/login.jsp?error=false&requestURI=" + loginLocation);
 		} else if (loginResult == 3) {
 			AdminVO admin = ms.getAdminInfo(adminAcc);
 
@@ -716,13 +716,17 @@ public class AdminServlet extends HttpServlet {
 				System.out.println(3);
 			}
 		} else if (loginResult == 4) {
-			resp.sendRedirect(req.getContextPath() + "/admin/login.jsp");
+			String URL = req.getContextPath() + "/admin/login.jsp?error=true&requestURI=" + loginLocation;
+			resp.sendRedirect(URL);
 		} else if (loginResult == 5) {
-			resp.sendRedirect(req.getContextPath() + "/admin/login.jsp");
+			String URL = req.getContextPath() + "/admin/login.jsp?error=nostatus&requestURI=" + loginLocation;
+			resp.sendRedirect(URL);
 		} else if (loginResult == 6) {
-			resp.sendRedirect(req.getContextPath() + "/admin/login.jsp");
+			String URL = req.getContextPath() + "/admin/login.jsp?error=nostatus&requestURI=" + loginLocation;
+			resp.sendRedirect(URL);
 		} else if (loginResult == 7) {
-			resp.sendRedirect(req.getContextPath() + "/admin/login.jsp");
+			String URL = req.getContextPath() + "/admin/login.jsp?error=nostatus&requestURI=" + loginLocation;
+			resp.sendRedirect(URL);
 		}
 	}
 

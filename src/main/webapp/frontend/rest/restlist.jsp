@@ -25,6 +25,9 @@
 	width: 30px;
 	height: 30px;
 }
+/* .img-thumbnail { */
+/* 	height: 250px; */
+/* } */
 </style>
 
 </head>
@@ -33,10 +36,17 @@
 		
 		<form action="/DepthSpace/Rest/getRests" method="post">
 			<div class="row pt-3">
-				<div class="">
+				<div>
+					地區：
+					<select name="city" id="city">
+						<option value="">請選縣市</option>
+						<c:forEach var="typeItem" items="${citylist}">
+							<option value="${typeItem.cityName}">${typeItem.cityName}</option>
+						</c:forEach>
+					</select>
 					類型：
 					<select id="restType" name="restType">
-						<option>請選擇</option>
+						<option value="">請選擇</option>
 						<c:forEach var="Type" items="${restType}">
 							<option value="${Type}">${Type}</option>
 						</c:forEach>

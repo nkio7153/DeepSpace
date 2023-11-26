@@ -62,15 +62,15 @@ public class RestVO implements Serializable {
 	@Column(name = "REST_TEXT", columnDefinition = "TEXT")
 	private String restText;
 
-	@Expose
+//	@Expose
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ADMIN_ID", referencedColumnName = "ADMIN_ID")
 	private AdminVO adminVO;
 
-	@Expose
+//	@Expose
 	@OneToMany(mappedBy = "restVO", cascade = CascadeType.ALL)
 	private Set<RestCollectionVO> rests;
-	@Expose
+//	@Expose
 	@OneToMany(mappedBy = "restVO", cascade = CascadeType.ALL)
 	private Set<MemBookingVO> memBooking;
 
