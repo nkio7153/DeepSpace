@@ -79,22 +79,29 @@ $(document).ready(function() {
         }
     });
     
-    // 綁定表單的提交事件
-    $("#editForm").submit(function(event) {
-        var artiTitle = $("#artiTitle").val().trim(); // 獲取並去除兩邊空白
-        var artiText = $("#artiText").val().trim(); // 同上
+        // 綁定表單的提交事件
+        $("#editForm").submit(function(event) {
+            var artiTitle = $("#artiTitle").val().trim(); // 獲取並去除兩邊空白
+            var artiText = $("#artiText").val().trim(); // 同上
 
-        // 檢查是否為空
-        if (artiTitle === "" || artiText === "") {
-            event.preventDefault(); // 阻止表單提交
-            Swal.fire({ // 使用 SweetAlert 顯示錯誤信息
-                icon: 'error',
-                title: '錯誤',
-                text: '文章標題和內容都不能為空！'
-            });
-        }
-        // 如果不為空，表單將正常提交
-    });
+            // 檢查標題和內容是否為空
+            if (artiTitle === "" || artiText === "") {
+                event.preventDefault(); // 阻止表單提交
+                Swal.fire({ // 使用 SweetAlert 顯示錯誤信息
+                    icon: 'error',
+                    title: '錯誤',
+                    text: '文章標題和內容都不能為空！'
+                });
+            } else if (artiTitle.length > 20) { // 檢查標題長度是否超過20個字
+                event.preventDefault(); // 阻止表單提交
+                Swal.fire({ // 使用 SweetAlert 顯示錯誤信息
+                    icon: 'error',
+                    title: '錯誤',
+                    text: '文章標題不能超過20個字！'
+                });
+            }
+            // 如果條件都符合，表單將正常提交
+        });
 });
 
 function previewImage(event) {
