@@ -295,9 +295,11 @@ public class RestApiServlet extends HttpServlet {
 					vo.setBookingNumber(Integer.parseInt(req.getParameter("bookingNumber")));
 					vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
 					int pk = memBookingService.add(vo);
+					// 訂位成功時將發送通知 加上會員訂位連結
 					NotificationsService msg = new NotificationsServiceImpl();
 					String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath() + "/Rest/membooking";
 					msg.RestOrderNotification(vo, url);
+					msg.getUnreadNotificationsCount(vo.getMemId());
 					out.print(gson.toJson(pk));
 				} catch (Exception e) {
 					out.print("ERROR");
