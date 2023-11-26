@@ -142,7 +142,7 @@ input {
 										if (response === 'success') {
 											alert("密碼更新成功");
 
-											window.location.href = "${pageContext.request.contextPath}/backadmin/list";
+											window.location.href = "${pageContext.request.contextPath}/admin/login.jsp";
 
 										} else {
 											alert("帳號錯誤或電子郵件輸入錯誤");

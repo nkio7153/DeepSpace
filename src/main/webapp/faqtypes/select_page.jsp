@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>FaqTypes: Home</title>
+    <title>常見問題類型</title>
 <%--  include head.jsp--%>
   <jsp:include page="/backend/backIndex/head.jsp"></jsp:include>
    <!-- Bootstrap 5 CSS -->
@@ -26,12 +26,10 @@
 <%--      放入自己body裡的代碼--%>
       <div class="col-lg-10 g-2 my-0">
                 <div class="mb-4">
-                    <h3>FaqTypes: Home</h3>
+                    <h3>常見問題類型</h3>
                 </div>
 
-                <p>FaqTypes: Home</p>
-
-                <h3>FaqTypes資料查詢:</h3>
+                <h3>常見問題類型資料查詢:</h3>
 
                 <c:if test="${not empty errorMsgs}">
                     <div class="alert alert-danger">
@@ -71,7 +69,7 @@
 
                     <li>
                         <form method="post" action="faqTypes.do" class="form-inline my-2">
-                            <b>選擇問題類型:</b>
+                            <b>選擇常見問題類型:</b>
                             <select size="1" name="faqNo" class="form-control mx-2">
                                 <c:forEach var="faqTypesVO" items="${faqSvc.all}">
                                     <option value="${faqTypesVO.faqNo}">${faqTypesVO.QTypes}
@@ -83,7 +81,7 @@
                     </li>
                 </ul>
 
-                <h3>FaqTypes管理</h3>
+                <h3>常見問題類型管理</h3>
                 <ul>
                     <li><a href='addFaq.jsp' class='btn btn-link'>新增</a> a new FaqTypes.</li>
                 </ul>

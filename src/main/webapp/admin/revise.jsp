@@ -51,10 +51,10 @@ request.setCharacterEncoding("UTF-8");
 							<td><input type="text" name="adminAcc"
 								value="${param.adminAcc}" readonly></td>
 						</tr>
-						<tr>
-							<th>密碼</th>
-							<td><input type="text" name="adminPwd" required></td>
-						</tr>
+					
+							
+							<input type="hidden" name="adminPwd" value="${param.adminPwd}" required>
+						
 						<tr>
 							<th>管理員姓名</th>
 							<td><input type="text" name="adminName"
