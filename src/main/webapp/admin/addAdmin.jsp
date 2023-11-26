@@ -72,7 +72,7 @@
             </div>
 
             <div class="col-lg-10 g-2 transparent rounded mt-1">
-                <h1 class="mb-4 text-center">註冊會員</h1>
+                <h1 class="mb-4 text-center">註冊管理員</h1>
                 <form action="${pageContext.request.contextPath}/ad/save" method="post" enctype="multipart/form-data" class="centered-form">
                     <c:if test="${not empty errorMsgs}">
                         <div class="alert alert-danger" style="width: 50%;">
