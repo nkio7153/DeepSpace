@@ -63,11 +63,11 @@ public class NotificationsServiceImpl implements NotificationsService {
         }
 
 	@Override
-  	public void RestOrderNotification(MemBookingVO order) {
+  	public void RestOrderNotification(MemBookingVO order, String url) {
         NotificationsVO notification = new NotificationsVO();
         notification.setMemId(order.getMemId());
-        notification.setNoteType("餐廳通知");    
-        notification.setNoteContent("您的訂單已成功建立！訂單號碼為 " + order.getBookingId());
+        notification.setNoteType("餐廳訂位通知");
+        notification.setNoteContent("您的訂位已成功建立！訂位號碼為 " + order.getBookingId() + "。 <a href='" + url + "'>點擊此處查看訂位詳情</a>");
         notification.setNoteCreated(new Timestamp(System.currentTimeMillis()));
         notification.setNoteRead((byte) 0);
 

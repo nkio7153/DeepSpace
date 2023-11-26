@@ -1,9 +1,12 @@
 package com.depthspace.restaurant.controller;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.alibaba.fastjson2.JSON;
+import com.depthspace.attractions.model.CityVO;
+import com.depthspace.attractions.service.CityService;
 import com.depthspace.restaurant.model.membooking.MemBookingVO;
 import com.depthspace.restaurant.model.restaurant.RestVO;
 import com.depthspace.restaurant.model.restcollection.RestCollectionVO;
@@ -26,6 +31,7 @@ import com.depthspace.restaurant.service.RestcollectionServiceImpl;
 import com.depthspace.utils.JedisUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import redis.clients.jedis.Jedis;
 
@@ -77,33 +83,30 @@ public class RestController extends HttpServlet {
 	}
 
 	private String getRests(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+		
+		CityService cityService = new CityService();
+		List<CityVO> citylist = cityService.getAll();
+		req.setAttribute("citylist", citylist);
+		
 		List<RestVO> restList = restService.showRest();
+		
+		// 複合查詢
+		String city = req.getParameter("city");
 		String restType = req.getParameter("restType");
 		String restName = req.getParameter("restName");
-		// 條件搜尋 根據類型與名稱 把redis的列表 根據條件塞選在返回到JSP
-		if (restType != null && !restType.equals("請選擇") && restName != null) {
-			List<RestVO> list = getRedis(restType, restName);
-			req.setAttribute("restList", list);
-
-		} else if (restType != null && !restType.equals("請選擇")) {
-			List<RestVO> list = getRedis(restType, null);
-			req.setAttribute("restList", list);
-
-		} else if (restName != null) {
-			List<RestVO> list = getRedis(null, restName);
-			req.setAttribute("restList", list);
-
+		if (city != null || restType != null || restName != null) {
+			Map<String, String> map = new HashMap<>();
+			map.put("restAddress", !city.isEmpty() ? city : null);
+			map.put("restType", !restType.isEmpty() ? restType : null);
+			map.put("restName", !restName.isEmpty() ? restName : null);
+			System.out.println(map);
+			List<RestVO> to = restService.sreach(map);
+			System.out.println(to);
+			req.setAttribute("restList", to);
 		} else {
 			req.setAttribute("restList", restList);
-			// 進入時將列表存入redis
-			try {
-				toRedis(gson.toJson(restList));
-			} catch (Exception e) {
-				System.out.println("redis異常");
-				e.printStackTrace();
-			}
 		}
+		
 		// 查出所有類型用HashSet去重
 		HashSet<String> typeList = new HashSet<String>();
 		for (RestVO vo : restList) {
@@ -119,10 +122,7 @@ public class RestController extends HttpServlet {
 			RestcollectionService rcs = new RestcollectionServiceImpl();
 			List<RestCollectionVO> rcList = rcs.findByMemId(memId);
 			req.setAttribute("rcList", rcList);
-			System.out.println("=================================================");
-			System.out.println(rcList);
 		}
-		
 		
 		return "/frontend/rest/restlist.jsp";
 	}
@@ -150,10 +150,8 @@ public class RestController extends HttpServlet {
 //			jedis.set("rests", vo);
 //		}
 		// 暫時處理修改優化
-		if (jedis.exists("rests")) {
-			jedis.del("rests", vo);
-			jedis.set("rests", vo);
-		}
+		jedis.del("rests", vo);
+		jedis.set("rests", vo);
 		jedis.close();
 	}
 
@@ -204,5 +202,5 @@ public class RestController extends HttpServlet {
 		return "/frontend/rest/membooking.jsp";
 	}
 
-
+	
 }

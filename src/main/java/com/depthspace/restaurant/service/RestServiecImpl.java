@@ -1,6 +1,7 @@
 package com.depthspace.restaurant.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.depthspace.restaurant.model.restaurant.RestDAO;
 import com.depthspace.restaurant.model.restaurant.RestDAOImpl;
@@ -52,6 +53,12 @@ public class RestServiecImpl implements RestService {
 		return dao.showRest();
 	}
 
+	@Override
+	public List<RestVO> sreach(Map<String, String> map) {
+		return dao.sreach(map);
+	}
+
+	
 
 	
 }

@@ -1,6 +1,15 @@
 package com.depthspace.restaurant.model.restaurant;
 
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -64,6 +73,37 @@ public class RestDAOImpl implements RestDAO {
 	public List<RestVO> showRest() {
 		return getSession().createQuery("from RestVO where REST_STATUS = 1", RestVO.class).list();
 	}
+
+	@Override
+	public List<RestVO> sreach(Map<String, String> map) {
+		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<RestVO> criteria = builder.createQuery(RestVO.class);
+        Root<RestVO> root = criteria.from(RestVO.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        
+        for (Map.Entry<String, String> row : map.entrySet()) {
+        	if (row.getValue() != null) {
+	            if ("restAddress".equals(row.getKey())) {
+	            	predicates.add(builder.like(root.get("restAddress"), "%" + row.getValue() + "%"));
+	            }
+	
+	            if ("restType".equals(row.getKey())) {
+	                predicates.add(builder.equal(root.get("restType"), row.getValue()));
+	            }
+	
+	            if ("restName".equals(row.getKey())) {
+	                predicates.add(builder.like(root.get("restName"), "%" + row.getValue() + "%"));
+	            }
+        	}
+		}
+        
+
+        criteria.where(predicates.toArray(new Predicate[0]));
+
+        return getSession().createQuery(criteria).getResultList();
+    } 
 
 
 	

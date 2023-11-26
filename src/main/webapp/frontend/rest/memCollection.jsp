@@ -26,6 +26,9 @@
 	.blank-line {
      	height: 500px;
     }
+     .img-thumbnail { 
+	 	height: 250px; 
+	 } 
 </style>
 </head>
 <body>
@@ -58,7 +61,7 @@
 				<div class="row">
 
 			<c:forEach var="rc" items="${rcList}">
-				<div class="col-md-4 p-3">
+				<div class="col-4 p-3">
 					<div class="card shadow-lg">
 						<a href="${pageContext.request.contextPath}/Rest/Restinfo?restId=${rc.restId}">
 							<img class="card-img-top img-thumbnail"	src="${pageContext.request.contextPath}/static/images/rest/r_${rc.restId}.jpg"

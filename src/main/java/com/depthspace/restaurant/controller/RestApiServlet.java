@@ -296,7 +296,8 @@ public class RestApiServlet extends HttpServlet {
 					vo.setBookingDate(java.sql.Date.valueOf(req.getParameter("bookingDate")));
 					int pk = memBookingService.add(vo);
 					NotificationsService msg = new NotificationsServiceImpl();
-					msg.RestOrderNotification(vo);
+					String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath() + "/Rest/membooking";
+					msg.RestOrderNotification(vo, url);
 					out.print(gson.toJson(pk));
 				} catch (Exception e) {
 					out.print("ERROR");
@@ -484,7 +485,6 @@ public class RestApiServlet extends HttpServlet {
         String uri = "/RestApi/getcheckBooking?bookingId=" + bookingId;
         System.out.println(url + uri);
         String img = "<img src=https://chart.googleapis.com/chart?cht=qr&chl=" + url + uri + "&chs=150x150 />";
-        System.out.println(img);
 		msg.append(img);
 		// 將HTML內容加進body再加進Multipart
 		try {
@@ -510,21 +510,15 @@ public class RestApiServlet extends HttpServlet {
 		AdminVO admin = (AdminVO) session.getAttribute("admin");
 		if (admin != null) {
 		    MemBookingVO mb = memBookingService.getByMembookingId(Integer.valueOf(req.getParameter("bookingId")));
-		    
-		    if (admin.getAdminId() == mb.getRestVO().getAdminVO().getAdminId()) {
-		    	HbMemService memService = new HbMemService();
-		        MemVO memVO = memService.getOneMem(mb.getMemId());
-		        req.setAttribute("mb", mb);
-		        req.setAttribute("mem", memVO);
-		        String forwardPath = "/backend/rest/checkBooking.jsp";
-		        RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
-		        dispatcher.forward(req, resp);
-		    } else {
-		        RequestDispatcher dispatcher = req.getRequestDispatcher("/DepthSpace/admin/login.jsp");
-		        dispatcher.forward(req, resp);
-		    }
+		    HbMemService memService = new HbMemService();
+	        MemVO memVO = memService.getOneMem(mb.getMemId());
+	        req.setAttribute("mb", mb);
+	        req.setAttribute("mem", memVO);
+	        String forwardPath = "/backend/rest/checkBooking.jsp";
+	        RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
+	        dispatcher.forward(req, resp);
 		} else {
-		    resp.sendRedirect("/DepthSpace/admin/login.jsp");
+		    resp.sendRedirect("/admin/login.jsp");
 		}
 
 		
