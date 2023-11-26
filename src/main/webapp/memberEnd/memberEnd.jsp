@@ -79,7 +79,9 @@ pageContext.setAttribute("list", list);
 									<td>${mem.memId}</td>
 									<td>${mem.memAcc}</td>
 									<td>${mem.memName}</td>
-									<td>${mem.memIdentity}</td>
+<%-- 									<td>${mem.memIdentity}</td> --%>
+									<td>${mem.memIdentity.substring(0, 1)}${'12****'}${mem.memIdentity.substring(mem.memIdentity.length() - 4)}</td>
+
 									<td><fmt:formatDate value="${mem.memBth}"
 											pattern="yyyy-MM-dd" /></td>
 									<td><c:choose>
@@ -94,7 +96,7 @@ pageContext.setAttribute("list", list);
 					                </c:otherwise>
 										</c:choose></td>
 									<td>${mem.memEmail}</td>
-									<td>${mem.memTel}</td>
+									<td>0${mem.memTel}</td>
 									<td>${mem.memAdd}</td>
 									<td><c:choose>
 											<c:when test="${mem.accStatus == 1}">
