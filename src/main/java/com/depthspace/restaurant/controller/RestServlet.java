@@ -256,8 +256,6 @@ public class RestServlet extends HttpServlet {
 		String restOpen = req.getParameter("restOpen");
 		if (restOpen.isEmpty() || restOpen == null || restOpen.trim().length() == 0) {
 			errorMsgs.put("restOpen", "營業時間請勿空白");
-		} else if (!restOpen.matches("([01]?[0-9]|2[0-3]):[0-5][0-9] - ([01]?[0-9]|2[0-3]):[0-5][0-9]")) {
-			errorMsgs.put("restOpen", "營業時間格式錯誤請用24小時制");
 		}
 		
 		if (!errorMsgs.isEmpty()) {

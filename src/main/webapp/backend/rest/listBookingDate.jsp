@@ -31,9 +31,9 @@
 					<th class="restId">餐廳編號</th>
 					<th>日期</th>
 					<th>營業狀態</th>
-					<th>早上可預約組數</th>
-					<th>中午可預約組數</th>
-					<th>晚上可預約組數</th>
+					<th>早上可預約人數</th>
+					<th>中午可預約人數</th>
+					<th>晚上可預約人數</th>
 					<th>修改</th>
 	              </tr>
 	            </thead>
