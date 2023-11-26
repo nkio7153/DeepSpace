@@ -66,12 +66,14 @@ public class MemberServlet extends HttpServlet {
 			return 1; // 返回一個特定的錯誤碼表示帳號不存在
 		} else {
 			memvo = mems.getMemberInfo(memAcc);
-			System.out.println("2");
+			System.out.println("memvo= " + memvo);
 		}
+		System.out.println("我會發瘋=" +BCrypt.checkpw(password, memvo.getMemPwd()));
 
 		// 新增的密碼鹽值格式檢查
 		if (memvo != null && memvo.getMemPwd() != null && memvo.getMemPwd().startsWith("$2a$")) {
 			if (BCrypt.checkpw(password, memvo.getMemPwd())) {
+				
 				// 檢查帳號狀態
 				if (memvo.getAccStatus() == 2) {
 					return 5; // 帳號狀態問題
@@ -218,8 +220,8 @@ public class MemberServlet extends HttpServlet {
 	private void doCheckAccount(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
 		String memAcc = req.getParameter("memAcc");
-		System.out.println("memAcc=" + memAcc);
-		HbMemService hbms = new HbMemService();
+//		System.out.println("memAcc=" + memAcc);
+//		HbMemService hbms = new HbMemService();
 		List<MemVO> list = hbms.getAll();
 		boolean account = false;
 
@@ -328,7 +330,7 @@ public class MemberServlet extends HttpServlet {
 		String memAcc = req.getParameter("memAcc");
 		String memEmail = req.getParameter("memEmail");
 
-		HbMemService hbms = new HbMemService();
+//		HbMemService hbms = new HbMemService();
 		MemVO mem = hbms.findByMemAcc(memAcc);
 		if (mem == null) {
 			String URL = req.getContextPath() + "/member/forgetPassword.jsp?error=true";
@@ -693,8 +695,9 @@ public class MemberServlet extends HttpServlet {
 
 		Integer st1 = null;
 		String st2 = req.getParameter("memAcc");
-		System.out.println("st2= " + st2);
-		String st3 = null;
+//		System.out.println("st2= " + st2);
+//		String st3 = null;
+		String pwd = null;
 		String st4 = null;
 		String st5 = null;
 		java.sql.Date st6 = null;
@@ -723,15 +726,23 @@ public class MemberServlet extends HttpServlet {
 			if (st2 == null || st2.trim().length() == 0) {
 				errorMsgs.add("帳號請勿空白");
 			}
-
-			st3 = req.getParameter("memPwd");
-			if (st3 == null || st3.trim().length() == 0) {
-				errorMsgs.add("密碼請勿空白");
-			} else {
-				// 使用 bcrypt 進行密碼加密
-				String hashedPassword = BCrypt.hashpw(st3, BCrypt.gensalt());
-				st3 = hashedPassword;
-			}
+			
+			//處理密碼
+			HttpSession session = req.getSession(false);
+			Integer sessionmemId = (Integer) session.getAttribute("memId");
+			HbMemService hbms = new HbMemService();
+			System.out.println("sessionmemId=" + sessionmemId);
+			//此頁面無修改密碼邏輯 所以只要取出資料就好
+			pwd = hbms.getOneMem(sessionmemId).getMemPwd();
+//			String pwd = memvo.getMemPwd();
+//			st3 = req.getParameter("memPwd");
+//			if (st3 == null || st3.trim().length() == 0) {
+//				errorMsgs.add("密碼請勿空白");
+//			} else {
+				
+//				String hashedPassword = BCrypt.hashpw(pwd, BCrypt.gensalt());
+//				pwd = hashedPassword;
+//			}
 
 			st4 = req.getParameter("memName");
 			if (st4 == null || st4.trim().length() == 0) {
@@ -826,14 +837,37 @@ public class MemberServlet extends HttpServlet {
 			e.printStackTrace();
 			return;
 		}
-
-		MemberService m = new MemberService();
-		MemVO memvo = null;
+//		MemVO memvo = hbms.getOneMem(sessionmemId);
+		//取得原本物件,hbms.getOneMem(st1)
+		MemVO memvo = hbms.getOneMem(st1);
+		
+		memvo.setMemId(st1);
+		memvo.setMemAcc(st2);
+		memvo.setMemPwd(pwd);
+		memvo.setMemName(st4);
+		memvo.setMemIdentity(st5);
+		memvo.setMemBth(st6);
+		memvo.setMemSex(st7);
+		memvo.setMemEmail(st8);
+		memvo.setMemTel(st9);
+		memvo.setMemAdd(st10);
+		memvo.setAccStatus(st11);
+//		memvo.setMemId(st12);
+		memvo.setMemImage(st13);
+		
+		hbms.update(memvo);
+		
+//		MemberService m = new MemberService();
 //		if (errorMsgs.isEmpty()) {
-		memvo = new MemVO(st1, st2, st3, st4, st5, st6, st7, st8, st9, st10, st11, st12, st13);
+//		memvo = new MemVO(st1, st2, pwd, st4, st5, st6, st7, st8, st9, st10, st11, st12, st13);
 //		}
-		m.updateMember(memvo);
-		req.setAttribute("authenticatedMem", memvo);
+//		m.updateMember(memvo);
+		
+		HttpSession session = req.getSession(false);
+//		Integer memId = null;
+//		memId = (Integer) session.getAttribute("memId");
+//		req.setAttribute("authenticatedMem", memvo);
+		session.setAttribute("authenticatedMem", memvo);
 
 //		st13 = mem.getMemImage();
 //		String base64Image = Base64.getEncoder().encodeToString(st13);
@@ -875,38 +909,44 @@ public class MemberServlet extends HttpServlet {
 	// ============================================================================================================================================
 
 	private void doEdit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		MemberService mems = new MemberService();
+//		MemberService mems = new MemberService();
+//		Integer memId = null;
+//		String st1 = req.getParameter("memId");
+		HttpSession session = req.getSession(false);
 		Integer memId = null;
-		String st1 = req.getParameter("memId");
+		memId = (Integer) session.getAttribute("memId");
+		System.out.println("memId=" + memId);
+		MemVO memvo = hbms.getOneMem(memId);
+		System.out.println("memvo=" + memvo);
 
-		if (st1 != null && !st1.isEmpty()) {
+//		if (memId != null && ! memId.isEmpty()) {
 			try {
-				memId = Integer.valueOf(st1);
+				memId = Integer.valueOf(memId);
 				req.setAttribute("memId", memId);
 			} catch (NumberFormatException e) {
 				// 轉換失敗時的處理
 				e.printStackTrace();
 				return;
 			}
-		} else {
-			MemVO mem = new MemVO();
+//		} else {
+//			MemVO mem = new MemVO();
+//
+//			List<MemVO> a = mems.getAll();
+//			int lastIndex = a.size() - 1; // 找到最後一個元素的索引
+//			mem = a.get(lastIndex); // 獲得最後一個元素的值
+//			memId = mem.getMemId();
+//			req.setAttribute("memId", memId);
+//		}
 
-			List<MemVO> a = mems.getAll();
-			int lastIndex = a.size() - 1; // 找到最後一個元素的索引
-			mem = a.get(lastIndex); // 獲得最後一個元素的值
-			memId = mem.getMemId();
-			req.setAttribute("memId", memId);
-		}
-
-		MemVO memvo = mems.findByMemId(memId);
+//		MemVO memvo = mems.findByMemId(memId);
 //		System.out.println("找的會員資料：" + memvo);
 		if (memvo != null) {
 			// 處理圖片
 			byte[] imageBytes = memvo.getMemImage();
 			if (imageBytes != null) {
 				String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-				req.setAttribute("imageBytes", imageBytes);
-				req.setAttribute("base64Image", base64Image);
+				session.setAttribute("imageBytes", imageBytes);
+				session.setAttribute("base64Image", base64Image);
 			} else {
 				req.setAttribute("base64Image", null); // 如果 memImage 為 null，設定 base64Image 為 null
 			}
@@ -941,7 +981,7 @@ public class MemberServlet extends HttpServlet {
 				System.out.println("字串長度不足六");
 			}
 
-			// 要把會員的前三個字拿出來
+			// 要把會員的地址前三個字拿出來
 			String newAddress = memvo.getMemAdd();
 			String cityName = newAddress.substring(0, Math.min(newAddress.length(), 3));
 			// 用比對方式去把id抓到
@@ -975,13 +1015,15 @@ public class MemberServlet extends HttpServlet {
 		String loginLocation = req.getParameter("loginLocation");
 		System.out.println("loginLocation=" + loginLocation);
 //		System.out.println("存session成功"+ "memAcc= " + memAcc );
+		
+		int allowUser = allowUser(memAcc, password);
 
-		if (allowUser(memAcc, password) == 1) {
+		if (allowUser == 1) {
 			System.out.println("沒有此帳號");
 			String URL = req.getContextPath() + "/member/login.jsp?error=false&requestURI=" + loginLocation;
 			resp.sendRedirect(URL);
 			return;
-		} else if (allowUser(memAcc, password) == 3) {
+		} else if (allowUser == 3) {
 			HttpSession session = req.getSession();
 
 			MemVO mem = ms.getMemberInfo(memAcc);
@@ -1042,14 +1084,14 @@ public class MemberServlet extends HttpServlet {
 //			req.getRequestDispatcher("/member/success.jsp").forward(req, resp);
 			req.getRequestDispatcher("/indexpage/index.jsp").forward(req, resp);
 //			resp.sendRedirect(req.getContextPath()+"/indexpage/index.jsp");
-		} else if (allowUser(memAcc, password) == 4) {
+		} else if (allowUser == 4) {
 			String URL = req.getContextPath() + "/member/login.jsp?error=true&requestURI=" + loginLocation;
 			resp.sendRedirect(URL);
 			return;// 程式中斷
-		} else if (allowUser(memAcc, password) == 5) {
+		} else if (allowUser == 5) {
 			String URL = req.getContextPath() + "/member/login.jsp?error=nostatus&requestURI=" + loginLocation;
 			resp.sendRedirect(URL);
-		} else if (allowUser(memAcc, password) == 6) {
+		} else if (allowUser == 6) {
 			String URL = req.getContextPath() + "/member/login.jsp?error=nostatus&requestURI=" + loginLocation;
 			resp.sendRedirect(URL);
 		}
