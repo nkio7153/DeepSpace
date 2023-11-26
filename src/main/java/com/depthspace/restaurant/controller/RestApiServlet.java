@@ -516,11 +516,13 @@ public class RestApiServlet extends HttpServlet {
 	        MemVO memVO = memService.getOneMem(mb.getMemId());
 	        req.setAttribute("mb", mb);
 	        req.setAttribute("mem", memVO);
+	        System.out.println(mb);
+	        System.out.println(memVO);
 	        String forwardPath = "/backend/rest/checkBooking.jsp";
 	        RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
 	        dispatcher.forward(req, resp);
 		} else {
-		    resp.sendRedirect("/admin/login.jsp");
+		    resp.sendRedirect("/DepthSpace/admin/login.jsp");
 		}
 
 		
