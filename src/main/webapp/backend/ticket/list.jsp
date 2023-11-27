@@ -65,14 +65,16 @@
 	    margin-bottom: 10px;
 	}
 
-.carousel-inner {
-    position: relative;
-    
- 
-.w-100 {
-    width: 45%!important;
-}
-
+	.carousel-inner {
+	    position: relative;
+	    
+	 
+	.w-100 {
+	    width: 45%!important;
+	}
+	.img-30 {
+	    max-width: 30% !important;
+	}
 </style>
 
 <title>票券列表</title>
@@ -276,17 +278,19 @@
 		            <div class="modal-body">
 		                <div class="row">
                           <!-- 輪播圖 -->
-		                    <div id="carouselExampleIndicators" class="carousel slide">
-		                        <div class="carousel-inner" id="ticketImagesCarousel"></div>
-		                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-		                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		                            <span class="sr-only">Previous</span>
-		                        </a>
-		                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-		                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-		                            <span class="sr-only">Next</span>
-		                        </a>
-							</div>
+                          <div id="ticketImagesContainer" class="d-flex justify-content-start flex-wrap"></div>
+                          
+<!-- 		                    <div id="carouselExampleIndicators" class="carousel slide"> -->
+<!-- 		                        <div class="carousel-inner" id="ticketImagesCarousel"></div> -->
+<!-- 		                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev"> -->
+<!-- 		                            <span class="carousel-control-prev-icon" aria-hidden="true"></span> -->
+<!-- 		                            <span class="sr-only">Previous</span> -->
+<!-- 		                        </a> -->
+<!-- 		                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next"> -->
+<!-- 		                            <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
+<!-- 		                            <span class="sr-only">Next</span> -->
+<!-- 		                        </a> -->
+<!-- 							</div> -->
 		                    <div class="col-md-6 mb-3"><strong class="d-block mb-2">票券類型</strong>
 		                        <p id="modalTicketType"></p>
 		                    </div>
@@ -397,19 +401,17 @@
                 $('#modalLatitude').text(ticket.latitude);
                 $('#modalStatus').text(ticket.status == 1 ? '此商品上架中' : '此商品未上架'); 
                 $('#modalDescription').html(ticket.description);
-                
-                var carouselInner = $('#ticketImagesCarousel').empty();
+            
+                var imagesContainer = $('#ticketImagesContainer').empty();
                 $.getJSON("<%=request.getContextPath()%>/ticketallimage?action=getIds&ticketId=" + ticketId, function(imageIds) {
-                    imageIds.forEach(function(imageId, index) {
-                        var carouselItem = $('<div>').addClass('carousel-item' + (index === 0 ? ' active' : ''));
+                    imageIds.forEach(function(imageId) {
                         var img = $('<img>')
                             .attr("src", "<%=request.getContextPath()%>/ticketallimage?action=getImage&imageId="  + imageId + "&ticketId=" + ticketId)
-                            .addClass("d-block w-100");
-                        carouselItem.append(img);
-                        carouselInner.append(carouselItem);
+                            .addClass("img-fluid m-2")
+                            .css('max-width', '30%'); 
+                        imagesContainer.append(img);
                     });
                 });
-                $('#editTicketButton').attr('href', '<%=request.getContextPath()%>/ticketmg/edit?ticketId=' + ticketId); 
             },
             
             error: function(error) {
