@@ -279,11 +279,18 @@
        var rowCount = $('table tbody tr').length + 1;
        var newRow = $('<tr>').addClass('new-row').append(
            $('<td>').text(rowCount),
-           $('<td>').append($('<input>').addClass('form-control typeName-input')),
-           $('<td>').append($('<input>').addClass('form-control description-input')),
+           $('<td>').append(
+        		   $('<input>').addClass('form-control typeName-input'),
+        		   $('<span>').addClass('typeName'),	   
+           ),
+           $('<td>').append(
+        		   $('<input>').addClass('form-control description-input'),
+        		   $('<span>').addClass('description'),	       		   
+           ),
            $('<td>').append(
                $('<span>').addClass('save-icon btn btn-success Nsave-btn').append($('<i>').addClass('fas fa-save')),
-               $('<span>').addClass('cancel-btn btn btn-danger').append($('<i>').addClass('fas fa-times'))
+               $('<span>').addClass('cancel-btn btn btn-danger').append($('<i>').addClass('fas fa-times')),
+               $('<span>').addClass('edit-icon btn btn-primary edit-btn').append($('<i>').addClass('fas fa-edit')).hide(),
            )
        );
        $('table tbody').append(newRow);
@@ -316,14 +323,14 @@
                        showConfirmButton: false,
                        timer: 1500
                    });
-                   currentRow.find('.typeName-input').replaceWith($('<span>').addClass('typeName').text(typeName));
-                   currentRow.find('.description-input').replaceWith($('<span>').addClass('description').text(description));
+	   		        currentRow.find('.typeName').text(typeName).show();
+			        currentRow.find('.typeName-input').hide();
+			        currentRow.find('.description').text(description).show();
+			        currentRow.find('.description-input').hide();
+
                    currentRow.find('.cancel-btn').hide();
-                   currentRow.find('.save-icon').replaceWith(
-                       $('<span>').addClass('edit-icon btn btn-primary edit-btn').append(
-                           $('<i>').addClass('fas fa-edit')
-                       )
-                   );
+                   currentRow.find('.save-icon').hide();
+                   currentRow.find('.edit-icon').show();
                }
            },
            error: function(xhr, status, error) {

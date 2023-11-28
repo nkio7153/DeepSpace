@@ -222,6 +222,7 @@ $(document).ready(function() {
         currentRow.find('.edit-icon').hide();
         currentRow.find('.save-icon').show();
         currentRow.find('.cancel-btn').show(); // 顯示取消按鈕
+        console.log("YYYYY");
     });
 });
     //送出
@@ -269,10 +270,14 @@ $('.add-button').on('click', function() {
     var rowCount = $('table tbody tr').length + 1; // 流水號
     var newRow = $('<tr>').addClass('new-row').append(
         $('<td>').text(rowCount), 
-        $('<td>').append($('<input>').addClass('form-control col-type-input')),
+        $('<td>').append(
+        		$('<input>').addClass('form-control col-type-input'),
+        		$('<span>').addClass('col-type-name'),
+        		),
         $('<td>').append(
                 $('<span>').addClass('save-icon btn btn-success Nsave-btn').append($('<i>').addClass('fas fa-save')),
-                $('<span>').addClass('cancel-btn btn btn-danger').append($('<i>').addClass('fas fa-times'))
+                $('<span>').addClass('cancel-btn btn btn-danger').append($('<i>').addClass('fas fa-times')),
+                $('<span>').addClass('edit-icon btn btn-primary edit-btn').append($('<i>').addClass('fas fa-edit')).hide(),
             )
         );
     $('table tbody').append(newRow);
@@ -283,7 +288,6 @@ $(document).on('click', '.Nsave-btn', function() {
     var currentRow = $(this).closest('tr');
     var colTypeId = currentRow.find('td:eq(0)').text().trim();
     var colTypeName = currentRow.find('.col-type-input').val().trim();
-
     if(colTypeName === ''){
         Swal.fire({
             icon: 'error',
@@ -291,7 +295,6 @@ $(document).on('click', '.Nsave-btn', function() {
         });
         return;
     }
-
     $.ajax({
         url: '<%=request.getContextPath()%>/columntypesmg/add',
         type: 'POST',
@@ -306,13 +309,11 @@ $(document).on('click', '.Nsave-btn', function() {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                currentRow.find('.col-type-input').replaceWith($('<span>').addClass('colTypeName').text(colTypeName));
+		        currentRow.find('.col-type-name').text(colTypeName).show();
+		        currentRow.find('.col-type-input').hide();
                 currentRow.find('.cancel-btn').hide();
-                currentRow.find('.save-icon').replaceWith(
-                    $('<span>').addClass('edit-icon btn btn-primary edit-btn').append(
-                        $('<i>').addClass('fas fa-edit')                    
-                    )
-                );
+                currentRow.find('.save-icon').hide();
+                currentRow.find('.edit-icon').show();
             }
         },
         error: function(xhr, status, error) {
@@ -329,6 +330,7 @@ $(document).on('click', '.cancel-btn', function() {
     } else {
         // 編輯模式：恢復
         currentRow.find('.col-type-input').hide();
+        currentRow.find('.col-type-name').show();
         currentRow.find('.col-type').show();
         currentRow.find('.edit-icon').show();
         currentRow.find('.save-icon').hide();
