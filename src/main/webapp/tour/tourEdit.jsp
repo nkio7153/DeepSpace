@@ -48,7 +48,7 @@
             height: 30px;
         }
 
-        #addTour {
+        #submit {
             background-color: #008CBA;
             color: #fff;
             padding: 10px 20px;
@@ -221,7 +221,7 @@
         </div>
         <div class="right-div">
             <label>結束日期:</label>
-            <input type="text" name="endDate" value="${list[0].endDate}">
+            <input type="text" name="endDate" value="${list[0].endDate}" readonly>
         </div>
     </div>
 
@@ -326,7 +326,7 @@
 
     <!-- 		讓總天數也可以傳到servlet -->
 
-    <input type="submit" id="addTour" value="儲存行程">
+    <input type="submit" id="submit" value="儲存行程">
 </form>
 
 <script>
@@ -821,18 +821,39 @@
     //提交錯誤驗證
 
     $("#submit").on("click",function(e){
-        $(this).closest(".row").remove();
         let count=0;
-        for (let i = 0; i < $(".oneDay").length; i++) {
-            count=i;
-        }
-        count=count+1;//行程天數
-
+        // for (let i = 0; i < $(".oneDay").length; i++) {
+        //     count=i;
+        // }
+        let loop=false;
+        let loop2=false;
+        $(".oneDay").each(function() { // 迭代每個 .oneDay 元素
+            count++;
+            let count2=0;
+            if ($(this).closest(".row").find(".attraction").length == 0 ) {
+                loop = true;
+                return; // 如果找到沒有景點的 .oneDay，終止迴圈
+            }
+            $(this).closest(".row").find(".attraction").each(function(){
+                if($(this).val() == "請選擇"){
+                    loop2=true;
+                    return;
+                }
+            })
+        })
         let cal=calculateDays();//日期相減天數
 
         if (count != cal){
             e.preventDefault();
             window.alert("總天數與行程天數不符，請檢查")
+        }
+        if(loop){
+            e.preventDefault();
+            window.alert("請添加景點");
+        }
+        if(loop2){
+            e.preventDefault();
+            window.alert("請選擇景點");
         }
     })
 
