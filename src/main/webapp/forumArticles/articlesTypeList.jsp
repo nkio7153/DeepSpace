@@ -279,16 +279,16 @@ function padZero(value) {
 	}
 
 	.cards {
-	  background-color: #fff; /* 设置卡片的背景颜色 */
-	  border: 1px solid #ccc; /* 设置边框 */
-	  border-radius: 5px; /* 圆角边框 */
-	  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
+	  background-color: #fff; /* 設置卡片的背景颜色 */
+	  border: 1px solid #ccc; /* 設置邊框 */
+	  border-radius: 5px; /* 圓角邊框 */
+	  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加陰影效果 */
 	  transition: transform 0.2s ease-in-out; /* 添加hover时的平移效果 */
 	}
 
 	.cards:hover {
-	  transform: scale(1.05); /* 鼠标悬停时稍微放大卡片 */
-	  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 提高阴影深度 */
+	  transform: scale(1.05);
+	  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 	}
 	
 	.likes-button{

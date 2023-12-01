@@ -62,13 +62,13 @@
 	
 	@media (max-width: 991px) {
 		.caca {
-		  width: 100%; /* 或其他適合小屏幕的寬度 */
+		  width: 100%;
 		}
     }
 		
     @media (min-width: 992px) {
 		 .caca {
-		  width: 45rem; /* 或其他適合大屏幕的寬度 */
+		  width: 45rem;
 		 }
 	}
 	

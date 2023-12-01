@@ -24,11 +24,11 @@
 
 @media (max-width: 576px) {
  .banner-info h3 {
-    font-size: 1rem; /* 更小螢幕上的h3字體大小 */
+    font-size: 1rem;
   }
 
  .banner-info h4 {
-    font-size: 0.9rem; /* 更小螢幕上的h4字體大小 */
+    font-size: 0.9rem;
   }
   
   a.btn {
@@ -114,16 +114,14 @@
 }
 
 .destinations-grids {
-  min-height: 350px; /* 或者您想要的任何數值 */
-  /* 其餘的樣式 */
+  min-height: 350px;
 }
 
 .image-position {
-  position: relative; /* 確保是定位容器 */
-  height: 100%; /* 設定容器高度 */
-  /* 若您想要容器高度隨著視窗大小變化，可以使用百分比或 vh 單位 */
-  width: 100%; /* 若需要，設定容器寬度 */
-  overflow: hidden; /* 隱藏超出部分，避免內容溢出 */
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 
 .card-img {

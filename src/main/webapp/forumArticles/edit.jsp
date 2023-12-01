@@ -40,8 +40,8 @@
             border-radius: 4px;
         }
 		#fileSelect, #preview {
-		  display: inline-block; /* 讓元素水平顯示 */
-		  vertical-align: top; /* 確保元素從頂部對齊 */
+		  display: inline-block;
+		  vertical-align: top;
 		}
         .button {
             display: inline-block;

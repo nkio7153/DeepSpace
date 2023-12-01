@@ -220,13 +220,9 @@ a.btn {
     filter: brightness(0.9);
     max-height: 200px;
     width: auto;
-    /* 保持原始宽高比 */
     display: block;
-    /* 确保图像是块级元素，以便设置最大高度有效 */
     margin: 0 auto;
-    /* 如果需要居中图像 */
     overflow: hidden;
-    /* 超过最大高度时隐藏内容 */
 }
 
 
@@ -265,17 +261,17 @@ a.btn {
 
 @media (max-width: 991px){
     .menu{
-        background: #ffffff; /* 淺灰色背景 */
-        text-align: left; /* 新增的行，確保文字對齊到左邊 */
+        background: #ffffff;
+        text-align: left;
     }
     .nav-link, nav a{
     	padding: 0;
-        color: black !important; /* 確保所有連結文字顏色為黑色 */
-        text-align: left !important; /* 確保文字對齊到左邊 */
+        color: black !important;
+        text-align: left !important;
     }
     .menu li{
-        display: block; /* 或者 'inline-block', 根據您的具體需求 */
-        text-align: left; /* 新增的行，確保列表項目文字對齊到左邊 */
+        display: block;
+        text-align: left;
        	margin-bottom: 5px;
     }
     .navbar-nav .dropdown-menu {
@@ -294,7 +290,6 @@ a.btn {
     color: #ddd;
 }
 
-/* 這樣會限制樣式只影響導航列(navbar)內的所有<a>標籤 */
 .navbar a:hover {
     color: #ddd;
     text-shadow: 2px 2px 2px rgba(0,0,0,0.5);

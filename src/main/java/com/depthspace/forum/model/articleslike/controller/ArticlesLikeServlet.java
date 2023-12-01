@@ -55,7 +55,7 @@ public class ArticlesLikeServlet extends HttpServlet {
 		if (session.getAttribute("memId") != null) {
 			memId = (Integer) session.getAttribute("memId");
 		}
-		// 检查是否已按讚
+		// 檢查是否已按讚
 		boolean islike = articlesLikeService.islike(articleId, memId);
 		ArticlesLikeVO alvo = new ArticlesLikeVO(articleId, memId);
 		if (islike) {

@@ -378,16 +378,16 @@ $(document).ready(function() {
 	}
 
 	.cards {
-	  background-color: #fff; /* 设置卡片的背景颜色 */
-	  border: 1px solid #ccc; /* 设置边框 */
-	  border-radius: 5px; /* 圆角边框 */
-	  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
-	  transition: transform 0.2s ease-in-out; /* 添加hover时的平移效果 */
+	  background-color: #fff;
+	  border: 1px solid #ccc;
+	  border-radius: 5px;
+	  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	  transition: transform 0.2s ease-in-out;
 	}
 
 	.cards:hover {
-	  transform: scale(1.05); /* 鼠标悬停时稍微放大卡片 */
-	  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 提高阴影深度 */
+	  transform: scale(1.05);
+	  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 	}
 	
 	div.modal-body {
@@ -415,13 +415,13 @@ $(document).ready(function() {
      
 		@media (max-width: 991px) {
 		  .card {
-		    width: 100%; /* 或其他適合小屏幕的寬度 */
+		    width: 100%;
 		  }
 		}
 		
 		@media (min-width: 992px) {
 		  .card {
-		    width: 45rem; /* 或其他適合大屏幕的寬度 */
+		    width: 45rem;
 		  }
 		}
      

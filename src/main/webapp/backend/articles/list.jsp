@@ -279,7 +279,7 @@ function closeModal() {
 	    margin-right: 30px;
 	}
 	.btn-fixed-width {
-    width: 35px; /* 或者任何您需要的寬度 */
+    width: 35px;
 	}
 </style>
 </head>
