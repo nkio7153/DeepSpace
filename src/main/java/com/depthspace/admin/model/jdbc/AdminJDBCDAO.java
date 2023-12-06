@@ -28,8 +28,9 @@ public class AdminJDBCDAO implements AdminDAO_Interface {
 		PreparedStatement ps = null;
 		
 		try {
-			conn = DBUtil.getConnection();
-			ps = conn.prepareStatement(INSERT_STMT);
+			conn = DBUtil.getConnection(); // 從 DBUtil 獲取數據庫連接
+			ps = conn.prepareStatement(INSERT_STMT); // 創建一個 PreparedStatement 對象來執行 SQL 語句
+			// 設置 PreparedStatement 參數
 			ps.setString(1, AdminVO.getAdminAcc());
 			ps.setString(2, AdminVO.getAdminPwd());
 			ps.setString(3, AdminVO.getAdminName());
@@ -37,12 +38,12 @@ public class AdminJDBCDAO implements AdminDAO_Interface {
 			ps.setByte(5, AdminVO.getAdminVerifyStatus());
 			ps.setByte(6, AdminVO.getAdminFuncName());
 			
-			ps.executeUpdate();
+			ps.executeUpdate(); // 執行 SQL 語句進行數據插入
 			
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException(e); // 捕獲並拋出 SQL 異常
 		} finally {
-			DBUtil.close(conn, ps, null);
+			DBUtil.close(conn, ps, null); // 最終塊中關閉資源
 		}
 	}
 
@@ -86,12 +87,13 @@ public class AdminJDBCDAO implements AdminDAO_Interface {
 		}
 	}
 
+	// 實現介面中的 findByPrimaryKey 方法，用於根據主鍵查詢單個管理員資料
 	@Override
 	public AdminVO findByPrimaryKey(Integer adminId) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		AdminVO adminVO = null;
+		AdminVO adminVO = null; // 定義一個 AdminVO 對象來存儲查詢結果
 
 		try {
 			conn = DBUtil.getConnection();
@@ -100,7 +102,8 @@ public class AdminJDBCDAO implements AdminDAO_Interface {
 			rs = ps.executeQuery();
 
 			if (rs.next()) {
-				adminVO = new AdminVO();
+				adminVO = new AdminVO(); // 初始化 AdminVO 對象
+                // 從結果集中提取數據並設置到 AdminVO 對象中
 				adminVO.setAdminAcc(rs.getString("ADMIN_ACC"));
 				adminVO.setAdminPwd(rs.getString("ADMIN_PWD"));
 				adminVO.setAdminName(rs.getString("ADMIN_NAME"));
@@ -117,6 +120,7 @@ public class AdminJDBCDAO implements AdminDAO_Interface {
 		return adminVO;
 	}
 
+	// 實現介面中的 getAll 方法，用於獲取所有管理員資料
 	@Override
 	public List<AdminVO> getAll() {
 		Connection conn = null;

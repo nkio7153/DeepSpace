@@ -84,6 +84,10 @@ body, html {
 		 alert("密碼錯誤，請從新輸入")
 	 } else if(error=='nostatus'){
 		 alert("此帳戶已停權，請聯繫客服")
+	 } else if(error=='noacc'){
+		 alert("帳號不符合信箱格式")
+	 }else if(error=='oldacc'){
+		 alert("帳號過舊")
 	 }
 	 
 	 

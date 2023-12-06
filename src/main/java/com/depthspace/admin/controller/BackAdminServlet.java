@@ -50,7 +50,7 @@ public class BackAdminServlet extends HttpServlet{
 			case "/updateStatus"://更新帳號狀態
 				doUpdateStatus(req, resp);
 				break;
-			case "/searchAdmins"://模糊查詢會員姓名
+			case "/searchAdmins"://模糊查詢管理員姓名
 				doSearchAdmins(req, resp);
 				break;
 		}
