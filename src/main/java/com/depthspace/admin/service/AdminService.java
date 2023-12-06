@@ -15,26 +15,26 @@ import com.depthspace.member.model.jdbc.MemDAO_Interface;
 import com.depthspace.member.model.jdbc.MemJDBCDAO;
 
 public class AdminService {
-	private AdminDAO_Interface dao;
+	private AdminDAO_Interface dao; // 宣告一個 AdminDAO_Interface 介面類型的變數，用於操作數據庫
 
 	public AdminService() {
 		dao = new AdminJDBCDAO();
 	}
-	//增加會員
+	//增加管理員
 	public AdminVO addAdmin(AdminVO adminVO) {
 		dao.insert(adminVO);
 		return adminVO;
 	}
-	//更新會員資料
+	//更新管理員資料
 	public AdminVO updateAdmin(AdminVO adminVO) {
 		dao.update(adminVO);
 		return adminVO;
 	}
-	// 取得會員資訊
+	// 取得管理員資訊
 	public AdminVO getAdminInfo(String adminAcc) {
 		return dao.getAdminInfo(adminAcc);
 	}
-	//拿到所有會員資料
+	//拿到所有管理員資料
 	public List<AdminVO> getAll(){
 		return dao.getAll();
 	}

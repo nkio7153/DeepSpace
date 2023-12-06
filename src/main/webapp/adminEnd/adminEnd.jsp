@@ -134,7 +134,7 @@
     //更新權限的欄位
     function updateTableRow(row, newData) {
         // 根據實際的資料結構更新表格行的內容
-        row.cells[3].textContent = newData; //adminStatus 是表格中的第 5 個欄位
+        row.cells[3].textContent = newData; //adminStatus 是表格中的第 4 個欄位
     }
     
 $(document).ready(function () {

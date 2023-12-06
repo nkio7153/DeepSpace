@@ -16,24 +16,29 @@ public class FaqServlet extends HttpServlet {
 	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-
+		
+		// 設置請求的字符編碼為UTF-8，以處理中文字符
 		req.setCharacterEncoding("UTF-8");
+		// 從請求中獲取名為'action'的參數，以判斷要執行什麼操作
 		String action = req.getParameter("action");
 
-		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
+		// 判斷action是否為"getOne_For_Display"，即是否來自select_page.jsp的請求
+		if ("getOne_For_Display".equals(action)) {
 
+			// 創建一個用於存儲錯誤信息的List
 			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
+			// 將錯誤信息列表添加到請求範圍，以便在發送錯誤頁面時使用
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
+			// 從請求中獲取名為'serialId'的參數
 			String str = req.getParameter("serialId");
 			
+			// 檢查serialId參數是否為空或者無效（去除前後空格後長度為0）
 			if (str == null || (str.trim()).length() == 0) {
 				errorMsgs.add("請輸入FAQ編號");
 			}
-			// Send the use back to the form, if there were errors
+			// 如果有錯誤信息，將用戶重定向回表單頁面
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/faq/select_page.jsp");
@@ -41,13 +46,14 @@ public class FaqServlet extends HttpServlet {
 				return;//程式中斷
 			}
 			
+			// 定義一個整型變量serialId，用於存儲從請求參數轉換來的整數值
 			Integer serialId = null;
 			try {
 				serialId = Integer.valueOf(str);
 			} catch (Exception e) {
 				errorMsgs.add("2員工編號格式不正確");
 			}
-			// Send the use back to the form, if there were errors
+			// 如果有錯誤信息，再次將用戶重定向回表單頁面
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/faq/select_page.jsp");
 				failureView.forward(req, res);
@@ -55,12 +61,15 @@ public class FaqServlet extends HttpServlet {
 			}
 
 			/*************************** 2.開始查詢資料 *****************************************/
+			// 創建FaqService的實例，以便執行查詢操作
 			FaqService faqSvc = new FaqService();
+			// 使用FaqService來獲取指定的FaqVO物件
 			FaqVO faqVO = faqSvc.getOneFaq(serialId);
+			// 如果查詢結果為空，則添加錯誤信息
 			if (faqVO == null) {
 				errorMsgs.add("查無資料");
 			}
-			// Send the use back to the form, if there were errors
+			// 如果有錯誤信息，再次將用戶重定向回表單頁面
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/faq/select_page.jsp");
 				failureView.forward(req, res);
@@ -68,8 +77,11 @@ public class FaqServlet extends HttpServlet {
 			}
 
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
-			req.setAttribute("faqVO", faqVO); // 資料庫取出的empVO物件,存入req
+			// 將查詢到的FaqVO物件存入請求範圍
+			req.setAttribute("faqVO", faqVO); 
+			// 設置成功頁面的URL
 			String url = "/faq/listOneFaq.jsp";
+			 // 獲取轉發器並轉發到成功頁面
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneFaq.jsp
 			successView.forward(req, res);
 		}
